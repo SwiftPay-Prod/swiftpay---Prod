@@ -37,7 +37,7 @@
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
             "netCore": {
-                "appProject": "${workspaceFolder}/safefy-api.csproj"
+                "appProject": "${workspaceFolder}/swiftpay-api.csproj"
             }
         }
     ]

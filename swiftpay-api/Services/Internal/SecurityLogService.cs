@@ -36,7 +36,7 @@ public class SecurityLogService(ILogQueue<SecurityLogEntry> logQueue) : ISecurit
             IpAddress = entry.IpAddress ?? _ipAddress,
             UserAgent = entry.UserAgent ?? _userAgent,
             Location = entry.Location ?? _location,
-            ServiceName = "safefy-api",
+            ServiceName = "swiftpay-api",
             CreatedAt = DateTime.UtcNow
         };
 

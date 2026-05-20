@@ -1,11 +1,11 @@
-﻿# safefy-api-core
+﻿# swiftpay-api-core
 
-Biblioteca compartilhada de entidades, modelos e serviços para o ecossistema Safefy API.
+Biblioteca compartilhada de entidades, modelos e serviços para o ecossistema SWIFTPAY API.
 
 ## Gerando o Pacote
 
 ```powershell
-cd safefy-api-core
+cd swiftpay-api-core
 dotnet build -c Release
 dotnet pack -c Release -o ./nupkg --no-build
 ```
@@ -17,28 +17,28 @@ O pacote será gerado em `./nupkg/safefy-api-core.{version}.nupkg`.
 Após gerar o pacote, copie para os projetos consumidores:
 
 ```powershell
-Copy-Item ./nupkg/*.nupkg ../safefy-api/nupkg/ -Force
-Copy-Item ./nupkg/*.nupkg ../safefy-api-payment/nupkg/ -Force
+Copy-Item ./nupkg/*.nupkg ../swiftpay-api/nupkg/ -Force
+Copy-Item ./nupkg/*.nupkg ../swiftpay-api-payment/nupkg/ -Force
 ```
 
 Para desenvolvimento local, limpe o cache e restaure:
 
 ```powershell
 dotnet nuget locals all --clear
-cd ../safefy-api && dotnet restore
-cd ../safefy-api-payment && dotnet restore
+cd ../swiftpay-api && dotnet restore
+cd ../swiftpay-api-payment && dotnet restore
 ```
 
 Para Docker, rebuild das imagens:
 
 ```powershell
-cd ../safefy-api && docker build --no-cache -t safefyapi:latest .
-cd ../safefy-api-payment && docker build --no-cache -t safefyapipayment:latest .
+cd ../swiftpay-api && docker build --no-cache -t swiftpayapi:latest .
+cd ../swiftpay-api-payment && docker build --no-cache -t swiftpayapipayment:latest .
 ```
 
 ## Versionamento
 
-Para evitar problemas de cache, incremente a versão no `safefy-api-core.csproj`:
+Para evitar problemas de cache, incremente a versão no `swiftpay-api-core.csproj`:
 
 ```xml
 <Version>1.1.0</Version>
@@ -47,7 +47,7 @@ Para evitar problemas de cache, incremente a versão no `safefy-api-core.csproj`
 E atualize a referência nos projetos consumidores:
 
 ```xml
-<PackageReference Include="safefy-api-core" Version="1.1.0" />
+<PackageReference Include="swiftpay-api-core" Version="1.1.0" />
 ```
 
 ### Criando Tag no Git
@@ -69,7 +69,7 @@ git push origin v1.1.0
 ## Estrutura
 
 ```
-safefy-api-core/
+swiftpay-api-core/
 ├── Constants/        # IDs fixos do sistema
 ├── Database/         # LogDbContext e entidades de log
 ├── Interfaces/       # Contratos de serviços compartilhados
@@ -80,5 +80,5 @@ safefy-api-core/
 
 ## Projetos que utilizam
 
-- **safefy-api** - API principal (gestão de merchants, usuários, admin)
-- **safefy-api-payment** - API de pagamentos (cobranças PIX, webhooks)
+- **swiftpay-api** - API principal (gestão de merchants, usuários, admin)
+- **swiftpay-api-payment** - API de pagamentos (cobranças PIX, webhooks)

@@ -24,7 +24,7 @@ public class SafefyApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         {
             // Encontra o diretório raiz do projeto (onde está o .sln)
             var currentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
-            while (currentDir != null && !File.Exists(Path.Combine(currentDir.FullName, "safefy-api.sln")))
+            while (currentDir != null && !File.Exists(Path.Combine(currentDir.FullName, "swiftpay-api.sln")))
             {
                 currentDir = currentDir.Parent;
             }

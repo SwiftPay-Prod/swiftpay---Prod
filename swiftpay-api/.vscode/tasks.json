@@ -7,7 +7,7 @@
 			"type": "process",
 			"args": [
 				"build",
-				"${workspaceFolder}/safefy-api.sln",
+				"${workspaceFolder}/swiftpay-api.sln",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary;ForceNoAlign"
 			],
@@ -19,7 +19,7 @@
 			"type": "process",
 			"args": [
 				"publish",
-				"${workspaceFolder}/safefy-api.sln",
+				"${workspaceFolder}/swiftpay-api.sln",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary;ForceNoAlign"
 			],
@@ -33,7 +33,7 @@
 				"watch",
 				"run",
 				"--project",
-				"${workspaceFolder}/safefy-api.sln"
+				"${workspaceFolder}/swiftpay-api.sln"
 			],
 			"problemMatcher": "$msCompile"
 		},
@@ -44,14 +44,14 @@
 				"build"
 			],
 			"dockerBuild": {
-				"tag": "safefyapi:dev",
+				"tag": "swiftpayapi:dev",
 				"target": "base",
 				"dockerfile": "${workspaceFolder}/Dockerfile",
 				"context": "${workspaceFolder}",
 				"pull": true
 			},
 			"netCore": {
-				"appProject": "${workspaceFolder}/safefy-api.csproj"
+				"appProject": "${workspaceFolder}/swiftpay-api.csproj"
 			}
 		},
 		{
@@ -61,7 +61,7 @@
 				"build"
 			],
 			"dockerBuild": {
-				"tag": "safefyapi:latest",
+				"tag": "swiftpayapi:latest",
 				"dockerfile": "${workspaceFolder}/Dockerfile",
 				"context": "${workspaceFolder}",
 				"platform": {
@@ -71,7 +71,7 @@
 				"pull": true
 			},
 			"netCore": {
-				"appProject": "${workspaceFolder}/safefy-api.csproj"
+				"appProject": "${workspaceFolder}/swiftpay-api.csproj"
 			}
 		},
 		{
@@ -82,7 +82,7 @@
 			],
 			"dockerRun": {},
 			"netCore": {
-				"appProject": "${workspaceFolder}/safefy-api.csproj",
+				"appProject": "${workspaceFolder}/swiftpay-api.csproj",
 				"enableDebugging": true
 			}
 		},
@@ -94,7 +94,7 @@
 			],
 			"dockerRun": {},
 			"netCore": {
-				"appProject": "${workspaceFolder}/safefy-api.csproj"
+				"appProject": "${workspaceFolder}/swiftpay-api.csproj"
 			}
 		},
 		{
@@ -103,7 +103,7 @@
 			"command": "dotnet",
 			"args": [
 				"build",
-				"safefy-api.sln"
+				"swiftpay-api.sln"
 			],
 			"isBackground": false
 		},
@@ -113,7 +113,7 @@
 			"command": "dotnet",
 			"args": [
 				"build",
-				"safefy-api.sln"
+				"swiftpay-api.sln"
 			],
 			"isBackground": false
 		}

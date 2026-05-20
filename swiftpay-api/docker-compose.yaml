@@ -96,7 +96,7 @@ services:
     container_name: swiftpayapi
     build:
       context: ..
-      dockerfile: safefy-api/Dockerfile
+      dockerfile: swiftpay-api/Dockerfile
     image: swiftpayapi:latest
     ports:
       - '5279:5279'
@@ -145,7 +145,7 @@ services:
     container_name: swiftpayapipayment
     build:
       context: ..
-      dockerfile: safefy-api-payment/Dockerfile
+      dockerfile: swiftpay-api-payment/Dockerfile
     image: swiftpayapipayment:latest
     ports:
       - '5166:5166'
@@ -170,7 +170,7 @@ services:
   swiftpayweb:
     container_name: swiftpayweb
     build:
-      context: ../safefy-web
+      context: ../swiftpay-web
     image: swiftpayweb:latest
     ports:
       - '3000:3000'

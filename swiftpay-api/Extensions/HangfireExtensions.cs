@@ -46,7 +46,7 @@ public static class HangfireExtensions
         {
             options.WorkerCount = 2;
             options.Queues = ["automatic-cashout", "ranking"];
-            options.ServerName = $"safefy-api-{Environment.MachineName}";
+            options.ServerName = $"swiftpay-api-{Environment.MachineName}";
         });
 
         return services;
