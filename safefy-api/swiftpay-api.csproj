@@ -2,30 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable> 
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>safefy_api_payment</RootNamespace>
+    <RootNamespace>safefy_api</RootNamespace>
+    <InternalsVisibleTo>swiftpay-api.Tests</InternalsVisibleTo>
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
   </PropertyGroup>
 
-  <!-- Excluir pasta Tests do projeto principal -->
   <ItemGroup>
-    <Compile Remove="Tests\**" />
-    <Content Remove="Tests\**" />
-    <EmbeddedResource Remove="Tests\**" />
-    <None Remove="Tests\**" />
+    <Compile Remove="Tests/**" />
+    <Content Remove="Tests/**" />
+    <None Remove="Tests/**" />
   </ItemGroup>
 
-  <ItemGroup Condition="Exists('..\safefy-api-core\safefy-api-core.csproj')">
-    <ProjectReference Include="..\safefy-api-core\safefy-api-core.csproj" />
+  <ItemGroup Condition="Exists('..\safefy-api-core\swiftpay-api-core.csproj')">
+    <ProjectReference Include="..\safefy-api-core\swiftpay-api-core.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="!Exists('..\safefy-api-core\safefy-api-core.csproj')">
-    <PackageReference Include="safefy-api-core" Version="2.15.1" />
+  <ItemGroup Condition="!Exists('..\safefy-api-core\swiftpay-api-core.csproj')">
+    <PackageReference Include="swiftpay-api-core" Version="2.15.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.401" />
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="FastEndpoints" Version="7.1.1" />
@@ -37,17 +37,19 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.5.4" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.5.4" />
     <PackageReference Include="Npgsql" Version="10.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageReference Include="Resend" Version="0.2.1" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.10.3" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.20" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.20" />
+    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.4" />
   </ItemGroup>
+
 
   <ItemGroup>
-    <Content Include="Templates/Email/**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Templates/Email/**" CopyToPublishDirectory="Always" />
   </ItemGroup>
-
 </Project>

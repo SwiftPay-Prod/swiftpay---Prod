@@ -35,7 +35,7 @@ const nextConfig: NextConfig = {
 		],
 	},
 	output: 'standalone',
-	generateBuildId: async () => 'safefy-web-checkout-stable-build',
+	generateBuildId: async () => 'swiftpay-web-checkout-stable-build',
 	async rewrites() {
 		const paymentApiUrl = process.env.INTERNAL_SAFEFY_API_PAYMENT_URL || process.env.NEXT_PUBLIC_SAFEFY_API_PAYMENT_URL;
 

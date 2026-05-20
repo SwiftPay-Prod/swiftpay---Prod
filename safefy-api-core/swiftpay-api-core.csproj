@@ -7,14 +7,14 @@
     <RootNamespace>safefy_api_core</RootNamespace>
     
     <!-- NuGet Package Configuration -->
-    <PackageId>safefy-api-core</PackageId>
+    <PackageId>swiftpay-api-core</PackageId>
     <Version>2.15.1</Version>
-    <Authors>Safefy</Authors>
-    <Company>Safefy</Company>
-    <Product>Safefy API Core</Product>
-    <Description>Shared entities, models, and utilities for Safefy API ecosystem</Description>
-    <PackageTags>safefy;payments;pix;entities;core</PackageTags>
-    <RepositoryUrl>https://github.com/safefy/safefy-api-core</RepositoryUrl>
+    <Authors>SWIFTPAY</Authors>
+    <Company>SWIFTPAY</Company>
+    <Product>SWIFTPAY API Core</Product>
+    <Description>Shared entities, models, and utilities for SWIFTPAY API ecosystem</Description>
+    <PackageTags>swiftpay;payments;pix;entities;core</PackageTags>
+    <RepositoryUrl>https://github.com/matspectrum-ai/SWIFTPAY</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>

@@ -1,4 +1,4 @@
-# Safefy Web Checkout
+# SWIFTPAY Web Checkout
 
 Checkout multi-template com resolucao dinamica por configuracao do checkout retornada pela API.
 
@@ -55,7 +55,7 @@ Use apenas para regras de dominio e utilidades:
 ## Estrutura principal
 
 ```txt
-safefy-web-checkout/
+swiftpay-web-checkout/
 	app/
 		[checkoutId]/
 		sandbox/[checkoutId]/

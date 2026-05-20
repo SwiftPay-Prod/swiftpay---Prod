@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "safefy-api", "safefy-api.csproj", "{54E0A93C-1DF3-5D8D-FD24-90ECA5D99CF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "swiftpay-api", "swiftpay-api.csproj", "{54E0A93C-1DF3-5D8D-FD24-90ECA5D99CF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "safefy-api.Tests", "Tests\safefy-api.Tests.csproj", "{57F18D6D-F6D9-423E-822E-35ECBF872884}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "swiftpay-api.Tests", "Tests\swiftpay-api.Tests.csproj", "{57F18D6D-F6D9-423E-822E-35ECBF872884}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
