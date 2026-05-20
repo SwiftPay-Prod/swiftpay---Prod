@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable> 
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>safefy_api_payment</RootNamespace>
+    <AssemblyName>safefy-api-payment</AssemblyName>
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
   </PropertyGroup>

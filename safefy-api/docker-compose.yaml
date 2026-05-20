@@ -6,8 +6,8 @@ services:
   # ============================================
   
   # Banco principal (aplicação)
-  safefydb:
-    container_name: safefydb
+  swiftpaydb:
+    container_name: swiftpaydb
     image: postgres:15.15-alpine3.22
     ports:
       - '5432:5432'
@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: YOUR_PASSWORD
       POSTGRES_DB: YOUR_DATABASE
     volumes:
-      - safefydb_data:/var/lib/postgresql/data
+      - swiftpaydb_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
@@ -24,8 +24,8 @@ services:
       retries: 5
 
   # Banco de logs
-  safefylogsdb:
-    container_name: safefylogsdb
+  swiftpaylogsdb:
+    container_name: swiftpaylogsdb
     image: postgres:15.15-alpine3.22
     ports:
       - '5433:5432'
@@ -34,7 +34,7 @@ services:
       POSTGRES_PASSWORD: YOUR_LOGS_PASSWORD
       POSTGRES_DB: YOUR_LOGS_DATABASE
     volumes:
-      - safefylogsdb_data:/var/lib/postgresql/data
+      - swiftpaylogsdb_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
@@ -45,8 +45,8 @@ services:
   # MAIL SERVER (Development)
   # ============================================
   
-  safefymail:
-    container_name: safefymail
+  swiftpaymail:
+    container_name: swiftpaymail
     image: mailhog/mailhog:latest
     ports:
       - '8025:8025'
@@ -74,14 +74,14 @@ services:
   # CACHE (SESSION STORE)
   # ============================================
 
-  safefyvalkey:
-    container_name: safefyvalkey
+  swiftpayvalkey:
+    container_name: swiftpayvalkey
     image: valkey/valkey:8-alpine
     ports:
       - '6379:6379'
     command: valkey-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
-      - safefyvalkey_data:/data
+      - swiftpayvalkey_data:/data
     healthcheck:
       test: ["CMD", "valkey-cli", "ping"]
       interval: 10s
@@ -92,12 +92,12 @@ services:
   # APPLICATIONS
   # ============================================
 
-  safefyapi:
-    container_name: safefyapi
+  swiftpayapi:
+    container_name: swiftpayapi
     build:
       context: ..
       dockerfile: safefy-api/Dockerfile
-    image: safefyapi:latest
+    image: swiftpayapi:latest
     ports:
       - '5279:5279'
     environment:
@@ -121,7 +121,7 @@ services:
       - SmtpSettings__EnableSend=YOUR_SMTP_ENABLE_SEND
       - EmailSettings__Provider=Resend
       - EmailSettings__FromEmail=noreply@safefypay.com.br
-      - EmailSettings__FromName=Safefy
+      - EmailSettings__FromName=SWIFTPAY
       - EmailSettings__EnableSend=true
       - EmailSettings__Resend__ApiKey=YOUR_RESEND_API_KEY
       - StorageSettings__Endpoint=sfo3.digitaloceanspaces.com
@@ -132,21 +132,21 @@ services:
       - StorageSettings__PublicUrl=https://YOUR_STORAGE_BUCKET_NAME.sfo3.cdn.digitaloceanspaces.com
       - ValkeySettings__ConnectionString=YOUR_VALKEY_CONNECTION_STRING
     depends_on:
-      safefydb:
+      swiftpaydb:
         condition: service_healthy
-      safefylogsdb:
+      swiftpaylogsdb:
         condition: service_healthy
-      safefymail:
+      swiftpaymail:
         condition: service_started
-      safefyvalkey:
+      swiftpayvalkey:
         condition: service_healthy
 
-  safefyapipayment:
-    container_name: safefyapipayment
+  swiftpayapipayment:
+    container_name: swiftpayapipayment
     build:
       context: ..
       dockerfile: safefy-api-payment/Dockerfile
-    image: safefyapipayment:latest
+    image: swiftpayapipayment:latest
     ports:
       - '5166:5166'
     environment:
@@ -160,18 +160,18 @@ services:
       - PlatformSettings__BaseUrl=YOUR_PLATFORM_BASE_URL
       - PlatformSettings__ApiVersion=YOUR_API_VERSION
     depends_on:
-      safefydb:
+      swiftpaydb:
         condition: service_healthy
-      safefylogsdb:
+      swiftpaylogsdb:
         condition: service_healthy
-      safefyapi:
+      swiftpayapi:
         condition: service_started
 
-  safefyweb:
-    container_name: safefyweb
+  swiftpayweb:
+    container_name: swiftpayweb
     build:
       context: ../safefy-web
-    image: safefyweb:latest
+    image: swiftpayweb:latest
     ports:
       - '3000:3000'
     environment:
@@ -181,16 +181,16 @@ services:
       - NEXT_PUBLIC_DOCS_URL=YOUR_DOCS_URL
       - NEXT_PUBLIC_INTEGRATION_URL=YOUR_INTEGRATION_URL
     depends_on:
-      safefyapi:
+      swiftpayapi:
         condition: service_started
-      safefyapipayment:
+      swiftpayapipayment:
         condition: service_started
 
 # ============================================
 # VOLUMES
 # ============================================
 volumes:
-  safefydb_data:
-  safefylogsdb_data:
+  swiftpaydb_data:
+  swiftpaylogsdb_data:
   grafana_data:
-  safefyvalkey_data:
+  swiftpayvalkey_data:

@@ -11,18 +11,18 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG configuration=Release
 WORKDIR /src
 
-COPY ["safefy-api-payment/safefy-api-payment.csproj", "safefy-api-payment/"]
-COPY ["safefy-api-core/safefy-api-core.csproj", "safefy-api-core/"]
-RUN dotnet restore "safefy-api-payment/safefy-api-payment.csproj" --ignore-failed-sources
+COPY ["safefy-api-payment/swiftpay-api-payment.csproj", "safefy-api-payment/"]
+COPY ["safefy-api-core/swiftpay-api-core.csproj", "safefy-api-core/"]
+RUN dotnet restore "safefy-api-payment/swiftpay-api-payment.csproj" --ignore-failed-sources
 
 COPY ["safefy-api-payment/", "safefy-api-payment/"]
 COPY ["safefy-api-core/", "safefy-api-core/"]
 RUN rm -rf safefy-api-payment/obj safefy-api-payment/bin safefy-api-core/obj safefy-api-core/bin \
-        && dotnet restore "safefy-api-payment/safefy-api-payment.csproj" --ignore-failed-sources
+        && dotnet restore "safefy-api-payment/swiftpay-api-payment.csproj" --ignore-failed-sources
 
 FROM build AS publish
 ARG configuration=Release
-RUN dotnet publish "safefy-api-payment/safefy-api-payment.csproj" -c $configuration --no-restore -o /app/publish /p:UseAppHost=false /p:GeneratePackageOnBuild=false
+RUN dotnet publish "safefy-api-payment/swiftpay-api-payment.csproj" -c $configuration --no-restore -o /app/publish /p:UseAppHost=false /p:GeneratePackageOnBuild=false
 
 FROM base AS final
 WORKDIR /app

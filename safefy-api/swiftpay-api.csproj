@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>safefy_api</RootNamespace>
+    <AssemblyName>safefy-api</AssemblyName>
     <InternalsVisibleTo>swiftpay-api.Tests</InternalsVisibleTo>
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>

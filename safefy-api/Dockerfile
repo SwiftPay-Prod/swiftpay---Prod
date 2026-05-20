@@ -18,8 +18,8 @@ RUN dotnet nuget add source "https://nuget.pkg.github.com/Safefy-Pay/index.json"
     --store-password-in-clear-text
 
 WORKDIR /src
-COPY ["safefy-api.csproj", "./"]
-RUN dotnet restore "safefy-api.csproj"
+COPY ["swiftpay-api.csproj", "./"]
+RUN dotnet restore "swiftpay-api.csproj"
 COPY . .
 
 # Stage publish

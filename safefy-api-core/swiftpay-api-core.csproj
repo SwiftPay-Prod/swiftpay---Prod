@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>safefy_api_core</RootNamespace>
+    <AssemblyName>safefy-api-core</AssemblyName>
     
     <!-- NuGet Package Configuration -->
     <PackageId>swiftpay-api-core</PackageId>
