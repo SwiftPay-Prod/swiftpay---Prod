@@ -1,0 +1,57 @@
+@safefy_api_HostAddress = http://localhost:5279
+
+### SignUp
+POST {{safefy_api_HostAddress}}/v1/auth/signup
+Content-Type: application/json
+
+{
+    "name": "João Silva",
+    "email": "joao@email.com",
+    "password": "Senha@123"
+}
+
+### SignIn
+POST {{safefy_api_HostAddress}}/v1/auth/signin
+Content-Type: application/json
+
+{
+    "email": "admin@safefypay.com.br",
+    "password": "Admin@123"
+}
+
+### Forgot Password
+POST {{safefy_api_HostAddress}}/v1/auth/forgot-password
+Content-Type: application/json
+
+{
+    "email": "joao@email.com"
+}
+
+### Reset Password
+POST {{safefy_api_HostAddress}}/v1/auth/reset-password
+Content-Type: application/json
+
+{
+    "email": "joao@email.com",
+    "code": "925360",
+    "newPassword": "NovaSenha@123"
+}
+
+### Send Email Confirmation
+POST {{safefy_api_HostAddress}}/v1/auth/send-email-confirmation
+Content-Type: application/json
+
+{
+    "email": "joao@email.com"
+}
+
+### Confirm Email
+POST {{safefy_api_HostAddress}}/v1/auth/confirm-email
+Content-Type: application/json
+
+{
+    "email": "joao@email.com",
+    "token": "your-token-here"
+}
+
+###

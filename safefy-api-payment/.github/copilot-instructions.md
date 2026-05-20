@@ -1,0 +1,25 @@
+# Safefy API Payment - Copilot Instructions (Referência)
+
+Este arquivo principal agora funciona como índice de navegação.
+O conteúdo detalhado foi dividido em arquivos menores por contexto para facilitar manutenção, revisão e atualização incremental.
+
+## Como usar
+
+1. Use este arquivo para localizar rapidamente o tema desejado.
+2. Edite diretamente o arquivo temático correspondente.
+3. Mantenha este índice atualizado sempre que um novo bloco temático for criado, renomeado ou removido.
+
+## Glossário de referências temáticas
+
+- [Fundamentos, environment e fluxos iniciais de transação/saque](instructions/safefy-api-payment/foundations-transactions-and-cashouts.instructions.md)
+- [Payment Links e arquitetura de saques](instructions/safefy-api-payment/payment-links-and-cashout-architecture.instructions.md)
+- [Webhooks, tracking e sinalização de status](instructions/safefy-api-payment/webhooks-tracking-and-signalr.instructions.md)
+- [Clients, autenticação, rate limiting e resiliência HTTP](instructions/safefy-api-payment/clients-auth-rate-limit-and-resilience.instructions.md)
+- [Estrutura, stack, mensageria e extensão do startup](instructions/safefy-api-payment/structure-stack-broker-and-extensions.instructions.md)
+- [Regras de negócio centrais do domínio de pagamento](instructions/safefy-api-payment/core-business-rules.instructions.md)
+- [Checkout config, práticas, dependências e logging](instructions/safefy-api-payment/checkout-practices-dependencies-and-logging.instructions.md)
+- [Reprocessamento DEV, health checks e migrações](instructions/safefy-api-payment/dev-reprocessing-health-and-migrations.instructions.md)
+
+## Regra de manutenção
+
+Sempre que houver alteração em arquitetura, estrutura de dados, fluxos de negócio ou padrões de código, atualize o arquivo temático correto e mantenha este índice sincronizado.

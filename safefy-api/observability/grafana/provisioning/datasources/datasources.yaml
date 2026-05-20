@@ -1,0 +1,34 @@
+apiVersion: 1
+
+datasources:
+  # PostgreSQL - Banco Principal (Payments, Merchants, Users)
+  - name: PostgreSQL-Primary
+    type: postgres
+    access: proxy
+    url: safefydb:5432
+    database: safefy
+    user: safefyuser
+    editable: false
+    secureJsonData:
+      password: safefypassword
+    jsonData:
+      sslmode: disable
+      maxOpenConns: 10
+      maxIdleConns: 5
+      connMaxLifetime: 14400
+
+  # PostgreSQL - Banco de Logs
+  - name: PostgreSQL-Logs
+    type: postgres
+    access: proxy
+    url: safefylogsdb:5432
+    database: safefylogs
+    user: logsuser
+    editable: false
+    secureJsonData:
+      password: logspassword
+    jsonData:
+      sslmode: disable
+      maxOpenConns: 10
+      maxIdleConns: 5
+      connMaxLifetime: 14400

@@ -1,0 +1,107 @@
+@import 'tailwindcss';
+@import '@heroui/styles';
+@import '../templates/hero-pro/theme.css';
+
+html,
+body {
+	min-height: 100%;
+	background-color: var(--hero-bg-page);
+}
+
+html {
+	color-scheme: dark light;
+}
+
+body {
+	min-height: 100dvh;
+	-webkit-font-smoothing: none;
+	-moz-osx-font-smoothing: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+	body {
+		min-height: -webkit-fill-available;
+	}
+}
+
+/* Prevent iOS Safari zoom on input focus */
+@supports (-webkit-touch-callout: none) {
+	input,
+	textarea,
+	select {
+		font-size: 16px !important;
+	}
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	-webkit-text-fill-color: inherit;
+	transition: background-color 9999s ease-in-out 0s;
+}
+
+.perspective-1000 {
+	perspective: 1000px;
+}
+
+.transform-style-3d {
+	transform-style: preserve-3d;
+}
+
+.backface-hidden {
+	backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+	transform: rotateY(180deg);
+}
+
+.icon-xs {
+	width: 14px;
+	height: 14px;
+}
+
+.icon-sm {
+	width: 18px;
+	height: 18px;
+}
+
+.icon-md {
+	width: 24px;
+	height: 24px;
+}
+
+.icon-lg {
+	width: 32px;
+	height: 32px;
+}
+
+.icon-xl {
+	width: 40px;
+	height: 40px;
+}
+
+.icon-2xl {
+	width: 48px;
+	height: 48px;
+}
+
+.dropdown__popover,
+.select__popover,
+.combobox__popover,
+.popover,
+.alert,
+.accordion,
+.accordion__heading,
+.autocomplete__popover {
+	border: 1px solid var(--default);
+	border-radius: var(--radius-xl);
+}
+
+

@@ -1,0 +1,564 @@
+@host = http://localhost:5166
+@webhookToken = whsec_bankizi_default_token_change_in_production
+@txId = 6EH8VGBEFRUX72Q7M7HKTXOZPG
+
+### =====================================
+### WEBHOOKS SIMULATION - Simulacao de Webhooks (Localhost Only)
+### =====================================
+### IMPORTANTE: 
+### - Estes endpoints funcionam APENAS em localhost e em ambiente Development
+### - A autenticação é feita pelo middleware AcquirerWebhookAuthMiddleware
+### - Modos de autenticação configuráveis via Admin:
+###   - Token: usa WebhookToken no header (Authorization, X-Webhook-Token, etc)
+###   - Ip: valida IP de origem (WebhookAllowedIps)
+###   - TokenAndIp: ambos obrigatórios
+### - Configure via: PATCH /v1/admin/acquirers/{id}
+### =====================================
+
+### =====================================
+### BANKIZI - Simulacao de Webhooks
+### =====================================
+
+### 1. Simular Webhook - PIX Pago (Paid)
+# @name simulatePaid
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "PAID123456789012345678",
+    "endToEndId": "EN69U7ROGLPKOPE1NMVOVISX",
+    "status": "PAID",
+    "amount": 15500,
+    "endToEndIdRefunded": null,
+    "amountRefunded": null,
+    "refundedAt": null,
+    "paidAt": "2025-12-19T05:56:27.539Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "Joao Silva",
+      "document": "12345678901"
+    },
+    "externalId": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 2. Simular Webhook - PIX Gerado (Generated)
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "GENERATED123456789012345678",
+    "endToEndId": null,
+    "status": "GENERATED",
+    "amount": 10000,
+    "endToEndIdRefunded": null,
+    "amountRefunded": null,
+    "refundedAt": null,
+    "paidAt": null,
+    "transactionType": "DYNAMIC",
+    "payerInfo": null,
+    "externalId": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 3. Simular Webhook - Reembolso Solicitado (RequestedRefund)
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "REFUND1234567890123456789",
+    "endToEndId": "E00000000202312011234REFUND01",
+    "status": "REQUESTED_REFUND",
+    "amount": 10000,
+    "endToEndIdRefunded": null,
+    "amountRefunded": 5000,
+    "refundedAt": null,
+    "paidAt": "2025-12-19T05:56:27.539Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "Joao Silva",
+      "document": "12345678901"
+    },
+    "externalId": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 4. Simular Webhook - Totalmente Reembolsado (Refunded)
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "REFUNDED123456789012345678",
+    "endToEndId": "E00000000202312011234REFUND02",
+    "status": "REFUNDED",
+    "amount": 10000,
+    "endToEndIdRefunded": "E00000000202312011234DEVOL001",
+    "amountRefunded": 10000,
+    "refundedAt": "2025-12-19T10:30:00.000Z",
+    "paidAt": "2025-12-19T05:56:27.539Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "João Silva Santos",
+      "document": "12345678901"
+    },
+    "externalId": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 5. Simular Webhook - Parcialmente Reembolsado (PartiallyRefunded)
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "PARTIAL1234567890123456789",
+    "endToEndId": "E00000000202312011234PARTIAL1",
+    "status": "PARTIALLY_REFUNDED",
+    "amount": 10000,
+    "endToEndIdRefunded": "E00000000202312011234DEVOL002",
+    "amountRefunded": 5000,
+    "refundedAt": "2025-12-19T10:30:00.000Z",
+    "paidAt": "2025-12-19T05:56:27.539Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "Joao Silva",
+      "document": "12345678901"
+    },
+    "externalId": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 6. Simular Webhook - Com Dados Completos
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "COMPLETE123456789012345678",
+    "endToEndId": "E0000000020241210154532GHIJKL",
+    "status": "PAID",
+    "amount": 10000,
+    "endToEndIdRefunded": null,
+    "amountRefunded": null,
+    "refundedAt": null,
+    "paidAt": "2025-12-19T15:45:32.000Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "Maria Santos Silva",
+      "document": "98765432100"
+    },
+    "externalId": "pedido-12345",
+    "account": {
+      "id": "acc-123",
+      "name": "Conta Principal"
+    },
+    "accountId": "66"
+  }
+}
+
+### =====================================
+### BANKIZI - PIX_OUT (Cashout/Saque) Webhooks
+### =====================================
+### Status possíveis: GENERATED, DONE, FAILED, REJECT, REFUNDED, PARTIALLY_REFUNDED
+### IMPORTANTE: O txId deve ser o mesmo retornado pela Bankizi ao criar o saque
+### (armazenado no campo AcquirerPayoutId do Payout)
+
+@payoutTxId = ADOUG086DGSH4534RWRGE66D304
+
+### 1. Simular Webhook PIX_OUT - Saque Concluído (DONE)
+# @name simulateCashoutDone
+POST {{host}}/v1/internal/bankizi/webhooks
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_OUT",
+  "data": {
+    "txId": "{{payoutTxId}}",
+    "transactionId": "CASHOUT_DONE_123456789",
+    "endToEndId": "E00000000202501152345CASHOUT01",
+    "status": "DONE",
+    "amount": 50000,
+    "amountRefunded": null,
+    "endToEndIdRefunded": null,
+    "refundedAt": null,
+    "paidAt": "2025-01-15T14:30:00.000Z",
+    "transactionType": "PIX_KEY",
+    "receiverInfo": {
+      "name": "João da Silva",
+      "document": "12345678900"
+    },
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 2. Simular Webhook PIX_OUT - Saque Gerado (GENERATED)
+# @name simulateCashoutGenerated
+POST {{host}}/v1/internal/bankizi/webhooks
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_OUT",
+  "data": {
+    "txId": "{{payoutTxId}}",
+    "transactionId": "CASHOUT_GEN_123456789",
+    "endToEndId": null,
+    "status": "GENERATED",
+    "amount": 50000,
+    "amountRefunded": null,
+    "endToEndIdRefunded": null,
+    "refundedAt": null,
+    "paidAt": null,
+    "transactionType": "PIX_KEY",
+    "receiverInfo": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 3. Simular Webhook PIX_OUT - Saque Falhou (FAILED)
+# @name simulateCashoutFailed
+POST {{host}}/v1/internal/bankizi/webhooks
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_OUT",
+  "data": {
+    "txId": "{{payoutTxId}}",
+    "transactionId": "CASHOUT_FAIL_123456789",
+    "endToEndId": null,
+    "status": "FAILED",
+    "amount": 50000,
+    "amountRefunded": null,
+    "endToEndIdRefunded": null,
+    "refundedAt": null,
+    "paidAt": null,
+    "rejectReason": "Erro técnico: timeout na comunicação com banco destino",
+    "transactionType": "PIX_KEY",
+    "receiverInfo": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 4. Simular Webhook PIX_OUT - Saque Rejeitado (REJECT)
+# @name simulateCashoutReject
+POST {{host}}/v1/internal/bankizi/webhooks
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_OUT",
+  "data": {
+    "txId": "{{payoutTxId}}",
+    "transactionId": "CASHOUT_REJ_123456789",
+    "endToEndId": null,
+    "status": "REJECT",
+    "amount": 50000,
+    "amountRefunded": null,
+    "endToEndIdRefunded": null,
+    "refundedAt": null,
+    "paidAt": null,
+    "rejectReason": "Chave PIX inválida ou conta encerrada",
+    "transactionType": "PIX_KEY",
+    "receiverInfo": null,
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### 5. Simular Webhook PIX_OUT - Saque Reembolsado (REFUNDED)
+# @name simulateCashoutRefunded
+POST {{host}}/v1/internal/bankizi/webhooks
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_OUT",
+  "data": {
+    "txId": "{{payoutTxId}}",
+    "transactionId": "CASHOUT_REFUND_123456789",
+    "endToEndId": "E00000000202501152345CASHOUT02",
+    "status": "REFUNDED",
+    "amount": 50000,
+    "amountRefunded": 50000,
+    "endToEndIdRefunded": "E00000000202501152345DEVOL001",
+    "refundedAt": "2025-01-15T16:00:00.000Z",
+    "paidAt": "2025-01-15T14:30:00.000Z",
+    "rejectReason": "Conta do recebedor recusou o PIX",
+    "transactionType": "PIX_KEY",
+    "receiverInfo": {
+      "name": "João da Silva",
+      "document": "12345678900"
+    },
+    "account": null,
+    "accountId": "66"
+  }
+}
+
+### =====================================
+### EXEMPLOS DE ERROS (PIX_IN)
+### =====================================
+
+### Erro: TxId não encontrado
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "INVALIDTXID000000000000000",
+    "transactionId": "ERROR12345678901234567890",
+    "status": "PAID",
+    "amount": 10000,
+    "paidAt": "2025-12-19T05:56:27.539Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "Joao Silva",
+      "document": "12345678901"
+    },
+    "accountId": "66"
+  }
+}
+
+### Erro: Status de reembolso sem valor
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "ERROR22345678901234567890",
+    "status": "REFUNDED",
+    "amount": 10000,
+    "amountRefunded": null,
+    "transactionType": "DYNAMIC",
+    "accountId": "66"
+  }
+}
+
+### Erro: TxId inválido (tamanho incorreto)
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "ABC123",
+    "transactionId": "ERROR32345678901234567890",
+    "status": "PAID",
+    "amount": 10000,
+    "transactionType": "DYNAMIC",
+    "accountId": "66"
+  }
+}
+
+### Erro: Documento inválido
+POST {{host}}/v1/internal/bankizi/webhooks/dev/simulate
+Content-Type: application/json
+Authorization: Bearer {{webhookToken}}
+
+{
+  "event": "PIX_IN",
+  "type": "PIX_IN",
+  "data": {
+    "txId": "{{txId}}",
+    "transactionId": "ERROR42345678901234567890",
+    "status": "PAID",
+    "amount": 10000,
+    "paidAt": "2025-12-19T05:56:27.539Z",
+    "transactionType": "DYNAMIC",
+    "payerInfo": {
+      "name": "Joao Silva",
+      "document": "123"
+    },
+    "accountId": "66"
+  }
+}
+
+### =====================================
+### IHUB BANKING - Simulacao de Webhooks (V2)
+### =====================================
+### Documentação: https://docs.vendasonlinestore.net/docs/webhook-v2
+### Eventos:
+### - cashin.paid: Pagamento PIX recebido
+### - cashin.refunded: Pagamento estornado
+### - cashout.success: Saque aprovado
+### - cashout.failed: Saque falhou
+### - cashout.returned: Saque devolvido
+### =====================================
+
+@ihubTxId = 17615714245971918718644287
+@ihubExternalId = pedido-teste-123
+
+### 1. Simular Webhook - PIX Pago (cashin.paid)
+# @name simulateIHubCashInPaid
+POST {{host}}/v1/internal/ihubbanking/webhooks
+Content-Type: application/json
+
+{
+  "event": "cashin.paid",
+  "payload": {
+    "transaction_id": "{{ihubTxId}}",
+    "external_id": "{{ihubExternalId}}",
+    "amount": 11000,
+    "end_to_end_id": "E18236120202510271324s05499b347c",
+    "payer": {
+      "name": "João da Silva",
+      "document": "99999999999",
+      "ispb": "19318318",
+      "institution": "NU PAGAMENTOS"
+    },
+    "receiver": {
+      "name": "Empresa Teste",
+      "document": "12345678000190",
+      "ispb": "18236120",
+      "institution": "BANCO EXEMPLO"
+    }
+  }
+}
+
+### 2. Simular Webhook - PIX Estornado (cashin.refunded)
+# @name simulateIHubCashInRefunded
+POST {{host}}/v1/internal/ihubbanking/webhooks
+Content-Type: application/json
+
+{
+  "event": "cashin.refunded",
+  "payload": {
+    "transaction_id": "{{ihubTxId}}",
+    "external_id": "{{ihubExternalId}}",
+    "amount": 11000,
+    "end_to_end_id": "E18236120202510271324s05499b347c",
+    "payer": {
+      "name": "João da Silva",
+      "document": "99999999999",
+      "ispb": "19318318",
+      "institution": "NU PAGAMENTOS"
+    },
+    "receiver": {
+      "name": "Empresa Teste",
+      "document": "12345678000190",
+      "ispb": "18236120",
+      "institution": "BANCO EXEMPLO"
+    }
+  }
+}
+
+### 3. Simular Webhook - Saque Aprovado (cashout.success)
+# @name simulateIHubCashOutSuccess
+POST {{host}}/v1/internal/ihubbanking/webhooks
+Content-Type: application/json
+
+{
+  "event": "cashout.success",
+  "payload": {
+    "withdrawal_id": "17615714245971918718644288",
+    "external_id": "PAYOUT123456789012345678901234",
+    "amount": 5000,
+    "end_to_end_id": "E18236120202510271324s05499b347d",
+    "receiver": {
+      "name": "João Silva",
+      "document": "12345678900",
+      "ispb": "60701190",
+      "institution": "ITAU UNIBANCO"
+    },
+    "payer": {
+      "name": "Empresa Teste",
+      "document": "12345678000190",
+      "ispb": "18236120",
+      "institution": "BANCO EXEMPLO"
+    }
+  }
+}
+
+### 4. Simular Webhook - Saque Falhou (cashout.failed)
+# @name simulateIHubCashOutFailed
+POST {{host}}/v1/internal/ihubbanking/webhooks
+Content-Type: application/json
+
+{
+  "event": "cashout.failed",
+  "payload": {
+    "withdrawal_id": "17615714245971918718644289",
+    "external_id": "PAYOUT234567890123456789012345",
+    "amount": 5000,
+    "end_to_end_id": "E18236120202510271324s05499b347e",
+    "error_message": "Invalid PIX key or account closed"
+  }
+}
+
+### 5. Simular Webhook - Saque Devolvido (cashout.returned)
+# @name simulateIHubCashOutReturned
+POST {{host}}/v1/internal/ihubbanking/webhooks
+Content-Type: application/json
+
+{
+  "event": "cashout.returned",
+  "payload": {
+    "withdrawal_id": "17615714245971918718644290",
+    "external_id": "PAYOUT345678901234567890123456",
+    "amount": 5000,
+    "end_to_end_id": "E18236120202510271324s05499b347f",
+    "receiver": {
+      "name": "João Silva",
+      "document": "12345678900",
+      "ispb": "60701190",
+      "institution": "ITAU UNIBANCO"
+    },
+    "payer": {
+      "name": "Empresa Teste",
+      "document": "12345678000190",
+      "ispb": "18236120",
+      "institution": "BANCO EXEMPLO"
+    }
+  }
+}

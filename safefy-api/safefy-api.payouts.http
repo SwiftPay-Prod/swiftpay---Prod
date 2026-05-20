@@ -1,0 +1,186 @@
+@safefy_api_HostAddress = http://localhost:5279
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzYWZlZnlwYXkiLCJhdWQiOiJzYWZlZnlwYXkiLCJyb2xlcyI6Ik1lcmNoYW50Iiwic3ViIjoiMDE5YjUyZDQtZTM2ZC03MTk0LWIxYWEtYmI3ZDBmNTllNDU1IiwiZ2l2ZW5fbmFtZSI6IkpvXHUwMEUzbyBTaWx2YSIsImVtYWlsIjoiam9hb0BlbWFpbC5jb20iLCJleHAiOjE3NzE4MDUyNDN9.qRVlOOdBrrq4t9duTgHJaNTdsXPovKPeIwL7O7JuW4jgzYC2z8XKQBdPdaGzSZaGpahkEk1MvkrP5YabiBiGbA
+@merchantId = 019b52d5-1e4f-75be-80de-ebf8fa509733
+@payoutAccountId = 019b5b28-066c-78b0-953f-79ae12190195
+@payoutId = 00000000-0000-0000-0000-000000000000
+@verificationCode = 695543
+
+###############################################################################
+# CASHOUT ACCOUNTS - CREATE
+###############################################################################
+
+### Create Cashout Account - PIX CPF
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixKeyType": "Cpf",
+    "pixKey": "06209730132",
+    "holderName": "Matheus da Silva",
+    "holderDocument": "12345678901"
+}
+
+### Create Cashout Account - PIX Email
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixKeyType": "Email",
+    "pixKey": "joao@email.com",
+    "holderName": "João da Silva",
+    "holderDocument": "12345678901"
+}
+
+### Create Cashout Account - PIX Phone
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixKeyType": "Phone",
+    "pixKey": "+5511999887766",
+    "holderName": "João da Silva",
+    "holderDocument": "12345678901"
+}
+
+### Create Cashout Account - PIX CNPJ
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixKeyType": "Cnpj",
+    "pixKey": "12345678000190",
+    "holderName": "Empresa LTDA",
+    "holderDocument": "12345678000190"
+}
+
+### Create Cashout Account - PIX Random Key
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixKeyType": "Random",
+    "pixKey": "123e4567-e89b-12d3-a456-426614174000",
+    "holderName": "João da Silva",
+    "holderDocument": "12345678901"
+}
+
+###############################################################################
+# CASHOUT ACCOUNTS - VERIFICATION
+###############################################################################
+
+### Verify Cashout Account (Enter the 6-digit code received by email)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts/{{payoutAccountId}}/verify
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "code": "{{verificationCode}}"
+}
+
+### Resend Verification Code
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts/{{payoutAccountId}}/resend-code
+Authorization: Bearer {{token}}
+
+###############################################################################
+# CASHOUT ACCOUNTS - MANAGEMENT
+###############################################################################
+
+### List Cashout Accounts
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts
+Authorization: Bearer {{token}}
+
+### List Cashout Accounts (By Single Status)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts?statuses=Active
+Authorization: Bearer {{token}}
+
+### List Cashout Accounts (By Multiple Statuses - Active and PendingVerification)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts?statuses=Active&statuses=Pending
+Authorization: Bearer {{token}}
+
+### List Cashout Accounts (All including Inactive)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts?statuses=Active&statuses=PendingVerification&statuses=Inactive
+Authorization: Bearer {{token}}
+
+### Set Default Cashout Account
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts/{{payoutAccountId}}/set-default
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### Delete Cashout Account
+DELETE {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/cashout-accounts/{{payoutAccountId}}
+Authorization: Bearer {{token}}
+
+###############################################################################
+# PAYOUTS - REQUEST
+###############################################################################
+
+### Request Payout (Default Account)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "amount": 5000,
+    "environment": "Sandbox",
+    "payoutAccountId": "{{payoutAccountId}}"
+}
+
+### Request Payout (Specific Account)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "amount": 10000,
+    "payoutAccountId": "{{payoutAccountId}}",
+    "environment": "Sandbox"
+}
+
+### Request Payout (Full Balance)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "amount": 100000,
+    "environment": "Sandbox"
+}
+
+###############################################################################
+# PAYOUTS - LIST
+###############################################################################
+
+### List Payouts
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts
+Authorization: Bearer {{token}}
+
+### List Payouts (Paginated)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts?page=1&pageSize=30
+Authorization: Bearer {{token}}
+
+### List Payouts (By Status: Pending, Processing, Completed, Failed, Cancelled)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts?status=Pending
+Authorization: Bearer {{token}}
+
+### List Payouts (By Period)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts?startDate=2024-01-01&endDate=2024-12-31
+Authorization: Bearer {{token}}
+
+### List Payouts (Completed Only)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts?status=Completed
+Authorization: Bearer {{token}}
+
+###############################################################################
+# PAYOUTS - READ
+###############################################################################
+
+### Get Payout Details
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payouts/{{payoutId}}
+Authorization: Bearer {{token}}

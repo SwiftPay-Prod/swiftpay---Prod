@@ -1,0 +1,19 @@
+@host = http://localhost:5279
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzYWZlZnlwYXkiLCJhdWQiOiJzYWZlZnlwYXkiLCJyb2xlcyI6IkFkbWluIiwic3ViIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMTAwIiwiZ2l2ZW5fbmFtZSI6IkFkbWluaXN0cmFkb3IiLCJlbWFpbCI6ImFkbWluQHNhZmVmeXBheS5jb20uYnIiLCJleHAiOjE3NzA1MzI5MTJ9.cH5XlLXuQxVUgoVuzaZ9lVW5-TT0sXsM7Cj1osP6czpZlOjtspcGnguNPZurwPpyKlp1Xks4Xnoq60ewBCh5Ew
+
+### ======================================
+### GET FILE URL
+### Obtém a URL de um arquivo (com autorização)
+### ======================================
+
+### Obter URL de arquivo público
+GET {{host}}/v1/files/public/kyc/019b0b8b-5cf9-7905-bcc1-4a2a559c90b8/c7f90b2d-9064-426e-9810-b23019440e0a.pdf
+Authorization: Bearer {{token}}
+
+### Obter URL de arquivo privado
+GET {{host}}/v1/files/private/kyc/019b1234-5678-7abc-def0-123456789abc/document.pdf
+Authorization: Bearer {{token}}
+
+### Arquivo não encontrado
+GET {{host}}/v1/files/nonexistent/file.pdf
+Authorization: Bearer {{token}}

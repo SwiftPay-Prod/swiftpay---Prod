@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace safefy_api.Database.Migrations.Primary
+{
+    /// <inheritdoc />
+    public partial class FixMerchantBalanceRelationship : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.Sql("""
+                DROP INDEX IF EXISTS "IX_MerchantBalances_MerchantId";
+                """);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.Sql("""
+                CREATE UNIQUE INDEX IF NOT EXISTS "IX_MerchantBalances_MerchantId" 
+                ON "MerchantBalances" ("MerchantId");
+                """);
+        }
+    }
+}

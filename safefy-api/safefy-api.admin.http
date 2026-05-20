@@ -1,0 +1,558 @@
+@safefy_api_HostAddress = http://localhost:5279
+@adminToken = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzYWZlZnlwYXkiLCJhdWQiOiJzYWZlZnlwYXkiLCJyb2xlcyI6IkFkbWluIiwic3ViIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMTAwIiwiZ2l2ZW5fbmFtZSI6IkFkbWluaXN0cmFkb3IiLCJlbWFpbCI6ImFkbWluQHNhZmVmeXBheS5jb20uYnIiLCJleHAiOjE3NzI2NTY1ODl9.NtMyFCN3v6G1RDPQ64tNqw6rabDHwm9r7ZqREsGBTYw3r1P1YA806YSf5-Z_2JZU7ZaZEyuz6z6SYy1qDs1xaQ
+@merchantId = 019b5ed3-0f46-7834-a8cb-8610a3fb8dda
+@userId = 019b8573-49b4-7dbb-91d4-468ab20761ef
+
+###############################################################################
+# DASHBOARD
+###############################################################################
+
+### Get Admin Dashboard (KPIs)
+GET {{safefy_api_HostAddress}}/v1/admin/dashboard
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+###############################################################################
+# USER MANAGEMENT
+###############################################################################
+
+### List Users
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Users by Status (Active)
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10&status=Active
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Users by Status (Inactive)
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10&status=Inactive
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Users by Status (Suspended)
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10&status=Suspended
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Users by Role (Merchant)
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10&role=Merchant
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Users by Role (Admin)
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10&role=Admin
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Search Users by Name or Email
+GET {{safefy_api_HostAddress}}/v1/admin/users?page=1&pageSize=10&search=matheus
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Get User Details
+GET {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Activate User
+POST {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/activate
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "reason": "Reativação aprovada após análise."
+}
+
+### Inactivate User
+POST {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/inactivate
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "reason": "Solicitação do usuário."
+}
+
+### Suspend User
+POST {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/suspend
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "reason": "Violação dos termos de uso."
+}
+
+### Reset User Password
+POST {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/reset-password
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{}
+
+### Send User Email Confirmation
+POST {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/send-email-confirmation
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{}
+
+### Update User Role - Set as Admin
+PATCH {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/role
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "role": "Admin"
+}
+
+### Update User Role - Set as Merchant
+PATCH {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/role
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "role": "Merchant"
+}
+
+### Update User Role - Set as Support
+PATCH {{safefy_api_HostAddress}}/v1/admin/user/{{userId}}/role
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "role": "Support"
+}
+
+###############################################################################
+# MERCHANT MANAGEMENT
+###############################################################################
+
+### List Pending Merchants (Default: Pending + UnderReview)
+GET {{safefy_api_HostAddress}}/v1/admin/merchants?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Merchants by KYC Status (Pending)
+GET {{safefy_api_HostAddress}}/v1/admin/merchants?page=1&pageSize=10&kycStatus=Pending
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Merchants by KYC Status (UnderReview)
+GET {{safefy_api_HostAddress}}/v1/admin/merchants?page=1&pageSize=10&kycStatus=UnderReview
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Merchants by KYC Status (Approved)
+GET {{safefy_api_HostAddress}}/v1/admin/merchants?page=1&pageSize=10&kycStatus=Approved
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Merchants by KYC Status (Rejected)
+GET {{safefy_api_HostAddress}}/v1/admin/merchants?page=1&pageSize=10&kycStatus=Rejected
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Merchants by KYC Status (Complement)
+GET {{safefy_api_HostAddress}}/v1/admin/merchants?page=1&pageSize=10&kycStatus=Complement
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Evaluate Merchant KYC - Approve
+POST {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/evaluate
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "Approved",
+    "reason": "Documentação completa e válida."
+}
+
+### Evaluate Merchant KYC - Reject
+POST {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/evaluate
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "Rejected",
+    "reason": "Documentos ilegíveis. Por favor, envie documentos com melhor qualidade."
+}
+
+### Evaluate Merchant KYC - Request Complement
+POST {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/evaluate
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "Complement",
+    "reason": "Precisamos de documentos adicionais para completar a análise.",
+    "pendingItems": [
+        {
+            "type": "Document",
+            "title": "Comprovante de endereço atualizado",
+            "description": "Por favor, envie um comprovante de endereço com data inferior a 3 meses."
+        },
+        {
+            "type": "Information",
+            "title": "Informar faturamento mensal",
+            "description": "Informe o faturamento médio mensal da empresa nos últimos 12 meses."
+        }
+    ]
+}
+
+###############################################################################
+# ACQUIRER MANAGEMENT
+###############################################################################
+
+### List All Acquirers
+GET {{safefy_api_HostAddress}}/v1/admin/acquirers?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Active Acquirers Only
+GET {{safefy_api_HostAddress}}/v1/admin/acquirers?page=1&pageSize=10&isActive=true
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Inactive Acquirers Only
+GET {{safefy_api_HostAddress}}/v1/admin/acquirers?page=1&pageSize=10&isActive=false
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Update Acquirer - Set IP Authentication Mode
+PATCH {{safefy_api_HostAddress}}/v1/admin/acquirers/{{acquirerId}}
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "webhookAuthMode": "Ip",
+    "webhookAllowedIps": "192.168.1.1,10.0.0.0/24"
+}
+
+### Update Acquirer - Set Token Authentication Mode
+PATCH {{safefy_api_HostAddress}}/v1/admin/acquirers/{{acquirerId}}
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "webhookAuthMode": "Token",
+    "webhookToken": "whsec_your_secure_token_here"
+}
+
+###############################################################################
+# PLATFORM PAYOUTS
+###############################################################################
+
+### Create Platform Payout
+POST {{safefy_api_HostAddress}}/v1/admin/platform-payouts
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "platformPayoutAccountId": "{{platformPayoutAccountId}}",
+    "totalAmount": 10000,
+    "notes": "Saque da plataforma"
+}
+
+### Create Simulated Platform Payout
+POST {{safefy_api_HostAddress}}/v1/admin/platform-payouts/simulated
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+    "platformPayoutAccountId": "{{platformPayoutAccountId}}",
+    "totalAmount": 10000,
+    "notes": "Saque simulado externo"
+}
+
+### Update Acquirer - Set Token and IP Authentication Mode
+PATCH {{safefy_api_HostAddress}}/v1/admin/acquirers/{{acquirerId}}
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "webhookAuthMode": "TokenAndIp",
+    "webhookToken": "whsec_your_secure_token_here",
+    "webhookAllowedIps": "192.168.1.1"
+}
+
+###############################################################################
+# MERCHANT ACQUIRER (Payment Provider Configuration)
+###############################################################################
+
+@acquirerId = 00000000-0000-0000-0000-000000000202
+
+### Set Merchant Acquirer
+POST {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/acquirer
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "acquirerId": "{{acquirerId}}"
+}
+
+###############################################################################
+# MERCHANT SETTINGS (Limits, Fees)
+###############################################################################
+
+### Update Merchant Settings - Pix Limits
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixMinTransactionAmount": 100,
+    "pixMaxTransactionAmount": 1000000
+}
+
+### Update Merchant Settings - PIX API Fee (Fixed)
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixApiFeeMode": "FixedOnly",
+    "pixApiFeeFixed": 100
+}
+
+### Update Merchant Settings - PIX API Fee (Percentage)
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixApiFeeMode": "PercentageOnly",
+    "pixApiFeePercentage": 450
+}
+
+### Update Merchant Settings - PIX Checkout Fee (Fixed + Percentage)
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixCheckoutFeeMode": "FixedAndPercentage",
+    "pixCheckoutFeeFixed": 50,
+    "pixCheckoutFeePercentage": 200
+}
+
+### Update Merchant Settings - Withdrawal Fee
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "withdrawalFeeMode": "FixedOnly",
+    "withdrawalFeeFixed": 500,
+    "minWithdrawalAmount": 1000
+}
+
+### Update Merchant Settings - All Settings
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixMinTransactionAmount": 100,
+    "pixMaxTransactionAmount": 1000000,
+    "pixApiFeeMode": "PercentageOnly",
+    "pixApiFeePercentage": 150,
+    "pixCheckoutFeeMode": "FixedAndPercentage",
+    "pixCheckoutFeeFixed": 50,
+    "pixCheckoutFeePercentage": 200,
+    "withdrawalFeeMode": "FixedOnly",
+    "withdrawalFeeFixed": 500,
+    "minWithdrawalAmount": 1000
+}
+
+###############################################################################
+# RATE LIMITING (Payment API)
+###############################################################################
+
+### Update Merchant Rate Limit
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "rateLimitPerMinute": 60,
+    "rateLimitPerHour": 1000,
+    "rateLimitPerDay": 10000
+}
+
+### Increase Rate Limit for High Volume Merchant
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "rateLimitPerMinute": 200,
+    "rateLimitPerHour": 5000,
+    "rateLimitPerDay": 50000
+}
+
+### Reduce Rate Limit (Suspicious Activity)
+PATCH {{safefy_api_HostAddress}}/v1/admin/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "rateLimitPerMinute": 10,
+    "rateLimitPerHour": 100,
+    "rateLimitPerDay": 500
+}
+
+###############################################################################
+# PLATFORM SETTINGS (Global Defaults)
+###############################################################################
+
+### Get Platform Settings
+GET {{safefy_api_HostAddress}}/v1/admin/platform-settings
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Update Platform Settings - PIX API Fee (Default)
+PATCH {{safefy_api_HostAddress}}/v1/admin/platform-settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixApiFeeMode": "PercentageOnly",
+    "pixApiFeePercentage": 150
+}
+
+### Update Platform Settings - PIX Checkout Fee (Default)
+PATCH {{safefy_api_HostAddress}}/v1/admin/platform-settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixCheckoutFeeMode": "PercentageOnly",
+    "pixCheckoutFeePercentage": 200
+}
+
+### Update Platform Settings - All Defaults
+PATCH {{safefy_api_HostAddress}}/v1/admin/platform-settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "pixMinTransactionAmount": 100,
+    "pixMaxTransactionAmount": 100000000,
+    "pixTimeoutMinutes": 30,
+    "pixApiFeeMode": "PercentageOnly",
+    "pixApiFeePercentage": 150,
+    "pixCheckoutFeeMode": "PercentageOnly",
+    "pixCheckoutFeePercentage": 200,
+    "withdrawalFeeMode": "FixedOnly",
+    "withdrawalFeeFixed": 200,
+    "minWithdrawalAmount": 1000,
+    "rateLimitPerMinute": 60,
+    "rateLimitPerHour": 1000,
+    "rateLimitPerDay": 10000
+}
+
+### Update Platform Settings - Withdrawal Approval Mode (Manual)
+PATCH {{safefy_api_HostAddress}}/v1/admin/platform-settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "withdrawalApprovalMode": "Manual"
+}
+
+### Update Platform Settings - Withdrawal Approval Mode (Automatic)
+PATCH {{safefy_api_HostAddress}}/v1/admin/platform-settings
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "withdrawalApprovalMode": "Automatic"
+}
+
+###############################################################################
+# PAYOUT MANAGEMENT
+###############################################################################
+
+@payoutId = 019b5bd3-6343-71ac-ac6c-7e620549e37f
+
+### List All Payouts
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Pending Payouts
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&status=Pending
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Processing Payouts
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&status=Processing
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Completed Payouts
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&status=Completed
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Failed Payouts
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&status=Failed
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Payouts by Merchant
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&merchantId={{merchantId}}
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Search Payouts
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&search=exemplo
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### List Payouts by Date Range
+GET {{safefy_api_HostAddress}}/v1/admin/payouts?page=1&pageSize=20&startDate=2025-01-01T00:00:00Z&endDate=2025-12-31T23:59:59Z
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Get Payout Details
+GET {{safefy_api_HostAddress}}/v1/admin/payouts/{{payoutId}}
+Accept: application/json
+Authorization: Bearer {{adminToken}}
+
+### Review Payout - Approve
+POST {{safefy_api_HostAddress}}/v1/admin/payouts/{{payoutId}}/review
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "action": "Approve",
+    "environment": "Sandbox",
+    "adminComment": "Saque aprovado após verificação."
+}
+
+### Review Payout - Reject
+POST {{safefy_api_HostAddress}}/v1/admin/payouts/{{payoutId}}/review
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "action": "Reject",
+    "environment": "Sandbox",
+    "reason": "Conta de destino não pode ser verificada. Por favor, verifique os dados da chave PIX."
+}
+
+###############################################################################
+# ACHIEVEMENTS
+###############################################################################
+
+# NOTA: O backfill requer role "God". Use um token de usuário God.
+@godToken = {{adminToken}}
+
+### Backfill - Conceder conquistas retroativas para todos os usuários (somente God)
+POST {{safefy_api_HostAddress}}/v1/admin/achievements/backfill
+Content-Type: application/json
+Authorization: Bearer {{godToken}}
+
+###

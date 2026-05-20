@@ -1,0 +1,241 @@
+/* ===== VARIÁVEIS DE CORES - LIGHT MODE ===== */
+:root {
+    --scalar-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --scalar-font-code: 'JetBrains Mono', 'Fira Code', monospace;
+    
+    /* Backgrounds */
+    --scalar-background-1: #ffffff;
+    --scalar-background-2: #f8fafc;
+    --scalar-background-3: #f1f5f9;
+    --scalar-background-4: #e2e8f0;
+    --scalar-background-accent: #0ea5e9;
+    
+    /* Textos */
+    --scalar-color-1: #0f172a;
+    --scalar-color-2: #334155;
+    --scalar-color-3: #64748b;
+    --scalar-color-disabled: #94a3b8;
+    --scalar-color-ghost: #cbd5e1;
+    --scalar-color-accent: #0284c7;
+    
+    /* Bordas */
+    --scalar-border-color: #e2e8f0;
+    
+    /* Botões */
+    --scalar-button-1: #0ea5e9;
+    --scalar-button-1-hover: #0284c7;
+    --scalar-button-1-color: #ffffff;
+    
+    /* Sidebar */
+    --scalar-sidebar-background-1: #f8fafc;
+    --scalar-sidebar-color-1: #0f172a;
+    --scalar-sidebar-color-2: #334155;
+    --scalar-sidebar-color-active: #0284c7;
+    --scalar-sidebar-border-color: #e2e8f0;
+    
+    /* Cards */
+    --scalar-card-background: #ffffff;
+    
+    /* Cores do gradiente animado - Light */
+    --safefy-gradient-1: rgba(14, 165, 233, 0.05);
+    --safefy-gradient-2: rgba(56, 189, 248, 0.08);
+    --safefy-gradient-3: rgba(2, 132, 199, 0.05);
+    --safefy-gradient-4: rgba(125, 211, 252, 0.06);
+}
+
+/* ===== DARK MODE ===== */
+.dark-mode {
+    --scalar-background-1: #0f172a;
+    --scalar-background-2: #1e293b;
+    --scalar-background-3: #334155;
+    --scalar-background-4: #475569;
+    --scalar-background-accent: #0ea5e9;
+    
+    --scalar-color-1: #f8fafc;
+    --scalar-color-2: #e2e8f0;
+    --scalar-color-3: #94a3b8;
+    --scalar-color-disabled: #64748b;
+    --scalar-color-ghost: #475569;
+    --scalar-color-accent: #38bdf8;
+    
+    --scalar-border-color: #334155;
+    
+    --scalar-button-1: #0ea5e9;
+    --scalar-button-1-hover: #38bdf8;
+    --scalar-button-1-color: #0f172a;
+    
+    --scalar-sidebar-background-1: #1e293b;
+    --scalar-sidebar-color-1: #f8fafc;
+    --scalar-sidebar-color-2: #cbd5e1;
+    --scalar-sidebar-color-active: #38bdf8;
+    --scalar-sidebar-border-color: #334155;
+    
+    --scalar-card-background: #1e293b;
+    
+    /* Cores do gradiente animado - Dark */
+    --safefy-gradient-1: rgba(14, 165, 233, 0.08);
+    --safefy-gradient-2: rgba(56, 189, 248, 0.12);
+    --safefy-gradient-3: rgba(2, 132, 199, 0.08);
+    --safefy-gradient-4: rgba(125, 211, 252, 0.10);
+}
+
+/* ===== EFEITO ANIMADO DE BACKGROUND ===== */
+
+/* Container principal com gradiente animado */
+.scalar-app,
+.scalar-api-reference,
+[class*="scalar-app"] {
+    position: relative;
+}
+
+.scalar-app::before,
+.scalar-api-reference::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(ellipse at 20% 20%, var(--safefy-gradient-1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, var(--safefy-gradient-2) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 80%, var(--safefy-gradient-3) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 90%, var(--safefy-gradient-4) 0%, transparent 50%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Efeito de brilho sutil flutuante */
+.scalar-app::after,
+.scalar-api-reference::after {
+    content: '';
+    position: fixed;
+    top: 10%;
+    right: 15%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--safefy-gradient-2) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulseGlow 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Segundo orb flutuante */
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 20%;
+    left: 10%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, var(--safefy-gradient-3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulseGlow 10s ease-in-out infinite reverse;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ===== LOGO DA SAFEFY ===== */
+.scalar-api-client__sidebar > nav::before,
+.sidebar > nav::before,
+.t-doc__sidebar > div:first-child::before,
+nav.sidebar-content::before,
+.sidebar-content::before,
+.references-sidebar::before {
+    content: '';
+    display: block;
+    background-image: url('https://console-staging-ff4f.up.railway.app/api/v1/buckets/safefy-dev/objects/download?preview=true&prefix=public%2Flogo-safefy-horizontal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 50px;
+    /* margin-right: 8px; */
+    margin-bottom: 8px;
+    margin-top: 8px;
+    margin-left: 8px;
+}
+
+/* ===== SIDEBAR COM BLUR SUTIL ===== */
+.sidebar,
+.t-doc__sidebar,
+[class*="sidebar"] {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* ===== CARDS COM EFEITO GLASS ===== */
+.scalar-card,
+[class*="scalar-card"] {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--scalar-border-color);
+    transition: all 0.3s ease;
+}
+
+.scalar-card:hover,
+[class*="scalar-card"]:hover {
+    border-color: var(--scalar-color-accent);
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.1);
+}
+
+/* ===== LINKS ===== */
+a {
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--scalar-color-accent);
+}
+
+/* ===== BADGES DE MÉTODOS HTTP ===== */
+.http-method-badge--get,
+[class*="badge"][class*="get"] {
+    background-color: #22c55e !important;
+}
+
+.http-method-badge--post,
+[class*="badge"][class*="post"] {
+    background-color: #3b82f6 !important;
+}
+
+.http-method-badge--put,
+[class*="badge"][class*="put"] {
+    background-color: #f59e0b !important;
+}
+
+.http-method-badge--patch,
+[class*="badge"][class*="patch"] {
+    background-color: #8b5cf6 !important;
+}
+
+.http-method-badge--delete,
+[class*="badge"][class*="delete"] {
+    background-color: #ef4444 !important;
+}
+
+/* ===== SCROLLBAR CUSTOMIZADA ===== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scalar-background-2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scalar-color-ghost);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scalar-color-3);
+}
+
+/* ===== CÓDIGO ===== */
+pre, code {
+    font-family: var(--scalar-font-code);
+}

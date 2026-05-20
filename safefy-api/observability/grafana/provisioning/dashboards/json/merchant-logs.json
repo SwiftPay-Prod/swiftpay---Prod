@@ -1,0 +1,1047 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": null,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"collapsed": false,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 100,
+			"panels": [],
+			"title": "📊 Visão Geral - API Logs",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 0,
+				"y": 1
+			},
+			"id": 1,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${merchant_id}' = '' THEN NULL ELSE COUNT(*) END as total\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Total de Requisições",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					},
+					"unit": "percent"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 4,
+				"y": 1
+			},
+			"id": 2,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \n  CASE WHEN '${merchant_id}' = '' THEN NULL ELSE ROUND(\n    (COUNT(*) FILTER (WHERE \"Status\" = 'Success')::numeric / NULLIF(COUNT(*), 0)) * 100, \n    2\n  ) END as success_rate\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Taxa de Sucesso",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "red",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 8,
+				"y": 1
+			},
+			"id": 3,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${merchant_id}' = '' THEN NULL ELSE COUNT(*) END as failed\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND \"Status\" = 'Failed'\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Falhas",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "blue",
+								"value": null
+							}
+						]
+					},
+					"unit": "ms"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 12,
+				"y": 1
+			},
+			"id": 4,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${merchant_id}' = '' THEN NULL ELSE ROUND(AVG(\"ResponseTimeMs\")::numeric, 0) END as avg_response\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND \"ResponseTimeMs\" IS NOT NULL\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Tempo Médio de Resposta",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "purple",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 16,
+				"y": 1
+			},
+			"id": 5,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${merchant_id}' = '' THEN NULL ELSE COUNT(DISTINCT \"MerchantId\") END as merchants\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Merchants Ativos",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "orange",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 20,
+				"y": 1
+			},
+			"id": 6,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${merchant_id}' = '' THEN NULL ELSE COUNT(DISTINCT \"IpAddress\") END as ips\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "IPs Únicos",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 20,
+						"gradientMode": "hue",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 2,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "auto",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "success"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "green",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "failed"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "red",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "warning"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "yellow",
+									"mode": "fixed"
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 5
+			},
+			"id": 7,
+			"options": {
+				"legend": {
+					"calcs": ["sum"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"mode": "multi",
+					"sort": "desc"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "time_series",
+					"rawQuery": true,
+					"rawSql": "SELECT \n  date_trunc('hour', \"CreatedAt\") as time,\n  COUNT(*) FILTER (WHERE \"Status\" = 'Success') as success,\n  COUNT(*) FILTER (WHERE \"Status\" = 'Failed') as failed,\n  COUNT(*) FILTER (WHERE \"Status\" = 'Warning') as warning\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'\nGROUP BY 1\nORDER BY 1",
+					"refId": "A"
+				}
+			],
+			"title": "📈 Requisições por Status (Timeline)",
+			"type": "timeseries"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"mappings": []
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Success"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "green",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Failed"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "red",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Warning"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "yellow",
+									"mode": "fixed"
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 6,
+				"x": 12,
+				"y": 5
+			},
+			"id": 8,
+			"options": {
+				"displayLabels": ["percent", "value"],
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"values": ["value", "percent"]
+				},
+				"pieType": "donut",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"Status\", COUNT(*) as count\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'\nGROUP BY \"Status\"\nORDER BY count DESC",
+					"refId": "A"
+				}
+			],
+			"title": "🎯 Distribuição por Status",
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"mappings": []
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 6,
+				"x": 18,
+				"y": 5
+			},
+			"id": 9,
+			"options": {
+				"displayLabels": ["percent", "value"],
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"values": ["value", "percent"]
+				},
+				"pieType": "donut",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"Action\", COUNT(*) as count\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'\nGROUP BY \"Action\"\nORDER BY count DESC\nLIMIT 10",
+					"refId": "A"
+				}
+			],
+			"title": "🔧 Top 10 Ações",
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"align": "auto",
+						"cellOptions": {
+							"type": "auto"
+						},
+						"inspect": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Status"
+						},
+						"properties": [
+							{
+								"id": "custom.cellOptions",
+								"value": {
+									"mode": "basic",
+									"type": "color-background"
+								}
+							},
+							{
+								"id": "mappings",
+								"value": [
+									{
+										"options": {
+											"Success": {
+												"color": "green",
+												"index": 0
+											}
+										},
+										"type": "value"
+									},
+									{
+										"options": {
+											"Failed": {
+												"color": "red",
+												"index": 1
+											}
+										},
+										"type": "value"
+									},
+									{
+										"options": {
+											"Warning": {
+												"color": "yellow",
+												"index": 2
+											}
+										},
+										"type": "value"
+									}
+								]
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "ResponseTimeMs"
+						},
+						"properties": [
+							{
+								"id": "unit",
+								"value": "ms"
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "StatusCode"
+						},
+						"properties": [
+							{
+								"id": "custom.cellOptions",
+								"value": {
+									"mode": "basic",
+									"type": "color-background"
+								}
+							},
+							{
+								"id": "thresholds",
+								"value": {
+									"mode": "absolute",
+									"steps": [
+										{
+											"color": "green",
+											"value": null
+										},
+										{
+											"color": "yellow",
+											"value": 400
+										},
+										{
+											"color": "red",
+											"value": 500
+										}
+									]
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 13
+			},
+			"id": 10,
+			"options": {
+				"cellHeight": "sm",
+				"footer": {
+					"countRows": false,
+					"fields": "",
+					"reducer": ["sum"],
+					"show": false
+				},
+				"showHeader": true,
+				"sortBy": [
+					{
+						"desc": true,
+						"displayName": "CreatedAt"
+					}
+				]
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \n  \"CreatedAt\",\n  \"Action\",\n  \"Status\",\n  \"StatusCode\",\n  \"HttpMethod\",\n  \"Endpoint\",\n  \"IpAddress\",\n  \"Location\",\n  \"ResponseTimeMs\",\n  \"Details\",\n  \"MerchantId\"\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'\nORDER BY \"CreatedAt\" DESC\nLIMIT 100",
+					"refId": "A"
+				}
+			],
+			"title": "📋 Últimos Logs da API",
+			"type": "table"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "blue",
+								"value": null
+							},
+							{
+								"color": "green",
+								"value": 10
+							},
+							{
+								"color": "yellow",
+								"value": 50
+							},
+							{
+								"color": "red",
+								"value": 100
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 23
+			},
+			"id": 11,
+			"options": {
+				"displayMode": "gradient",
+				"minVizHeight": 10,
+				"minVizWidth": 0,
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"showUnfilled": true,
+				"valueMode": "color"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"Action\" as action, COUNT(*) as count\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'\nGROUP BY \"Action\"\nORDER BY count DESC\nLIMIT 15",
+					"refId": "A"
+				}
+			],
+			"title": "📊 Volume por Ação",
+			"type": "bargauge"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "yellow",
+								"value": 400
+							},
+							{
+								"color": "red",
+								"value": 500
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 23
+			},
+			"id": 12,
+			"options": {
+				"displayMode": "gradient",
+				"minVizHeight": 10,
+				"minVizWidth": 0,
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"showUnfilled": true,
+				"valueMode": "color"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"StatusCode\"::text as status_code, COUNT(*) as count\nFROM \"ApiLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${merchant_id}' != '' AND \"MerchantId\"::text = '${merchant_id}'\nGROUP BY \"StatusCode\"\nORDER BY count DESC\nLIMIT 10",
+					"refId": "A"
+				}
+			],
+			"title": "📊 Distribuição por HTTP Status Code",
+			"type": "bargauge"
+		}
+	],
+	"refresh": "30s",
+	"schemaVersion": 38,
+	"style": "dark",
+	"tags": ["safefy", "logs", "api", "security"],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"selected": false,
+					"text": "",
+					"value": ""
+				},
+				"description": "Filtrar por ID do Merchant (deixe vazio para ver todos)",
+				"hide": 0,
+				"label": "Merchant ID",
+				"name": "merchant_id",
+				"options": [
+					{
+						"selected": true,
+						"text": "",
+						"value": ""
+					}
+				],
+				"query": "",
+				"skipUrlSync": false,
+				"type": "textbox"
+			}
+		]
+	},
+	"time": {
+		"from": "now-24h",
+		"to": "now"
+	},
+	"timepicker": {
+		"refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
+	},
+	"timezone": "browser",
+	"title": "Logs Merchant Dashboard",
+	"uid": "safefy-merchant-logs-dashboard",
+	"version": 1,
+	"weekStart": ""
+}

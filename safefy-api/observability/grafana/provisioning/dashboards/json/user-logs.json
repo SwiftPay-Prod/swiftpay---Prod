@@ -1,0 +1,987 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": null,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"collapsed": false,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 31
+			},
+			"id": 101,
+			"panels": [],
+			"title": "🔐 Visão Geral - Security Logs",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 0,
+				"y": 32
+			},
+			"id": 20,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${user_id}' = '' THEN NULL ELSE COUNT(*) END as total\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Total de Eventos",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 4,
+				"y": 32
+			},
+			"id": 21,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${user_id}' = '' THEN NULL ELSE COUNT(*) END as logins\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND \"Action\" = 'SignIn' AND \"Status\" = 'Success'\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Logins Bem-Sucedidos",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "red",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 8,
+				"y": 32
+			},
+			"id": 22,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${user_id}' = '' THEN NULL ELSE COUNT(*) END as failed_logins\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND \"Action\" = 'SignIn' AND \"Status\" = 'Failed'\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Logins Falhos",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "orange",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 12,
+				"y": 32
+			},
+			"id": 23,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${user_id}' = '' THEN NULL ELSE COUNT(*) END as password_changes\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND \"Action\" IN ('PasswordChange', 'PasswordResetComplete')\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Alterações de Senha",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "purple",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 16,
+				"y": 32
+			},
+			"id": 24,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${user_id}' = '' THEN NULL ELSE COUNT(DISTINCT \"UserId\") END as users\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Usuários Ativos",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "blue",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 4,
+				"x": 20,
+				"y": 32
+			},
+			"id": 25,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT CASE WHEN '${user_id}' = '' THEN NULL ELSE COUNT(*) END as device_verified\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND \"Action\" = 'DeviceVerified'\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'",
+					"refId": "A"
+				}
+			],
+			"title": "Dispositivos Verificados",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 20,
+						"gradientMode": "hue",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "smooth",
+						"lineWidth": 2,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "auto",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "success"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "green",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "failed"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "red",
+									"mode": "fixed"
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 36
+			},
+			"id": 26,
+			"options": {
+				"legend": {
+					"calcs": ["sum"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"mode": "multi",
+					"sort": "desc"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "time_series",
+					"rawQuery": true,
+					"rawSql": "SELECT \n  date_trunc('hour', \"CreatedAt\") as time,\n  COUNT(*) FILTER (WHERE \"Status\" = 'Success') as success,\n  COUNT(*) FILTER (WHERE \"Status\" = 'Failed') as failed,\n  COUNT(*) FILTER (WHERE \"Status\" = 'Warning') as warning\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'\nGROUP BY 1\nORDER BY 1",
+					"refId": "A"
+				}
+			],
+			"title": "📈 Eventos de Segurança (Timeline)",
+			"type": "timeseries"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"mappings": []
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 6,
+				"x": 12,
+				"y": 36
+			},
+			"id": 27,
+			"options": {
+				"displayLabels": ["percent", "value"],
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"values": ["value", "percent"]
+				},
+				"pieType": "donut",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"Action\"::text as action, COUNT(*) as count\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'\nGROUP BY \"Action\"\nORDER BY count DESC\nLIMIT 10",
+					"refId": "A"
+				}
+			],
+			"title": "🔐 Top 10 Ações de Segurança",
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						}
+					},
+					"mappings": []
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Success"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "green",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Failed"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "red",
+									"mode": "fixed"
+								}
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Warning"
+						},
+						"properties": [
+							{
+								"id": "color",
+								"value": {
+									"fixedColor": "yellow",
+									"mode": "fixed"
+								}
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 6,
+				"x": 18,
+				"y": 36
+			},
+			"id": 28,
+			"options": {
+				"displayLabels": ["percent", "value"],
+				"legend": {
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true,
+					"values": ["value", "percent"]
+				},
+				"pieType": "donut",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"Status\"::text as status, COUNT(*) as count\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'\nGROUP BY \"Status\"\nORDER BY count DESC",
+					"refId": "A"
+				}
+			],
+			"title": "🎯 Distribuição por Status",
+			"type": "piechart"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"align": "auto",
+						"cellOptions": {
+							"type": "auto"
+						},
+						"inspect": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "Status"
+						},
+						"properties": [
+							{
+								"id": "custom.cellOptions",
+								"value": {
+									"mode": "basic",
+									"type": "color-background"
+								}
+							},
+							{
+								"id": "mappings",
+								"value": [
+									{
+										"options": {
+											"Success": {
+												"color": "green",
+												"index": 0
+											}
+										},
+										"type": "value"
+									},
+									{
+										"options": {
+											"Failed": {
+												"color": "red",
+												"index": 1
+											}
+										},
+										"type": "value"
+									},
+									{
+										"options": {
+											"Warning": {
+												"color": "yellow",
+												"index": 2
+											}
+										},
+										"type": "value"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 44
+			},
+			"id": 29,
+			"options": {
+				"cellHeight": "sm",
+				"footer": {
+					"countRows": false,
+					"fields": "",
+					"reducer": ["sum"],
+					"show": false
+				},
+				"showHeader": true,
+				"sortBy": [
+					{
+						"desc": true,
+						"displayName": "CreatedAt"
+					}
+				]
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \n  \"CreatedAt\",\n  \"Action\"::text as \"Action\",\n  \"Status\"::text as \"Status\",\n  \"UserEmail\",\n  \"IpAddress\",\n  \"Location\",\n  \"Details\",\n  \"UserId\"\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'\nORDER BY \"CreatedAt\" DESC\nLIMIT 100",
+					"refId": "A"
+				}
+			],
+			"title": "📋 Últimos Logs de Segurança",
+			"type": "table"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "blue",
+								"value": null
+							},
+							{
+								"color": "green",
+								"value": 5
+							},
+							{
+								"color": "yellow",
+								"value": 20
+							},
+							{
+								"color": "red",
+								"value": 50
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 54
+			},
+			"id": 30,
+			"options": {
+				"displayMode": "gradient",
+				"minVizHeight": 10,
+				"minVizWidth": 0,
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"showUnfilled": true,
+				"valueMode": "color"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \"Action\"::text as action, COUNT(*) as count\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'\nGROUP BY \"Action\"\nORDER BY count DESC\nLIMIT 15",
+					"refId": "A"
+				}
+			],
+			"title": "📊 Volume por Ação de Segurança",
+			"type": "bargauge"
+		},
+		{
+			"datasource": {
+				"type": "postgres",
+				"uid": "PostgreSQL-Logs"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "blue",
+								"value": null
+							},
+							{
+								"color": "green",
+								"value": 1
+							},
+							{
+								"color": "yellow",
+								"value": 5
+							},
+							{
+								"color": "red",
+								"value": 10
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 54
+			},
+			"id": 31,
+			"options": {
+				"displayMode": "gradient",
+				"minVizHeight": 10,
+				"minVizWidth": 0,
+				"orientation": "horizontal",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": true
+				},
+				"showUnfilled": true,
+				"valueMode": "color"
+			},
+			"pluginVersion": "10.0.0",
+			"targets": [
+				{
+					"datasource": {
+						"type": "postgres",
+						"uid": "PostgreSQL-Logs"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT \n  COALESCE(\"Location\", 'Desconhecido') as location, \n  COUNT(*) as count\nFROM \"SecurityLogs\"\nWHERE \"CreatedAt\" >= $__timeFrom() AND \"CreatedAt\" <= $__timeTo()\n  AND '${user_id}' != '' AND \"UserId\"::text = '${user_id}'\nGROUP BY \"Location\"\nORDER BY count DESC\nLIMIT 10",
+					"refId": "A"
+				}
+			],
+			"title": "🌍 Top 10 Localizações",
+			"type": "bargauge"
+		}
+	],
+	"refresh": "30s",
+	"schemaVersion": 38,
+	"style": "dark",
+	"tags": ["safefy", "logs", "api", "security"],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"selected": false,
+					"text": "",
+					"value": ""
+				},
+				"description": "Filtrar por ID do Usuário (deixe vazio para ver todos)",
+				"hide": 0,
+				"label": "User ID",
+				"name": "user_id",
+				"options": [
+					{
+						"selected": true,
+						"text": "",
+						"value": ""
+					}
+				],
+				"query": "",
+				"skipUrlSync": false,
+				"type": "textbox"
+			}
+		]
+	},
+	"time": {
+		"from": "now-24h",
+		"to": "now"
+	},
+	"timepicker": {
+		"refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"]
+	},
+	"timezone": "browser",
+	"title": "Logs User Dashboard",
+	"uid": "safefy-user-logs-dashboard",
+	"version": 1,
+	"weekStart": ""
+}

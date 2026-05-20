@@ -1,0 +1,196 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # DATABASES
+  # ============================================
+  
+  # Banco principal (aplicação)
+  safefydb:
+    container_name: safefydb
+    image: postgres:15.15-alpine3.22
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: YOUR_USER
+      POSTGRES_PASSWORD: YOUR_PASSWORD
+      POSTGRES_DB: YOUR_DATABASE
+    volumes:
+      - safefydb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Banco de logs
+  safefylogsdb:
+    container_name: safefylogsdb
+    image: postgres:15.15-alpine3.22
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: YOUR_LOGS_USER
+      POSTGRES_PASSWORD: YOUR_LOGS_PASSWORD
+      POSTGRES_DB: YOUR_LOGS_DATABASE
+    volumes:
+      - safefylogsdb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # MAIL SERVER (Development)
+  # ============================================
+  
+  safefymail:
+    container_name: safefymail
+    image: mailhog/mailhog:latest
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+
+  # ============================================
+  # OBSERVABILITY STACK
+  # ============================================
+
+  # Grafana - visualização
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:10.2.3
+    ports:
+      - '3001:3000'
+    environment:
+      - GF_SECURITY_ADMIN_USER=YOUR_GRAFANA_USER
+      - GF_SECURITY_ADMIN_PASSWORD=YOUR_GRAFANA_PASSWORD
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+
+  # ============================================
+  # CACHE (SESSION STORE)
+  # ============================================
+
+  safefyvalkey:
+    container_name: safefyvalkey
+    image: valkey/valkey:8-alpine
+    ports:
+      - '6379:6379'
+    command: valkey-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - safefyvalkey_data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # APPLICATIONS
+  # ============================================
+
+  safefyapi:
+    container_name: safefyapi
+    build:
+      context: ..
+      dockerfile: safefy-api/Dockerfile
+    image: safefyapi:latest
+    ports:
+      - '5279:5279'
+    environment:
+      - PlatformSettings__BaseUrl=YOUR_PLATFORM_BASE_URL
+      - PlatformSettings__MaxLoginAttempts=YOUR_MAX_LOGIN_ATTEMPTS
+      - ASPNETCORE_ENVIRONMENT=YOUR_ENVIRONMENT
+      - DatabaseSettings__ConnectionString=YOUR_DATABASE_CONNECTION_STRING
+      - LogsDatabaseSettings__ConnectionString=YOUR_LOGS_DATABASE_CONNECTION_STRING
+      - JWTSettings__Secret=YOUR_JWT_SECRET
+      - JWTSettings__Issuer=YOUR_JWT_ISSUER
+      - JWTSettings__Audience=YOUR_JWT_AUDIENCE
+      - JWTSettings__TokenExpire=YOUR_TOKEN_EXPIRE
+      - JWTSettings__RefreshTokenExpire=YOUR_REFRESH_TOKEN_EXPIRE
+      - SmtpSettings__Host=YOUR_SMTP_HOST
+      - SmtpSettings__Port=YOUR_SMTP_PORT
+      - SmtpSettings__Username=YOUR_SMTP_USERNAME
+      - SmtpSettings__Password=YOUR_SMTP_PASSWORD
+      - SmtpSettings__FromEmail=YOUR_SMTP_FROM_EMAIL
+      - SmtpSettings__FromName=YOUR_SMTP_FROM_NAME
+      - SmtpSettings__EnableSsl=YOUR_SMTP_ENABLE_SSL
+      - SmtpSettings__EnableSend=YOUR_SMTP_ENABLE_SEND
+      - EmailSettings__Provider=Resend
+      - EmailSettings__FromEmail=noreply@safefypay.com.br
+      - EmailSettings__FromName=Safefy
+      - EmailSettings__EnableSend=true
+      - EmailSettings__Resend__ApiKey=YOUR_RESEND_API_KEY
+      - StorageSettings__Endpoint=sfo3.digitaloceanspaces.com
+      - StorageSettings__AccessKey=YOUR_STORAGE_ACCESS_KEY
+      - StorageSettings__SecretKey=YOUR_STORAGE_SECRET_KEY
+      - StorageSettings__BucketName=YOUR_STORAGE_BUCKET_NAME
+      - StorageSettings__UseSSL=true
+      - StorageSettings__PublicUrl=https://YOUR_STORAGE_BUCKET_NAME.sfo3.cdn.digitaloceanspaces.com
+      - ValkeySettings__ConnectionString=YOUR_VALKEY_CONNECTION_STRING
+    depends_on:
+      safefydb:
+        condition: service_healthy
+      safefylogsdb:
+        condition: service_healthy
+      safefymail:
+        condition: service_started
+      safefyvalkey:
+        condition: service_healthy
+
+  safefyapipayment:
+    container_name: safefyapipayment
+    build:
+      context: ..
+      dockerfile: safefy-api-payment/Dockerfile
+    image: safefyapipayment:latest
+    ports:
+      - '5166:5166'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=YOUR_ENVIRONMENT
+      - DatabaseSettings__ConnectionString=YOUR_DATABASE_CONNECTION_STRING
+      - LogsDatabaseSettings__ConnectionString=YOUR_LOGS_DATABASE_CONNECTION_STRING
+      - JWTSettings__Secret=YOUR_JWT_SECRET
+      - JWTSettings__Issuer=YOUR_JWT_ISSUER
+      - JWTSettings__Audience=YOUR_JWT_AUDIENCE
+      - JWTSettings__TokenExpire=YOUR_TOKEN_EXPIRE
+      - PlatformSettings__BaseUrl=YOUR_PLATFORM_BASE_URL
+      - PlatformSettings__ApiVersion=YOUR_API_VERSION
+    depends_on:
+      safefydb:
+        condition: service_healthy
+      safefylogsdb:
+        condition: service_healthy
+      safefyapi:
+        condition: service_started
+
+  safefyweb:
+    container_name: safefyweb
+    build:
+      context: ../safefy-web
+    image: safefyweb:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=YOUR_PUBLIC_API_URL
+      - INTERNAL_API_URL=YOUR_INTERNAL_API_URL
+      - NEXT_PUBLIC_APP_URL=YOUR_APP_URL
+      - NEXT_PUBLIC_DOCS_URL=YOUR_DOCS_URL
+      - NEXT_PUBLIC_INTEGRATION_URL=YOUR_INTEGRATION_URL
+    depends_on:
+      safefyapi:
+        condition: service_started
+      safefyapipayment:
+        condition: service_started
+
+# ============================================
+# VOLUMES
+# ============================================
+volumes:
+  safefydb_data:
+  safefylogsdb_data:
+  grafana_data:
+  safefyvalkey_data:

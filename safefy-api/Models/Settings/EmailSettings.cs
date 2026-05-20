@@ -1,0 +1,1 @@
+global using EmailSettingsOptions = safefy_api_core.Models.Settings.EmailSettingsOptions;

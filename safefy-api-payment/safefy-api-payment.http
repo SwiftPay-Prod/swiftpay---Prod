@@ -1,0 +1,209 @@
+@host = http://localhost:5166
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTliNTJkNS0xZTRmLTc1YmUtODBkZS1lYmY4ZmE1MDk3MzMiLCJjcmVkZW50aWFsX2lkIjoiMDE5YjUyZTMtOGI0Zi03MjRjLWE1ODctY2Q5YTJiZWNiMDBjIiwiZW52aXJvbm1lbnQiOiJTYW5kYm94IiwianRpIjoiMDMwZTI2M2QtYTc0Zi00ZjUxLWJmMmItNTUxN2MxZTRkZTJiIiwiaWF0IjoxNzY2NzY0MDI2LCJuYmYiOjE3NjY3NjQwMjYsImV4cCI6MTc2Njc2NzYyNiwiaXNzIjoic2FmZWZ5LXBheW1lbnQtYXBpIiwiYXVkIjoic2FmZWZ5LW1lcmNoYW50cyJ9.7s847o3G9V4UWKQ77FPKR3aUewrno2YNBUonT_Uz3uQ
+@customerId = 019b5abe-cdb1-72d2-b25a-a81bfc495557
+@transactionId = 019b5abf-3fb4-7d1b-9933-72cdb5d5b28a
+
+### =====================================
+### AUTH - Autenticacao OAuth2
+### =====================================
+
+### Obter Token de Acesso
+# @name getToken
+POST {{host}}/v1/auth/token
+Content-Type: application/json
+
+{
+    "grantType": "client_credentials",
+    "clientId": "client_sandbox_Dp9VKwzn5D-Ofl_-KasDCk4RlchlzU4SiCNUNhil-uo",
+    "clientSecret": "0aRcV4jqVpj-3fg8uSPHyKEjppe9ltSdyJv6cVtXb1A"
+}
+
+### =====================================
+### CUSTOMERS - Gerenciamento de Clientes
+### =====================================
+
+### Criar Cliente
+# @name createCustomer
+POST {{host}}/v1/customers
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "externalId": "customer-002",
+    "name": "Andre",
+    "email": "andre.silva@email.com",
+    "document": "12345678901",
+    "documentType": "CPF",
+    "phone": "5511999999999",
+    "metadata": ""
+}
+
+### Buscar Cliente por ID
+GET {{host}}/v1/customers/{{customerId}}
+Authorization: Bearer {{token}}
+
+### Listar Clientes
+GET {{host}}/v1/customers?page=1&pageSize=20
+Authorization: Bearer {{token}}
+
+### Listar Clientes com Filtros
+GET {{host}}/v1/customers?page=1&pageSize=20&status=Active&search=joao
+Authorization: Bearer {{token}}
+
+### Atualizar Cliente
+PATCH {{host}}/v1/customers/{{customerId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Andre",
+    "email": "joao.novo@email.com",
+    "phone": "5511888888888",
+    "status": "Active"
+}
+
+### =====================================
+### TRANSACTIONS - API Unificada de Transacoes
+### =====================================
+
+### Criar Transacao PIX
+# @name createTransaction
+POST {{host}}/v1/transactions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "method": "pix", 
+    "amount": 15500,
+    "currency": "BRL",
+    "description": "Pagamento do pedido #456",
+    "customerId": "{{customerId}}",
+    "callbackurl": "https://api.seusite.com/webhooks/safefy",
+    "pixexpirationminutes": 30,
+    "customername": "Joao Silva",
+    "customerdocument": "12345678901",
+    "customeremail": "joao.silva@email.com"
+}
+
+### Criar Transacao PIX (criando Customer automaticamente)
+POST {{host}}/v1/transactions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "method": "pix",
+    "amount": 15500,
+    "currency": "BRL",
+    "description": "Pagamento do pedido #456",
+    "callbackurl": "https://api.seusite.com/webhooks/safefy",
+    "pixexpirationminutes": 30,
+    "customername": "Joao Silva",
+    "customerdocument": "12345678901",
+    "customeremail": "joao.silva@email.com"
+}
+
+### Criar Transacao PIX (Minimo)
+POST {{host}}/v1/transactions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "method": "pix",
+    "amount": 1000
+}
+
+### Criar Transacao Cartao de Credito (em breve)
+# POST {{host}}/v1/transactions
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+#
+# {
+#     "method": "credit_card",
+#     "amount": 15000,
+#     "card_token": "tok_abc123",
+#     "installments": 3
+# }
+
+### Criar Transacao Boleto (em breve)
+# POST {{host}}/v1/transactions
+# Content-Type: application/json
+# Authorization: Bearer {{token}}
+#
+# {
+#     "method": "boleto",
+#     "amount": 25000,
+#     "boleto_due_date": "2024-12-31",
+#     "customer_name": "Joao Silva",
+#     "customer_document": "12345678901"
+# }
+
+### Listar Transacoes
+GET {{host}}/v1/transactions?page=1&pageSize=20
+Authorization: Bearer {{token}}
+
+### Listar Transacoes com Filtros
+GET {{host}}/v1/transactions?page=1&pageSize=20&method=pix&status=pending
+Authorization: Bearer {{token}}
+
+### Listar Transacoes por Data
+GET {{host}}/v1/transactions?page=1&pageSize=20&startDate=2024-01-01T00:00:00Z&endDate=2025-12-31T23:59:59Z
+Authorization: Bearer {{token}}
+
+### Listar Transacoes por Customer
+GET {{host}}/v1/transactions?page=1&pageSize=20&customerId={{customerId}}
+Authorization: Bearer {{token}}
+
+### Listar Transacoes por ExternalId
+GET {{host}}/v1/transactions?page=1&pageSize=20&externalId=order-456
+Authorization: Bearer {{token}}
+
+### Buscar Transacao por ID
+GET {{host}}/v1/transactions/{{transactionId}}
+Authorization: Bearer {{token}}
+
+### Simular Transacao - Completar (Sandbox)
+POST {{host}}/v1/transactions/{{transactionId}}/simulate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "action": "complete"
+}
+
+### Simular Transacao - Expirar (Sandbox)
+POST {{host}}/v1/transactions/{{transactionId}}/simulate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "action": "expire"
+}
+
+### Simular Transacao - Falhar (Sandbox)
+POST {{host}}/v1/transactions/{{transactionId}}/simulate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "action": "fail"
+}
+
+### Simular Transacao - Estornar (Sandbox)
+# Apenas para transacoes com status completed
+POST {{host}}/v1/transactions/{{transactionId}}/simulate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "action": "refund"
+}
+
+### =====================================
+### BALANCE - Saldo e Volumes do Merchant
+### =====================================
+
+### Consultar Saldo
+# Retorna saldo disponivel, pendente, total e volumes
+# Volumes consideram apenas pagamentos com status Completed
+GET {{host}}/v1/balance
+Authorization: Bearer {{token}}

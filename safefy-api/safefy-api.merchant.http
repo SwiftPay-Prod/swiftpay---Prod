@@ -1,0 +1,322 @@
+@safefy_api_HostAddress = http://localhost:5279
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzYWZlZnlwYXkiLCJhdWQiOiJzYWZlZnlwYXkiLCJyb2xlcyI6IkdvZCIsInN1YiI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDEwMCIsImdpdmVuX25hbWUiOiJBZG1pbmlzdHJhZG9yIiwiZW1haWwiOiJhZG1pbkBzYWZlZnlwYXkuY29tLmJyIiwiZXhwIjoxNzY3ODEwMjAyfQ.49sPA-Sb8sXISAupG6jFG874PypXEvbg0PcwOlIvJiWeB3tCmBtzAYMVtiYvKUSuuACKX2q7wx_QzKSsxwn24g
+@merchantId = 019b5ed3-0f46-7834-a8cb-8610a3fb8dda
+@notificationId = 00000000-0000-0000-0000-000000000000
+
+###############################################################################
+# DASHBOARD
+###############################################################################
+
+### Get Merchant Dashboard (KPIs)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/dashboard
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###############################################################################
+# BALANCE
+###############################################################################
+
+### Get Merchant Balance (Real-time available balance + cached period data)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/balance
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###############################################################################
+# NOTIFICATIONS
+###############################################################################
+
+### List Notifications
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications?page=1&pageSize=20
+Accept: application/json
+Authorization: Bearer {{token}}
+X-Device-Id: 86c61515-1788-4eab-b47c-e1dd9f3a14c1
+
+### List Unread Notifications
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications?page=1&pageSize=20&isRead=false
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List Read Notifications
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications?page=1&pageSize=20&isRead=true
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Get Notification Count
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications/count
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Mark Notification as Read
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications/{{notificationId}}/read
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Mark All Notifications as Read
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications/read-all
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Delete Notification
+DELETE {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/notifications/{{notificationId}}
+Authorization: Bearer {{token}}
+
+###############################################################################
+# MERCHANT MANAGEMENT
+###############################################################################
+
+### Create Merchant (Step 0 - Draft Creation)
+POST {{safefy_api_HostAddress}}/v1/merchant
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Minha Empresa"
+}
+
+### List Merchants
+GET {{safefy_api_HostAddress}}/v1/merchant?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Get Merchant by ID
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Update Merchant - Basic Info (Step 1)
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Minha Empresa LTDA",
+    "email": "contato@minhaempresa.com.br",
+    "phoneNumber": "+5511999999999"
+}
+
+### Update Merchant - Address (Step 2)
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "address": "Av. Paulista",
+    "addressNumber": "1000",
+    "addressComplement": "Sala 101",
+    "neighborhood": "Bela Vista",
+    "city": "São Paulo",
+    "state": "SP",
+    "postalCode": "01310-100",
+    "country": "Brasil"
+}
+
+### Update Merchant - KYC Documents (Step 3)
+# Primeiro faça upload dos documentos usando o endpoint de upload
+# e use o 'objectName' retornado para preencher os campos abaixo
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "legalName": "Minha Empresa LTDA",
+    "documentType": "CNPJ",
+    "documentNumber": "12.345.678/0001-90",
+    "identityDocumentType": "RG",
+    "identityDocumentNumber": "12.345.678-9",
+    "operationType": "Black",
+    "businessDescription": "Empresa de tecnologia especializada em soluções de pagamento",
+    "website": "https://minhaempresa.com.br",
+    "expectedMonthlyVolume": 50000.00,
+    "proofOfAddressFileId": "00000000-0000-0000-0000-000000000000",
+    "documentFrontFileId": "00000000-0000-0000-0000-000000000000",
+    "documentBackFileId": "00000000-0000-0000-0000-000000000000",
+    "selfieFileId": "00000000-0000-0000-0000-000000000000"
+}
+
+### Update Merchant - All Fields at Once
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Minha Empresa LTDA",
+    "email": "contato@minhaempresa.com.br",
+    "phoneNumber": "+5511999999999",
+    "address": "Av. Paulista",
+    "addressNumber": "1000",
+    "addressComplement": "Sala 101",
+    "neighborhood": "Bela Vista",
+    "city": "São Paulo",
+    "state": "SP",
+    "postalCode": "01310-100",
+    "country": "Brasil",
+    "legalName": "Minha Empresa LTDA",
+    "documentType": "CNPJ",
+    "documentNumber": "12.345.678/0001-90",
+    "identityDocumentType": "RG",
+    "identityDocumentNumber": "12.345.678-9",
+    "operationType": "Black",
+    "businessDescription": "Empresa de tecnologia especializada em soluções de pagamento",
+    "website": "https://minhaempresa.com.br",
+    "expectedMonthlyVolume": 50000.00
+}
+
+### Submit Onboarding (Step 4 - Finalize)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/submit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+###############################################################################
+# API CREDENTIALS
+###############################################################################
+
+### List API Credentials
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/api-credentials
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Create API Credentials (Production)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/api-credentials
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "environment": "sandbox"
+}
+
+### Create API Credentials (Sandbox)
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/api-credentials
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "environment": "Sandbox",
+    "allowedIpRange": "192.168.1.0/24"
+}
+
+@credentialId = 019b0b8c-d85a-7bbe-b0f5-baf0e7a28e19
+
+### Regenerate API Credential
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/api-credentials/{{credentialId}}/regenerate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### Delete (Revoke) API Credential
+DELETE {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/api-credentials/{{credentialId}}
+Authorization: Bearer {{token}}
+
+###############################################################################
+# PAYMENTS
+###############################################################################
+
+### List Payments
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payments?page=1&pageSize=10
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List Payments - Filter by Status (Completed)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payments?page=1&pageSize=10&status=Completed
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List Payments - Filter by Status (Pending)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payments?page=1&pageSize=10&status=Pending
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List Payments - Filter by Method (Pix)
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payments?page=1&pageSize=10&method=pix
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List Payments - Filter by Date Range
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/payments?page=1&pageSize=10&startDate=2024-01-01&endDate=2024-12-31
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###############################################################################
+# GET FILE URL (Authorization Required)
+###############################################################################
+
+### Get File URL (Private file - requires authorization)
+# Use o objectName retornado pelo upload
+GET {{safefy_api_HostAddress}}/v1/files/private/kyc/{{merchantId}}/uuid-do-arquivo.pdf
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Get File URL (Public file)
+GET {{safefy_api_HostAddress}}/v1/files/public/products/{{merchantId}}/uuid-da-imagem.jpg
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###############################################################################
+# MERCHANT SETTINGS
+###############################################################################
+
+### Get Merchant Settings
+GET {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/settings
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Update PIX Settings
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixEnabled": true,
+    "pixTimeoutMinutes": 30,
+    "pixDiscountPercentage": 0
+}
+
+### Update Microsoft Clarity Settings
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "microsoftClarityCode": "abc123xyz",
+    "microsoftClarityIsEnabled": true
+}
+
+### Update All Settings at Once
+PATCH {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/settings
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "pixEnabled": true,
+    "pixTimeoutMinutes": 30,
+    "pixDiscountPercentage": 0,
+    "microsoftClarityCode": "abc123xyz",
+    "microsoftClarityIsEnabled": true
+}
+
+###############################################################################
+# DELETE MERCHANT (SOFT DELETE)
+###############################################################################
+
+### Request Merchant Deletion (Step 1 - Sends confirmation code via email)
+# ⚠️ IRREVERSÍVEL: Após confirmar, o merchant será desativado permanentemente
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/request-delete
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### Confirm Merchant Deletion (Step 2 - Use code from email)
+# ⚠️ IRREVERSÍVEL: Esta ação não pode ser desfeita!
+# Após exclusão você poderá apenas: consultar métricas, saldo e realizar saques
+POST {{safefy_api_HostAddress}}/v1/merchant/{{merchantId}}/confirm-delete
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "code": "123456"
+}
+
+###

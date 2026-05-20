@@ -1,0 +1,74 @@
+@safefy_api_HostAddress = http://localhost:5279
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzYWZlZnlwYXkiLCJhdWQiOiJzYWZlZnlwYXkiLCJyb2xlcyI6IkFkbWluIiwic3ViIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMTAwIiwiZ2l2ZW5fbmFtZSI6IkFkbWluaXN0cmFkb3IiLCJlbWFpbCI6ImFkbWluQHNhZmVmeXBheS5jb20uYnIiLCJleHAiOjE3NzE1NTQ1MDl9.hMHa0NvdJ0_ANNoDA6opuqQyo2ibbffsHzWpiM165UyFKEIaoiukl6DJa9wF08Asd3_GVUDGlMxLSdfS4R7Tdg
+
+### Read User (Current user's profile)
+GET {{safefy_api_HostAddress}}/v1/user
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### Change Password (User) - Step 1: Request code
+POST {{safefy_api_HostAddress}}/v1/user/change-password
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "currentPassword": "NovaSenha123!",
+  "newPassword": "NovaSenha1234!"
+}
+
+###
+
+### Confirm Change Password (User) - Step 2: Confirm with code
+POST {{safefy_api_HostAddress}}/v1/user/confirm-change-password
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "code": "337524"
+}
+
+###
+
+### Register Push Token
+POST {{safefy_api_HostAddress}}/v1/users/push-tokens
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "token": "your-fcm-token-here",
+  "platform": "web",
+  "deviceName": "Chrome on Windows"
+}
+
+###
+
+### Delete Push Token (Unregister)
+DELETE {{safefy_api_HostAddress}}/v1/users/push-tokens
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "token": "your-fcm-token-here"
+}
+
+###
+
+### Test Push Notification
+POST {{safefy_api_HostAddress}}/v1/users/push-tokens/test
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "🎉 Teste de Notificação",
+  "message": "Esta é uma notificação push de teste enviada manualmente!",
+  "actionUrl": "/panel/dashboard"
+}
+
+###

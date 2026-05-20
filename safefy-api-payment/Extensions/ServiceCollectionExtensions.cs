@@ -1,0 +1,156 @@
+using safefy_api_payment.Clients.Accithus;
+using safefy_api_payment.Clients.ActivePayments;
+using safefy_api_payment.Clients.Bankizi;
+using safefy_api_payment.Clients.Coldfy;
+using safefy_api_payment.Clients.HeartPay;
+using safefy_api_payment.Clients.HunterPay;
+using safefy_api_payment.Clients.IHubBanking;
+using safefy_api_payment.Clients.Pluggou;
+using safefy_api_payment.Clients.Rapdyn;
+using safefy_api_payment.Endpoints.Checkout.Calculate;
+using safefy_api_payment.Endpoints.Checkout.CreateOrder;
+using safefy_api_payment.Endpoints.Checkout.Get;
+using safefy_api_payment.Endpoints.Checkout.GetOrder;
+using safefy_api_payment.Endpoints.Checkout.ReactivateOrder;
+using safefy_api_payment.Endpoints.Checkout.ReserveOrder;
+using safefy_api_payment.Endpoints.Checkout.UpdateOrder;
+using safefy_api_payment.Endpoints.Checkout.ValidateCoupon;
+using safefy_api_payment.Interfaces;
+using safefy_api_payment.Interfaces.Acquirers;
+using safefy_api_payment.Interfaces.Internal;
+using safefy_api_payment.Interfaces.Internal.Submerchants;
+using safefy_api_payment.Interfaces.Transactions;
+using safefy_api_payment.Providers;
+using safefy_api_payment.Services;
+using safefy_api_payment.Services.Acquirers;
+using safefy_api_payment.Services.Helpers;
+using safefy_api_payment.Services.Internal;
+using safefy_api_payment.Services.Internal.Submerchants;
+using safefy_api_payment.Services.Sandbox;
+using safefy_api_payment.Services.Transactions;
+using safefy_api_core.Interfaces;
+using safefy_api_core.Extensions;
+using safefy_api_core.Services;
+
+namespace safefy_api_payment.Extensions;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddCoreServices(this IServiceCollection services)
+    {
+        services.AddEnvironmentProvider();
+
+        services.AddLogServices();
+        services.AddLedgerService();
+        services.AddGeoLocationService();
+        services.AddNotificationService();
+        services.AddEmailService();
+        services.AddEmailTemplateService();
+        services.AddLedgerRepository();
+        services.AddMerchantCalculationService();
+        services.AddCalculationService();
+        services.AddScoped<IReferralCommissionCompilationService, ReferralCommissionCompilationService>();
+        services.AddAchievementService();
+        services.AddScoped<IWayneProtocolService, WayneProtocolService>();
+
+        services.AddScoped<IEmailTemplateProvider, EmailTemplateProvider>();
+        services.AddScoped<IStockService, StockService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddInternalServices(this IServiceCollection services)
+    {
+        services.AddSafefyDataProtection();
+        services.AddHttpClient("utmify-integration", client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        services.AddScoped<ITokenService, Services.Internal.TokenService>();
+        services.AddScoped<IRateLimitService, Services.Internal.RateLimitService>();
+        services.AddScoped<IAcquirerConfigService, Services.Internal.AcquirerConfigService>();
+        services.AddScoped<ISubmerchantProviderAdapter, AccithusSubmerchantProviderAdapter>();
+        services.AddScoped<ISubmerchantProviderAdapterFactory, SubmerchantProviderAdapterFactory>();
+        services.AddScoped<ISubmerchantProviderPolicyService, SubmerchantProviderPolicyService>();
+        services.AddScoped<ISubmerchantValidationService, SubmerchantValidationService>();
+        services.AddScoped<ISubmerchantOrchestrationService, SubmerchantOrchestrationService>();
+        services.AddScoped<ITransactionTrackingIntegrationService, TransactionTrackingIntegrationService>();
+        services.AddScoped<IWebhookService, WebhookService>();
+        services.AddScoped<ICashoutWebhookService, CashoutWebhookService>();
+        services.AddScoped<IPlatformPayoutWebhookService, Services.PlatformPayoutWebhookService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAcquirerServices(this IServiceCollection services)
+    {
+        services.AddAcquirerHttpClient<IActivePaymentsClient, ActivePaymentsClient>("activepayments");
+        services.AddAcquirerHttpClient<IBankiziClient, BankiziClient>("bankizi");
+        services.AddAcquirerHttpClient<IIHubBankingClient, IHubBankingClient>("ihubbanking");
+        services.AddAcquirerHttpClient<IRapdynClient, RapdynClient>("rapdyn");
+        services.AddAcquirerHttpClient<IColdfyClient, ColdfyClient>("coldfy");
+        services.AddAcquirerHttpClient<IPluggouClient, PluggouClient>("pluggou");
+        services.AddAcquirerHttpClient<IHunterPayClient, HunterPayClient>("hunterpay");
+        services.AddAcquirerHttpClient<IHeartPayClient, HeartPayClient>("heartpay");
+        services.AddAcquirerHttpClient<IAccithusClient, AccithusClient>("accithus");
+
+        services.AddScoped<IAcquirerService, ActivePaymentsService>();
+        services.AddScoped<IAcquirerService, BankiziService>();
+        services.AddScoped<IAcquirerService, IHubBankingService>();
+        services.AddScoped<IAcquirerService, RapdynService>();
+        services.AddScoped<IAcquirerService, ColdfyService>();
+        services.AddScoped<IAcquirerService, PluggouService>();
+        services.AddScoped<IAcquirerService, HunterPayService>();
+        services.AddScoped<IAcquirerService, HeartPayService>();
+        services.AddScoped<IAcquirerService, AccithusService>();
+        services.AddScoped<IAcquirerServiceFactory, AcquirerServiceFactory>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddPaymentServices(this IServiceCollection services)
+    {
+        services.AddScoped<IPixService, PixService>();
+        services.AddScoped<IWithdrawService, WithdrawService>();
+        services.AddScoped<ICashoutService, CashoutService>();
+        services.AddScoped<IPaymentProcessingService, PaymentProcessingService>();
+        services.AddScoped<ITransactionService, TransactionService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IDigitalDeliveryService, DigitalDeliveryService>();
+        services.AddScoped<IAcquirerNominalTrackingService, AcquirerNominalTrackingService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddSandboxServices(this IServiceCollection services)
+    {
+        services.AddScoped<ISandboxService, SandboxService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddPaymentMethodServices(this IServiceCollection services)
+    {
+        services.AddScoped<IPaymentMethodService, PixTransactionService>();
+        services.AddScoped<IPaymentMethodService, CreditCardTransactionService>();
+        services.AddScoped<IPaymentMethodService, BoletoTransactionService>();
+        services.AddScoped<IPaymentMethodServiceFactory, PaymentMethodServiceFactory>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddCheckoutHandlers(this IServiceCollection services)
+    {
+        services.AddScoped<GetCheckoutHandler>();
+        services.AddScoped<CalculateHandler>();
+        services.AddScoped<ValidateCouponHandler>();
+        services.AddScoped<CreateOrderHandler>();
+        services.AddScoped<GetOrderHandler>();
+        services.AddScoped<UpdateOrderHandler>();
+        services.AddScoped<ReserveOrderHandler>();
+        services.AddScoped<ReactivateOrderHandler>();
+
+        return services;
+    }
+}
