@@ -1,0 +1,13 @@
+{
+  "project": "swiftpay",
+  "skills": [
+    "swiftpay-domain",
+    "swiftpay-architecture",
+    "swiftpay-testing",
+    "swiftpay-workflow"
+  ],
+  "agent": {
+    "model": "default",
+    "instructionsRef": "AGENTS.md"
+  }
+}
