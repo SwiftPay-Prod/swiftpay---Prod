@@ -1,0 +1,19 @@
+{
+  "project": "swiftpay",
+  "skills": [
+    "swiftpay-domain",
+    "swiftpay-architecture",
+    "swiftpay-testing",
+    "swiftpay-workflow"
+  ],
+  "agent": {
+    "model": "default",
+    "instructionsRef": "AGENTS.md"
+  },
+  "providers": {
+    "github": {
+      "repo": "matspectrum-ai/swiftpay",
+      "workflows": [".github/workflows/ci.yml", ".github/workflows/codeql.yml", ".github/workflows/security-scan.yml"]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+# Session state — contains auth tokens
+data/state.json
+
+# Captured data — sensitive, contains real user data and API responses
+data/api-logs/*.json
+data/screenshots/*.png
+data/html-snapshots/*.html
+data/api-map.json
+data/data-models.json
