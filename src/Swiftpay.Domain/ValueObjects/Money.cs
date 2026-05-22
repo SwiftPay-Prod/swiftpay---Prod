@@ -12,5 +12,5 @@ public readonly record struct Money(long AmountInCents)
 
     public static Money Zero => new(0);
 
-    public override string ToString() => $"R$ {ToDecimal():N2}";
+    public override string ToString() => $"R$ {ToDecimal().ToString("N2", new System.Globalization.CultureInfo("pt-BR"))}";
 }

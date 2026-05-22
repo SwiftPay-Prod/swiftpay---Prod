@@ -29,14 +29,14 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test --no-build --configuration Release --verbosity normal --results-directory ./TestResults
 
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: '**/TestResults/**'
+          path: ./TestResults/**/*
 
   lint:
     name: Code Lint
