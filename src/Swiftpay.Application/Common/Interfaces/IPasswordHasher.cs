@@ -1,4 +1,4 @@
-namespace Swiftpay.Application.Common;
+namespace Swiftpay.Application.Common.Interfaces;
 
 public interface IPasswordHasher
 {

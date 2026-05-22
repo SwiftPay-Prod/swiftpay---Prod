@@ -1,0 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using Swiftpay.Application.Common;
+using Swiftpay.Domain.Entities;
+using Swiftpay.Infrastructure.Data;
+
+namespace Swiftpay.Infrastructure.Repositories;
+
+public class UserRepository : IUserRepository
+{
+    private readonly AppDbContext _context;
+
+    public UserRepository(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        return await _context.Users.Include(u => u.Company).FirstOrDefaultAsync(u => u.Id == id, ct);
+    }
+
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
+    {
+        return await _context.Users.Include(u => u.Company)
+            .FirstOrDefaultAsync(u => u.Email.Address == email.ToLowerInvariant(), ct);
+    }
+
+    public async Task AddAsync(User user, CancellationToken ct)
+    {
+        await _context.Users.AddAsync(user, ct);
+    }
+}
