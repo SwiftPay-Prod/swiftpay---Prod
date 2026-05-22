@@ -442,5 +442,8 @@ Thumbs.db
 .env.local
 *.secret
 
+# Docker
+docker-compose.override.yml
+
 # Build
 packages/
