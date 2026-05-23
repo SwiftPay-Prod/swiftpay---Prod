@@ -1,35 +1,33 @@
 # Swiftpay
 
-Payment platform -- built with C# .NET 9 + Next.js 14.
+Payment gateway orchestrator — multi-provider PIX/Boleto/Card processing.
 
-## Tech Stack
-- **Backend:** .NET 9 (ASP.NET Core Web API, Clean Architecture)
-- **Frontend:** TypeScript, Next.js 14
-- **Database:** PostgreSQL (EF Core + Npgsql)
-- **Auth:** JWT (access + refresh tokens)
-- **CI/CD:** GitHub Actions, Dependabot, CodeQL
+Built with C# .NET 9 (Clean Architecture + CQRS), Next.js 16, PostgreSQL, Redis, RabbitMQ.
 
-## Project Structure
+## Architecture
+
 ```
-src/Swiftpay.Domain/          # Pure domain entities
-src/Swiftpay.Application/     # Use cases, CQRS
-src/Swiftpay.Infrastructure/  # EF Core, JWT, external services
-src/Swiftpay.WebApi/          # API controllers
-web/                          # Next.js frontend
+src/
+├── Swiftpay.Api.Core/      ← Shared: Domain, Ledger, Messaging, Services
+├── Swiftpay.Api.Gestao/    ← API de Gestão (Auth, Admin)
+└── Swiftpay.Api.Payment/   ← API de Pagamento (PIX, Transações, Webhooks)
 ```
 
-## Getting Started
+## Quick Start
+
 ```bash
-# Run database
+# Start infrastructure
 docker compose up -d
 
-# Run API
-cd src/Swiftpay.WebApi && dotnet run
+# Run APIs
+dotnet run --project src/Swiftpay.Api.Gestao    # :5001
+dotnet run --project src/Swiftpay.Api.Payment   # :5002
 
-# Run frontend
-cd web && npm install && npm run dev
+# Tests
+dotnet test
 ```
 
-## Development Workflow
-This project uses the Superpowers methodology with AI-assisted development.
-See AGENTS.md and .kilo/skills/ for full workflow instructions.
+## Development
+
+This project uses the **Superpowers** AI-assisted development workflow.
+See `AGENTS.md` and `.kilo/skills/` for full instructions.

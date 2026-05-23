@@ -56,50 +56,27 @@
 - `swiftpay-admin-web` — Next.js admin dashboard (monocrom black/white)
 - `swiftpay-checkout` — public checkout pages (PIX/Boleto/Card)
 
-## Pre-Implementation Checklist (MANDATORY)
-1. Read **.kilo/skills/** (*.md) domain rules and architecture
-2. Read **AGENTS.md** for full project context
-3. Read **docs/superpowers/specs/** for approved design
-4. Read **docs/superpowers/plans/** for current implementation plan
-5. Invoke **superpowers:brainstorming** if requirements are unclear
-6. Invoke **superpowers:writing-plans** to create the implementation plan
+## Workflow (MANDATORY — NEVER SKIP)
+1. **brainstorming** → refine requirements (via superpowers skill)
+2. **writing-plans** → create implementation plan (via superpowers skill)
+3. **subagent-driven-development** → execute each task with TDD (via superpowers skill)
+4. **requesting-code-review** → review before merge (via superpowers skill)
+5. **finishing-a-development-branch** → complete and merge (via superpowers skill)
 
-## Development Workflow (MANDATORY)
-```
-1. brainstorming → refine requirements
-2. writing-plans → create implementation plan
-3. subagent-driven-development → execute each task
-4. test-driven-development → RED-GREEN-REFACTOR
-5. requesting-code-review → review before merge
-6. finishing-a-development-branch → complete and merge
-```
+## Quality Gates (.github/workflows/)
+- **CI:** Build + Test + Lint — runs on every push/PR
+- **CodeQL:** Security analysis — runs weekly + on push/PR
+- **Security Scan:** Secret scanning + NuGet audit — runs weekly + on push/PR
 
 ## Technology Rules (Non-negotiable)
 - ❌ No AutoMapper (use manual mapping via extension methods)
 - ❌ No magic strings for routes (use `nameof` or constants)
-- ❌ No direct Domain references from WebApi (go through Application)
 - ❌ No float/double for monetary values
 - ✅ All API responses wrapped in `ApiResponse<T>`
 - ✅ All commands validated by FluentValidation
 - ✅ Exceptions handled by global middleware, never try/catch in controllers
 - ✅ EF Core migrations via `dotnet ef migrations add`
 - ✅ Tests written BEFORE implementation code (TDD)
-
-## First Run Instructions
-```bash
-# Start PostgreSQL
-docker compose up -d
-
-# Apply migrations
-cd src/Swiftpay.WebApi
-dotnet ef database update
-
-# Run API
-dotnet run
-
-# Run all tests
-dotnet test
-```
 
 ## Repository
 - **GitHub:** https://github.com/matspectrum-ai/swiftpay
