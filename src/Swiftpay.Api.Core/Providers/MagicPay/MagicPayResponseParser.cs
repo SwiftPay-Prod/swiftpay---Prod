@@ -23,4 +23,15 @@ public class MagicPayResponseParser
             return new PixGenerationResult(false, null, null, null, ex.Message);
         }
     }
+
+    public PixRefundResult ParseRefundResponse(string json)
+    {
+        try
+        {
+            var resp = JsonSerializer.Deserialize<MagicPayPaymentResponse>(json, JsonOptions);
+            if (resp?.Error != null) return new PixRefundResult(false, $"{resp.Error}: {resp.Message}");
+            return new PixRefundResult(true, null);
+        }
+        catch (Exception ex) { return new PixRefundResult(false, ex.Message); }
+    }
 }

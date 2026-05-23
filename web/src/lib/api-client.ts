@@ -98,4 +98,18 @@ export const webhooks = {
     }),
 };
 
+export const apiKeys = {
+  list: () =>
+    request<ApiResponse<any[]>>(GESTAO_API, '/api-keys'),
+  create: (data: { name: string; merchantId: string }) =>
+    request<ApiResponse<any>>(GESTAO_API, '/api-keys', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  delete: (id: string) =>
+    request<ApiResponse<any>>(GESTAO_API, `/api-keys/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
 export { ApiError };

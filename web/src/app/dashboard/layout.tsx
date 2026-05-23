@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
-import { LayoutDashboard, Wallet, Link as LinkIcon, ArrowRightLeft, Banknote, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Wallet, Link as LinkIcon, ArrowRightLeft, Banknote, Settings, Key, LogOut } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -12,6 +12,7 @@ const navItems = [
   { label: 'Payment Links', href: '/dashboard/payment-links', icon: LinkIcon },
   { label: 'Transactions', href: '/dashboard/transactions', icon: ArrowRightLeft },
   { label: 'Saques', href: '/dashboard/withdrawals', icon: Banknote },
+  { label: 'API Keys', href: '/dashboard/settings/api-keys', icon: Key },
   { label: 'Configurações', href: '/dashboard/settings/webhooks', icon: Settings },
 ];
 

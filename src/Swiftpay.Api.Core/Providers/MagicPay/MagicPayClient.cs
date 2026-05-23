@@ -20,4 +20,11 @@ public class MagicPayClient
         var json = await response.Content.ReadAsStringAsync(ct);
         return _parser.ParseCreatePaymentResponse(json);
     }
+
+    public async Task<PixRefundResult> RefundPaymentAsync(string paymentId, long amount, CancellationToken ct)
+    {
+        var response = await _http.PostAsJsonAsync($"/v1/payment/{paymentId}/refund", new { amount }, ct);
+        var json = await response.Content.ReadAsStringAsync(ct);
+        return _parser.ParseRefundResponse(json);
+    }
 }
