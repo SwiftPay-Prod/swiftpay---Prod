@@ -130,10 +130,18 @@ public class PaymentLinksController : ControllerBase
     public async Task<ActionResult<ApiResponse<object>>> GetPaymentStatus(string externalId, CancellationToken ct)
     {
         var payment = await _context.Payments
+            .Include(p => p.Pix)
             .FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
+
         if (payment == null)
             return NotFound(ApiResponse<object>.Fail("Payment not found"));
-        return Ok(ApiResponse<object>.Ok(new { status = payment.Status }));
+
+        return Ok(ApiResponse<object>.Ok(new
+        {
+            status = payment.Status,
+            externalId = payment.ExternalId,
+            paidAt = payment.PaidAt,
+        }));
     }
 }
 

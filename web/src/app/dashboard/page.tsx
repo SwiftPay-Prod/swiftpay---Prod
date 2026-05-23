@@ -1,10 +1,21 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { paymentLinks, wallet } from '@/lib/api-client';
+import { getSignalRConnection, startSignalR } from '@/lib/signalr-client';
+import { useEffect } from 'react';
 
 export default function DashboardPage() {
+  const queryClient = useQueryClient();
   const { data: links } = useQuery({ queryKey: ['payment-links'], queryFn: () => paymentLinks.list() });
   const { data: balance } = useQuery({ queryKey: ['balance'], queryFn: () => wallet.balance() });
+
+  useEffect(() => {
+    const conn = getSignalRConnection();
+    conn.on('PaymentStatusChanged', () => { queryClient.invalidateQueries({ queryKey: ['transactions'] }); });
+    conn.on('BalanceUpdated', () => { queryClient.invalidateQueries({ queryKey: ['balance'] }); });
+    startSignalR();
+    return () => { conn.off('PaymentStatusChanged'); conn.off('BalanceUpdated'); };
+  }, []);
 
   const formatBRL = (cents: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cents / 100);
 

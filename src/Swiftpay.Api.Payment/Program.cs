@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Swiftpay.Api.Core.Consumers;
+using Swiftpay.Api.Core.Hubs;
 using Swiftpay.Api.Payment.Middleware;
 using Swiftpay.Application;
 using Swiftpay.Infrastructure;
@@ -15,6 +16,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiResponseFilter>();
 });
+builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -83,5 +85,7 @@ if (app.Environment.IsDevelopment())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
+
+app.MapHub<DashboardHub>("/hubs/dashboard");
 
 app.Run();
