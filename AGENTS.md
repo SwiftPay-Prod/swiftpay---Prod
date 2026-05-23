@@ -31,6 +31,7 @@
 - `test-driven-development` — RED-GREEN-REFACTOR
 - `requesting-code-review` — review before merge
 - `finishing-a-development-branch` — complete work
+aND FULL WORKFLoW SUPERPOWERS
 
 ### .kilo/skills/dotnet/ (technical — consult as needed)
 - `dotnet-webapi` — ASP.NET Core Web API / FastEndpoints patterns
@@ -62,6 +63,7 @@
 3. **subagent-driven-development** → execute each task with TDD (via superpowers skill)
 4. **requesting-code-review** → review before merge (via superpowers skill)
 5. **finishing-a-development-branch** → complete and merge (via superpowers skill)
+6. AND FULL WORKFLOW SUPERPOWERS
 
 ## Quality Gates (.github/workflows/)
 - **CI:** Build + Test + Lint — runs on every push/PR

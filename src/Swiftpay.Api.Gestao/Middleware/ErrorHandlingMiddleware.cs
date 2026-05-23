@@ -28,20 +28,20 @@ public class ErrorHandlingMiddleware
 
             await context.Response.WriteAsJsonAsync(response);
         }
-        catch (KeyNotFoundException)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            context.Response.ContentType = "application/json";
-
-            var response = ApiResponse<object>.Fail("Resource not found");
-            await context.Response.WriteAsJsonAsync(response);
-        }
         catch (UnauthorizedAccessException)
         {
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             context.Response.ContentType = "application/json";
 
             var response = ApiResponse<object>.Fail("Unauthorized");
+            await context.Response.WriteAsJsonAsync(response);
+        }
+        catch (KeyNotFoundException)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            context.Response.ContentType = "application/json";
+
+            var response = ApiResponse<object>.Fail("Resource not found");
             await context.Response.WriteAsJsonAsync(response);
         }
         catch (Exception)

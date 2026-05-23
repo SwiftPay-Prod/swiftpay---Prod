@@ -22,10 +22,12 @@ public class PaymentLinkConfiguration : IEntityTypeConfiguration<PaymentLink>
         builder.Property(x => x.SuccessUrl).HasMaxLength(2000);
         builder.Property(x => x.CancelUrl).HasMaxLength(2000);
 
-        builder.ComplexProperty(x => x.Amount, m =>
-        {
-            m.Property(p => p.AmountInCents).HasColumnName("Amount").IsRequired();
-        });
+        builder.Property(x => x.Amount)
+            .HasConversion(
+                v => v.AmountInCents,
+                v => new Money(v))
+            .HasColumnName("Amount")
+            .IsRequired();
         builder.Property(x => x.AmountMin)
             .HasConversion(
                 v => v.HasValue ? v.Value.AmountInCents : (long?)null,
