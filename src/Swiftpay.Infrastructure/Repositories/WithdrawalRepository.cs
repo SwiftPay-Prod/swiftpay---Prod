@@ -33,4 +33,9 @@ public class WithdrawalRepository : IWithdrawalRepository
     {
         await _context.Withdrawals.AddAsync(withdrawal, ct);
     }
+
+    public async Task<int> CountByCompanyAsync(Guid companyId, CancellationToken ct)
+    {
+        return await _context.Withdrawals.CountAsync(w => w.CompanyId == companyId, ct);
+    }
 }

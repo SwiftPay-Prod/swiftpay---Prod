@@ -11,10 +11,18 @@
 - **dotnet-data** (.kilo/skills/dotnet/) — EF Core query optimization
 - **assertion-quality** (.kilo/skills/dotnet/) — test assertion patterns
 - **test-anti-patterns** (.kilo/skills/dotnet/) — common test mistakes to avoid
+- **swiftpay-ledger** (.kilo/skills/) — double-entry accounting system
+- **swiftpay-payment-processing** (.kilo/skills/) — PIX/Boleto/Card payment flow
+- **swiftpay-acquirer-integration** (.kilo/skills/) — multi-provider strategy pattern
+- **swiftpay-messaging** (.kilo/skills/) — MassTransit/RabbitMQ consumers
+- **swiftpay-webhooks** (.kilo/skills/) — outgoing/incoming webhook system
+- **swiftpay-signalr** (.kilo/skills/) — real-time updates via SignalR
+- **swiftpay-admin-web** (.kilo/skills/) — Next.js admin dashboard
+- **swiftpay-checkout** (.kilo/skills/) — public checkout pages
 
 ## Global Workflow (ALWAYS)
 ```
-1. brainSTORMING ──> design doc ──> user approves
+1. BRAINSTORMING ──> design doc ──> user approves
 2. WRITING-PLANS ──> implementation plan ──> user approves
 3. SUBAGENT-DEV ──> TDD per task ──> code review ──> merge
 4. FINISHING-BRANCH ──> cleanup
@@ -22,7 +30,7 @@
 
 ## Implementation Order (MANDATORY — per feature)
 ```
-DOMAIN → APPLICATION → INFRASTRUCTURE → WEBAPI → FRONTEND
+DOMAIN → APPLICATION → INFRASTRUCTURE → MESSAGING → WEBAPI → FRONTEND
 ```
 
 Each layer must be completed and tested before moving to the next.

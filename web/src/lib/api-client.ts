@@ -1,4 +1,4 @@
-import { AuthResponse, User, PaymentLink, Balance, Transaction, PagedResponse } from './types';
+import { AuthResponse, User, PaymentLink, Balance, Transaction, Withdrawal, PagedResponse } from './types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
 
@@ -72,6 +72,16 @@ export const wallet = {
     request<ApiResponse<Balance>>('/wallet/balance'),
   transactions: (page = 1, limit = 25) =>
     request<ListResponse<Transaction>>(`/wallet/transactions?page=${page}&limit=${limit}`),
+};
+
+export const withdrawals = {
+  request: (amount: number, pixKey: string, pixKeyType: string) =>
+    request<ApiResponse<string>>('/wallet/withdrawals', {
+      method: 'POST',
+      body: JSON.stringify({ amount, pixKey, pixKeyType }),
+    }),
+  list: (page = 1, limit = 25) =>
+    request<ListResponse<Withdrawal>>(`/wallet/withdrawals?page=${page}&limit=${limit}`),
 };
 
 export { ApiError };

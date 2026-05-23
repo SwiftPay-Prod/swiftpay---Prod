@@ -43,6 +43,15 @@ export interface Transaction {
   createdAt: string;
 }
 
+export interface Withdrawal {
+  id: string;
+  amount: number;
+  status: string;
+  pixKey: string;
+  pixKeyType: string;
+  requestedAt: string;
+}
+
 export interface PagedResponse<T> {
   items: T[];
   page: number;

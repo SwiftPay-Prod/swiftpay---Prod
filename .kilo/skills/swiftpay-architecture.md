@@ -5,28 +5,97 @@
 - **dotnet:dotnet-data** — EF Core configuration, migrations, query patterns
 - **dotnet:dotnet-test** — Test project setup, mocking patterns
 - **superpowers:test-driven-development** — TDD for every layer
+- **swiftpay-ledger** — double-entry accounting placement
+- **swiftpay-messaging** — MassTransit/RabbitMQ placement
+- **swiftpay-payment-processing** — payment flow architecture
+- **swiftpay-acquirer-integration** — multi-provider strategy
+- **swiftpay-webhooks** — webhook system architecture
+- **swiftpay-signalr** — real-time updates placement
+- **swiftpay-admin-web** — Next.js admin frontend
+- **swiftpay-checkout** — public checkout frontend
 
-## Layer Architecture
+## Full System Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                    PRESENTATION                       │
-│             Swiftpay.WebApi (Controllers)            │
-│         ↓ (depends on Infrastructure)                │
-├─────────────────────────────────────────────────────┤
-│                   INFRASTRUCTURE                      │
-│  EF Core (PostgreSQL) | JWT | Payment Gateway SDK     │
-│         ↓ (depends on Application)                    │
-├─────────────────────────────────────────────────────┤
-│                    APPLICATION                        │
-│        Use Cases | CQRS | DTOs | Validation           │
-│         ↓ (depends on Domain)                         │
-├─────────────────────────────────────────────────────┤
-│                      DOMAIN                           │
-│      Entities | Value Objects | Enums | Interfaces   │
-│          ⚡ ZERO EXTERNAL DEPENDENCIES ⚡              │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                    Swiftpay — Complete Architecture                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │                    SWIFTPAY.WEBAPI                            │    │
+│  │  FastEndpoints (Controllers) | Middleware | SignalR Hubs     │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│         │                    │                    │                  │
+│  ┌──────┴──────┐    ┌───────┴────────┐    ┌─────┴──────────┐        │
+│  │  Auth       │    │ Payment        │    │  Internal      │        │
+│  │  Endpoints  │    │ Endpoints      │    │  Endpoints     │        │
+│  │  /v1/auth   │    │ /v1/transactions│   │  /v1/internal  │        │
+│  └─────────────┘    └───────┬────────┘    └────────────────┘        │
+│                             │                                       │
+├─────────────────────────────┼───────────────────────────────────────┤
+│  ┌──────────────────────────┴──────────────────────────────────┐    │
+│  │                 SWIFTPAY.APPLICATION                          │    │
+│  │  MediatR | CQRS | FluentValidation | Result<T>               │    │
+│  │                                                              │    │
+│  │  ┌────────────┐  ┌────────────┐  ┌────────────┐              │    │
+│  │  │ Auth       │  │ Payment    │  │ Wallet     │              │    │
+│  │  │ Use Cases  │  │ Use Cases  │  │ Use Cases  │              │    │
+│  │  └────────────┘  └────────────┘  └────────────┘              │    │
+│  └──────────────────────────────────────────────────────────────┘    │
+│         │                  │                    │                     │
+├─────────┼──────────────────┼────────────────────┼───────────────────┤
+│  ┌──────┴──────────────────┴────────────────────┴────────────────┐  │
+│  │                  SWIFTPAY.INFRASTRUCTURE                        │  │
+│  │                                                                │  │
+│  │  ┌──────────────┐  ┌──────────────────┐  ┌────────────────┐    │  │
+│  │  │ EF Core      │  │ MassTransit      │  │ SignalR        │    │  │
+│  │  │ PostgreSQL   │  │ RabbitMQ         │  │ Hubs           │    │  │
+│  │  └──────────────┘  └──────────────────┘  └────────────────┘    │  │
+│  │                                                                │  │
+│  │  ┌──────────────┐  ┌──────────────────┐  ┌────────────────┐    │  │
+│  │  │ Repositories  │  │ Acquirer Clients │  │ JWT + Redis    │    │  │
+│  │  │ (EF Core)    │  │ (9 adquirentes)  │  │ Cache/Session  │    │  │
+│  │  └──────────────┘  └──────────────────┘  └────────────────┘    │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐    │
+│  │                  SWIFTPAY.DOMAIN                               │    │
+│  │  Entities: Account, LedgerEntry, LedgerTransaction,            │    │
+│  │  Payment, PaymentPix, PaymentLink, User, Company, Withdrawal   │    │
+│  │  ValueObjects: Money, Email | Enums: todos os status/type     │    │
+│  └──────────────────────────────────────────────────────────────┘    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                    MESSAGING (RabbitMQ / MassTransit)                │
+│                                                                     │
+│  PixTransactionService → [RecordLedgerPending] → RecordLedgerConsumer
+│  PaymentProcessingService → [PaymentCompleted] → PaymentCompletedConsumer
+│  PaymentCompletedConsumer → [ProcessMerchantDashboard] → DashboardConsumer
+│  PaymentCompletedConsumer → [SendWebhook] → WebhookConsumer
+│  CashoutService → [ProcessCashout] → CashoutConsumer
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                    FRONTENDS (Next.js 16)                            │
+│                                                                     │
+│  swiftpay-web (Admin)         swiftpay-web-checkout (Público)        │
+│  ┌─────────────────────┐      ┌────────────────────────────┐        │
+│  │ /dashboard          │      │ /checkout/{slug}           │        │
+│  │ /dashboard/wallet   │      │ /checkout/{slug}/pix      │        │
+│  │ /dashboard/transactions  │  │ /checkout/{slug}/boleto   │        │
+│  │ /dashboard/payment-links │  │ /checkout/{slug}/card     │        │
+│  │ /dashboard/withdrawals   │  │ /checkout/{slug}/success  │        │
+│  └─────────────────────┘      └────────────────────────────┘        │
+└─────────────────────────────────────────────────────────────────────┘
 ```
+
+## Layer Rules (Strict)
+- **Domain**: ZERO external dependencies. Pure C# classes only. No NuGet packages. No EF Core attributes. No JSON attributes.
+- **Application**: Depends ONLY on Domain. Contains MediatR handlers (NuGet allowed), DTOs, validation, repository interfaces.
+- **Infrastructure**: Implements Application interfaces. EF Core, JWT generation, Acquirer SDKs, MassTransit, SignalR.
+- **WebApi**: Composition root. Registers all DI, FastEndpoints (or Controllers), middleware pipeline, SignalR hubs.
 
 ## Layer Rules (Strict)
 - **Domain**: ZERO external dependencies. Pure C# classes only. No NuGet packages. No EF Core attributes. No JSON attributes.

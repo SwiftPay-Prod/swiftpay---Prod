@@ -4,13 +4,14 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
-import { LayoutDashboard, Wallet, Link as LinkIcon, ArrowRightLeft, LogOut } from 'lucide-react';
+import { LayoutDashboard, Wallet, Link as LinkIcon, ArrowRightLeft, Banknote, LogOut } from 'lucide-react';
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Carteira', href: '/dashboard/wallet', icon: Wallet },
   { label: 'Payment Links', href: '/dashboard/payment-links', icon: LinkIcon },
   { label: 'Transactions', href: '/dashboard/transactions', icon: ArrowRightLeft },
+  { label: 'Saques', href: '/dashboard/withdrawals', icon: Banknote },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {

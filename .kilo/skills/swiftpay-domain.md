@@ -66,10 +66,51 @@
 - `WithdrawalRequested` — when a withdrawal is initiated
 - `WithdrawalCompleted` — when funds are actually sent
 
+## Ledger System (Contabilidade)
+
+### Account Entity
+- Root entity: `Account` under `Swiftpay.Domain.Entities`
+- **Balance is stored as `long` (cents)** — never decimal/float
+- Account types: `MerchantAvailable`, `MerchantPending`, `MerchantBlocked`, `MerchantReserved`, `MerchantPayoutsOut`, `PlatformBlocked`, `PlatformPayoutsOut`, `AcquirerSettlement`, `AcquirerPayoutsOut`
+- Accounts are per-merchant, per-environment, per-acquirer-bucket
+- `GetOrCreate` pattern: accounts created lazily on first access
+- Balance updates via raw SQL (`UPDATE Accounts SET Balance = Balance + delta`) — never EF Core for writes
+
+### LedgerTransaction Entity
+- Groups multiple `LedgerEntry` records for a single financial event
+- Operation types: `PixIn`, `PixOut`, `PixRefund`, `PixPartialRefund`, `PlatformFee`, `SettlementIn`, `SettlementOut`, `PayOut`, `PlatformPayOut`, `Reversal`, `PlatformAdjustment`, `AcquirerAdjustment`, `MerchantAdjustment`
+- Statuses: `Pending`, `AwaitingBankProcessing`, `Approved`, `Refused`, `Failed`, `Reversed`
+- Idempotency key: `PaymentId + Operation + Status`
+
+### LedgerEntry Entity
+- Atomic unit: each entry is a `Credit` or `Debit` on a specific `Account`
+- Every transaction has at least 2 entries (dual effect)
+- Timestamped and immutable after creation
+
+## Payment Processing Entities
+
+### Payment Entity
+- Root entity for all payment transactions
+- Status flow: `Pending → Processing → Completed | Failed | Expired`
+- From `Completed`: can transition to `Refunded` or `PartiallyRefunded`
+- Key fields: `Amount`, `PlatformFee`, `AcquirerFee`, `NetAmount` (merchant liquid), `MerchantSettlementAmount`, `AcquirerNetAmount`, `MerchantAcquirerId`, `ExternalId`, `AcquirerPaymentId`, `GatewayTransactionId`
+- Related entities: `PaymentPix`, `PaymentBoleto`, `PaymentCreditCard` (one per method)
+- Locking: optimistic via `UPDATE ... SET Status = 'Confirming' WHERE Status = 'Pending'`
+
+### PaymentPix Entity
+- `TxId`, `EndToEndId`, `QrCodePayload`, `QrCodeBase64`, `CopyAndPaste`
+- `PixKey`, `PixKeyType`
+- `PayerName`, `PayerDocument`, `PayerBank`, `PayerBranch`, `PayerAccount`
+- `PaidAt`, `ExpiresAt`
+
 ## Aggregate Boundaries
-- **Company Aggregate**: Company + Users + AcquirerConfigurations + FeeConfiguration
-- **PaymentLink Aggregate**: PaymentLink + Transactions (child collection)
-- **Transaction Aggregate**: Transaction only (standalone, references PaymentLink by Id)
+- **Company Aggregate**: Company + Users + MerchantAcquirers + FeeConfiguration
+- **Ledger Aggregate**: Account + LedgerTransaction + LedgerEntry (immutable)
+- **Payment Aggregate**: Payment + PaymentPix/Boleto/Card (child)
+- **PaymentLink Aggregate**: PaymentLink + Payments (child collection)
+- **Transaction Aggregate**: Transaction only (standalone)
 - **Withdrawal Aggregate**: Withdrawal only (standalone)
 
 > Rule: Never load an entire aggregate just to access a single entity within it. Load the aggregate root or use a separate query.
+> Rule: Ledger entries are **immutable** — never update or delete. Create reversal transactions instead.
+> Rule: Payment status transitions must be **atomic** — use `ExecuteUpdateAsync` for optimistic locking.
