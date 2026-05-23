@@ -53,7 +53,13 @@ public static class DependencyInjection
 
         // MagicPay provider
         services.AddSingleton<MagicPayResponseParser>();
-        services.AddHttpClient<MagicPayClient>();
+        services.AddHttpClient<MagicPayClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.sistema-magicpay.com");
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",
+                    configuration["MagicPay:ApiKey"] ?? "");
+        });
         services.AddScoped<IPixProvider, MagicPayPixService>();
         services.AddScoped<PixProviderFactory>();
 
