@@ -27,13 +27,20 @@ public class LedgerService : ILedgerService
 
         var transaction = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = amount, Operation = LedgerOperation.PixIn,
-            Status = "Pending", PaymentId = paymentId, CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = amount,
+            Operation = LedgerOperation.PixIn,
+            Status = "Pending",
+            PaymentId = paymentId,
+            CreatedAt = DateTime.UtcNow,
         };
         transaction.Entries.Add(new LedgerEntry
         {
-            Id = $"e-{Guid.NewGuid()}", AccountId = pendingAccount.Id,
-            Type = LedgerEntryType.Credit, Amount = amount, Timestamp = DateTime.UtcNow,
+            Id = $"e-{Guid.NewGuid()}",
+            AccountId = pendingAccount.Id,
+            Type = LedgerEntryType.Credit,
+            Amount = amount,
+            Timestamp = DateTime.UtcNow,
         });
 
         return await _ledgerRepo.CreateTransactionWithAtomicBalanceUpdateAsync(
@@ -57,8 +64,12 @@ public class LedgerService : ILedgerService
         var reserveAmount = amount - settlementAmount;
         var tx = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = amount, Operation = LedgerOperation.PixIn,
-            Status = "Approved", PaymentId = paymentId, CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = amount,
+            Operation = LedgerOperation.PixIn,
+            Status = "Approved",
+            PaymentId = paymentId,
+            CreatedAt = DateTime.UtcNow,
         };
         tx.Entries = new List<LedgerEntry>
         {
@@ -94,8 +105,13 @@ public class LedgerService : ILedgerService
 
         var tx = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = amount, Operation = LedgerOperation.PixIn,
-            Status = "Refused", PaymentId = paymentId, Notes = "Payment cancelled", CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = amount,
+            Operation = LedgerOperation.PixIn,
+            Status = "Refused",
+            PaymentId = paymentId,
+            Notes = "Payment cancelled",
+            CreatedAt = DateTime.UtcNow,
         };
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = pendingAccount.Id, Type = LedgerEntryType.Debit, Amount = amount, Description = "Cancel", Timestamp = DateTime.UtcNow });
 
@@ -113,8 +129,12 @@ public class LedgerService : ILedgerService
 
         var tx = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = refundAmount, Operation = LedgerOperation.PixRefund,
-            Status = "Approved", PaymentId = paymentId, CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = refundAmount,
+            Operation = LedgerOperation.PixRefund,
+            Status = "Approved",
+            PaymentId = paymentId,
+            CreatedAt = DateTime.UtcNow,
         };
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = availableAccount.Id, Type = LedgerEntryType.Debit, Amount = refundAmount, Description = "Refund", Timestamp = DateTime.UtcNow });
 
@@ -130,9 +150,12 @@ public class LedgerService : ILedgerService
 
         var tx = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = withdrawal.Amount.AmountInCents,
-            Operation = LedgerOperation.PayOut, Status = "Pending",
-            PayoutId = withdrawal.Id, CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = withdrawal.Amount.AmountInCents,
+            Operation = LedgerOperation.PayOut,
+            Status = "Pending",
+            PayoutId = withdrawal.Id,
+            CreatedAt = DateTime.UtcNow,
         };
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = availableAccount.Id, Type = LedgerEntryType.Debit, Amount = withdrawal.Amount.AmountInCents, Description = "Withdrawal request", Timestamp = DateTime.UtcNow });
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = blockedAccount.Id, Type = LedgerEntryType.Credit, Amount = withdrawal.Amount.AmountInCents, Description = "Locked", Timestamp = DateTime.UtcNow });
@@ -150,9 +173,12 @@ public class LedgerService : ILedgerService
 
         var tx = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = netAmount,
-            Operation = LedgerOperation.SettlementOut, Status = "Approved",
-            PayoutId = withdrawal.Id, CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = netAmount,
+            Operation = LedgerOperation.SettlementOut,
+            Status = "Approved",
+            PayoutId = withdrawal.Id,
+            CreatedAt = DateTime.UtcNow,
         };
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = blockedAccount.Id, Type = LedgerEntryType.Debit, Amount = withdrawal.Amount.AmountInCents, Description = "Release", Timestamp = DateTime.UtcNow });
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = payoutsAccount.Id, Type = LedgerEntryType.Credit, Amount = netAmount, Description = "Payout", Timestamp = DateTime.UtcNow });
@@ -170,9 +196,13 @@ public class LedgerService : ILedgerService
 
         var tx = new LedgerTransaction
         {
-            Id = $"tx-{Guid.NewGuid()}", Amount = withdrawal.Amount.AmountInCents,
-            Operation = LedgerOperation.PayOut, Status = "Failed",
-            PayoutId = withdrawal.Id, Notes = "Withdrawal failed — reversed", CreatedAt = DateTime.UtcNow,
+            Id = $"tx-{Guid.NewGuid()}",
+            Amount = withdrawal.Amount.AmountInCents,
+            Operation = LedgerOperation.PayOut,
+            Status = "Failed",
+            PayoutId = withdrawal.Id,
+            Notes = "Withdrawal failed — reversed",
+            CreatedAt = DateTime.UtcNow,
         };
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = blockedAccount.Id, Type = LedgerEntryType.Debit, Amount = withdrawal.Amount.AmountInCents, Description = "Release (failure)", Timestamp = DateTime.UtcNow });
         tx.Entries.Add(new() { Id = $"e-{Guid.NewGuid()}", AccountId = availableAccount.Id, Type = LedgerEntryType.Credit, Amount = withdrawal.Amount.AmountInCents, Description = "Restore (failure)", Timestamp = DateTime.UtcNow });
