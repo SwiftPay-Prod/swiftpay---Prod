@@ -25,4 +25,5 @@ public class Payment
     public PaymentPix? Pix { get; set; }
     public PaymentBoleto? Boleto { get; set; }
     public PaymentCreditCard? CreditCard { get; set; }
+    public ICollection<PaymentSplit> Splits { get; set; } = new List<PaymentSplit>();
 }

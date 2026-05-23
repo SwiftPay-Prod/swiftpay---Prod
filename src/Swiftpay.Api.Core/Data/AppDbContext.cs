@@ -21,6 +21,7 @@ public class AppDbContext : DbContext
     public DbSet<WebhookConfiguration> WebhookConfigurations => Set<WebhookConfiguration>();
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
     public DbSet<PaymentCreditCard> PaymentCreditCards => Set<PaymentCreditCard>();
+    public DbSet<PaymentSplit> PaymentSplits => Set<PaymentSplit>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

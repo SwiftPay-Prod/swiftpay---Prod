@@ -9,7 +9,8 @@ public record MagicPayPaymentRequest(
     [property: JsonPropertyName("description")] string Description,
     [property: JsonPropertyName("externalRef")] string ExternalRef,
     [property: JsonPropertyName("notificationUrl")] string NotificationUrl,
-    [property: JsonPropertyName("payer")] MagicPayPayer Payer);
+    [property: JsonPropertyName("payer")] MagicPayPayer Payer,
+    [property: JsonPropertyName("split")] IReadOnlyList<MagicPaySplit>? Split = null);
 
 public record MagicPayPayer(
     [property: JsonPropertyName("name")] string Name,
@@ -25,6 +26,12 @@ public record MagicPayPaymentResponse(
     [property: JsonPropertyName("payer")] MagicPayPayer? Payer,
     [property: JsonPropertyName("error")] string? Error,
     [property: JsonPropertyName("message")] string? Message);
+
+public record MagicPaySplit(
+    [property: JsonPropertyName("amount")] long Amount,
+    [property: JsonPropertyName("currency")] string Currency,
+    [property: JsonPropertyName("percent")] int Percent,
+    [property: JsonPropertyName("storeId")] string StoreId);
 
 public record MagicPayData(
     [property: JsonPropertyName("copypaste")] string? Copypaste,
