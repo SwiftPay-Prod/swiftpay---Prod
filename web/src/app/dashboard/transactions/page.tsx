@@ -49,16 +49,16 @@ export default function TransactionsPage() {
                     <td className="p-4 text-sm text-gray-600">{tx.method}</td>
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 rounded-full ${
-                        tx.status === 'Paid' ? 'bg-green-100 text-green-700' :
-                        tx.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
-                        tx.status === 'Refunded' ? 'bg-purple-100 text-purple-700' :
+                        tx.status === 'Paid' ? 'bg-zinc-100 text-black' :
+                        tx.status === 'Pending' ? 'bg-zinc-100 text-black' :
+                        tx.status === 'Refunded' ? 'bg-zinc-100 text-black' :
                         'bg-red-100 text-red-700'
                       }`}>
                         {tx.status}
                       </span>
                     </td>
                     <td className={`p-4 text-right font-semibold ${
-                      tx.type === 'Payment' ? 'text-green-600' : 'text-red-600'
+                      tx.type === 'Payment' ? 'text-black' : 'text-red-600'
                     }`}>
                       {tx.type === 'Payment' ? '+' : '-'}{formatBRL(tx.amount)}
                     </td>

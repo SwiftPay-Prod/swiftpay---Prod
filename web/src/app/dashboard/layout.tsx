@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-zinc-50">
       <aside className="flex w-64 flex-col border-r border-zinc-200 bg-white">
         <div className="flex h-16 items-center gap-2 border-b border-zinc-200 px-6">
-          <div className="h-8 w-8 rounded-lg bg-orange-500" />
+          <div className="h-8 w-8 rounded-lg bg-black" />
           <span className="text-lg font-bold text-zinc-900">Swiftpay</span>
         </div>
 
@@ -36,8 +36,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-orange-50 text-orange-700'
-                    : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                    ? 'bg-zinc-100 text-black font-semibold'
+                    : 'text-zinc-600 hover:bg-zinc-100 hover:text-black'
                 }`}
               >
                 <Icon className="h-4 w-4" />

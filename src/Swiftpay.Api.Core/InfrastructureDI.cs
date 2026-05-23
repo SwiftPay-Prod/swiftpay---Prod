@@ -1,6 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swiftpay.Api.Core.Common;
+using Swiftpay.Api.Core.Providers;
+using Swiftpay.Api.Core.Providers.MagicPay;
+using Swiftpay.Api.Core.Repositories;
+using Swiftpay.Api.Core.Services;
 using Swiftpay.Application.Common;
 using Swiftpay.Application.Common.Interfaces;
 using Swiftpay.Application.Services;
@@ -40,6 +45,17 @@ public static class DependencyInjection
         services.AddScoped<ILedgerRepository, LedgerRepository>();
         services.AddScoped<ILedgerService, LedgerService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Payment services
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddSingleton<FeeCalculationService>();
+        services.AddScoped<PixTransactionService>();
+
+        // MagicPay provider
+        services.AddSingleton<MagicPayResponseParser>();
+        services.AddHttpClient<MagicPayClient>();
+        services.AddScoped<IPixProvider, MagicPayPixService>();
+        services.AddScoped<PixProviderFactory>();
 
         return services;
     }

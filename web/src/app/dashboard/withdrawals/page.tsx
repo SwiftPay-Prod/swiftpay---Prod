@@ -64,7 +64,7 @@ export default function WithdrawalsPage() {
 
           <div className="mb-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-500">Saldo disponível</p>
-            <p className="text-xl font-bold text-green-600">{formatBRL(available)}</p>
+            <p className="text-xl font-bold text-black">{formatBRL(available)}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -78,7 +78,7 @@ export default function WithdrawalsPage() {
                 max={available / 100}
                 value={amount}
                 onChange={e => setAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black outline-none"
                 placeholder="100,00"
               />
             </div>
@@ -88,7 +88,7 @@ export default function WithdrawalsPage() {
               <select
                 value={pixKeyType}
                 onChange={e => setPixKeyType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none"
               >
                 {pixKeyTypes.map(t => (
                   <option key={t} value={t}>{t}</option>
@@ -103,7 +103,7 @@ export default function WithdrawalsPage() {
                 required
                 value={pixKey}
                 onChange={e => setPixKey(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black outline-none"
                 placeholder="seuemail@exemplo.com"
               />
             </div>
@@ -112,13 +112,13 @@ export default function WithdrawalsPage() {
               <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg">{error}</div>
             )}
             {success && (
-              <div className="p-3 bg-green-50 text-green-700 text-sm rounded-lg">{success}</div>
+              <div className="p-3 bg-zinc-50 text-black text-sm rounded-lg">{success}</div>
             )}
 
             <button
               type="submit"
               disabled={mutation.isPending}
-              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 disabled:opacity-50 transition-colors"
+              className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-zinc-800 disabled:opacity-50 transition-colors"
             >
               {mutation.isPending ? 'Solicitando...' : 'Solicitar Saque'}
             </button>
@@ -139,9 +139,9 @@ export default function WithdrawalsPage() {
                     <p className="text-xs text-gray-500">{w.pixKeyType}: {w.pixKey}</p>
                   </div>
                   <span className={`text-xs px-2 py-1 rounded-full ${
-                    w.status === 'Completed' ? 'bg-green-100 text-green-700' :
-                    w.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
-                    w.status === 'Approved' ? 'bg-blue-100 text-blue-700' :
+                    w.status === 'Completed' ? 'bg-zinc-100 text-black' :
+                    w.status === 'Pending' ? 'bg-zinc-100 text-black' :
+                    w.status === 'Approved' ? 'bg-zinc-100 text-black' :
                     'bg-red-100 text-red-700'
                   }`}>
                     {w.status}

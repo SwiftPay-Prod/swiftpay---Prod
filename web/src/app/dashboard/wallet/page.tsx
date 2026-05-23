@@ -27,13 +27,13 @@ export default function WalletPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500 mb-1">Saldo Disponível</p>
-            <p className="text-3xl font-bold text-green-600">
+            <p className="text-3xl font-bold text-black">
               {formatBRL(balance?.data?.available ?? 0)}
             </p>
           </div>
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500 mb-1">Pendente</p>
-            <p className="text-3xl font-bold text-yellow-600">
+            <p className="text-3xl font-bold text-black">
               {formatBRL(balance?.data?.pending ?? 0)}
             </p>
           </div>
@@ -63,12 +63,12 @@ export default function WalletPage() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className={`font-semibold ${tx.type === 'Payment' ? 'text-green-600' : 'text-red-600'}`}>
+                  <p className={`font-semibold ${tx.type === 'Payment' ? 'text-black' : 'text-red-600'}`}>
                     {tx.type === 'Payment' ? '+' : '-'}{formatBRL(tx.amount)}
                   </p>
                   <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    tx.status === 'Paid' ? 'bg-green-100 text-green-700' :
-                    tx.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
+                    tx.status === 'Paid' ? 'bg-zinc-100 text-black' :
+                    tx.status === 'Pending' ? 'bg-zinc-100 text-black' :
                     'bg-red-100 text-red-700'
                   }`}>
                     {tx.status}
