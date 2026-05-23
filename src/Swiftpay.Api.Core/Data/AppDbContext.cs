@@ -15,6 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<LedgerTransaction> LedgerTransactions => Set<LedgerTransaction>();
     public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
+    public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<PaymentPix> PaymentPixs => Set<PaymentPix>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
