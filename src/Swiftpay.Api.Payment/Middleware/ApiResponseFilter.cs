@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Swiftpay.WebApi.Middleware;
+namespace Swiftpay.Api.Payment.Middleware;
 
 public class ApiResponseFilter : IActionFilter
 {

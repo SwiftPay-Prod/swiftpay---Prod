@@ -6,7 +6,7 @@ using Swiftpay.Application.Features.Wallet.Commands;
 using Swiftpay.Application.Features.Wallet.DTOs;
 using Swiftpay.Application.Features.Wallet.Queries;
 
-namespace Swiftpay.WebApi.Controllers;
+namespace Swiftpay.Api.Payment.Controllers;
 
 [ApiController]
 [Route("api/v1/wallet")]

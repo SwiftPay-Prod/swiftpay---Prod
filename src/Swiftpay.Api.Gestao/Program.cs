@@ -1,11 +1,13 @@
 using System.Text;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Swiftpay.Api.Core.Consumers;
+using Swiftpay.Api.Gestao.Middleware;
 using Swiftpay.Application;
 using Swiftpay.Infrastructure;
 using Swiftpay.Infrastructure.Data;
-using Swiftpay.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,18 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// MassTransit + RabbitMQ
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumersFromNamespaceContaining<PaymentCompletedConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ") ?? "rabbitmq://localhost");
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);

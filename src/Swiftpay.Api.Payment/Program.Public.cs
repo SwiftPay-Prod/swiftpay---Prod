@@ -1,3 +1,3 @@
-namespace Swiftpay.WebApi;
+namespace Swiftpay.Api.Payment;
 
 public partial class Program { }

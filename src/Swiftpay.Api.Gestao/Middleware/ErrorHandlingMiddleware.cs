@@ -1,7 +1,7 @@
 using System.Net;
 using FluentValidation;
 
-namespace Swiftpay.WebApi.Middleware;
+namespace Swiftpay.Api.Gestao.Middleware;
 
 public class ErrorHandlingMiddleware
 {

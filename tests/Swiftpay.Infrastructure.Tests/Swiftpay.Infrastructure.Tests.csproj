@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Swiftpay.Infrastructure\Swiftpay.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Swiftpay.Api.Core\Swiftpay.Api.Core.csproj" />
   </ItemGroup>
 
 </Project>

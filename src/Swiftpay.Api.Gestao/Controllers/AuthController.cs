@@ -5,7 +5,7 @@ using Swiftpay.Application.Common.Models;
 using Swiftpay.Application.Features.Auth.Commands;
 using Swiftpay.Application.Features.Auth.DTOs;
 
-namespace Swiftpay.WebApi.Controllers;
+namespace Swiftpay.Api.Gestao.Controllers;
 
 [ApiController]
 [Route("api/v1/auth")]

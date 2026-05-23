@@ -19,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Swiftpay.WebApi\Swiftpay.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\Swiftpay.Api.Gestao\Swiftpay.Api.Gestao.csproj" />
+    <ProjectReference Include="..\..\src\Swiftpay.Api.Payment\Swiftpay.Api.Payment.csproj" />
   </ItemGroup>
 
 </Project>

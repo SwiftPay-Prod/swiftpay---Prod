@@ -1,0 +1,6 @@
+@Swiftpay.Api.Payment_HostAddress = http://localhost:5067
+
+GET {{Swiftpay.Api.Payment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

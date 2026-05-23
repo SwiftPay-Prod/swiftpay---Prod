@@ -6,7 +6,7 @@ using Swiftpay.Application.Features.PaymentLinks.Commands;
 using Swiftpay.Application.Features.PaymentLinks.DTOs;
 using Swiftpay.Application.Features.PaymentLinks.Queries;
 
-namespace Swiftpay.WebApi.Controllers;
+namespace Swiftpay.Api.Payment.Controllers;
 
 [ApiController]
 [Route("api/v1/payment-links")]
