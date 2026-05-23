@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swiftpay.Application.Common;
 using Swiftpay.Application.Common.Interfaces;
+using Swiftpay.Application.Services;
 using Swiftpay.Infrastructure.Data;
 using Swiftpay.Infrastructure.Repositories;
 using Swiftpay.Infrastructure.Services;
@@ -35,6 +36,9 @@ public static class DependencyInjection
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<IWithdrawalRepository, WithdrawalRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<ILedgerRepository, LedgerRepository>();
+        services.AddScoped<ILedgerService, LedgerService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

@@ -12,6 +12,9 @@ public class AppDbContext : DbContext
     public DbSet<PaymentLink> PaymentLinks => Set<PaymentLink>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Withdrawal> Withdrawals => Set<Withdrawal>();
+    public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<LedgerTransaction> LedgerTransactions => Set<LedgerTransaction>();
+    public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
