@@ -16,7 +16,7 @@ public class MagicPayPixService : IPixProvider
     public async Task<PixGenerationResult> GeneratePixAsync(PixGenerationRequest request, CancellationToken ct)
     {
         var payload = new MagicPayPaymentRequest(
-            request.Amount, "BRL", "PIX", request.Description,
+            request.Amount, "BRL", request.Method, request.Description,
             request.ExternalRef, request.NotificationUrl,
             new MagicPayPayer(request.PayerName, request.PayerTaxId, request.PayerEmail, request.PayerPhone));
 

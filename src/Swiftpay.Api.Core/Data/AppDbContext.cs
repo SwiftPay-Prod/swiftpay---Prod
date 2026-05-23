@@ -17,6 +17,7 @@ public class AppDbContext : DbContext
     public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
     public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<PaymentPix> PaymentPixs => Set<PaymentPix>();
+    public DbSet<PaymentBoleto> PaymentBoletos => Set<PaymentBoleto>();
     public DbSet<WebhookConfiguration> WebhookConfigurations => Set<WebhookConfiguration>();
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
 

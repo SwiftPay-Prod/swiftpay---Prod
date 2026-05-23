@@ -27,6 +27,10 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .WithOne(p => p.Payment)
             .HasForeignKey<PaymentPix>(p => p.PaymentId);
 
+        builder.HasOne(x => x.Boleto)
+            .WithOne(p => p.Payment)
+            .HasForeignKey<PaymentBoleto>(p => p.PaymentId);
+
         builder.Property(x => x.CreatedAt).HasDefaultValueSql("NOW()");
     }
 }

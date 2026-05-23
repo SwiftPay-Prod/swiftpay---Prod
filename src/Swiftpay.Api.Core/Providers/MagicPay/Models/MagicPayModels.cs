@@ -28,4 +28,6 @@ public record MagicPayPaymentResponse(
 
 public record MagicPayData(
     [property: JsonPropertyName("copypaste")] string? Copypaste,
-    [property: JsonPropertyName("e2e")] string? E2E);
+    [property: JsonPropertyName("e2e")] string? E2E,
+    [property: JsonPropertyName("barcode")] string? Barcode,
+    [property: JsonPropertyName("boleto_url")] string? BoletoUrl);

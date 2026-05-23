@@ -3,11 +3,12 @@ namespace Swiftpay.Api.Core.Providers;
 public record PixGenerationRequest(
     long Amount, string Description, string ExternalRef,
     string NotificationUrl, string PayerName, string PayerTaxId,
-    string PayerEmail, string PayerPhone);
+    string PayerEmail, string PayerPhone, string Method = "PIX");
 
 public record PixGenerationResult(
     bool Success, string? TransactionId, string? QrCodePayload,
-    string? CopyAndPaste, string? ErrorMessage);
+    string? CopyAndPaste, string? ErrorMessage,
+    string? QrCodeBase64 = null, string? Barcode = null, string? BoletoUrl = null);
 
 public record PixStatusResult(
     bool Success, string Status, string? EndToEndId,
