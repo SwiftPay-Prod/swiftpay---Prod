@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Swiftpay.Application.Common;
 using Swiftpay.Domain.Entities;
+using Swiftpay.Domain.ValueObjects;
 using Swiftpay.Infrastructure.Data;
 
 namespace Swiftpay.Infrastructure.Repositories;
@@ -22,7 +23,7 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
     {
         return await _context.Users.Include(u => u.Company)
-            .FirstOrDefaultAsync(u => u.Email.Address == email.ToLowerInvariant(), ct);
+            .FirstOrDefaultAsync(u => u.Email == Email.Create(email), ct);
     }
 
     public async Task AddAsync(User user, CancellationToken ct)

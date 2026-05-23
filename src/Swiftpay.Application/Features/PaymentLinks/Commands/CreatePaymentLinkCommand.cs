@@ -26,12 +26,14 @@ public class CreatePaymentLinkCommand : IRequest<Result<Guid>>
 public class CreatePaymentLinkCommandHandler : IRequestHandler<CreatePaymentLinkCommand, Result<Guid>>
 {
     private readonly IPaymentLinkRepository _repo;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUser;
     private static readonly Random _random = new();
 
-    public CreatePaymentLinkCommandHandler(IPaymentLinkRepository repo, ICurrentUserService currentUser)
+    public CreatePaymentLinkCommandHandler(IPaymentLinkRepository repo, IUnitOfWork unitOfWork, ICurrentUserService currentUser)
     {
         _repo = repo;
+        _unitOfWork = unitOfWork;
         _currentUser = currentUser;
     }
 
@@ -61,6 +63,7 @@ public class CreatePaymentLinkCommandHandler : IRequestHandler<CreatePaymentLink
         };
 
         await _repo.AddAsync(link, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
         return Result<Guid>.Success(link.Id);
     }
 

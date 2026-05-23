@@ -12,6 +12,7 @@ namespace Swiftpay.Application.Tests.Features.PaymentLinks;
 public class CreatePaymentLinkCommandTests
 {
     private readonly Mock<IPaymentLinkRepository> _repo;
+    private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<ICurrentUserService> _currentUser;
     private readonly IRequestHandler<CreatePaymentLinkCommand, Result<Guid>> _createHandler;
     private readonly IRequestHandler<GetPaymentLinkQuery, Result<PaymentLinkResponse>> _getHandler;
@@ -21,9 +22,10 @@ public class CreatePaymentLinkCommandTests
     public CreatePaymentLinkCommandTests()
     {
         _repo = new Mock<IPaymentLinkRepository>();
+        _unitOfWork = new Mock<IUnitOfWork>();
         _currentUser = new Mock<ICurrentUserService>();
         _currentUser.Setup(x => x.CompanyId).Returns(_companyId);
-        _createHandler = new CreatePaymentLinkCommandHandler(_repo.Object, _currentUser.Object);
+        _createHandler = new CreatePaymentLinkCommandHandler(_repo.Object, _unitOfWork.Object, _currentUser.Object);
         _getHandler = new GetPaymentLinkQueryHandler(_repo.Object, _currentUser.Object);
         _listHandler = new ListPaymentLinksQueryHandler(_repo.Object, _currentUser.Object);
     }
