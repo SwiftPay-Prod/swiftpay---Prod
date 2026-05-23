@@ -24,4 +24,5 @@ public class Payment
     public DateTime? RefundedAt { get; set; }
     public PaymentPix? Pix { get; set; }
     public PaymentBoleto? Boleto { get; set; }
+    public PaymentCreditCard? CreditCard { get; set; }
 }

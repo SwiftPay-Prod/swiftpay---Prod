@@ -19,15 +19,21 @@ public class PaymentLinksController : ControllerBase
     private readonly IMediator _mediator;
     private readonly AppDbContext _context;
     private readonly PixTransactionService _pixTransactionService;
+    private readonly BoletoTransactionService _boletoTransactionService;
+    private readonly CardTransactionService _cardService;
 
     public PaymentLinksController(
         IMediator mediator,
         AppDbContext context,
-        PixTransactionService pixTransactionService)
+        PixTransactionService pixTransactionService,
+        BoletoTransactionService boletoTransactionService,
+        CardTransactionService cardService)
     {
         _mediator = mediator;
         _context = context;
         _pixTransactionService = pixTransactionService;
+        _boletoTransactionService = boletoTransactionService;
+        _cardService = cardService;
     }
 
     [HttpPost]
@@ -110,6 +116,40 @@ public class PaymentLinksController : ControllerBase
         if (link.IsExpired) return BadRequest(ApiResponse<object>.Fail("Payment link expired"));
 
         var externalRef = $"{link.Slug}-{Guid.NewGuid():N}"[..20];
+        var method = (request.Method ?? "PIX").ToUpper();
+
+        if (method == "CREDIT_CARD")
+        {
+            var cardResult = await _cardService.ChargeAsync(
+                link.CompanyId, link.Amount.AmountInCents, externalRef,
+                $"{Request.Scheme}://{Request.Host}/api/v1/internal/magicpay/webhook",
+                request.CardToken!, request.LastDigits!, request.CardHolder!, request.Installments ?? 1, ct);
+            if (!cardResult.Success) return BadRequest(ApiResponse<object>.Fail(cardResult.ErrorMessage!));
+            return Ok(ApiResponse<object>.Ok(new
+            {
+                paymentId = externalRef,
+                method = "CREDIT_CARD",
+                authorizationCode = cardResult.AuthorizationCode,
+                lastDigits = cardResult.LastDigits,
+            }));
+        }
+
+        if (method == "BOLETO")
+        {
+            var boletoResult = await _boletoTransactionService.CreateBoletoAsync(
+                link.CompanyId, link.Amount.AmountInCents, externalRef,
+                $"{Request.Scheme}://{Request.Host}/api/v1/internal/magicpay/webhook",
+                DateTime.UtcNow.AddDays(3), ct);
+            if (!boletoResult.Success) return BadRequest(ApiResponse<object>.Fail(boletoResult.ErrorMessage!));
+            return Ok(ApiResponse<object>.Ok(new
+            {
+                paymentId = externalRef,
+                method = "BOLETO",
+                barcode = boletoResult.Barcode,
+                boletoUrl = boletoResult.BoletoUrl,
+            }));
+        }
+
         var result = await _pixTransactionService.CreatePixPaymentAsync(
             link.CompanyId, link.Amount.AmountInCents, externalRef,
             $"{Request.Scheme}://{Request.Host}/api/v1/internal/magicpay/webhook",
@@ -120,7 +160,8 @@ public class PaymentLinksController : ControllerBase
         return Ok(ApiResponse<object>.Ok(new
         {
             paymentId = externalRef,
-            qrCode = result.QrCodePayload,
+            method = "PIX",
+            qrCode = result.QrCodeBase64 ?? result.QrCodePayload,
             copyPaste = result.CopyAndPaste,
         }));
     }
@@ -131,6 +172,7 @@ public class PaymentLinksController : ControllerBase
     {
         var payment = await _context.Payments
             .Include(p => p.Pix)
+            .Include(p => p.CreditCard)
             .FirstOrDefaultAsync(p => p.ExternalId == externalId, ct);
 
         if (payment == null)
@@ -145,4 +187,5 @@ public class PaymentLinksController : ControllerBase
     }
 }
 
-public record PayPaymentLinkRequest(string? PayerName, string? PayerTaxId, string? PayerEmail, string? PayerPhone);
+public record PayPaymentLinkRequest(string? PayerName, string? PayerTaxId, string? PayerEmail, string? PayerPhone,
+    string? Method = "PIX", string? CardToken = null, string? LastDigits = null, string? CardHolder = null, int? Installments = 1);

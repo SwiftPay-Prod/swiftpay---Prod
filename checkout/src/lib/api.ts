@@ -7,7 +7,8 @@ export async function getPaymentLink(slug: string) {
 }
 
 export async function payPaymentLink(slug: string, data: {
-  payerName?: string; payerTaxId?: string; payerEmail?: string; payerPhone?: string;
+  payerName?: string; payerTaxId?: string; payerEmail?: string; payerPhone?: string; method?: string;
+  cardToken?: string; lastDigits?: string; cardHolder?: string; installments?: number;
 }) {
   const res = await fetch(`${API}/payment-links/${slug}/pay`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },

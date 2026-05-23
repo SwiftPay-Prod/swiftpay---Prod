@@ -20,6 +20,7 @@ public class AppDbContext : DbContext
     public DbSet<PaymentBoleto> PaymentBoletos => Set<PaymentBoleto>();
     public DbSet<WebhookConfiguration> WebhookConfigurations => Set<WebhookConfiguration>();
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
+    public DbSet<PaymentCreditCard> PaymentCreditCards => Set<PaymentCreditCard>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

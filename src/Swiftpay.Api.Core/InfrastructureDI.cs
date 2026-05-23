@@ -50,6 +50,8 @@ public static class DependencyInjection
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddSingleton<FeeCalculationService>();
         services.AddScoped<PixTransactionService>();
+        services.AddScoped<BoletoTransactionService>();
+        services.AddScoped<CardTransactionService>();
 
         // MagicPay provider
         services.AddSingleton<MagicPayResponseParser>();
