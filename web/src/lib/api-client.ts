@@ -88,4 +88,14 @@ export const withdrawals = {
     request<ListResponse<Withdrawal>>(PAYMENT_API, `/wallet/withdrawals?page=${page}&limit=${limit}`),
 };
 
+export const webhooks = {
+  list: () =>
+    request<ApiResponse<any[]>>(GESTAO_API, '/webhooks'),
+  create: (data: { url: string; secret: string; events: string }) =>
+    request<ApiResponse<any>>(GESTAO_API, '/webhooks', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+};
+
 export { ApiError };
