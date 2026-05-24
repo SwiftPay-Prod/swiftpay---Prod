@@ -1,4 +1,5 @@
 using MassTransit;
+using QRCoder;
 using Swiftpay.Api.Core.Common;
 using Swiftpay.Api.Core.Messages;
 using Swiftpay.Api.Core.Providers;
@@ -50,12 +51,22 @@ public class PixTransactionService
 
         if (!pixResult.Success) return pixResult;
 
+        string? qrCodeBase64 = null;
+        if (!string.IsNullOrEmpty(pixResult.CopyAndPaste))
+        {
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrData = qrGenerator.CreateQrCode(pixResult.CopyAndPaste, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new PngByteQRCode(qrData);
+            qrCodeBase64 = Convert.ToBase64String(qrCode.GetGraphic(20));
+        }
+
         payment.Pix = new PaymentPix
         {
             Id = Guid.NewGuid(),
             PaymentId = payment.Id,
             CopyAndPaste = pixResult.CopyAndPaste,
             QrCodePayload = pixResult.QrCodePayload,
+            QrCodeBase64 = qrCodeBase64,
         };
 
         payment.AcquirerPaymentId = pixResult.TransactionId;
@@ -65,6 +76,6 @@ public class PixTransactionService
 
         await _publish.Publish(new PaymentPendingMessage(payment.Id, merchantId, null, amount, "production"), ct);
 
-        return pixResult;
+        return pixResult with { QrCodeBase64 = qrCodeBase64 };
     }
 }
