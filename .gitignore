@@ -440,6 +440,10 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# Next.js build artifacts
+.next/
+checkout/.next/
 *.secret
 
 # Docker
