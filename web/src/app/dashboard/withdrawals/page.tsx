@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { withdrawals, wallet } from '@/lib/api-client';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 
 export default function WithdrawalsPage() {
   const [amount, setAmount] = useState('');
@@ -59,98 +64,100 @@ export default function WithdrawalsPage() {
       <h1 className="text-2xl font-bold">Saques</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-semibold mb-4">Solicitar Saque</h2>
-
-          <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-500">Saldo disponível</p>
-            <p className="text-xl font-bold text-black">{formatBRL(available)}</p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
-              <input
-                type="number"
-                required
-                min="0.01"
-                step="0.01"
-                max={available / 100}
-                value={amount}
-                onChange={e => setAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black outline-none"
-                placeholder="100,00"
-              />
+        <Card>
+          <CardHeader>
+            <CardTitle>Solicitar Saque</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="p-3 bg-zinc-50 rounded-lg">
+              <p className="text-sm text-zinc-500">Saldo disponível</p>
+              <p className="text-xl font-bold">{formatBRL(available)}</p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de Chave PIX</label>
-              <select
-                value={pixKeyType}
-                onChange={e => setPixKeyType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none"
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="amount">Valor (R$)</Label>
+                <Input
+                  id="amount"
+                  type="number"
+                  required
+                  min="0.01"
+                  step="0.01"
+                  max={available / 100}
+                  value={amount}
+                  onChange={e => setAmount(e.target.value)}
+                  placeholder="100,00"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="pixKeyType">Tipo de Chave PIX</Label>
+                <select
+                  id="pixKeyType"
+                  value={pixKeyType}
+                  onChange={e => setPixKeyType(e.target.value)}
+                  className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black"
+                >
+                  {pixKeyTypes.map(t => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="pixKey">Chave PIX</Label>
+                <Input
+                  id="pixKey"
+                  type="text"
+                  required
+                  value={pixKey}
+                  onChange={e => setPixKey(e.target.value)}
+                  placeholder="seuemail@exemplo.com"
+                />
+              </div>
+
+              {error && (
+                <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>
+              )}
+              {success && (
+                <div className="p-3 bg-zinc-50 text-black text-sm rounded-lg border border-zinc-200">{success}</div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={mutation.isPending}
+                className="w-full bg-black hover:bg-zinc-800 text-white"
               >
-                {pixKeyTypes.map(t => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            </div>
+                {mutation.isPending ? 'Solicitando...' : 'Solicitar Saque'}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Chave PIX</label>
-              <input
-                type="text"
-                required
-                value={pixKey}
-                onChange={e => setPixKey(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black outline-none"
-                placeholder="seuemail@exemplo.com"
-              />
-            </div>
-
-            {error && (
-              <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg">{error}</div>
-            )}
-            {success && (
-              <div className="p-3 bg-zinc-50 text-black text-sm rounded-lg">{success}</div>
-            )}
-
-            <button
-              type="submit"
-              disabled={mutation.isPending}
-              className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-zinc-800 disabled:opacity-50 transition-colors"
-            >
-              {mutation.isPending ? 'Solicitando...' : 'Solicitar Saque'}
-            </button>
-          </form>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-semibold mb-4">Saques Recentes</h2>
-
-          {((withdrawalList as any)?.items ?? []).length === 0 ? (
-            <p className="text-gray-400 text-center py-8">Nenhum saque realizado</p>
-          ) : (
-            <div className="space-y-3">
-              {(withdrawalList as any)?.items?.map((w: any) => (
-                <div key={w.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="font-medium">{formatBRL(w.amount)}</p>
-                    <p className="text-xs text-gray-500">{w.pixKeyType}: {w.pixKey}</p>
+        <Card>
+          <CardHeader>
+            <CardTitle>Saques Recentes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {((withdrawalList as any)?.items ?? []).length === 0 ? (
+              <p className="text-zinc-400 text-center py-8">Nenhum saque realizado</p>
+            ) : (
+              <div className="space-y-3">
+                {(withdrawalList as any)?.items?.map((w: any) => (
+                  <div key={w.id} className="flex justify-between items-center p-3 bg-zinc-50 rounded-lg">
+                    <div>
+                      <p className="font-medium">{formatBRL(w.amount)}</p>
+                      <p className="text-xs text-zinc-500">{w.pixKeyType}: {w.pixKey}</p>
+                    </div>
+                    <Badge variant={w.status === 'Failed' ? 'destructive' : 'secondary'}>
+                      {w.status}
+                    </Badge>
                   </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    w.status === 'Completed' ? 'bg-zinc-100 text-black' :
-                    w.status === 'Pending' ? 'bg-zinc-100 text-black' :
-                    w.status === 'Approved' ? 'bg-zinc-100 text-black' :
-                    'bg-red-100 text-red-700'
-                  }`}>
-                    {w.status}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

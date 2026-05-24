@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { wallet } from '@/lib/api-client';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 export default function TransactionsPage() {
   const [page, setPage] = useState(1);
@@ -22,75 +26,56 @@ export default function TransactionsPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Transações</h1>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-100 text-left text-sm text-gray-500">
-                <th className="p-4 font-medium">Data</th>
-                <th className="p-4 font-medium">Tipo</th>
-                <th className="p-4 font-medium">Método</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Valor</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
+      <Card>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Data</TableHead>
+                <TableHead>Tipo</TableHead>
+                <TableHead>Método</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Valor</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {isLoading ? (
-                <tr><td colSpan={5} className="p-8 text-center text-gray-400">Carregando...</td></tr>
+                <TableRow><TableCell colSpan={5} className="text-center text-zinc-400">Carregando...</TableCell></TableRow>
               ) : (data?.items ?? []).length === 0 ? (
-                <tr><td colSpan={5} className="p-8 text-center text-gray-400">Nenhuma transação</td></tr>
+                <TableRow><TableCell colSpan={5} className="text-center text-zinc-400">Nenhuma transação</TableCell></TableRow>
               ) : (
                 data?.items?.map((tx: any) => (
-                  <tr key={tx.id} className="hover:bg-gray-50">
-                    <td className="p-4 text-sm">
-                      {new Date(tx.createdAt).toLocaleDateString('pt-BR')}
-                    </td>
-                    <td className="p-4 font-medium">{tx.type}</td>
-                    <td className="p-4 text-sm text-gray-600">{tx.method}</td>
-                    <td className="p-4">
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        tx.status === 'Paid' ? 'bg-zinc-100 text-black' :
-                        tx.status === 'Pending' ? 'bg-zinc-100 text-black' :
-                        tx.status === 'Refunded' ? 'bg-zinc-100 text-black' :
-                        'bg-red-100 text-red-700'
-                      }`}>
+                  <TableRow key={tx.id}>
+                    <TableCell className="text-sm">{new Date(tx.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                    <TableCell className="font-medium">{tx.type}</TableCell>
+                    <TableCell className="text-sm text-zinc-600">{tx.method}</TableCell>
+                    <TableCell>
+                      <Badge variant={tx.status === 'Failed' ? 'destructive' : tx.status === 'Refunded' ? 'secondary' : 'default'} className={tx.status === 'Paid' ? 'bg-black text-white' : ''}>
                         {tx.status}
-                      </span>
-                    </td>
-                    <td className={`p-4 text-right font-semibold ${
-                      tx.type === 'Payment' ? 'text-black' : 'text-red-600'
-                    }`}>
+                      </Badge>
+                    </TableCell>
+                    <TableCell className={`text-right font-semibold ${tx.type === 'Payment' ? 'text-black' : 'text-red-600'}`}>
                       {tx.type === 'Payment' ? '+' : '-'}{formatBRL(tx.amount)}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))
               )}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-2 p-4 border-t border-gray-100">
-            <button
-              onClick={() => setPage(p => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className="px-3 py-1 rounded text-sm disabled:opacity-30 hover:bg-gray-100"
-            >
-              Anterior
-            </button>
-            <span className="px-3 py-1 text-sm text-gray-600">
-              Página {page} de {totalPages}
-            </span>
-            <button
-              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className="px-3 py-1 rounded text-sm disabled:opacity-30 hover:bg-gray-100"
-            >
-              Próxima
-            </button>
-          </div>
-        )}
-      </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
+            Anterior
+          </Button>
+          <span className="flex items-center text-sm text-zinc-500">Página {page} de {totalPages}</span>
+          <Button variant="outline" size="sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
+            Próxima
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

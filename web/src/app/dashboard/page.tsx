@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { paymentLinks, wallet } from '@/lib/api-client';
 import { getSignalRConnection, startSignalR } from '@/lib/signalr-client';
 import { useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function DashboardPage() {
   const queryClient = useQueryClient();
@@ -21,20 +22,32 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-black">Dashboard</h1>
+      <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm text-zinc-500">Saldo disponível</p>
-          <p className="text-3xl font-bold text-black mt-1">{formatBRL(balance?.data?.available ?? 0)}</p>
-        </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm text-zinc-500">Links criados</p>
-          <p className="text-3xl font-bold text-black mt-1">{links?.total ?? 0}</p>
-        </div>
-        <div className="rounded-xl border border-zinc-200 bg-white p-6">
-          <p className="text-sm text-zinc-500">Transações</p>
-          <p className="text-3xl font-bold text-black mt-1">—</p>
-        </div>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-zinc-500">Saldo disponível</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{formatBRL(balance?.data?.available ?? 0)}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-zinc-500">Links criados</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{links?.total ?? 0}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-zinc-500">Transações</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">—</p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
