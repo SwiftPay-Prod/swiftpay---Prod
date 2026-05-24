@@ -1,13 +1,13 @@
 # Swiftpay — AI Development Guide
 
 ## Stack
-- **Backend:** C# .NET 9/10 (ASP.NET Core Web API / FastEndpoints)
+- **Backend:** C# .NET 9 (ASP.NET Core Web API)
 - **Frontend:** TypeScript (Next.js 16, React 19)
 - **Database:** PostgreSQL 16/17 (EF Core + Npgsql)
 - **Cache:** Redis / Valkey 8
 - **Messaging:** RabbitMQ + MassTransit
 - **Real-Time:** SignalR
-- **Background Jobs:** Hangfire
+- **Background Jobs:** (removed - not implemented yet)
 - **Storage:** S3-compatible (DigitalOcean Spaces)
 - **Testing:** xUnit + FluentAssertions + Moq
 - **CI/CD:** GitHub Actions (build, test, lint, CodeQL, security scan)

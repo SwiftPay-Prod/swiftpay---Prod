@@ -20,6 +20,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Swiftpay.Api.Ge
     {
         builder.UseEnvironment("Testing");
         builder.UseSetting("MagicPay:ApiKey", "test-api-key");
+        builder.UseSetting("Jwt:Secret", "test-secret-key-that-is-at-least-32-bytes-long!");
         builder.ConfigureServices(services =>
         {
             // Add Payment API controllers to Gestao test host
