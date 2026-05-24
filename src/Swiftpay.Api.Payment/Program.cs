@@ -1,8 +1,10 @@
 using System.Text;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Swiftpay.Api.Core.Consumers;
 using Swiftpay.Api.Core.Hubs;
 using Swiftpay.Api.Payment.Middleware;
@@ -10,82 +12,120 @@ using Swiftpay.Application;
 using Swiftpay.Infrastructure;
 using Swiftpay.Infrastructure.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs/swiftpay-.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
-builder.Services.AddControllers(options =>
+try
 {
-    options.Filters.Add<ApiResponseFilter>();
-});
-builder.Services.AddSignalR();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    Log.Information("Starting Swiftpay Payment API");
 
-// MassTransit + RabbitMQ
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumersFromNamespaceContaining<PaymentCompletedConsumer>();
+    var builder = WebApplication.CreateBuilder(args);
 
-    x.UsingRabbitMq((context, cfg) =>
+    builder.Host.UseSerilog();
+
+    _ = builder.Configuration["MagicPay:ApiKey"] ?? throw new InvalidOperationException("MagicPay:ApiKey is not configured. Set MagicPay__ApiKey environment variable.");
+
+    builder.Services.AddControllers(options =>
     {
-        cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ") ?? "rabbitmq://localhost");
-        cfg.ConfigureEndpoints(context);
+        options.Filters.Add<ApiResponseFilter>();
     });
-});
+    builder.Services.AddSignalR();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-
-var jwtSecret = builder.Configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured");
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    builder.Services.AddRateLimiter(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.AddFixedWindowLimiter("Api", opt =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
-        };
+            opt.PermitLimit = 100;
+            opt.Window = TimeSpan.FromMinutes(1);
+        });
     });
 
-builder.Services.AddAuthorization();
+    builder.Services.AddHealthChecks()
+        .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!)
+        .AddRedis(builder.Configuration["Redis:ConnectionString"] ?? "localhost:6379");
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend", policy =>
+    // MassTransit + RabbitMQ
+    builder.Services.AddMassTransit(x =>
     {
-        policy.WithOrigins("http://localhost:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        x.AddConsumersFromNamespaceContaining<PaymentCompletedConsumer>();
+
+        x.UsingRabbitMq((context, cfg) =>
+        {
+            cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ") ?? "rabbitmq://localhost");
+            cfg.ConfigureEndpoints(context);
+        });
     });
-});
 
-var app = builder.Build();
+    builder.Services.AddApplication();
+    builder.Services.AddInfrastructure(builder.Configuration);
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
+    var jwtSecret = builder.Configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured");
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+            };
+        });
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    builder.Services.AddAuthorization();
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+    });
+
+    var app = builder.Build();
+
+    app.UseMiddleware<ErrorHandlingMiddleware>();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseCors("AllowFrontend");
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseRateLimiter();
+    app.MapHealthChecks("/health");
+    app.MapControllers();
+
+    if (app.Environment.IsDevelopment())
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.Migrate();
+    }
+
+    app.MapHub<DashboardHub>("/hubs/dashboard");
+
+    app.Run();
 }
-
-app.UseCors("AllowFrontend");
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
-
-if (app.Environment.IsDevelopment())
+catch (Exception ex)
 {
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
+    Log.Fatal(ex, "Application terminated unexpectedly");
 }
-
-app.MapHub<DashboardHub>("/hubs/dashboard");
-
-app.Run();
+finally
+{
+    Log.CloseAndFlush();
+}

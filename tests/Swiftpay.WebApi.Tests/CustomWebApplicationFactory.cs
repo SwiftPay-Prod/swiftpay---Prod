@@ -19,6 +19,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Swiftpay.Api.Ge
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
+        builder.UseSetting("MagicPay:ApiKey", "test-api-key");
         builder.ConfigureServices(services =>
         {
             // Add Payment API controllers to Gestao test host
