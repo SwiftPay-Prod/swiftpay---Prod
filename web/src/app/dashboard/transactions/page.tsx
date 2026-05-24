@@ -40,21 +40,21 @@ export default function TransactionsPage() {
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                <TableRow><TableCell colSpan={5} className="text-center text-zinc-400">Carregando...</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : (data?.items ?? []).length === 0 ? (
-                <TableRow><TableCell colSpan={5} className="text-center text-zinc-400">Nenhuma transação</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground">Nenhuma transação</TableCell></TableRow>
               ) : (
                 data?.items?.map((tx: any) => (
                   <TableRow key={tx.id}>
                     <TableCell className="text-sm">{new Date(tx.createdAt).toLocaleDateString('pt-BR')}</TableCell>
                     <TableCell className="font-medium">{tx.type}</TableCell>
-                    <TableCell className="text-sm text-zinc-600">{tx.method}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{tx.method}</TableCell>
                     <TableCell>
-                      <Badge variant={tx.status === 'Failed' ? 'destructive' : tx.status === 'Refunded' ? 'secondary' : 'default'} className={tx.status === 'Paid' ? 'bg-black text-white' : ''}>
+                      <Badge variant={tx.status === 'Failed' ? 'destructive' : tx.status === 'Refunded' ? 'secondary' : 'default'}>
                         {tx.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className={`text-right font-semibold ${tx.type === 'Payment' ? 'text-black' : 'text-red-600'}`}>
+                    <TableCell className={`text-right font-semibold ${tx.type === 'Payment' ? 'text-foreground' : 'text-destructive'}`}>
                       {tx.type === 'Payment' ? '+' : '-'}{formatBRL(tx.amount)}
                     </TableCell>
                   </TableRow>
@@ -70,7 +70,7 @@ export default function TransactionsPage() {
           <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
             Anterior
           </Button>
-          <span className="flex items-center text-sm text-zinc-500">Página {page} de {totalPages}</span>
+          <span className="flex items-center text-sm text-muted-foreground">Página {page} de {totalPages}</span>
           <Button variant="outline" size="sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
             Próxima
           </Button>

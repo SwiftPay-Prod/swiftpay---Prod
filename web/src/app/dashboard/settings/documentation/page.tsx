@@ -110,7 +110,7 @@ export default function DocumentationPage() {
         {sections.map(s => (
           <button key={s.id} onClick={() => setActive(s.id)}
             className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-              active === s.id ? 'bg-zinc-100 text-black font-medium' : 'text-zinc-500 hover:text-black'
+              active === s.id ? 'bg-accent text-accent-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
             }`}>
             {s.title}
           </button>
@@ -120,26 +120,26 @@ export default function DocumentationPage() {
       <div className="flex-1 min-w-0 space-y-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Documentação da API</h1>
-          <button onClick={copyCode} className="text-xs text-zinc-400 hover:text-black flex items-center gap-1">
+          <button onClick={copyCode} className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
             <Copy className="h-3 w-3" /> {copied ? 'Copiado!' : 'Copiar exemplo'}
           </button>
         </div>
 
-        <div className="rounded-xl border border-zinc-200 bg-zinc-50 overflow-hidden">
-          <div className="bg-zinc-900 px-4 py-2 flex items-center justify-between">
-            <span className="text-xs text-zinc-400 font-mono">bash</span>
-            <span className="text-xs text-zinc-500">{active === 'auth' ? 'Autenticação' :
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="bg-primary text-primary-foreground px-4 py-2 flex items-center justify-between">
+            <span className="text-xs text-muted-foreground font-mono">bash</span>
+            <span className="text-xs text-muted-foreground">{active === 'auth' ? 'Autenticação' :
               active === 'payments' ? 'Pagamentos' :
               active === 'webhooks' ? 'Webhooks' :
               active === 'withdrawals' ? 'Saques' : 'Erros'}</span>
           </div>
-          <pre className="p-4 text-sm font-mono text-zinc-800 overflow-x-auto whitespace-pre-wrap">{codeExamples[active]}</pre>
+          <pre className="p-4 text-sm font-mono text-foreground bg-muted overflow-x-auto whitespace-pre-wrap">{codeExamples[active]}</pre>
         </div>
 
-        <div className="text-xs text-zinc-400 space-y-1">
-          <p>Base URL: <code className="bg-zinc-100 px-1 rounded">https://api.swiftpay.com/api/v1</code></p>
-          <p>Formato: <code className="bg-zinc-100 px-1 rounded">JSON</code></p>
-          <p>Moeda: <code className="bg-zinc-100 px-1 rounded">BRL</code> (valores em centavos)</p>
+        <div className="text-xs text-muted-foreground space-y-1">
+          <p>Base URL: <code className="bg-muted px-1 rounded">https://api.swiftpay.com/api/v1</code></p>
+          <p>Formato: <code className="bg-muted px-1 rounded">JSON</code></p>
+          <p>Moeda: <code className="bg-muted px-1 rounded">BRL</code> (valores em centavos)</p>
         </div>
       </div>
     </div>

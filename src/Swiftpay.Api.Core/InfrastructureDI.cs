@@ -46,6 +46,10 @@ public static class DependencyInjection
         services.AddScoped<ILedgerService, LedgerService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        // Webhook
+        services.AddScoped<WebhookService>();
+        services.AddHttpClient();
+
         // Payment services
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddSingleton<FeeCalculationService>();

@@ -32,16 +32,16 @@ export default function CreatePaymentLinkPage() {
           <div className="space-y-2">
             <Label htmlFor="desc">Descrição</Label>
             <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
-              className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black min-h-[80px]" />
+              className="w-full px-3 py-2 border border-border rounded-lg outline-none focus:border-ring bg-background text-foreground min-h-[80px]" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="amount">Valor (R$)</Label>
             <Input id="amount" type="number" required min="0.01" step="0.01" value={form.amount}
               onChange={e => setForm({ ...form, amount: e.target.value })} />
           </div>
-          {error && <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>}
+          {error && <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg border border-destructive/20">{error}</div>}
           <Button onClick={() => mutation.mutate()} disabled={!form.title || !form.amount || mutation.isPending}
-            className="w-full bg-black hover:bg-zinc-800 text-white">
+            className="w-full">
             {mutation.isPending ? 'Criando...' : 'Criar Link de Pagamento'}
           </Button>
         </CardContent>

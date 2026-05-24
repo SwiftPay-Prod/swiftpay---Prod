@@ -23,7 +23,7 @@ export default function PaymentLinksPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Payment Links</h1>
         <Link href="/dashboard/payment-links/create">
-          <Button className="bg-black hover:bg-zinc-800 text-white">Novo Link</Button>
+          <Button>Novo Link</Button>
         </Link>
       </div>
 
@@ -42,22 +42,22 @@ export default function PaymentLinksPage() {
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                <TableRow><TableCell colSpan={6} className="text-center text-zinc-400">Carregando...</TableCell></TableRow>
+                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
               ) : (data?.items ?? []).length === 0 ? (
-                <TableRow><TableCell colSpan={6} className="text-center text-zinc-400">Nenhum link criado</TableCell></TableRow>
+                <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Nenhum link criado</TableCell></TableRow>
               ) : (
                 data?.items?.map((link: any) => (
                   <TableRow key={link.id}>
                     <TableCell className="font-medium">{link.title}</TableCell>
                     <TableCell>{formatBRL(link.amount)}</TableCell>
-                    <TableCell className="font-mono text-sm text-zinc-500">{link.slug}</TableCell>
+                    <TableCell className="font-mono text-sm text-muted-foreground">{link.slug}</TableCell>
                     <TableCell>
-                      <Badge variant={link.isActive ? 'default' : 'secondary'} className={link.isActive ? 'bg-black text-white' : ''}>
+                      <Badge variant={link.isActive ? 'default' : 'secondary'}>
                         {link.isActive ? 'Ativo' : 'Inativo'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-zinc-600">{link.usesCount}/{link.maxUses || '∞'}</TableCell>
-                    <TableCell className="text-zinc-500">{new Date(link.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                    <TableCell className="text-muted-foreground">{link.usesCount}/{link.maxUses || '∞'}</TableCell>
+                    <TableCell className="text-muted-foreground">{new Date(link.createdAt).toLocaleDateString('pt-BR')}</TableCell>
                   </TableRow>
                 ))
               )}
@@ -71,7 +71,7 @@ export default function PaymentLinksPage() {
           <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>
             Anterior
           </Button>
-          <span className="flex items-center text-sm text-zinc-500">Página {page} de {totalPages}</span>
+          <span className="flex items-center text-sm text-muted-foreground">Página {page} de {totalPages}</span>
           <Button variant="outline" size="sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
             Próxima
           </Button>

@@ -23,12 +23,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <Card className="w-full max-w-sm mx-4">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 h-10 w-10 rounded-lg bg-black" />
+          <div className="mx-auto mb-2 h-10 w-10 rounded-lg bg-foreground" />
           <CardTitle className="text-xl">Swiftpay</CardTitle>
-          <p className="text-sm text-zinc-500 mt-1">Entre na sua conta</p>
+          <p className="text-sm text-muted-foreground mt-1">Entre na sua conta</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -40,8 +40,8 @@ export default function LoginPage() {
               <label className="text-sm font-medium">Senha</label>
               <Input type="password" required value={password} onChange={e => setPassword(e.target.value)} />
             </div>
-            {error && <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>}
-            <Button type="submit" disabled={loading} className="w-full bg-black hover:bg-zinc-800 text-white">
+            {error && <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg border border-destructive/20">{error}</div>}
+            <Button type="submit" disabled={loading} className="w-full">
               {loading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>

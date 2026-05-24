@@ -69,8 +69,8 @@ export default function WithdrawalsPage() {
             <CardTitle>Solicitar Saque</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="p-3 bg-zinc-50 rounded-lg">
-              <p className="text-sm text-zinc-500">Saldo disponível</p>
+            <div className="p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground">Saldo disponível</p>
               <p className="text-xl font-bold">{formatBRL(available)}</p>
             </div>
 
@@ -96,7 +96,7 @@ export default function WithdrawalsPage() {
                   id="pixKeyType"
                   value={pixKeyType}
                   onChange={e => setPixKeyType(e.target.value)}
-                  className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black"
+                  className="w-full px-3 py-2 border border-border rounded-lg outline-none focus:border-ring bg-background text-foreground"
                 >
                   {pixKeyTypes.map(t => (
                     <option key={t} value={t}>{t}</option>
@@ -117,16 +117,15 @@ export default function WithdrawalsPage() {
               </div>
 
               {error && (
-                <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>
+                <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg border border-destructive/20">{error}</div>
               )}
               {success && (
-                <div className="p-3 bg-zinc-50 text-black text-sm rounded-lg border border-zinc-200">{success}</div>
+                <div className="p-3 bg-muted text-foreground text-sm rounded-lg border border-border">{success}</div>
               )}
 
               <Button
                 type="submit"
                 disabled={mutation.isPending}
-                className="w-full bg-black hover:bg-zinc-800 text-white"
               >
                 {mutation.isPending ? 'Solicitando...' : 'Solicitar Saque'}
               </Button>
@@ -140,14 +139,14 @@ export default function WithdrawalsPage() {
           </CardHeader>
           <CardContent>
             {((withdrawalList as any)?.items ?? []).length === 0 ? (
-              <p className="text-zinc-400 text-center py-8">Nenhum saque realizado</p>
+              <p className="text-muted-foreground text-center py-8">Nenhum saque realizado</p>
             ) : (
               <div className="space-y-3">
                 {(withdrawalList as any)?.items?.map((w: any) => (
-                  <div key={w.id} className="flex justify-between items-center p-3 bg-zinc-50 rounded-lg">
+                  <div key={w.id} className="flex justify-between items-center p-3 bg-muted rounded-lg">
                     <div>
                       <p className="font-medium">{formatBRL(w.amount)}</p>
-                      <p className="text-xs text-zinc-500">{w.pixKeyType}: {w.pixKey}</p>
+                      <p className="text-xs text-muted-foreground">{w.pixKeyType}: {w.pixKey}</p>
                     </div>
                     <Badge variant={w.status === 'Failed' ? 'destructive' : 'secondary'}>
                       {w.status}

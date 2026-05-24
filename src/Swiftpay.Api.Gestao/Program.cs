@@ -15,6 +15,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiResponseFilter>();
 });
+builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

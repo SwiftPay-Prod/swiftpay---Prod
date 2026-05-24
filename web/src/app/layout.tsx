@@ -1,34 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Serif } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
-
-const fontSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-const fontSerif = Noto_Serif({
-  subsets: ["latin"],
-  variable: "--font-serif",
-});
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
-
-export const metadata: Metadata = {
-  title: "Swiftpay",
-  description: "Payment Gateway",
-};
-
+const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
+export const metadata: Metadata = { title: "Swiftpay", description: "Payment Gateway" };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={cn("h-full", fontSans.variable, fontSerif.variable, fontMono.variable)}>
-      <body className="font-sans antialiased h-full">
-        <Providers>{children}</Providers>
+    <html lang="pt-BR" className={cn(fontSans.variable, fontMono.variable)} suppressHydrationWarning>
+      <body className="font-sans antialiased">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <Providers>{children}</Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

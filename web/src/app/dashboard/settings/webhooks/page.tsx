@@ -38,8 +38,8 @@ export default function WebhooksPage() {
               <Label htmlFor="secret">Secret</Label>
               <Input id="secret" type="text" required value={secret} onChange={e => setSecret(e.target.value)} />
             </div>
-            {error && <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">{error}</div>}
-            <Button type="submit" disabled={mutation.isPending} className="bg-black hover:bg-zinc-800 text-white">
+            {error && <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg border border-destructive/20">{error}</div>}
+            <Button type="submit" disabled={mutation.isPending}>
               {mutation.isPending ? 'Salvando...' : 'Adicionar Webhook'}
             </Button>
           </form>
@@ -51,11 +51,11 @@ export default function WebhooksPage() {
         </CardHeader>
         <CardContent className="p-0">
           {(data?.data ?? []).length === 0
-            ? <div className="p-8 text-center text-zinc-400">Nenhum webhook</div>
-            : <div className="divide-y divide-zinc-100">{data?.data?.map((w: any) => (
+            ? <div className="p-8 text-center text-muted-foreground">Nenhum webhook</div>
+            : <div className="divide-y divide-border">{data?.data?.map((w: any) => (
                 <div key={w.id} className="p-4 flex justify-between items-center">
-                  <div><p className="font-medium text-sm">{w.url}</p><p className="text-xs text-zinc-500">{w.events}</p></div>
-                  <Badge variant={w.isActive ? 'default' : 'secondary'} className={w.isActive ? 'bg-black text-white' : ''}>
+                  <div><p className="font-medium text-sm">{w.url}</p><p className="text-xs text-muted-foreground">{w.events}</p></div>
+                  <Badge variant={w.isActive ? 'default' : 'secondary'}>
                     {w.isActive ? 'Ativo' : 'Inativo'}
                   </Badge>
                 </div>

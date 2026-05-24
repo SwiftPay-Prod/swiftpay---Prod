@@ -37,8 +37,7 @@ export default function ApiKeysPage() {
               <Input id="key-name" value={name} onChange={e => setName(e.target.value)}
                 placeholder="Ex: Produção, Homologação" />
             </div>
-            <Button onClick={() => name && createKey.mutate()} disabled={!name || createKey.isPending}
-              className="bg-black hover:bg-zinc-800 text-white">
+            <Button onClick={() => name && createKey.mutate()} disabled={!name || createKey.isPending}>
               <Plus className="h-4 w-4 mr-1" /> Criar
             </Button>
           </div>
@@ -50,28 +49,28 @@ export default function ApiKeysPage() {
         </CardHeader>
         <CardContent className="p-0">
           {(data?.data ?? []).length === 0
-            ? <div className="p-8 text-center text-zinc-400">Nenhuma chave criada</div>
-            : <div className="divide-y divide-zinc-100">
+            ? <div className="p-8 text-center text-muted-foreground">Nenhuma chave criada</div>
+            : <div className="divide-y divide-border">
                 {data?.data?.filter((k: any) => k.isActive).map((key: any) => (
                   <div key={key.id} className="p-4 flex items-center justify-between">
                     <div className="flex-1">
                       <p className="font-medium">{key.name}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <code className="text-xs bg-zinc-100 px-2 py-1 rounded font-mono">
+                        <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
                           {showKey === key.id ? key.key : `${key.key?.slice(0, 12)}...`}
                         </code>
                         <button onClick={() => setShowKey(showKey === key.id ? null : key.id)}
-                          className="text-zinc-400 hover:text-black">
+                          className="text-muted-foreground hover:text-foreground">
                           {showKey === key.id ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
                         <button onClick={() => navigator.clipboard?.writeText(key.key)}
-                          className="text-zinc-400 hover:text-black">
+                          className="text-muted-foreground hover:text-foreground">
                           <Copy className="h-4 w-4" />
                         </button>
                       </div>
-                      <p className="text-xs text-zinc-400 mt-1">Escopos: {key.scopes || 'read,write'} | Criada: {new Date(key.createdAt).toLocaleDateString('pt-BR')}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Escopos: {key.scopes || 'read,write'} | Criada: {new Date(key.createdAt).toLocaleDateString('pt-BR')}</p>
                     </div>
-                    <button onClick={() => deleteKey.mutate(key.id)} className="text-red-400 hover:text-red-600 p-2">
+                    <button onClick={() => deleteKey.mutate(key.id)} className="text-destructive hover:text-destructive/80 p-2">
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>

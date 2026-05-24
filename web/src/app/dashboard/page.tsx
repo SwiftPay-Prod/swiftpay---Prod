@@ -26,7 +26,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Saldo disponível</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Saldo disponível</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{formatBRL(balance?.data?.available ?? 0)}</p>
@@ -34,7 +34,7 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Links criados</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Links criados</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{links?.total ?? 0}</p>
@@ -42,7 +42,7 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Transações</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Transações</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">—</p>
