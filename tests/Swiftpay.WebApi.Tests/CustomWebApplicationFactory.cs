@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swiftpay.Api.Core.Consumers;
+using Swiftpay.Api.Core.Providers.MagicPay;
 using Swiftpay.Infrastructure.Data;
 
 namespace Swiftpay.WebApi.Tests;
@@ -51,6 +52,22 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Swiftpay.Api.Ge
             {
                 options.UseInMemoryDatabase(dbName)
                     .UseInternalServiceProvider(inMemorySp);
+            });
+
+            // Replace MagicPayClient with mock handler
+            var magicPayDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(MagicPayClient));
+            if (magicPayDescriptor != null) services.Remove(magicPayDescriptor);
+
+            services.AddSingleton<MockMagicPayHandler>();
+            services.AddTransient<MagicPayClient>(sp =>
+            {
+                var handler = sp.GetRequiredService<MockMagicPayHandler>();
+                var parser = sp.GetRequiredService<MagicPayResponseParser>();
+                var httpClient = new System.Net.Http.HttpClient(handler, disposeHandler: false)
+                {
+                    BaseAddress = new Uri("http://localhost")
+                };
+                return new MagicPayClient(httpClient, parser);
             });
         });
     }

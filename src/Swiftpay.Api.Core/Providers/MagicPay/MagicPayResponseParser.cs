@@ -17,7 +17,8 @@ public class MagicPayResponseParser
                 return new PixGenerationResult(false, null, null, null, $"{resp.Error}: {resp.Message}");
 
             return new PixGenerationResult(true, resp!.Id, null, resp.Data?.Copypaste, null,
-                Barcode: resp.Data?.Barcode, BoletoUrl: resp.Data?.BoletoUrl);
+                Barcode: resp.Data?.Barcode, BoletoUrl: resp.Data?.BoletoUrl,
+                AuthorizationCode: resp.AuthorizationCode);
         }
         catch (Exception ex)
         {

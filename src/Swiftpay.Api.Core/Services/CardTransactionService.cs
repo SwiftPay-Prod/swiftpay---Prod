@@ -46,7 +46,7 @@ public class CardTransactionService
         };
 
         var request = new PixGenerationRequest(amount, $"Card {externalRef}", externalRef,
-            notificationUrl, "", "", "", "")
+            notificationUrl, "", "", "", "", Method: "CREDIT_CARD")
         {
             CardToken = cardToken,
             Installments = installments

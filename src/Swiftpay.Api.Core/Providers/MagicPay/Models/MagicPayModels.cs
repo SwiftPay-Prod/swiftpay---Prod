@@ -25,7 +25,8 @@ public record MagicPayPaymentResponse(
     [property: JsonPropertyName("data")] MagicPayData? Data,
     [property: JsonPropertyName("payer")] MagicPayPayer? Payer,
     [property: JsonPropertyName("error")] string? Error,
-    [property: JsonPropertyName("message")] string? Message);
+    [property: JsonPropertyName("message")] string? Message,
+    [property: JsonPropertyName("authorizationCode")] string? AuthorizationCode);
 
 public record MagicPaySplit(
     [property: JsonPropertyName("amount")] long Amount,
