@@ -1,7 +1,0 @@
-{
-  "/[slug]/expired/page": "/[slug]/expired",
-  "/[slug]/page": "/[slug]",
-  "/[slug]/success/page": "/[slug]/success",
-  "/_global-error/page": "/_global-error",
-  "/_not-found/page": "/_not-found"
-}
