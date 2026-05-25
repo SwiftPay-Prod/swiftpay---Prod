@@ -10,6 +10,7 @@ namespace Swiftpay.Infrastructure.Repositories;
 public class LedgerRepository : ILedgerRepository
 {
     private readonly AppDbContext _context;
+    private const int MaxRetries = 3;
 
     public LedgerRepository(AppDbContext context) { _context = context; }
 
@@ -17,36 +18,67 @@ public class LedgerRepository : ILedgerRepository
         LedgerTransaction transaction, List<(Account account, long delta)> balanceUpdates, CancellationToken ct)
     {
         var strategy = _context.Database.CreateExecutionStrategy();
+
         return await strategy.ExecuteAsync(async () =>
         {
-            await using var dbTransaction = await _context.Database.BeginTransactionAsync(ct);
-            try
+            for (int attempt = 1; attempt <= MaxRetries; attempt++)
             {
-                foreach (var (account, delta) in balanceUpdates)
+                await using var dbTransaction = await _context.Database.BeginTransactionAsync(ct);
+                try
                 {
-                    await _context.Database.ExecuteSqlRawAsync(
-                        "UPDATE \"Accounts\" SET \"Balance\" = \"Balance\" + @delta, \"UpdatedAt\" = NOW() WHERE \"Id\" = @id",
-                        new Npgsql.NpgsqlParameter("delta", delta),
-                        new Npgsql.NpgsqlParameter("id", account.Id));
+                    foreach (var (account, delta) in balanceUpdates)
+                    {
+                        var rowsAffected = await _context.Database.ExecuteSqlRawAsync(
+                            "UPDATE \"Accounts\" SET \"Balance\" = \"Balance\" + @delta, \"UpdatedAt\" = NOW() WHERE \"Id\" = @id AND \"RowVersion\" = @rowVersion",
+                            new Npgsql.NpgsqlParameter("delta", delta),
+                            new Npgsql.NpgsqlParameter("id", account.Id),
+                            new Npgsql.NpgsqlParameter("rowVersion", account.RowVersion));
+
+                        if (rowsAffected == 0)
+                            throw new DbUpdateConcurrencyException($"Concurrency conflict on account {account.Id}. Retry attempt {attempt}/{MaxRetries}.");
+                    }
+
+                    _context.LedgerTransactions.Add(transaction);
+                    await _context.SaveChangesAsync(ct);
+                    await dbTransaction.CommitAsync(ct);
+
+                    var updated = balanceUpdates.Count > 0
+                        ? await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Id == balanceUpdates[0].account.Id, ct)
+                        : null;
+
+                    return LedgerTransactionResult.Ok(transaction.Id, updated?.Balance ?? 0);
                 }
-
-                _context.LedgerTransactions.Add(transaction);
-                await _context.SaveChangesAsync(ct);
-                await dbTransaction.CommitAsync(ct);
-
-                Account? updated = null;
-                if (balanceUpdates.Count > 0)
+                catch (DbUpdateConcurrencyException) when (attempt < MaxRetries)
                 {
-                    updated = await _context.Accounts.FindAsync(new object[] { balanceUpdates[0].account.Id }, ct);
-                }
+                    await dbTransaction.RollbackAsync(ct);
+                    var delay = TimeSpan.FromMilliseconds(Math.Pow(2, attempt) * 100);
+                    await Task.Delay(delay, ct);
 
-                return LedgerTransactionResult.Ok(transaction.Id, updated?.Balance ?? 0);
+                    // Reload accounts with fresh RowVersion
+                    for (int i = 0; i < balanceUpdates.Count; i++)
+                    {
+                        var fresh = await _context.Accounts.AsNoTracking()
+                            .FirstOrDefaultAsync(a => a.Id == balanceUpdates[i].account.Id, ct);
+                        if (fresh != null)
+                            balanceUpdates[i] = (fresh, balanceUpdates[i].delta);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await dbTransaction.RollbackAsync(ct);
+                    if (attempt < MaxRetries)
+                    {
+                        var delay = TimeSpan.FromMilliseconds(Math.Pow(2, attempt) * 100);
+                        await Task.Delay(delay, ct);
+                    }
+                    else
+                    {
+                        return LedgerTransactionResult.Fail($"Concurrency failure after {MaxRetries} attempts: {ex.Message}");
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                await dbTransaction.RollbackAsync(ct);
-                return LedgerTransactionResult.Fail(ex.Message);
-            }
+
+            return LedgerTransactionResult.Fail($"Concurrency failure after {MaxRetries} attempts");
         });
     }
 

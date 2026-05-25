@@ -15,19 +15,26 @@ public class RequestWithdrawalCommandHandler : IRequestHandler<RequestWithdrawal
     private readonly IWithdrawalRepository _repo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUser;
+    private readonly ILedgerService _ledgerService;
 
     public RequestWithdrawalCommandHandler(
         IWithdrawalRepository repo,
         IUnitOfWork unitOfWork,
-        ICurrentUserService currentUser)
+        ICurrentUserService currentUser,
+        ILedgerService ledgerService)
     {
         _repo = repo;
         _unitOfWork = unitOfWork;
         _currentUser = currentUser;
+        _ledgerService = ledgerService;
     }
 
     public async Task<Result<Guid>> Handle(RequestWithdrawalCommand request, CancellationToken ct)
     {
+        var availableBalance = await _ledgerService.GetMerchantAvailableBalanceAsync(_currentUser.CompanyId, "production", ct);
+        if (request.Amount > availableBalance)
+            return Result<Guid>.Failure(Error.Validation("Saldo insuficiente para saque"));
+
         var withdrawal = new Withdrawal
         {
             Id = Guid.NewGuid(),

@@ -14,4 +14,5 @@ public class Account
     public string Environment { get; set; } = "production";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 }

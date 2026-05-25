@@ -14,6 +14,7 @@ public class RequestWithdrawalCommandTests
     private readonly Mock<IWithdrawalRepository> _repo;
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<ICurrentUserService> _currentUser;
+    private readonly Mock<ILedgerService> _ledgerService;
     private readonly IRequestHandler<RequestWithdrawalCommand, Result<Guid>> _createHandler;
     private readonly IRequestHandler<ListWithdrawalsQuery, PagedResponse<WithdrawalResponse>> _listHandler;
     private readonly Guid _companyId = Guid.NewGuid();
@@ -23,14 +24,18 @@ public class RequestWithdrawalCommandTests
         _repo = new Mock<IWithdrawalRepository>();
         _unitOfWork = new Mock<IUnitOfWork>();
         _currentUser = new Mock<ICurrentUserService>();
+        _ledgerService = new Mock<ILedgerService>();
         _currentUser.Setup(x => x.CompanyId).Returns(_companyId);
-        _createHandler = new RequestWithdrawalCommandHandler(_repo.Object, _unitOfWork.Object, _currentUser.Object);
+        _createHandler = new RequestWithdrawalCommandHandler(_repo.Object, _unitOfWork.Object, _currentUser.Object, _ledgerService.Object);
         _listHandler = new ListWithdrawalsQueryHandler(_repo.Object, _currentUser.Object);
     }
 
     [Fact]
     public async Task Handle_Should_CreateWithdrawal_When_ValidRequest()
     {
+        _ledgerService.Setup(x => x.GetMerchantAvailableBalanceAsync(_companyId, "production", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(100000);
+
         var cmd = new RequestWithdrawalCommand(10000, "test@example.com", "EMAIL");
 
         var result = await _createHandler.Handle(cmd, CancellationToken.None);
@@ -48,6 +53,9 @@ public class RequestWithdrawalCommandTests
     [Fact]
     public async Task Handle_Should_CreateWithdrawal_WithCPFKey()
     {
+        _ledgerService.Setup(x => x.GetMerchantAvailableBalanceAsync(_companyId, "production", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(100000);
+
         var cmd = new RequestWithdrawalCommand(5000, "12345678901", "CPF");
 
         var result = await _createHandler.Handle(cmd, CancellationToken.None);
@@ -57,6 +65,23 @@ public class RequestWithdrawalCommandTests
             w.Amount.AmountInCents == 5000 &&
             w.PixKey == "12345678901" &&
             w.PixKeyType == "CPF"), It.IsAny<CancellationToken>()));
+    }
+
+    [Fact]
+    public async Task Handle_Should_ReturnFailure_When_InsufficientBalance()
+    {
+        _ledgerService.Setup(x => x.GetMerchantAvailableBalanceAsync(_companyId, "production", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(1000);
+
+        var cmd = new RequestWithdrawalCommand(5000, "test@example.com", "EMAIL");
+
+        var result = await _createHandler.Handle(cmd, CancellationToken.None);
+
+        result.IsSuccess.Should().BeFalse();
+        result.Error.Should().NotBeNull();
+        result.Error!.Code.Should().Be("VALIDATION");
+        _repo.Verify(r => r.AddAsync(It.IsAny<Withdrawal>(), It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWork.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]

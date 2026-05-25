@@ -22,7 +22,7 @@ public record PixStatusResult(
 
 public record PixRefundResult(bool Success, string? ErrorMessage);
 
-public interface IPixProvider
+public interface IPaymentProvider
 {
     string ProviderName { get; }
     Task<PixGenerationResult> GeneratePixAsync(PixGenerationRequest request, CancellationToken ct);

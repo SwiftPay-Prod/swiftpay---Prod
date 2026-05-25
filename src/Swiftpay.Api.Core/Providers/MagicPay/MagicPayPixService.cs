@@ -2,7 +2,7 @@ using Swiftpay.Api.Core.Providers.MagicPay.Models;
 
 namespace Swiftpay.Api.Core.Providers.MagicPay;
 
-public class MagicPayPixService : IPixProvider
+public class MagicPayPixService : IPaymentProvider
 {
     private readonly MagicPayClient _client;
 

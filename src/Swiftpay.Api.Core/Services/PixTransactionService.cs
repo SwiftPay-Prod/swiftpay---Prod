@@ -11,13 +11,13 @@ namespace Swiftpay.Api.Core.Services;
 public class PixTransactionService
 {
     private readonly IPaymentRepository _repo;
-    private readonly IPixProvider _pixProvider;
+    private readonly IPaymentProvider _pixProvider;
     private readonly IPublishEndpoint _publish;
     private readonly IUnitOfWork _uow;
     private readonly FeeCalculationService _calc;
 
     public PixTransactionService(
-        IPaymentRepository repo, IPixProvider pixProvider,
+        IPaymentRepository repo, IPaymentProvider pixProvider,
         IPublishEndpoint publish, IUnitOfWork uow,
         FeeCalculationService calc)
     { _repo = repo; _pixProvider = pixProvider; _publish = publish; _uow = uow; _calc = calc; }

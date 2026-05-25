@@ -1,10 +1,11 @@
+using Microsoft.Extensions.Options;
 using Swiftpay.Api.Core.Services;
 
 namespace Swiftpay.Application.Tests.Services;
 
 public class FeeCalculationServiceTests
 {
-    private readonly FeeCalculationService _calc = new();
+    private readonly FeeCalculationService _calc = new(Options.Create(new FeeScheduleOptions()));
 
     [Fact]
     public void CalculatePixFees_Should_ComputeAllValues()

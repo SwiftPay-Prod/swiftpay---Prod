@@ -16,6 +16,8 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.Property(x => x.Environment).HasMaxLength(20).IsRequired();
         builder.HasIndex(x => new { x.MerchantId, x.Type, x.Environment });
         builder.Property(x => x.CreatedAt).HasDefaultValueSql("NOW()");
+        builder.Property(x => x.RowVersion).IsRowVersion();
+        builder.Property(x => x.CreatedAt).HasDefaultValueSql("NOW()");
         builder.Property(x => x.UpdatedAt).HasDefaultValueSql("NOW()");
     }
 }

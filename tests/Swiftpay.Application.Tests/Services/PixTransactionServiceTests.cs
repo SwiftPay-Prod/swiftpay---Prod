@@ -1,4 +1,5 @@
 using MassTransit;
+using Microsoft.Extensions.Options;
 using Swiftpay.Api.Core.Common;
 using Swiftpay.Api.Core.Providers;
 using Swiftpay.Api.Core.Services;
@@ -10,15 +11,17 @@ namespace Swiftpay.Application.Tests.Services;
 public class PixTransactionServiceTests
 {
     private readonly Mock<IPaymentRepository> _repo = new();
-    private readonly Mock<IPixProvider> _provider = new();
+    private readonly Mock<IPaymentProvider> _provider = new();
     private readonly Mock<IPublishEndpoint> _publish = new();
     private readonly Mock<IUnitOfWork> _uow = new();
-    private readonly FeeCalculationService _calc = new();
+    private readonly FeeCalculationService _calc;
     private readonly PixTransactionService _service;
     private readonly Guid _merchantId = Guid.NewGuid();
 
     public PixTransactionServiceTests()
     {
+        var options = Options.Create(new FeeScheduleOptions());
+        _calc = new FeeCalculationService(options);
         _service = new PixTransactionService(
             _repo.Object, _provider.Object, _publish.Object, _uow.Object, _calc);
     }

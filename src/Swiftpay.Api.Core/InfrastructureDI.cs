@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 using Resend;
 using Swiftpay.Api.Core.Common;
 using Swiftpay.Api.Core.Providers;
@@ -53,25 +54,30 @@ public static class DependencyInjection
 
         // Webhook
         services.AddScoped<WebhookService>();
-        services.AddHttpClient();
 
         // Payment services
         services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.Configure<FeeScheduleOptions>(configuration.GetSection("FeeSchedule"));
         services.AddSingleton<FeeCalculationService>();
         services.AddScoped<PixTransactionService>();
         services.AddScoped<BoletoTransactionService>();
         services.AddScoped<CardTransactionService>();
 
-        // MagicPay provider
+        // MagicPay provider with Polly resilience
         services.AddSingleton<MagicPayResponseParser>();
         services.AddHttpClient<MagicPayClient>(client =>
         {
             client.BaseAddress = new Uri("https://api.sistema-magicpay.com");
+            client.Timeout = TimeSpan.FromSeconds(30);
             client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",
                     configuration["MagicPay:ApiKey"] ?? "");
-        });
-        services.AddScoped<IPixProvider, MagicPayPixService>();
+        })
+        .AddTransientHttpErrorPolicy(policy =>
+            policy.WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(Math.Pow(2, attempt) * 200)))
+        .AddTransientHttpErrorPolicy(policy =>
+            policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+        services.AddScoped<IPaymentProvider, MagicPayPixService>();
         services.AddScoped<PixProviderFactory>();
 
         return services;

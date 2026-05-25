@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swiftpay.Api.Core.Providers;
+using Swiftpay.Application.Common;
 using Swiftpay.Application.Common.Models;
 using Swiftpay.Application.Features.Wallet.Commands;
 using Swiftpay.Application.Features.Wallet.DTOs;
@@ -19,12 +20,16 @@ public class WalletController : ControllerBase
     private readonly IMediator _mediator;
     private readonly AppDbContext _context;
     private readonly PixProviderFactory _providerFactory;
+    private readonly ILedgerService _ledgerService;
+    private readonly ILogger<WalletController> _logger;
 
-    public WalletController(IMediator mediator, AppDbContext context, PixProviderFactory providerFactory)
+    public WalletController(IMediator mediator, AppDbContext context, PixProviderFactory providerFactory, ILedgerService ledgerService, ILogger<WalletController> logger)
     {
         _mediator = mediator;
         _context = context;
         _providerFactory = providerFactory;
+        _ledgerService = ledgerService;
+        _logger = logger;
     }
 
     [HttpGet("balance")]
@@ -71,16 +76,42 @@ public class WalletController : ControllerBase
         if (payment == null) return NotFound(ApiResponse<object>.Fail("Payment not found"));
         if (payment.Status != "PAID") return BadRequest(ApiResponse<object>.Fail("Payment is not paid"));
 
-        var provider = _providerFactory.GetProvider("MagicPay");
-        var result = await provider.RefundAsync(payment.AcquirerPaymentId!, payment.Amount, ct);
+        using var tx = await _context.Database.BeginTransactionAsync(ct);
+        try
+        {
+            var provider = _providerFactory.GetProvider("MagicPay");
+            var result = await provider.RefundAsync(payment.AcquirerPaymentId!, payment.Amount, ct);
 
-        if (!result.Success) return BadRequest(ApiResponse<object>.Fail(result.ErrorMessage!));
+            if (!result.Success)
+            {
+                await tx.RollbackAsync(ct);
+                return BadRequest(ApiResponse<object>.Fail(result.ErrorMessage!));
+            }
 
-        payment.Status = "REFUNDED";
-        payment.RefundedAt = DateTime.UtcNow;
-        await _context.SaveChangesAsync(ct);
+            // Record ledger refund
+            var ledgerResult = await _ledgerService.RecordPaymentRefundedAsync(
+                payment.Id, payment.MerchantId, payment.MerchantAcquirerId, payment.Amount, payment.Environment, ct);
 
-        return Ok(ApiResponse<object>.Ok(new { status = "REFUNDED" }));
+            if (!ledgerResult.IsSuccess)
+            {
+                await tx.RollbackAsync(ct);
+                return BadRequest(ApiResponse<object>.Fail($"Ledger error: {ledgerResult.ErrorMessage}"));
+            }
+
+            payment.Status = "REFUNDED";
+            payment.RefundedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync(ct);
+            await tx.CommitAsync(ct);
+
+            _logger.LogInformation("Refund processed: {PaymentId}, amount: {Amount}", payment.Id, payment.Amount);
+            return Ok(ApiResponse<object>.Ok(new { status = "REFUNDED" }));
+        }
+        catch (Exception ex)
+        {
+            await tx.RollbackAsync(ct);
+            _logger.LogError(ex, "Refund failed for payment {PaymentId}", payment.Id);
+            throw;
+        }
     }
 }
 

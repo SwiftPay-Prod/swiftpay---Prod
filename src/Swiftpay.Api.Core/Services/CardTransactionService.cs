@@ -12,13 +12,13 @@ public record CardResult(bool Success, Guid? PaymentId, string? AuthorizationCod
 public class CardTransactionService
 {
     private readonly IPaymentRepository _repo;
-    private readonly IPixProvider _provider;
+    private readonly IPaymentProvider _provider;
     private readonly IPublishEndpoint _publish;
     private readonly IUnitOfWork _uow;
     private readonly FeeCalculationService _calc;
 
     public CardTransactionService(
-        IPaymentRepository repo, IPixProvider provider,
+        IPaymentRepository repo, IPaymentProvider provider,
         IPublishEndpoint publish, IUnitOfWork uow,
         FeeCalculationService calc)
     { _repo = repo; _provider = provider; _publish = publish; _uow = uow; _calc = calc; }
