@@ -22,6 +22,7 @@ public class AppDbContext : DbContext
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
     public DbSet<PaymentCreditCard> PaymentCreditCards => Set<PaymentCreditCard>();
     public DbSet<PaymentSplit> PaymentSplits => Set<PaymentSplit>();
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

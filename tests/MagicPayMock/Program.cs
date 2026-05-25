@@ -20,8 +20,13 @@ app.MapPost("/v1/payment", async (HttpRequest request) =>
     {
         "PIX" => new
         {
-            id, amount, currency = "BRL", status = "PENDING", method = "PIX",
-            externalRef, data = new
+            id,
+            amount,
+            currency = "BRL",
+            status = "PENDING",
+            method = "PIX",
+            externalRef,
+            data = new
             {
                 method = "PIX",
                 copypaste = $"000201010212{id}000201010212{id}000201010212{id}",
@@ -32,8 +37,13 @@ app.MapPost("/v1/payment", async (HttpRequest request) =>
         },
         "BOLETO" => new
         {
-            id, amount, currency = "BRL", status = "PENDING", method = "BOLETO",
-            externalRef, data = new
+            id,
+            amount,
+            currency = "BRL",
+            status = "PENDING",
+            method = "BOLETO",
+            externalRef,
+            data = new
             {
                 method = "BOLETO",
                 barcode = $"{id}34191.79001 01043.510047 91020.150008 4 12340000001000",
@@ -44,11 +54,17 @@ app.MapPost("/v1/payment", async (HttpRequest request) =>
         },
         "CREDIT_CARD" => new
         {
-            id, amount, currency = "BRL", status = "PAID", method = "CREDIT_CARD",
-            externalRef, installments = 1,
+            id,
+            amount,
+            currency = "BRL",
+            status = "PAID",
+            method = "CREDIT_CARD",
+            externalRef,
+            installments = 1,
             data = new { method = "CREDIT_CARD", message = "Pagamento aprovado com sucesso", cardHolder = "JOHN DOE", cardNumber = "411111******1111" },
             payer = new { name = "Cliente Teste", taxId = "12345678901" },
-            paidAt = DateTime.UtcNow, createdAt = DateTime.UtcNow
+            paidAt = DateTime.UtcNow,
+            createdAt = DateTime.UtcNow
         },
         _ => new { id, amount, currency = "BRL", status = "PENDING", method, externalRef, createdAt = DateTime.UtcNow }
     };
