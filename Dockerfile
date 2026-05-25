@@ -9,11 +9,10 @@ RUN dotnet restore src/Swiftpay.Api.Gestao/Swiftpay.Api.Gestao.csproj && \
     dotnet restore src/Swiftpay.Api.Payment/Swiftpay.Api.Payment.csproj
 
 COPY . .
-RUN dotnet publish src/Swiftpay.Api.Gestao/Swiftpay.Api.Gestao.csproj -c Release -o /app/gestao && \
-    dotnet publish src/Swiftpay.Api.Payment/Swiftpay.Api.Payment.csproj -c Release -o /app/payment
+RUN dotnet publish src/Swiftpay.Api.Gestao/Swiftpay.Api.Gestao.csproj -c Release -o /app/gestao --self-contained && \
+    dotnet publish src/Swiftpay.Api.Payment/Swiftpay.Api.Payment.csproj -c Release -o /app/payment --self-contained
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
-EXPOSE 8080
-ENV ASPNETCORE_URLS=http://+:8080
+# Each API runs as separate process with its own entry point
