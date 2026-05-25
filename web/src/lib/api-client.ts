@@ -14,7 +14,7 @@ function getToken(): string | null {
   return localStorage.getItem('swiftpay_token');
 }
 
-async function request<T>(base: string, path: string, options: RequestInit = {}): Promise<T> {
+async function requestInternal<T>(base: string, path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -32,6 +32,10 @@ async function request<T>(base: string, path: string, options: RequestInit = {})
   return res.json();
 }
 
+export function request<T>(path: string, options?: RequestInit): Promise<T> {
+  return requestInternal<T>(GESTAO_API, path, options);
+}
+
 interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -47,52 +51,52 @@ interface ListResponse<T> {
 
 export const auth = {
   login: (email: string, password: string) =>
-    request<ApiResponse<AuthResponse>>(GESTAO_API, '/auth/login', {
+    requestInternal<ApiResponse<AuthResponse>>(GESTAO_API, '/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     }),
   register: (data: { name: string; email: string; password: string; companyName: string; document: string }) =>
-    request<ApiResponse<AuthResponse>>(GESTAO_API, '/auth/register', {
+    requestInternal<ApiResponse<AuthResponse>>(GESTAO_API, '/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
-  me: () => request<ApiResponse<User>>(GESTAO_API, '/auth/me'),
+  me: () => requestInternal<ApiResponse<User>>(GESTAO_API, '/auth/me'),
 };
 
 export const paymentLinks = {
   create: (data: Partial<PaymentLink>) =>
-    request<ApiResponse<string>>(PAYMENT_API, '/payment-links', {
+    requestInternal<ApiResponse<string>>(PAYMENT_API, '/payment-links', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
   list: (page = 1, limit = 25) =>
-    request<ListResponse<PaymentLink>>(PAYMENT_API, `/payment-links?page=${page}&limit=${limit}`),
+    requestInternal<ListResponse<PaymentLink>>(PAYMENT_API, `/payment-links?page=${page}&limit=${limit}`),
   getById: (id: string) =>
-    request<ApiResponse<PaymentLink>>(PAYMENT_API, `/payment-links/${id}`),
+    requestInternal<ApiResponse<PaymentLink>>(PAYMENT_API, `/payment-links/${id}`),
 };
 
 export const wallet = {
   balance: () =>
-    request<ApiResponse<Balance>>(PAYMENT_API, '/wallet/balance'),
+    requestInternal<ApiResponse<Balance>>(PAYMENT_API, '/wallet/balance'),
   transactions: (page = 1, limit = 25) =>
-    request<ListResponse<Transaction>>(PAYMENT_API, `/wallet/transactions?page=${page}&limit=${limit}`),
+    requestInternal<ListResponse<Transaction>>(PAYMENT_API, `/wallet/transactions?page=${page}&limit=${limit}`),
 };
 
 export const withdrawals = {
   request: (amount: number, pixKey: string, pixKeyType: string) =>
-    request<ApiResponse<string>>(PAYMENT_API, '/wallet/withdrawals', {
+    requestInternal<ApiResponse<string>>(PAYMENT_API, '/wallet/withdrawals', {
       method: 'POST',
       body: JSON.stringify({ amount, pixKey, pixKeyType }),
     }),
   list: (page = 1, limit = 25) =>
-    request<ListResponse<Withdrawal>>(PAYMENT_API, `/wallet/withdrawals?page=${page}&limit=${limit}`),
+    requestInternal<ListResponse<Withdrawal>>(PAYMENT_API, `/wallet/withdrawals?page=${page}&limit=${limit}`),
 };
 
 export const webhooks = {
   list: () =>
-    request<ApiResponse<any[]>>(GESTAO_API, '/webhooks'),
+    requestInternal<ApiResponse<any[]>>(GESTAO_API, '/webhooks'),
   create: (data: { url: string; secret: string; events: string }) =>
-    request<ApiResponse<any>>(GESTAO_API, '/webhooks', {
+    requestInternal<ApiResponse<any>>(GESTAO_API, '/webhooks', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
@@ -100,14 +104,14 @@ export const webhooks = {
 
 export const apiKeys = {
   list: () =>
-    request<ApiResponse<any[]>>(GESTAO_API, '/api-keys'),
+    requestInternal<ApiResponse<any[]>>(GESTAO_API, '/api-keys'),
   create: (data: { name: string }) =>
-    request<ApiResponse<any>>(GESTAO_API, '/api-keys', {
+    requestInternal<ApiResponse<any>>(GESTAO_API, '/api-keys', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
   remove: (id: string) =>
-    request<ApiResponse<any>>(GESTAO_API, `/api-keys/${id}`, {
+    requestInternal<ApiResponse<any>>(GESTAO_API, `/api-keys/${id}`, {
       method: 'DELETE',
     }),
 };
