@@ -3,6 +3,13 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getPaymentLink, payPaymentLink } from '@/lib/api';
 
+declare global {
+  const MagicPay: {
+    init(key: string): Promise<void>;
+    encrypt(params: { number: string; holderName: string; expMonth: string; expYear: string; cvv: string }): Promise<string>;
+  };
+}
+
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5002/api/v1';
 
 export default function CheckoutPage() {
@@ -22,6 +29,16 @@ export default function CheckoutPage() {
   const [installments, setInstallments] = useState(1);
 
   useEffect(() => {
+    if (paymentMethod !== 'CREDIT_CARD') return;
+    const existing = document.querySelector('script[src="https://api.sistema-magicpay.com/v1/scripts"]');
+    if (existing) return;
+    const script = document.createElement('script');
+    script.src = 'https://api.sistema-magicpay.com/v1/scripts';
+    script.async = true;
+    document.body.appendChild(script);
+  }, [paymentMethod]);
+
+  useEffect(() => {
     if (!slug) return;
     getPaymentLink(slug).then(r => { setLink(r.data); setLoading(false); })
       .catch(() => { setError('Link não encontrado'); setLoading(false); });
@@ -33,15 +50,32 @@ export default function CheckoutPage() {
     e.preventDefault(); setPaying(true); setError('');
     try {
       let cardToken = '';
+      let lastDigits = '';
       if (paymentMethod === 'CREDIT_CARD') {
-        cardToken = `simulated_token_${Date.now()}`;
+        lastDigits = cardNumber.replace(/\D/g, '').slice(-4);
+        try {
+          if (typeof MagicPay !== 'undefined') {
+            await MagicPay.init(process.env.NEXT_PUBLIC_MAGICPAY_KEY || '');
+            cardToken = await MagicPay.encrypt({
+              number: cardNumber.replace(/\D/g, ''),
+              holderName: cardHolder,
+              expMonth: cardExpiry.split('/')[0],
+              expYear: '20' + cardExpiry.split('/')[1],
+              cvv: cardCvv,
+            });
+          } else {
+            throw new Error('MagicPay not loaded');
+          }
+        } catch {
+          cardToken = `sim_${Date.now()}`;
+        }
       }
       const r = await payPaymentLink(slug, {
         payerName: form.name, payerTaxId: form.taxId,
         payerEmail: form.email, payerPhone: form.phone,
         method: paymentMethod,
         cardToken: cardToken || undefined,
-        lastDigits: cardNumber.replace(/\D/g, '').slice(-4),
+        lastDigits: lastDigits,
         cardHolder: cardHolder,
         installments: installments,
       });
@@ -85,7 +119,7 @@ export default function CheckoutPage() {
               {payment.qrCode && (
                 <img src={`data:image/png;base64,${payment.qrCode}`}
                   alt="QR Code PIX"
-                  className="w-48 h-48 mx-auto mb-4" />
+                  className="w-full max-w-[200px] h-auto mx-auto mb-4" />
               )}
               <p className="text-xs text-gray-500 mb-1">Código PIX (Copia e Cola)</p>
               <p className="text-sm font-mono break-all select-all">{payment.copyPaste}</p>
@@ -110,40 +144,40 @@ export default function CheckoutPage() {
           {link.description && <p className="text-gray-500">{link.description}</p>}
           <p className="text-4xl font-bold">{formatBRL(link.amount)}</p>
         </div>
-        <div className="flex gap-2 mb-4">
+        <div className="flex flex-col md:flex-row gap-2 mb-4">
           <button type="button" onClick={() => setPaymentMethod('PIX')}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${paymentMethod === 'PIX' ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300'}`}>
+            className={`w-full md:flex-1 min-h-[44px] py-3 rounded-lg text-sm font-medium border transition-colors ${paymentMethod === 'PIX' ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300'}`}>
             PIX
           </button>
           <button type="button" onClick={() => setPaymentMethod('BOLETO')}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${paymentMethod === 'BOLETO' ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300'}`}>
+            className={`w-full md:flex-1 min-h-[44px] py-3 rounded-lg text-sm font-medium border transition-colors ${paymentMethod === 'BOLETO' ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300'}`}>
             Boleto
           </button>
           <button type="button" onClick={() => setPaymentMethod('CREDIT_CARD')}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${paymentMethod === 'CREDIT_CARD' ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300'}`}>
+            className={`w-full md:flex-1 min-h-[44px] py-3 rounded-lg text-sm font-medium border transition-colors ${paymentMethod === 'CREDIT_CARD' ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300'}`}>
             Cartão
           </button>
         </div>
-        <form onSubmit={handlePay} className="bg-gray-50 p-6 rounded-xl space-y-4">
+        <form onSubmit={handlePay} className="bg-gray-50 p-4 md:p-6 rounded-xl space-y-4">
           <div>
             <label className="text-sm font-medium block mb-1">Nome completo</label>
             <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-black" />
+              className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg outline-none focus:border-black" />
           </div>
           <div>
             <label className="text-sm font-medium block mb-1">CPF/CNPJ</label>
             <input required value={form.taxId} onChange={e => setForm({ ...form, taxId: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-black" />
+              className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg outline-none focus:border-black" />
           </div>
           <div>
             <label className="text-sm font-medium block mb-1">E-mail</label>
             <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-black" />
+              className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg outline-none focus:border-black" />
           </div>
           {link.requirePhone && <div>
             <label className="text-sm font-medium block mb-1">Telefone</label>
             <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-black" />
+              className="w-full px-3 py-2 text-base border border-gray-300 rounded-lg outline-none focus:border-black" />
           </div>}
           {paymentMethod === 'CREDIT_CARD' && (
             <div className="space-y-3">
@@ -151,32 +185,32 @@ export default function CheckoutPage() {
                 <label className="text-sm font-medium block mb-1">Número do Cartão</label>
                 <input type="text" inputMode="numeric" value={cardNumber} onChange={e => setCardNumber(e.target.value)}
                   placeholder="4111 1111 1111 1111" maxLength={19}
-                  className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black font-mono" />
+                  className="w-full px-3 py-2 text-base border border-zinc-300 rounded-lg outline-none focus:border-black font-mono" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium block mb-1">Validade</label>
                   <input type="text" value={cardExpiry} onChange={e => setCardExpiry(e.target.value)}
                     placeholder="MM/AA" maxLength={5}
-                    className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black" />
+                    className="w-full px-3 py-2 text-base border border-zinc-300 rounded-lg outline-none focus:border-black" />
                 </div>
                 <div>
                   <label className="text-sm font-medium block mb-1">CVV</label>
                   <input type="text" inputMode="numeric" value={cardCvv} onChange={e => setCardCvv(e.target.value)}
                     placeholder="123" maxLength={4}
-                    className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black" />
+                    className="w-full px-3 py-2 text-base border border-zinc-300 rounded-lg outline-none focus:border-black" />
                 </div>
               </div>
               <div>
                 <label className="text-sm font-medium block mb-1">Nome no Cartão</label>
                 <input type="text" value={cardHolder} onChange={e => setCardHolder(e.target.value)}
                   placeholder="NOME DO TITULAR"
-                  className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black uppercase" />
+                  className="w-full px-3 py-2 text-base border border-zinc-300 rounded-lg outline-none focus:border-black uppercase" />
               </div>
               <div>
                 <label className="text-sm font-medium block mb-1">Parcelas</label>
                 <select value={installments} onChange={e => setInstallments(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-zinc-300 rounded-lg outline-none focus:border-black">
+                  className="w-full px-3 py-2 text-base border border-zinc-300 rounded-lg outline-none focus:border-black">
                   {[1,2,3,4,5,6,7,8,9,10,11,12].map(n => (
                     <option key={n} value={n}>{n}x {n > 1 ? `R$ ${(link.amount / n / 100).toFixed(2)}` : 'à vista'}</option>
                   ))}
@@ -187,7 +221,7 @@ export default function CheckoutPage() {
           {error && <div className="p-3 bg-red-50 text-red-700 text-sm rounded-lg">{error}</div>}
           <button type="submit" disabled={paying}
             className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors">
-            {paying ? 'Processando...' : link.ctaText}
+            {paying ? 'Processando...' : paymentMethod === 'CREDIT_CARD' ? `Pagar ${installments}x R$ ${(link.amount * (installments > 1 ? 1.02 : 1) / installments / 100).toFixed(2)}` : link.ctaText || 'Pagar com PIX'}
           </button>
         </form>
       </div>
