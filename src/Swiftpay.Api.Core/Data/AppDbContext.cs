@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<PaymentCreditCard> PaymentCreditCards => Set<PaymentCreditCard>();
     public DbSet<PaymentSplit> PaymentSplits => Set<PaymentSplit>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<WebhookDeliveryLog> WebhookDeliveryLogs => Set<WebhookDeliveryLog>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

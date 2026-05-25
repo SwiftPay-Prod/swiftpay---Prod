@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Wallet, Link as LinkIcon, ArrowRightLeft, Banknote, Settings, Key, BookOpen, LogOut, User, Building2, History } from 'lucide-react';
+import { LayoutDashboard, Wallet, Link as LinkIcon, ArrowRightLeft, Banknote, Settings, Key, BookOpen, LogOut, User, Building2, History, Webhook } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 const navItems = [
@@ -16,6 +16,7 @@ const navItems = [
   { label: 'Perfil', href: '/dashboard/settings/profile', icon: User },
   { label: 'Empresa', href: '/dashboard/settings/company', icon: Building2 },
   { label: 'Configurações', href: '/dashboard/settings/webhooks', icon: Settings },
+  { label: 'Entregas', href: '/dashboard/settings/webhooks/delivery', icon: Webhook },
   { label: 'API Keys', href: '/dashboard/settings/api-keys', icon: Key },
   { label: 'Auditoria', href: '/dashboard/settings/audit', icon: History },
   { label: 'Documentação', href: '/dashboard/settings/documentation', icon: BookOpen },

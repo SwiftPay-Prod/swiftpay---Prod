@@ -33,4 +33,24 @@ public class WebhookConfigurationController : ControllerBase
         await _db.SaveChangesAsync();
         return Ok(config);
     }
+
+    [HttpGet("delivery")]
+    public async Task<ActionResult> GetDeliveries([FromQuery] int page = 1, [FromQuery] int limit = 25)
+    {
+        var query = _db.Set<WebhookDeliveryLog>().OrderByDescending(l => l.CreatedAt);
+        var total = await query.CountAsync();
+        var items = await query.Skip((page - 1) * limit).Take(limit).ToListAsync();
+        return Ok(new { success = true, data = new { items, total, page, limit } });
+    }
+
+    [HttpPost("delivery/{id}/retry")]
+    public async Task<ActionResult> RetryDelivery(Guid id)
+    {
+        var log = await _db.Set<WebhookDeliveryLog>().FindAsync(id);
+        if (log == null) return NotFound();
+        log.Attempts++;
+        log.Status = "Pending";
+        await _db.SaveChangesAsync();
+        return Ok(new { success = true });
+    }
 }

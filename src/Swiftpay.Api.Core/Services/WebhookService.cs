@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Swiftpay.Domain.Entities;
+using Swiftpay.Infrastructure.Data;
 
 namespace Swiftpay.Api.Core.Services;
 
@@ -10,11 +11,13 @@ public class WebhookService
 {
     private readonly IHttpClientFactory _httpFactory;
     private readonly ILogger<WebhookService> _logger;
+    private readonly AppDbContext _db;
 
-    public WebhookService(IHttpClientFactory httpFactory, ILogger<WebhookService> logger)
+    public WebhookService(IHttpClientFactory httpFactory, ILogger<WebhookService> logger, AppDbContext db)
     {
         _httpFactory = httpFactory;
         _logger = logger;
+        _db = db;
     }
 
     public async Task<bool> SendAsync(WebhookConfiguration config, string eventType, object payload, CancellationToken ct)
@@ -30,13 +33,19 @@ public class WebhookService
         request.Headers.Add("X-Swiftpay-Event", eventType);
         request.Headers.Add("X-Swiftpay-Delivery", Guid.NewGuid().ToString());
 
+        var success = false;
+        int? responseStatus = null;
+        string? responseBody = null;
+
         for (int attempt = 1; attempt <= 3; attempt++)
         {
             try
             {
                 var response = await client.SendAsync(request, ct);
-                if (response.IsSuccessStatusCode) return true;
-                _logger.LogWarning("Webhook attempt {A}/3 for {Url}: HTTP {S}", attempt, config.Url, (int)response.StatusCode);
+                responseStatus = (int)response.StatusCode;
+                responseBody = await response.Content.ReadAsStringAsync(ct);
+                if (response.IsSuccessStatusCode) { success = true; break; }
+                _logger.LogWarning("Webhook attempt {A}/3 for {Url}: HTTP {S}", attempt, config.Url, responseStatus);
             }
             catch (Exception ex)
             {
@@ -44,7 +53,25 @@ public class WebhookService
             }
             if (attempt < 3) await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, attempt)), ct);
         }
-        return false;
+
+        var deliveryLog = new WebhookDeliveryLog
+        {
+            Id = Guid.NewGuid(),
+            WebhookConfigurationId = config.Id,
+            EventType = eventType,
+            Url = config.Url,
+            Status = success ? "Success" : "Failed",
+            RequestBody = json,
+            ResponseStatus = responseStatus,
+            ResponseBody = responseBody,
+            Attempts = 3,
+            CreatedAt = DateTime.UtcNow,
+            CompletedAt = DateTime.UtcNow,
+        };
+        _db.WebhookDeliveryLogs.Add(deliveryLog);
+        await _db.SaveChangesAsync(ct);
+
+        return success;
     }
 
     private static string ComputeHmacSha256(string payload, string secret)
