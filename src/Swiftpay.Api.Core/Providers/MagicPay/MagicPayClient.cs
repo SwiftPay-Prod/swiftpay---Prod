@@ -27,4 +27,11 @@ public class MagicPayClient
         var json = await response.Content.ReadAsStringAsync(ct);
         return _parser.ParseRefundResponse(json);
     }
+
+    public async Task<PixStatusResult> GetPaymentStatusAsync(string paymentId, CancellationToken ct)
+    {
+        var response = await _http.GetAsync($"/v1/payment/{paymentId}", ct);
+        var json = await response.Content.ReadAsStringAsync(ct);
+        return _parser.ParseGetPaymentStatusResponse(json);
+    }
 }

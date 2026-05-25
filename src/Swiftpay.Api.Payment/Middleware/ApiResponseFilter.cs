@@ -13,7 +13,10 @@ public class ApiResponseFilter : IActionFilter
         {
             var statusCode = objectResult.StatusCode ?? 200;
 
-            if (objectResult.Value is not ApiResponse<object> && objectResult.Value is not ProblemDetails)
+            var valueType = objectResult.Value?.GetType();
+            var isApiResponse = valueType?.IsGenericType == true && valueType.GetGenericTypeDefinition() == typeof(ApiResponse<>);
+
+            if (!isApiResponse && objectResult.Value is not ProblemDetails)
             {
                 var response = statusCode >= 400
                     ? ApiResponse<object>.Fail(objectResult.Value?.ToString() ?? "Error")

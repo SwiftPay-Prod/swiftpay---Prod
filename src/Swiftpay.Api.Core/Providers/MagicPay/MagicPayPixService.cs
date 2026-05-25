@@ -24,7 +24,7 @@ public class MagicPayPixService : IPaymentProvider
     }
 
     public Task<PixStatusResult> GetPixStatusAsync(string transactionId, CancellationToken ct)
-        => throw new NotImplementedException();
+        => _client.GetPaymentStatusAsync(transactionId, ct);
 
     public async Task<PixRefundResult> RefundAsync(string transactionId, long amount, CancellationToken ct)
         => await _client.RefundPaymentAsync(transactionId, amount, ct);

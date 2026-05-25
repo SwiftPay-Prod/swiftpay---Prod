@@ -26,7 +26,7 @@ public class MagicPayFlowTests : IClassFixture<CustomWebApplicationFactory>
             "MagicPay Co", Guid.NewGuid().ToString("N")[..14]);
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", request);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        return json.GetProperty("data").GetProperty("data").GetProperty("accessToken").GetString()!;
+        return json.GetProperty("data").GetProperty("accessToken").GetString()!;
     }
 
     private async Task<string> CreateLinkAsync(long amount)
@@ -34,7 +34,7 @@ public class MagicPayFlowTests : IClassFixture<CustomWebApplicationFactory>
         var linkRes = await _client.PostAsJsonAsync("/api/v1/payment-links",
             new { title = "E2E Test", amount });
         var linkData = await linkRes.Content.ReadFromJsonAsync<JsonElement>();
-        var linkId = linkData.GetProperty("data").GetProperty("data").GetGuid();
+        var linkId = linkData.GetProperty("data").GetGuid();
 
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();

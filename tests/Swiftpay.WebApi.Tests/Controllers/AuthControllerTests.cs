@@ -57,9 +57,8 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
         var data = json.GetProperty("data");
-        var authData = data.GetProperty("data");
-        authData.GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
-        authData.GetProperty("refreshToken").GetString().Should().NotBeNullOrEmpty();
+        data.GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
+        data.GetProperty("refreshToken").GetString().Should().NotBeNullOrEmpty();
     }
 
     [Fact]
@@ -102,7 +101,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>
             "Me Co", Guid.NewGuid().ToString("N")[..14]);
         var regResponse = await _client.PostAsJsonAsync("/api/v1/auth/register", register);
         var regJson = await regResponse.Content.ReadFromJsonAsync<JsonElement>();
-        var token = regJson.GetProperty("data").GetProperty("data").GetProperty("accessToken").GetString();
+        var token = regJson.GetProperty("data").GetProperty("accessToken").GetString();
 
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var response = await _client.GetAsync("/api/v1/auth/me");

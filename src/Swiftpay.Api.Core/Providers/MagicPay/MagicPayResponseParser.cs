@@ -36,4 +36,19 @@ public class MagicPayResponseParser
         }
         catch (Exception ex) { return new PixRefundResult(false, ex.Message); }
     }
+
+    public PixStatusResult ParseGetPaymentStatusResponse(string json)
+    {
+        try
+        {
+            var resp = JsonSerializer.Deserialize<MagicPayPaymentResponse>(json, JsonOptions);
+            if (resp?.Error != null)
+                return new PixStatusResult(false, "ERROR", null, null, null, null, $"{resp.Error}: {resp.Message}");
+            return new PixStatusResult(true, resp!.Status ?? "PENDING", resp.Data?.E2E, resp.Payer?.Name, null, null, null);
+        }
+        catch (Exception ex)
+        {
+            return new PixStatusResult(false, "ERROR", null, null, null, null, ex.Message);
+        }
+    }
 }

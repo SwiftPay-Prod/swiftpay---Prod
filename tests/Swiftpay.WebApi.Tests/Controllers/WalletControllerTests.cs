@@ -20,7 +20,7 @@ public class WalletControllerTests : IClassFixture<CustomWebApplicationFactory>
             "Wallet Co", Guid.NewGuid().ToString("N")[..14]);
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", request);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        return json.GetProperty("data").GetProperty("data").GetProperty("accessToken").GetString()!;
+        return json.GetProperty("data").GetProperty("accessToken").GetString()!;
     }
 
     [Fact]
@@ -33,9 +33,8 @@ public class WalletControllerTests : IClassFixture<CustomWebApplicationFactory>
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        var data = json.GetProperty("data");
-        data.GetProperty("success").GetBoolean().Should().BeTrue();
-        var balance = data.GetProperty("data");
+        json.GetProperty("success").GetBoolean().Should().BeTrue();
+        var balance = json.GetProperty("data");
         balance.GetProperty("available").GetInt64().Should().Be(0);
         balance.GetProperty("pending").GetInt64().Should().Be(0);
     }

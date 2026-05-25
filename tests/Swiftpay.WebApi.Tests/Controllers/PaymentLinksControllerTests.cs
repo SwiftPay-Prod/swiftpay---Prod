@@ -21,7 +21,7 @@ public class PaymentLinksControllerTests : IClassFixture<CustomWebApplicationFac
             "PL Test Co", Guid.NewGuid().ToString("N")[..14]);
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", request);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        return json.GetProperty("data").GetProperty("data").GetProperty("accessToken").GetString()!;
+        return json.GetProperty("data").GetProperty("accessToken").GetString()!;
     }
 
     [Fact]
@@ -40,9 +40,8 @@ public class PaymentLinksControllerTests : IClassFixture<CustomWebApplicationFac
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        var data = json.GetProperty("data");
-        data.GetProperty("success").GetBoolean().Should().BeTrue();
-        data.GetProperty("data").GetGuid().Should().NotBeEmpty();
+        json.GetProperty("success").GetBoolean().Should().BeTrue();
+        json.GetProperty("data").GetGuid().Should().NotBe(Guid.Empty);
     }
 
     [Fact]
@@ -81,13 +80,13 @@ public class PaymentLinksControllerTests : IClassFixture<CustomWebApplicationFac
             null, null, null, null, null, null);
         var createResponse = await _client.PostAsJsonAsync("/api/v1/payment-links", createRequest);
         var createJson = await createResponse.Content.ReadFromJsonAsync<JsonElement>();
-        var linkId = createJson.GetProperty("data").GetProperty("data").GetGuid();
+        var linkId = createJson.GetProperty("data").GetGuid();
 
         var response = await _client.GetAsync($"/api/v1/payment-links/{linkId}");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        json.GetProperty("data").GetProperty("success").GetBoolean().Should().BeTrue();
+        json.GetProperty("success").GetBoolean().Should().BeTrue();
     }
 
     [Fact]
