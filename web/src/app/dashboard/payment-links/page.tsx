@@ -55,6 +55,7 @@ export default function PaymentLinksPage() {
                       <Badge variant={link.isActive ? 'default' : 'secondary'}>
                         {link.isActive ? 'Ativo' : 'Inativo'}
                       </Badge>
+                      {link.isSandbox && <Badge variant="outline" className="ml-1 text-yellow-600 border-yellow-300">Sandbox</Badge>}
                     </TableCell>
                     <TableCell className="text-muted-foreground">{link.usesCount}/{link.maxUses || '∞'}</TableCell>
                     <TableCell className="text-muted-foreground">{new Date(link.createdAt).toLocaleDateString('pt-BR')}</TableCell>

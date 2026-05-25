@@ -140,6 +140,11 @@ export default function CheckoutPage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-6">
         <div className="text-center space-y-2">
+          {link.isSandbox && (
+            <span className="inline-block px-2 py-0.5 text-xs font-mono bg-yellow-100 text-yellow-800 rounded mb-2">
+              SANDBOX
+            </span>
+          )}
           <h1 className="text-2xl font-bold">{link.title}</h1>
           {link.description && <p className="text-gray-500">{link.description}</p>}
           <p className="text-4xl font-bold">{formatBRL(link.amount)}</p>

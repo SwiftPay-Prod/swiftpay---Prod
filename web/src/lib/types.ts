@@ -21,6 +21,7 @@ export interface PaymentLink {
   amountMax?: number;
   slug: string;
   isActive: boolean;
+  isSandbox: boolean;
   isExpired: boolean;
   isExhausted: boolean;
   expiresAt?: string;

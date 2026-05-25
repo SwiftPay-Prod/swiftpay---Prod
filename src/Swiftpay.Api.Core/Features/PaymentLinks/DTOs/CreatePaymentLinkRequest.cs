@@ -15,7 +15,8 @@ public record CreatePaymentLinkRequest(
     string? CtaText,
     string? SuccessMessage,
     DateTime? ExpiresAt,
-    int? MaxUses);
+    int? MaxUses,
+    bool IsSandbox = false);
 
 public class CreatePaymentLinkValidator : AbstractValidator<CreatePaymentLinkRequest>
 {

@@ -13,6 +13,7 @@ public class CreatePaymentLinkCommand : IRequest<Result<Guid>>
     public long Amount { get; init; }
     public long? AmountMin { get; init; }
     public long? AmountMax { get; init; }
+    public bool IsSandbox { get; init; }
     public bool RequireDocument { get; init; }
     public bool RequirePhone { get; init; }
     public string? Theme { get; init; }
@@ -50,6 +51,7 @@ public class CreatePaymentLinkCommandHandler : IRequestHandler<CreatePaymentLink
             AmountMax = request.AmountMax.HasValue ? new Money(request.AmountMax.Value) : null,
             Slug = GenerateSlug(),
             IsActive = true,
+            IsSandbox = request.IsSandbox,
             RequireDocument = request.RequireDocument,
             RequirePhone = request.RequirePhone,
             Theme = request.Theme,

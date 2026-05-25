@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Resend;
 using Swiftpay.Api.Core.Common;
 using Swiftpay.Api.Core.Providers;
 using Swiftpay.Api.Core.Providers.MagicPay;
@@ -45,6 +46,10 @@ public static class DependencyInjection
         services.AddScoped<ILedgerRepository, LedgerRepository>();
         services.AddScoped<ILedgerService, LedgerService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Email
+        services.AddResend(options => options.ApiToken = configuration["Resend:ApiKey"] ?? "");
+        services.AddScoped<IEmailService, ResendEmailService>();
 
         // Webhook
         services.AddScoped<WebhookService>();

@@ -17,6 +17,7 @@ public static class PaymentLinkMappings
             AmountMax = link.AmountMax?.AmountInCents,
             Slug = link.Slug,
             IsActive = link.IsActive,
+            IsSandbox = link.IsSandbox,
             IsExpired = link.IsExpired,
             IsExhausted = link.IsExhausted,
             ExpiresAt = link.ExpiresAt,

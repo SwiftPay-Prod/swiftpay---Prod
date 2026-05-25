@@ -55,6 +55,7 @@ public class PaymentLinksController : ControllerBase
             SuccessMessage = request.SuccessMessage,
             ExpiresAt = request.ExpiresAt,
             MaxUses = request.MaxUses,
+            IsSandbox = request.IsSandbox,
         };
 
         var result = await _mediator.Send(command, ct);
@@ -97,6 +98,7 @@ public class PaymentLinksController : ControllerBase
             description = link.Description,
             amount = link.Amount.AmountInCents,
             amountFormatted = link.Amount.ToString(),
+            isSandbox = link.IsSandbox,
             requireDocument = link.RequireDocument,
             requirePhone = link.RequirePhone,
             theme = link.Theme ?? "dark",
@@ -116,6 +118,19 @@ public class PaymentLinksController : ControllerBase
         if (link.IsExpired) return BadRequest(ApiResponse<object>.Fail("Payment link expired"));
 
         var externalRef = $"{link.Slug}-{Guid.NewGuid():N}"[..20];
+
+        if (link.IsSandbox)
+        {
+            return Ok(ApiResponse<object>.Ok(new
+            {
+                paymentId = externalRef,
+                method = "PIX",
+                qrCode = "iVBORw0KGgo...sandbox...",
+                copyPaste = $"000201010212sandbox{externalRef}",
+                isSandbox = true,
+            }));
+        }
+
         var method = (request.Method ?? "PIX").ToUpper();
 
         if (method == "CREDIT_CARD")

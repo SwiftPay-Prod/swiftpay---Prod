@@ -15,6 +15,7 @@ public class PaymentLinkResponse
     public DateTime? ExpiresAt { get; set; }
     public int? MaxUses { get; set; }
     public int UsesCount { get; set; }
+    public bool IsSandbox { get; set; }
     public bool RequireDocument { get; set; }
     public bool RequirePhone { get; set; }
     public string? Theme { get; set; }
