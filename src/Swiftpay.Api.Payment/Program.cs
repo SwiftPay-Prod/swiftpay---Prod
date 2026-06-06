@@ -45,21 +45,29 @@ try
         });
     });
 
-    builder.Services.AddHealthChecks()
-        .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!)
-        .AddRedis(builder.Configuration["Redis:ConnectionString"] ?? "localhost:6379");
+    var healthCheckBuilder = builder.Services.AddHealthChecks()
+        .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
-    // MassTransit + RabbitMQ
-    builder.Services.AddMassTransit(x =>
+    var redisConnectionString = builder.Configuration["Redis:ConnectionString"];
+    if (!string.IsNullOrEmpty(redisConnectionString))
     {
-        x.AddConsumersFromNamespaceContaining<PaymentCompletedConsumer>();
+        healthCheckBuilder.AddRedis(redisConnectionString);
+    }
 
-        x.UsingRabbitMq((context, cfg) =>
+    var rabbitMqHost = builder.Configuration.GetConnectionString("RabbitMQ");
+    if (!string.IsNullOrEmpty(rabbitMqHost))
+    {
+        builder.Services.AddMassTransit(x =>
         {
-            cfg.Host(builder.Configuration.GetConnectionString("RabbitMQ") ?? "rabbitmq://localhost");
-            cfg.ConfigureEndpoints(context);
+            x.AddConsumersFromNamespaceContaining<PaymentCompletedConsumer>();
+
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(rabbitMqHost);
+                cfg.ConfigureEndpoints(context);
+            });
         });
-    });
+    }
 
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);

@@ -129,6 +129,80 @@ public class InternalController : ControllerBase
         return Ok(new { success = true });
     }
 
+    [HttpPost("coratri/webhook")]
+    [AllowAnonymous]
+    public async Task<IActionResult> CoratriWebhook(CancellationToken ct)
+    {
+        string rawBody;
+        using (var reader = new StreamReader(Request.Body, Encoding.UTF8))
+            rawBody = await reader.ReadToEndAsync(ct);
+
+        JsonElement payload;
+        try { payload = JsonDocument.Parse(rawBody).RootElement; }
+        catch
+        {
+            _logger.LogWarning("Coratri webhook rejected: invalid JSON");
+            return BadRequest(new { success = false, message = "Invalid JSON" });
+        }
+
+        if (!payload.TryGetProperty("idTransaction", out var txIdProp))
+            return BadRequest(new { success = false, message = "Missing idTransaction" });
+        if (!payload.TryGetProperty("status", out var statusProp))
+            return BadRequest(new { success = false, message = "Missing status" });
+
+        var transactionId = txIdProp.GetString()!;
+        var status = statusProp.GetString()!;
+
+        var alreadyProcessed = await _db.Set<WebhookDeliveryLog>()
+            .AnyAsync(l => l.RequestBody != null && l.RequestBody.Contains(transactionId), ct);
+        if (alreadyProcessed)
+        {
+            _logger.LogInformation("Coratri webhook {TxId} already processed, skipping", transactionId);
+            return Ok(new { success = true, message = "Already processed" });
+        }
+
+        var payment = await _db.Payments.FirstOrDefaultAsync(p => p.ExternalId == transactionId, ct);
+        if (payment == null)
+        {
+            _logger.LogWarning("Coratri webhook for unknown payment: {TxId}", transactionId);
+            return NotFound(new { success = false, message = "Payment not found" });
+        }
+
+        payment.Status = status;
+        if (status == "PAID" || status == "paid")
+        {
+            payment.PaidAt = DateTime.UtcNow;
+            if (payload.TryGetProperty("endToEndId", out var e2e) && e2e.ValueKind == JsonValueKind.String)
+            {
+                if (payment.Pix != null) payment.Pix.EndToEndId = e2e.GetString();
+            }
+        }
+
+        _db.Set<WebhookDeliveryLog>().Add(new WebhookDeliveryLog
+        {
+            Id = Guid.NewGuid(),
+            EventType = $"payment.{status.ToLower()}",
+            Url = Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? "unknown",
+            Status = "Success",
+            RequestBody = rawBody.Length > 4000 ? rawBody[..4000] : rawBody,
+            Attempts = 1,
+            CreatedAt = DateTime.UtcNow,
+        });
+
+        await _db.SaveChangesAsync(ct);
+
+        if (status == "PAID" || status == "paid")
+        {
+            await _publish.Publish(new PaymentCompletedMessage(
+                payment.Id, payment.MerchantId, payment.MerchantAcquirerId, "PAID", payment.Amount,
+                payment.MerchantSettlementAmount, payment.AcquirerFee,
+                payment.Environment), ct);
+        }
+
+        _logger.LogInformation("Coratri webhook processed: {TxId} -> {Status}", transactionId, status);
+        return Ok(new { success = true });
+    }
+
     private static string ComputeHmacSha256(string payload, string secret)
     {
         var key = Encoding.UTF8.GetBytes(secret);

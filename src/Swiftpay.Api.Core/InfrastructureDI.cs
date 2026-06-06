@@ -5,6 +5,7 @@ using Polly;
 using Resend;
 using Swiftpay.Api.Core.Common;
 using Swiftpay.Api.Core.Providers;
+using Swiftpay.Api.Core.Providers.Coratri;
 using Swiftpay.Api.Core.Providers.MagicPay;
 using Swiftpay.Api.Core.Repositories;
 using Swiftpay.Api.Core.Services;
@@ -78,6 +79,30 @@ public static class DependencyInjection
         .AddTransientHttpErrorPolicy(policy =>
             policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
         services.AddScoped<IPaymentProvider, MagicPayPixService>();
+
+        // Coratri provider
+        services.AddSingleton<CoratriResponseParser>();
+        services.AddHttpClient<CoratriClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.coratri.com");
+            client.Timeout = TimeSpan.FromSeconds(30);
+        })
+        .AddTransientHttpErrorPolicy(policy =>
+            policy.WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(Math.Pow(2, attempt) * 200)))
+        .AddTransientHttpErrorPolicy(policy =>
+            policy.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+        services.AddScoped<IPaymentProvider>(sp =>
+        {
+            var config = sp.GetRequiredService<IConfiguration>();
+            var clientKey = config["Coratri:ClientKey"] ?? "";
+            var clientSecret = config["Coratri:ClientSecret"] ?? "";
+            var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+            var httpClient = httpClientFactory.CreateClient("CoratriClient");
+            var parser = sp.GetRequiredService<CoratriResponseParser>();
+            var coratriClient = new CoratriClient(httpClient, parser, clientKey, clientSecret);
+            return new CoratriPixService(coratriClient);
+        });
+
         services.AddScoped<PixProviderFactory>();
 
         return services;
