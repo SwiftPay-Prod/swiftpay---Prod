@@ -12,7 +12,9 @@ COPY . .
 RUN dotnet publish src/Swiftpay.Api.Gestao/Swiftpay.Api.Gestao.csproj -c Release -o /app/gestao --self-contained && \
     dotnet publish src/Swiftpay.Api.Payment/Swiftpay.Api.Payment.csproj -c Release -o /app/payment --self-contained
 
-FROM mcr.microsoft.com/dotnet/runtime:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
-# Each API runs as separate process with its own entry point
+COPY startup.sh .
+RUN chmod +x startup.sh
+ENTRYPOINT ["./startup.sh"]
