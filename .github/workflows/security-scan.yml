@@ -13,7 +13,7 @@ jobs:
     name: Secret Scanning
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: TruffleHog Secrets Scan
         uses: trufflesecurity/trufflehog@v3.95.3
@@ -24,7 +24,7 @@ jobs:
     name: NuGet Vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
