@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
-/// Conta PIX de destino para saques da plataforma (Safefy).
+/// Conta PIX de destino para saques da plataforma (SwiftPay).
 /// Pode ter várias contas cadastradas, mas apenas 1 ativa por vez.
 /// Somente role God pode cadastrar/editar.
 /// </summary>

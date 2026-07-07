@@ -20,7 +20,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-	title: 'Checkout - Safefy',
+	title: 'Checkout - SwiftPay',
 	description: 'Checkout seguro e rápido',
 	icons: {
 		icon: '/swiftpay-icon-logo.png',

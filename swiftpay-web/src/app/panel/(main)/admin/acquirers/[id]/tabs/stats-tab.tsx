@@ -320,7 +320,7 @@ export function StatsTab({
 									</Tooltip.Trigger>
 									<Tooltip.Content className="max-w-64">
 										<Tooltip.Arrow />
-										Total de taxas cobradas dos merchants pela plataforma Safefy no período.
+										Total de taxas cobradas dos merchants pela plataforma SwiftPay no período.
 									</Tooltip.Content>
 								</Tooltip>
 							</div>
@@ -342,7 +342,7 @@ export function StatsTab({
 									</Tooltip.Trigger>
 									<Tooltip.Content className="max-w-64">
 										<Tooltip.Arrow />
-										Total de taxas cobradas pela processadora da plataforma Safefy no período.
+										Total de taxas cobradas pela processadora da plataforma SwiftPay no período.
 									</Tooltip.Content>
 								</Tooltip>
 							</div>

@@ -48,7 +48,7 @@ public sealed class ReadBoletoEndpoint(
             Data = new ReadBoletoData
             {
                 PaymentId = payment.Id,
-                MerchantName = payment.Merchant?.Name ?? "Safefy",
+                MerchantName = payment.Merchant?.Name ?? "SwiftPay",
                 Amount = payment.Amount,
                 Description = payment.Description,
                 Status = payment.Status.ToString(),

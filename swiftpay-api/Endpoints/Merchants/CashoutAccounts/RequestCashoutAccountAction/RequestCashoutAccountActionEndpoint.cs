@@ -187,10 +187,10 @@ public sealed class RequestCashoutAccountActionEndpoint(
 
     private static (string Subject, string Description) GetEmailContent(PayoutAccountActionType actionType) => actionType switch
     {
-        PayoutAccountActionType.SetDefault => ("🔐 Confirme a Alteração de Conta Padrão - Safefy", "definir esta conta como padrão para saques"),
-        PayoutAccountActionType.Delete => ("🔐 Confirme a Remoção de Conta de Saque - Safefy", "remover esta conta de saque"),
-        PayoutAccountActionType.View => ("🔐 Confirme a Visualização de Dados - Safefy", "visualizar os dados completos desta conta de saque"),
-        _ => ("🔐 Código de Verificação - Safefy", "realizar esta ação")
+        PayoutAccountActionType.SetDefault => ("🔐 Confirme a Alteração de Conta Padrão - SwiftPay", "definir esta conta como padrão para saques"),
+        PayoutAccountActionType.Delete => ("🔐 Confirme a Remoção de Conta de Saque - SwiftPay", "remover esta conta de saque"),
+        PayoutAccountActionType.View => ("🔐 Confirme a Visualização de Dados - SwiftPay", "visualizar os dados completos desta conta de saque"),
+        _ => ("🔐 Código de Verificação - SwiftPay", "realizar esta ação")
     };
 
     private static string GetPixKeyTypeDisplayName(PixKeyType keyType) => keyType switch

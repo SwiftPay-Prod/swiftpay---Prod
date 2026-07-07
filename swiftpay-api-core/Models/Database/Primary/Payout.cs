@@ -71,7 +71,7 @@ public class Payout : BaseEntity
     public long Amount { get; set; }
     
     /// <summary>
-    /// Taxa da plataforma Safefy cobrada do merchant (em centavos)
+    /// Taxa da plataforma SwiftPay cobrada do merchant (em centavos)
     /// </summary>
     public long PlatformFee { get; set; }
     

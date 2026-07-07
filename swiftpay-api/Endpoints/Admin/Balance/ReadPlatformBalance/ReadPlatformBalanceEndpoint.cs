@@ -139,7 +139,7 @@ public sealed class ReadPlatformBalanceEndpoint(
         var totalWithdrawalFee = acquirerBalances.Sum(a => a.WithdrawalFeeIfWithdrawAll);
         var totalAvailableForWithdrawal = acquirerBalances.Sum(a => a.AvailableForWithdrawal);
         var totalAcquirerGrossBalance = acquirerBalances.Sum(a => a.GrossBalance);
-        var totalSafefyProfit = acquirerBalances.Sum(a => a.SwiftpayProfit);
+        var totalSwiftPayProfit = acquirerBalances.Sum(a => a.SwiftpayProfit);
         var totalMerchantAvailable = acquirerBalances.Sum(a => a.MerchantAvailableBalance);
         var totalMerchantBalance = acquirerBalances.Sum(a => a.MerchantBalance);
         var totalMerchantBlocked = totalMerchantBalance - totalMerchantAvailable;
@@ -162,7 +162,7 @@ public sealed class ReadPlatformBalanceEndpoint(
                 TotalMerchantBlocked = totalMerchantBlocked,
                 TotalMerchantBalance = totalMerchantBalance,
                 TotalAcquirerGrossBalance = totalAcquirerGrossBalance,
-                TotalSafefyProfit = totalSafefyProfit,
+                TotalSwiftPayProfit = totalSwiftPayProfit,
                 ConsistencyDifference = consistencyDifference,
                 ConsistencyDifferenceAbsolute = Math.Abs(consistencyDifference),
                 IsConsistent = consistencyDifference == 0,

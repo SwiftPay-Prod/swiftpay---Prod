@@ -352,7 +352,7 @@ public sealed class SignInEndpoint(
 
             await emailService.SendAsync(
                 user.Email,
-                "⚠️ Sua conta foi bloqueada - Safefy",
+                "⚠️ Sua conta foi bloqueada - SwiftPay",
                 EmailTemplate.AccountLocked,
                 new Dictionary<string, string>
                 {
@@ -380,7 +380,7 @@ public sealed class SignInEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "🔐 Código de verificação de dispositivo - Safefy",
+                "🔐 Código de verificação de dispositivo - SwiftPay",
                 EmailTemplate.DeviceVerification,
                 new Dictionary<string, string>
                 {

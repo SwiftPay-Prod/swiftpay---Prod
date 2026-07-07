@@ -142,7 +142,7 @@ public sealed class RequestRegenerateApiCredentialEndpoint(
 
             await emailService.SendAsync(
                 user.Email,
-                "🔄 Regenerar Credencial de API - Safefy",
+                "🔄 Regenerar Credencial de API - SwiftPay",
                 EmailTemplate.ApiCredentialCode,
                 new Dictionary<string, string>
                 {

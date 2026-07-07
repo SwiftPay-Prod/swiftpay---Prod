@@ -210,8 +210,8 @@ Publish SendWebhookMessage → RabbitMQ
           ├─ Monta payload JSON com dados do pagamento
           ├─ HMAC-SHA256: secret = payment.Id, header = "sha256={hex}"
           ├─ POST {CallbackUrl} com headers:
-          │     X-Safefy-Signature, X-Safefy-Event,
-          │     X-Safefy-Delivery, X-Safefy-Attempt
+          │     X-SwiftPay-Signature, X-SwiftPay-Event,
+          │     X-SwiftPay-Delivery, X-SwiftPay-Attempt
           └─ Retry: 3 tentativas (2s → 4s → 8s)
 ```
 

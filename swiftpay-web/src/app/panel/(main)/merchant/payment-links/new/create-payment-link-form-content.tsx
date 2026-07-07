@@ -1774,7 +1774,7 @@ function Step4Review({
 							<ReviewRow label="Tema">
 								{themeMode === 'Auto' ? 'Automático' : themeMode === 'Light' ? 'Claro' : 'Escuro'}
 							</ReviewRow>
-							<ReviewRow label="Logo">{logoUrl ? 'Personalizada' : 'Padrão Safefy'}</ReviewRow>
+							<ReviewRow label="Logo">{logoUrl ? 'Personalizada' : 'Padrão SwiftPay'}</ReviewRow>
 							{enabledMethods.length > 0 && (
 								<p className="mb-1 mt-2 text-[11px] font-semibold uppercase tracking-wider text-warning">Detalhes por método</p>
 							)}

@@ -215,7 +215,7 @@ Filters/
 - Deduplicação via unique filtered index
 
 **Merchant Webhooks:**
-- Headers: `X-Safefy-Signature` (HMAC-SHA256), `X-Safefy-Event`, `X-Safefy-Delivery`, `X-Safefy-Attempt`
+- Headers: `X-SwiftPay-Signature` (HMAC-SHA256), `X-SwiftPay-Event`, `X-SwiftPay-Delivery`, `X-SwiftPay-Attempt`
 - Retry: exponential backoff 2s/4s/8s, max 3 tentativas
 
 ### 3.3 `clients-auth-rate-limit-and-resilience.instructions.md`

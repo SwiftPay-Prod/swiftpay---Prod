@@ -18,7 +18,7 @@ builder.Services.AddAllSettings(builder.Configuration);
 
 // Authorization & Authentication
 builder.Services.AddAuthorization();
-builder.Services.AddSafefyAuthentication(builder.Configuration);
+builder.Services.AddSwiftPayAuthentication(builder.Configuration);
 
 // FastEndpoints & OpenAPI
 builder.Services.AddFastEndpoints();
@@ -71,7 +71,7 @@ builder.Services.AddWebhookHttpClient();
 builder.Services.AddHttpClient();
 
 // CORS
-builder.Services.AddSafefyCors(builder.Configuration);
+builder.Services.AddSwiftPayCors(builder.Configuration);
 
 // SignalR
 builder.Services.AddSignalR(hubOptions =>
@@ -105,6 +105,6 @@ await app.PreWarmDatabasePoolsAsync(builder.Configuration);
 app.UseDocumentation();
 
 // Pipeline
-app.UseSafefyPipeline();
+app.UseSwiftPayPipeline();
 
 app.Run();

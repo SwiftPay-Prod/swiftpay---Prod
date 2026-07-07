@@ -150,7 +150,7 @@ export function usePlatformSettingsForm({
 				name: '',
 				baseUrl: '',
 				isDefault: findMethodOptions(method).every((option) => !option.isDefault),
-				showSafefyBranding: true,
+				showSwiftPayBranding: true,
 			};
 
 			setDomainModalMethod(method);

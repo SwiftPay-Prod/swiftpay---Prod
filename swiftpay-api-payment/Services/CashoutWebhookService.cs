@@ -164,10 +164,10 @@ public sealed class CashoutWebhookService(
                     Content = new StringContent(payload, Encoding.UTF8, "application/json")
                 };
 
-                request.Headers.Add("X-Safefy-Signature", signature);
-                request.Headers.Add("X-Safefy-Event", eventType);
-                request.Headers.Add("X-Safefy-Delivery", webhookId);
-                request.Headers.Add("X-Safefy-Attempt", attempt.ToString());
+                request.Headers.Add("X-SwiftPay-Signature", signature);
+                request.Headers.Add("X-SwiftPay-Event", eventType);
+                request.Headers.Add("X-SwiftPay-Delivery", webhookId);
+                request.Headers.Add("X-SwiftPay-Attempt", attempt.ToString());
 
                 var response = await client.SendAsync(request);
 

@@ -36,7 +36,7 @@ public sealed class CreatePlatformBalanceAdjustmentEndpoint(
         {
             await Send.ResponseAsync(new CreatePlatformBalanceAdjustmentResponse
             {
-                Error = new("Ajustes globais da plataforma não são mais suportados. Use ajuste por adquirente no alvo SafefyProfit.")
+                Error = new("Ajustes globais da plataforma não são mais suportados. Use ajuste por adquirente no alvo SwiftPayProfit.")
             }, 400, ct);
             return;
         }
@@ -55,8 +55,8 @@ public sealed class CreatePlatformBalanceAdjustmentEndpoint(
                 return;
             }
 
-            var result = req.AcquirerTarget == AcquirerAdjustmentTarget.SafefyProfit
-                ? await ledgerService.RecordAcquirerSafefyProfitAdjustmentAsync(
+            var result = req.AcquirerTarget == AcquirerAdjustmentTarget.SwiftPayProfit
+                ? await ledgerService.RecordAcquirerSwiftPayProfitAdjustmentAsync(
                     req.AcquirerId!.Value,
                     req.Amount,
                     req.IsCredit,
@@ -92,9 +92,9 @@ public sealed class CreatePlatformBalanceAdjustmentEndpoint(
                 },
                 Message = req.AcquirerTarget switch
                 {
-                    AcquirerAdjustmentTarget.SafefyProfit => req.IsCredit
-                        ? $"Crédito de {req.Amount / 100m:C} registrado no lucro Safefy da adquirente."
-                        : $"Débito de {req.Amount / 100m:C} registrado no lucro Safefy da adquirente.",
+                    AcquirerAdjustmentTarget.SwiftPayProfit => req.IsCredit
+                        ? $"Crédito de {req.Amount / 100m:C} registrado no lucro SwiftPay da adquirente."
+                        : $"Débito de {req.Amount / 100m:C} registrado no lucro SwiftPay da adquirente.",
                     AcquirerAdjustmentTarget.MerchantBalance => req.IsCredit
                         ? $"Crédito de {req.Amount / 100m:C} registrado no saldo global das organizações da adquirente."
                         : $"Débito de {req.Amount / 100m:C} registrado no saldo global das organizações da adquirente.",

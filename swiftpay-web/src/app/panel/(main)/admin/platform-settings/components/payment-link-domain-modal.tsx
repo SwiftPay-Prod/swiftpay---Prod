@@ -60,13 +60,13 @@ export function PaymentLinkDomainModal({
 								/>
 							</TextField>
 							<Switch
-								isSelected={state.draft?.showSafefyBranding ?? false}
-								onChange={(selected) => onDraftChange('showSafefyBranding', selected)}
+								isSelected={state.draft?.showSwiftPayBranding ?? false}
+								onChange={(selected) => onDraftChange('showSwiftPayBranding', selected)}
 							>
 								<Switch.Control>
 									<Switch.Thumb />
 								</Switch.Control>
-								Exibir branding Safefy
+								Exibir branding SwiftPay
 							</Switch>
 							{error ? <FieldError>{error}</FieldError> : null}
 						</div>

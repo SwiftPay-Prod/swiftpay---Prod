@@ -224,7 +224,7 @@ public sealed class ProcessCashoutConsumer(
         {
             _ = emailService.SendAsync(
                 payout.Merchant.User.Email,
-                "✅ Saque Concluído - Safefy",
+                "✅ Saque Concluído - SwiftPay",
                 EmailTemplate.PayoutCompleted,
                 new Dictionary<string, string>
                 {

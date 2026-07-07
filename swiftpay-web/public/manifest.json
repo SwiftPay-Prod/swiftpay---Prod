@@ -1,6 +1,6 @@
 {
-  "name": "Safefy - Gateway de Pagamentos PIX",
-  "short_name": "Safefy",
+  "name": "SwiftPay - Gateway de Pagamentos PIX",
+  "short_name": "SwiftPay",
   "description": "Gateway de pagamentos PIX. Integre pagamentos PIX em sua plataforma com nossa API simples e segura.",
   "start_url": "/splash",
   "display": "standalone",

@@ -95,7 +95,7 @@ public enum AccountType
     AcquirerSettlement,
     
     /// <summary>
-    /// Valor transferido via adquirente (saques dos merchants + settlements da Safefy).
+    /// Valor transferido via adquirente (saques dos merchants + settlements da SwiftPay).
     /// Representa o dinheiro físico que saiu da conta da adquirente.
     /// </summary>
     AcquirerPayoutsOut,

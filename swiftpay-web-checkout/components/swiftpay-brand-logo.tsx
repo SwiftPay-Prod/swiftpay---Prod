@@ -31,7 +31,7 @@ export function SwiftPayBrandLogo({
 		<div className={joinClasses('inline-flex items-center justify-center', className)}>
 			<Image
 				src={logoSrc}
-				alt="Safefy"
+				alt="SwiftPay"
 				width={logoWidth}
 				height={iconSize}
 				className={joinClasses('h-auto w-auto object-contain', textClassName)}

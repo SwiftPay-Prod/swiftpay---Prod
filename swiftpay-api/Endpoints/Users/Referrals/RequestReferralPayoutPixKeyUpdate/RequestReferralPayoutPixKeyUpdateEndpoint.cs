@@ -80,7 +80,7 @@ public sealed class RequestReferralPayoutPixKeyUpdateEndpoint(
 
         _ = emailService.SendAsync(
             user.Email,
-            "🔐 Código para confirmar chave PIX de indicação - Safefy",
+            "🔐 Código para confirmar chave PIX de indicação - SwiftPay",
             EmailTemplate.ReferralPayoutPixKeyVerification,
             new Dictionary<string, string>
             {

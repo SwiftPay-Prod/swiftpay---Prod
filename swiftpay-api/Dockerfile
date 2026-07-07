@@ -11,7 +11,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
-RUN dotnet nuget add source "https://nuget.pkg.github.com/Safefy-Pay/index.json" \
+RUN dotnet nuget add source "https://nuget.pkg.github.com/SwiftPay/index.json" \
     --name github-swiftpay \
     --username $GITHUB_USER \
     --password $GITHUB_TOKEN \

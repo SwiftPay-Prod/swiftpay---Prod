@@ -161,7 +161,7 @@ Account (Saldo real) ──▶ LedgerTransaction (Agrupamento) ──▶ LedgerE
 
 ### Operações (17 tipos):
 
-`PlatformFee`, `SettlementIn`, `SettlementOut`, `PayOut`, `PixIn`, `PixOut`, `PixRefund`, `PixPartialRefund`, `PlatformPayOutRequested`, `PlatformPayOut`, `ReferralCommissionPayOut`, `Reversal`, `PlatformAdjustment`, `AcquirerAdjustment`, `AcquirerSafefyProfitAdjustment`, `MerchantAdjustment`
+`PlatformFee`, `SettlementIn`, `SettlementOut`, `PayOut`, `PixIn`, `PixOut`, `PixRefund`, `PixPartialRefund`, `PlatformPayOutRequested`, `PlatformPayOut`, `ReferralCommissionPayOut`, `Reversal`, `PlatformAdjustment`, `AcquirerAdjustment`, `AcquirerSwiftPayProfitAdjustment`, `MerchantAdjustment`
 
 ### Propriedades críticas:
 - **Imutabilidade:** Transações nunca são alteradas ou deletadas

@@ -96,7 +96,7 @@ public sealed class SubmitOnboardingEndpoint(
         // Send confirmation email
         _ = emailService.SendAsync(
             merchant.User.Email,
-            "Cadastro Recebido - Safefy",
+            "Cadastro Recebido - SwiftPay",
             EmailTemplate.KycSubmitted,
             new Dictionary<string, string>
             {

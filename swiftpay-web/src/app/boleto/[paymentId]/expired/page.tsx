@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: 'website',
       locale: 'pt_BR',
-      siteName: 'Safefy',
+      siteName: 'SwiftPay',
     },
     twitter: {
       card: 'summary',

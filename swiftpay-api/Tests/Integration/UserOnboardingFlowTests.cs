@@ -8,12 +8,12 @@ using swiftpay_api.Tests.Models;
 
 namespace swiftpay_api.Tests.Integration;
 
-public class UserOnboardingFlowTests : IClassFixture<SafefyApiFactory>
+public class UserOnboardingFlowTests : IClassFixture<SwiftPayApiFactory>
 {
-    private readonly SafefyApiFactory _factory;
+    private readonly SwiftPayApiFactory _factory;
     private readonly JsonSerializerOptions _jsonOptions;
 
-    public UserOnboardingFlowTests(SafefyApiFactory factory)
+    public UserOnboardingFlowTests(SwiftPayApiFactory factory)
     {
         _factory = factory;
         _jsonOptions = new JsonSerializerOptions

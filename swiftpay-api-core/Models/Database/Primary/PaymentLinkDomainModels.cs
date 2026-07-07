@@ -16,7 +16,7 @@ public sealed class PaymentLinkDomainOption
     public string Name { get; set; } = string.Empty;
     public string BaseUrl { get; set; } = string.Empty;
     public bool IsDefault { get; set; }
-    public bool ShowSafefyBranding { get; set; } = true;
+    public bool ShowSwiftPayBranding { get; set; } = true;
 }
 
 public sealed class MerchantPaymentLinkDomainSelection

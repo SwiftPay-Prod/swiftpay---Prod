@@ -420,7 +420,7 @@ public static class AcquirerRequiredFieldsDefaults
                 new() { Name = "description", Label = "Descricao", Type = "string", Required = false, Description = "Descricao do saque enviada para a HunterPay", Source = "payment" },
                 new() { Name = "isPix", Label = "Transferencia PIX", Type = "boolean", Required = true, Description = "Flag fixa para indicar saque PIX", Source = "system", Example = "true" },
                 new() { Name = "postbackUrl", Label = "URL de Webhook", Type = "string", Required = false, Description = "URL para receber atualizacoes de status do saque", Source = "system" },
-                new() { Name = "Idempotency-Key", Label = "Idempotency Key", Type = "string", Required = true, Description = "Header idempotente enviado com o identificador do saque na Safefy", Source = "system" }
+                new() { Name = "Idempotency-Key", Label = "Idempotency Key", Type = "string", Required = true, Description = "Header idempotente enviado com o identificador do saque na SwiftPay", Source = "system" }
             ]
         }
     };

@@ -13,7 +13,7 @@ import { DeviceRevokedModalProvider } from '@/components/auth/device-revoked-mod
 
 type AuthView = 'signin' | 'signup' | 'forgot-password';
 
-function SafefyLogo() {
+function SwiftPayLogo() {
 	return <SwiftPayBrandLogo iconSize={30} textClassName="text-2xl text-white" />;
 }
 
@@ -56,7 +56,7 @@ export default function AuthPage() {
 			<div className="absolute inset-0 z-50 flex">
 				<div className="hidden lg:flex lg:flex-1 relative">
 					<div className="flex flex-col justify-between items-start p-8 w-full">
-						<SafefyLogo />
+						<SwiftPayLogo />
 
 						<div className="max-w-lg">
 							<p className="text-white/90 text-lg leading-relaxed drop-shadow-lg">
@@ -70,7 +70,7 @@ export default function AuthPage() {
 				<div className="flex-1 flex flex-col lg:max-w-xl relative">
 					<div className="flex justify-between items-center p-4 lg:p-6">
 						<div className="lg:hidden">
-							<SafefyLogo />
+							<SwiftPayLogo />
 						</div>
 						<div className="lg:ml-auto">
 							<ThemeToggle />

@@ -145,13 +145,13 @@ function ModalContent({
 	);
 
 	const creditDescription =
-		selectedAcquirerTarget === 'SafefyProfit'
-			? 'Aumenta o lucro Safefy na adquirente e o disponível total para saque'
+		selectedAcquirerTarget === 'SwiftPayProfit'
+			? 'Aumenta o lucro SwiftPay na adquirente e o disponível total para saque'
 			: 'Aumenta o saldo global das organizações na adquirente';
 
 	const debitDescription =
-		selectedAcquirerTarget === 'SafefyProfit'
-			? 'Reduz o lucro Safefy na adquirente e o disponível total para saque'
+		selectedAcquirerTarget === 'SwiftPayProfit'
+			? 'Reduz o lucro SwiftPay na adquirente e o disponível total para saque'
 			: 'Reduz o saldo global das organizações na adquirente';
 
 	return (
@@ -161,8 +161,8 @@ function ModalContent({
 					<div className="flex items-start gap-3 rounded-lg bg-warning/10 p-3">
 						<Icon icon={AlertDiamondIcon} className="icon-sm shrink-0 text-warning mt-0.5" />
 						<p className="text-xs text-muted">
-							{selectedAcquirerTarget === 'SafefyProfit'
-								? 'Ajustes de lucro Safefy corrigem diretamente o saldo da adquirente e, por consequência, o disponível total para saque.'
+							{selectedAcquirerTarget === 'SwiftPayProfit'
+								? 'Ajustes de lucro SwiftPay corrigem diretamente o saldo da adquirente e, por consequência, o disponível total para saque.'
 								: 'Ajustes globais de organizações corrigem o saldo agregado das organizações na adquirente. Esta operação fica registrada no histórico do ledger com seu usuário.'}
 						</p>
 					</div>
@@ -249,8 +249,8 @@ function ModalContent({
 												Saldo Global das Organizações
 												<ListBox.ItemIndicator />
 											</ListBox.Item>
-											<ListBox.Item id="SafefyProfit" textValue="Lucro Safefy na Adquirente">
-												Lucro Safefy na Adquirente
+											<ListBox.Item id="SwiftPayProfit" textValue="Lucro SwiftPay na Adquirente">
+												Lucro SwiftPay na Adquirente
 												<ListBox.ItemIndicator />
 											</ListBox.Item>
 										</ListBox>

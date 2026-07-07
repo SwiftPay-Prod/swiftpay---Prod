@@ -228,7 +228,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 				<div className="flex flex-col gap-1">
 					<div className="flex items-center gap-2 text-xs text-foreground/50">
 						<Icon icon={Analytics01Icon} className="icon-sm" />
-						<span>{ledgerData.profit < 0 ? 'Prejuízo Safefy' : 'Lucro Safefy'}</span>
+						<span>{ledgerData.profit < 0 ? 'Prejuízo SwiftPay' : 'Lucro SwiftPay'}</span>
 					</div>
 					<span
 						className={`font-mono text-sm font-medium ${
@@ -384,7 +384,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 					<DetailRow label="Taxa Adquirente" value={formatCurrency(transaction.acquirerFee)} />
 					<DetailRow label="Líquido Adquirente" value={formatCurrency(transaction.acquirerNetAmount)} />
 					<DetailRow
-						label={transaction.profit < 0 ? 'Prejuízo Safefy' : 'Lucro Safefy'}
+						label={transaction.profit < 0 ? 'Prejuízo SwiftPay' : 'Lucro SwiftPay'}
 						value={
 							<span
 								className={

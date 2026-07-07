@@ -5,7 +5,7 @@ namespace swiftpay_api.Extensions;
 
 public static class RateLimiterExtensions
 {
-    public static IServiceCollection AddSafefyRateLimiter(this IServiceCollection services, IWebHostEnvironment environment)
+    public static IServiceCollection AddSwiftPayRateLimiter(this IServiceCollection services, IWebHostEnvironment environment)
     {
         if (environment.IsDevelopment())
         {

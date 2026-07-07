@@ -116,7 +116,7 @@ public sealed class RequestDeleteMerchantEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "⚠️ Código de confirmação para exclusão - Safefy",
+                "⚠️ Código de confirmação para exclusão - SwiftPay",
                 EmailTemplate.MerchantDeletionCode,
                 new Dictionary<string, string>
                 {

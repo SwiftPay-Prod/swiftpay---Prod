@@ -375,8 +375,8 @@ public class LedgerService(
             {
                 if (feeSplitHandling == PaymentFeeSplitHandling.AutoSplitToBank)
                 {
-                    // A adquirente faz split autom�tico e envia a taxa diretamente para a conta banc�ria da Safefy.
-                    // Creditamos em PlatformPayoutsOut, pois o valor j� foi transferido para o banco da Safefy.
+                    // A adquirente faz split autom�tico e envia a taxa diretamente para a conta banc�ria da SwiftPay.
+                    // Creditamos em PlatformPayoutsOut, pois o valor j� foi transferido para o banco da SwiftPay.
                     var platformPayoutsOutAccount = await ledgerRepository.GetOrCreatePlatformPayoutsOutAccountAsync(Environment);
                     entries.Add(new LedgerEntry
                     {
@@ -1353,7 +1353,7 @@ public class LedgerService(
         }
     }
 
-    public async Task<LedgerTransactionResult> RecordAcquirerSafefyProfitAdjustmentAsync(
+    public async Task<LedgerTransactionResult> RecordAcquirerSwiftPayProfitAdjustmentAsync(
         Guid acquirerId,
         long amount,
         bool isCredit,
@@ -1384,7 +1384,7 @@ public class LedgerService(
                     Type = entryType,
                     Amount = amount,
                     Timestamp = now,
-                    Description = $"Ajuste de lucro Safefy na adquirente: {reason}"
+                    Description = $"Ajuste de lucro SwiftPay na adquirente: {reason}"
                 }
             };
 
@@ -1394,7 +1394,7 @@ public class LedgerService(
             };
 
             await ledgerRepository.CreateTransactionWithAtomicBalanceUpdateAsync(
-                LedgerTransactionOperation.AcquirerSafefyProfitAdjustment,
+                LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment,
                 amount,
                 entries,
                 balanceUpdates,
@@ -1407,7 +1407,7 @@ public class LedgerService(
         catch (Exception ex)
         {
             logger.LogError(ex, "Error recording acquirer swiftpay profit adjustment: AcquirerId={AcquirerId}, Amount={Amount}, IsCredit={IsCredit}", acquirerId, amount, isCredit);
-            return LedgerTransactionResult.Fail("Erro ao registrar ajuste de lucro Safefy na adquirente no ledger.");
+            return LedgerTransactionResult.Fail("Erro ao registrar ajuste de lucro SwiftPay na adquirente no ledger.");
         }
     }
 

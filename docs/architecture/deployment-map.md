@@ -92,7 +92,7 @@ Estágio 3: runner  → node:20-alpine
 ```
 checkout → setup-dotnet (10.0.x) → extract version from tag → dotnet restore
 → dotnet build -c Release → dotnet pack -c Release -o ./nupkg
-→ dotnet nuget push → GitHub Packages (nuget.pkg.github.com/Safefy-Pay/)
+→ dotnet nuget push → GitHub Packages (nuget.pkg.github.com/SwiftPay-Pay/)
 → Upload artifact (nupkg)
 ```
 

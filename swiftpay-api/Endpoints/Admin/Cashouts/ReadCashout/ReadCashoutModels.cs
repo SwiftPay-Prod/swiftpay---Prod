@@ -29,7 +29,7 @@ public sealed class AdminCashoutDetails
     public long Amount { get; set; }
     public long FeeAmount { get; set; }
     public long AcquirerFeeAmount { get; set; }
-    public long SafefyProfitAmount { get; set; }
+    public long SwiftPayProfitAmount { get; set; }
     public long NetAmount { get; set; }
     public PayoutStatus Status { get; set; }
     public DateTime RequestedAt { get; set; }

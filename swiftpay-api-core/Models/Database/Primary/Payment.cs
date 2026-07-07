@@ -67,7 +67,7 @@ public class Payment : BaseEntity
     public long Amount { get; set; }
 
     /// <summary>
-    /// Taxa da plataforma Safefy cobrada do merchant (em centavos)
+    /// Taxa da plataforma SwiftPay cobrada do merchant (em centavos)
     /// </summary>
     public long PlatformFee { get; set; }
 
@@ -87,7 +87,7 @@ public class Payment : BaseEntity
     public long NetAmount { get; set; }
 
     /// <summary>
-    /// Valor líquido que a Safefy recebe da adquirente (Amount - AcquirerFee) - INVISÍVEL para o merchant
+    /// Valor líquido que a SwiftPay recebe da adquirente (Amount - AcquirerFee) - INVISÍVEL para o merchant
     /// </summary>
     public long AcquirerNetAmount { get; set; }
 

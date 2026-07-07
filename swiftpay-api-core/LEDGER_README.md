@@ -1,6 +1,6 @@
-# Safefy Ledger System - Documentação Técnica
+# SwiftPay Ledger System - Documentação Técnica
 
-Este documento descreve a arquitetura completa do sistema de Ledger (Livro Razão), Accounts (Contas), Payments (Pagamentos) e a integração com Adquirentes na plataforma Safefy.
+Este documento descreve a arquitetura completa do sistema de Ledger (Livro Razão), Accounts (Contas), Payments (Pagamentos) e a integração com Adquirentes na plataforma SwiftPay.
 
 ---
 
@@ -20,7 +20,7 @@ Este documento descreve a arquitetura completa do sistema de Ledger (Livro Razã
 
 ## Visão Geral
 
-O sistema financeiro da Safefy é baseado em uma **arquitetura de Ledger (Livro Razão)**, o mesmo padrão utilizado por bancos e instituições financeiras. Esta arquitetura garante:
+O sistema financeiro da SwiftPay é baseado em uma **arquitetura de Ledger (Livro Razão)**, o mesmo padrão utilizado por bancos e instituições financeiras. Esta arquitetura garante:
 
 - **Imutabilidade**: Transações nunca são alteradas ou deletadas
 - **Rastreabilidade**: Toda movimentação tem referência à operação original
@@ -109,7 +109,7 @@ O sistema possui três categorias de contas, todas representando **saldo real**:
 | Tipo | Descrição | Representa |
 |------|-----------|------------|
 | `AcquirerSettlement` | Recebimentos PIX | Valor LÍQUIDO recebido (já descontada taxa da adquirente) |
-| `AcquirerPayoutsOut` | Saques processados | Valor transferido (merchants + settlements Safefy) |
+| `AcquirerPayoutsOut` | Saques processados | Valor transferido (merchants + settlements SwiftPay) |
 
 ### O que NÃO está no Ledger (ficam nos Dashboard Caches)
 
@@ -210,7 +210,7 @@ public enum LedgerEntryType
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ FLUXO: PAGAMENTO PIX DE R$ 100,00 (Taxa Safefy: 2%, Taxa Adquirente: 0.5%)   │
+│ FLUXO: PAGAMENTO PIX DE R$ 100,00 (Taxa SwiftPay: 2%, Taxa Adquirente: 0.5%)   │
 └──────────────────────────────────────────────────────────────────────────────┘
 
 1. CRIAÇÃO DA COBRANÇA (Merchant cria via API)
@@ -277,7 +277,7 @@ public enum LedgerEntryType
    │ MerchantBalance.LifetimeFeesPaid: +R$ 2,00                             │
    │ AcquirerDashboardCache.TotalPlatformFees: +R$ 2,00                     │
    │ AcquirerDashboardCache.TotalAcquirerFees: +R$ 0,50                     │
-   │ AcquirerDashboardCache.TotalProfit: +R$ 1,50 (lucro Safefy)            │
+   │ AcquirerDashboardCache.TotalProfit: +R$ 1,50 (lucro SwiftPay)            │
    │                                                                        │
    └────────────────────────────────────────────────────────────────────────┘
 ```
@@ -326,7 +326,7 @@ foi creditado originalmente. As taxas são revertidas nos KPIs.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│ FLUXO: SAQUE DE R$ 500,00 (Taxa Safefy: R$ 3,00, Taxa Adquirente: R$ 1,00)   │
+│ FLUXO: SAQUE DE R$ 500,00 (Taxa SwiftPay: R$ 3,00, Taxa Adquirente: R$ 1,00)   │
 └──────────────────────────────────────────────────────────────────────────────┘
 
 1. SOLICITAÇÃO DE SAQUE (Merchant solicita)
@@ -408,8 +408,8 @@ foi creditado originalmente. As taxas são revertidas nos KPIs.
 │ │ MerchantPending        → PIX aguardando pagamento                       │  │
 │ │ MerchantBlocked        → Saques em processamento                        │  │
 │ │ MerchantPayoutsOut     → Histórico de saques concluídos                 │  │
-│ │ PlatformBlocked        → Saques em processamento (Safefy)               │  │
-│ │ PlatformPayoutsOut     → Histórico de saques concluídos (Safefy)        │  │
+│ │ PlatformBlocked        → Saques em processamento (SwiftPay)               │  │
+│ │ PlatformPayoutsOut     → Histórico de saques concluídos (SwiftPay)        │  │
 │ │ AcquirerSettlement     → Valor líquido na adquirente                    │  │
 │ │ AcquirerPayoutsOut     → Valor transferido pela adquirente              │  │
 │ └─────────────────────────────────────────────────────────────────────────┘  │
@@ -421,7 +421,7 @@ foi creditado originalmente. As taxas são revertidas nos KPIs.
 │ │ ├── LifetimeVolume      → Total de volume processado                    │  │
 │ │ ├── LifetimePayouts     → Total de saques                               │  │
 │ │ ├── LifetimeRefunds     → Total de estornos                             │  │
-│ │ ├── LifetimeFeesPaid    → Total de taxas pagas à Safefy                 │  │
+│ │ ├── LifetimeFeesPaid    → Total de taxas pagas à SwiftPay                 │  │
 │ │ ├── VolumeToday/Week/Month → Volume por período                         │  │
 │ │                                                                         │  │
 │ │ MerchantDashboardCache                                                  │  │
@@ -431,7 +431,7 @@ foi creditado originalmente. As taxas são revertidas nos KPIs.
 │ │ ├── TotalVolume         → Volume total processado                       │  │
 │ │ ├── TotalPlatformFees   → Taxas cobradas dos merchants                  │  │
 │ │ ├── TotalAcquirerFees   → Taxas pagas à adquirente                      │  │
-│ │ ├── TotalProfit         → Lucro Safefy (Platform - Acquirer)            │  │
+│ │ ├── TotalProfit         → Lucro SwiftPay (Platform - Acquirer)            │  │
 │ │ ├── TotalPayoutVolume   → Volume de saques                              │  │
 │ │ └── TotalPayoutAcquirerFees → Taxas de saque da adquirente              │  │
 │ │                                                                         │  │
@@ -485,7 +485,7 @@ foi creditado originalmente. As taxas são revertidas nos KPIs.
 │ │ LucroDisponível = SaldoNaAdquirente - SaldoMerchants                    │  │
 │ │                 = (Settlement - PayoutsOut) - (Available + Blocked)     │  │
 │ │                                                                         │  │
-│ │ Este é o valor que a Safefy pode sacar para sua conta bancária.         │  │
+│ │ Este é o valor que a SwiftPay pode sacar para sua conta bancária.         │  │
 │ └─────────────────────────────────────────────────────────────────────────┘  │
 │                                                                              │
 │ LUCRO LÍQUIDO (KPI):                                                         │
@@ -537,9 +537,9 @@ O cálculo do lucro disponível é feito de forma assíncrona via cache para gar
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Settlement da Safefy
+### Settlement da SwiftPay
 
-Quando a Safefy quiser sacar seu lucro da adquirente:
+Quando a SwiftPay quiser sacar seu lucro da adquirente:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
@@ -591,7 +591,7 @@ Quando a Safefy quiser sacar seu lucro da adquirente:
 │ CENÁRIO: 3 pagamentos + 1 saque + 1 settlement                                │
 ├──────────────────────────────────────────────────────────────────────────────┤
 
-PAGAMENTO 1: R$ 100,00 (Taxa Safefy: 2%, Taxa Adquirente: 0.5%)
+PAGAMENTO 1: R$ 100,00 (Taxa SwiftPay: 2%, Taxa Adquirente: 0.5%)
   Ledger:
     MerchantAvailable: +R$ 98,00
     AcquirerSettlement: +R$ 99,50 (líquido)
@@ -612,7 +612,7 @@ PAGAMENTO 3: R$ 50,00
   KPIs:
     MerchantBalance.LifetimeFeesPaid: +R$ 1,00 (total: R$ 7,00)
 
-SAQUE: R$ 100,00 (Taxa Safefy: R$ 2,00, Taxa Adquirente: R$ 0,50)
+SAQUE: R$ 100,00 (Taxa SwiftPay: R$ 2,00, Taxa Adquirente: R$ 0,50)
   Ledger:
     MerchantAvailable: -R$ 102,00 (total: R$ 241,00)
     MerchantBlocked: +R$ 100,00 → depois -R$ 100,00
@@ -631,7 +631,7 @@ SALDOS FINAIS:
 
     MerchantAvailable:     R$ 241,00
     ────────────────────────────────
-    Lucro Safefy Disponível: R$ 6,75 (pode sacar)
+    Lucro SwiftPay Disponível: R$ 6,75 (pode sacar)
 
   KPIs:
     TotalPlatformFees: R$ 9,00 (R$ 7,00 PIX + R$ 2,00 saque)
@@ -659,7 +659,7 @@ SALDOS FINAIS:
 
 ## Conclusão
 
-O sistema de Ledger da Safefy foi projetado seguindo as melhores práticas:
+O sistema de Ledger da SwiftPay foi projetado seguindo as melhores práticas:
 
 - **Ledger apenas para saldo real** - Não mistura KPIs com movimentação financeira
 - **KPIs nos Dashboard Caches** - Otimizados para leitura e relatórios

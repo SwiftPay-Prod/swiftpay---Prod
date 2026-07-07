@@ -57,7 +57,7 @@
 	--hero-badge-service-bg: oklch(22% 0.05 76.34);
 	--hero-badge-service-text: oklch(82.03% 0.1388 76.34);
 
-	/* Accent Colors (Safefy Brand) */
+	/* Accent Colors (SwiftPay Brand) */
 	--hero-accent: oklch(62.04% 0.1951 253.83);
 	--hero-accent-light: oklch(62.04% 0.1951 253.83 / 0.15);
 	--hero-accent-muted: oklch(62.04% 0.1951 253.83 / 0.09);
@@ -119,7 +119,7 @@
 	--hero-badge-service-bg: oklch(22% 0.05 76.34);
 	--hero-badge-service-text: oklch(82.03% 0.1388 76.34);
 
-	/* Accent Colors (Safefy Brand) */
+	/* Accent Colors (SwiftPay Brand) */
 	--hero-accent: oklch(62.04% 0.1951 253.83);
 	--hero-accent-light: oklch(62.04% 0.1951 253.83 / 0.15);
 	--hero-accent-muted: oklch(62.04% 0.1951 253.83 / 0.09);
@@ -185,7 +185,7 @@
 	--hero-badge-service-bg: oklch(95% 0.05 76.34);
 	--hero-badge-service-text: oklch(44% 0.12 72.33);
 
-	/* Accent Colors (Safefy Brand) */
+	/* Accent Colors (SwiftPay Brand) */
 	--hero-accent: oklch(62.04% 0.1951 253.83);
 	--hero-accent-light: oklch(62.04% 0.1951 253.83 / 0.12);
 	--hero-accent-muted: oklch(62.04% 0.1951 253.83 / 0.06);
@@ -584,7 +584,7 @@
 }
 
 /* =================================================================
-   Component Classes - Accent (Safefy Brand)
+   Component Classes - Accent (SwiftPay Brand)
    ================================================================= */
 
 .hero-accent-text {

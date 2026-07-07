@@ -36,7 +36,7 @@ public sealed class ReadPlatformBalanceAdjustmentsEndpoint(
         [
             LedgerTransactionOperation.PlatformAdjustment,
             LedgerTransactionOperation.AcquirerAdjustment,
-            LedgerTransactionOperation.AcquirerSafefyProfitAdjustment,
+            LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment,
             LedgerTransactionOperation.MerchantAdjustment
         ];
 
@@ -55,7 +55,7 @@ public sealed class ReadPlatformBalanceAdjustmentsEndpoint(
             };
             query = req.Scope == AdjustmentScope.Acquirer
                 ? query.Where(t => t.Operation == LedgerTransactionOperation.AcquirerAdjustment
-                                || t.Operation == LedgerTransactionOperation.AcquirerSafefyProfitAdjustment)
+                                || t.Operation == LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment)
                 : query.Where(t => t.Operation == scopeOperation);
         }
 
@@ -100,7 +100,7 @@ public sealed class ReadPlatformBalanceAdjustmentsEndpoint(
             var scope = t.Operation switch
             {
                 LedgerTransactionOperation.AcquirerAdjustment => AdjustmentScope.Acquirer,
-                LedgerTransactionOperation.AcquirerSafefyProfitAdjustment => AdjustmentScope.Acquirer,
+                LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment => AdjustmentScope.Acquirer,
                 LedgerTransactionOperation.MerchantAdjustment => AdjustmentScope.Merchant,
                 _ => AdjustmentScope.Platform
             };

@@ -133,7 +133,7 @@ public sealed class RequestDeleteApiCredentialEndpoint(
 
             await emailService.SendAsync(
                 user.Email,
-                "🔒 Revogar Credencial de API - Safefy",
+                "🔒 Revogar Credencial de API - SwiftPay",
                 EmailTemplate.ApiCredentialCode,
                 new Dictionary<string, string>
                 {

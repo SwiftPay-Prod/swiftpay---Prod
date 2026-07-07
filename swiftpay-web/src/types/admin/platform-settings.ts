@@ -11,7 +11,7 @@ export interface PaymentLinkDomainOption {
   name: string;
   baseUrl: string;
   isDefault: boolean;
-  showSafefyBranding: boolean;
+  showSwiftPayBranding: boolean;
 }
 
 export interface PaymentLinkDomainMethodOptions {

@@ -138,7 +138,7 @@ internal static class OtimizeyTrackingDispatcher
         if (!string.IsNullOrWhiteSpace(customer?.Name))
             return customer.Name.Trim();
 
-        return "Cliente Safefy";
+        return "Cliente SwiftPay";
     }
 
     private static string ResolveCustomerEmail(Customer? customer, Payment payment)

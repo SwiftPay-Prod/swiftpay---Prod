@@ -10,7 +10,7 @@ dotnet build -c Release
 dotnet pack -c Release -o ./nupkg --no-build
 ```
 
-O pacote será gerado em `./nupkg/safefy-api-core.{version}.nupkg`.
+O pacote será gerado em `./nupkg/swiftpay-api-core.{version}.nupkg`.
 
 ## Atualizando nos Projetos
 

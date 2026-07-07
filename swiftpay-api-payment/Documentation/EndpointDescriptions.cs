@@ -14,7 +14,7 @@ public static partial class EndpointDescriptions
 
 **Seu parceiro financeiro de confiança.**
 
-Nós somos a Safefy, uma plataforma especializada em soluções de pagamento PIX. Com um serviço personalizado e focado nas suas necessidades, estamos prontos para apoiar sua empresa em cada etapa do processo.
+Nós somos a SwiftPay, uma plataforma especializada em soluções de pagamento PIX. Com um serviço personalizado e focado nas suas necessidades, estamos prontos para apoiar sua empresa em cada etapa do processo.
 
 - ✅ Conte com o **PIX** como método de pagamento rápido, seguro e alinhado com as melhores práticas de conformidade e prevenção a fraudes.
 - 📊 Gerencie suas finanças de forma simples e acessível por meio de uma interface completa e intuitiva.
@@ -22,7 +22,7 @@ Nós somos a Safefy, uma plataforma especializada em soluções de pagamento PIX
 
 ## 🤔 Precisa de Ajuda?
 
-A equipe da Safefy quer garantir que sua integração seja um sucesso. Se tiver dúvidas ou precisar de suporte, não hesite em nos contatar:
+A equipe da SwiftPay quer garantir que sua integração seja um sucesso. Se tiver dúvidas ou precisar de suporte, não hesite em nos contatar:
 
 📩 **suporte@swiftpay.com.br**
 
@@ -49,7 +49,7 @@ Autentica sua aplicação usando as credenciais de API (`publicKey` e `secretKey
 
 ### 📋 Fluxo de Autenticação
 
-1. **Obtenha suas credenciais**: Acesse o painel Safefy e crie uma credencial de API
+1. **Obtenha suas credenciais**: Acesse o painel SwiftPay e crie uma credencial de API
 2. **Solicite o token**: Faça uma requisição `POST` para este endpoint
 3. **Use o token**: Inclua o token no header `Authorization: Bearer {token}`
 4. **Renove antes de expirar**: O token expira em **1 hora (3600 segundos)**
@@ -100,7 +100,7 @@ Cria uma nova cobrança PIX e retorna o **QR Code** e o código **Copia e Cola**
 
 A taxa é calculada automaticamente e descontada do valor recebido:
 - O campo `amount` é o valor total da cobrança
-- O campo `fee` é a taxa cobrada pela Safefy
+- O campo `fee` é a taxa cobrada pela SwiftPay
 - O campo `netAmount` é o valor líquido que será creditado
 
 ### ⏱️ Expiração
@@ -129,7 +129,7 @@ Retorna os dados completos de uma cobrança PIX específica, incluindo informaç
 
 ### 📦 Campos Retornados
 
-- `id` - Identificador único da cobrança na Safefy
+- `id` - Identificador único da cobrança na SwiftPay
 - `externalId` - Seu identificador interno (se informado na criação)
 - `amount` - Valor da cobrança em centavos
 - `fee` - Taxa cobrada em centavos
@@ -246,7 +246,7 @@ Retorna os dados completos de um cliente específico pelo seu ID.
 
 ### 📦 Campos Retornados
 
-- `id` - Identificador único do cliente na Safefy
+- `id` - Identificador único do cliente na SwiftPay
 - `externalId` - Seu identificador interno (se informado na criação)
 - `name` - Nome do cliente
 - `email` - E-mail do cliente

@@ -68,7 +68,7 @@ public static class HttpClientResilienceExtensions
         services.AddHttpClient("webhooks", client =>
         {
             client.Timeout = TimeSpan.FromSeconds(30);
-            client.DefaultRequestHeaders.Add("User-Agent", "Safefy-Webhook/1.0");
+            client.DefaultRequestHeaders.Add("User-Agent", "SwiftPay-Webhook/1.0");
         })
         .AddResilienceHandler("webhook-resilience", builder =>
         {

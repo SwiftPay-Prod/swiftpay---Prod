@@ -115,7 +115,7 @@ public sealed class ResendCashoutVerificationCodeEndpoint(
 
         _ = emailService.SendAsync(
             user.Email,
-            "🔐 Novo Código de Verificação - Safefy",
+            "🔐 Novo Código de Verificação - SwiftPay",
             EmailTemplate.PayoutAccountActionVerification,
             new Dictionary<string, string>
             {

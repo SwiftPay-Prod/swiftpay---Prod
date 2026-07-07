@@ -172,7 +172,7 @@ public sealed class SetAcquirerEndpoint(
             _ = notificationService.CreateSystemNotificationAsync(
                 req.MerchantId,
                 "Adquirente atualizada",
-                $"As configurações da adquirente {acquirer.Name} foram atualizadas pela equipe Safefy."
+                $"As configurações da adquirente {acquirer.Name} foram atualizadas pela equipe SwiftPay."
             );
 
             if (isChangingDefaultAcquirer && previousAcquirerId.HasValue)

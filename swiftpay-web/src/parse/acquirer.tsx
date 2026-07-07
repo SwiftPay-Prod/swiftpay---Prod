@@ -178,12 +178,12 @@ export const paymentFeeSplitHandlingParse: Record<PaymentFeeSplitHandling, TPars
 	None: {
 		label: 'Nenhum (Padrão)',
 		color: 'default',
-		description: 'A taxa da plataforma é creditada normalmente como saldo disponível da Safefy',
+		description: 'A taxa da plataforma é creditada normalmente como saldo disponível da SwiftPay',
 	},
 	AutoSplitToBank: {
 		label: 'Split Automático p/ Banco',
 		color: 'warning',
-		description: 'A adquirente já envia a taxa direto para o banco da Safefy (registra como saque automatizado)',
+		description: 'A adquirente já envia a taxa direto para o banco da SwiftPay (registra como saque automatizado)',
 	},
 };
 

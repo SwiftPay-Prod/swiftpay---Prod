@@ -25,7 +25,7 @@ public class ReferralCommissionMovement : BaseEntity
     public Guid SourceId { get; set; }
 
     /// <summary>
-    /// Lucro da Safefy na origem da movimentação (PlatformFee - AcquirerFee), em centavos.
+    /// Lucro da SwiftPay na origem da movimentação (PlatformFee - AcquirerFee), em centavos.
     /// </summary>
     public long SourceAmount { get; set; }
 

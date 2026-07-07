@@ -2,7 +2,7 @@ import type { PaginationParams } from '../common';
 import type { PaymentEnvironment } from '../enums';
 
 export type AdjustmentScope = 'Acquirer' | 'Merchant' | 'Platform';
-export type AcquirerAdjustmentTarget = 'Settlement' | 'MerchantBalance' | 'SafefyProfit';
+export type AcquirerAdjustmentTarget = 'Settlement' | 'MerchantBalance' | 'SwiftPayProfit';
 
 export interface AdminCreatePlatformBalanceAdjustmentRequest {
   scope: AdjustmentScope;

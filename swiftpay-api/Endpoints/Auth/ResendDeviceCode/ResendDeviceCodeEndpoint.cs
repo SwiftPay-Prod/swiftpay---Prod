@@ -116,7 +116,7 @@ public sealed class ResendDeviceCodeEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "🔐 Código de verificação de dispositivo - Safefy",
+                "🔐 Código de verificação de dispositivo - SwiftPay",
                 EmailTemplate.DeviceVerification,
                 new Dictionary<string, string>
                 {

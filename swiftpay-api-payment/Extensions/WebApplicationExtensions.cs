@@ -9,7 +9,7 @@ namespace swiftpay_api_payment.Extensions;
 
 public static class WebApplicationExtensions
 {
-    public static WebApplication UseSafefyPipeline(this WebApplication app)
+    public static WebApplication UseSwiftPayPipeline(this WebApplication app)
     {
         app.UseStaticFiles();
 

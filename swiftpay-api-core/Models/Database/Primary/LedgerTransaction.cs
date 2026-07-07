@@ -92,8 +92,8 @@ public enum LedgerTransactionOperation
     // Ajuste manual de saldo da adquirente (conciliação)
     AcquirerAdjustment,
 
-    // Ajuste manual de lucro Safefy na adquirente (com contrapartida na plataforma)
-    AcquirerSafefyProfitAdjustment,
+    // Ajuste manual de lucro SwiftPay na adquirente (com contrapartida na plataforma)
+    AcquirerSwiftPayProfitAdjustment,
 
     // Ajuste manual de saldo do merchant (com contrapartida na plataforma)
     MerchantAdjustment

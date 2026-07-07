@@ -1,4 +1,4 @@
-# Safefy Web Checkout - Copilot Instructions (Referência)
+# SwiftPay Web Checkout - Copilot Instructions (Referência)
 
 Este arquivo principal agora funciona como índice de navegação.
 O conteúdo detalhado foi dividido em arquivos menores por contexto para facilitar manutenção, revisão e atualização incremental.

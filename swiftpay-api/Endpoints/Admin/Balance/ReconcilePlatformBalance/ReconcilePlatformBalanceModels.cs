@@ -69,9 +69,9 @@ public sealed class AcquirerReconciliationData
     public PlatformReconciliationAccount MerchantBalance { get; set; } = null!;
 
     /// <summary>
-    /// Parcela do saldo bruto que pertence à Safefy.
+    /// Parcela do saldo bruto que pertence à SwiftPay.
     /// </summary>
-    public PlatformReconciliationAccount SafefyProfit { get; set; } = null!;
+    public PlatformReconciliationAccount SwiftPayProfit { get; set; } = null!;
 
     /// <summary>
     /// Excesso de saídas liquidadas acima do settlement corrente.

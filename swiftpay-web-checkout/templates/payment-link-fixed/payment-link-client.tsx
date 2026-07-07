@@ -1303,7 +1303,7 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 				</div>
 				{currentPaymentLink.showSwiftPayBranding && (
 					<div className="mt-4 flex flex-col items-center gap-2 pb-4">
-						<p className="text-xs hero-text-subtle">Pagamento processado com segurança pela Safefy Pay</p>
+						<p className="text-xs hero-text-subtle">Pagamento processado com segurança pela SwiftPay Pay</p>
 						<div className="flex items-center justify-center gap-4">
 							<div className="flex items-center gap-1.5 hero-text-subtle">
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none">

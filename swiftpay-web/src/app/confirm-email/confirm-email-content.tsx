@@ -14,7 +14,7 @@ interface ConfirmEmailContentProps {
   message: string;
 }
 
-function SafefyLogo() {
+function SwiftPayLogo() {
   return <SwiftPayBrandLogo iconSize={30} textClassName="text-3xl text-white" />;
 }
 
@@ -41,7 +41,7 @@ export function ConfirmEmailContent({
     >
       <div className="absolute inset-0 z-50 flex flex-col">
         <div className="flex justify-between items-center p-4 lg:p-6">
-          <SafefyLogo />
+          <SwiftPayLogo />
           <ThemeToggle />
         </div>
         

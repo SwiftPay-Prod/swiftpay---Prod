@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: 'Safefy Dashboards'
+  - name: 'SwiftPay Dashboards'
     orgId: 1
-    folder: 'Safefy'
+    folder: 'SwiftPay'
     folderUid: 'swiftpay'
     type: file
     disableDeletion: false

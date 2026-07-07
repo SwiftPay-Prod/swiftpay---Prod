@@ -103,7 +103,7 @@ public sealed class CreateApiCredentialEndpoint(
 
             _ = emailService.SendAsync(
                 user.Email,
-                "🔑 Nova credencial de API criada - Safefy",
+                "🔑 Nova credencial de API criada - SwiftPay",
                 EmailTemplate.ApiCredentialCreated,
                 new Dictionary<string, string>
                 {

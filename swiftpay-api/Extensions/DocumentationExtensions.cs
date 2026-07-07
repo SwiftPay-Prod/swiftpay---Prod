@@ -20,7 +20,7 @@ public static class DocumentationExtensions
             app.MapScalarApiReference("docs", (options, httpContext) =>
             {
                 options
-                    .WithTitle("Safefy Api")
+                    .WithTitle("SwiftPay Api")
                     .WithTheme(ScalarTheme.BluePlanet)
                     .PreserveSchemaPropertyOrder();
             });
@@ -33,7 +33,7 @@ public static class DocumentationExtensions
             app.MapScalarApiReference("docs", (options, httpContext) =>
             {
                 options
-                    .WithTitle("Safefy Api - Staging")
+                    .WithTitle("SwiftPay Api - Staging")
                     .WithTheme(ScalarTheme.Saturn)
                     .PreserveSchemaPropertyOrder();
             });

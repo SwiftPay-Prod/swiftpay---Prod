@@ -165,10 +165,10 @@ public interface ILedgerService
         string reason);
 
     /// <summary>
-    /// Registra ajuste de lucro Safefy na adquirente diretamente no settlement.
+    /// Registra ajuste de lucro SwiftPay na adquirente diretamente no settlement.
     /// Esse ajuste altera a disponibilidade derivada da plataforma para saque.
     /// </summary>
-    Task<LedgerTransactionResult> RecordAcquirerSafefyProfitAdjustmentAsync(
+    Task<LedgerTransactionResult> RecordAcquirerSwiftPayProfitAdjustmentAsync(
         Guid acquirerId,
         long amount,
         bool isCredit,

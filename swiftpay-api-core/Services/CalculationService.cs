@@ -134,7 +134,7 @@ public sealed class CalculationService(PrimaryDbContext dbContext) : ICalculatio
         return Math.Max(0, grossBalance - merchantBalance);
     }
 
-    public long CalculateSafefyProfit(long swiftpayProfitBase, long completedPlatformPayouts)
+    public long CalculateSwiftPayProfit(long swiftpayProfitBase, long completedPlatformPayouts)
     {
         return Math.Max(0, swiftpayProfitBase - completedPlatformPayouts);
     }

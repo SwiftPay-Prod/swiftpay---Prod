@@ -270,7 +270,7 @@ public sealed class SignUpEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "Confirme seu e-mail - Safefy",
+                "Confirme seu e-mail - SwiftPay",
                 EmailTemplate.EmailConfirmation,
                 new Dictionary<string, string>
                 {

@@ -21,7 +21,7 @@ export async function PaymentLinkPageContent({ token }: PaymentLinkPageContentPr
 				</div>
 			)}
 
-			{paymentLink?.showSafefyBranding !== false && (
+			{paymentLink?.showSwiftPayBranding !== false && (
 				<header className="flex items-center justify-center py-6 px-4">
 					<ThemeLogo logoUrl={paymentLink?.logoUrl} />
 				</header>

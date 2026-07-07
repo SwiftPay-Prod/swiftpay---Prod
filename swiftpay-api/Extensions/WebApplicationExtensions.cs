@@ -10,7 +10,7 @@ namespace swiftpay_api.Extensions;
 
 public static class WebApplicationExtensions
 {
-    public static WebApplication UseSafefyPipeline(this WebApplication app, IWebHostEnvironment environment)
+    public static WebApplication UseSwiftPayPipeline(this WebApplication app, IWebHostEnvironment environment)
     {
         if (environment.IsStaging())
         {

@@ -279,7 +279,7 @@ public sealed class ReconcilePlatformBalanceEndpoint(
             {
                 var settlementAdjustmentEntries = await dbContext.LedgerTransactions
                     .Where(lt => lt.Operation == LedgerTransactionOperation.AcquirerAdjustment
-                              || lt.Operation == LedgerTransactionOperation.AcquirerSafefyProfitAdjustment)
+                              || lt.Operation == LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment)
                     .SelectMany(lt => lt.LedgerEntries)
                     .Where(e => e.AccountId == settlementAccount.Id)
                     .GroupBy(e => e.Type)
@@ -374,7 +374,7 @@ public sealed class ReconcilePlatformBalanceEndpoint(
                     Current = currentMerchantBalance,
                     Difference = merchantBalanceDifference
                 },
-                SafefyProfit = new PlatformReconciliationAccount
+                SwiftPayProfit = new PlatformReconciliationAccount
                 {
                     Expected = expectedSwiftpayProfit,
                     Current = currentSwiftpayProfit,

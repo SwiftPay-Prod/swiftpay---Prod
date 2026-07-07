@@ -271,7 +271,7 @@ public sealed class StartPaymentLinkEndpoint(
             ShowFees = paymentLink.ShowFees,
             FeeAmounts = feeAmounts,
             PassFeeToCustomer = paymentLink.PassFeeToCustomer,
-            ShowSafefyBranding = resolvedBranding?.ShowSafefyBranding ?? true,
+            ShowSwiftPayBranding = resolvedBranding?.ShowSwiftPayBranding ?? true,
             ThemeMode = paymentLink.ThemeMode,
             LogoUrl = paymentLink.LogoUrl,
             ProductName = paymentLink.ProductName,

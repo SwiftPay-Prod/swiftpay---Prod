@@ -206,10 +206,10 @@ Entrada: JSON completo do payload (UTF-8)
 Formato do header: "sha256={hex_lowercase}"
 
 Headers enviados:
-  X-Safefy-Signature: sha256={hmac_hex}
-  X-Safefy-Event: payment.completed|cashout.completed|...
-  X-Safefy-Delivery: {webhookId}
-  X-Safefy-Attempt: {attemptNumber}
+  X-SwiftPay-Signature: sha256={hmac_hex}
+  X-SwiftPay-Event: payment.completed|cashout.completed|...
+  X-SwiftPay-Delivery: {webhookId}
+  X-SwiftPay-Attempt: {attemptNumber}
   Content-Type: application/json
 ```
 

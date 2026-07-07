@@ -126,7 +126,7 @@ function FinancialOverviewCards({
 								<span className="font-medium">Receita Bruta (Taxas Cobradas)</span>
 								<br />
 								<span className="text-xs">
-									Total de taxas que a Safefy cobrou das organizações (pagamentos + saques). Não representa o lucro líquido, pois ainda há custos das adquirentes.
+									Total de taxas que a SwiftPay cobrou das organizações (pagamentos + saques). Não representa o lucro líquido, pois ainda há custos das adquirentes.
 								</span>
 							</Tooltip.Content>
 						</Tooltip>
@@ -159,7 +159,7 @@ function FinancialOverviewCards({
 								<span className="font-medium">Custo das Adquirentes</span>
 								<br />
 								<span className="text-xs">
-									Total de taxas que a Safefy paga às adquirentes (Bankizi, etc.) para processar pagamentos e saques. Este é o custo operacional.
+									Total de taxas que a SwiftPay paga às adquirentes (Bankizi, etc.) para processar pagamentos e saques. Este é o custo operacional.
 								</span>
 							</Tooltip.Content>
 						</Tooltip>
@@ -192,7 +192,7 @@ function FinancialOverviewCards({
 								<span className="font-medium">Resultado Líquido de Taxas</span>
 								<br />
 								<span className="text-xs">
-									Receita Bruta de Taxas menos Custo com Adquirentes. Este é o resultado líquido real da Safefy em taxas de pagamentos e saques.
+									Receita Bruta de Taxas menos Custo com Adquirentes. Este é o resultado líquido real da SwiftPay em taxas de pagamentos e saques.
 								</span>
 								<br />
 								<span className="mt-1 flex items-center gap-1 text-xs text-muted">

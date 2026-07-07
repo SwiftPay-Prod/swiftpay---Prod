@@ -2,7 +2,7 @@ namespace swiftpay_api.Extensions;
 
 public static class CorsExtensions
 {
-    public static IServiceCollection AddSafefyCors(this IServiceCollection services, IWebHostEnvironment environment)
+    public static IServiceCollection AddSwiftPayCors(this IServiceCollection services, IWebHostEnvironment environment)
     {
         if (environment.IsDevelopment())
         {

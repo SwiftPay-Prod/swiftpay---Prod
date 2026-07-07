@@ -189,7 +189,7 @@ public sealed class VerifyCashoutAccountEndpoint(
 
         _ = emailService.SendAsync(
             user.Email,
-            "✅ Conta de Saque Ativada - Safefy",
+            "✅ Conta de Saque Ativada - SwiftPay",
             EmailTemplate.PayoutAccountCreated,
             new Dictionary<string, string>
             {

@@ -343,7 +343,7 @@ public sealed class HunterPayService(
 
     private static string ResolveCustomerName(string? name)
     {
-        var value = string.IsNullOrWhiteSpace(name) ? "Cliente Safefy" : name.Trim();
+        var value = string.IsNullOrWhiteSpace(name) ? "Cliente SwiftPay" : name.Trim();
         return value[..Math.Min(value.Length, 100)];
     }
 

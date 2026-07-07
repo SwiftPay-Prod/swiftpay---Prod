@@ -6,7 +6,7 @@ using swiftpay_api_core.Models.Enum;
 namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
-/// Representa um saque da plataforma (Safefy) a partir das adquirentes.
+/// Representa um saque da plataforma (SwiftPay) a partir das adquirentes.
 /// Pode envolver múltiplas adquirentes (1 PlatformPayoutItem por adquirente).
 /// </summary>
 public class PlatformPayout : BaseEntity

@@ -6,11 +6,11 @@ namespace swiftpay_api_core.Extensions;
 
 public static class DataProtectionExtensions
 {
-    public static IServiceCollection AddSafefyDataProtection(this IServiceCollection services)
+    public static IServiceCollection AddSwiftPayDataProtection(this IServiceCollection services)
     {
         services.AddDataProtection()
             .PersistKeysToDbContext<PrimaryDbContext>()
-            .SetApplicationName("Safefy");
+            .SetApplicationName("SwiftPay");
 
         return services;
     }

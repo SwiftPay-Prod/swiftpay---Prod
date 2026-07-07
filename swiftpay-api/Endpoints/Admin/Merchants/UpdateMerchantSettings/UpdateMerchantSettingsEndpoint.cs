@@ -129,7 +129,7 @@ public sealed class UpdateMerchantSettingsEndpoint(
         _ = notificationService.CreateSystemNotificationAsync(
             merchant.Id,
             "Configurações atualizadas",
-            "As configurações da sua organização (taxas ou limites) foram atualizadas pela equipe Safefy."
+            "As configurações da sua organização (taxas ou limites) foram atualizadas pela equipe SwiftPay."
         );
 
         await Send.OkAsync(new UpdateMerchantSettingsResponse

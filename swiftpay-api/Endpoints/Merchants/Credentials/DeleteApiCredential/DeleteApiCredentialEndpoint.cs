@@ -106,7 +106,7 @@ public sealed class DeleteApiCredentialEndpoint(
 
             _ = emailService.SendAsync(
                 user.Email,
-                "🔒 Credencial de API revogada - Safefy",
+                "🔒 Credencial de API revogada - SwiftPay",
                 EmailTemplate.ApiCredentialRevoked,
                 new Dictionary<string, string>
                 {

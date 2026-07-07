@@ -151,7 +151,7 @@ public sealed class ConfirmRegenerateApiCredentialEndpoint(
 
             _ = emailService.SendAsync(
                 user.Email,
-                "🔄 Credencial de API regenerada - Safefy",
+                "🔄 Credencial de API regenerada - SwiftPay",
                 EmailTemplate.ApiCredentialRegenerated,
                 new Dictionary<string, string>
                 {

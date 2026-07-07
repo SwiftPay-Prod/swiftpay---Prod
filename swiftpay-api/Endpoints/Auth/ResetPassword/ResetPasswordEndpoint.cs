@@ -141,7 +141,7 @@ public sealed class ResetPasswordEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "Sua senha foi alterada - Safefy",
+                "Sua senha foi alterada - SwiftPay",
                 EmailTemplate.PasswordChanged,
                 new Dictionary<string, string>
                 {

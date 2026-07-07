@@ -82,8 +82,8 @@ function PaymentLinkDomainSortableItem({
 								Padrão
 							</Chip>
 						) : null}
-						<Chip variant='soft' size='sm' color={option.showSafefyBranding ? 'accent' : 'default'}>
-							{option.showSafefyBranding ? 'Com branding' : 'Sem branding'}
+						<Chip variant='soft' size='sm' color={option.showSwiftPayBranding ? 'accent' : 'default'}>
+							{option.showSwiftPayBranding ? 'Com branding' : 'Sem branding'}
 						</Chip>
 					</div>
 					<p className='truncate text-xs text-muted'>{option.baseUrl}</p>

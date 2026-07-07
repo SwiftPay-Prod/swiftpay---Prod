@@ -120,21 +120,21 @@ public class MerchantAcquirer : BaseEntity
     /// <summary>
     /// Define como a adquirente trata o split da taxa da plataforma em PIX.
     /// None: comportamento padrão, taxa compõe a disponibilidade derivada para saque.
-    /// AutoSplitToBank: adquirente envia taxa direto para conta bancária da Safefy.
+    /// AutoSplitToBank: adquirente envia taxa direto para conta bancária da SwiftPay.
     /// </summary>
     public PaymentFeeSplitHandling PixFeeSplitHandling { get; set; } = PaymentFeeSplitHandling.None;
 
     /// <summary>
     /// Define como a adquirente trata o split da taxa da plataforma em Boleto.
     /// None: comportamento padrão, taxa compõe a disponibilidade derivada para saque.
-    /// AutoSplitToBank: adquirente envia taxa direto para conta bancária da Safefy.
+    /// AutoSplitToBank: adquirente envia taxa direto para conta bancária da SwiftPay.
     /// </summary>
     public PaymentFeeSplitHandling BoletoFeeSplitHandling { get; set; } = PaymentFeeSplitHandling.None;
 
     /// <summary>
     /// Define como a adquirente trata o split da taxa da plataforma em Cartão de Crédito.
     /// None: comportamento padrão, taxa compõe a disponibilidade derivada para saque.
-    /// AutoSplitToBank: adquirente envia taxa direto para conta bancária da Safefy.
+    /// AutoSplitToBank: adquirente envia taxa direto para conta bancária da SwiftPay.
     /// </summary>
     public PaymentFeeSplitHandling CreditCardFeeSplitHandling { get; set; } = PaymentFeeSplitHandling.None;
 

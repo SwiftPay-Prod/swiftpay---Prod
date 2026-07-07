@@ -61,7 +61,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddInternalServices(this IServiceCollection services)
     {
-        services.AddSafefyDataProtection();
+        services.AddSwiftPayDataProtection();
         services.AddHttpClient("utmify-integration", client =>
         {
             client.Timeout = TimeSpan.FromSeconds(30);

@@ -302,7 +302,7 @@ LedgerTransaction (agrupamento)
 │              PlatformPayOutRequested, PlatformPayOut,
 │              ReferralCommissionPayOut, Reversal,
 │              PlatformAdjustment, AcquirerAdjustment,
-│              AcquirerSafefyProfitAdjustment, MerchantAdjustment
+│              AcquirerSwiftPayProfitAdjustment, MerchantAdjustment
 ├── Status: Pending, Approved, Refused
 └── Reference: PaymentId, PayoutId, PlatformPayoutId, etc.
 

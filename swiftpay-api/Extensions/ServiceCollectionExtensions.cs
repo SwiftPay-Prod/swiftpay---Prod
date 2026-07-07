@@ -41,7 +41,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddInternalServices(this IServiceCollection services)
     {
-        services.AddSafefyDataProtection();
+        services.AddSwiftPayDataProtection();
 
         services.AddHostedService<StartupWarmupService>();
         services.AddScoped<ITokenService, TokenService>();

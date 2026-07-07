@@ -12,7 +12,7 @@ interface PaymentLinkByIdPageContentProps {
 
 export async function PaymentLinkByIdPageContent({ paymentId }: PaymentLinkByIdPageContentProps) {
 	const { paymentLink, error, errorType } = await getPaymentLinkByPaymentIdCached(paymentId);
-	const showSafefyBranding = paymentLink?.showSafefyBranding !== false;
+	const showSwiftPayBranding = paymentLink?.showSwiftPayBranding !== false;
 
 	return (
 		<PaymentLinkThemeWrapper themeMode={paymentLink?.themeMode}>
@@ -23,13 +23,13 @@ export async function PaymentLinkByIdPageContent({ paymentId }: PaymentLinkByIdP
 					</div>
 				)}
 
-				{showSafefyBranding && (
+				{showSwiftPayBranding && (
 					<header className="payment-link-main flex items-center justify-center py-6 px-4">
 						<ThemeLogo logoUrl={paymentLink?.logoUrl} />
 					</header>
 				)}
 
-				<main className={`flex flex-1 justify-center px-4 ${showSafefyBranding ? 'items-start pb-12' : 'items-center py-12'}`}>
+				<main className={`flex flex-1 justify-center px-4 ${showSwiftPayBranding ? 'items-start pb-12' : 'items-center py-12'}`}>
 					{!paymentLink ? (
 						<ErrorView errorType={errorType} error={error} />
 					) : (

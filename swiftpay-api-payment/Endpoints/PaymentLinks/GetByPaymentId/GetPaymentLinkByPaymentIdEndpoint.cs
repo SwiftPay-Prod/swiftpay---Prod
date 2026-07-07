@@ -107,7 +107,7 @@ public sealed class GetPaymentLinkByPaymentIdEndpoint(
             ShowFees = false,
             FeeAmounts = [],
             PassFeeToCustomer = false,
-            ShowSafefyBranding = branding?.ShowSafefyBranding ?? true,
+            ShowSwiftPayBranding = branding?.ShowSwiftPayBranding ?? true,
             ThemeMode = null,
             LogoUrl = null,
             ProductName = null,

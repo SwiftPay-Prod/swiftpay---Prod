@@ -128,7 +128,7 @@ export function AdminRevenueCard({
 									</Tooltip.Trigger>
 									<Tooltip.Content className="max-w-56">
 										<Tooltip.Arrow />
-										Saldo disponível para saque da Safefy em cada adquirente.
+										Saldo disponível para saque da SwiftPay em cada adquirente.
 									</Tooltip.Content>
 								</Tooltip>
 							</div>

@@ -73,7 +73,7 @@ public class StagingDocsAuthMiddleware(RequestDelegate next)
 
     private static void SetUnauthorizedResponse(HttpContext context)
     {
-        context.Response.Headers.WWWAuthenticate = "Basic realm=\"Safefy Staging Docs\", charset=\"UTF-8\"";
+        context.Response.Headers.WWWAuthenticate = "Basic realm=\"SwiftPay Staging Docs\", charset=\"UTF-8\"";
         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
     }
 }

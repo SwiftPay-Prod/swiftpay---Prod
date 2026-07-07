@@ -120,7 +120,7 @@ export function buildFallbackDomainOptionsFromLegacy(settings: AdminPlatformSett
 					name: `${paymentMethodLabel(item.method)} padrão`,
 					baseUrl: safeTrim(item.baseUrl),
 					isDefault: true,
-					showSafefyBranding: true,
+					showSwiftPayBranding: true,
 				},
 			],
 		}));
@@ -270,7 +270,7 @@ export function buildUpdatePayload(formData: FormValues): AdminUpdatePlatformSet
 					name: safeTrim(option.name),
 					baseUrl: safeTrim(option.baseUrl),
 					isDefault: option.isDefault,
-					showSafefyBranding: option.showSafefyBranding,
+					showSwiftPayBranding: option.showSwiftPayBranding,
 				}))
 				.filter((option) => option.id && option.name && option.baseUrl),
 		})),

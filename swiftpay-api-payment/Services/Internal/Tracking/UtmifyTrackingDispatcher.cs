@@ -54,7 +54,7 @@ internal static class UtmifyTrackingDispatcher
 
         return new UtmifyOrderPayload
         {
-            Platform = "SafefyPay",
+            Platform = "SwiftPayPay",
             OrderId = payment.Id.ToString(),
             PaymentMethod = payment.Method switch
             {
@@ -133,7 +133,7 @@ internal static class UtmifyTrackingDispatcher
         if (!string.IsNullOrWhiteSpace(customer?.Name))
             return customer.Name.Trim();
 
-        return "Cliente Safefy";
+        return "Cliente SwiftPay";
     }
 
     private static string ResolveCustomerEmail(Customer? customer, Payment payment)
@@ -147,7 +147,7 @@ internal static class UtmifyTrackingDispatcher
     private sealed class UtmifyOrderPayload
     {
         [JsonPropertyName("platform")]
-        public string Platform { get; set; } = "SafefyPay";
+        public string Platform { get; set; } = "SwiftPayPay";
 
         [JsonPropertyName("orderId")]
         public string OrderId { get; set; } = string.Empty;

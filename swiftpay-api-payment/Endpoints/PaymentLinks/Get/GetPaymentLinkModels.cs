@@ -34,7 +34,7 @@ public sealed class PaymentLinkData
     public bool ShowFees { get; set; }
     public Dictionary<string, long> FeeAmounts { get; set; } = [];
     public bool PassFeeToCustomer { get; set; }
-    public bool ShowSafefyBranding { get; set; }
+    public bool ShowSwiftPayBranding { get; set; }
     public string? ThemeMode { get; set; }
     public string? LogoUrl { get; set; }
     public string? ProductName { get; set; }

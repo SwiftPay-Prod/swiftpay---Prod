@@ -170,7 +170,7 @@ export default function UserSettingsPage() {
 		if (isEnabled) {
 			return 'Você receberá notificações push sobre pagamentos e atualizações importantes.';
 		}
-		return 'Ative para receber notificações mesmo quando não estiver usando o Safefy.';
+		return 'Ative para receber notificações mesmo quando não estiver usando o SwiftPay.';
 	}
 
 	function getPushErrorMessage(): string | null {
@@ -178,7 +178,7 @@ export default function UserSettingsPage() {
 		
 		// Mapear erros comuns para mensagens mais claras
 		if (lastError.includes('permission') || lastError.includes('denied')) {
-			return 'Permissão negada. Vá em Configurações do navegador > Notificações e permita o Safefy.';
+			return 'Permissão negada. Vá em Configurações do navegador > Notificações e permita o SwiftPay.';
 		}
 		if (lastError.includes('token') || lastError.includes('messaging')) {
 			return 'Erro ao obter token de notificação. Recarregue a página e tente novamente.';
@@ -302,7 +302,7 @@ export default function UserSettingsPage() {
 							<div className="flex flex-col gap-1">
 								<span className="text-sm font-medium">Instalar como aplicativo</span>
 								<span className="text-xs opacity-80">
-									Para usar notificações no iOS, instale o Safefy como aplicativo: toque em Compartilhar → &quot;Adicionar à Tela de Início&quot;.
+									Para usar notificações no iOS, instale o SwiftPay como aplicativo: toque em Compartilhar → &quot;Adicionar à Tela de Início&quot;.
 								</span>
 								<Link
 									href={pushNotificationsDocsUrl}

@@ -6,7 +6,7 @@ public static class CorsExtensions
 {
     public const string CheckoutCorsPolicy = "CheckoutCorsPolicy";
 
-    public static IServiceCollection AddSafefyCors(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddSwiftPayCors(this IServiceCollection services, IConfiguration configuration)
     {
         var platformSettings = configuration.GetSection(PlatformSettingsOptions.PlatformSettings).Get<PlatformSettingsOptions>();
         var checkoutOrigin = (platformSettings?.CheckoutBaseUrl ?? "http://localhost:3000").TrimEnd('/');

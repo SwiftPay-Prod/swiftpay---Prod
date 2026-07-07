@@ -100,7 +100,7 @@ public sealed class ChangePasswordEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "Código de confirmação de alteração de senha - Safefy",
+                "Código de confirmação de alteração de senha - SwiftPay",
                 EmailTemplate.PasswordChangeCode,
                 new Dictionary<string, string>
                 {

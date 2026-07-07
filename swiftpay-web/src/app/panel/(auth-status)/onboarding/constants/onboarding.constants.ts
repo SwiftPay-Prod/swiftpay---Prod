@@ -31,7 +31,7 @@ export const STEP_DEFINITIONS: StepDefinition[] = [
 	{
 		id: 'discovery',
 		title: 'Como nos encontrou?',
-		description: 'Selecione todas as fontes que te trouxeram até a Safefy.',
+		description: 'Selecione todas as fontes que te trouxeram até a SwiftPay.',
 		icon: SearchFocusIcon,
 		requiresOtherText: true,
 		options: [

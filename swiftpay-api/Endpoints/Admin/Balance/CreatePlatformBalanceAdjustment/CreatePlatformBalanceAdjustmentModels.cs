@@ -33,7 +33,7 @@ public enum AcquirerAdjustmentTarget
 {
     Settlement,
     MerchantBalance,
-    SafefyProfit
+    SwiftPayProfit
 }
 
 public sealed class CreatePlatformBalanceAdjustmentRequest

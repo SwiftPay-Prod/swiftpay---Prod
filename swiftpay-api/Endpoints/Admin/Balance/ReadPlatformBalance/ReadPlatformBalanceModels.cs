@@ -20,7 +20,7 @@ public sealed class AdminPlatformBalanceData
 
     // Consolidados do ambiente
     public long TotalAcquirerGrossBalance { get; set; }
-    public long TotalSafefyProfit { get; set; }
+    public long TotalSwiftPayProfit { get; set; }
     public long ConsistencyDifference { get; set; }
     public long ConsistencyDifferenceAbsolute { get; set; }
     public bool IsConsistent { get; set; }
@@ -61,7 +61,7 @@ public sealed class AdminAcquirerBalanceData
     public long TotalOut { get; set; }
 
     /// <summary>
-    /// Saldo físico na adquirente (TotalIn - TotalOut) = dinheiro da Safefy + merchants
+    /// Saldo físico na adquirente (TotalIn - TotalOut) = dinheiro da SwiftPay + merchants
     /// </summary>
     public long GrossBalance { get; set; }
 
@@ -75,11 +75,11 @@ public sealed class AdminAcquirerBalanceData
     /// </summary>
     public long MerchantAvailableBalance { get; set; }
 
-    // Lucro da Safefy
+    // Lucro da SwiftPay
     /// <summary>
-    /// Lucro da Safefy nesta adquirente: (PlatformFee - AcquirerFee) de pagamentos + saques
+    /// Lucro da SwiftPay nesta adquirente: (PlatformFee - AcquirerFee) de pagamentos + saques
     /// </summary>
-    public long SafefyProfit { get; set; }
+    public long SwiftPayProfit { get; set; }
 
     /// <summary>
     /// Total de taxas pagas para esta adquirente (soma de AcquirerFee de todos os pagamentos)

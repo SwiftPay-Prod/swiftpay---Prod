@@ -68,7 +68,7 @@ public sealed class ResetUserPasswordEndpoint(
         {
             await emailService.SendAsync(
                 dbUser.Email,
-                "Sua senha foi redefinida - Safefy",
+                "Sua senha foi redefinida - SwiftPay",
                 EmailTemplate.AdminPasswordReset,
                 new Dictionary<string, string>
                 {

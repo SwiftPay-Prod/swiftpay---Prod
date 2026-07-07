@@ -227,7 +227,7 @@ public enum PayoutFeeHandling
 
 /// <summary>
 /// Define como a adquirente trata o split da taxa da plataforma em pagamentos recebidos.
-/// Algumas adquirentes fazem split automático enviando a taxa diretamente para a conta bancária da Safefy.
+/// Algumas adquirentes fazem split automático enviando a taxa diretamente para a conta bancária da SwiftPay.
 /// </summary>
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum PaymentFeeSplitHandling
@@ -239,8 +239,8 @@ public enum PaymentFeeSplitHandling
     None,
     
     /// <summary>
-    /// A adquirente faz split automático e envia a taxa diretamente para a conta bancária da Safefy.
-    /// O valor é creditado em PlatformPayoutsOut, pois já foi liquidado para a conta bancária da Safefy.
+    /// A adquirente faz split automático e envia a taxa diretamente para a conta bancária da SwiftPay.
+    /// O valor é creditado em PlatformPayoutsOut, pois já foi liquidado para a conta bancária da SwiftPay.
     /// Também registra em AcquirerPayoutsOut para conciliação.
     /// </summary>
     AutoSplitToBank

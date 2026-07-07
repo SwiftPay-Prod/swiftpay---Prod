@@ -22,7 +22,7 @@ export const integrationTexts: Record<IntegrationTextId, IntegrationText> = {
 			'Conecte sua operação à Utmify para acompanhar a jornada de compra com eventos de pagamento em tempo real.',
 		capabilities: [
 			'Ativar ou desativar a integração sem perder a configuração já salva.',
-			'Configurar o token da API para autenticar os envios da Safefy.',
+			'Configurar o token da API para autenticar os envios da SwiftPay.',
 			'Escolher quais notificações serão enviadas: waiting_payment, paid, refused, refunded e chargedback.',
 			'Controlar a granularidade do tracking por evento, mantendo somente o que faz sentido para sua operação.',
 		],
@@ -35,7 +35,7 @@ export const integrationTexts: Record<IntegrationTextId, IntegrationText> = {
 	otimizey: {
 		description: 'Conecte sua operação à Otimizey para enviar eventos de compra e otimizar atribuição de campanhas.',
 		capabilities: [
-			'Configurar o credential ID da Otimizey para autenticar os envios da Safefy.',
+			'Configurar o credential ID da Otimizey para autenticar os envios da SwiftPay.',
 			'Ativar ou desativar a integração sem perder as preferências de notificações.',
 			'Controlar envios por evento: waiting_payment, paid, refused, refunded e chargedback.',
 			'Enviar parâmetros UTM e dados de compra para análise completa de performance.',
@@ -69,7 +69,7 @@ export const integrationTexts: Record<IntegrationTextId, IntegrationText> = {
 	zapier: {
 		description: 'Automatize fluxos operacionais com gatilhos de pagamento.',
 		capabilities: [
-			'Conectar eventos da Safefy com milhares de aplicativos.',
+			'Conectar eventos da SwiftPay com milhares de aplicativos.',
 			'Criar automações sem código para operações comerciais.',
 		],
 		examples: ['Criar uma tarefa no time de suporte sempre que uma cobrança entrar em disputa.'],

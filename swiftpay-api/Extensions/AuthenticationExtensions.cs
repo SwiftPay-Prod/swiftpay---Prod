@@ -4,7 +4,7 @@ namespace swiftpay_api.Extensions;
 
 public static class AuthenticationExtensions
 {
-    public static IServiceCollection AddSafefyAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddSwiftPayAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         return services.AddJwtAuthentication(configuration, events =>
         {

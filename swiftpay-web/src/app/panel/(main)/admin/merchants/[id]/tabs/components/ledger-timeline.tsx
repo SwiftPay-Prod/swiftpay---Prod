@@ -148,7 +148,7 @@ function LedgerTimelineContent({ fetchPromise }: LedgerTimelineProps) {
 				<div className="flex flex-col gap-1">
 					<div className="flex items-center gap-2 text-xs text-foreground/50">
 						<Icon icon={Analytics01Icon} className="icon-sm" />
-						<span>Lucro Safefy</span>
+						<span>Lucro SwiftPay</span>
 					</div>
 					<span
 						className={`font-mono text-sm font-medium ${ledgerData.profit > 0 ? 'text-success' : ledgerData.profit < 0 ? 'text-danger' : 'text-foreground'}`}

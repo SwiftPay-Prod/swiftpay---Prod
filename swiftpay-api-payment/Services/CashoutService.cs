@@ -1032,7 +1032,7 @@ public class CashoutService(
 
         _ = emailService.SendAsync(
             user.Email,
-            "💸 Saque Solicitado - Safefy",
+            "💸 Saque Solicitado - SwiftPay",
             EmailTemplate.PayoutRequested,
             new Dictionary<string, string>
             {
@@ -1070,7 +1070,7 @@ public class CashoutService(
         {
             _ = emailService.SendAsync(
                 user.Email,
-                "❌ Saque Rejeitado - Safefy",
+                "❌ Saque Rejeitado - SwiftPay",
                 EmailTemplate.PayoutRejected,
                 new Dictionary<string, string>
                 {

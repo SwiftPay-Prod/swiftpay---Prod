@@ -300,7 +300,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
                 var settlementAdjustmentEntries = await dbContext.LedgerTransactions
                     .IgnoreQueryFilters()
                     .Where(lt => lt.Operation == LedgerTransactionOperation.AcquirerAdjustment
-                              || lt.Operation == LedgerTransactionOperation.AcquirerSafefyProfitAdjustment)
+                              || lt.Operation == LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment)
                     .SelectMany(lt => lt.LedgerEntries)
                     .Where(e => e.AccountId == settlementAccount.Id)
                     .GroupBy(e => e.Type)
@@ -378,7 +378,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
                 ? []
                 : await dbContext.LedgerTransactions
                     .IgnoreQueryFilters()
-                    .Where(lt => lt.Operation == LedgerTransactionOperation.AcquirerSafefyProfitAdjustment)
+                    .Where(lt => lt.Operation == LedgerTransactionOperation.AcquirerSwiftPayProfitAdjustment)
                     .SelectMany(lt => lt.LedgerEntries)
                     .Where(e => e.AccountId == settlementAccount.Id)
                     .GroupBy(e => e.Type)
@@ -390,7 +390,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
 
             var expectedPaymentProfit = completedPaymentProfit - refundedPaymentProfit;
             var expectedSwiftpayProfitBase = expectedPaymentProfit + payoutProfit + swiftpayProfitAdjustmentNet;
-            var expectedSwiftpayProfit = calculationService.CalculateSafefyProfit(expectedSwiftpayProfitBase, platformPayoutsOut);
+            var expectedSwiftpayProfit = calculationService.CalculateSwiftPayProfit(expectedSwiftpayProfitBase, platformPayoutsOut);
             var expectedMerchantBalance = calculationService.CalculateMerchantBalance(expectedGrossBalance, expectedSwiftpayProfit);
 
             var settlementDifference = currentSettlement - expectedSettlement;

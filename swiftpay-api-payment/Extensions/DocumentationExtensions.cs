@@ -13,12 +13,12 @@ public static class DocumentationExtensions
             {
                 document.Info = new()
                 {
-                    Title = "Safefy - Pix Gateway",
+                    Title = "SwiftPay - Pix Gateway",
                     Version = "v1",
                     Description = EndpointDescriptions.ApiDescription,
                     Contact = new()
                     {
-                        Name = "Suporte Safefy",
+                        Name = "Suporte SwiftPay",
                         Email = "suporte@swiftpay.com.br"
                     }
                 };
@@ -40,7 +40,7 @@ public static class DocumentationExtensions
         app.MapScalarApiReference("docs", options =>
         {
             options
-                .WithTitle("Safefy API")
+                .WithTitle("SwiftPay API")
                 .WithTheme(ScalarTheme.None)
                 .EnableDarkMode()
                 .PreserveSchemaPropertyOrder()
@@ -55,7 +55,7 @@ public static class DocumentationExtensions
         app.MapScalarApiReference("docs/classic", options =>
         {
             options
-                .WithTitle("Safefy API")
+                .WithTitle("SwiftPay API")
                 .WithTheme(ScalarTheme.None)
                 .WithClassicLayout()
                 .EnableDarkMode()

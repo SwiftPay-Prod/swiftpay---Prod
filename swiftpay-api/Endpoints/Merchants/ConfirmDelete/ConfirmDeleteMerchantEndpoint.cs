@@ -181,7 +181,7 @@ public sealed class ConfirmDeleteMerchantEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "🗑️ Sua organização foi excluída - Safefy",
+                "🗑️ Sua organização foi excluída - SwiftPay",
                 EmailTemplate.MerchantDeleted,
                 new Dictionary<string, string>
                 {

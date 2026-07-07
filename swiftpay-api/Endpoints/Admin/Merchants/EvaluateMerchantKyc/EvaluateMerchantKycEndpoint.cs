@@ -130,7 +130,7 @@ public sealed class EvaluateMerchantKycEndpoint(
 
         _ = emailService.SendAsync(
             merchant.User.Email,
-            "Cadastro Aprovado - Safefy",
+            "Cadastro Aprovado - SwiftPay",
             EmailTemplate.KycApproved,
             new Dictionary<string, string>
             {
@@ -176,7 +176,7 @@ public sealed class EvaluateMerchantKycEndpoint(
 
         _ = emailService.SendAsync(
             merchant.User.Email,
-            "Cadastro Rejeitado - Safefy",
+            "Cadastro Rejeitado - SwiftPay",
             EmailTemplate.KycRejected,
             new Dictionary<string, string>
             {
@@ -248,7 +248,7 @@ public sealed class EvaluateMerchantKycEndpoint(
 
         _ = emailService.SendAsync(
             merchant.User.Email,
-            "Complemento Solicitado - Safefy",
+            "Complemento Solicitado - SwiftPay",
             EmailTemplate.KycComplement,
             new Dictionary<string, string>
             {

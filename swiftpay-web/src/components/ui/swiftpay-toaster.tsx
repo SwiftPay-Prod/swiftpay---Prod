@@ -2,7 +2,7 @@
 
 import { Toast } from "@heroui/react";
 
-export function SafefyToaster() {
+export function SwiftPayToaster() {
   return (
     <Toast.Provider placement="top end" />
   );

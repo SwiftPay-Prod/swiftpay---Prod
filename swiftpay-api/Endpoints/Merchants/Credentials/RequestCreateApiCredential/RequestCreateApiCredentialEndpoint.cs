@@ -122,7 +122,7 @@ public sealed class RequestCreateApiCredentialEndpoint(
 
             await emailService.SendAsync(
                 user.Email,
-                $"{titleIcon} {title} - Safefy",
+                $"{titleIcon} {title} - SwiftPay",
                 EmailTemplate.ApiCredentialCode,
                 new Dictionary<string, string>
                 {

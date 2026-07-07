@@ -17,7 +17,7 @@ builder.Services.AddAllSettings(builder.Configuration);
 
 // Authorization & Authentication
 builder.Services.AddAuthorization();
-builder.Services.AddSafefyAuthentication(builder.Configuration);
+builder.Services.AddSwiftPayAuthentication(builder.Configuration);
 
 // FastEndpoints & OpenAPI
 builder.Services.AddFastEndpoints();
@@ -54,10 +54,10 @@ builder.Services.AddPaymentApiClient();
 builder.Services.AddHttpClient();
 
 // CORS
-builder.Services.AddSafefyCors(builder.Environment);
+builder.Services.AddSwiftPayCors(builder.Environment);
 
 // Rate Limiter (Production only)
-builder.Services.AddSafefyRateLimiter(builder.Environment);
+builder.Services.AddSwiftPayRateLimiter(builder.Environment);
 
 // Kestrel Configuration
 builder.WebHost.ConfigureKestrel(options =>
@@ -88,7 +88,7 @@ await app.PreWarmDatabasePoolsAsync(builder.Configuration);
 app.UseDocumentation(app.Environment);
 
 // Pipeline
-app.UseSafefyPipeline(app.Environment);
+app.UseSwiftPayPipeline(app.Environment);
 
 // Hangfire recurring jobs
 app.UseHangfireJobs();

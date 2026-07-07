@@ -82,7 +82,7 @@ public sealed class ForgotPasswordEndpoint(
         {
             await emailService.SendAsync(
                 user.Email,
-                "Código de recuperação de senha - Safefy",
+                "Código de recuperação de senha - SwiftPay",
                 EmailTemplate.PasswordReset,
                 new Dictionary<string, string>
                 {
