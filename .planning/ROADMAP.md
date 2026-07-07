@@ -2,14 +2,14 @@
 
 **6 fases** | **46 requisitos** | Todos v1 cobertos ✓
 
-| # | Fase | Goal | Requirements | Critérios |
-|---|------|------|-------------|-----------|
-| 1 | Namespaces .NET | Renomear todos os namespaces e assemblies C# | REBRAND-01–06 | 3 |
-| 2 | Arquivos e Diretórios | Renomear arquivos, diretórios e paths com "safefy" | REBRAND-07–12 | 3 |
-| 3 | Frontend e Assets | Substituir assets visuais e atualizar componentes React | REBRAND-13–21 | 3 |
-| 4 | Mensageria e Webhooks | Renomear filas RabbitMQ e headers de webhook | REBRAND-22–36 | 3 |
-| 5 | Config, Testes e Docs | Atualizar env vars, testes e documentação | REBRAND-37–42 | 3 |
-| 6 | Validação Final | Build, verificação e rename do diretório pai | REBRAND-43–46 | 3 |
+| # | Fase | Goal | Requirements | Status |
+|---|------|------|-------------|--------|
+| 1 | Namespaces .NET | Renomear todos os namespaces e assemblies C# | REBRAND-01–06 | ✅ |
+| 2 | Arquivos e Diretórios | Renomear arquivos, diretórios e paths com "safefy" | REBRAND-07–12 | ✅ |
+| 3 | Frontend e Assets | Substituir assets visuais e atualizar componentes React | REBRAND-13–21 | ✅ |
+| 4 | Mensageria e Webhooks | Renomear filas RabbitMQ e headers de webhook | REBRAND-22–36 | ✅ |
+| 5 | Config, Testes e Docs | Atualizar env vars, testes e documentação | REBRAND-37–42 | ✅ |
+| 6 | Validação Final | Build, verificação e rename do diretório pai | REBRAND-43–46 | ⏳ Parcial |
 
 ---
 
