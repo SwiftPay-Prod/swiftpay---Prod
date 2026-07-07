@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api_payment.Extensions;
+namespace swiftpay_api_payment.Extensions;
 
 public static class CorsExtensions
 {
@@ -27,8 +27,8 @@ public static class CorsExtensions
                         && (
                             origin.TrimEnd('/').Equals(checkoutOrigin, StringComparison.OrdinalIgnoreCase)
                             || (uri.Scheme == Uri.UriSchemeHttps
-                                && (uri.Host.Equals("safefypay.com.br", StringComparison.OrdinalIgnoreCase)
-                                    || uri.Host.EndsWith(".safefypay.com.br", StringComparison.OrdinalIgnoreCase)))
+                                && (uri.Host.Equals("swiftpay.com.br", StringComparison.OrdinalIgnoreCase)
+                                    || uri.Host.EndsWith(".swiftpay.com.br", StringComparison.OrdinalIgnoreCase)))
                         ))
                     .AllowAnyHeader()
                     .AllowAnyMethod()

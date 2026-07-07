@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
-using safefy_api.Interfaces;
+using swiftpay_api.Interfaces;
 
-namespace safefy_api.Hubs;
+namespace swiftpay_api.Hubs;
 
 public class MainHub(ISessionService sessionService) : BaseHub(sessionService)
 {

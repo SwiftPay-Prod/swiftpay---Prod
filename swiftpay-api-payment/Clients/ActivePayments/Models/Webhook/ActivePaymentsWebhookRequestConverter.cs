@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.ActivePayments.Models.Webhook;
+namespace swiftpay_api_payment.Clients.ActivePayments.Models.Webhook;
 
 public sealed class ActivePaymentsWebhookRequestConverter : JsonConverter<ActivePaymentsWebhookRequest>
 {

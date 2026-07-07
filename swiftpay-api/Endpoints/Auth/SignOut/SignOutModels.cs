@@ -1,5 +1,5 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Auth.SignOut;
+namespace swiftpay_api.Endpoints.Auth.SignOut;
 
 public sealed class SignOutResponse : BaseResponse;

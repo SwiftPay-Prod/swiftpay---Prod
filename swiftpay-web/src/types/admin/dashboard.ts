@@ -159,7 +159,7 @@ export interface AdminAcquirerBalanceData {
   grossBalance: number;
   merchantBalance: number;
   merchantAvailableBalance: number;
-  safefyProfit: number;
+  swiftpayProfit: number;
   totalAcquirerFees: number;
   payoutFeeMode: 'FixedOnly' | 'PercentageOnly' | 'FixedAndPercentage';
   payoutFeeFixed: number;
@@ -193,7 +193,7 @@ export interface AdminPlatformBalanceData {
   totalMerchantBlocked: number;
   totalMerchantBalance: number;
   totalAcquirerGrossBalance: number;
-  totalSafefyProfit: number;
+  totalSwiftPayProfit: number;
   consistencyDifference: number;
   consistencyDifferenceAbsolute: number;
   isConsistent: boolean;
@@ -259,8 +259,8 @@ export interface AcquirerReconciliationData {
   grossBalance: PlatformReconciliationAccount;
   /** Parcela do saldo bruto que pertence às organizações. */
   merchantBalance: PlatformReconciliationAccount;
-  /** Parcela do saldo bruto que pertence à Safefy. */
-  safefyProfit: PlatformReconciliationAccount;
+  /** Parcela do saldo bruto que pertence à SwiftPay. */
+  swiftpayProfit: PlatformReconciliationAccount;
   /** Excesso de saídas liquidadas acima do settlement corrente. */
   overdrawAmount: number;
   /** Soma absoluta das divergências principais desta adquirente. */

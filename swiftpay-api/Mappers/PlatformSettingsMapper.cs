@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api.Endpoints.Admin.Settings.ReadPlatformSettings;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.Settings.ReadPlatformSettings;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class PlatformSettingsMapper
 {

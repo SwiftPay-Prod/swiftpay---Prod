@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api.Validators;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Validators;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.Products.Stock.ReadListStockMovements;
+namespace swiftpay_api.Endpoints.Merchants.Products.Stock.ReadListStockMovements;
 
 public sealed class ReadListStockMovementsRequest : IPaginatedRequest
 {

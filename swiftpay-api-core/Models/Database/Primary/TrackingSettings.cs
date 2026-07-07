@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
 /// Tipos de eventos de tracking do checkout.

@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
 using System.Text.Json.Serialization;
 
-namespace safefy_api.Endpoints.Admin.Cashouts.ReprocessCompletedCashoutDev;
+namespace swiftpay_api.Endpoints.Admin.Cashouts.ReprocessCompletedCashoutDev;
 
 public sealed class ReprocessCompletedCashoutDevRequest
 {

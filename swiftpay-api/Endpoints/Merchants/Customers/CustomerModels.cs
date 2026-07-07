@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Merchants.Customers;
+namespace swiftpay_api.Endpoints.Merchants.Customers;
 
 public sealed class CustomerAddressData
 {

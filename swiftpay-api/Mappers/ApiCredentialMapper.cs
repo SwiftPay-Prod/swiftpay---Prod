@@ -1,8 +1,8 @@
-using safefy_api.Endpoints.Merchants.Credentials.CreateApiCredential;
-using safefy_api.Endpoints.Merchants.Credentials.ReadListApiCredentials;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Merchants.Credentials.CreateApiCredential;
+using swiftpay_api.Endpoints.Merchants.Credentials.ReadListApiCredentials;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class ApiCredentialMapper
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Primary
+namespace swiftpay_api.Database.Migrations.Primary
 {
     /// <inheritdoc />
     public partial class CheckoutsOrdersAndEnhancements_20260126 : Migration

@@ -2,9 +2,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Acquirers.Accithus.Webhook;
+namespace swiftpay_api_payment.Endpoints.Acquirers.Accithus.Webhook;
 
 public sealed class AccithusWebhookRequest
 {

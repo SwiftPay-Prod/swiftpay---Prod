@@ -1,17 +1,17 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Inputs;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Models.Orders;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Models.Orders;
 
-namespace safefy_api_payment.Endpoints.Orders.Create;
+namespace swiftpay_api_payment.Endpoints.Orders.Create;
 
 public sealed class CreateOrderEndpoint(
     PrimaryDbContext dbContext,

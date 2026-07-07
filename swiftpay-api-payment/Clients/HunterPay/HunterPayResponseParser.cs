@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace safefy_api_payment.Clients.HunterPay;
+namespace swiftpay_api_payment.Clients.HunterPay;
 
 internal static class HunterPayResponseParser
 {

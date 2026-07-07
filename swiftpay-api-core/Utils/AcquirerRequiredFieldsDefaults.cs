@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_core.Models.Acquirer;
+namespace swiftpay_api_core.Models.Acquirer;
 
 public static class AcquirerRequiredFieldsDefaults
 {

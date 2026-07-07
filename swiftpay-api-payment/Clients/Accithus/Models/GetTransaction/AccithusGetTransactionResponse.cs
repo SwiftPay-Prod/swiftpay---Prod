@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Accithus.Models.GetTransaction;
+namespace swiftpay_api_payment.Clients.Accithus.Models.GetTransaction;
 
 public sealed class AccithusGetTransactionResponse
 {

@@ -1,18 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api.Interfaces;
-using safefy_api.Models.PaymentApi;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Models.Settings;
-using safefy_api_core.Services;
+using swiftpay_api_core.Constants;
+using swiftpay_api.Interfaces;
+using swiftpay_api.Models.PaymentApi;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Services;
 using System.Data;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public sealed class AutomaticCashoutService(
     IServiceScopeFactory scopeFactory,

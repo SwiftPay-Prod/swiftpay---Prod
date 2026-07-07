@@ -214,7 +214,7 @@ export function DevToolsContent() {
 			});
 		}
 
-		const fcmToken = localStorage.getItem('safefy_fcm_token');
+		const fcmToken = localStorage.getItem('swiftpay_fcm_token');
 		addLog(`FCM Token: ${fcmToken ? fcmToken.substring(0, 30) + '...' : 'not found'}`, 'info');
 		addLog('=================', 'info');
 
@@ -581,7 +581,7 @@ export function DevToolsContent() {
 						<div className="rounded-lg bg-surface p-3 text-xs">
 							<p className="mb-2 font-semibold">Como ver console no iOS:</p>
 							<ol className="ml-4 flex list-decimal flex-col gap-1 text-muted">
-								<li>Mac: Safari → Develop → [iPhone] → [safefy.app]</li>
+								<li>Mac: Safari → Develop → [iPhone] → [swiftpay.app]</li>
 								<li>Ou use este console interno do Dev Tools</li>
 								<li>Verifique logs com prefixo [FCM] e [PushContext]</li>
 							</ol>

@@ -12,7 +12,7 @@ import { Routes } from '@/router/routes';
 import type { UserInfo } from '@/types/auth';
 import { useStandaloneHub } from '@/hub/use-standalone-hub';
 import { SignalRMethods } from '@/lib/signalr/methods';
-import { SafefyBrandLogo } from '@/components/ui/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 
 interface VerifyEmailContentProps {
 	user: UserInfo;
@@ -82,7 +82,7 @@ export function VerifyEmailContent({ user, accessToken, apiUrl }: VerifyEmailCon
 		<div className="min-h-screen flex items-center justify-center bg-background p-4">
 			<Card className="flex w-full max-w-lg flex-col items-center gap-6 p-8 text-center">
 				<div className="flex flex-col items-center gap-4">
-					<SafefyBrandLogo iconSize={30} textClassName="text-3xl" />
+					<SwiftPayBrandLogo iconSize={30} textClassName="text-3xl" />
 				</div>
 
 				<div className="flex size-20 items-center justify-center rounded-full bg-warning/10">

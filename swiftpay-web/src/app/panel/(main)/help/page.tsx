@@ -89,7 +89,7 @@ function SocialLink({ icon, name, handle, href, bgColor }: SocialLinkProps) {
 }
 
 export default function HelpPage() {
-	const whatsappUrl = resolveWhatsAppSupportUrl('Olá! Preciso de ajuda com a plataforma Safefy.');
+	const whatsappUrl = resolveWhatsAppSupportUrl('Olá! Preciso de ajuda com a plataforma SwiftPay.');
 
 	return (
 		<div className="flex flex-col gap-8">
@@ -255,7 +255,7 @@ export default function HelpPage() {
 									<span className="text-muted group-open:rotate-180 transition-transform">▼</span>
 								</summary>
 								<p className="mt-3 text-sm text-muted">
-									A documentação completa da API está disponível em docs.safefypay.com.br. Lá você encontra
+									A documentação completa da API está disponível em docs.swiftpay.com.br. Lá você encontra
 									guias de integração, referência de endpoints e exemplos de código em várias linguagens.
 								</p>
 							</details>
@@ -285,21 +285,21 @@ export default function HelpPage() {
 							<SocialLink
 								icon={InstagramIcon}
 								name="Instagram"
-								handle="@safefy_pay"
+								handle="@swiftpay_pay"
 								href={USEFUL_LINKS.instagramUrl}
 								bgColor="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500"
 							/>
 							<SocialLink
 								icon={DiscordIcon}
 								name="Discord"
-								handle="Comunidade Safefy"
+								handle="Comunidade SwiftPay"
 								href={USEFUL_LINKS.discordUrl}
 								bgColor="bg-[#5865F2]"
 							/>
 							<SocialLink
 								icon={TelegramIcon}
 								name="Telegram"
-								handle="Safefy Payments"
+								handle="SwiftPay Payments"
 								href={USEFUL_LINKS.telegramGroupUrl}
 								bgColor="bg-[#0088cc]"
 							/>

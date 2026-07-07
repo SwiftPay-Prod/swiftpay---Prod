@@ -1,8 +1,8 @@
 import type { DashboardPeriod } from '@/types/merchant/dashboard';
 
-export const DASHBOARD_PERIOD_STORAGE_KEY = 'safefy_dashboard_period';
-export const DASHBOARD_CUSTOM_START_STORAGE_KEY = 'safefy_dashboard_custom_start';
-export const DASHBOARD_CUSTOM_END_STORAGE_KEY = 'safefy_dashboard_custom_end';
+export const DASHBOARD_PERIOD_STORAGE_KEY = 'swiftpay_dashboard_period';
+export const DASHBOARD_CUSTOM_START_STORAGE_KEY = 'swiftpay_dashboard_custom_start';
+export const DASHBOARD_CUSTOM_END_STORAGE_KEY = 'swiftpay_dashboard_custom_end';
 
 export const DASHBOARD_PERIOD_OPTIONS: { key: DashboardPeriod; label: string }[] = [
 	{ key: 'today', label: 'Hoje' },

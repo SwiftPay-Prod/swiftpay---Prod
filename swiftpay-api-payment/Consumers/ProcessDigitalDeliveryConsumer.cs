@@ -1,12 +1,12 @@
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.MassTransit;
-using safefy_api_core.Services;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.MassTransit;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_payment.Consumers;
+namespace swiftpay_api_payment.Consumers;
 
 /// <summary>
 /// Consumer that processes digital item delivery after payment completion.

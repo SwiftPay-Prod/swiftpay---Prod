@@ -1,8 +1,8 @@
 using System.Text.Json;
 using FluentAssertions;
-using safefy_api_payment.Clients.Common;
+using swiftpay_api_payment.Clients.Common;
 
-namespace safefy_api_payment.Tests.Unit.Clients.Common;
+namespace swiftpay_api_payment.Tests.Unit.Clients.Common;
 
 public sealed class AcquirerJsonReaderTests
 {

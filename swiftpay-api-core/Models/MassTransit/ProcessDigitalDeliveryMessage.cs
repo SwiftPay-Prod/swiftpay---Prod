@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.MassTransit;
+namespace swiftpay_api_core.Models.MassTransit;
 
 /// <summary>
 /// Message to trigger digital item delivery after payment completion.

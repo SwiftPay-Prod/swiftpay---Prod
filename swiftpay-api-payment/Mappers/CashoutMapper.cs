@@ -1,10 +1,10 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
-using safefy_api_payment.Endpoints.Cashouts.Create;
-using safefy_api_payment.Endpoints.Cashouts.Get;
-using safefy_api_payment.Endpoints.Cashouts.List;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Endpoints.Cashouts.Create;
+using swiftpay_api_payment.Endpoints.Cashouts.Get;
+using swiftpay_api_payment.Endpoints.Cashouts.List;
 
-namespace safefy_api_payment.Mappers;
+namespace swiftpay_api_payment.Mappers;
 
 public static class CashoutMapper
 {

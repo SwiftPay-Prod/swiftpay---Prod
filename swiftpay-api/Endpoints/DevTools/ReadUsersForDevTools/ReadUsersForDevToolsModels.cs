@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.DevTools.ReadUsersForDevTools;
+namespace swiftpay_api.Endpoints.DevTools.ReadUsersForDevTools;
 
 public sealed class ReadUsersForDevToolsRequest
 {

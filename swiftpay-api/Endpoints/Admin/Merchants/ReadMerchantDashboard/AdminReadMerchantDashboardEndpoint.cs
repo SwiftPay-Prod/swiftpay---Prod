@@ -1,15 +1,15 @@
 using System.Text.Json;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Dashboard;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Messages;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Dashboard;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Messages;
 
-namespace safefy_api.Endpoints.Admin.Merchants.ReadMerchantDashboard;
+namespace swiftpay_api.Endpoints.Admin.Merchants.ReadMerchantDashboard;
 
 public sealed class AdminReadMerchantDashboardEndpoint(
     PrimaryDbContext dbContext,
@@ -118,7 +118,7 @@ public sealed class AdminReadMerchantDashboardEndpoint(
 
     private async Task SendCachedResponse(
         MerchantDashboardCache? cache,
-        safefy_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
+        swiftpay_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
         CancellationToken ct)
     {
         var volumeChart = cache != null

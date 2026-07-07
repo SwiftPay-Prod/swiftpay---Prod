@@ -1,12 +1,12 @@
 using FastEndpoints;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Models.Orders;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Models.Orders;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Utils;
 
-namespace safefy_api_payment.Endpoints.Internal.Orders.Create;
+namespace swiftpay_api_payment.Endpoints.Internal.Orders.Create;
 
 public sealed class CreateOrderInternalEndpoint(
     IOrderService orderService

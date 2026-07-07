@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.HeartPay.Models.Charges;
+namespace swiftpay_api_payment.Clients.HeartPay.Models.Charges;
 
 public sealed class HeartPayCreateChargeRequest
 {

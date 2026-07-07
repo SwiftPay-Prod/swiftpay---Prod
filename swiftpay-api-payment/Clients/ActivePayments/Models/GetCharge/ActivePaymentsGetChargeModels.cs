@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.ActivePayments.Models.CreateCharge;
+using swiftpay_api_payment.Clients.ActivePayments.Models.CreateCharge;
 
-namespace safefy_api_payment.Clients.ActivePayments.Models.GetCharge;
+namespace swiftpay_api_payment.Clients.ActivePayments.Models.GetCharge;
 
 public sealed class ActivePaymentsGetChargeResponse
 {

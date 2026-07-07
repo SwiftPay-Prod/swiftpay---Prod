@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Acquirer;
+namespace swiftpay_api_core.Models.Acquirer;
 
 public sealed class AcquirerRequiredFieldsConfig
 {

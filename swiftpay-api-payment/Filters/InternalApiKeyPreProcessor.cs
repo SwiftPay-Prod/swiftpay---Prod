@@ -1,8 +1,8 @@
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_core.Constants;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_core.Constants;
 
-namespace safefy_api_payment.Filters;
+namespace swiftpay_api_payment.Filters;
 
 public class InternalApiKeyPreProcessor(IConfiguration configuration) : IGlobalPreProcessor
 {

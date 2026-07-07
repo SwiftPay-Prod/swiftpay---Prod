@@ -1,9 +1,9 @@
 using FastEndpoints;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Users.PushTokens.UnregisterPushToken;
+namespace swiftpay_api.Endpoints.Users.PushTokens.UnregisterPushToken;
 
 public sealed class UnregisterPushTokenEndpoint(
     IPushNotificationService pushService

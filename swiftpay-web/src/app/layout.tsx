@@ -11,7 +11,7 @@ const inter = Inter({
 
 const appUrl =
   process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://safefypay.com.br");
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://swiftpay.com.br");
 const ogImageUrl = new URL("/images/og.png", appUrl).toString();
 
 export const viewport: Viewport = {
@@ -24,8 +24,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Safefy - Gateway de Pagamentos PIX",
-    template: "%s | Safefy",
+    default: "SwiftPay - Gateway de Pagamentos PIX",
+    template: "%s | SwiftPay",
   },
   description:
     "Gateway de pagamentos PIX. Integre pagamentos PIX em sua plataforma com nossa API simples e segura.",
@@ -37,15 +37,15 @@ export const metadata: Metadata = {
     "fintech",
     "pagamentos PIX",
   ],
-  authors: [{ name: "Safefy" }],
-  creator: "Safefy",
-  publisher: "Safefy",
+  authors: [{ name: "SwiftPay" }],
+  creator: "SwiftPay",
+  publisher: "SwiftPay",
   metadataBase: new URL(appUrl),
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Safefy",
+    title: "SwiftPay",
   },
   formatDetection: {
     telephone: false,
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: appUrl,
-    siteName: "Safefy",
-    title: "Safefy - Gateway de Pagamentos PIX",
+    siteName: "SwiftPay",
+    title: "SwiftPay - Gateway de Pagamentos PIX",
     description:
       "Gateway de pagamentos PIX. Integre pagamentos PIX em sua plataforma com nossa API simples e segura.",
     images: [
@@ -63,13 +63,13 @@ export const metadata: Metadata = {
         url: ogImageUrl,
         width: 1200,
         height: 630,
-        alt: "Safefy",
+        alt: "SwiftPay",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Safefy - Gateway de Pagamentos PIX",
+    title: "SwiftPay - Gateway de Pagamentos PIX",
     description:
       "Gateway de pagamentos PIX. Integre pagamentos PIX em sua plataforma com nossa API simples e segura.",
     images: [ogImageUrl],

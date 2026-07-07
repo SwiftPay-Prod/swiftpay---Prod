@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Extensions;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Extensions;
 
-namespace safefy_api_payment.Extensions;
+namespace swiftpay_api_payment.Extensions;
 
 public static class DatabaseExtensions
 {

@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Models.Transactions;
+namespace swiftpay_api_payment.Models.Transactions;
 
 public sealed class BoletoAddress
 {

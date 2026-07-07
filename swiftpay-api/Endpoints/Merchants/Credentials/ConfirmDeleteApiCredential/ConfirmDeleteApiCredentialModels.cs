@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Merchants.Credentials.DeleteApiCredential;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Merchants.Credentials.DeleteApiCredential;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.Credentials.ConfirmDeleteApiCredential;
+namespace swiftpay_api.Endpoints.Merchants.Credentials.ConfirmDeleteApiCredential;
 
 public sealed class ConfirmDeleteApiCredentialRequest
 {

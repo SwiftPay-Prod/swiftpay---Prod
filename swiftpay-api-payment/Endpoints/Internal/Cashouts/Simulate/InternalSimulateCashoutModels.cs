@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Services.Sandbox;
+using swiftpay_api_payment.Services.Sandbox;
 
-namespace safefy_api_payment.Endpoints.Internal.Cashouts.Simulate;
+namespace swiftpay_api_payment.Endpoints.Internal.Cashouts.Simulate;
 
 public sealed class InternalSimulateCashoutRequest
 {

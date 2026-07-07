@@ -1,8 +1,8 @@
 using System.Text.Json;
-using safefy_api.Endpoints.Admin.Merchants.ReadMerchantSettings;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.Merchants.ReadMerchantSettings;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminMerchantSettingsMapper
 {

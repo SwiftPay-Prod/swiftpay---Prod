@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.ActivePayments.Models.CreateCharge;
-using safefy_api_payment.Clients.ActivePayments.Models.Withdrawals;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Clients.ActivePayments.Models.CreateCharge;
+using swiftpay_api_payment.Clients.ActivePayments.Models.Withdrawals;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.ActivePayments.Models.Webhook;
+namespace swiftpay_api_payment.Clients.ActivePayments.Models.Webhook;
 
 [JsonConverter(typeof(ActivePaymentsWebhookRequestConverter))]
 public sealed class ActivePaymentsWebhookRequest

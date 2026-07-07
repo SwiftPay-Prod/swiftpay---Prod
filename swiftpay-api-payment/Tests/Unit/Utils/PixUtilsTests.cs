@@ -1,7 +1,7 @@
 using FluentAssertions;
-using safefy_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Endpoints.Utils;
 
-namespace safefy_api_payment.Tests.Unit.Utils;
+namespace swiftpay_api_payment.Tests.Unit.Utils;
 
 public sealed class PixUtilsTests
 {

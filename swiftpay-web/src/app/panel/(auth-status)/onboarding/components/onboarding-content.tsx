@@ -30,15 +30,15 @@ export function OnboardingContent({ userName, initialData }: OnboardingContentPr
 					<div className="flex flex-col">
 						<div className="mb-2">
 							<Image
-								src="/logos/safefy-horizontal-dark.png"
-								alt="Safefy"
+								src="/logos/swiftpay-horizontal-dark.png"
+								alt="SwiftPay"
 								width={146}
 								height={32}
 								className="h-8 w-auto dark:hidden"
 							/>
 							<Image
-								src="/logos/safefy-horizontal-light.png"
-								alt="Safefy"
+								src="/logos/swiftpay-horizontal-light.png"
+								alt="SwiftPay"
 								width={146}
 								height={32}
 								className="hidden h-8 w-auto dark:block"

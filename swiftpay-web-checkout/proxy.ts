@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const ENVIRONMENT_COOKIE = 'safefy_checkout_environment';
+const ENVIRONMENT_COOKIE = 'swiftpay_checkout_environment';
 
 export default function proxy(request: NextRequest) {
 	const response = NextResponse.next();

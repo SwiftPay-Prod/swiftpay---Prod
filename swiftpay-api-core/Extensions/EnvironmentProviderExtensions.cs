@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Services;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 /// <summary>
 /// Extension methods para registro do IEnvironmentProvider.

@@ -1,12 +1,12 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api.Mappers;
-using safefy_api.Services.Internal;
-using safefy_api_core.Models.UserOnboarding;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Mappers;
+using swiftpay_api.Services.Internal;
+using swiftpay_api_core.Models.UserOnboarding;
 
-namespace safefy_api.Endpoints.Admin.Users.ReadUser;
+namespace swiftpay_api.Endpoints.Admin.Users.ReadUser;
 
 public sealed class ReadUserEndpoint(
     PrimaryDbContext dbContext,
@@ -41,7 +41,7 @@ public sealed class ReadUserEndpoint(
         }
 
         var merchants = user.Merchants
-            .Where(m => m.Status != safefy_api_core.Models.Database.MerchantStatus.Deleted)
+            .Where(m => m.Status != swiftpay_api_core.Models.Database.MerchantStatus.Deleted)
             .Select(UserMapper.ToAdminMerchantSummary)
             .ToList();
 

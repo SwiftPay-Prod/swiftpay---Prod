@@ -1,12 +1,12 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Interfaces;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Services;
+namespace swiftpay_api_payment.Services;
 
 public class WithdrawService(
     IAcquirerConfigService acquirerConfigService,

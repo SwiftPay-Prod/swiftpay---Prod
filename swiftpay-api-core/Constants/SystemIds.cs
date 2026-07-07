@@ -1,4 +1,4 @@
-namespace safefy_api_core.Constants;
+namespace swiftpay_api_core.Constants;
 
 /// <summary>
 /// IDs de sistema para recursos sem owner específico (uploads da plataforma, etc).

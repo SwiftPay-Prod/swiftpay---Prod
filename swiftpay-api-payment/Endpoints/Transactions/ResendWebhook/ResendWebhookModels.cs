@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Transactions.ResendWebhook;
+namespace swiftpay_api_payment.Endpoints.Transactions.ResendWebhook;
 
 /// <summary>
 /// Request para reenviar webhook de uma transação.

@@ -3,10 +3,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
-using safefy_api_payment.Tests.Fixtures;
-using safefy_api_payment.Tests.Models;
+using swiftpay_api_payment.Tests.Fixtures;
+using swiftpay_api_payment.Tests.Models;
 
-namespace safefy_api_payment.Tests.Integration;
+namespace swiftpay_api_payment.Tests.Integration;
 
 /// <summary>
 /// E2E (End-to-End) do fluxo principal:
@@ -69,7 +69,7 @@ public class EndToEndFlowTests : IClassFixture<PaymentApiFactory>
         {
             Amount = 5000,
             PixKeyType = "Email",
-            PixKey = "e2e@safefy.com"
+            PixKey = "e2e@swiftpay.com"
         });
 
         cashoutResponse.StatusCode.Should().Be(HttpStatusCode.Created);

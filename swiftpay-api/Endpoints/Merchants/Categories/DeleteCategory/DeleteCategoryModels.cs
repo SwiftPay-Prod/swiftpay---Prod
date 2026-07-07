@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.Categories.DeleteCategory;
+namespace swiftpay_api.Endpoints.Merchants.Categories.DeleteCategory;
 
 public sealed class DeleteCategoryRequest
 {

@@ -1,7 +1,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace safefy_api_payment.Clients.IHubBanking.Models.Webhook;
+namespace swiftpay_api_payment.Clients.IHubBanking.Models.Webhook;
 
 public sealed class IHubWebhookRequestValidator : Validator<IHubWebhookRequest>
 {

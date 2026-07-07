@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Models.Email;
+namespace swiftpay_api_core.Models.Email;
 
 /// <summary>
 /// Variável disponível para uso em templates de email

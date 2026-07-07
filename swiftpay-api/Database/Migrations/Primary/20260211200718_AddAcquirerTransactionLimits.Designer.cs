@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Email;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Email;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Primary
+namespace swiftpay_api.Database.Migrations.Primary
 {
     [DbContext(typeof(PrimaryDbContext))]
     [Migration("20260211200718_AddAcquirerTransactionLimits")]
@@ -118,7 +118,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("CouponProduct");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Account", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Account", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +164,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Acquirer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Acquirer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -346,7 +346,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Acquirers");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.AcquirerDashboardCache", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.AcquirerDashboardCache", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -468,7 +468,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("AcquirerDashboardCaches");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.AdminDashboardCache", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.AdminDashboardCache", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -641,7 +641,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("AdminDashboardCaches");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.ApiCredentialCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.ApiCredentialCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -699,7 +699,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("ApiCredentialCodes");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BankReconciliation", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BankReconciliation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -819,7 +819,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("BankReconciliations");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BankReconciliationDiscrepancy", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BankReconciliationDiscrepancy", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -886,7 +886,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("BankReconciliationDiscrepancies");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Bulletin", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Bulletin", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -921,7 +921,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Bulletins");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BulletinReaction", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BulletinReaction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -956,7 +956,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("BulletinReactions");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BulletinRead", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BulletinRead", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -987,7 +987,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("BulletinReads");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Category", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1029,7 +1029,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Checkout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Checkout", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1092,7 +1092,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Checkouts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.CheckoutConfig", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.CheckoutConfig", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1248,7 +1248,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("CheckoutConfigs");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.CheckoutProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.CheckoutProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1296,7 +1296,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("CheckoutProducts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.CheckoutTemplate", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.CheckoutTemplate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1407,7 +1407,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("CheckoutTemplates");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Coupon", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Coupon", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1488,7 +1488,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Customer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -1575,7 +1575,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DeviceVerificationCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DeviceVerificationCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1634,7 +1634,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("DeviceVerificationCodes");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1708,7 +1708,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("DigitalItems");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1788,7 +1788,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.UseTpcMappingStrategy();
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProductItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProductItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1862,7 +1862,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("DigitalProductItems");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProductVariant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProductVariant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1916,7 +1916,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("DigitalProductVariants");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.EmailConfirmationToken", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.EmailConfirmationToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1951,7 +1951,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("EmailConfirmationTokens");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.LedgerEntry", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.LedgerEntry", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -1992,7 +1992,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("LedgerEntries");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.LedgerTransaction", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.LedgerTransaction", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -2037,7 +2037,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("LedgerTransactions");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Merchant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Merchant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2128,7 +2128,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Merchants");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantAcquirer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantAcquirer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2224,7 +2224,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantAcquirers");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantAcquirerChangeHistory", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantAcquirerChangeHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2283,7 +2283,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantAcquirerChangeHistories");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantApiCredential", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantApiCredential", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -2329,7 +2329,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantApiCredentials");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantBalance", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantBalance", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2392,7 +2392,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantBalances");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantDashboardCache", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantDashboardCache", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2493,7 +2493,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantDashboardCaches");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantDeletionCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantDeletionCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2533,7 +2533,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantDeletionCodes");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantEmailSettings", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantEmailSettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2583,7 +2583,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantEmailSettings");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantEmailTemplate", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantEmailTemplate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2654,7 +2654,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantEmailTemplates");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantKyc", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantKyc", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2733,7 +2733,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantKycs");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantKycPendingItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantKycPendingItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2785,7 +2785,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantKycPendingItems");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantPayoutAccount", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantPayoutAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2834,7 +2834,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantPayoutAccounts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantSettings", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantSettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2929,7 +2929,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantSettings");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantSettingsChangeHistory", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantSettingsChangeHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2978,7 +2978,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("MerchantSettingsChangeHistories");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Notification", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3048,7 +3048,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Order", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3145,7 +3145,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.OrderItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3207,7 +3207,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PasswordChangeCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PasswordChangeCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3246,7 +3246,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PasswordChangeCodes");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PasswordResetCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PasswordResetCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3281,7 +3281,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PasswordResetCodes");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Payment", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Payment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3411,7 +3411,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PaymentBoleto", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PaymentBoleto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3446,7 +3446,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PaymentsBoleto");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PaymentPix", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PaymentPix", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3514,7 +3514,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PaymentsPix");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Payout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Payout", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3598,7 +3598,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Payouts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PayoutAccountVerificationCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PayoutAccountVerificationCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3642,7 +3642,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PayoutAccountVerificationCodes");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PhysicalProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PhysicalProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3740,7 +3740,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.UseTpcMappingStrategy();
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PhysicalProductVariant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PhysicalProductVariant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3806,7 +3806,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PhysicalProductVariants");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformBalanceCache", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformBalanceCache", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3860,7 +3860,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PlatformBalanceCaches");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayout", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3917,7 +3917,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PlatformPayouts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayoutAccount", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayoutAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3967,7 +3967,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PlatformPayoutAccounts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayoutItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayoutItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4027,7 +4027,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PlatformPayoutItems");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformSettings", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformSettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4125,7 +4125,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PlatformSettings");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Product", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4199,7 +4199,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PushToken", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PushToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4244,7 +4244,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("PushTokens");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.RefreshToken", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4294,7 +4294,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.ServiceProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.ServiceProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4384,7 +4384,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.UseTpcMappingStrategy();
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.StockMovement", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.StockMovement", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4443,7 +4443,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("StockMovements");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.StoredFile", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.StoredFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4505,7 +4505,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("StoredFiles");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.TrustedDevice", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.TrustedDevice", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4557,7 +4557,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("TrustedDevices");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.User", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4633,7 +4633,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.UserNotificationPreference", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.UserNotificationPreference", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4716,7 +4716,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.ToTable("UserNotificationPreferences");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Variant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Variant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -4765,13 +4765,13 @@ namespace safefy_api.Database.Migrations.Primary
 
             modelBuilder.Entity("CategoryDigitalProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Category", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.DigitalProduct", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.DigitalProduct", null)
                         .WithMany()
                         .HasForeignKey("DigitalProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4780,13 +4780,13 @@ namespace safefy_api.Database.Migrations.Primary
 
             modelBuilder.Entity("CategoryPhysicalProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Category", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.PhysicalProduct", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.PhysicalProduct", null)
                         .WithMany()
                         .HasForeignKey("PhysicalProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4795,13 +4795,13 @@ namespace safefy_api.Database.Migrations.Primary
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Category", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Product", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4810,13 +4810,13 @@ namespace safefy_api.Database.Migrations.Primary
 
             modelBuilder.Entity("CategoryServiceProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Category", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.ServiceProduct", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.ServiceProduct", null)
                         .WithMany()
                         .HasForeignKey("ServiceProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4825,13 +4825,13 @@ namespace safefy_api.Database.Migrations.Primary
 
             modelBuilder.Entity("CheckoutCoupon", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Checkout", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Checkout", null)
                         .WithMany()
                         .HasForeignKey("CheckoutsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Coupon", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Coupon", null)
                         .WithMany()
                         .HasForeignKey("CouponsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4840,26 +4840,26 @@ namespace safefy_api.Database.Migrations.Primary
 
             modelBuilder.Entity("CouponProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Coupon", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Coupon", null)
                         .WithMany()
                         .HasForeignKey("CouponsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Product", null)
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Account", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Account", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Acquirer", "Acquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Acquirer", "Acquirer")
                         .WithMany("Accounts")
                         .HasForeignKey("AcquirerId");
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Accounts")
                         .HasForeignKey("MerchantId");
 
@@ -4868,30 +4868,30 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.AcquirerDashboardCache", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.AcquirerDashboardCache", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Acquirer", "Acquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Acquirer", "Acquirer")
                         .WithOne()
-                        .HasForeignKey("safefy_api_core.Models.Database.AcquirerDashboardCache", "AcquirerId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.AcquirerDashboardCache", "AcquirerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Acquirer");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.ApiCredentialCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.ApiCredentialCode", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.MerchantApiCredential", "Credential")
+                    b.HasOne("swiftpay_api_core.Models.Database.MerchantApiCredential", "Credential")
                         .WithMany()
                         .HasForeignKey("CredentialId");
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4904,19 +4904,19 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BankReconciliation", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BankReconciliation", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "CorrectionsAppliedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "CorrectionsAppliedByUser")
                         .WithMany()
                         .HasForeignKey("CorrectionsAppliedByUserId");
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "RequestedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "RequestedByUser")
                         .WithMany()
                         .HasForeignKey("RequestedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4929,25 +4929,25 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("RequestedByUser");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BankReconciliationDiscrepancy", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BankReconciliationDiscrepancy", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.BankReconciliation", "BankReconciliation")
+                    b.HasOne("swiftpay_api_core.Models.Database.BankReconciliation", "BankReconciliation")
                         .WithMany("Discrepancies")
                         .HasForeignKey("BankReconciliationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.LedgerTransaction", "LedgerTransaction")
+                    b.HasOne("swiftpay_api_core.Models.Database.LedgerTransaction", "LedgerTransaction")
                         .WithMany()
                         .HasForeignKey("LedgerTransactionId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Payment", "Payment")
+                    b.HasOne("swiftpay_api_core.Models.Database.Payment", "Payment")
                         .WithMany()
                         .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Payout", "Payout")
+                    b.HasOne("swiftpay_api_core.Models.Database.Payout", "Payout")
                         .WithMany()
                         .HasForeignKey("PayoutId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -4961,9 +4961,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Payout");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Bulletin", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Bulletin", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "CreatedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4972,15 +4972,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("CreatedByUser");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BulletinReaction", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BulletinReaction", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Bulletin", "Bulletin")
+                    b.HasOne("swiftpay_api_core.Models.Database.Bulletin", "Bulletin")
                         .WithMany("BulletinReactions")
                         .HasForeignKey("BulletinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4991,15 +4991,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BulletinRead", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BulletinRead", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Bulletin", "Bulletin")
+                    b.HasOne("swiftpay_api_core.Models.Database.Bulletin", "Bulletin")
                         .WithMany("BulletinReads")
                         .HasForeignKey("BulletinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5010,9 +5010,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Category", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Category", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5021,13 +5021,13 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Checkout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Checkout", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.CheckoutTemplate", "CheckoutTemplate")
+                    b.HasOne("swiftpay_api_core.Models.Database.CheckoutTemplate", "CheckoutTemplate")
                         .WithMany("Checkouts")
                         .HasForeignKey("CheckoutTemplateId");
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Checkouts")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5038,15 +5038,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.CheckoutConfig", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.CheckoutConfig", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Checkout", "Checkout")
+                    b.HasOne("swiftpay_api_core.Models.Database.Checkout", "Checkout")
                         .WithOne("Config")
-                        .HasForeignKey("safefy_api_core.Models.Database.CheckoutConfig", "CheckoutId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.CheckoutConfig", "CheckoutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("safefy_api_core.Models.Database.SeoConfig", "Seo", b1 =>
+                    b.OwnsOne("swiftpay_api_core.Models.Database.SeoConfig", "Seo", b1 =>
                         {
                             b1.Property<Guid>("CheckoutConfigId");
 
@@ -5069,7 +5069,7 @@ namespace safefy_api.Database.Migrations.Primary
                             b1.WithOwner()
                                 .HasForeignKey("CheckoutConfigId");
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.OpenGraphConfig", "OpenGraph", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.OpenGraphConfig", "OpenGraph", b2 =>
                                 {
                                     b2.Property<Guid>("SeoConfigCheckoutConfigId");
 
@@ -5099,7 +5099,7 @@ namespace safefy_api.Database.Migrations.Primary
                                         .HasForeignKey("SeoConfigCheckoutConfigId");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.TwitterCardConfig", "Twitter", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.TwitterCardConfig", "Twitter", b2 =>
                                 {
                                     b2.Property<Guid>("SeoConfigCheckoutConfigId");
 
@@ -5128,7 +5128,7 @@ namespace safefy_api.Database.Migrations.Primary
                             b1.Navigation("Twitter");
                         });
 
-                    b.OwnsOne("safefy_api_core.Models.Database.SocialProofSettings", "SocialProofSettings", b1 =>
+                    b.OwnsOne("swiftpay_api_core.Models.Database.SocialProofSettings", "SocialProofSettings", b1 =>
                         {
                             b1.Property<Guid>("CheckoutConfigId");
 
@@ -5148,7 +5148,7 @@ namespace safefy_api.Database.Migrations.Primary
                             b1.WithOwner()
                                 .HasForeignKey("CheckoutConfigId");
 
-                            b1.OwnsMany("safefy_api_core.Models.Database.SocialProofNotification", "Notifications", b2 =>
+                            b1.OwnsMany("swiftpay_api_core.Models.Database.SocialProofNotification", "Notifications", b2 =>
                                 {
                                     b2.Property<Guid>("SocialProofSettingsCheckoutConfigId");
 
@@ -5175,7 +5175,7 @@ namespace safefy_api.Database.Migrations.Primary
                             b1.Navigation("Notifications");
                         });
 
-                    b.OwnsOne("safefy_api_core.Models.Database.TrackingSettings", "TrackingSettings", b1 =>
+                    b.OwnsOne("swiftpay_api_core.Models.Database.TrackingSettings", "TrackingSettings", b1 =>
                         {
                             b1.Property<Guid>("CheckoutConfigId");
 
@@ -5188,7 +5188,7 @@ namespace safefy_api.Database.Migrations.Primary
                             b1.WithOwner()
                                 .HasForeignKey("CheckoutConfigId");
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.ClarityTrackingConfig", "Clarity", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.ClarityTrackingConfig", "Clarity", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5204,7 +5204,7 @@ namespace safefy_api.Database.Migrations.Primary
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.FacebookPixelTrackingConfig", "FacebookPixel", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.FacebookPixelTrackingConfig", "FacebookPixel", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5225,7 +5225,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.FacebookPixelEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.FacebookPixelEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("FacebookPixelTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5252,7 +5252,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.GoogleTagManagerTrackingConfig", "GoogleTagManager", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.GoogleTagManagerTrackingConfig", "GoogleTagManager", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5267,7 +5267,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.GoogleTagManagerEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.GoogleTagManagerEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("GoogleTagManagerTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5294,7 +5294,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.KwaiTrackingConfig", "Kwai", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.KwaiTrackingConfig", "Kwai", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5309,7 +5309,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.KwaiEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.KwaiEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("KwaiTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5336,7 +5336,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.OtimizeyTrackingConfig", "Otimizey", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.OtimizeyTrackingConfig", "Otimizey", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5351,7 +5351,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.OtimizeyEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.OtimizeyEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("OtimizeyTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5378,7 +5378,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.PinterestTrackingConfig", "Pinterest", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.PinterestTrackingConfig", "Pinterest", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5393,7 +5393,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.PinterestEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.PinterestEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("PinterestTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5420,7 +5420,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.TaboolaTrackingConfig", "Taboola", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.TaboolaTrackingConfig", "Taboola", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5435,7 +5435,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.TaboolaEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.TaboolaEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("TaboolaTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5462,7 +5462,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.TikTokTrackingConfig", "TikTok", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.TikTokTrackingConfig", "TikTok", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5479,7 +5479,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.TikTokEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.TikTokEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("TikTokTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5506,7 +5506,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.Navigation("Events");
                                 });
 
-                            b1.OwnsOne("safefy_api_core.Models.Database.UtmifyTrackingConfig", "Utmify", b2 =>
+                            b1.OwnsOne("swiftpay_api_core.Models.Database.UtmifyTrackingConfig", "Utmify", b2 =>
                                 {
                                     b2.Property<Guid>("TrackingSettingsCheckoutConfigId");
 
@@ -5521,7 +5521,7 @@ namespace safefy_api.Database.Migrations.Primary
                                     b2.WithOwner()
                                         .HasForeignKey("TrackingSettingsCheckoutConfigId");
 
-                                    b2.OwnsOne("safefy_api_core.Models.Database.UtmifyEventSettings", "Events", b3 =>
+                                    b2.OwnsOne("swiftpay_api_core.Models.Database.UtmifyEventSettings", "Events", b3 =>
                                         {
                                             b3.Property<Guid>("UtmifyTrackingConfigTrackingSettingsCheckoutConfigId");
 
@@ -5576,21 +5576,21 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("TrackingSettings");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.CheckoutProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.CheckoutProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Checkout", "Checkout")
+                    b.HasOne("swiftpay_api_core.Models.Database.Checkout", "Checkout")
                         .WithMany("CheckoutProducts")
                         .HasForeignKey("CheckoutId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Product", "Product")
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Variant", "Variant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Variant", "Variant")
                         .WithMany()
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5602,9 +5602,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Coupon", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Coupon", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5613,9 +5613,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Customer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Customer", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5624,9 +5624,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DeviceVerificationCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DeviceVerificationCode", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5635,33 +5635,33 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalItem", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Order", "DeliveredToOrder")
+                    b.HasOne("swiftpay_api_core.Models.Database.Order", "DeliveredToOrder")
                         .WithMany()
                         .HasForeignKey("DeliveredToOrderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.OrderItem", "DeliveredToOrderItem")
+                    b.HasOne("swiftpay_api_core.Models.Database.OrderItem", "DeliveredToOrderItem")
                         .WithMany("DeliveredDigitalItems")
                         .HasForeignKey("DeliveredToOrderItemId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Product", "Product")
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", "Product")
                         .WithMany("DigitalItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Order", "ReservedForOrder")
+                    b.HasOne("swiftpay_api_core.Models.Database.Order", "ReservedForOrder")
                         .WithMany()
                         .HasForeignKey("ReservedForOrderId");
 
-                    b.HasOne("safefy_api_core.Models.Database.OrderItem", "ReservedForOrderItem")
+                    b.HasOne("swiftpay_api_core.Models.Database.OrderItem", "ReservedForOrderItem")
                         .WithMany()
                         .HasForeignKey("ReservedForOrderItemId");
 
-                    b.HasOne("safefy_api_core.Models.Database.Variant", "Variant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Variant", "Variant")
                         .WithMany()
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5679,9 +5679,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5690,32 +5690,32 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProductItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProductItem", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Order", "DeliveredToOrder")
+                    b.HasOne("swiftpay_api_core.Models.Database.Order", "DeliveredToOrder")
                         .WithMany()
                         .HasForeignKey("DeliveredToOrderId");
 
-                    b.HasOne("safefy_api_core.Models.Database.OrderItem", "DeliveredToOrderItem")
+                    b.HasOne("swiftpay_api_core.Models.Database.OrderItem", "DeliveredToOrderItem")
                         .WithMany()
                         .HasForeignKey("DeliveredToOrderItemId");
 
-                    b.HasOne("safefy_api_core.Models.Database.DigitalProduct", "DigitalProduct")
+                    b.HasOne("swiftpay_api_core.Models.Database.DigitalProduct", "DigitalProduct")
                         .WithMany("Items")
                         .HasForeignKey("DigitalProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.DigitalProductVariant", "DigitalProductVariant")
+                    b.HasOne("swiftpay_api_core.Models.Database.DigitalProductVariant", "DigitalProductVariant")
                         .WithMany("Items")
                         .HasForeignKey("DigitalProductVariantId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Order", "ReservedForOrder")
+                    b.HasOne("swiftpay_api_core.Models.Database.Order", "ReservedForOrder")
                         .WithMany()
                         .HasForeignKey("ReservedForOrderId");
 
-                    b.HasOne("safefy_api_core.Models.Database.OrderItem", "ReservedForOrderItem")
+                    b.HasOne("swiftpay_api_core.Models.Database.OrderItem", "ReservedForOrderItem")
                         .WithMany()
                         .HasForeignKey("ReservedForOrderItemId");
 
@@ -5732,9 +5732,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("ReservedForOrderItem");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProductVariant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProductVariant", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.DigitalProduct", "DigitalProduct")
+                    b.HasOne("swiftpay_api_core.Models.Database.DigitalProduct", "DigitalProduct")
                         .WithMany("Variants")
                         .HasForeignKey("DigitalProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5743,9 +5743,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("DigitalProduct");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.EmailConfirmationToken", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.EmailConfirmationToken", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5754,15 +5754,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.LedgerEntry", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.LedgerEntry", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Account", "Account")
+                    b.HasOne("swiftpay_api_core.Models.Database.Account", "Account")
                         .WithMany("LedgerEntries")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.LedgerTransaction", "LedgerTransaction")
+                    b.HasOne("swiftpay_api_core.Models.Database.LedgerTransaction", "LedgerTransaction")
                         .WithMany("LedgerEntries")
                         .HasForeignKey("LedgerTransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5773,19 +5773,19 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("LedgerTransaction");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.LedgerTransaction", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.LedgerTransaction", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Payment", "Payment")
+                    b.HasOne("swiftpay_api_core.Models.Database.Payment", "Payment")
                         .WithMany("LedgerTransactions")
                         .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Payout", "Payout")
+                    b.HasOne("swiftpay_api_core.Models.Database.Payout", "Payout")
                         .WithMany("LedgerTransactions")
                         .HasForeignKey("PayoutId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.PlatformPayout", "PlatformPayout")
+                    b.HasOne("swiftpay_api_core.Models.Database.PlatformPayout", "PlatformPayout")
                         .WithMany("LedgerTransactions")
                         .HasForeignKey("PlatformPayoutId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5797,9 +5797,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("PlatformPayout");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Merchant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Merchant", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany("Merchants")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5808,15 +5808,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantAcquirer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantAcquirer", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Acquirer", "Acquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Acquirer", "Acquirer")
                         .WithMany("MerchantAcquirers")
                         .HasForeignKey("AcquirerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("MerchantAcquirers")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5827,25 +5827,25 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantAcquirerChangeHistory", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantAcquirerChangeHistory", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "ChangedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "ChangedByUser")
                         .WithMany()
                         .HasForeignKey("ChangedByUserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Acquirer", "NewAcquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Acquirer", "NewAcquirer")
                         .WithMany()
                         .HasForeignKey("NewAcquirerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Acquirer", "PreviousAcquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Acquirer", "PreviousAcquirer")
                         .WithMany()
                         .HasForeignKey("PreviousAcquirerId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5859,9 +5859,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("PreviousAcquirer");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantApiCredential", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantApiCredential", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("MerchantApiCredentials")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5870,9 +5870,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantBalance", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantBalance", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5881,26 +5881,26 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantDashboardCache", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantDashboardCache", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithOne()
-                        .HasForeignKey("safefy_api_core.Models.Database.MerchantDashboardCache", "MerchantId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.MerchantDashboardCache", "MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantDeletionCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantDeletionCode", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5911,20 +5911,20 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantEmailSettings", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantEmailSettings", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithOne("EmailSettings")
-                        .HasForeignKey("safefy_api_core.Models.Database.MerchantEmailSettings", "MerchantId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.MerchantEmailSettings", "MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantEmailTemplate", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantEmailTemplate", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("EmailTemplates")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5933,30 +5933,30 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantKyc", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantKyc", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.StoredFile", "DocumentBackFile")
+                    b.HasOne("swiftpay_api_core.Models.Database.StoredFile", "DocumentBackFile")
                         .WithMany()
                         .HasForeignKey("DocumentBackFileId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.StoredFile", "DocumentFrontFile")
+                    b.HasOne("swiftpay_api_core.Models.Database.StoredFile", "DocumentFrontFile")
                         .WithMany()
                         .HasForeignKey("DocumentFrontFileId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithOne("MerchantKyc")
-                        .HasForeignKey("safefy_api_core.Models.Database.MerchantKyc", "MerchantId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.MerchantKyc", "MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.StoredFile", "ProofOfAddressFile")
+                    b.HasOne("swiftpay_api_core.Models.Database.StoredFile", "ProofOfAddressFile")
                         .WithMany()
                         .HasForeignKey("ProofOfAddressFileId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.StoredFile", "SelfieFile")
+                    b.HasOne("swiftpay_api_core.Models.Database.StoredFile", "SelfieFile")
                         .WithMany()
                         .HasForeignKey("SelfieFileId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -5972,15 +5972,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("SelfieFile");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantKycPendingItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantKycPendingItem", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("MerchantKycPendingItems")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "RequestedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "RequestedByUser")
                         .WithMany()
                         .HasForeignKey("RequestedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -5991,9 +5991,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("RequestedByUser");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantPayoutAccount", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantPayoutAccount", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("PayoutAccounts")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6002,25 +6002,25 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantSettings", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantSettings", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithOne("MerchantSettings")
-                        .HasForeignKey("safefy_api_core.Models.Database.MerchantSettings", "MerchantId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.MerchantSettings", "MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantSettingsChangeHistory", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantSettingsChangeHistory", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "ChangedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "ChangedByUser")
                         .WithMany()
                         .HasForeignKey("ChangedByUserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6031,14 +6031,14 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Notification", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Notification", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Notifications")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -6048,25 +6048,25 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Order", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Order", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Checkout", "Checkout")
+                    b.HasOne("swiftpay_api_core.Models.Database.Checkout", "Checkout")
                         .WithMany("Orders")
                         .HasForeignKey("CheckoutId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Coupon", "Coupon")
+                    b.HasOne("swiftpay_api_core.Models.Database.Coupon", "Coupon")
                         .WithMany("Orders")
                         .HasForeignKey("CouponId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("safefy_api_core.Models.Database.Customer", "Customer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Orders")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6081,21 +6081,21 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.OrderItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.OrderItem", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Order", "Order")
+                    b.HasOne("swiftpay_api_core.Models.Database.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Product", "Product")
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Variant", "Variant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Variant", "Variant")
                         .WithMany("OrderItems")
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -6107,9 +6107,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PasswordChangeCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PasswordChangeCode", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6118,9 +6118,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PasswordResetCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PasswordResetCode", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6129,27 +6129,27 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Payment", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Payment", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Customer", "Customer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Customer", "Customer")
                         .WithMany("Payments")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("safefy_api_core.Models.Database.MerchantAcquirer", "MerchantAcquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.MerchantAcquirer", "MerchantAcquirer")
                         .WithMany()
                         .HasForeignKey("MerchantAcquirerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Payments")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Order", "Order")
+                    b.HasOne("swiftpay_api_core.Models.Database.Order", "Order")
                         .WithOne("Payment")
-                        .HasForeignKey("safefy_api_core.Models.Database.Payment", "OrderId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.Payment", "OrderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Customer");
@@ -6161,47 +6161,47 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PaymentBoleto", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PaymentBoleto", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Payment", "Payment")
+                    b.HasOne("swiftpay_api_core.Models.Database.Payment", "Payment")
                         .WithOne("PaymentBoleto")
-                        .HasForeignKey("safefy_api_core.Models.Database.PaymentBoleto", "PaymentId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.PaymentBoleto", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Payment");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PaymentPix", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PaymentPix", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Payment", "Payment")
+                    b.HasOne("swiftpay_api_core.Models.Database.Payment", "Payment")
                         .WithOne("PaymentPix")
-                        .HasForeignKey("safefy_api_core.Models.Database.PaymentPix", "PaymentId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.PaymentPix", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Payment");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Payout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Payout", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "EvaluatedBy")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "EvaluatedBy")
                         .WithMany()
                         .HasForeignKey("EvaluatedById");
 
-                    b.HasOne("safefy_api_core.Models.Database.MerchantAcquirer", "MerchantAcquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.MerchantAcquirer", "MerchantAcquirer")
                         .WithMany()
                         .HasForeignKey("MerchantAcquirerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Payouts")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.MerchantPayoutAccount", "PayoutAccount")
+                    b.HasOne("swiftpay_api_core.Models.Database.MerchantPayoutAccount", "PayoutAccount")
                         .WithMany("Payouts")
                         .HasForeignKey("MerchantPayoutAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6216,15 +6216,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("PayoutAccount");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PayoutAccountVerificationCode", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PayoutAccountVerificationCode", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.MerchantPayoutAccount", "PayoutAccount")
+                    b.HasOne("swiftpay_api_core.Models.Database.MerchantPayoutAccount", "PayoutAccount")
                         .WithMany()
                         .HasForeignKey("MerchantPayoutAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6235,9 +6235,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PhysicalProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PhysicalProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6246,9 +6246,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PhysicalProductVariant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PhysicalProductVariant", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.PhysicalProduct", "PhysicalProduct")
+                    b.HasOne("swiftpay_api_core.Models.Database.PhysicalProduct", "PhysicalProduct")
                         .WithMany("Variants")
                         .HasForeignKey("PhysicalProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6257,15 +6257,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("PhysicalProduct");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayout", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.PlatformPayoutAccount", "PayoutAccount")
+                    b.HasOne("swiftpay_api_core.Models.Database.PlatformPayoutAccount", "PayoutAccount")
                         .WithMany("PlatformPayouts")
                         .HasForeignKey("PlatformPayoutAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "RequestedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "RequestedByUser")
                         .WithMany()
                         .HasForeignKey("RequestedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6276,9 +6276,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("RequestedByUser");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayoutAccount", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayoutAccount", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "CreatedByUser")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6287,15 +6287,15 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("CreatedByUser");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayoutItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayoutItem", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Acquirer", "Acquirer")
+                    b.HasOne("swiftpay_api_core.Models.Database.Acquirer", "Acquirer")
                         .WithMany()
                         .HasForeignKey("AcquirerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.PlatformPayout", "PlatformPayout")
+                    b.HasOne("swiftpay_api_core.Models.Database.PlatformPayout", "PlatformPayout")
                         .WithMany("Items")
                         .HasForeignKey("PlatformPayoutId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6306,9 +6306,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("PlatformPayout");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Product", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Product", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany("Products")
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6317,9 +6317,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PushToken", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PushToken", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6328,13 +6328,13 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.RefreshToken", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.RefreshToken", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.RefreshToken", "ReplacedByToken")
+                    b.HasOne("swiftpay_api_core.Models.Database.RefreshToken", "ReplacedByToken")
                         .WithOne()
-                        .HasForeignKey("safefy_api_core.Models.Database.RefreshToken", "ReplacedByTokenId");
+                        .HasForeignKey("swiftpay_api_core.Models.Database.RefreshToken", "ReplacedByTokenId");
 
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6345,9 +6345,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.ServiceProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.ServiceProduct", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6356,21 +6356,21 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.StockMovement", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.StockMovement", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Merchant", "Merchant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Merchant", "Merchant")
                         .WithMany()
                         .HasForeignKey("MerchantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Product", "Product")
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("safefy_api_core.Models.Database.Variant", "Variant")
+                    b.HasOne("swiftpay_api_core.Models.Database.Variant", "Variant")
                         .WithMany()
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -6382,9 +6382,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.StoredFile", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.StoredFile", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "Uploader")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "Uploader")
                         .WithMany()
                         .HasForeignKey("UploaderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6393,9 +6393,9 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Uploader");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.TrustedDevice", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.TrustedDevice", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithMany("TrustedDevices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6404,20 +6404,20 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.UserNotificationPreference", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.UserNotificationPreference", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.User", "User")
+                    b.HasOne("swiftpay_api_core.Models.Database.User", "User")
                         .WithOne()
-                        .HasForeignKey("safefy_api_core.Models.Database.UserNotificationPreference", "UserId")
+                        .HasForeignKey("swiftpay_api_core.Models.Database.UserNotificationPreference", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Variant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Variant", b =>
                 {
-                    b.HasOne("safefy_api_core.Models.Database.Product", "Product")
+                    b.HasOne("swiftpay_api_core.Models.Database.Product", "Product")
                         .WithMany("Variants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -6426,31 +6426,31 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Account", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Account", b =>
                 {
                     b.Navigation("LedgerEntries");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Acquirer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Acquirer", b =>
                 {
                     b.Navigation("Accounts");
 
                     b.Navigation("MerchantAcquirers");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.BankReconciliation", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.BankReconciliation", b =>
                 {
                     b.Navigation("Discrepancies");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Bulletin", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Bulletin", b =>
                 {
                     b.Navigation("BulletinReactions");
 
                     b.Navigation("BulletinReads");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Checkout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Checkout", b =>
                 {
                     b.Navigation("CheckoutProducts");
 
@@ -6459,41 +6459,41 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.CheckoutTemplate", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.CheckoutTemplate", b =>
                 {
                     b.Navigation("Checkouts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Coupon", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Coupon", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Customer", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Customer", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProduct", b =>
                 {
                     b.Navigation("Items");
 
                     b.Navigation("Variants");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.DigitalProductVariant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.DigitalProductVariant", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.LedgerTransaction", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.LedgerTransaction", b =>
                 {
                     b.Navigation("LedgerEntries");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Merchant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Merchant", b =>
                 {
                     b.Navigation("Accounts");
 
@@ -6526,24 +6526,24 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.MerchantPayoutAccount", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.MerchantPayoutAccount", b =>
                 {
                     b.Navigation("Payouts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Order", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Order", b =>
                 {
                     b.Navigation("Items");
 
                     b.Navigation("Payment");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.OrderItem", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.OrderItem", b =>
                 {
                     b.Navigation("DeliveredDigitalItems");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Payment", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Payment", b =>
                 {
                     b.Navigation("LedgerTransactions");
 
@@ -6552,29 +6552,29 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("PaymentPix");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Payout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Payout", b =>
                 {
                     b.Navigation("LedgerTransactions");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PhysicalProduct", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PhysicalProduct", b =>
                 {
                     b.Navigation("Variants");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayout", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayout", b =>
                 {
                     b.Navigation("Items");
 
                     b.Navigation("LedgerTransactions");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.PlatformPayoutAccount", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.PlatformPayoutAccount", b =>
                 {
                     b.Navigation("PlatformPayouts");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Product", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Product", b =>
                 {
                     b.Navigation("DigitalItems");
 
@@ -6583,7 +6583,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("Variants");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.User", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.User", b =>
                 {
                     b.Navigation("Merchants");
 
@@ -6592,7 +6592,7 @@ namespace safefy_api.Database.Migrations.Primary
                     b.Navigation("TrustedDevices");
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.Variant", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.Variant", b =>
                 {
                     b.Navigation("OrderItems");
                 });

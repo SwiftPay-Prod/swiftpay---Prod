@@ -30,7 +30,7 @@ export function Footer({ footerMessage }: FooterProps) {
 					</div>
 
 					<div className="text-center text-xs hero-text-subtle">
-						<a href="https://safefypay.com.br/" target="_blank" rel="noopener noreferrer">
+						<a href="https://swiftpay.com.br/" target="_blank" rel="noopener noreferrer">
 							<p className="text-xs font-extrabold">Processado com tecnologia SafefyPay</p>
 						</a>
 						<p className="mt-1">© 2026 Todos os direitos reservados.</p>

@@ -1,11 +1,11 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api.Endpoints.Models;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Merchants.ReadMerchantAcquirerHistory;
+namespace swiftpay_api.Endpoints.Admin.Merchants.ReadMerchantAcquirerHistory;
 
 public sealed class ReadMerchantAcquirerHistoryEndpoint(
     PrimaryDbContext dbContext

@@ -2,18 +2,18 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Session;
-using safefy_api.Interfaces;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Session;
+using swiftpay_api.Interfaces;
 using System.Text.Json;
 using System.Security.Claims;
 using JWT.Builder;
 using JWT.Algorithms;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Models.Settings;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Middlewares;
+namespace swiftpay_api.Middlewares;
 
 public class SessionValidationMiddleware(RequestDelegate next)
 {

@@ -6,7 +6,7 @@ import { Icon } from '@/components/ui/icon';
 import { AlertCircleIcon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { SafefyBrandLogo } from '@/components/ui/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { Routes } from '@/router/routes';
 
 interface ConfirmEmailContentProps {
@@ -15,7 +15,7 @@ interface ConfirmEmailContentProps {
 }
 
 function SafefyLogo() {
-  return <SafefyBrandLogo iconSize={30} textClassName="text-3xl text-white" />;
+  return <SwiftPayBrandLogo iconSize={30} textClassName="text-3xl text-white" />;
 }
 
 export function ConfirmEmailContent({

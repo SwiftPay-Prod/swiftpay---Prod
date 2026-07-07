@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Constants;
+namespace swiftpay_api_core.Constants;
 
 public static class UserProgressionConstants
 {

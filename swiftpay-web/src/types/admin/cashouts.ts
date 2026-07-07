@@ -23,7 +23,7 @@ export interface AdminMinimalCashout {
   amount: number;
   feeAmount: number;
   acquirerFeeAmount: number;
-  safefyProfitAmount: number;
+  swiftpayProfitAmount: number;
   netAmount: number;
   status: PayoutStatus;
   requestedAt: string;
@@ -66,7 +66,7 @@ export interface AdminCashoutDetails {
   amount: number;
   feeAmount: number;
   acquirerFeeAmount: number;
-  safefyProfitAmount: number;
+  swiftpayProfitAmount: number;
   netAmount: number;
   status: PayoutStatus;
   requestedAt: string;

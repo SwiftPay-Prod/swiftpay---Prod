@@ -1,12 +1,12 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Inputs;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Inputs;
 
-namespace safefy_api.Endpoints.Admin.Users.UpdateUserReferralSettings;
+namespace swiftpay_api.Endpoints.Admin.Users.UpdateUserReferralSettings;
 
 public sealed class UpdateUserReferralSettingsEndpoint(
     PrimaryDbContext dbContext,
@@ -56,8 +56,8 @@ public sealed class UpdateUserReferralSettingsEndpoint(
 
         await securityLog.LogAsync(new SecurityLogInput
         {
-            Action = safefy_api_core.Models.Database.SecurityLogAction.ProfileUpdate,
-            Status = safefy_api_core.Models.Database.SecurityLogStatus.Success,
+            Action = swiftpay_api_core.Models.Database.SecurityLogAction.ProfileUpdate,
+            Status = swiftpay_api_core.Models.Database.SecurityLogStatus.Success,
             UserId = adminId,
             Details = $"Configurações de indicação do usuário {user.Id} atualizadas."
         });

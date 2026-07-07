@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace safefy_api_payment.Clients.Common;
+namespace swiftpay_api_payment.Clients.Common;
 
 public static class AcquirerJsonReader
 {

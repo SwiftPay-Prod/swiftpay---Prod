@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.Rapdyn.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Rapdyn.Models.Webhook;
 
 public sealed class RapdynWebhookRequest
 {

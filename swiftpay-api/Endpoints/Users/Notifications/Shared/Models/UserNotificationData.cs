@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Users.Notifications.Shared.Models;
+namespace swiftpay_api.Endpoints.Users.Notifications.Shared.Models;
 
 public sealed class UserNotificationData
 {

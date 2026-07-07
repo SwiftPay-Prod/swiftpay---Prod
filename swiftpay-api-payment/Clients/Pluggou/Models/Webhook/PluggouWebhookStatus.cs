@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Pluggou.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Pluggou.Models.Webhook;
 
 [JsonConverter(typeof(PluggouWebhookStatusConverter))]
 public enum PluggouWebhookStatus

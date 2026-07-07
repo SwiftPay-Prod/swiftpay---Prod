@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Interfaces.Internal;
+namespace swiftpay_api_payment.Interfaces.Internal;
 
 public interface ITokenService
 {

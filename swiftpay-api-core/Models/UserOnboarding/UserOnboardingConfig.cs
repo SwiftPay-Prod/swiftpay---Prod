@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace safefy_api_core.Models.UserOnboarding;
+namespace swiftpay_api_core.Models.UserOnboarding;
 
 public sealed class UserOnboardingConfig
 {

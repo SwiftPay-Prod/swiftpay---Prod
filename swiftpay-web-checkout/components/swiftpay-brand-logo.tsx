@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useSyncExternalStore } from 'react';
 
-interface SafefyBrandLogoProps {
+interface SwiftPayBrandLogoProps {
 	className?: string;
 	textClassName?: string;
 	iconSize?: number;
@@ -15,16 +15,16 @@ function joinClasses(...classes: Array<string | undefined>) {
 	return classes.filter(Boolean).join(' ');
 }
 
-export function SafefyBrandLogo({
+export function SwiftPayBrandLogo({
 	className,
 	textClassName,
 	iconSize = 32,
 	variant = 'auto',
 	priority = false,
-}: SafefyBrandLogoProps) {
+}: SwiftPayBrandLogoProps) {
 	const theme = useSyncExternalStore<'light' | 'dark'>(subscribeToThemeChange, getThemeSnapshot, () => 'dark');
 	const resolvedVariant = variant === 'auto' ? (theme === 'dark' ? 'light' : 'dark') : variant;
-	const logoSrc = resolvedVariant === 'dark' ? '/safefy-horizontal-light.png' : '/safefy-horizontal-dark.png';
+	const logoSrc = resolvedVariant === 'dark' ? '/swiftpay-horizontal-light.png' : '/swiftpay-horizontal-dark.png';
 	const logoWidth = Math.max(96, Math.round(iconSize * 3.3));
 
 	return (

@@ -1,7 +1,7 @@
 using FluentValidation;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Validators;
+namespace swiftpay_api_payment.Validators;
 
 public static class PaginationValidator
 {

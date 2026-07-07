@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 public class TrustedDevice : BaseEntity
 {

@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.PlatformPayouts.CreatePlatformPayout;
+namespace swiftpay_api.Endpoints.Admin.PlatformPayouts.CreatePlatformPayout;
 
 public sealed class CreatePlatformPayoutRequest
 {

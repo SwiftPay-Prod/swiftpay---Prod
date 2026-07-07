@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 public static class CryptoUtils
 {

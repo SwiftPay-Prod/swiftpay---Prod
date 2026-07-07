@@ -1,4 +1,4 @@
-namespace safefy_api.Models.PaymentApi;
+namespace swiftpay_api.Models.PaymentApi;
 
 internal sealed class PaymentApiCreateCashoutResponse
 {

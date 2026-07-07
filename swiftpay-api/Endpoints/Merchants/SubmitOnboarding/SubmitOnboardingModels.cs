@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Merchants.Shared.Models;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Merchants.Shared.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.SubmitOnboarding;
+namespace swiftpay_api.Endpoints.Merchants.SubmitOnboarding;
 
 public sealed class SubmitOnboardingRequest
 {

@@ -3,15 +3,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_payment.Services.Internal.Tracking;
+namespace swiftpay_api_payment.Services.Internal.Tracking;
 
 internal static class FacebookCapiTrackingDispatcher
 {
     private const string GraphApiVersion = "v25.0";
-    private const string DefaultEventSourceUrl = "https://safefypay.com.br";
+    private const string DefaultEventSourceUrl = "https://swiftpay.com.br";
     private const string DefaultClientIpAddress = "1.1.1.1";
     private const string DefaultClientUserAgent = "Mozilla/5.0";
 

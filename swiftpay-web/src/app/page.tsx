@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Card } from '@heroui/react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
-import { SafefyBrandLogo } from '@/components/ui/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { SignInForm } from '@/components/auth/forms/signin-form';
 import { SignUpForm } from '@/components/auth/forms/signup-form';
 import { ForgotPasswordForm } from '@/components/auth/forms/forgot-password-form';
@@ -14,7 +14,7 @@ import { DeviceRevokedModalProvider } from '@/components/auth/device-revoked-mod
 type AuthView = 'signin' | 'signup' | 'forgot-password';
 
 function SafefyLogo() {
-	return <SafefyBrandLogo iconSize={30} textClassName="text-2xl text-white" />;
+	return <SwiftPayBrandLogo iconSize={30} textClassName="text-2xl text-white" />;
 }
 
 export default function AuthPage() {

@@ -1,8 +1,8 @@
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public class SecurityLogService(ILogQueue<SecurityLogEntry> logQueue) : ISecurityLogService
 {

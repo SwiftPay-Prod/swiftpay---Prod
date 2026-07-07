@@ -1,12 +1,12 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_core.Models.Database;
-using CredentialUtils = safefy_api_core.Models.Acquirer.CredentialUtils;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using CredentialUtils = swiftpay_api_core.Models.Acquirer.CredentialUtils;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.UpdateAcquirer;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.UpdateAcquirer;
 
 public sealed class UpdateAcquirerEndpoint(
     PrimaryDbContext dbContext

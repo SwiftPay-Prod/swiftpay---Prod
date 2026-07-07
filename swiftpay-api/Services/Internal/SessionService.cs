@@ -2,13 +2,13 @@ using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using safefy_api.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Session;
-using safefy_api_core.Models.Settings;
+using swiftpay_api.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Session;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public class SessionService(
     IDistributedCache cache,

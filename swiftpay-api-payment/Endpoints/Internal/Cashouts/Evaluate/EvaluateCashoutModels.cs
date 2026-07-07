@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
 
-namespace safefy_api_payment.Endpoints.Internal.Cashouts.Evaluate;
+namespace swiftpay_api_payment.Endpoints.Internal.Cashouts.Evaluate;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EvaluateAction

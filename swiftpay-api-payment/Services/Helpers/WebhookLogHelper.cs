@@ -2,13 +2,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_payment.Services.Helpers;
+namespace swiftpay_api_payment.Services.Helpers;
 
 public static class WebhookLogHelper
 {

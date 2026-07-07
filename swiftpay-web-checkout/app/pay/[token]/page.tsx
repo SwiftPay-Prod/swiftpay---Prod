@@ -56,15 +56,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	}
 
 	const { title, description } = resolvePaymentLinkMetadataText(paymentLink);
-	const metadataImage = paymentLink.productImageUrl || '/safefy-icon-logo.png';
+	const metadataImage = paymentLink.productImageUrl || '/swiftpay-icon-logo.png';
 
 	return {
 		title,
 		description,
 		icons: {
-			icon: '/safefy-icon-logo.png',
-			shortcut: '/safefy-icon-logo.png',
-			apple: '/safefy-icon-logo.png',
+			icon: '/swiftpay-icon-logo.png',
+			shortcut: '/swiftpay-icon-logo.png',
+			apple: '/swiftpay-icon-logo.png',
 		},
 		openGraph: {
 			title,

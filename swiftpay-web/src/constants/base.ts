@@ -11,13 +11,13 @@ const BaseCookie = {
 }
 
 const BaseLocalStorage = {
-    safefyDeviceId: "safefy_device_id",
+    swiftpayDeviceId: "swiftpay_device_id",
     notificationSoundEnabled: "notification_sound_enabled",
-    liveBalanceSettings: "safefy_live_balance_settings",
-    fcmToken: "safefy_fcm_token",
-    pushEnabled: "safefy_push_enabled",
-    pushAutoPrompted: "safefy_push_auto_prompted",
-    sidebarExpandedSections: "safefy_sidebar_expanded_sections",
+    liveBalanceSettings: "swiftpay_live_balance_settings",
+    fcmToken: "swiftpay_fcm_token",
+    pushEnabled: "swiftpay_push_enabled",
+    pushAutoPrompted: "swiftpay_push_auto_prompted",
+    sidebarExpandedSections: "swiftpay_sidebar_expanded_sections",
 }
 
 export const SIDEBAR_EXPANDED_SECTIONS_KEY = BaseLocalStorage.sidebarExpandedSections;

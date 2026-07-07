@@ -1,10 +1,10 @@
 using FastEndpoints;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Users.PushTokens.RegisterPushToken;
+namespace swiftpay_api.Endpoints.Users.PushTokens.RegisterPushToken;
 
 public sealed class RegisterPushTokenEndpoint(
     IPushNotificationService pushService

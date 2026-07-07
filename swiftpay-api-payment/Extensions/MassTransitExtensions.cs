@@ -1,7 +1,7 @@
-using safefy_api_core.Extensions;
-using safefy_api_payment.Consumers;
+using swiftpay_api_core.Extensions;
+using swiftpay_api_payment.Consumers;
 
-namespace safefy_api_payment.Extensions;
+namespace swiftpay_api_payment.Extensions;
 
 public static class MassTransitExtensions
 {

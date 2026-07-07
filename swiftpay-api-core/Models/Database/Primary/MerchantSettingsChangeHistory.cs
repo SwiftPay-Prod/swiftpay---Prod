@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
 /// Histórico de alterações de configurações de um merchant.

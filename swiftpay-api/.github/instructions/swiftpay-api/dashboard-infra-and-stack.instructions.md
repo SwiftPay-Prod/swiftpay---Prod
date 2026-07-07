@@ -73,9 +73,9 @@ O dashboard utiliza uma arquitetura de cache com processamento assíncrono via f
 | `MerchantDashboardCache` | Cache de KPIs por merchant + environment |
 | `AdminDashboardCache` | Cache de KPIs globais (singleton) |
 
-### Tipos de Dados (safefy-api-core)
+### Tipos de Dados (swiftpay-api-core)
 
-Os tipos de dados para gráficos ficam em `safefy_api_core.Models.Dashboard`:
+Os tipos de dados para gráficos ficam em `swiftpay_api_core.Models.Dashboard`:
 
 | Tipo | Descrição |
 |------|-----------|
@@ -163,11 +163,11 @@ Todas as requisições são rastreadas com um ID de correlação:
 
 | Projeto | Descrição |
 |---------|-----------|
-| `safefy-api` | API principal (autenticação, merchants, admin, consumer MassTransit) |
-| `safefy-api-payment` | API de pagamentos (transações, webhooks, publisher MassTransit) |
-| `safefy-api-core` | Biblioteca compartilhada (DbContext, Utils, Middlewares, Consumers) |
+| `swiftpay-api` | API principal (autenticação, merchants, admin, consumer MassTransit) |
+| `swiftpay-api-payment` | API de pagamentos (transações, webhooks, publisher MassTransit) |
+| `swiftpay-api-core` | Biblioteca compartilhada (DbContext, Utils, Middlewares, Consumers) |
 
-### safefy-api-core
+### swiftpay-api-core
 
 Biblioteca compartilhada que contém:
 
@@ -229,9 +229,9 @@ logger.LogWarning("Rate limit exceeded for {MerchantId}", merchantId);
 
 | Projeto | Serviço | Uso |
 |---------|---------|-----|
-| safefy-api | `ISecurityLogService` | Login, logout, alteração de senha, dispositivos confiáveis |
-| safefy-api | `IApiLogService` | Operações financeiras no painel (criar/cancelar/aprovar/rejeitar saques) |
-| safefy-api-payment | `IApiLogService` | Criação de transações, criação/cancelamento de saques, criação de clientes |
+| swiftpay-api | `ISecurityLogService` | Login, logout, alteração de senha, dispositivos confiáveis |
+| swiftpay-api | `IApiLogService` | Operações financeiras no painel (criar/cancelar/aprovar/rejeitar saques) |
+| swiftpay-api-payment | `IApiLogService` | Criação de transações, criação/cancelamento de saques, criação de clientes |
 
 **Operações que DEVEM ter log no banco:**
 - Criação de transações/pagamentos (`ApiLogAction.CreateTransaction`)

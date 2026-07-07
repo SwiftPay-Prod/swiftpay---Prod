@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Clients.IHubBanking.Models.Webhook;
+namespace swiftpay_api_payment.Clients.IHubBanking.Models.Webhook;
 
 public sealed record IHubWebhookRequest
 {

@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api_payment.Filters;
+using swiftpay_api_payment.Filters;
 
-namespace safefy_api_payment.EndpointsGroups.Acquirers;
+namespace swiftpay_api_payment.EndpointsGroups.Acquirers;
 
 public class IHubBankingGroup : Group
 {

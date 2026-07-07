@@ -6,7 +6,7 @@ applyTo: 'Program.cs, Extensions/**/*.cs, Consumers/**/*.cs, Interfaces/**/*.cs'
 ## Estrutura de Pastas
 
 ```
-safefy-api-payment/
+swiftpay-api-payment/
 ├── Clients/                    # Clientes HTTP para APIs externas
 │   ├── Bankizi/
 │   │   ├── BankiziClient.cs
@@ -18,7 +18,7 @@ safefy-api-payment/
 │   ├── Auth/                   # Autenticação via API credentials
 │   ├── Transactions/           # Criação e consulta de transações
 │   ├── Cashouts/               # Saques via API
-│   ├── Internal/               # Endpoints internos (webhooks, safefy-api)
+│   ├── Internal/               # Endpoints internos (webhooks, swiftpay-api)
 │   └── Models/                 # BaseResponse, Paginated
 ├── EndpointsGroups/            # Grupos de endpoints
 ├── Extensions/                 # Extension methods (Program.cs limpo)
@@ -52,20 +52,20 @@ Esta API atua como **publisher** e **consumer** de mensagens:
 
 | Fila | Descrição |
 |------|-----------|
-| `safefy.notification.created` | Notificações para envio via SignalR (consumido por safefy-api) |
-| `safefy.ledger.pending` | Registro de transação pendente no ledger |
-| `safefy.payment.completed` | Processar pagamento confirmado (ledger, notificações, webhook) |
-| `safefy.cashout.process` | Processar saque na adquirente |
-| `safefy.webhook.send` | Enviar webhook para merchant |
+| `swiftpay.notification.created` | Notificações para envio via SignalR (consumido por swiftpay-api) |
+| `swiftpay.ledger.pending` | Registro de transação pendente no ledger |
+| `swiftpay.payment.completed` | Processar pagamento confirmado (ledger, notificações, webhook) |
+| `swiftpay.cashout.process` | Processar saque na adquirente |
+| `swiftpay.webhook.send` | Enviar webhook para merchant |
 
 **Filas que este projeto CONSOME:**
 
 | Fila | Consumer | Descrição |
 |------|----------|-----------|
-| `safefy.ledger.pending` | `RecordLedgerPendingConsumer` | Registra transação no ledger em background |
-| `safefy.payment.completed` | `PaymentCompletedConsumer` | Processa pagamento (ledger, notificação, webhook) |
-| `safefy.cashout.process` | `ProcessCashoutConsumer` | Chama adquirente para processar saque |
-| `safefy.webhook.send` | `SendWebhookConsumer` | Envia webhook HTTP para merchant |
+| `swiftpay.ledger.pending` | `RecordLedgerPendingConsumer` | Registra transação no ledger em background |
+| `swiftpay.payment.completed` | `PaymentCompletedConsumer` | Processa pagamento (ledger, notificação, webhook) |
+| `swiftpay.cashout.process` | `ProcessCashoutConsumer` | Chama adquirente para processar saque |
+| `swiftpay.webhook.send` | `SendWebhookConsumer` | Envia webhook HTTP para merchant |
 
 **Exemplo de publicação:**
 

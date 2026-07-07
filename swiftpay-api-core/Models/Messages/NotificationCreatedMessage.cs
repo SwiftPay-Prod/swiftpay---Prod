@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Models.Messages;
+namespace swiftpay_api_core.Models.Messages;
 
 public record NotificationCreatedMessage(
     Guid NotificationId,

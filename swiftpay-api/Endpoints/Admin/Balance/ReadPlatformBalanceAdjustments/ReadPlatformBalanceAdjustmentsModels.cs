@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Admin.Balance.CreatePlatformBalanceAdjustment;
-using safefy_api.Endpoints.Models;
-using safefy_api.Validators;
+using swiftpay_api.Endpoints.Admin.Balance.CreatePlatformBalanceAdjustment;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Validators;
 
-namespace safefy_api.Endpoints.Admin.Balance.ReadPlatformBalanceAdjustments;
+namespace swiftpay_api.Endpoints.Admin.Balance.ReadPlatformBalanceAdjustments;
 
 public sealed class ReadPlatformBalanceAdjustmentsRequest : IPaginatedRequest
 {

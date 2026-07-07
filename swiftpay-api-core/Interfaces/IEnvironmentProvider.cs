@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Interfaces;
+namespace swiftpay_api_core.Interfaces;
 
 /// <summary>
 /// Provider interface for obtaining the current API environment from the HTTP request context.

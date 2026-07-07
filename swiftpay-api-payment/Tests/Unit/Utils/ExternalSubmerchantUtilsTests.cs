@@ -1,8 +1,8 @@
 using FluentAssertions;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_payment.Tests.Unit.Utils;
+namespace swiftpay_api_payment.Tests.Unit.Utils;
 
 public sealed class ExternalSubmerchantUtilsTests
 {

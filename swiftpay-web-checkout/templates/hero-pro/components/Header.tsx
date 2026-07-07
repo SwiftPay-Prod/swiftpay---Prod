@@ -1,6 +1,6 @@
 'use client';
 
-import { SafefyBrandLogo } from '@/components/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/swiftpay-brand-logo';
 import Image from 'next/image';
 
 interface HeaderProps {
@@ -45,7 +45,7 @@ export function Header({ primaryColor, secondaryColor, logoUrl, bannerUrl, heade
 									/>
 								</div>
 							) : (
-									<SafefyBrandLogo className="shrink-0" iconSize={40} variant="light" priority />
+									<SwiftPayBrandLogo className="shrink-0" iconSize={40} variant="light" priority />
 							)}
 							<div className="min-w-0 flex-1">
 								<h1 className="text-3xl font-extrabold italic text-white truncate">{headerMessage || 'CHECKOUT SEGURO'}</h1>

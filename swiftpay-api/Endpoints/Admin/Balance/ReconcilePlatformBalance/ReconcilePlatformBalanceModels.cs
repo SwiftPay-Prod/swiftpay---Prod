@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Balance.ReconcilePlatformBalance;
+namespace swiftpay_api.Endpoints.Admin.Balance.ReconcilePlatformBalance;
 
 public sealed class ReconcilePlatformBalanceRequest
 {

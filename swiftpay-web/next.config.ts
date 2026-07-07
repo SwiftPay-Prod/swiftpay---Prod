@@ -18,16 +18,16 @@ const nextConfig: NextConfig = {
 		remotePatterns: [
 			{
 				hostname: 'bucket-staging-13ce.up.railway.app',
-				pathname: '/safefy-dev/**',
+				pathname: '/swiftpay-dev/**',
 			},
 			{
 				protocol: 'https',
-				hostname: 'safefy-staging.nyc3.cdn.digitaloceanspaces.com',
+				hostname: 'swiftpay-staging.nyc3.cdn.digitaloceanspaces.com',
 				pathname: '/**',
 			},
 			{
 				protocol: 'https',
-				hostname: 'safefy-staging.nyc3.digitaloceanspaces.com',
+				hostname: 'swiftpay-staging.nyc3.digitaloceanspaces.com',
 				pathname: '/**',
 			},
 			{
@@ -37,12 +37,12 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'safefy-prod.nyc3.cdn.digitaloceanspaces.com',
+				hostname: 'swiftpay-prod.nyc3.cdn.digitaloceanspaces.com',
 				pathname: '/**',
 			},
 			{
 				protocol: 'https',
-				hostname: 'safefy-prod.nyc3.digitaloceanspaces.com',
+				hostname: 'swiftpay-prod.nyc3.digitaloceanspaces.com',
 				pathname: '/**',
 			},
 			{
@@ -51,7 +51,7 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'storage.safefypay.com.br',
+				hostname: 'storage.swiftpay.com.br',
 				pathname: '/**',
 			},
 		],

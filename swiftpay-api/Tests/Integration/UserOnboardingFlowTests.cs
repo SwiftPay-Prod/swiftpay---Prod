@@ -3,10 +3,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
-using safefy_api.Tests.Fixtures;
-using safefy_api.Tests.Models;
+using swiftpay_api.Tests.Fixtures;
+using swiftpay_api.Tests.Models;
 
-namespace safefy_api.Tests.Integration;
+namespace swiftpay_api.Tests.Integration;
 
 public class UserOnboardingFlowTests : IClassFixture<SafefyApiFactory>
 {
@@ -163,7 +163,7 @@ public class UserOnboardingFlowTests : IClassFixture<SafefyApiFactory>
         // Step 6.1: Login como admin padrão do sistema
         var adminSignInRequest = new
         {
-            email = "admin@safefypay.com.br",
+            email = "admin@swiftpay.com.br",
             password = "Admin@123"
         };
 
@@ -299,7 +299,7 @@ public class UserOnboardingFlowTests : IClassFixture<SafefyApiFactory>
         // ---------------------------------------------------------------
         // Step 4: Admin solicita complemento
         // ---------------------------------------------------------------
-        var adminSignInResponse = await client.PostAsJsonAsync("/v1/auth/signin", new { email = "admin@safefypay.com.br", password = "Admin@123" });
+        var adminSignInResponse = await client.PostAsJsonAsync("/v1/auth/signin", new { email = "admin@swiftpay.com.br", password = "Admin@123" });
         adminSignInResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         
         var adminSignInResult = await adminSignInResponse.Content.ReadFromJsonAsync<AuthResponse>(_jsonOptions);
@@ -409,7 +409,7 @@ public class UserOnboardingFlowTests : IClassFixture<SafefyApiFactory>
         // ---------------------------------------------------------------
         // Step 4: Admin rejeita o cadastro
         // ---------------------------------------------------------------
-        var adminSignInResponse = await client.PostAsJsonAsync("/v1/auth/signin", new { email = "admin@safefypay.com.br", password = "Admin@123" });
+        var adminSignInResponse = await client.PostAsJsonAsync("/v1/auth/signin", new { email = "admin@swiftpay.com.br", password = "Admin@123" });
         adminSignInResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         
         var adminSignInResult = await adminSignInResponse.Content.ReadFromJsonAsync<AuthResponse>(_jsonOptions);

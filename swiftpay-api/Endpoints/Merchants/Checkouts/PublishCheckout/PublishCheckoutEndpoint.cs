@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api.EndpointsGroups;
+using swiftpay_api.EndpointsGroups;
 
-namespace safefy_api.Endpoints.Merchants.Checkouts.PublishCheckout;
+namespace swiftpay_api.Endpoints.Merchants.Checkouts.PublishCheckout;
 
 public sealed class PublishCheckoutEndpoint : Endpoint<PublishCheckoutRequest, PublishCheckoutResponse>
 {

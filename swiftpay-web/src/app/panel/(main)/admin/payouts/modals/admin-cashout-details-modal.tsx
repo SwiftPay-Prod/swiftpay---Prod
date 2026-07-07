@@ -256,18 +256,18 @@ function DetailsContent({ cashout }: { cashout: AdminCashoutDetails }) {
 					<DetailRow label="Taxa Plataforma" value={<span className="text-danger">{formatCurrency(cashout.feeAmount)}</span>} />
 					<DetailRow label="Taxa Adquirente" value={<span className="text-danger">{formatCurrency(cashout.acquirerFeeAmount)}</span>} />
 					<DetailRow
-						label={cashout.safefyProfitAmount < 0 ? 'Prejuízo Safefy' : 'Lucro Safefy'}
+						label={cashout.swiftpayProfitAmount < 0 ? 'Prejuízo SwiftPay' : 'Lucro SwiftPay'}
 						value={
 							<span
 								className={
-									cashout.safefyProfitAmount > 0
+									cashout.swiftpayProfitAmount > 0
 										? 'text-success'
-										: cashout.safefyProfitAmount < 0
+										: cashout.swiftpayProfitAmount < 0
 										? 'text-danger'
 										: 'text-foreground'
 								}
 							>
-								{formatCurrency(cashout.safefyProfitAmount)}
+								{formatCurrency(cashout.swiftpayProfitAmount)}
 							</span>
 						}
 					/>

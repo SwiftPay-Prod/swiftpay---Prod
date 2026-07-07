@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Utils;
+namespace swiftpay_api_payment.Utils;
 
 /// <summary>
 /// Converts JSON values (string or number) to string, handling API inconsistencies.

@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Clients.Bankizi.Models.Webhook;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Clients.Bankizi.Models.Webhook;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Acquirers.Bankizi.Simulate;
+namespace swiftpay_api_payment.Endpoints.Acquirers.Bankizi.Simulate;
 
 /// <summary>
 /// Request para simular webhook da Bankizi.

@@ -68,7 +68,7 @@ const CARD_BRAND_LOGOS: Record<CardBrand, string> = {
 };
 
 function getPaymentLinkSessionStorageKey(token: string): string {
-	return `safefy_payment_link_session_${token}`;
+	return `swiftpay_payment_link_session_${token}`;
 }
 
 function readSessionPayment(token: string): PaymentLinkData | null {
@@ -1301,7 +1301,7 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 						</div>
 					</div>
 				</div>
-				{currentPaymentLink.showSafefyBranding && (
+				{currentPaymentLink.showSwiftPayBranding && (
 					<div className="mt-4 flex flex-col items-center gap-2 pb-4">
 						<p className="text-xs hero-text-subtle">Pagamento processado com segurança pela Safefy Pay</p>
 						<div className="flex items-center justify-center gap-4">

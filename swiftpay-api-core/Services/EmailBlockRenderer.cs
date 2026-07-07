@@ -1,11 +1,11 @@
 using System.Text;
 using System.Web;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 public sealed class EmailBlockRenderer : IEmailBlockRenderer
 {

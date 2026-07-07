@@ -60,7 +60,7 @@ export function PrintableBoletoDocument({
 					<section className="print-boleto-box">
 						<div className={`print-header-grid${hasLogo && hasLineDigitable ? '' : ' print-header-grid-single'}`}>
 							<div className="print-header-cell print-logo-cell">
-								{hasLogo && <img src={logoUrl} alt="Logo" className="print-safefy-logo" />}
+								{hasLogo && <img src={logoUrl} alt="Logo" className="print-swiftpay-logo" />}
 							</div>
 							{hasLineDigitable && <div className="print-header-cell print-line-digitable">{lineDigitable}</div>}
 						</div>
@@ -221,7 +221,7 @@ export function PrintableBoletoDocument({
 					justify-content: flex-start;
 				}
 
-				.print-safefy-logo {
+				.print-swiftpay-logo {
 					height: 50px;
 					width: auto;
 					object-fit: contain;

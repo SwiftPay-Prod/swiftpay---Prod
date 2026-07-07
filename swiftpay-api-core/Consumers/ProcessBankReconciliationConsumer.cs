@@ -1,10 +1,10 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Services;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_core.Consumers;
+namespace swiftpay_api_core.Consumers;
 
 public class ProcessBankReconciliationConsumer : IConsumer<ProcessBankReconciliationMessage>
 {

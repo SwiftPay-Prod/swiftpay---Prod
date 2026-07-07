@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.Bankizi.Models.Webhook;
+using swiftpay_api_payment.Clients.Bankizi.Models.Webhook;
 
-namespace safefy_api_payment.Clients.Bankizi.Models.GetPix;
+namespace swiftpay_api_payment.Clients.Bankizi.Models.GetPix;
 
 public record BankiziGetPixResponse
 {

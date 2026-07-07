@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Pluggou.Models;
+namespace swiftpay_api_payment.Clients.Pluggou.Models;
 
 public sealed class PluggouApiResponse<T>
 {

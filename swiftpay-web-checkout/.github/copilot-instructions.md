@@ -11,12 +11,12 @@ O conteúdo detalhado foi dividido em arquivos menores por contexto para facilit
 
 ## Glossário de referências temáticas
 
-- [Runtime de templates e fluxo de Payment Link](./instructions/safefy-web-checkout/runtime-and-payment-link-foundations.instructions.md)
-- [Enums compartilhados, parse e formatadores](./instructions/safefy-web-checkout/shared-enums-parse-and-formatters.instructions.md)
-- [SEO, tema e funcionalidades compartilhadas](./instructions/safefy-web-checkout/seo-theme-and-shared-features.instructions.md)
-- [Criação de templates e tipos compartilhados](./instructions/safefy-web-checkout/template-authoring-and-shared-types.instructions.md)
-- [Fluxo de dados, stack, design system e React 19](./instructions/safefy-web-checkout/flow-stack-design-system-and-react.instructions.md)
-- [Tailwind v4 e convenções de código](./instructions/safefy-web-checkout/tailwind-and-code-conventions.instructions.md)
+- [Runtime de templates e fluxo de Payment Link](./instructions/swiftpay-web-checkout/runtime-and-payment-link-foundations.instructions.md)
+- [Enums compartilhados, parse e formatadores](./instructions/swiftpay-web-checkout/shared-enums-parse-and-formatters.instructions.md)
+- [SEO, tema e funcionalidades compartilhadas](./instructions/swiftpay-web-checkout/seo-theme-and-shared-features.instructions.md)
+- [Criação de templates e tipos compartilhados](./instructions/swiftpay-web-checkout/template-authoring-and-shared-types.instructions.md)
+- [Fluxo de dados, stack, design system e React 19](./instructions/swiftpay-web-checkout/flow-stack-design-system-and-react.instructions.md)
+- [Tailwind v4 e convenções de código](./instructions/swiftpay-web-checkout/tailwind-and-code-conventions.instructions.md)
 
 ## Regra de manutenção
 

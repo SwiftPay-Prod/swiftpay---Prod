@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Utils;
+namespace swiftpay_api_payment.Utils;
 
 public sealed class WebhookDateTimeConverter : JsonConverter<DateTime?>
 {

@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Achievements.BackfillAchievements;
+namespace swiftpay_api.Endpoints.Admin.Achievements.BackfillAchievements;
 
 public sealed class BackfillAchievementsResponse : BaseResponse<BackfillAchievementsData>;
 

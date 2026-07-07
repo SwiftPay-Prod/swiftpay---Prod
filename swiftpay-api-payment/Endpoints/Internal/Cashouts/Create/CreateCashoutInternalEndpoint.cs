@@ -1,11 +1,11 @@
 using FastEndpoints;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Utils;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Mappers;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Mappers;
 
-namespace safefy_api_payment.Endpoints.Internal.Cashouts.Create;
+namespace swiftpay_api_payment.Endpoints.Internal.Cashouts.Create;
 
 public sealed class CreateCashoutInternalEndpoint(
     ICashoutService cashoutService,

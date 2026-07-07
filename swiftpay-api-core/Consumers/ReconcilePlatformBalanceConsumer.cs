@@ -2,15 +2,15 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Services;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Services;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_core.Consumers;
+namespace swiftpay_api_core.Consumers;
 
 public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalanceMessage>
 {
@@ -213,10 +213,10 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
                 acqParts.Add($"Org {(acq.MerchantBalanceDifference > 0 ? "+" : "-")}{formattedDiff}");
             }
 
-            if (acq.SafefyProfitDifference != 0)
+            if (acq.SwiftpayProfitDifference != 0)
             {
-                var formattedDiff = FormatUtils.FormatCurrency(Math.Abs(acq.SafefyProfitDifference));
-                acqParts.Add($"Lucro {(acq.SafefyProfitDifference > 0 ? "+" : "-")}{formattedDiff}");
+                var formattedDiff = FormatUtils.FormatCurrency(Math.Abs(acq.SwiftpayProfitDifference));
+                acqParts.Add($"Lucro {(acq.SwiftpayProfitDifference > 0 ? "+" : "-")}{formattedDiff}");
             }
 
             if (acqParts.Count > 0)
@@ -347,7 +347,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
             var expectedGrossBalance = calculationService.CalculateGrossBalance(expectedSettlement, expectedPayoutsOut);
 
             var currentMerchantBalance = currentSnapshot?.MerchantBalance ?? 0;
-            var currentSafefyProfit = calculationService.CalculatePlatformProfit(currentGrossBalance, currentMerchantBalance);
+            var currentSwiftpayProfit = calculationService.CalculatePlatformProfit(currentGrossBalance, currentMerchantBalance);
 
             var completedPaymentProfit = await dbContext.Payments
                 .IgnoreQueryFilters()
@@ -374,7 +374,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
                          && x.payout.Status == PayoutStatus.Completed)
                 .SumAsync(x => x.payout.PlatformFee - x.payout.AcquirerFee);
 
-            var safefyProfitAdjustmentEntries = settlementAccount == null
+            var swiftpayProfitAdjustmentEntries = settlementAccount == null
                 ? []
                 : await dbContext.LedgerTransactions
                     .IgnoreQueryFilters()
@@ -385,24 +385,24 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
                     .Select(g => new { Type = g.Key, Total = g.Sum(e => e.Amount) })
                     .ToListAsync();
 
-            var safefyProfitAdjustmentNet = safefyProfitAdjustmentEntries
+            var swiftpayProfitAdjustmentNet = swiftpayProfitAdjustmentEntries
                 .Sum(x => x.Type == LedgerEntryType.Credit ? x.Total : -x.Total);
 
             var expectedPaymentProfit = completedPaymentProfit - refundedPaymentProfit;
-            var expectedSafefyProfitBase = expectedPaymentProfit + payoutProfit + safefyProfitAdjustmentNet;
-            var expectedSafefyProfit = calculationService.CalculateSafefyProfit(expectedSafefyProfitBase, platformPayoutsOut);
-            var expectedMerchantBalance = calculationService.CalculateMerchantBalance(expectedGrossBalance, expectedSafefyProfit);
+            var expectedSwiftpayProfitBase = expectedPaymentProfit + payoutProfit + swiftpayProfitAdjustmentNet;
+            var expectedSwiftpayProfit = calculationService.CalculateSafefyProfit(expectedSwiftpayProfitBase, platformPayoutsOut);
+            var expectedMerchantBalance = calculationService.CalculateMerchantBalance(expectedGrossBalance, expectedSwiftpayProfit);
 
             var settlementDifference = currentSettlement - expectedSettlement;
             var payoutsOutDifference = currentPayoutsOut - expectedPayoutsOut;
             var grossBalanceDifference = currentGrossBalance - expectedGrossBalance;
             var merchantBalanceDifference = currentMerchantBalance - expectedMerchantBalance;
-            var safefyProfitDifference = currentSafefyProfit - expectedSafefyProfit;
+            var swiftpayProfitDifference = currentSwiftpayProfit - expectedSwiftpayProfit;
             var hasDiscrepancy = Math.Abs(settlementDifference) > 0
                               || Math.Abs(payoutsOutDifference) > 0
                               || Math.Abs(grossBalanceDifference) > 0
                               || Math.Abs(merchantBalanceDifference) > 0
-                              || Math.Abs(safefyProfitDifference) > 0;
+                              || Math.Abs(swiftpayProfitDifference) > 0;
 
             if (applyFix && hasDiscrepancy)
             {
@@ -442,7 +442,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
                 ExpectedPayoutsOut = expectedPayoutsOut,
                 PayoutsOutDifference = payoutsOutDifference,
                 MerchantBalanceDifference = merchantBalanceDifference,
-                SafefyProfitDifference = safefyProfitDifference,
+                SwiftpayProfitDifference = swiftpayProfitDifference,
                 HasDiscrepancy = hasDiscrepancy
             });
         }
@@ -492,7 +492,7 @@ public class ReconcilePlatformBalanceConsumer : IConsumer<ReconcilePlatformBalan
         public long ExpectedPayoutsOut { get; init; }
         public long PayoutsOutDifference { get; init; }
         public long MerchantBalanceDifference { get; init; }
-        public long SafefyProfitDifference { get; init; }
+        public long SwiftpayProfitDifference { get; init; }
         public bool HasDiscrepancy { get; init; }
     }
 }

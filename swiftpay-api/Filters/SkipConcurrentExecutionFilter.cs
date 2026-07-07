@@ -2,7 +2,7 @@ using Hangfire.Common;
 using Hangfire.Server;
 using StackExchange.Redis;
 
-namespace safefy_api.Filters;
+namespace swiftpay_api.Filters;
 
 /// <summary>
 /// Hangfire server filter that prevents concurrent execution of the same job

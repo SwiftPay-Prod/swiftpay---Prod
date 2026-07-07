@@ -46,7 +46,7 @@
 	--hero-border-warning: oklch(38% 0.09 76.34);
 	--hero-border-danger: oklch(32% 0.12 24.63);
 
-	/* Badge/Chip Colors - Product Types (aligned with safefy-web) */
+	/* Badge/Chip Colors - Product Types (aligned with swiftpay-web) */
 	/* Physical: accent (blue) */
 	--hero-badge-physical-bg: oklch(22% 0.05 253.83);
 	--hero-badge-physical-text: oklch(72% 0.15 253.83);
@@ -108,7 +108,7 @@
 	--hero-border-warning: oklch(38% 0.09 76.34);
 	--hero-border-danger: oklch(32% 0.12 24.63);
 
-	/* Badge/Chip Colors - Product Types (aligned with safefy-web) */
+	/* Badge/Chip Colors - Product Types (aligned with swiftpay-web) */
 	/* Physical: accent (blue) */
 	--hero-badge-physical-bg: oklch(22% 0.05 253.83);
 	--hero-badge-physical-text: oklch(72% 0.15 253.83);
@@ -174,7 +174,7 @@
 	--hero-border-warning: oklch(88% 0.1 76.34);
 	--hero-border-danger: oklch(85% 0.12 25.74);
 
-	/* Badge/Chip Colors - Product Types (aligned with safefy-web) */
+	/* Badge/Chip Colors - Product Types (aligned with swiftpay-web) */
 	/* Physical: accent (blue) */
 	--hero-badge-physical-bg: oklch(93% 0.04 253.83);
 	--hero-badge-physical-text: oklch(42% 0.18 253.83);

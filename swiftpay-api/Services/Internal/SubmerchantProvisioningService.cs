@@ -1,11 +1,11 @@
-using safefy_api.Interfaces;
-using safefy_api.Models.PaymentApi;
+using swiftpay_api.Interfaces;
+using swiftpay_api.Models.PaymentApi;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public sealed class SubmerchantProvisioningService(
     IPaymentApiClient paymentApiClient,

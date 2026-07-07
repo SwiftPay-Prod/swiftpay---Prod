@@ -1,6 +1,6 @@
-using safefy_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Interfaces.Internal;
 
-namespace safefy_api_payment.Tests.Fixtures;
+namespace swiftpay_api_payment.Tests.Fixtures;
 
 internal sealed class NoOpRateLimitService : IRateLimitService
 {

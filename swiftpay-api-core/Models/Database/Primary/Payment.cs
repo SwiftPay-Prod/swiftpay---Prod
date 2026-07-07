@@ -1,10 +1,10 @@
-﻿using safefy_api_core.Models.Enum;
+﻿using swiftpay_api_core.Models.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
 /// Representa um pagamento recebido pelo merchant.

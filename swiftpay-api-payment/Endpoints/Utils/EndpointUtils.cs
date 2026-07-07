@@ -1,7 +1,7 @@
 using System.Security.Claims;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_payment.Endpoints.Utils;
+namespace swiftpay_api_payment.Endpoints.Utils;
 
 public static class PaymentEndpointUtils
 {

@@ -1,7 +1,7 @@
 using Npgsql;
 using System.Diagnostics;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class StartupPreWarmExtensions
 {

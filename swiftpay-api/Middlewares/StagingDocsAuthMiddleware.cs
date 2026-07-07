@@ -1,10 +1,10 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Middlewares;
+namespace swiftpay_api.Middlewares;
 
 public class StagingDocsAuthMiddleware(RequestDelegate next)
 {

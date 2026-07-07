@@ -1,10 +1,10 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 public sealed class MassTransitMessagePublisher(
     IPublishEndpoint publishEndpoint,

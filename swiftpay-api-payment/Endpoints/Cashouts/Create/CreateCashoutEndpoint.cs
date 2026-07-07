@@ -1,16 +1,16 @@
 using FastEndpoints;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Mappers;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Documentation;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Mappers;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Documentation;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Endpoints.Cashouts.Create;
+namespace swiftpay_api_payment.Endpoints.Cashouts.Create;
 
 public sealed class CreateCashoutEndpoint(
     ICashoutService cashoutService,
@@ -118,13 +118,13 @@ public sealed class CreateCashoutEndpoint(
         await Send.ResponseAsync(response, 201, ct);
     }
 
-    private static string GetStatusMessage(safefy_api_core.Models.Database.PayoutStatus status)
+    private static string GetStatusMessage(swiftpay_api_core.Models.Database.PayoutStatus status)
     {
         return status switch
         {
-            safefy_api_core.Models.Database.PayoutStatus.Completed => "Saque processado com sucesso!",
-            safefy_api_core.Models.Database.PayoutStatus.Processing => "Saque em processamento. Você receberá em breve.",
-            safefy_api_core.Models.Database.PayoutStatus.Failed => "Houve um erro ao processar o saque. O valor foi devolvido ao seu saldo.",
+            swiftpay_api_core.Models.Database.PayoutStatus.Completed => "Saque processado com sucesso!",
+            swiftpay_api_core.Models.Database.PayoutStatus.Processing => "Saque em processamento. Você receberá em breve.",
+            swiftpay_api_core.Models.Database.PayoutStatus.Failed => "Houve um erro ao processar o saque. O valor foi devolvido ao seu saldo.",
             _ => "Saque solicitado com sucesso!"
         };
     }

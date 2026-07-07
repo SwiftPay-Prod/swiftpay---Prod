@@ -1,7 +1,7 @@
 using System.Threading.Channels;
-using safefy_api_core.Interfaces;
+using swiftpay_api_core.Interfaces;
 
-namespace safefy_api_core.Services.Queues;
+namespace swiftpay_api_core.Services.Queues;
 
 public sealed class LogQueue<T> : ILogQueue<T> where T : class
 {

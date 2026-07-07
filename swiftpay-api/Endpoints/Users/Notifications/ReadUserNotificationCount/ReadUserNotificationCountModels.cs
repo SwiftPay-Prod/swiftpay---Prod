@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Users.Notifications.ReadUserNotificationCount;
+namespace swiftpay_api.Endpoints.Users.Notifications.ReadUserNotificationCount;
 
 public sealed class ReadUserNotificationCountResponse : BaseResponse<ReadUserNotificationCountData>;
 

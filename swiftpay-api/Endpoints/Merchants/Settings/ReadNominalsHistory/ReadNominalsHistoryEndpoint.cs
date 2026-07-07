@@ -1,10 +1,10 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.Settings.ReadNominalsHistory;
+namespace swiftpay_api.Endpoints.Merchants.Settings.ReadNominalsHistory;
 
 public sealed class ReadNominalsHistoryEndpoint(
     PrimaryDbContext dbContext

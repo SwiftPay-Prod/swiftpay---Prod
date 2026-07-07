@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Admin.PlatformPayouts.PreviewPlatformPayout;
+namespace swiftpay_api.Endpoints.Admin.PlatformPayouts.PreviewPlatformPayout;
 
 public sealed class PreviewPlatformPayoutEndpoint(
     PrimaryDbContext dbContext,

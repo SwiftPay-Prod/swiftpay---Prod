@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Integrations;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Integrations;
 using System.Text.Json.Serialization;
 
-namespace safefy_api.Endpoints.Merchants.Integrations.UpdateIntegration;
+namespace swiftpay_api.Endpoints.Merchants.Integrations.UpdateIntegration;
 
 public sealed class UpdateIntegrationRequest
 {

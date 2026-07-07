@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using safefy_api.Interfaces;
-using safefy_api_core.Constants;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Session;
+using swiftpay_api.Interfaces;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Session;
 
-namespace safefy_api.Hubs;
+namespace swiftpay_api.Hubs;
 
 [Authorize]
 public abstract class BaseHub(ISessionService sessionService) : Hub

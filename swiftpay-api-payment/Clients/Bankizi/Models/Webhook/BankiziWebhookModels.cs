@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.Bankizi.Utils;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Clients.Bankizi.Utils;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.Bankizi.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Bankizi.Models.Webhook;
 
 /// <summary>
 /// Status de uma transação PIX IN (Cash In) na Bankizi.

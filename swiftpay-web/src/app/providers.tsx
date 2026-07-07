@@ -1,6 +1,6 @@
 'use client';
 
-import { SafefyToaster } from '@/components/ui/safefy-toaster';
+import { SwiftPayToaster } from '@/components/ui/swiftpay-toaster';
 import { ForegroundNotificationListener } from '@/components/foreground-notification-listener';
 import { RouterProvider } from '@/providers/router-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
@@ -11,7 +11,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 			<ThemeProvider>
 				<ForegroundNotificationListener />
 				{children}
-				<SafefyToaster />
+				<SwiftPayToaster />
 			</ThemeProvider>
 		</RouterProvider>
 	);

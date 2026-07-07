@@ -1,7 +1,7 @@
-using safefy_api.Endpoints.Admin.Logs.ReadListLogs;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.Logs.ReadListLogs;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminLogMapper
 {

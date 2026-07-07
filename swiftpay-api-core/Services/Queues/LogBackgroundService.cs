@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_core.Services.Queues;
+namespace swiftpay_api_core.Services.Queues;
 
 public sealed class LogBackgroundService(
     IServiceScopeFactory serviceScopeFactory,

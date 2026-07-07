@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api.Mappers;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Merchants.Settings.ReadSettings;
+namespace swiftpay_api.Endpoints.Merchants.Settings.ReadSettings;
 
 public sealed class ReadSettingsEndpoint(
     PrimaryDbContext dbContext,
@@ -90,7 +90,7 @@ public sealed class ReadSettingsEndpoint(
     private static async Task<DateTime?> GetNextAutomaticCashoutAttemptAtAsync(
         PrimaryDbContext dbContext,
         Guid merchantId,
-        safefy_api_core.Models.Enum.ApiEnvironment environment,
+        swiftpay_api_core.Models.Enum.ApiEnvironment environment,
         bool isEnabled,
         AutomaticCashoutFrequency frequency,
         DateTime settingsUpdatedAt,
@@ -114,18 +114,18 @@ public sealed class ReadSettingsEndpoint(
 
     private static bool ResolveIsAutomaticCashoutEnabled(
         MerchantSettings settings,
-        safefy_api_core.Models.Enum.ApiEnvironment environment)
+        swiftpay_api_core.Models.Enum.ApiEnvironment environment)
     {
-        return environment == safefy_api_core.Models.Enum.ApiEnvironment.Sandbox
+        return environment == swiftpay_api_core.Models.Enum.ApiEnvironment.Sandbox
             ? settings.IsAutomaticCashoutEnabledSandbox
             : settings.IsAutomaticCashoutEnabled;
     }
 
     private static AutomaticCashoutFrequency ResolveAutomaticCashoutFrequency(
         MerchantSettings settings,
-        safefy_api_core.Models.Enum.ApiEnvironment environment)
+        swiftpay_api_core.Models.Enum.ApiEnvironment environment)
     {
-        return environment == safefy_api_core.Models.Enum.ApiEnvironment.Sandbox
+        return environment == swiftpay_api_core.Models.Enum.ApiEnvironment.Sandbox
             ? settings.AutomaticCashoutFrequencySandbox
             : settings.AutomaticCashoutFrequency;
     }

@@ -1,6 +1,6 @@
 using FastEndpoints;
 
-namespace safefy_api.EndpointsGroups;
+namespace swiftpay_api.EndpointsGroups;
 
 public class AuthGroup : Group
 {

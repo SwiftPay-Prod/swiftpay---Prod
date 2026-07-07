@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Balance.Get;
+namespace swiftpay_api_payment.Endpoints.Balance.Get;
 
 /// <summary>
 /// Response da consulta de saldo.

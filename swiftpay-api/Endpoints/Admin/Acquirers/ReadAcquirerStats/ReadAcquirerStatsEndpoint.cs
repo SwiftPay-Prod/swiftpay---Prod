@@ -1,16 +1,16 @@
 using System.Text.Json;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Constants;
-using safefy_api_core.Models.Messages;
-using safefy_api.Endpoints.Merchants.ReadMerchantDashboard;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api.Endpoints.Merchants.ReadMerchantDashboard;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.ReadAcquirerStats;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.ReadAcquirerStats;
 
 public sealed class ReadAcquirerStatsEndpoint(
     PrimaryDbContext dbContext,

@@ -143,9 +143,9 @@ const COLORS: Record<Status, string> = {...};
 - Usuários autenticados acessando rotas de auth são redirecionados para `/panel/dashboard`
 
 ### Cookies de Autenticação
-- `safefy_access_token` - Token de acesso (httpOnly)
-- `safefy_refresh_token` - Token de refresh (httpOnly)
-- `safefy_user_info` - Informações do usuário (httpOnly)
+- `swiftpay_access_token` - Token de acesso (httpOnly)
+- `swiftpay_refresh_token` - Token de refresh (httpOnly)
+- `swiftpay_user_info` - Informações do usuário (httpOnly)
 
 ### Onboarding de Usuário (pós-verificação)
 - Fluxo dedicado: onboarding de usuário é separado do onboarding de organização (merchant).

@@ -1,9 +1,9 @@
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Pluggou.Models;
-using safefy_api_payment.Clients.Pluggou.Models.Transactions;
-using safefy_api_payment.Clients.Pluggou.Models.Withdrawals;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Pluggou.Models;
+using swiftpay_api_payment.Clients.Pluggou.Models.Transactions;
+using swiftpay_api_payment.Clients.Pluggou.Models.Withdrawals;
 
-namespace safefy_api_payment.Interfaces.Acquirers;
+namespace swiftpay_api_payment.Interfaces.Acquirers;
 
 public interface IPluggouClient
 {

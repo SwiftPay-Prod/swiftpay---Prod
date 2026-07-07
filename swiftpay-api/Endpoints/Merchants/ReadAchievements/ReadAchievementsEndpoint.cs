@@ -1,14 +1,14 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Constants;
-using safefy_api_core.Utils;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.ReadAchievements;
+namespace swiftpay_api.Endpoints.Merchants.ReadAchievements;
 
 public sealed class ReadAchievementsEndpoint(
     PrimaryDbContext dbContext,

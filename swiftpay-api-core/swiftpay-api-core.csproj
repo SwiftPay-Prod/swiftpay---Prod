@@ -4,8 +4,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>safefy_api_core</RootNamespace>
-    <AssemblyName>safefy-api-core</AssemblyName>
+    <RootNamespace>swiftpay_api_core</RootNamespace>
+    <AssemblyName>swiftpay-api-core</AssemblyName>
     
     <!-- NuGet Package Configuration -->
     <PackageId>swiftpay-api-core</PackageId>

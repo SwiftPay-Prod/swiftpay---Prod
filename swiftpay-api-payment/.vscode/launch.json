@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net10.0/safefy-api-payment.dll",
+            "program": "${workspaceFolder}/bin/Debug/net10.0/swiftpay-api-payment.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.SignalR;
-using safefy_api.Hubs;
-using safefy_api_core.Constants;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Hubs;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public class DashboardHubService(
     IHubContext<MainHub> hubContext

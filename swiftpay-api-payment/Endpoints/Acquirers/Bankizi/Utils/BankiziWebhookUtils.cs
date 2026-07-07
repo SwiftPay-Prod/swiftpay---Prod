@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace safefy_api_payment.Endpoints.Acquirers.Bankizi.Utils;
+namespace swiftpay_api_payment.Endpoints.Acquirers.Bankizi.Utils;
 
 public static class BankiziWebhookUtils
 {

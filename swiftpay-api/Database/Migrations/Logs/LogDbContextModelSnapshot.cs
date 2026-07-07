@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using safefy_api_core.Database;
+using swiftpay_api_core.Database;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Logs
+namespace swiftpay_api.Database.Migrations.Logs
 {
     [DbContext(typeof(LogDbContext))]
     partial class LogDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace safefy_api.Database.Migrations.Logs
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.AcquirerWebhookLogEntry", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.AcquirerWebhookLogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -108,7 +108,7 @@ namespace safefy_api.Database.Migrations.Logs
                     b.ToTable("AcquirerWebhookLogs", (string)null);
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.ApiLogEntry", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.ApiLogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -222,7 +222,7 @@ namespace safefy_api.Database.Migrations.Logs
                     b.ToTable("ApiLogs", (string)null);
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.EmailLogEntry", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.EmailLogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -292,7 +292,7 @@ namespace safefy_api.Database.Migrations.Logs
                     b.ToTable("EmailLogs", (string)null);
                 });
 
-            modelBuilder.Entity("safefy_api_core.Models.Database.SecurityLogEntry", b =>
+            modelBuilder.Entity("swiftpay_api_core.Models.Database.SecurityLogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

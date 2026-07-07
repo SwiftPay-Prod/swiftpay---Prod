@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.HeartPay.Models.Payouts;
+namespace swiftpay_api_payment.Clients.HeartPay.Models.Payouts;
 
 public sealed class HeartPayCreatePayoutRequest
 {

@@ -1,7 +1,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace safefy_api_payment.Endpoints.Internal.Submerchants.SyncSplitConfig;
+namespace swiftpay_api_payment.Endpoints.Internal.Submerchants.SyncSplitConfig;
 
 public sealed class SyncSubmerchantSplitConfigInternalRequest
 {

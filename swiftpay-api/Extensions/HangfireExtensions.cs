@@ -1,12 +1,12 @@
 using Hangfire;
 using Hangfire.Redis.StackExchange;
-using safefy_api.Filters;
-using safefy_api.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Settings;
+using swiftpay_api.Filters;
+using swiftpay_api.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Settings;
 using StackExchange.Redis;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class HangfireExtensions
 {
@@ -32,7 +32,7 @@ public static class HangfireExtensions
                 .UseRecommendedSerializerSettings()
                 .UseRedisStorage(redis, new RedisStorageOptions
                 {
-                    Prefix = "safefy:hangfire:",
+                    Prefix = "swiftpay:hangfire:",
                     Db = 0,
                     InvisibilityTimeout = TimeSpan.FromMinutes(30),
                     ExpiryCheckInterval = TimeSpan.FromMinutes(5),

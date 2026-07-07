@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Session;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Session;
 
-namespace safefy_api.Interfaces;
+namespace swiftpay_api.Interfaces;
 
 public interface ISessionService
 {

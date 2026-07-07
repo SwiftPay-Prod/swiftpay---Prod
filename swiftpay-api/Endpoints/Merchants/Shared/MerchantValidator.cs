@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.Shared;
+namespace swiftpay_api.Endpoints.Merchants.Shared;
 
 public static class MerchantValidator
 {

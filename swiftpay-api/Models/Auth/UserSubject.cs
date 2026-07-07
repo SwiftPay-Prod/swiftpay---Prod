@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Models.Auth;
+namespace swiftpay_api.Models.Auth;
 
 public class UserSubject
 {

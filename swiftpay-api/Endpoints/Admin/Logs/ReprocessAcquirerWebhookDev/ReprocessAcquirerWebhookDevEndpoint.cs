@@ -1,11 +1,11 @@
 using FastEndpoints;
-using safefy_api.EndpointsGroups;
-using safefy_api.Interfaces;
-using safefy_api.Models.PaymentApi;
-using safefy_api_core.Utils;
-using safefy_api_core.Models.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Interfaces;
+using swiftpay_api.Models.PaymentApi;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Logs.ReprocessAcquirerWebhookDev;
+namespace swiftpay_api.Endpoints.Admin.Logs.ReprocessAcquirerWebhookDev;
 
 public sealed class ReprocessAcquirerWebhookDevEndpoint(
     IPaymentApiClient paymentApiClient

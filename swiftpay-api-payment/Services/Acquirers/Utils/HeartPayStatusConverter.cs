@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Clients.HeartPay.Models.Webhook;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Clients.HeartPay.Models.Webhook;
 
-namespace safefy_api_payment.Services.Acquirers.Utils;
+namespace swiftpay_api_payment.Services.Acquirers.Utils;
 
 public static class HeartPayStatusConverter
 {
@@ -25,19 +25,19 @@ public static class HeartPayStatusConverter
         };
     }
 
-    public static safefy_api_payment.Interfaces.WithdrawStatus ToWithdrawStatus(HeartPayWebhookStatus? status)
+    public static swiftpay_api_payment.Interfaces.WithdrawStatus ToWithdrawStatus(HeartPayWebhookStatus? status)
     {
         return ToWithdrawStatus(status?.ToString());
     }
 
-    public static safefy_api_payment.Interfaces.WithdrawStatus ToWithdrawStatus(string? status)
+    public static swiftpay_api_payment.Interfaces.WithdrawStatus ToWithdrawStatus(string? status)
     {
         return Normalize(status) switch
         {
-            "paid" or "completed" or "done" or "success" or "succeeded" => safefy_api_payment.Interfaces.WithdrawStatus.Completed,
-            "cancelled" or "canceled" => safefy_api_payment.Interfaces.WithdrawStatus.Cancelled,
-            "refused" or "rejected" or "failed" or "error" => safefy_api_payment.Interfaces.WithdrawStatus.Failed,
-            _ => safefy_api_payment.Interfaces.WithdrawStatus.Processing
+            "paid" or "completed" or "done" or "success" or "succeeded" => swiftpay_api_payment.Interfaces.WithdrawStatus.Completed,
+            "cancelled" or "canceled" => swiftpay_api_payment.Interfaces.WithdrawStatus.Cancelled,
+            "refused" or "rejected" or "failed" or "error" => swiftpay_api_payment.Interfaces.WithdrawStatus.Failed,
+            _ => swiftpay_api_payment.Interfaces.WithdrawStatus.Processing
         };
     }
 

@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.DeleteAcquirer;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.DeleteAcquirer;
 
 public sealed class DeleteAcquirerRequest
 {

@@ -1,9 +1,9 @@
-using safefy_api.Endpoints.Merchants.Checkouts;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Merchants.Checkouts;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class CheckoutMapper
 {

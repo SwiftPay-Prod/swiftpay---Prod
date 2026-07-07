@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Messages;
+namespace swiftpay_api_core.Models.Messages;
 
 public sealed record SendWebhookMessage
 {

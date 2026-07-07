@@ -1,17 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Transactions;
-using safefy_api_payment.Models.Transactions;
-using safefy_api_payment.Services.Sandbox;
-using safefy_api_payment.Services.Transactions;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Transactions;
+using swiftpay_api_payment.Models.Transactions;
+using swiftpay_api_payment.Services.Sandbox;
+using swiftpay_api_payment.Services.Transactions;
 
-namespace safefy_api_payment.Services;
+namespace swiftpay_api_payment.Services;
 
 /// <summary>
 /// Serviço de transações simples (gateway).
@@ -146,7 +146,7 @@ public class TransactionService(
             MerchantId = input.MerchantId,
             Environment = environmentProvider.CurrentEnvironment,
             Name = name,
-            Email = normalizedEmail ?? $"transaction-{Guid.NewGuid():N}@transactions.safefy.app",
+            Email = normalizedEmail ?? $"transaction-{Guid.NewGuid():N}@transactions.swiftpay.app",
             Document = normalizedDocument,
             DocumentType = documentType,
             Phone = normalizedPhone,

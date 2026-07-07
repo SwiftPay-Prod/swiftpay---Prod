@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
-using safefy_api.Endpoints.Models;
-using safefy_api.Endpoints.Users.ReadPublicProfile;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Users.ReadPublicProfile;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Users.Ranking.ReadRanking;
+namespace swiftpay_api.Endpoints.Users.Ranking.ReadRanking;
 
 public sealed class ReadRankingRequest
 {

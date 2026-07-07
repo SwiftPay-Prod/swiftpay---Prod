@@ -1,11 +1,11 @@
-using safefy_api.Endpoints.Merchants.Cashouts.ListCashouts;
-using safefy_api.Endpoints.Merchants.CashoutAccounts.CreateCashoutAccount;
-using safefy_api.Endpoints.Merchants.CashoutAccounts.ReadListCashoutAccounts;
-using safefy_api.Endpoints.Merchants.CashoutAccounts.ViewCashoutAccount;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Merchants.Cashouts.ListCashouts;
+using swiftpay_api.Endpoints.Merchants.CashoutAccounts.CreateCashoutAccount;
+using swiftpay_api.Endpoints.Merchants.CashoutAccounts.ReadListCashoutAccounts;
+using swiftpay_api.Endpoints.Merchants.CashoutAccounts.ViewCashoutAccount;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class CashoutAccountMapper
 {

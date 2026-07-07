@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 
-namespace safefy_api.Providers;
+namespace swiftpay_api.Providers;
 
 public class UserIdProvider : IUserIdProvider
 {

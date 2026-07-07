@@ -56,7 +56,7 @@ export const paymentMethodParse: Record<PaymentMethod, TParseWithIcon> = {
 
 /**
  * Product Type Parse with icons and styles (Hero Pro specific)
- * Colors aligned with safefy-web:
+ * Colors aligned with swiftpay-web:
  * - Physical: accent (blue)
  * - Digital: success (green)
  * - Service: warning (yellow/amber)

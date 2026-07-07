@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Accithus.Models.Submerchant;
+namespace swiftpay_api_payment.Clients.Accithus.Models.Submerchant;
 
 public sealed class AccithusCreateSubmerchantAddressRequest
 {

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_core.Models.Email;
+namespace swiftpay_api_core.Models.Email;
 
 /// <summary>
 /// Bloco de conteúdo do template de email

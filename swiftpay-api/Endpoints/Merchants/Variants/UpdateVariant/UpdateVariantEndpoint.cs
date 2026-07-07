@@ -1,11 +1,11 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.EndpointsGroups;
-using safefy_api.Mappers;
-using safefy_api_core.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.Variants.UpdateVariant;
+namespace swiftpay_api.Endpoints.Merchants.Variants.UpdateVariant;
 
 public sealed class UpdateVariantEndpoint(
     PrimaryDbContext dbContext

@@ -1,14 +1,14 @@
 using FastEndpoints;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Documentation;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Documentation;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
 
-namespace safefy_api_payment.Endpoints.Cashouts.Cancel;
+namespace swiftpay_api_payment.Endpoints.Cashouts.Cancel;
 
 public sealed class CancelCashoutEndpoint(
     ICashoutService cashoutService,

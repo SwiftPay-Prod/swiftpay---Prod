@@ -11,14 +11,14 @@ O conteúdo detalhado foi dividido em arquivos menores por contexto para facilit
 
 ## Glossário de referências temáticas
 
-- [Fundamentos, environment e fluxos iniciais de transação/saque](instructions/safefy-api-payment/foundations-transactions-and-cashouts.instructions.md)
-- [Payment Links e arquitetura de saques](instructions/safefy-api-payment/payment-links-and-cashout-architecture.instructions.md)
-- [Webhooks, tracking e sinalização de status](instructions/safefy-api-payment/webhooks-tracking-and-signalr.instructions.md)
-- [Clients, autenticação, rate limiting e resiliência HTTP](instructions/safefy-api-payment/clients-auth-rate-limit-and-resilience.instructions.md)
-- [Estrutura, stack, mensageria e extensão do startup](instructions/safefy-api-payment/structure-stack-broker-and-extensions.instructions.md)
-- [Regras de negócio centrais do domínio de pagamento](instructions/safefy-api-payment/core-business-rules.instructions.md)
-- [Checkout config, práticas, dependências e logging](instructions/safefy-api-payment/checkout-practices-dependencies-and-logging.instructions.md)
-- [Reprocessamento DEV, health checks e migrações](instructions/safefy-api-payment/dev-reprocessing-health-and-migrations.instructions.md)
+- [Fundamentos, environment e fluxos iniciais de transação/saque](instructions/swiftpay-api-payment/foundations-transactions-and-cashouts.instructions.md)
+- [Payment Links e arquitetura de saques](instructions/swiftpay-api-payment/payment-links-and-cashout-architecture.instructions.md)
+- [Webhooks, tracking e sinalização de status](instructions/swiftpay-api-payment/webhooks-tracking-and-signalr.instructions.md)
+- [Clients, autenticação, rate limiting e resiliência HTTP](instructions/swiftpay-api-payment/clients-auth-rate-limit-and-resilience.instructions.md)
+- [Estrutura, stack, mensageria e extensão do startup](instructions/swiftpay-api-payment/structure-stack-broker-and-extensions.instructions.md)
+- [Regras de negócio centrais do domínio de pagamento](instructions/swiftpay-api-payment/core-business-rules.instructions.md)
+- [Checkout config, práticas, dependências e logging](instructions/swiftpay-api-payment/checkout-practices-dependencies-and-logging.instructions.md)
+- [Reprocessamento DEV, health checks e migrações](instructions/swiftpay-api-payment/dev-reprocessing-health-and-migrations.instructions.md)
 
 ## Regra de manutenção
 

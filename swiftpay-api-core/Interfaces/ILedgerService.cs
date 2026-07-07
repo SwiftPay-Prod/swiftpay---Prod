@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Ledger;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Ledger;
 
-namespace safefy_api_core.Interfaces;
+namespace swiftpay_api_core.Interfaces;
 
 public interface ILedgerService
 {

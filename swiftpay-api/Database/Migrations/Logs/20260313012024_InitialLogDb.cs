@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Logs
+namespace swiftpay_api.Database.Migrations.Logs
 {
     /// <inheritdoc />
     public partial class InitialLogDb : Migration

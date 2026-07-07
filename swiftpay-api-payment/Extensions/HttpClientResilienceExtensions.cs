@@ -3,7 +3,7 @@ using Polly;
 using Polly.CircuitBreaker;
 using Polly.Timeout;
 
-namespace safefy_api_payment.Extensions;
+namespace swiftpay_api_payment.Extensions;
 
 public static class HttpClientResilienceExtensions
 {

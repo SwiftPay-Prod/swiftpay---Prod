@@ -3,13 +3,13 @@ using System.Security.Cryptography;
 using System.Text;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Filters;
+namespace swiftpay_api_payment.Filters;
 
 public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
 {

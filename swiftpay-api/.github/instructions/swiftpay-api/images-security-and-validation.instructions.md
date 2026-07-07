@@ -82,7 +82,7 @@ public sealed class MyRequestValidator : Validator<MyRequest>
 ### Validadores de Paginação
 
 ```csharp
-using safefy_api.Validators;
+using swiftpay_api.Validators;
 
 public sealed class MyValidator : Validator<MyRequest>
 {

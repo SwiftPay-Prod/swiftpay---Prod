@@ -1,19 +1,19 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Mappers;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.MassTransit;
-using safefy_api_core.Models.Messages;
-using safefy_api_payment.Constants;
-using safefy_api_payment.Hubs;
-using safefy_api_payment.Models.SignalR;
-using PaymentSignalRMethods = safefy_api_payment.Constants.SignalRMethods;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Mappers;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.MassTransit;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_payment.Constants;
+using swiftpay_api_payment.Hubs;
+using swiftpay_api_payment.Models.SignalR;
+using PaymentSignalRMethods = swiftpay_api_payment.Constants.SignalRMethods;
 
-namespace safefy_api_payment.Services.Sandbox;
+namespace swiftpay_api_payment.Services.Sandbox;
 
 public class SandboxService(
     PrimaryDbContext dbContext,

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
+using swiftpay_api_core.Database;
 
-namespace safefy_api_payment.Services.Internal;
+namespace swiftpay_api_payment.Services.Internal;
 
 public sealed class StartupWarmupService(
     IServiceProvider serviceProvider,

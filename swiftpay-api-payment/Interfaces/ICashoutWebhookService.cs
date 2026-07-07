@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Interfaces;
+namespace swiftpay_api_payment.Interfaces;
 
 public interface ICashoutWebhookService
 {

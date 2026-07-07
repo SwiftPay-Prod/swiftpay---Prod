@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.ActivePayments.Models.CreateBillet;
+namespace swiftpay_api_payment.Clients.ActivePayments.Models.CreateBillet;
 
 public sealed class ActivePaymentsCreateBilletRequest
 {

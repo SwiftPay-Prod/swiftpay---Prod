@@ -1,4 +1,4 @@
-namespace safefy_api.Interfaces;
+namespace swiftpay_api.Interfaces;
 
 public interface IAutomaticCashoutService
 {

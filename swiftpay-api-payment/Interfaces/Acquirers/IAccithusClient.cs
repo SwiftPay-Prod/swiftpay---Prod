@@ -1,10 +1,10 @@
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Accithus.Models.CreateTransaction;
-using safefy_api_payment.Clients.Accithus.Models.GetTransaction;
-using safefy_api_payment.Clients.Accithus.Models.Submerchant;
-using safefy_api_payment.Clients.Accithus.Models.Withdrawals;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Accithus.Models.CreateTransaction;
+using swiftpay_api_payment.Clients.Accithus.Models.GetTransaction;
+using swiftpay_api_payment.Clients.Accithus.Models.Submerchant;
+using swiftpay_api_payment.Clients.Accithus.Models.Withdrawals;
 
-namespace safefy_api_payment.Interfaces.Acquirers;
+namespace swiftpay_api_payment.Interfaces.Acquirers;
 
 public interface IAccithusClient
 {

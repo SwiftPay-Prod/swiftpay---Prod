@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Database;
-using safefy_api.Endpoints.Merchants.Orders.ReadListOrders;
-using safefy_api.Endpoints.Merchants.Orders.ReadOrder;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api.Endpoints.Merchants.Orders.ReadListOrders;
+using swiftpay_api.Endpoints.Merchants.Orders.ReadOrder;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class OrderMapper
 {

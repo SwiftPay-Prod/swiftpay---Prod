@@ -1,12 +1,12 @@
-export const DEFAULT_DOCS_URL = 'https://docs.safefypay.com.br';
+export const DEFAULT_DOCS_URL = 'https://docs.swiftpay.com.br';
 
 export const USEFUL_LINKS = {
 	supportPhone: '+55 11 9 3481-9868',
 	supportWhatsAppNumber: '5511934819868',
-	supportEmail: 'suporte@safefypay.com.br',
-	instagramUrl: 'https://instagram.com/safefy_pay',
+	supportEmail: 'suporte@swiftpay.com.br',
+	instagramUrl: 'https://instagram.com/swiftpay_pay',
 	discordUrl: 'https://discord.gg/7e9BZB5qhG',
-	telegramGroupUrl: 'https://t.me/safefypay',
+	telegramGroupUrl: 'https://t.me/swiftpay',
 	docsDescription: 'Guias, tutoriais e referência da API.',
 	docsActionLabel: 'Acessar docs',
 } as const;

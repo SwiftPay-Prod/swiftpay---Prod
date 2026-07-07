@@ -17,7 +17,7 @@ export const DASHBOARD_LAYOUT_OPTIONS: DashboardLayoutOption[] = [
 	{ id: 'compact', label: 'Compacto', description: 'Evolução e gauge lado a lado, máxima densidade' },
 ];
 
-const STORAGE_KEY = 'safefy_dashboard_layout';
+const STORAGE_KEY = 'swiftpay_dashboard_layout';
 
 export function useDashboardLayout() {
 	const [layout, setLayout] = useState<DashboardLayoutId>('standard');

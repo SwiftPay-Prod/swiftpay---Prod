@@ -2,12 +2,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Rapdyn.Models.Payments;
-using safefy_api_payment.Clients.Rapdyn.Models.Withdrawals;
-using safefy_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Rapdyn.Models.Payments;
+using swiftpay_api_payment.Clients.Rapdyn.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces.Acquirers;
 
-namespace safefy_api_payment.Clients.Rapdyn;
+namespace swiftpay_api_payment.Clients.Rapdyn;
 
 public sealed class RapdynClient(
     HttpClient httpClient,

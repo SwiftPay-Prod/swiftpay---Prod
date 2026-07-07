@@ -1,13 +1,13 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using safefy_api_payment.Clients.Common;
-using safefy_api_payment.Clients.HeartPay.Models.Boletos;
-using safefy_api_payment.Clients.HeartPay.Models.Charges;
-using safefy_api_payment.Clients.HeartPay.Models.Payouts;
-using safefy_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Clients.Common;
+using swiftpay_api_payment.Clients.HeartPay.Models.Boletos;
+using swiftpay_api_payment.Clients.HeartPay.Models.Charges;
+using swiftpay_api_payment.Clients.HeartPay.Models.Payouts;
+using swiftpay_api_payment.Interfaces.Acquirers;
 
-namespace safefy_api_payment.Clients.HeartPay;
+namespace swiftpay_api_payment.Clients.HeartPay;
 
 public sealed class HeartPayClient(
     HttpClient httpClient,

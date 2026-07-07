@@ -5,7 +5,7 @@ applyTo: 'Endpoints/Internal/**/*.cs, Endpoints/Acquirers/**/*.cs, EndpointsGrou
 
 ## Arquitetura de Webhooks
 
-### 1. Webhooks das Adquirentes → safefy-api-payment
+### 1. Webhooks das Adquirentes → swiftpay-api-payment
 
 **IMPORTANTE**: Os endpoints de webhook das adquirentes ficam **exclusivamente** nesta API.
 
@@ -101,7 +101,7 @@ O `AcquirerWebhookAuthMiddleware` cuida da autenticação automaticamente para t
 - O registro deve incluir payload bruto (`RequestBody`), headers (`RequestHeaders` com mascaramento de segredo), adquirente (`AcquirerId`, `AcquirerType`, `AcquirerCode`) e metadados de rede (`IpAddress`, `UserAgent`, `Location`, `CorrelationId`, etc.).
 - Esse log é independente de `ApiLogs` e deve permitir rastreabilidade completa da entrada recebida.
 
-### 2. Webhooks Safefy → Merchants
+### 2. Webhooks SwiftPay → Merchants
 
 Após processar o webhook da adquirente, a API envia um webhook **padronizado** para o `CallbackUrl` do pagamento.
 
@@ -109,11 +109,11 @@ Após processar o webhook da adquirente, a API envia um webhook **padronizado** 
 
 | Header | Descrição |
 |--------|-----------|
-| `X-Safefy-Signature` | Assinatura HMAC-SHA256 do payload |
-| `X-Safefy-Event` | Tipo do evento |
-| `X-Safefy-Delivery` | ID único da entrega |
-| `X-Safefy-Attempt` | Número da tentativa (1, 2, 3) |
-| `User-Agent` | Safefy-Webhook/1.0 |
+| `X-SwiftPay-Signature` | Assinatura HMAC-SHA256 do payload |
+| `X-SwiftPay-Event` | Tipo do evento |
+| `X-SwiftPay-Delivery` | ID único da entrega |
+| `X-SwiftPay-Attempt` | Número da tentativa (1, 2, 3) |
+| `User-Agent` | SwiftPay-Webhook/1.0 |
 
 **Eventos enviados para o merchant:**
 
@@ -142,7 +142,7 @@ Após processar o webhook da adquirente, a API envia um webhook **padronizado** 
 - Endpoint de envio:
     - `POST https://api.utmify.com.br/api-credentials/orders`
     - header `x-api-token`
-- O campo `platform` no body deve ser fixo como `SafefyPay`.
+- O campo `platform` no body deve ser fixo como `SwiftPayPay`.
 - Mapeamento de eventos de pagamento para notificacoes Utmify:
     - `Pending` -> `waiting_payment` (flag `waitingPayment`)
     - `Completed` -> `paid` (flag `paid`)

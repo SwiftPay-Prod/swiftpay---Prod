@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-interface SafefyBrandLogoProps {
+interface SwiftPayBrandLogoProps {
 	className?: string;
 	iconClassName?: string;
 	textClassName?: string;
@@ -14,21 +14,21 @@ function joinClasses(...classes: Array<string | undefined>) {
 
 const HORIZONTAL_LOGO_RATIO = 882 / 248;
 
-export function SafefyBrandLogo({
+export function SwiftPayBrandLogo({
 	className,
 	iconClassName,
 	textClassName,
 	iconSize = 32,
 	priority = false,
-}: SafefyBrandLogoProps) {
+}: SwiftPayBrandLogoProps) {
 	const logoWidth = Math.round(iconSize * HORIZONTAL_LOGO_RATIO);
 	const logoClassName = joinClasses('h-auto w-auto', iconClassName, textClassName);
 
 	return (
 		<div className={joinClasses('inline-flex items-center justify-center', className)}>
 			<Image
-				src="/logos/safefy-horizontal-light.png"
-				alt="Safefy"
+				src="/logos/swiftpay-horizontal-light.png"
+				alt="SwiftPay"
 				width={logoWidth}
 				height={iconSize}
 				sizes={`${logoWidth}px`}
@@ -36,8 +36,8 @@ export function SafefyBrandLogo({
 				className={joinClasses('block dark:hidden', logoClassName)}
 			/>
 			<Image
-				src="/logos/safefy-horizontal-dark.png"
-				alt="Safefy"
+				src="/logos/swiftpay-horizontal-dark.png"
+				alt="SwiftPay"
 				width={logoWidth}
 				height={iconSize}
 				sizes={`${logoWidth}px`}

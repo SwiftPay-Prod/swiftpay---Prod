@@ -1,7 +1,7 @@
-using safefy_api.Endpoints.Auth.Shared.Models;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Auth.Shared.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Auth.ConfirmEmail;
+namespace swiftpay_api.Endpoints.Auth.ConfirmEmail;
 
 public sealed class ConfirmEmailRequest
 {

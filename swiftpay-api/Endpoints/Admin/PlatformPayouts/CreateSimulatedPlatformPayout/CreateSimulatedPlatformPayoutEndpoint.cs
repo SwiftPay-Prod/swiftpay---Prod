@@ -1,19 +1,19 @@
 using System.Data;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Models.Calculation;
-using safefy_api.Mappers;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Admin.PlatformPayouts.CreateSimulatedPlatformPayout;
+namespace swiftpay_api.Endpoints.Admin.PlatformPayouts.CreateSimulatedPlatformPayout;
 
 public sealed class CreateSimulatedPlatformPayoutEndpoint(
     PrimaryDbContext dbContext,

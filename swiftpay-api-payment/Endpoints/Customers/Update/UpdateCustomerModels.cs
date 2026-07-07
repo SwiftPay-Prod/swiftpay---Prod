@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Endpoints.Customers.Create;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_payment.Endpoints.Customers.Create;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_payment.Endpoints.Customers.Update;
+namespace swiftpay_api_payment.Endpoints.Customers.Update;
 
 public class UpdateCustomerRequest
 {

@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Users.Profile.ReadProfile;
+namespace swiftpay_api.Endpoints.Users.Profile.ReadProfile;
 
 public sealed class ReadProfileResponse : BaseResponse<ProfileData>;
 

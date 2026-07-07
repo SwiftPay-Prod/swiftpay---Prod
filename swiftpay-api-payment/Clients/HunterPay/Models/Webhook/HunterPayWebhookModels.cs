@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.HunterPay.Models.Transactions;
-using safefy_api_payment.Clients.HunterPay.Models.Withdrawals;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Clients.HunterPay.Models.Transactions;
+using swiftpay_api_payment.Clients.HunterPay.Models.Withdrawals;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Clients.HunterPay.Models.Webhook;
+namespace swiftpay_api_payment.Clients.HunterPay.Models.Webhook;
 
 public sealed class HunterPayWebhookResponse : BaseResponse<HunterPayWebhookData>;
 

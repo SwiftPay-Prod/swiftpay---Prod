@@ -1,6 +1,6 @@
-namespace safefy_api_core.Models.Messages;
+namespace swiftpay_api_core.Models.Messages;
 
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Enum;
 
 public class ProcessReferralHistoricalCommissionMessage
 {

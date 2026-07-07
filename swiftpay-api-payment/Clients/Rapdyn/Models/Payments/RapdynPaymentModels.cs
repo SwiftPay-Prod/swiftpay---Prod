@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.Rapdyn.Models.Payments;
+namespace swiftpay_api_payment.Clients.Rapdyn.Models.Payments;
 
 [JsonConverter(typeof(RapdynPaymentMethodConverter))]
 public enum RapdynPaymentMethod

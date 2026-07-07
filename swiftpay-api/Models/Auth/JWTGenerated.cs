@@ -1,4 +1,4 @@
-namespace safefy_api.Models.Auth;
+namespace swiftpay_api.Models.Auth;
 
 public class JWTGenerated
 {

@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api.Mappers;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api.Endpoints.Merchants.Checkouts.ReadCheckout;
+namespace swiftpay_api.Endpoints.Merchants.Checkouts.ReadCheckout;
 
 public sealed class ReadCheckoutEndpoint(
     PrimaryDbContext dbContext,

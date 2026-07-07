@@ -1,6 +1,6 @@
-using safefy_api_core.Extensions;
+using swiftpay_api_core.Extensions;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class AuthenticationExtensions
 {

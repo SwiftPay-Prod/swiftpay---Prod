@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
-using safefy_api.Endpoints.Users.Notifications.Shared.Models;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Endpoints.Users.Notifications.Shared.Models;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Users.Notifications.ReadListUserNotifications;
+namespace swiftpay_api.Endpoints.Users.Notifications.ReadListUserNotifications;
 
 public sealed class ReadListUserNotificationsEndpoint(PrimaryDbContext dbContext) : Endpoint<ReadListUserNotificationsRequest, ReadListUserNotificationsResponse>
 {

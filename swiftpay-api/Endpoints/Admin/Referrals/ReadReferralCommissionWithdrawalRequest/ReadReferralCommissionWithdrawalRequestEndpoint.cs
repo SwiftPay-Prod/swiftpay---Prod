@@ -1,10 +1,10 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api.Interfaces;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Interfaces;
 
-namespace safefy_api.Endpoints.Admin.Referrals.ReadReferralCommissionWithdrawalRequest;
+namespace swiftpay_api.Endpoints.Admin.Referrals.ReadReferralCommissionWithdrawalRequest;
 
 public sealed class ReadReferralCommissionWithdrawalRequestEndpoint(
     PrimaryDbContext dbContext,
@@ -67,7 +67,7 @@ public sealed class ReadReferralCommissionWithdrawalRequestEndpoint(
 
         var referralWithdrawalIntervalUnit = withdrawalRequest.ReferrerUser.ReferralCommissionWithdrawalIntervalUnit
             ?? platformReferralSettings?.ReferralCommissionWithdrawalIntervalUnit
-            ?? safefy_api_core.Models.Database.ReferralWithdrawalIntervalUnit.Days;
+            ?? swiftpay_api_core.Models.Database.ReferralWithdrawalIntervalUnit.Days;
 
         var referralMinWithdrawalAmount = withdrawalRequest.ReferrerUser.ReferralCommissionMinWithdrawalAmount
             ?? platformReferralSettings?.ReferralCommissionMinWithdrawalAmount

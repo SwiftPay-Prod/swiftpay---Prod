@@ -1,7 +1,7 @@
-namespace safefy_api_core.Constants;
+namespace swiftpay_api_core.Constants;
 
 /// <summary>
-/// Códigos de erro da API de Pagamentos (safefy-api-payment).
+/// Códigos de erro da API de Pagamentos (swiftpay-api-payment).
 /// Estes códigos são utilizados para identificação programática de erros.
 /// </summary>
 public static class PaymentApiErrorCodes

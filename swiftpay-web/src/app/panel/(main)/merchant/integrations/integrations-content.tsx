@@ -19,16 +19,16 @@ import type {
 } from '@/types/merchant/integrations';
 
 type IntegrationsPromise = Promise<ApiResponse<ReadMerchantIntegrationsData>>;
-const UTMIFY_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/utmify-icon.png';
-const OTIMIZEY_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/otimiey-icon.png';
-const GOOGLE_ADS_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/google-ads-icon.png';
+const UTMIFY_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/utmify-icon.png';
+const OTIMIZEY_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/otimiey-icon.png';
+const GOOGLE_ADS_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/google-ads-icon.png';
 const GOOGLE_ANALYTICS_IMAGE_URL =
-	'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/google-analytics-icon.png';
-const HUBSPOT_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/hubspot-icon.png';
-const META_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/meta-icon.png';
-const MIXPANEL_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/mixpanel-icon.png';
-const N8N_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/n8n-icon.png';
-const ZAPIER_IMAGE_URL = 'https://safefy-prod.nyc3.cdn.digitaloceanspaces.com/integrations/zapier-icon.png';
+	'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/google-analytics-icon.png';
+const HUBSPOT_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/hubspot-icon.png';
+const META_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/meta-icon.png';
+const MIXPANEL_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/mixpanel-icon.png';
+const N8N_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/n8n-icon.png';
+const ZAPIER_IMAGE_URL = 'https://swiftpay-prod.nyc3.cdn.digitaloceanspaces.com/integrations/zapier-icon.png';
 
 type IntegrationCategory = 'tracking' | 'automation' | 'crm' | 'analytics';
 

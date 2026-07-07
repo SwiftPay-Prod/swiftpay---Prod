@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 /// <summary>
 /// Hybrid environment provider that checks AsyncLocal first (for consumers/background jobs),

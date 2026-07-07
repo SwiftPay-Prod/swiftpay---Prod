@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.HunterPay.Models.Webhook;
+namespace swiftpay_api_payment.Clients.HunterPay.Models.Webhook;
 
 [JsonConverter(typeof(HunterPayWebhookTypeConverter))]
 public enum HunterPayWebhookType

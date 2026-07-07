@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Models.Orders;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Models.Orders;
 
-namespace safefy_api_payment.Endpoints.Checkout.CreateOrder;
+namespace swiftpay_api_payment.Endpoints.Checkout.CreateOrder;
 
 public sealed class CreateOrderHandler(
     PrimaryDbContext dbContext,
@@ -341,12 +341,12 @@ public sealed class CreateOrderHandler(
         if (!string.IsNullOrEmpty(customerData.Email))
         {
             var normalizedEmail = customerData.Email.ToLower().Trim();
-            if (customer.Email != normalizedEmail && !customer.Email.Contains("@checkout.safefy.app"))
+            if (customer.Email != normalizedEmail && !customer.Email.Contains("@checkout.swiftpay.app"))
             {
                 customer.Email = normalizedEmail;
                 wasUpdated = true;
             }
-            else if (customer.Email.Contains("@checkout.safefy.app"))
+            else if (customer.Email.Contains("@checkout.swiftpay.app"))
             {
                 customer.Email = normalizedEmail;
                 wasUpdated = true;
@@ -386,7 +386,7 @@ public sealed class CreateOrderHandler(
             var anonymousCustomer = await dbContext.Customers
                 .FirstOrDefaultAsync(c =>
                     c.MerchantId == merchantId &&
-                    c.Email == "anonymous@checkout.safefy.app", ct);
+                    c.Email == "anonymous@checkout.swiftpay.app", ct);
 
             if (anonymousCustomer != null)
                 return anonymousCustomer.Id;
@@ -397,7 +397,7 @@ public sealed class CreateOrderHandler(
                 MerchantId = merchantId,
                 Environment = environment,
                 Name = "Cliente Anônimo",
-                Email = "anonymous@checkout.safefy.app",
+                Email = "anonymous@checkout.swiftpay.app",
                 Status = CustomerStatus.Active
             };
 
@@ -428,7 +428,7 @@ public sealed class CreateOrderHandler(
         {
             if (!string.IsNullOrEmpty(customerData.Name) && string.IsNullOrEmpty(customer.Name))
                 customer.Name = customerData.Name;
-            if (!string.IsNullOrEmpty(customerData.Email) && (string.IsNullOrEmpty(customer.Email) || customer.Email.Contains("@checkout.safefy.app")))
+            if (!string.IsNullOrEmpty(customerData.Email) && (string.IsNullOrEmpty(customer.Email) || customer.Email.Contains("@checkout.swiftpay.app")))
                 customer.Email = customerData.Email.ToLower().Trim();
             if (!string.IsNullOrEmpty(customerData.Phone) && string.IsNullOrEmpty(customer.Phone))
                 customer.Phone = customerData.Phone;
@@ -445,7 +445,7 @@ public sealed class CreateOrderHandler(
             MerchantId = merchantId,
             Environment = environment,
             Name = customerData.Name ?? "",
-            Email = customerData.Email?.ToLower().Trim() ?? $"checkout-{Guid.NewGuid():N}@checkout.safefy.app",
+            Email = customerData.Email?.ToLower().Trim() ?? $"checkout-{Guid.NewGuid():N}@checkout.swiftpay.app",
             Phone = customerData.Phone,
             Document = customerData.Document,
             Status = CustomerStatus.Active
@@ -471,7 +471,7 @@ public sealed class CreateOrderHandler(
         Payment payment,
         PaymentPix? pix,
         PaymentBoleto? boleto,
-        safefy_api_core.Models.Database.Order order)
+        swiftpay_api_core.Models.Database.Order order)
     {
         var data = new OrderData
         {

@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Ledger;
+namespace swiftpay_api_core.Models.Ledger;
 
 public class PlatformBalanceInfo
 {

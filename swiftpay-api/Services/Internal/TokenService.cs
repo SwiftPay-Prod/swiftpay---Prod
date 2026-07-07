@@ -1,12 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
-using safefy_api.Interfaces;
-using safefy_api.Models.Auth;
-using safefy_api_core.Models.Settings;
+using swiftpay_api.Interfaces;
+using swiftpay_api.Models.Auth;
+using swiftpay_api_core.Models.Settings;
 using JWT.Builder;
 using JWT.Algorithms;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public class TokenService(IOptions<JWTSettingsOptions> jwtSettingsOptions) : ITokenService
 {

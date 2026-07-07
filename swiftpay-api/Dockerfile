@@ -12,7 +12,7 @@ ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
 RUN dotnet nuget add source "https://nuget.pkg.github.com/Safefy-Pay/index.json" \
-    --name github-safefy \
+    --name github-swiftpay \
     --username $GITHUB_USER \
     --password $GITHUB_TOKEN \
     --store-password-in-clear-text
@@ -31,4 +31,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:5279
-ENTRYPOINT ["dotnet", "safefy-api.dll"]
+ENTRYPOINT ["dotnet", "swiftpay-api.dll"]

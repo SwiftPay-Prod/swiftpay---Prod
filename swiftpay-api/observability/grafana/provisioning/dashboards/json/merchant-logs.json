@@ -1006,7 +1006,7 @@
 	"refresh": "30s",
 	"schemaVersion": 38,
 	"style": "dark",
-	"tags": ["safefy", "logs", "api", "security"],
+	"tags": ["swiftpay", "logs", "api", "security"],
 	"templating": {
 		"list": [
 			{
@@ -1041,7 +1041,7 @@
 	},
 	"timezone": "browser",
 	"title": "Logs Merchant Dashboard",
-	"uid": "safefy-merchant-logs-dashboard",
+	"uid": "swiftpay-merchant-logs-dashboard",
 	"version": 1,
 	"weekStart": ""
 }

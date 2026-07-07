@@ -1,5 +1,5 @@
 ---
-description: "Use when applying HeroUI v3, Tailwind v4 semantics, coding best practices, and utility usage conventions in safefy-web."
+description: "Use when applying HeroUI v3, Tailwind v4 semantics, coding best practices, and utility usage conventions in swiftpay-web."
 applyTo: 'src/**/*.tsx, src/**/*.ts, src/app/globals.css, src/components/**/*.tsx'
 ---
 

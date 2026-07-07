@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Tests.Models;
+namespace swiftpay_api_payment.Tests.Models;
 
 // ===================================================================
 // Base Response Models

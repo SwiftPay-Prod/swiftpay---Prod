@@ -1,6 +1,6 @@
 using FastEndpoints;
 
-namespace safefy_api_payment.EndpointsGroups;
+namespace swiftpay_api_payment.EndpointsGroups;
 
 /// <summary>
 /// Grupo de endpoints de pedidos.

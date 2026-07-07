@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_core.Models.Email;
+namespace swiftpay_api_core.Models.Email;
 
 public static class EmailTemplates
 {

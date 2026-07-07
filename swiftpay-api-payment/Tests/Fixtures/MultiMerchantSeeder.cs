@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Models.Acquirer;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Models.Acquirer;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_payment.Tests.Fixtures;
+namespace swiftpay_api_payment.Tests.Fixtures;
 
 /// <summary>
 /// Seeder de dados para os 3 merchants extras usados no teste de fluxo completo da plataforma.
@@ -78,7 +78,7 @@ public static class MultiMerchantSeeder
             {
                 Id = userId,
                 Name = $"Test Merchant {label} User",
-                Email = $"merchant_{label.ToLower()}@test.safefy.com",
+                Email = $"merchant_{label.ToLower()}@test.swiftpay.com",
                 Password = "hashed_password_test",
                 Role = UserRole.Merchant,
                 Status = UserStatus.Active,
@@ -93,7 +93,7 @@ public static class MultiMerchantSeeder
                 Id = merchantId,
                 UserId = userId,
                 Name = $"Test Merchant {label}",
-                Email = $"merchant_{label.ToLower()}@test.safefy.com",
+                Email = $"merchant_{label.ToLower()}@test.swiftpay.com",
                 Status = MerchantStatus.Active,
                 KycStatus = MerchantKycStatus.Approved
             });

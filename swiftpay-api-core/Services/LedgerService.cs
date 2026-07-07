@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Ledger;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Ledger;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 public class LedgerService(
     ILedgerRepository ledgerRepository,
@@ -1406,7 +1406,7 @@ public class LedgerService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error recording acquirer safefy profit adjustment: AcquirerId={AcquirerId}, Amount={Amount}, IsCredit={IsCredit}", acquirerId, amount, isCredit);
+            logger.LogError(ex, "Error recording acquirer swiftpay profit adjustment: AcquirerId={AcquirerId}, Amount={Amount}, IsCredit={IsCredit}", acquirerId, amount, isCredit);
             return LedgerTransactionResult.Fail("Erro ao registrar ajuste de lucro Safefy na adquirente no ledger.");
         }
     }

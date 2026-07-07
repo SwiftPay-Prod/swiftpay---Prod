@@ -1,17 +1,17 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Constants;
-using safefy_api.Hubs;
-using safefy_api.Interfaces;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Constants;
+using swiftpay_api.Hubs;
+using swiftpay_api.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
-namespace safefy_api.Endpoints.Users.Devices.RevokeDevice;
+namespace swiftpay_api.Endpoints.Users.Devices.RevokeDevice;
 
 public sealed class RevokeDeviceEndpoint(
     PrimaryDbContext dbContext,

@@ -2,12 +2,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Coldfy.Models.Payments;
-using safefy_api_payment.Clients.Coldfy.Models.Withdrawals;
-using safefy_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Coldfy.Models.Payments;
+using swiftpay_api_payment.Clients.Coldfy.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces.Acquirers;
 
-namespace safefy_api_payment.Clients.Coldfy;
+namespace swiftpay_api_payment.Clients.Coldfy;
 
 public sealed class ColdfyClient(
     HttpClient httpClient,

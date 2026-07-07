@@ -37,10 +37,10 @@
     --scalar-card-background: #ffffff;
     
     /* Cores do gradiente animado - Light */
-    --safefy-gradient-1: rgba(14, 165, 233, 0.05);
-    --safefy-gradient-2: rgba(56, 189, 248, 0.08);
-    --safefy-gradient-3: rgba(2, 132, 199, 0.05);
-    --safefy-gradient-4: rgba(125, 211, 252, 0.06);
+    --swiftpay-gradient-1: rgba(14, 165, 233, 0.05);
+    --swiftpay-gradient-2: rgba(56, 189, 248, 0.08);
+    --swiftpay-gradient-3: rgba(2, 132, 199, 0.05);
+    --swiftpay-gradient-4: rgba(125, 211, 252, 0.06);
 }
 
 /* ===== DARK MODE ===== */
@@ -73,10 +73,10 @@
     --scalar-card-background: #1e293b;
     
     /* Cores do gradiente animado - Dark */
-    --safefy-gradient-1: rgba(14, 165, 233, 0.08);
-    --safefy-gradient-2: rgba(56, 189, 248, 0.12);
-    --safefy-gradient-3: rgba(2, 132, 199, 0.08);
-    --safefy-gradient-4: rgba(125, 211, 252, 0.10);
+    --swiftpay-gradient-1: rgba(14, 165, 233, 0.08);
+    --swiftpay-gradient-2: rgba(56, 189, 248, 0.12);
+    --swiftpay-gradient-3: rgba(2, 132, 199, 0.08);
+    --swiftpay-gradient-4: rgba(125, 211, 252, 0.10);
 }
 
 /* ===== EFEITO ANIMADO DE BACKGROUND ===== */
@@ -97,10 +97,10 @@
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(ellipse at 20% 20%, var(--safefy-gradient-1) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 30%, var(--safefy-gradient-2) 0%, transparent 50%),
-        radial-gradient(ellipse at 40% 80%, var(--safefy-gradient-3) 0%, transparent 50%),
-        radial-gradient(ellipse at 90% 90%, var(--safefy-gradient-4) 0%, transparent 50%);
+        radial-gradient(ellipse at 20% 20%, var(--swiftpay-gradient-1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, var(--swiftpay-gradient-2) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 80%, var(--swiftpay-gradient-3) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 90%, var(--swiftpay-gradient-4) 0%, transparent 50%);
     background-size: 200% 200%;
     animation: gradientShift 15s ease infinite;
     pointer-events: none;
@@ -116,7 +116,7 @@
     right: 15%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, var(--safefy-gradient-2) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--swiftpay-gradient-2) 0%, transparent 70%);
     border-radius: 50%;
     animation: pulseGlow 8s ease-in-out infinite;
     pointer-events: none;
@@ -131,7 +131,7 @@ body::after {
     left: 10%;
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, var(--safefy-gradient-3) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--swiftpay-gradient-3) 0%, transparent 70%);
     border-radius: 50%;
     animation: pulseGlow 10s ease-in-out infinite reverse;
     pointer-events: none;
@@ -147,7 +147,7 @@ nav.sidebar-content::before,
 .references-sidebar::before {
     content: '';
     display: block;
-    background-image: url('https://console-staging-ff4f.up.railway.app/api/v1/buckets/safefy-dev/objects/download?preview=true&prefix=public%2Flogo-safefy-horizontal.png');
+    background-image: url('https://console-staging-ff4f.up.railway.app/api/v1/buckets/swiftpay-dev/objects/download?preview=true&prefix=public%2Flogo-swiftpay-horizontal.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left;

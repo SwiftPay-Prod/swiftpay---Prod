@@ -1,1 +1,1 @@
-global using EmailSettingsOptions = safefy_api_core.Models.Settings.EmailSettingsOptions;
+global using EmailSettingsOptions = swiftpay_api_core.Models.Settings.EmailSettingsOptions;

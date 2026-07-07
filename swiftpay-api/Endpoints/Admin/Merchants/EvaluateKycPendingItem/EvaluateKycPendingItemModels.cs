@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Merchants.EvaluateKycPendingItem;
+namespace swiftpay_api.Endpoints.Admin.Merchants.EvaluateKycPendingItem;
 
 public sealed class EvaluateKycPendingItemRequest
 {

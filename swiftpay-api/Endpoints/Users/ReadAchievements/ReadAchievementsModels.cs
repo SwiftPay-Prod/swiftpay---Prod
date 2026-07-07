@@ -1,7 +1,7 @@
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Users.ReadAchievements;
+namespace swiftpay_api.Endpoints.Users.ReadAchievements;
 
 public sealed class ReadAchievementsResponse : BaseResponse<ReadAchievementsData>;
 

@@ -1,8 +1,8 @@
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.EndpointsGroups;
 
-namespace safefy_api_payment.Endpoints.Checkout.CreateOrder;
+namespace swiftpay_api_payment.Endpoints.Checkout.CreateOrder;
 
 public sealed class CreateOrderEndpoint(
     CreateOrderHandler handler

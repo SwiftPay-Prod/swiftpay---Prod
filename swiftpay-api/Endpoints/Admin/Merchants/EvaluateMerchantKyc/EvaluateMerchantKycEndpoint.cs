@@ -1,15 +1,15 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api.Mappers;
-using safefy_api_core.Utils;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Interfaces;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Interfaces;
 
-namespace safefy_api.Endpoints.Admin.Merchants.EvaluateMerchantKyc;
+namespace swiftpay_api.Endpoints.Admin.Merchants.EvaluateMerchantKyc;
 
 public sealed class EvaluateMerchantKycEndpoint(
     PrimaryDbContext dbContext,
@@ -136,7 +136,7 @@ public sealed class EvaluateMerchantKycEndpoint(
             {
                 { "NAME", merchant.User.Name },
                 { "MERCHANT_NAME", merchant.Name ?? "" },
-                { "DASHBOARD_URL", "https://app.safefypay.com.br/dashboard" }
+                { "DASHBOARD_URL", "https://app.swiftpay.com.br/dashboard" }
             },
             userId: merchant.UserId,
             merchantId: merchant.Id
@@ -183,7 +183,7 @@ public sealed class EvaluateMerchantKycEndpoint(
                 { "NAME", merchant.User.Name },
                 { "MERCHANT_NAME", merchant.Name ?? "" },
                 { "REASON", req.Reason ?? "" },
-                { "ONBOARDING_URL", "https://app.safefypay.com.br/onboarding" }
+                { "ONBOARDING_URL", "https://app.swiftpay.com.br/onboarding" }
             },
             userId: merchant.UserId,
             merchantId: merchant.Id
@@ -255,7 +255,7 @@ public sealed class EvaluateMerchantKycEndpoint(
                 { "NAME", merchant.User.Name },
                 { "MERCHANT_NAME", merchant.Name ?? "" },
                 { "PENDING_ITEMS_HTML", pendingItemsHtml },
-                { "COMPLEMENT_URL", "https://app.safefypay.com.br/panel/merchants/review" }
+                { "COMPLEMENT_URL", "https://app.swiftpay.com.br/panel/merchants/review" }
             },
             userId: merchant.UserId,
             merchantId: merchant.Id

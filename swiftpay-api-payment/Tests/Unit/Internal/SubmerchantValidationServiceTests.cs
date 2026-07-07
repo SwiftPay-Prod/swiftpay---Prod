@@ -1,12 +1,12 @@
 using FluentAssertions;
-using safefy_api_core.Constants;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Interfaces.Internal.Submerchants;
-using safefy_api_payment.Services.Internal;
-using safefy_api_payment.Services.Internal.Submerchants;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Interfaces.Internal.Submerchants;
+using swiftpay_api_payment.Services.Internal;
+using swiftpay_api_payment.Services.Internal.Submerchants;
 
-namespace safefy_api_payment.Tests.Unit.Internal;
+namespace swiftpay_api_payment.Tests.Unit.Internal;
 
 public sealed class SubmerchantValidationServiceTests
 {

@@ -1,9 +1,9 @@
 using FastEndpoints;
-using safefy_api_core.Interfaces;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Interfaces.Internal;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Interfaces.Internal;
 
-namespace safefy_api_payment.Endpoints.Internal.Submerchants.GetStatus;
+namespace swiftpay_api_payment.Endpoints.Internal.Submerchants.GetStatus;
 
 public sealed class GetSubmerchantStatusInternalEndpoint(
     IAcquirerConfigService acquirerConfigService,

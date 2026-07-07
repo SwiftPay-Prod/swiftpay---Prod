@@ -1,12 +1,12 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Services.Sandbox;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Services.Sandbox;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_payment.Endpoints.Internal.Cashouts.Simulate;
+namespace swiftpay_api_payment.Endpoints.Internal.Cashouts.Simulate;
 
 public sealed class InternalSimulateCashoutEndpoint(
     ICashoutService cashoutService,

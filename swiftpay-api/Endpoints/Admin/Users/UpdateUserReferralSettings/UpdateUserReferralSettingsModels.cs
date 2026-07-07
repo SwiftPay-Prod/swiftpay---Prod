@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
 using System.Text.Json.Serialization;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Users.UpdateUserReferralSettings;
+namespace swiftpay_api.Endpoints.Admin.Users.UpdateUserReferralSettings;
 
 public sealed class UpdateUserReferralSettingsRequest
 {
@@ -13,7 +13,7 @@ public sealed class UpdateUserReferralSettingsRequest
     public int? ReferralCommissionPercentage { get; set; }
     public int? ReferralCommissionWithdrawalIntervalValue { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public global::safefy_api_core.Models.Database.ReferralWithdrawalIntervalUnit? ReferralCommissionWithdrawalIntervalUnit { get; set; }
+    public global::swiftpay_api_core.Models.Database.ReferralWithdrawalIntervalUnit? ReferralCommissionWithdrawalIntervalUnit { get; set; }
     public long? ReferralCommissionMinWithdrawalAmount { get; set; }
     public long? ReferralCommissionWithdrawalFeeFixed { get; set; }
 }
@@ -56,7 +56,7 @@ public sealed class UpdateUserReferralSettingsData
     public int? ReferralCommissionPercentage { get; set; }
     public int? ReferralCommissionWithdrawalIntervalValue { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public global::safefy_api_core.Models.Database.ReferralWithdrawalIntervalUnit? ReferralCommissionWithdrawalIntervalUnit { get; set; }
+    public global::swiftpay_api_core.Models.Database.ReferralWithdrawalIntervalUnit? ReferralCommissionWithdrawalIntervalUnit { get; set; }
     public long? ReferralCommissionMinWithdrawalAmount { get; set; }
     public long? ReferralCommissionWithdrawalFeeFixed { get; set; }
 }

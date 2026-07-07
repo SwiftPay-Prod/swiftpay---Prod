@@ -1619,7 +1619,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["safefy", "payments", "gateway", "transactions", "api"],
+  "tags": ["swiftpay", "payments", "gateway", "transactions", "api"],
   "templating": {
     "list": []
   },
@@ -1630,7 +1630,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Gateway de Transações - Pagamentos & API",
-  "uid": "safefy-payment-gateway",
+  "uid": "swiftpay-payment-gateway",
   "version": 1,
   "weekStart": ""
 }

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class HostingExtensions
 {

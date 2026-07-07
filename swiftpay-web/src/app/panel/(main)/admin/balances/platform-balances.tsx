@@ -78,7 +78,7 @@ type AcquirerSortField =
 	| 'totalIn'
 	| 'grossBalance'
 	| 'merchantBalance'
-	| 'safefyProfit'
+	| 'swiftpayProfit'
 	| 'withdrawalFeeIfWithdrawAll'
 	| 'netIfWithdrawAll';
 type SortDirection = 'asc' | 'desc';
@@ -133,8 +133,8 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 				return acq.grossBalance;
 			case 'merchantBalance':
 				return acq.merchantBalance;
-			case 'safefyProfit':
-				return acq.safefyProfit;
+			case 'swiftpayProfit':
+				return acq.swiftpayProfit;
 			case 'withdrawalFeeIfWithdrawAll':
 				return acq.withdrawalFeeIfWithdrawAll;
 			case 'netIfWithdrawAll':
@@ -328,8 +328,8 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 	const totalAvailableForWithdrawal = balanceData.totalAvailableForWithdrawal;
 	const platformTotalBalance = balanceData.totalPlatformOperationalBalance;
 	const platformNetIfWithdrawAll = balanceData.netIfWithdrawAll;
-	const totalSafefyProfit = balanceData.totalSafefyProfit;
-	const isTotalSafefyProfitNegative = totalSafefyProfit < 0;
+	const totalSwiftPayProfit = balanceData.totalSwiftPayProfit;
+	const isTotalSwiftPayProfitNegative = totalSwiftPayProfit < 0;
 
 	const acquirerFilterOptions: LocalSelectOption<AcquirerFilterType>[] = [
 		{ value: 'all', label: 'Todos', color: 'default', icon: <Icon icon={BankIcon} className="icon-xs" /> },
@@ -376,9 +376,9 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 			icon: <Icon icon={Wallet03Icon} className="icon-xs" />,
 		},
 		{
-			value: 'safefyProfit',
-			label: 'Lucro Safefy',
-			triggerLabel: 'Lucro Safefy',
+			value: 'swiftpayProfit',
+			label: 'Lucro SwiftPay',
+			triggerLabel: 'Lucro SwiftPay',
 			color: 'success',
 			icon: <Icon icon={Wallet01Icon} className="icon-xs" />,
 		},
@@ -611,7 +611,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 									</Tooltip.Trigger>
 									<Tooltip.Content className="max-w-64">
 										<Tooltip.Arrow />
-										Total liquido ja transferido para a conta bancaria da Safefy.
+										Total liquido ja transferido para a conta bancaria da SwiftPay.
 									</Tooltip.Content>
 								</Tooltip>
 							</div>
@@ -629,10 +629,10 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							<div className="flex items-center gap-2">
 								<Icon
 									icon={MoneyReceiveSquareIcon}
-									className={`icon-md ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-emerald-500'}`}
+									className={`icon-md ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-emerald-500'}`}
 								/>
 								<span className="text-sm font-semibold">
-									{isTotalSafefyProfitNegative ? 'Resumo do Prejuizo' : 'Resumo do Lucro'}
+									{isTotalSwiftPayProfitNegative ? 'Resumo do Prejuizo' : 'Resumo do Lucro'}
 								</span>
 							</div>
 						</Card.Header>
@@ -640,8 +640,8 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							<div className="space-y-3">
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-1">
-										<span className={`text-sm ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-muted'}`}>
-											{isTotalSafefyProfitNegative
+										<span className={`text-sm ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-muted'}`}>
+											{isTotalSwiftPayProfitNegative
 												? 'Prejuizo Líquido (Taxas - Custos)'
 												: 'Lucro Líquido (Taxas - Custos)'}
 										</span>
@@ -651,15 +651,15 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 											</Tooltip.Trigger>
 											<Tooltip.Content className="max-w-64">
 												<Tooltip.Arrow />
-												{isTotalSafefyProfitNegative
-													? 'Prejuizo real da Safefy: custos e taxas pagos as adquirentes superam as taxas cobradas das organizacoes.'
-													: 'Lucro real da Safefy: taxa cobrada das organizacoes menos taxa paga as adquirentes.'}
+												{isTotalSwiftPayProfitNegative
+													? 'Prejuizo real da SwiftPay: custos e taxas pagos as adquirentes superam as taxas cobradas das organizacoes.'
+													: 'Lucro real da SwiftPay: taxa cobrada das organizacoes menos taxa paga as adquirentes.'}
 											</Tooltip.Content>
 										</Tooltip>
 									</div>
 									<AnimatedCurrency
-										value={totalSafefyProfit}
-										className={`font-semibold ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-success'}`}
+										value={totalSwiftPayProfit}
+										className={`font-semibold ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`}
 									/>
 								</div>
 								<div className="flex items-center justify-between">
@@ -772,14 +772,14 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 								</div>
 								<div className="flex items-center justify-between border-t border-default pt-3">
 									<div className="flex items-center gap-1">
-										<span className="text-sm font-medium">Saldo Conta Safefy</span>
+										<span className="text-sm font-medium">Saldo Conta SwiftPay</span>
 										<Tooltip>
 											<Tooltip.Trigger>
 												<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-muted" />
 											</Tooltip.Trigger>
 											<Tooltip.Content className="max-w-64">
 												<Tooltip.Arrow />
-												Total líquido já transferido para a conta bancária da Safefy.
+												Total líquido já transferido para a conta bancária da SwiftPay.
 											</Tooltip.Content>
 										</Tooltip>
 									</div>
@@ -1027,7 +1027,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 																	<Tooltip.Content className="max-w-56">
 																		<Tooltip.Arrow />
 																		Total enviado para fora desta adquirente (saques das organizacoes + saques da
-																		Safefy).
+																		SwiftPay).
 																	</Tooltip.Content>
 																</Tooltip>
 															</div>
@@ -1134,7 +1134,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 																	</Tooltip.Trigger>
 																	<Tooltip.Content className="max-w-56">
 																		<Tooltip.Arrow />
-																		Saques da Safefy aguardando confirmação nesta adquirente.
+																		Saques da SwiftPay aguardando confirmação nesta adquirente.
 																	</Tooltip.Content>
 																</Tooltip>
 															</div>

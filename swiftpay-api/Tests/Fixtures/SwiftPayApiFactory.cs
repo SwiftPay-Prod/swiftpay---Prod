@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Testcontainers.PostgreSql;
 
-namespace safefy_api.Tests.Fixtures;
+namespace swiftpay_api.Tests.Fixtures;
 
 public class SafefyApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15.15-alpine3.22")
-        .WithDatabase("safefy_test")
+        .WithDatabase("swiftpay_test")
         .WithUsername("postgres")
         .WithPassword("postgres")
         .Build();

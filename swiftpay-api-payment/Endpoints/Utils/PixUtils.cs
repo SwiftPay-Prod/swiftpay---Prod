@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace safefy_api_payment.Endpoints.Utils;
+namespace swiftpay_api_payment.Endpoints.Utils;
 
 /// <summary>
 /// Utilitários para operações relacionadas ao PIX.

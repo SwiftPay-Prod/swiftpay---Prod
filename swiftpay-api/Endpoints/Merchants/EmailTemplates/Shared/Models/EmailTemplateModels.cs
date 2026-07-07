@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.EmailTemplates.Shared.Models;
+namespace swiftpay_api.Endpoints.Merchants.EmailTemplates.Shared.Models;
 
 public sealed class EmailTemplateData
 {

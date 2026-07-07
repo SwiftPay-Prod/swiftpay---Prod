@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api.Validators;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api.Validators;
 
-namespace safefy_api.Endpoints.Merchants.Cashouts.ListCashouts;
+namespace swiftpay_api.Endpoints.Merchants.Cashouts.ListCashouts;
 
 public sealed class ListCashoutsRequest : IPaginatedRequest
 {

@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Interfaces;
 
-namespace safefy_api_payment.Services.Acquirers;
+namespace swiftpay_api_payment.Services.Acquirers;
 
 public sealed class AcquirerServiceFactory(IEnumerable<IAcquirerService> acquirerServices) : IAcquirerServiceFactory
 {

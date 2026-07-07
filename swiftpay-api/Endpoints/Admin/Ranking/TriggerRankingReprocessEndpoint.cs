@@ -1,13 +1,13 @@
 using FastEndpoints;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Constants;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Messages;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Ranking.TriggerRankingReprocess;
+namespace swiftpay_api.Endpoints.Admin.Ranking.TriggerRankingReprocess;
 
 public sealed class TriggerRankingReprocessEndpoint(
     IMessagePublisher messagePublisher,

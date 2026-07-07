@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Constants;
-using safefy_api_core.Models.Messages;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Models.Messages;
 
-namespace safefy_api_payment.Endpoints.Internal.Transactions.ResendWebhook;
+namespace swiftpay_api_payment.Endpoints.Internal.Transactions.ResendWebhook;
 
 public sealed class InternalResendWebhookEndpoint(
     PrimaryDbContext dbContext,

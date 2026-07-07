@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Users.ReadOnboarding;
+namespace swiftpay_api.Endpoints.Users.ReadOnboarding;
 
 public sealed class ReadOnboardingResponse : BaseResponse<ReadOnboardingData>;
 

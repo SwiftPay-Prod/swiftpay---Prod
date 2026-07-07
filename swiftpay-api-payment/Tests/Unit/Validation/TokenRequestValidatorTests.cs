@@ -1,7 +1,7 @@
 using FluentAssertions;
-using safefy_api_payment.Endpoints.Auth.Token;
+using swiftpay_api_payment.Endpoints.Auth.Token;
 
-namespace safefy_api_payment.Tests.Unit.Validation;
+namespace swiftpay_api_payment.Tests.Unit.Validation;
 
 public sealed class TokenRequestValidatorTests
 {

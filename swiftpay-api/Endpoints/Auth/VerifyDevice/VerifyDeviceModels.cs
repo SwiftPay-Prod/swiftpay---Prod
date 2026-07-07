@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Auth.Shared.Models;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Auth.Shared.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Auth.VerifyDevice;
+namespace swiftpay_api.Endpoints.Auth.VerifyDevice;
 
 public class VerifyDeviceRequest
 {

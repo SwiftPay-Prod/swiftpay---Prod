@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Constants;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 public sealed class CalculationService(PrimaryDbContext dbContext) : ICalculationService
 {
@@ -134,14 +134,14 @@ public sealed class CalculationService(PrimaryDbContext dbContext) : ICalculatio
         return Math.Max(0, grossBalance - merchantBalance);
     }
 
-    public long CalculateSafefyProfit(long safefyProfitBase, long completedPlatformPayouts)
+    public long CalculateSafefyProfit(long swiftpayProfitBase, long completedPlatformPayouts)
     {
-        return Math.Max(0, safefyProfitBase - completedPlatformPayouts);
+        return Math.Max(0, swiftpayProfitBase - completedPlatformPayouts);
     }
 
-    public long CalculateMerchantBalance(long grossBalance, long safefyProfit)
+    public long CalculateMerchantBalance(long grossBalance, long swiftpayProfit)
     {
-        return grossBalance - safefyProfit;
+        return grossBalance - swiftpayProfit;
     }
 
     public long CalculateAvailableForWithdrawal(long grossBalance, long merchantAvailableBalance)

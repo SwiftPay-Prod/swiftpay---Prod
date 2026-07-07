@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_core.Middlewares;
+namespace swiftpay_api_core.Middlewares;
 
 public class SecurityLogContextMiddleware(RequestDelegate next)
 {

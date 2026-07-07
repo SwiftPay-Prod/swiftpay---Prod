@@ -1,9 +1,9 @@
 using FastEndpoints;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Interfaces;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Interfaces;
 
-namespace safefy_api_payment.Endpoints.Internal.Cashouts.Cancel;
+namespace swiftpay_api_payment.Endpoints.Internal.Cashouts.Cancel;
 
 public sealed class CancelCashoutInternalEndpoint(
     ICashoutService cashoutService

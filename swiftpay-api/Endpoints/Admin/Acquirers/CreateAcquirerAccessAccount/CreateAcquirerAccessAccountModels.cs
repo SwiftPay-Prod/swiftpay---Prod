@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Acquirer;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Acquirer;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.CreateAcquirerAccessAccount;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.CreateAcquirerAccessAccount;
 
 public sealed class CreateAcquirerAccessAccountRequest
 {

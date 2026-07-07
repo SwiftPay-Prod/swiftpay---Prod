@@ -1,11 +1,11 @@
 using FluentValidation;
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Customers.Create;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Validators;
-using safefy_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Customers.Create;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Validators;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_payment.Endpoints.Customers.List;
+namespace swiftpay_api_payment.Endpoints.Customers.List;
 
 /// <summary>
 /// Request para listar clientes.

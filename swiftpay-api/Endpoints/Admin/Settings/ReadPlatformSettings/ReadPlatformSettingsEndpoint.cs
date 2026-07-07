@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api.Mappers;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Settings.ReadPlatformSettings;
+namespace swiftpay_api.Endpoints.Admin.Settings.ReadPlatformSettings;
 
 public sealed class ReadPlatformSettingsEndpoint(
     PrimaryDbContext dbContext,
@@ -59,7 +59,7 @@ public sealed class ReadPlatformSettingsEndpoint(
 
     private static async Task<DateTime?> GetNextAutomaticCashoutAttemptAtAsync(
         PrimaryDbContext dbContext,
-        safefy_api_core.Models.Enum.ApiEnvironment environment,
+        swiftpay_api_core.Models.Enum.ApiEnvironment environment,
         bool isEnabled,
         AutomaticCashoutFrequency frequency,
         DateTime settingsUpdatedAt,

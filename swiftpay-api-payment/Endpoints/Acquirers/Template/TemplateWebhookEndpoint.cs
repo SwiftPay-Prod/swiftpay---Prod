@@ -1,9 +1,9 @@
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Interfaces;
-using safefy_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_payment.Endpoints.Acquirers.Template;
+namespace swiftpay_api_payment.Endpoints.Acquirers.Template;
 
 /*
  * ================================================================================
@@ -14,7 +14,7 @@ namespace safefy_api_payment.Endpoints.Acquirers.Template;
  * 
  * PASSOS PARA ADICIONAR UMA NOVA ADQUIRENTE:
  * 
- * 1. Adicionar o tipo em AcquirerType enum (safefy-api-core)
+ * 1. Adicionar o tipo em AcquirerType enum (swiftpay-api-core)
  * 2. Criar pasta: Endpoints/Acquirers/{NomeAdquirente}/
  * 3. Criar EndpointGroup em EndpointsGroups/Acquirers/{NomeAdquirente}Group.cs
  *    - Usar rota base: v1/internal/{nomeadquirente}

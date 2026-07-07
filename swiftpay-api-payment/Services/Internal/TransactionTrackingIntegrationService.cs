@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Integrations;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Services.Internal.Tracking;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Integrations;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Services.Internal.Tracking;
 
-namespace safefy_api_payment.Services.Internal;
+namespace swiftpay_api_payment.Services.Internal;
 
 public sealed class TransactionTrackingIntegrationService(
     PrimaryDbContext dbContext,

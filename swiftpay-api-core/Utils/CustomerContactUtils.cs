@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using System.Linq;
 
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 public static partial class CustomerContactUtils
 {
@@ -32,6 +32,6 @@ public static partial class CustomerContactUtils
         return string.Equals(digits, DefaultFallbackPhoneDigits, StringComparison.Ordinal);
     }
 
-    [GeneratedRegex("^cliente\\+.+@safefy\\.com\\.br$", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    [GeneratedRegex("^cliente\\+.+@swiftpay\\.com\\.br$", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
     private static partial Regex FallbackEmailRegex();
 }

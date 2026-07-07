@@ -1,12 +1,12 @@
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Ledger;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Ledger;
 
-namespace safefy_api_core.Repositories;
+namespace swiftpay_api_core.Repositories;
 
 public class LedgerRepository(PrimaryDbContext dbContext) : ILedgerRepository
 {

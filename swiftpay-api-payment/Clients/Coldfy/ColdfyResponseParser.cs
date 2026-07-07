@@ -1,8 +1,8 @@
 using System.Text.Json;
-using safefy_api_payment.Clients.Coldfy.Models.Payments;
-using safefy_api_payment.Clients.Coldfy.Models.Withdrawals;
+using swiftpay_api_payment.Clients.Coldfy.Models.Payments;
+using swiftpay_api_payment.Clients.Coldfy.Models.Withdrawals;
 
-namespace safefy_api_payment.Clients.Coldfy;
+namespace swiftpay_api_payment.Clients.Coldfy;
 
 internal static class ColdfyResponseParser
 {

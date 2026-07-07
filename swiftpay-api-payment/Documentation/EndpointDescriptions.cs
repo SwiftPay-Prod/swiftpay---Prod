@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Documentation;
+namespace swiftpay_api_payment.Documentation;
 
 /// <summary>
 /// Documentação centralizada dos endpoints da API.
@@ -24,7 +24,7 @@ Nós somos a Safefy, uma plataforma especializada em soluções de pagamento PIX
 
 A equipe da Safefy quer garantir que sua integração seja um sucesso. Se tiver dúvidas ou precisar de suporte, não hesite em nos contatar:
 
-📩 **suporte@safefypay.com.br**
+📩 **suporte@swiftpay.com.br**
 
 ---
 

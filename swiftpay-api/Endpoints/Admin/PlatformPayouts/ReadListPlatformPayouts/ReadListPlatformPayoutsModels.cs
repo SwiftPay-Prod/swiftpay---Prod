@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Admin.PlatformPayouts.CreatePlatformPayout;
-using safefy_api.Endpoints.Models;
-using safefy_api.Validators;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.PlatformPayouts.CreatePlatformPayout;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Validators;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.PlatformPayouts.ReadListPlatformPayouts;
+namespace swiftpay_api.Endpoints.Admin.PlatformPayouts.ReadListPlatformPayouts;
 
 public sealed class ReadListPlatformPayoutsRequest : IPaginatedRequest
 {

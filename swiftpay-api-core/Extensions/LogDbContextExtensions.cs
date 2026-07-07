@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Models.Settings;
-using safefy_api_core.Database;
+using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Database;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 public static class LogDbContextExtensions
 {

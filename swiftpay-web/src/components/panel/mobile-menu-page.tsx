@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import { SafefyBrandLogo } from '@/components/ui/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { Logout01Icon } from '@hugeicons/core-free-icons';
 import { useRouter } from 'next/navigation';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
@@ -37,7 +37,7 @@ export function MobileMenuPage({ sections, user }: MobileMenuPageProps) {
 			{/* Logo — mirrors sidebar header */}
 			<div className="flex h-12 shrink-0 items-center border-b border-divider px-3">
 				<Link href={Routes.panel.merchant.dashboard} className="flex h-7 items-center">
-					<SafefyBrandLogo iconSize={26} textClassName="text-2xl" />
+					<SwiftPayBrandLogo iconSize={26} textClassName="text-2xl" />
 				</Link>
 			</div>
 

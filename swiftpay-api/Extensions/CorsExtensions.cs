@@ -1,4 +1,4 @@
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class CorsExtensions
 {
@@ -26,8 +26,8 @@ public static class CorsExtensions
                     policy.SetIsOriginAllowed(origin =>
                         Uri.TryCreate(origin, UriKind.Absolute, out var uri)
                         && uri.Scheme == Uri.UriSchemeHttps
-                        && (uri.Host.Equals("safefypay.com.br", StringComparison.OrdinalIgnoreCase)
-                            || uri.Host.EndsWith(".safefypay.com.br", StringComparison.OrdinalIgnoreCase)))
+                        && (uri.Host.Equals("swiftpay.com.br", StringComparison.OrdinalIgnoreCase)
+                            || uri.Host.EndsWith(".swiftpay.com.br", StringComparison.OrdinalIgnoreCase)))
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

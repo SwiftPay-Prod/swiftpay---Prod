@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Users.Bulletins.ReadBulletinContent;
+namespace swiftpay_api.Endpoints.Users.Bulletins.ReadBulletinContent;
 
 public sealed class ReadBulletinContentRequest
 {

@@ -1,10 +1,10 @@
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Acquirer;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Acquirer;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Database;
+namespace swiftpay_api.Database;
 
 public static class AcquirerInitializer
 {

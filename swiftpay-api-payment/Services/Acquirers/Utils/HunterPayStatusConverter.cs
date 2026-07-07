@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Clients.HunterPay.Models.Transactions;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Clients.HunterPay.Models.Transactions;
 
-namespace safefy_api_payment.Services.Acquirers.Utils
+namespace swiftpay_api_payment.Services.Acquirers.Utils
 {
     public static class HunterPayStatusConverter
     {
@@ -32,22 +32,22 @@ namespace safefy_api_payment.Services.Acquirers.Utils
             };
         }
 
-        public static safefy_api_payment.Interfaces.WithdrawStatus ToWithdrawStatus(string? status)
+        public static swiftpay_api_payment.Interfaces.WithdrawStatus ToWithdrawStatus(string? status)
         {
             return Normalize(status) switch
             {
-                "done" => safefy_api_payment.Interfaces.WithdrawStatus.Completed,
-                "done_manual" => safefy_api_payment.Interfaces.WithdrawStatus.Completed,
-                "paid" => safefy_api_payment.Interfaces.WithdrawStatus.Completed,
-                "completed" => safefy_api_payment.Interfaces.WithdrawStatus.Completed,
-                "approved" => safefy_api_payment.Interfaces.WithdrawStatus.Processing,
-                "processing" => safefy_api_payment.Interfaces.WithdrawStatus.Processing,
-                "pending" => safefy_api_payment.Interfaces.WithdrawStatus.Processing,
-                "failed" => safefy_api_payment.Interfaces.WithdrawStatus.Failed,
-                "refused" => safefy_api_payment.Interfaces.WithdrawStatus.Failed,
-                "cancelled" => safefy_api_payment.Interfaces.WithdrawStatus.Failed,
-                "canceled" => safefy_api_payment.Interfaces.WithdrawStatus.Failed,
-                _ => safefy_api_payment.Interfaces.WithdrawStatus.Processing
+                "done" => swiftpay_api_payment.Interfaces.WithdrawStatus.Completed,
+                "done_manual" => swiftpay_api_payment.Interfaces.WithdrawStatus.Completed,
+                "paid" => swiftpay_api_payment.Interfaces.WithdrawStatus.Completed,
+                "completed" => swiftpay_api_payment.Interfaces.WithdrawStatus.Completed,
+                "approved" => swiftpay_api_payment.Interfaces.WithdrawStatus.Processing,
+                "processing" => swiftpay_api_payment.Interfaces.WithdrawStatus.Processing,
+                "pending" => swiftpay_api_payment.Interfaces.WithdrawStatus.Processing,
+                "failed" => swiftpay_api_payment.Interfaces.WithdrawStatus.Failed,
+                "refused" => swiftpay_api_payment.Interfaces.WithdrawStatus.Failed,
+                "cancelled" => swiftpay_api_payment.Interfaces.WithdrawStatus.Failed,
+                "canceled" => swiftpay_api_payment.Interfaces.WithdrawStatus.Failed,
+                _ => swiftpay_api_payment.Interfaces.WithdrawStatus.Processing
             };
         }
 

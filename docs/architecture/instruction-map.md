@@ -38,7 +38,7 @@ O repositório contém **44 arquivos de instruções/configuração** distribuí
 > **Em endpoints HTTP:** NUNCA usar `IgnoreQueryFilters()`.
 
 **Arquitetura de Mensageria:**
-- 7 filas documentadas: `safefy.notification.created`, `safefy.ledger.pending`, `safefy.payment.completed`, `safefy.cashout.process`, `safefy.webhook.send`, `safefy.dashboard.merchant`, `safefy.dashboard.admin`
+- 7 filas documentadas: `swiftpay.notification.created`, `swiftpay.ledger.pending`, `swiftpay.payment.completed`, `swiftpay.cashout.process`, `swiftpay.webhook.send`, `swiftpay.dashboard.merchant`, `swiftpay.dashboard.admin`
 
 **Merchant Onboarding (V2):**
 - Persistência incremental por step, submissão final separada

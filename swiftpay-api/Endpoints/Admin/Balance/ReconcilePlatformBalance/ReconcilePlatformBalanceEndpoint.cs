@@ -1,15 +1,15 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
 
-namespace safefy_api.Endpoints.Admin.Balance.ReconcilePlatformBalance;
+namespace swiftpay_api.Endpoints.Admin.Balance.ReconcilePlatformBalance;
 
 public sealed class ReconcilePlatformBalanceEndpoint(
     PrimaryDbContext dbContext,
@@ -313,28 +313,28 @@ public sealed class ReconcilePlatformBalanceEndpoint(
 
             var currentMerchantBalance = merchantBalancesByAcquirer.GetValueOrDefault(acquirer.Id, 0);
             var currentMerchantAvailable = merchantAvailableByAcquirer.GetValueOrDefault(acquirer.Id, 0);
-            var currentSafefyProfit = calculationService.CalculateAvailableForWithdrawal(currentGrossBalance, currentMerchantAvailable);
+            var currentSwiftpayProfit = calculationService.CalculateAvailableForWithdrawal(currentGrossBalance, currentMerchantAvailable);
 
-            var expectedSafefyProfit = calculationService.CalculateAvailableForWithdrawal(expectedGrossBalance, currentMerchantAvailable);
-            var expectedMerchantBalance = expectedGrossBalance - expectedSafefyProfit;
+            var expectedSwiftpayProfit = calculationService.CalculateAvailableForWithdrawal(expectedGrossBalance, currentMerchantAvailable);
+            var expectedMerchantBalance = expectedGrossBalance - expectedSwiftpayProfit;
 
             var settlementDifference = currentSettlement - expectedSettlement;
             var payoutsOutDifference = currentPayoutsOut - expectedPayoutsOut;
             var grossBalanceDifference = currentGrossBalance - expectedGrossBalance;
             var merchantBalanceDifference = currentMerchantBalance - expectedMerchantBalance;
-            var safefyProfitDifference = currentSafefyProfit - expectedSafefyProfit;
+            var swiftpayProfitDifference = currentSwiftpayProfit - expectedSwiftpayProfit;
             var overdrawAmount = Math.Max(currentPayoutsOut - currentSettlement, 0);
             var totalMismatch = Math.Abs(settlementDifference)
                               + Math.Abs(payoutsOutDifference)
                               + Math.Abs(grossBalanceDifference)
                               + Math.Abs(merchantBalanceDifference)
-                              + Math.Abs(safefyProfitDifference);
+                              + Math.Abs(swiftpayProfitDifference);
 
             var hasDiscrepancy = Math.Abs(settlementDifference) > 0
                                  || Math.Abs(payoutsOutDifference) > 0
                                  || Math.Abs(grossBalanceDifference) > 0
                                  || Math.Abs(merchantBalanceDifference) > 0
-                                 || Math.Abs(safefyProfitDifference) > 0;
+                                 || Math.Abs(swiftpayProfitDifference) > 0;
 
             var inReconciliation = new PlatformReconciliationAccount
             {
@@ -376,9 +376,9 @@ public sealed class ReconcilePlatformBalanceEndpoint(
                 },
                 SafefyProfit = new PlatformReconciliationAccount
                 {
-                    Expected = expectedSafefyProfit,
-                    Current = currentSafefyProfit,
-                    Difference = safefyProfitDifference
+                    Expected = expectedSwiftpayProfit,
+                    Current = currentSwiftpayProfit,
+                    Difference = swiftpayProfitDifference
                 },
                 OverdrawAmount = overdrawAmount,
                 TotalMismatch = totalMismatch,

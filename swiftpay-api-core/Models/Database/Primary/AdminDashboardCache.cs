@@ -1,6 +1,6 @@
-﻿using safefy_api_core.Models.Enum;
+﻿using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 public class AdminDashboardCache : BaseEntity
 {

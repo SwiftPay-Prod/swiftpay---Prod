@@ -15,16 +15,16 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'safefy-staging.nyc3.cdn.digitaloceanspaces.com',
+				hostname: 'swiftpay-staging.nyc3.cdn.digitaloceanspaces.com',
 				pathname: '/**',
 			},
 			{
 				hostname: 'bucket-staging-13ce.up.railway.app',
-				pathname: '/safefy-dev/**',
+				pathname: '/swiftpay-dev/**',
 			},
 			{
 				protocol: 'https',
-				hostname: 'storage.safefypay.com.br',
+				hostname: 'storage.swiftpay.com.br',
 				pathname: '/**',
 			},
 			{

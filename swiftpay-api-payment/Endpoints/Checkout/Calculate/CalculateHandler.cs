@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Checkout.Calculate;
+namespace swiftpay_api_payment.Endpoints.Checkout.Calculate;
 
 public sealed class CalculateHandler(PrimaryDbContext dbContext)
 {
@@ -193,7 +193,7 @@ public sealed class CalculateHandler(PrimaryDbContext dbContext)
     }
 
     private async Task<CouponCalculationResult> TryCalculateCouponDiscountAsync(
-        safefy_api_core.Models.Database.Checkout checkout,
+        swiftpay_api_core.Models.Database.Checkout checkout,
         string couponCode,
         List<CalculateItemInfo> items,
         long subtotal,

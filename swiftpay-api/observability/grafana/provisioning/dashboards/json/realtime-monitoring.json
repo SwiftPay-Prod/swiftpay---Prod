@@ -1875,7 +1875,7 @@
   "refresh": "10s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["safefy", "monitoring", "realtime", "payments", "financial"],
+  "tags": ["swiftpay", "monitoring", "realtime", "payments", "financial"],
   "templating": {
     "list": []
   },
@@ -1888,7 +1888,7 @@
   },
   "timezone": "browser",
   "title": "Monitoramento em Tempo Real",
-  "uid": "safefy-realtime-monitoring",
+  "uid": "swiftpay-realtime-monitoring",
   "version": 1,
   "weekStart": ""
 }

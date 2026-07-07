@@ -1,15 +1,15 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.Payments.CreatePaymentLink;
+namespace swiftpay_api.Endpoints.Merchants.Payments.CreatePaymentLink;
 
 public sealed class CreatePaymentLinkRequest
 {
     public Guid MerchantId { get; set; }
-    public List<safefy_api_core.Models.Database.PaymentMethod> EnabledMethods { get; set; } = [safefy_api_core.Models.Database.PaymentMethod.Pix];
+    public List<swiftpay_api_core.Models.Database.PaymentMethod> EnabledMethods { get; set; } = [swiftpay_api_core.Models.Database.PaymentMethod.Pix];
     public long Amount { get; set; }
     public string? Description { get; set; }
     public Guid? CustomerId { get; set; }
@@ -48,7 +48,7 @@ public sealed class CreatePaymentLinkRequestValidator : Validator<CreatePaymentL
             .WithMessage("Selecione ao menos um método de pagamento.");
 
         RuleForEach(x => x.EnabledMethods)
-            .Must(method => method == safefy_api_core.Models.Database.PaymentMethod.Pix || method == safefy_api_core.Models.Database.PaymentMethod.Boleto)
+            .Must(method => method == swiftpay_api_core.Models.Database.PaymentMethod.Pix || method == swiftpay_api_core.Models.Database.PaymentMethod.Boleto)
             .WithMessage("O método de pagamento é inválido para link de pagamento.");
 
         RuleFor(x => x.PixExpirationMinutes)
@@ -58,7 +58,7 @@ public sealed class CreatePaymentLinkRequestValidator : Validator<CreatePaymentL
 
         RuleFor(x => x.BoletoDueDate)
             .NotNull()
-            .When(x => x.EnabledMethods.Contains(safefy_api_core.Models.Database.PaymentMethod.Boleto))
+            .When(x => x.EnabledMethods.Contains(swiftpay_api_core.Models.Database.PaymentMethod.Boleto))
             .WithMessage("A data de vencimento do boleto é obrigatória.")
             .DependentRules(() =>
             {
@@ -90,7 +90,7 @@ public sealed class CreatePaymentLinkData
 {
     public Guid PaymentLinkId { get; set; }
     public string PaymentLinkUrl { get; set; } = string.Empty;
-    public List<safefy_api_core.Models.Database.PaymentMethod> EnabledMethods { get; set; } = [];
+    public List<swiftpay_api_core.Models.Database.PaymentMethod> EnabledMethods { get; set; } = [];
     public long Amount { get; set; }
     public CurrencyType Currency { get; set; }
     public string? Description { get; set; }

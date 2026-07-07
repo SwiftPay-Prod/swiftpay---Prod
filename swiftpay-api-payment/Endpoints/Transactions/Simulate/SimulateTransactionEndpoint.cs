@@ -1,14 +1,14 @@
 using FastEndpoints;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Documentation;
-using safefy_api_payment.Mappers;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Services.Sandbox;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Documentation;
+using swiftpay_api_payment.Mappers;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Services.Sandbox;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_payment.Endpoints.Transactions.Simulate;
+namespace swiftpay_api_payment.Endpoints.Transactions.Simulate;
 
 public sealed class SimulateTransactionEndpoint(
     ITransactionService transactionService

@@ -1,4 +1,4 @@
-namespace safefy_api.Models.Settings;
+namespace swiftpay_api.Models.Settings;
 
 public class PaymentApiSettings
 {

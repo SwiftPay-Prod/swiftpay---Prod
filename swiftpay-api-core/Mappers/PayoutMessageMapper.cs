@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Messages;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Messages;
 
-namespace safefy_api_core.Mappers;
+namespace swiftpay_api_core.Mappers;
 
 public static class PayoutMessageMapper
 {

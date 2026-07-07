@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Integrations;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Integrations;
 
-namespace safefy_api.Endpoints.Merchants.Integrations.ReadIntegrations;
+namespace swiftpay_api.Endpoints.Merchants.Integrations.ReadIntegrations;
 
 public sealed class ReadIntegrationsRequest
 {

@@ -5,7 +5,7 @@ applyTo: '**/Clients/**/**/*.cs, **/Endpoints/Acquirers/**/*.cs, **/EndpointsGro
 
 # Padrao de Integracao de Adquirentes
 
-Este arquivo centraliza as regras para criar, manter e evoluir integracoes de adquirentes na safefy-api-payment.
+Este arquivo centraliza as regras para criar, manter e evoluir integracoes de adquirentes na swiftpay-api-payment.
 
 Objetivo:
 - Garantir consistencia entre providers.
@@ -109,14 +109,14 @@ Esse desenho deve ser replicado para novas adquirentes.
 ## 8. Checklist obrigatorio ao adicionar nova adquirente
 
 Sempre atualizar:
-- `safefy-api-core/Models/Database/Primary/Acquirer.cs` (enum `AcquirerType`)
-- `safefy-api-core/Constants/SystemIds.cs` (SystemAcquirerIds)
-- `safefy-api-core/Utils/AcquirerRequiredFieldsDefaults.cs`
-- `safefy-api/Database/PrimaryDbInitialize.cs` (seed)
-- `safefy-api-payment/Extensions/ServiceCollectionExtensions.cs` (DI)
-- `safefy-api-payment/Services/Acquirers/Utils/AcquirerWebhookUtils.cs` (rota webhook)
-- `safefy-api-payment/EndpointsGroups/Acquirers/*Group.cs`
-- `safefy-api-payment/Endpoints/Acquirers/{Acquirer}/Webhook/*`
+- `swiftpay-api-core/Models/Database/Primary/Acquirer.cs` (enum `AcquirerType`)
+- `swiftpay-api-core/Constants/SystemIds.cs` (SystemAcquirerIds)
+- `swiftpay-api-core/Utils/AcquirerRequiredFieldsDefaults.cs`
+- `swiftpay-api/Database/PrimaryDbInitialize.cs` (seed)
+- `swiftpay-api-payment/Extensions/ServiceCollectionExtensions.cs` (DI)
+- `swiftpay-api-payment/Services/Acquirers/Utils/AcquirerWebhookUtils.cs` (rota webhook)
+- `swiftpay-api-payment/EndpointsGroups/Acquirers/*Group.cs`
+- `swiftpay-api-payment/Endpoints/Acquirers/{Acquirer}/Webhook/*`
 
 ## 9. Autenticacao de webhook
 
@@ -147,6 +147,6 @@ Para adquirentes com `ProviderCategory = PaymentInstitution` que exigem KYC de s
 
 - Nunca enviar URL privada bruta de storage (`private/...`) para endpoint de documentos do provider.
 - Antes do submit de documentos, gerar URL assinada com validade de `1 ano` (`31536000` segundos).
-- A API principal (`safefy-api`) deve enviar `fileUrl` assinado e `expiresAt` no payload interno para a API de pagamentos.
+- A API principal (`swiftpay-api`) deve enviar `fileUrl` assinado e `expiresAt` no payload interno para a API de pagamentos.
 - Quando houver URL cacheada com TTL menor que o solicitado, a URL deve ser regenerada para cumprir o TTL minimo exigido.
 - O adapter/provider deve propagar `fileUrl` e `expiresAt` recebidos, sem reescrever para URL privada.

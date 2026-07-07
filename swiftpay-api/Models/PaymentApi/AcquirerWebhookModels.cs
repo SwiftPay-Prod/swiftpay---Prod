@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Models.PaymentApi;
+namespace swiftpay_api.Models.PaymentApi;
 
 public sealed class ReprocessAcquirerWebhookDevApiInput
 {

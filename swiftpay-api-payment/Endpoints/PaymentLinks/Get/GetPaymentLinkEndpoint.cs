@@ -1,15 +1,15 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Utils;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Transactions.Create;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Transactions.Create;
 
-namespace safefy_api_payment.Endpoints.PaymentLinks.Get;
+namespace swiftpay_api_payment.Endpoints.PaymentLinks.Get;
 
 public sealed class GetPaymentLinkEndpoint(
     PrimaryDbContext dbContext,
@@ -187,12 +187,12 @@ public sealed class GetPaymentLinkEndpoint(
             .ToList();
     }
 
-    private static bool HasBoletoPixData(safefy_api_core.Models.Database.PaymentBoleto paymentBoleto)
+    private static bool HasBoletoPixData(swiftpay_api_core.Models.Database.PaymentBoleto paymentBoleto)
     {
         return !string.IsNullOrWhiteSpace(paymentBoleto.PixCopyAndPaste);
     }
 
-    private static PixTransactionData ToPixData(safefy_api_core.Models.Database.PaymentPix paymentPix)
+    private static PixTransactionData ToPixData(swiftpay_api_core.Models.Database.PaymentPix paymentPix)
     {
         return new PixTransactionData
         {
@@ -203,7 +203,7 @@ public sealed class GetPaymentLinkEndpoint(
         };
     }
 
-    private static PixTransactionData ToPixData(safefy_api_core.Models.Database.PaymentBoleto paymentBoleto)
+    private static PixTransactionData ToPixData(swiftpay_api_core.Models.Database.PaymentBoleto paymentBoleto)
     {
         return new PixTransactionData
         {
@@ -214,7 +214,7 @@ public sealed class GetPaymentLinkEndpoint(
         };
     }
 
-    private static BoletoTransactionData ToBoletoData(Payment payment, safefy_api_core.Models.Database.PaymentBoleto paymentBoleto)
+    private static BoletoTransactionData ToBoletoData(Payment payment, swiftpay_api_core.Models.Database.PaymentBoleto paymentBoleto)
     {
         return new BoletoTransactionData
         {

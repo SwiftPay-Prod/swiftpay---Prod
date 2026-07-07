@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.Rapdyn.Models.Withdrawals;
+namespace swiftpay_api_payment.Clients.Rapdyn.Models.Withdrawals;
 
 [JsonConverter(typeof(RapdynPixKeyTypeConverter))]
 public enum RapdynPixKeyType

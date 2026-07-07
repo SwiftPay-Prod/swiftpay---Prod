@@ -28,4 +28,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:5166
-ENTRYPOINT ["dotnet", "safefy-api-payment.dll"]
+ENTRYPOINT ["dotnet", "swiftpay-api-payment.dll"]

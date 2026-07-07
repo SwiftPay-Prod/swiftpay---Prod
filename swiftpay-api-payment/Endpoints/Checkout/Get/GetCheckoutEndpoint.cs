@@ -1,9 +1,9 @@
 using FastEndpoints;
-using safefy_api_core.Database;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Database;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Checkout.Get;
+namespace swiftpay_api_payment.Endpoints.Checkout.Get;
 
 public sealed class GetCheckoutEndpoint(PrimaryDbContext dbContext) : Endpoint<GetCheckoutRequest, GetCheckoutResponse>
 {

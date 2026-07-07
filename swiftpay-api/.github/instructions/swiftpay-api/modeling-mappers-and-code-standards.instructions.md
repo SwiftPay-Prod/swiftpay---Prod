@@ -115,10 +115,10 @@ Mappers/
 ### Exemplo de Mapper para DTO/Projeção
 
 ```csharp
-using safefy_api.Endpoints.Admin.Merchants.ReadListMerchants;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.Merchants.ReadListMerchants;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminMinimalMerchantMapper
 {
@@ -165,11 +165,11 @@ var merchants = await query.Select(m => new AdminMinimalMerchant
 ### Exemplo de Mapper Completo
 
 ```csharp
-using safefy_api.Endpoints.Admin.Merchants.ReadMerchantDashboard;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Ledger;
+using swiftpay_api.Endpoints.Admin.Merchants.ReadMerchantDashboard;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Ledger;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminMerchantDashboardMapper
 {
@@ -288,9 +288,9 @@ Post("{merchantId:guid}/submit");     // POST /v1/merchant/{id}/submit
 ```csharp
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.UpdateSettings;
+namespace swiftpay_api.Endpoints.Merchants.UpdateSettings;
 
 public sealed class UpdateSettingsRequest
 {
@@ -334,11 +334,11 @@ public sealed class SettingsData
 ```csharp
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.UpdateSettings;
+namespace swiftpay_api.Endpoints.Merchants.UpdateSettings;
 
 public sealed class UpdateSettingsEndpoint(
     PrimaryDbContext dbContext,

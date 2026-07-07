@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
-using safefy_api.Models.Auth;
+using swiftpay_api.Models.Auth;
 
-namespace safefy_api.Interfaces;
+namespace swiftpay_api.Interfaces;
 
 public interface ITokenService
 {

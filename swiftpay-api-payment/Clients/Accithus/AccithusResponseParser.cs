@@ -1,8 +1,8 @@
 using System.Text.Json;
-using safefy_api_payment.Clients.Common;
-using safefy_api_payment.Clients.Accithus.Models;
+using swiftpay_api_payment.Clients.Common;
+using swiftpay_api_payment.Clients.Accithus.Models;
 
-namespace safefy_api_payment.Clients.Accithus;
+namespace swiftpay_api_payment.Clients.Accithus;
 
 internal static class AccithusResponseParser
 {

@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Dashboard;
+namespace swiftpay_api_core.Models.Dashboard;
 
 public sealed class MerchantDailyVolumeData
 {

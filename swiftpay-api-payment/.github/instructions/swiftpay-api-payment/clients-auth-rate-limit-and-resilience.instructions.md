@@ -94,7 +94,7 @@ Rate limiting é aplicado nos endpoints de criação de transação:
 - `/v1/pix` (POST)
 - `/v1/transactions` (POST)
 
-Limites configuráveis por merchant (via Admin na safefy-api):
+Limites configuráveis por merchant (via Admin na swiftpay-api):
 - `RateLimitPerMinute`: 60 req/min (padrão)
 - `RateLimitPerHour`: 1.000 req/hora (padrão)
 - `RateLimitPerDay`: 10.000 req/dia (padrão)

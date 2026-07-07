@@ -1,24 +1,24 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Utils;
-using safefy_api_payment.Clients.ActivePayments.Models.CreateBillet;
-using safefy_api_payment.Clients.Coldfy.Models.Payments;
-using safefy_api_payment.Clients.HeartPay.Models.Boletos;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Acquirers;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Interfaces.Transactions;
-using safefy_api_payment.Models.Transactions;
-using safefy_api_payment.Services.Acquirers.Utils;
-using PaymentBoletoDto = safefy_api_payment.Interfaces.Transactions.PaymentBoleto;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Clients.ActivePayments.Models.CreateBillet;
+using swiftpay_api_payment.Clients.Coldfy.Models.Payments;
+using swiftpay_api_payment.Clients.HeartPay.Models.Boletos;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Interfaces.Transactions;
+using swiftpay_api_payment.Models.Transactions;
+using swiftpay_api_payment.Services.Acquirers.Utils;
+using PaymentBoletoDto = swiftpay_api_payment.Interfaces.Transactions.PaymentBoleto;
 
-namespace safefy_api_payment.Services.Transactions;
+namespace swiftpay_api_payment.Services.Transactions;
 
 public class BoletoTransactionService(
     PrimaryDbContext dbContext,
@@ -216,7 +216,7 @@ public class BoletoTransactionService(
 
             dbContext.Payments.Add(payment);
 
-            safefy_api_core.Models.Database.PaymentBoleto boletoEntity;
+            swiftpay_api_core.Models.Database.PaymentBoleto boletoEntity;
             PaymentBoletoDto boletoDto;
 
             if (input.Environment == ApiEnvironment.Sandbox)
@@ -281,7 +281,7 @@ public class BoletoTransactionService(
 
                     if (!billetResponse.Success || billetResponse.Data?.Billet == null || string.IsNullOrEmpty(billetResponse.Data.ChargeId))
                     {
-                        await apiLogService.LogAsync(new safefy_api_core.Models.Inputs.ApiLogInput
+                        await apiLogService.LogAsync(new swiftpay_api_core.Models.Inputs.ApiLogInput
                         {
                             Action = ApiLogAction.AcquirerRequestFailed,
                             Status = ApiLogStatus.Failed,
@@ -306,7 +306,7 @@ public class BoletoTransactionService(
                     payment.AcquirerPaymentId = billetResponse.Data.ChargeId;
                     payment.AcquirerStatus = billetResponse.Data.Status;
 
-                    boletoEntity = new safefy_api_core.Models.Database.PaymentBoleto
+                    boletoEntity = new swiftpay_api_core.Models.Database.PaymentBoleto
                     {
                         Id = Guid.CreateVersion7(),
                         PaymentId = payment.Id,
@@ -368,7 +368,7 @@ public class BoletoTransactionService(
 
                     if (!coldfyResponse.Success || coldfyResponse.Data?.Boleto == null || string.IsNullOrWhiteSpace(coldfyResponse.Data.Id))
                     {
-                        await apiLogService.LogAsync(new safefy_api_core.Models.Inputs.ApiLogInput
+                        await apiLogService.LogAsync(new swiftpay_api_core.Models.Inputs.ApiLogInput
                         {
                             Action = ApiLogAction.AcquirerRequestFailed,
                             Status = ApiLogStatus.Failed,
@@ -393,7 +393,7 @@ public class BoletoTransactionService(
                     payment.AcquirerPaymentId = coldfyResponse.Data.Id;
                     payment.AcquirerStatus = coldfyResponse.Data.Status?.ToString();
 
-                    boletoEntity = new safefy_api_core.Models.Database.PaymentBoleto
+                    boletoEntity = new swiftpay_api_core.Models.Database.PaymentBoleto
                     {
                         Id = Guid.CreateVersion7(),
                         PaymentId = payment.Id,
@@ -447,7 +447,7 @@ public class BoletoTransactionService(
 
                     if (!heartPayResponse.Success || heartPayResponse.Data == null || string.IsNullOrWhiteSpace(heartPayPaymentId))
                     {
-                        await apiLogService.LogAsync(new safefy_api_core.Models.Inputs.ApiLogInput
+                        await apiLogService.LogAsync(new swiftpay_api_core.Models.Inputs.ApiLogInput
                         {
                             Action = ApiLogAction.AcquirerRequestFailed,
                             Status = ApiLogStatus.Failed,
@@ -472,7 +472,7 @@ public class BoletoTransactionService(
                     payment.AcquirerPaymentId = heartPayPaymentId;
                     payment.AcquirerStatus = heartPayResponse.Data.Status;
 
-                    boletoEntity = new safefy_api_core.Models.Database.PaymentBoleto
+                    boletoEntity = new swiftpay_api_core.Models.Database.PaymentBoleto
                     {
                         Id = Guid.CreateVersion7(),
                         PaymentId = payment.Id,
@@ -880,15 +880,15 @@ public class BoletoTransactionService(
         };
     }
 
-    private static safefy_api_core.Models.Database.PaymentBoleto CreateSandboxBoletoEntity(Guid paymentId, DateTime dueDate)
+    private static swiftpay_api_core.Models.Database.PaymentBoleto CreateSandboxBoletoEntity(Guid paymentId, DateTime dueDate)
     {
-        return new safefy_api_core.Models.Database.PaymentBoleto
+        return new swiftpay_api_core.Models.Database.PaymentBoleto
         {
             Id = Guid.CreateVersion7(),
             PaymentId = paymentId,
             Barcode = $"SANDBOX-{paymentId:N}"[..32],
             DigitableLine = $"SANDBOX-{paymentId:N}"[..32],
-            PdfUrl = $"https://sandbox.safefy/payments/{paymentId:N}/boleto.pdf",
+            PdfUrl = $"https://sandbox.swiftpay/payments/{paymentId:N}/boleto.pdf",
             RecipientName = "Sandbox",
             RecipientDocument = null,
             PixCopyAndPaste = null,
@@ -897,7 +897,7 @@ public class BoletoTransactionService(
         };
     }
 
-    private static PaymentBoletoDto MapBoletoDto(safefy_api_core.Models.Database.PaymentBoleto entity)
+    private static PaymentBoletoDto MapBoletoDto(swiftpay_api_core.Models.Database.PaymentBoleto entity)
     {
         return new PaymentBoletoDto
         {

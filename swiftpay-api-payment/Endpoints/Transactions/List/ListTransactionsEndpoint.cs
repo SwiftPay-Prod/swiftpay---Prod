@@ -1,16 +1,16 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Database;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Documentation;
-using safefy_api_payment.Mappers;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Database;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Documentation;
+using swiftpay_api_payment.Mappers;
 
-namespace safefy_api_payment.Endpoints.Transactions.List;
+namespace swiftpay_api_payment.Endpoints.Transactions.List;
 
 public sealed class ListTransactionsEndpoint(
     PrimaryDbContext dbContext

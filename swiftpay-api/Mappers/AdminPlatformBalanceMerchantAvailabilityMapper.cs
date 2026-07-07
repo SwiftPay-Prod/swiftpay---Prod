@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Admin.Balance.ReadAcquirerMerchantAvailability;
+using swiftpay_api.Endpoints.Admin.Balance.ReadAcquirerMerchantAvailability;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminPlatformBalanceMerchantAvailabilityMapper
 {

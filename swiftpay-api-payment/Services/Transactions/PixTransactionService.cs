@@ -1,18 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Interfaces.Transactions;
-using safefy_api_payment.Services.Sandbox;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Interfaces.Transactions;
+using swiftpay_api_payment.Services.Sandbox;
 
-namespace safefy_api_payment.Services.Transactions;
+namespace swiftpay_api_payment.Services.Transactions;
 
 public class PixTransactionService(
     PrimaryDbContext dbContext,
@@ -723,7 +723,7 @@ public class PixTransactionService(
         var prefix = FallbackEmailPrefixes[prefixIndex];
         var suffix = ResolveEmailSuffix(source);
 
-        return $"{prefix}+{suffix}@transactions.safefy.app";
+        return $"{prefix}+{suffix}@transactions.swiftpay.app";
     }
 
     private static string ResolveCustomerPhone(string? customerPhone, string? source)

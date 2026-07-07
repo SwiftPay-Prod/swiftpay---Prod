@@ -1,6 +1,6 @@
-using safefy_api_payment.Clients.ActivePayments.Models;
+using swiftpay_api_payment.Clients.ActivePayments.Models;
 
-namespace safefy_api_payment.Clients.ActivePayments;
+namespace swiftpay_api_payment.Clients.ActivePayments;
 
 internal static class ActivePaymentsResponseParser
 {

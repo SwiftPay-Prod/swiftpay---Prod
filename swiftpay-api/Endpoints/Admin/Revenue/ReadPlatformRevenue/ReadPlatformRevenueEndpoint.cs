@@ -1,11 +1,11 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Revenue.ReadPlatformRevenue;
+namespace swiftpay_api.Endpoints.Admin.Revenue.ReadPlatformRevenue;
 
 public sealed class ReadPlatformRevenueEndpoint(
     PrimaryDbContext dbContext,

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api.Models.Auth;
+namespace swiftpay_api.Models.Auth;
 
 public class JWTDecode
 {

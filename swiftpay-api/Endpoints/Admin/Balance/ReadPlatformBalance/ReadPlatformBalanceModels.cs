@@ -1,8 +1,8 @@
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Admin.Balance.ReadPlatformBalance;
+namespace swiftpay_api.Endpoints.Admin.Balance.ReadPlatformBalance;
 
 public sealed class ReadPlatformBalanceResponse : BaseResponse<AdminPlatformBalanceData>;
 

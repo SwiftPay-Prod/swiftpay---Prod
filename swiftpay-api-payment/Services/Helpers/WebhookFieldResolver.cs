@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace safefy_api_payment.Services.Helpers;
+namespace swiftpay_api_payment.Services.Helpers;
 
 public static class WebhookFieldResolver
 {

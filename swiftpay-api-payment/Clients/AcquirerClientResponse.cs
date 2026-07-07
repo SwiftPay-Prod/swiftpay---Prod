@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Clients;
+namespace swiftpay_api_payment.Clients;
 
 public sealed record AcquirerClientResponse<T>
 {

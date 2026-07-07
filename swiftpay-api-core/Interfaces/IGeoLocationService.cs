@@ -1,4 +1,4 @@
-namespace safefy_api_core.Interfaces;
+namespace swiftpay_api_core.Interfaces;
 
 public interface IGeoLocationService
 {

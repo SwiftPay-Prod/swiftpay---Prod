@@ -159,13 +159,13 @@ Providers
 | **Data Display** | `data-table`, `data-links`, `detail-components`, `expandable-list`, `inline-list`, `json-code-block`, `section-header` |
 | **Forms/Inputs** | `async-autocomplete`, `async-combobox`, `async-multi-combobox`, `combobox-filter`, `currency-cents-input`, `international-phone-input`, `json-editor-input`, `multi-select-chips`, `rich-text-editor`, `search-filter`, `select-filter` |
 | **Layout** | `form-page-header`, `form-page-skeleton`, `form-save-footer`, `horizontal-steps`, `vertical-steps`, `wizard-stepper`, `page-header`, `review-step-layout`, `internal-tabs`, `internal-tabs-list`, `internal-tag-tabs`, `system-accordion` |
-| **Feedback** | `confetti`, `safefy-toaster`, `confirmation-modal`, `empty-state`, `unsaved-changes-alert`, `progress-bar` |
+| **Feedback** | `confetti`, `swiftpay-toaster`, `confirmation-modal`, `empty-state`, `unsaved-changes-alert`, `progress-bar` |
 | **Buttons/Actions** | `async-button`, `table-id-cell` |
 | **Visualization** | `animated-currency`, `animated-number`, `chart`, `background-gradient-animation`, `boleto-barcode-image`, `number-ticket` |
 | **Image/Document** | `image-uploader`, `single-image-upload`, `document-viewer` |
 | **Date/Time** | `date-time-picker`, `formatted-date`, `relative-time`, `time-remaining` |
 | **Mobile** | `mobile-bottom-sheet`, `mobile-menu-page` |
-| **Specialized** | `icon`, `safefy-brand-logo`, `avatar-user`, `bulletin-reactions`, `theme-toggle` |
+| **Specialized** | `icon`, `swiftpay-brand-logo`, `avatar-user`, `bulletin-reactions`, `theme-toggle` |
 
 ### 2.5 Server Actions (75+ mapeadas)
 
@@ -211,7 +211,7 @@ interface TParse {
 
 ### 2.9 Autenticação
 
-**Cookies httpOnly:** `safefy_access_token`, `safefy_refresh_token`, `safefy_user_info`
+**Cookies httpOnly:** `swiftpay_access_token`, `swiftpay_refresh_token`, `swiftpay_user_info`
 
 **Fluxo:**
 ```
@@ -224,7 +224,7 @@ Login → API Route Handler → JWT token → cookie
 
 ### 2.10 Firebase / Push
 
-- Project: `safefypay-a405c`
+- Project: `swiftpaya405c`
 - VAPID key configurada
 - Service worker: `public/firebase-messaging-sw.js`
 - Detecção de PWA (iOS e Android)

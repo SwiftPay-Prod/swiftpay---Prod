@@ -1,6 +1,6 @@
-using safefy_api.Models.PaymentApi;
+using swiftpay_api.Models.PaymentApi;
 
-namespace safefy_api.Interfaces;
+namespace swiftpay_api.Interfaces;
 
 public interface IPaymentApiClient
 {

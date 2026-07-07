@@ -2,11 +2,11 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Settings;
-using safefy_api_core.Services;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 public static class MassTransitExtensions
 {

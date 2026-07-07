@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Templates;
+namespace swiftpay_api.Endpoints.Admin.Templates;
 
 internal static class TemplateFeeModeNormalizer
 {

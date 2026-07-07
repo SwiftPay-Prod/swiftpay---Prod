@@ -4,15 +4,15 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using safefy_api_payment.Tests.Fixtures;
-using safefy_api_payment.Tests.Models;
-using safefy_api_payment.Interfaces;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Services;
+using swiftpay_api_payment.Tests.Fixtures;
+using swiftpay_api_payment.Tests.Models;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_payment.Tests.Integration;
+namespace swiftpay_api_payment.Tests.Integration;
 
 /// <summary>
 /// Testes de integração cobrindo o fluxo completo do Ledger.
@@ -226,7 +226,7 @@ public class LedgerFlowTests : IClassFixture<PaymentApiFactory>
         {
             Amount = 5000,
             PixKeyType = "Email",
-            PixKey = "test@safefy.com"
+            PixKey = "test@swiftpay.com"
         });
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -608,7 +608,7 @@ public class LedgerFlowTests : IClassFixture<PaymentApiFactory>
         {
             Amount = amount,
             PixKeyType = "Email",
-            PixKey = "test@safefy.com"
+            PixKey = "test@swiftpay.com"
         };
         var response = await PostJsonAsync(client, "/v1/cashouts", request);
         var content = await response.Content.ReadAsStringAsync();

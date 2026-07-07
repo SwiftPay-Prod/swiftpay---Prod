@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_core.Models.Enum;
+namespace swiftpay_api_core.Models.Enum;
 
 /// <summary>
 /// Ambiente de operação da API (Sandbox para testes, Production para produção).

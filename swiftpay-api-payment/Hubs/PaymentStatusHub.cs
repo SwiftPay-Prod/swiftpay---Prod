@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 
-namespace safefy_api_payment.Hubs;
+namespace swiftpay_api_payment.Hubs;
 
 public sealed class PaymentStatusHub : Hub
 {

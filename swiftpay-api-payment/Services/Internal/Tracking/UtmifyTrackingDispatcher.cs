@@ -1,9 +1,9 @@
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_payment.Services.Internal.Tracking;
+namespace swiftpay_api_payment.Services.Internal.Tracking;
 
 internal static class UtmifyTrackingDispatcher
 {
@@ -141,7 +141,7 @@ internal static class UtmifyTrackingDispatcher
         if (!string.IsNullOrWhiteSpace(customer?.Email))
             return customer.Email.Trim();
 
-        return $"customer-{payment.Id:N}@safefy.local";
+        return $"customer-{payment.Id:N}@swiftpay.local";
     }
 
     private sealed class UtmifyOrderPayload

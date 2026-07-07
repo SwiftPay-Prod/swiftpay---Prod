@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api_payment.Services.Internal;
+namespace swiftpay_api_payment.Services.Internal;
 
 public class TokenService(IOptions<JWTSettingsOptions> jwtSettings) : ITokenService
 {

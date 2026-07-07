@@ -130,7 +130,7 @@ export function PushNotificationProvider({ children }: PushNotificationProviderP
 				token: result.token,
 				platform: 'web',
 				deviceName: navigator.userAgent,
-				deviceId: localStorage.getItem(BaseLocalStorage.safefyDeviceId) ?? undefined,
+				deviceId: localStorage.getItem(BaseLocalStorage.swiftpayDeviceId) ?? undefined,
 			});
 
 			if (response?.error) {
@@ -236,7 +236,7 @@ export function PushNotificationProvider({ children }: PushNotificationProviderP
 				token: result.token,
 				platform: 'web',
 				deviceName: navigator.userAgent,
-				deviceId: localStorage.getItem(BaseLocalStorage.safefyDeviceId) ?? undefined,
+				deviceId: localStorage.getItem(BaseLocalStorage.swiftpayDeviceId) ?? undefined,
 			});
 
 			if (response?.error) {

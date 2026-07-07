@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { SafefyBrandLogo } from '@/components/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/swiftpay-brand-logo';
 
 interface ThemeLogoProps {
 	logoUrl?: string | null;
@@ -24,5 +24,5 @@ export function ThemeLogo({ logoUrl }: ThemeLogoProps) {
 		);
 	}
 
-	return <SafefyBrandLogo iconSize={32} priority />;
+	return <SwiftPayBrandLogo iconSize={32} priority />;
 }

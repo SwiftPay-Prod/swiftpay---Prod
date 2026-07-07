@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class RateLimiterExtensions
 {

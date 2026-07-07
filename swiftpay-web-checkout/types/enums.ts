@@ -1,4 +1,4 @@
-// Enums matching safefy-api-core models
+// Enums matching swiftpay-api-core models
 
 export type ProductType = 'Physical' | 'Digital' | 'Service';
 

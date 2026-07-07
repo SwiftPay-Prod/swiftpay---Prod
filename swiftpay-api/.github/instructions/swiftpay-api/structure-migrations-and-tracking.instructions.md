@@ -40,10 +40,10 @@ Validators/                   # Validadores compartilhados
 
 ## Migrations (LogDbContext)
 
-- As migrations do banco de logs ficam em `Database/Migrations/Logs` no projeto `safefy-api`
-- O `LogDbContext` pertence ao `safefy-api-core`, mas o assembly de migrations deve ser `safefy-api`
+- As migrations do banco de logs ficam em `Database/Migrations/Logs` no projeto `swiftpay-api`
+- O `LogDbContext` pertence ao `swiftpay-api-core`, mas o assembly de migrations deve ser `swiftpay-api`
 - Sempre gerar migrations com o output-dir correto:
-    `dotnet ef migrations add <Nome> --context LogDbContext --output-dir Database/Migrations/Logs --project safefy-api.csproj --startup-project safefy-api.csproj`
+    `dotnet ef migrations add <Nome> --context LogDbContext --output-dir Database/Migrations/Logs --project swiftpay-api.csproj --startup-project swiftpay-api.csproj`
 - Se o banco de logs ja existir sem registros em `__EFMigrationsHistory`, alinhar o baseline antes de aplicar a primeira migration em ambientes existentes
 
 ## Integrações do Merchant (Tracking)

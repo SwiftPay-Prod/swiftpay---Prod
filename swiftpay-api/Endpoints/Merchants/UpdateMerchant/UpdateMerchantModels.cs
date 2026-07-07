@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Merchants.Shared.Models;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Merchants.Shared.Models;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.UpdateMerchant;
+namespace swiftpay_api.Endpoints.Merchants.UpdateMerchant;
 
 public sealed class UpdateMerchantRequest
 {

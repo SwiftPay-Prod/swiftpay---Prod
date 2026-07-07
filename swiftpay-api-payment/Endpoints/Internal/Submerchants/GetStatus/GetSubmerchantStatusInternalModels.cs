@@ -1,7 +1,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace safefy_api_payment.Endpoints.Internal.Submerchants.GetStatus;
+namespace swiftpay_api_payment.Endpoints.Internal.Submerchants.GetStatus;
 
 public sealed class GetSubmerchantStatusInternalRequest
 {

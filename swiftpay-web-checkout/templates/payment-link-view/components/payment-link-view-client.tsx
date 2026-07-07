@@ -380,7 +380,7 @@ export default function PaymentLinkViewTemplate({
 			instructions,
 			barcodeText,
 			barcodeDataUrl: boletoBarcodeValue ? generateBarcodeDataUrl(boletoBarcodeValue) : null,
-			logoUrl: paymentLink.showSafefyBranding ? '/safefy-horizontal-light.png' : null,
+			logoUrl: paymentLink.showSwiftPayBranding ? '/swiftpay-horizontal-light.png' : null,
 		};
 	}, [
 		boletoBarcodeValue,
@@ -395,7 +395,7 @@ export default function PaymentLinkViewTemplate({
 		paymentLink.description,
 		paymentLink.id,
 		paymentLink.paymentId,
-		paymentLink.showSafefyBranding,
+		paymentLink.showSwiftPayBranding,
 	]);
 
 	useEffect(() => {

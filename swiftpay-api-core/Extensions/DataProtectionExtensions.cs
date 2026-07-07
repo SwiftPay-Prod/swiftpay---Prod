@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
-using safefy_api_core.Database;
+using swiftpay_api_core.Database;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 public static class DataProtectionExtensions
 {

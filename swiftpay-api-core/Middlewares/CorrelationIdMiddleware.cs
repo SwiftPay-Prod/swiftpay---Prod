@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
-namespace safefy_api_core.Middlewares;
+namespace swiftpay_api_core.Middlewares;
 
 public class CorrelationIdMiddleware(RequestDelegate next)
 {

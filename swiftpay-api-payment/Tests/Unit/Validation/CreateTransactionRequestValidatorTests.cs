@@ -1,9 +1,9 @@
 using FluentAssertions;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Transactions.Create;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Transactions.Create;
 
-namespace safefy_api_payment.Tests.Unit.Validation;
+namespace swiftpay_api_payment.Tests.Unit.Validation;
 
 public sealed class CreateTransactionRequestValidatorTests
 {

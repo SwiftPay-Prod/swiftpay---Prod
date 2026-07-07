@@ -1,13 +1,13 @@
 using FastEndpoints;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Clients.Bankizi.Models.Webhook;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.EndpointsGroups.Acquirers;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Clients.Bankizi.Models.Webhook;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.EndpointsGroups.Acquirers;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Endpoints.Acquirers.Bankizi.Simulate;
+namespace swiftpay_api_payment.Endpoints.Acquirers.Bankizi.Simulate;
 
 public sealed class SimulateBankiziWebhookEndpoint(
     IPaymentProcessingService paymentProcessingService,

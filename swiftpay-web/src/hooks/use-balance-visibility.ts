@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const BALANCE_VISIBILITY_KEY = 'safefy_balance_visible';
-const BALANCE_VISIBILITY_EVENT = 'safefy_balance_visibility_changed';
+const BALANCE_VISIBILITY_KEY = 'swiftpay_balance_visible';
+const BALANCE_VISIBILITY_EVENT = 'swiftpay_balance_visibility_changed';
 
 export function useBalanceVisibility() {
 	const [isVisible, setIsVisible] = useState(true);

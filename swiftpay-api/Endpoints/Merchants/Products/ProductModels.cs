@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.Products;
+namespace swiftpay_api.Endpoints.Merchants.Products;
 
 public sealed class ProductData
 {

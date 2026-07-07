@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Interfaces.Internal.Submerchants;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Interfaces.Internal.Submerchants;
 
-namespace safefy_api_payment.Services.Internal.Submerchants;
+namespace swiftpay_api_payment.Services.Internal.Submerchants;
 
 public sealed class SubmerchantProviderAdapterFactory(
     IEnumerable<ISubmerchantProviderAdapter> adapters

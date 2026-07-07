@@ -1,10 +1,10 @@
-using safefy_api.Endpoints.Admin.Users.ReadListUsers;
-using safefy_api.Endpoints.Admin.Users.ReadUser;
-using safefy_api.Endpoints.Auth.Shared.Models;
-using safefy_api.Endpoints.Users.ReadUser;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.Users.ReadListUsers;
+using swiftpay_api.Endpoints.Admin.Users.ReadUser;
+using swiftpay_api.Endpoints.Auth.Shared.Models;
+using swiftpay_api.Endpoints.Users.ReadUser;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class UserMapper
 {

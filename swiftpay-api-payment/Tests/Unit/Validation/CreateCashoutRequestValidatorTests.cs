@@ -1,7 +1,7 @@
 using FluentAssertions;
-using safefy_api_payment.Endpoints.Cashouts.Create;
+using swiftpay_api_payment.Endpoints.Cashouts.Create;
 
-namespace safefy_api_payment.Tests.Unit.Validation;
+namespace swiftpay_api_payment.Tests.Unit.Validation;
 
 public sealed class CreateCashoutRequestValidatorTests
 {

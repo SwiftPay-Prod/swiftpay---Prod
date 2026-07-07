@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
 /// SEO and Open Graph configuration stored as JSONB

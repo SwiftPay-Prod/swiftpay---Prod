@@ -1,10 +1,10 @@
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Bankizi.Models.CreatePix;
-using safefy_api_payment.Clients.Bankizi.Models.GetPix;
-using safefy_api_payment.Clients.Bankizi.Models.Token;
-using safefy_api_payment.Clients.Bankizi.Models.Withdrawals;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Bankizi.Models.CreatePix;
+using swiftpay_api_payment.Clients.Bankizi.Models.GetPix;
+using swiftpay_api_payment.Clients.Bankizi.Models.Token;
+using swiftpay_api_payment.Clients.Bankizi.Models.Withdrawals;
 
-namespace safefy_api_payment.Interfaces.Acquirers;
+namespace swiftpay_api_payment.Interfaces.Acquirers;
 
 public interface IBankiziClient
 {

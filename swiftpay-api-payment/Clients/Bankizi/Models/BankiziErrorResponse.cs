@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Clients.Bankizi.Models;
+namespace swiftpay_api_payment.Clients.Bankizi.Models;
 
 public sealed class BankiziErrorResponse
 {

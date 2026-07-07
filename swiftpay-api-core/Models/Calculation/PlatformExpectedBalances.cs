@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Calculation;
+namespace swiftpay_api_core.Models.Calculation;
 
 public sealed class PlatformExpectedBalances
 {

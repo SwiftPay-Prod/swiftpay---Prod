@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Auth.Token;
+namespace swiftpay_api_payment.Endpoints.Auth.Token;
 
 public class TokenRequest
 {

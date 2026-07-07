@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Settings;
+namespace swiftpay_api_core.Models.Settings;
 
 /// <summary>
 /// Configurações do banco de dados de logs.

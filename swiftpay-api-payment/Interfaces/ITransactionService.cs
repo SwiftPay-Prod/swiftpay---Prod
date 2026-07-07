@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Models.Transactions;
-using safefy_api_payment.Services.Sandbox;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Models.Transactions;
+using swiftpay_api_payment.Services.Sandbox;
 
-namespace safefy_api_payment.Interfaces;
+namespace swiftpay_api_payment.Interfaces;
 
 public interface ITransactionService
 {

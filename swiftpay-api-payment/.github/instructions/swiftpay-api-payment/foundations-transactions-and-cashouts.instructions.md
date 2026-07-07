@@ -1,11 +1,11 @@
 ---
-description: "Use when editing environment filtering, platform overview, transaction architecture, and cashout entry flows in safefy-api-payment."
+description: "Use when editing environment filtering, platform overview, transaction architecture, and cashout entry flows in swiftpay-api-payment."
 applyTo: 'Program.cs, Endpoints/Transactions/**/*.cs, Endpoints/Cashouts/**/*.cs, Endpoints/Internal/Cashouts/**/*.cs, Services/**/*.cs, Middlewares/**/*.cs'
 ---
 
-# Safefy API Payment - Copilot Instructions
+# SwiftPay API Payment - Copilot Instructions
 
-Este documento descreve os padrões e convenções utilizados no projeto Safefy API Payment para criação de endpoints de pagamento, integração com adquirentes e processamento de transações.
+Este documento descreve os padrões e convenções utilizados no projeto SwiftPay API Payment para criação de endpoints de pagamento, integração com adquirentes e processamento de transações.
 
 > **⚠️ IMPORTANTE PARA O COPILOT**: Sempre que houver alterações na arquitetura do sistema, estrutura de dados, fluxos de negócio ou padrões de código, **ATUALIZE ESTE ARQUIVO** para manter a documentação sincronizada com o código.
 
@@ -46,7 +46,7 @@ var accounts = await dbContext.Accounts
 **Em Endpoints HTTP (com request):**
 - O filtro global funciona automaticamente
 - **Não use** `IgnoreQueryFilters()` a menos que tenha certeza do que está fazendo
-- Em endpoints autenticados por credencial na `safefy-api-payment`, o ambiente do token (`claim environment`) é propagado no `CredentialValidationMiddleware` via `HybridEnvironmentProvider.SetEnvironment(...)` para manter o `DbContext` consistente com o ambiente da credencial
+- Em endpoints autenticados por credencial na `swiftpay-api-payment`, o ambiente do token (`claim environment`) é propagado no `CredentialValidationMiddleware` via `HybridEnvironmentProvider.SetEnvironment(...)` para manter o `DbContext` consistente com o ambiente da credencial
 
 **Locais que DEVEM usar `IgnoreQueryFilters()` + filtro manual:**
 - Todos os Consumers do MassTransit (`PaymentCompletedConsumer`, `ProcessCashoutConsumer`, etc.)
@@ -58,7 +58,7 @@ var accounts = await dbContext.Accounts
 
 ## Visão Geral
 
-A **safefy-api-payment** é a API de pagamentos da plataforma Safefy, responsável por:
+A **swiftpay-api-payment** é a API de pagamentos da plataforma SwiftPay, responsável por:
 
 - **Transações Unificadas**: API unificada `/v1/transactions` para PIX, Cartão e Boleto
 - **Processamento de Cobranças**: Criação de cobranças via API
@@ -168,7 +168,7 @@ A API utiliza uma arquitetura unificada de transações:
 | `/v1/cashouts` | GET | Listar saques |
 | `/v1/cashouts/{id}` | GET | Obter detalhes do saque |
 
-**Endpoints Internos (safefy-api → safefy-api-payment):**
+**Endpoints Internos (swiftpay-api → swiftpay-api-payment):**
 
 | Endpoint | Método | Descrição |
 |----------|--------|-----------|

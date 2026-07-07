@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Models.Messages;
+namespace swiftpay_api_core.Models.Messages;
 
 /// <summary>
 /// Mensagem para processar reconciliação bancária de uma organização em background

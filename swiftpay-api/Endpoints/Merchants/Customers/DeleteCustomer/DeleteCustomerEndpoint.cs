@@ -1,11 +1,11 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.Customers.DeleteCustomer;
+namespace swiftpay_api.Endpoints.Merchants.Customers.DeleteCustomer;
 
 public sealed class DeleteCustomerEndpoint(
     PrimaryDbContext dbContext

@@ -1,11 +1,11 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_core.Constants;
 
-namespace safefy_api_payment.Middlewares;
+namespace swiftpay_api_payment.Middlewares;
 
 public partial class InternalApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
 {

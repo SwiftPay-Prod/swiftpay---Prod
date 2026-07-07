@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Integrations;
+namespace swiftpay_api_core.Models.Integrations;
 
 public enum MerchantIntegrationFieldType
 {

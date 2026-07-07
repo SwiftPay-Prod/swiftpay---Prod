@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Dashboard;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Dashboard;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Admin.Merchants.ReadMerchantDashboard;
+namespace swiftpay_api.Endpoints.Admin.Merchants.ReadMerchantDashboard;
 
 public sealed class AdminReadMerchantDashboardRequest
 {

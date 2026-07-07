@@ -49,7 +49,7 @@ type AcquirerSortField =
 	| 'totalIn'
 	| 'grossBalance'
 	| 'merchantBalance'
-	| 'safefyProfit'
+	| 'swiftpayProfit'
 	| 'withdrawalFeeIfWithdrawAll'
 	| 'netIfWithdrawAll';
 type SortDirection = 'asc' | 'desc';
@@ -96,8 +96,8 @@ function getAcquirerSortValue(
 			return acq.grossBalance;
 		case 'merchantBalance':
 			return acq.merchantBalance;
-		case 'safefyProfit':
-			return acq.safefyProfit;
+		case 'swiftpayProfit':
+			return acq.swiftpayProfit;
 		case 'withdrawalFeeIfWithdrawAll':
 			return acq.withdrawalFeeIfWithdrawAll;
 		case 'netIfWithdrawAll':
@@ -153,8 +153,8 @@ const acquirerSortFieldOptions: LocalSelectOption<AcquirerSortField>[] = [
 		icon: <Icon icon={Wallet03Icon} className="icon-xs" />,
 	},
 	{
-		value: 'safefyProfit',
-		label: 'Lucro Safefy',
+		value: 'swiftpayProfit',
+		label: 'Lucro SwiftPay',
 		triggerLabel: 'Lucro',
 		color: 'success',
 		icon: <Icon icon={Wallet01Icon} className="icon-xs" />,
@@ -212,8 +212,8 @@ export function PlatformBalancesMobile({
 	const totalAvailableForWithdrawal = balanceData.totalAvailableForWithdrawal;
 	const platformTotalBalance = balanceData.totalPlatformOperationalBalance;
 	const platformNetIfWithdrawAll = balanceData.netIfWithdrawAll;
-	const totalSafefyProfit = balanceData.totalSafefyProfit;
-	const isTotalSafefyProfitNegative = totalSafefyProfit < 0;
+	const totalSwiftPayProfit = balanceData.totalSwiftPayProfit;
+	const isTotalSwiftPayProfitNegative = totalSwiftPayProfit < 0;
 
 	const filteredAcquirers = (() => {
 		const base = balanceData.acquirerBalances;
@@ -259,7 +259,7 @@ export function PlatformBalancesMobile({
 					<div className="relative z-10 mb-4 flex items-center justify-between">
 						<div className="flex items-center gap-1.5">
 							<Icon icon={ShieldEnergyIcon} className="icon-xs text-accent" />
-							<p className="text-[10px] font-medium uppercase tracking-wider text-accent">Plataforma Safefy</p>
+							<p className="text-[10px] font-medium uppercase tracking-wider text-accent">Plataforma SwiftPay</p>
 						</div>
 						<div className="flex items-center gap-0.5">
 							{(isRefreshPending || isReconcilePending) && <Spinner size="sm" color="warning" />}
@@ -374,12 +374,12 @@ export function PlatformBalancesMobile({
 					<Card className="overflow-hidden border-success-soft-hover">
 						<Card.Content className="p-3">
 							<div className="mb-2 flex items-center gap-1.5">
-								<div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${isTotalSafefyProfitNegative ? 'bg-danger/10' : 'bg-success/10'}`}>
-									<Icon icon={MoneyReceiveSquareIcon} className={`icon-xs ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-success'}`} />
+								<div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-danger/10' : 'bg-success/10'}`}>
+									<Icon icon={MoneyReceiveSquareIcon} className={`icon-xs ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`} />
 								</div>
-								<p className={`line-clamp-1 text-[11px] ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-muted'}`}>{isTotalSafefyProfitNegative ? 'Prejuizo Safefy' : 'Lucro Safefy'}</p>
+								<p className={`line-clamp-1 text-[11px] ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-muted'}`}>{isTotalSwiftPayProfitNegative ? 'Prejuizo SwiftPay' : 'Lucro SwiftPay'}</p>
 							</div>
-							<Val value={totalSafefyProfit} isHidden={isHidden} className={`text-base font-bold tabular-nums ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-success'}`} />
+							<Val value={totalSwiftPayProfit} isHidden={isHidden} className={`text-base font-bold tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`} />
 							<p className="mt-0.5 text-[10px] text-muted">Taxas - Custos</p>
 						</Card.Content>
 					</Card>
@@ -417,8 +417,8 @@ export function PlatformBalancesMobile({
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between px-3 py-3">
 								<div className="flex items-center gap-2">
-										<Icon icon={MoneyReceiveSquareIcon} className={`icon-sm ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-emerald-500'}`} />
-											<span className={`text-sm font-medium ${isTotalSafefyProfitNegative ? 'text-danger' : ''}`}>{isTotalSafefyProfitNegative ? 'Resumo do Prejuizo' : 'Resumo do Lucro'}</span>
+										<Icon icon={MoneyReceiveSquareIcon} className={`icon-sm ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-emerald-500'}`} />
+											<span className={`text-sm font-medium ${isTotalSwiftPayProfitNegative ? 'text-danger' : ''}`}>{isTotalSwiftPayProfitNegative ? 'Resumo do Prejuizo' : 'Resumo do Lucro'}</span>
 								</div>
 								<Accordion.Indicator />
 							</Accordion.Trigger>
@@ -427,8 +427,8 @@ export function PlatformBalancesMobile({
 							<Accordion.Body className="px-3 pb-3 pt-0">
 								<div className="space-y-3 rounded-lg bg-surface/50 p-3">
 									<div className="flex items-center justify-between">
-												<span className={`text-sm ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-muted'}`}>{isTotalSafefyProfitNegative ? 'Prejuizo Líquido' : 'Lucro Líquido'}</span>
-											<Val value={totalSafefyProfit} isHidden={isHidden} className={`font-semibold ${isTotalSafefyProfitNegative ? 'text-danger' : 'text-success'}`} />
+												<span className={`text-sm ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-muted'}`}>{isTotalSwiftPayProfitNegative ? 'Prejuizo Líquido' : 'Lucro Líquido'}</span>
+											<Val value={totalSwiftPayProfit} isHidden={isHidden} className={`font-semibold ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`} />
 									</div>
 									<div className="flex items-center justify-between">
 										<span className="text-sm text-muted">Em Processamento</span>
@@ -482,7 +482,7 @@ export function PlatformBalancesMobile({
 										/>
 									</div>
 									<div className="flex items-center justify-between border-t border-default pt-3">
-										<span className="text-sm font-medium">Saldo Conta Safefy</span>
+										<span className="text-sm font-medium">Saldo Conta SwiftPay</span>
 										<Val value={balanceData.platformPayoutsOut} isHidden={isHidden} className="font-bold" />
 									</div>
 								</div>

@@ -1,7 +1,7 @@
 using System.Text.Json;
-using safefy_api_payment.Clients.Bankizi.Models;
+using swiftpay_api_payment.Clients.Bankizi.Models;
 
-namespace safefy_api_payment.Clients.Bankizi;
+namespace swiftpay_api_payment.Clients.Bankizi;
 
 internal static class BankiziResponseParser
 {

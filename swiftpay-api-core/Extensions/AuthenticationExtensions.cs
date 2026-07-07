@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 public static class AuthenticationExtensions
 {

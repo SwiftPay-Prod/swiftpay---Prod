@@ -1,18 +1,18 @@
 using System.Text.Json;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Models.Dashboard;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Models.Enum;
-using safefy_api.Mappers;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Models.Dashboard;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api.Mappers;
 
-namespace safefy_api.Endpoints.Merchants.ReadMerchantDashboard;
+namespace swiftpay_api.Endpoints.Merchants.ReadMerchantDashboard;
 
 public sealed class ReadMerchantDashboardEndpoint(
     PrimaryDbContext dbContext,
@@ -73,7 +73,7 @@ public sealed class ReadMerchantDashboardEndpoint(
 
     private async Task HandleCustomFilteredRequest(
         ReadMerchantDashboardRequest req,
-        safefy_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
+        swiftpay_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
         CancellationToken ct)
     {
         var (startDate, endDate, periodLabel) = CalculateDateRange(req);
@@ -542,7 +542,7 @@ public sealed class ReadMerchantDashboardEndpoint(
 
     private async Task HandleCachedRequest(
         ReadMerchantDashboardRequest req,
-        safefy_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
+        swiftpay_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
         CancellationToken ct)
     {
         var now = DateTime.UtcNow;
@@ -641,7 +641,7 @@ public sealed class ReadMerchantDashboardEndpoint(
     private async Task SendCachedResponse(
         ReadMerchantDashboardRequest req,
         MerchantDashboardCache? cache,
-        safefy_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
+        swiftpay_api_core.Models.Ledger.MerchantBalanceInfo balanceInfo,
         CancellationToken ct)
     {
         var volumeChart = cache != null

@@ -27,10 +27,10 @@ export function getOrCreateDeviceId(): string {
 		return '';
 	}
 	
-	let deviceId = localStorage.getItem(BaseLocalStorage.safefyDeviceId);
+	let deviceId = localStorage.getItem(BaseLocalStorage.swiftpayDeviceId);
 	if (!deviceId) {
 		deviceId = generateUUID();
-		localStorage.setItem(BaseLocalStorage.safefyDeviceId, deviceId);
+		localStorage.setItem(BaseLocalStorage.swiftpayDeviceId, deviceId);
 	}
 	return deviceId;
 }
@@ -39,13 +39,13 @@ export function getDeviceId(): string | null {
 	if (typeof window === 'undefined') {
 		return null;
 	}
-	return localStorage.getItem(BaseLocalStorage.safefyDeviceId);
+	return localStorage.getItem(BaseLocalStorage.swiftpayDeviceId);
 }
 
 export function clearDeviceId(): void {
 	if (typeof window === 'undefined') {
 		return;
 	}
-	localStorage.removeItem(BaseLocalStorage.safefyDeviceId);
+	localStorage.removeItem(BaseLocalStorage.swiftpayDeviceId);
 }
 

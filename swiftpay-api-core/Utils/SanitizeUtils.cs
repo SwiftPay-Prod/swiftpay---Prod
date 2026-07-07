@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 public static partial class SanitizeUtils
 {

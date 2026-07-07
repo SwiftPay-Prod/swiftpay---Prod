@@ -2,15 +2,15 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.ActivePayments.Models;
-using safefy_api_payment.Clients.ActivePayments.Models.CreateBillet;
-using safefy_api_payment.Clients.ActivePayments.Models.CreateCharge;
-using safefy_api_payment.Clients.ActivePayments.Models.GetCharge;
-using safefy_api_payment.Clients.ActivePayments.Models.Withdrawals;
-using safefy_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.ActivePayments.Models;
+using swiftpay_api_payment.Clients.ActivePayments.Models.CreateBillet;
+using swiftpay_api_payment.Clients.ActivePayments.Models.CreateCharge;
+using swiftpay_api_payment.Clients.ActivePayments.Models.GetCharge;
+using swiftpay_api_payment.Clients.ActivePayments.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces.Acquirers;
 
-namespace safefy_api_payment.Clients.ActivePayments;
+namespace swiftpay_api_payment.Clients.ActivePayments;
 
 public sealed class ActivePaymentsClient(
     HttpClient httpClient,

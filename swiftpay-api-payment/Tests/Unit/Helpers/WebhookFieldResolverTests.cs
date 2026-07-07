@@ -1,8 +1,8 @@
 using System.Text.Json;
 using FluentAssertions;
-using safefy_api_payment.Services.Helpers;
+using swiftpay_api_payment.Services.Helpers;
 
-namespace safefy_api_payment.Tests.Unit.Helpers;
+namespace swiftpay_api_payment.Tests.Unit.Helpers;
 
 public sealed class WebhookFieldResolverTests
 {

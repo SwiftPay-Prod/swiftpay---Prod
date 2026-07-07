@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Mappers;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Database;
-using safefy_api_payment.Interfaces;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Mappers;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api_payment.Interfaces;
 
-namespace safefy_api_payment.Services;
+namespace swiftpay_api_payment.Services;
 
 public class PaymentProcessingService(
     PrimaryDbContext dbContext,

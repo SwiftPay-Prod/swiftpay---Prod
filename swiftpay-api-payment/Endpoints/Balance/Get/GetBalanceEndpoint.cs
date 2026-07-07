@@ -1,13 +1,13 @@
 using FastEndpoints;
-using safefy_api_core.Interfaces;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Documentation;
-using safefy_api_payment.Mappers;
-using safefy_api_core.Services;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Documentation;
+using swiftpay_api_payment.Mappers;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_payment.Endpoints.Balance.Get;
+namespace swiftpay_api_payment.Endpoints.Balance.Get;
 
 public sealed class GetBalanceEndpoint(
     ILedgerService ledgerService

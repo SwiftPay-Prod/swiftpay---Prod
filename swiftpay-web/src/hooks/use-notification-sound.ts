@@ -7,10 +7,10 @@ const CASHIN_SOUND_PATH = '/audio/cashin-sound.mp3';
 const DEFAULT_SOUND_PATH = '/audio/notification-default.mp3';
 const DEBOUNCE_MS = 500;
 const CROSS_TAB_DEDUPE_WINDOW_MS = 15000;
-const SOUND_DEDUPE_PREFIX = 'safefy:notification-sound:played:';
-const SOUND_DEDUPE_LOCK = 'safefy-notification-sound-lock';
-const SOUND_DEDUPE_STATE_KEY = 'safefy:notification-sound:last-event';
-const SOUND_TAB_ID_KEY = 'safefy:notification-sound:tab-id';
+const SOUND_DEDUPE_PREFIX = 'swiftpay:notification-sound:played:';
+const SOUND_DEDUPE_LOCK = 'swiftpay-notification-sound-lock';
+const SOUND_DEDUPE_STATE_KEY = 'swiftpay:notification-sound:last-event';
+const SOUND_TAB_ID_KEY = 'swiftpay:notification-sound:tab-id';
 
 let lastCashinPlayTime = 0;
 let lastDefaultPlayTime = 0;

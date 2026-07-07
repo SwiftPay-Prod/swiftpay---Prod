@@ -3,11 +3,11 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_core.Middlewares;
+namespace swiftpay_api_core.Middlewares;
 
 public class ApiLogContextMiddleware(RequestDelegate next)
 {

@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Boleto.ReadBoleto;
+namespace swiftpay_api.Endpoints.Boleto.ReadBoleto;
 
 public sealed class ReadBoletoResponse : BaseResponse<ReadBoletoData>;
 

@@ -1,24 +1,24 @@
 using System.Text.Json;
 using FluentAssertions;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Clients.ActivePayments.Models.Webhook;
-using safefy_api_payment.Clients.ActivePayments.Models.Withdrawals;
-using safefy_api_payment.Clients.Bankizi.Models.Webhook;
-using safefy_api_payment.Clients.Coldfy.Models.Webhook;
-using safefy_api_payment.Clients.Coldfy.Models.Withdrawals;
-using safefy_api_payment.Clients.IHubBanking.Models.Transactions;
-using safefy_api_payment.Clients.IHubBanking.Models.Withdrawals;
-using safefy_api_payment.Clients.IHubBanking.Models.Webhook;
-using safefy_api_payment.Clients.HeartPay.Models.Webhook;
-using safefy_api_payment.Clients.HunterPay.Models.Transactions;
-using safefy_api_payment.Clients.HunterPay.Models.Webhook;
-using safefy_api_payment.Clients.Pluggou.Models.Webhook;
-using safefy_api_payment.Clients.Rapdyn.Models.Webhook;
-using safefy_api_payment.Clients.Bankizi.Models.Withdrawals;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Clients.ActivePayments.Models.Webhook;
+using swiftpay_api_payment.Clients.ActivePayments.Models.Withdrawals;
+using swiftpay_api_payment.Clients.Bankizi.Models.Webhook;
+using swiftpay_api_payment.Clients.Coldfy.Models.Webhook;
+using swiftpay_api_payment.Clients.Coldfy.Models.Withdrawals;
+using swiftpay_api_payment.Clients.IHubBanking.Models.Transactions;
+using swiftpay_api_payment.Clients.IHubBanking.Models.Withdrawals;
+using swiftpay_api_payment.Clients.IHubBanking.Models.Webhook;
+using swiftpay_api_payment.Clients.HeartPay.Models.Webhook;
+using swiftpay_api_payment.Clients.HunterPay.Models.Transactions;
+using swiftpay_api_payment.Clients.HunterPay.Models.Webhook;
+using swiftpay_api_payment.Clients.Pluggou.Models.Webhook;
+using swiftpay_api_payment.Clients.Rapdyn.Models.Webhook;
+using swiftpay_api_payment.Clients.Bankizi.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Tests.Integration;
+namespace swiftpay_api_payment.Tests.Integration;
 
 public sealed class AcquirerStatusMappingTests
 {

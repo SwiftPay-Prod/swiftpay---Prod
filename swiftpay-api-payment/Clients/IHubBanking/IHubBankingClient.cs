@@ -2,13 +2,13 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.IHubBanking.Models;
-using safefy_api_payment.Clients.IHubBanking.Models.Transactions;
-using safefy_api_payment.Clients.IHubBanking.Models.Withdrawals;
-using safefy_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.IHubBanking.Models;
+using swiftpay_api_payment.Clients.IHubBanking.Models.Transactions;
+using swiftpay_api_payment.Clients.IHubBanking.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces.Acquirers;
 
-namespace safefy_api_payment.Clients.IHubBanking;
+namespace swiftpay_api_payment.Clients.IHubBanking;
 
 public sealed class IHubBankingClient(
     HttpClient httpClient,

@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.Customers.ReadCustomer;
+namespace swiftpay_api.Endpoints.Merchants.Customers.ReadCustomer;
 
 public sealed class ReadCustomerRequest
 {

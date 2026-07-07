@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Referrals.ReadReferralCommissionWithdrawalRequest;
+namespace swiftpay_api.Endpoints.Admin.Referrals.ReadReferralCommissionWithdrawalRequest;
 
 public sealed class ReadReferralCommissionWithdrawalRequestRequest
 {

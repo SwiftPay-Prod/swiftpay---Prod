@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Models.Settings;
+namespace swiftpay_api_payment.Models.Settings;
 
 public class BankiziSettingsOptions
 {

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Bankizi.Models;
+namespace swiftpay_api_payment.Clients.Bankizi.Models;
 
 public record BankiziApiResponse<T>
 {

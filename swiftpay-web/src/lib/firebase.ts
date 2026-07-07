@@ -3,9 +3,9 @@ import { getMessaging, getToken, onMessage, type Messaging } from 'firebase/mess
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsu8suCX_tCN5CB_DgtyPDjz6jIX7q1x0",
-  authDomain: "safefypay-a405c.firebaseapp.com",
-  projectId: "safefypay-a405c",
-  storageBucket: "safefypay-a405c.firebasestorage.app",
+  authDomain: "swiftpaya405c.firebaseapp.com",
+  projectId: "swiftpaya405c",
+  storageBucket: "swiftpaya405c.firebasestorage.app",
   messagingSenderId: "741958846185",
   appId: "1:741958846185:web:8348a6128a085dc29a9278"
 };

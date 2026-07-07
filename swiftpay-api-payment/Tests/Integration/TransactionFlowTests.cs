@@ -3,10 +3,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
-using safefy_api_payment.Tests.Fixtures;
-using safefy_api_payment.Tests.Models;
+using swiftpay_api_payment.Tests.Fixtures;
+using swiftpay_api_payment.Tests.Models;
 
-namespace safefy_api_payment.Tests.Integration;
+namespace swiftpay_api_payment.Tests.Integration;
 
 /// <summary>
 /// Testes de integração para o fluxo completo de transações.

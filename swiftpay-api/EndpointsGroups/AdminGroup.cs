@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.EndpointsGroups;
+namespace swiftpay_api.EndpointsGroups;
 
 public class AdminGroup : Group
 {

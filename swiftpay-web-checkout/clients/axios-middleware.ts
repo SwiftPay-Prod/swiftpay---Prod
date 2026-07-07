@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosInstance } from 'axios';
 import { cookies, headers } from 'next/headers';
 
-const ENVIRONMENT_COOKIE = 'safefy_checkout_environment';
+const ENVIRONMENT_COOKIE = 'swiftpay_checkout_environment';
 
 export function applyAxiosMiddleware(client: AxiosInstance): void {
 	client.interceptors.request.use(async (config) => {

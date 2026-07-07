@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.HunterPay.Models.Transactions;
+namespace swiftpay_api_payment.Clients.HunterPay.Models.Transactions;
 
 [JsonConverter(typeof(HunterPayTransactionDocumentValueConverter))]
 public sealed class HunterPayTransactionDocumentValue

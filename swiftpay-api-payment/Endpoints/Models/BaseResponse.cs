@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Endpoints.Models;
+namespace swiftpay_api_payment.Endpoints.Models;
 
 /// <summary>
 /// Resposta padrão da API sem dados.

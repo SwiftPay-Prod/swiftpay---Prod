@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_payment.Endpoints.Internal.Submerchants.Submit;
+namespace swiftpay_api_payment.Endpoints.Internal.Submerchants.Submit;
 
 public sealed class SubmitSubmerchantInternalRequest
 {

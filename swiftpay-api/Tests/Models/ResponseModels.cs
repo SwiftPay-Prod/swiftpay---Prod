@@ -1,4 +1,4 @@
-namespace safefy_api.Tests.Models;
+namespace swiftpay_api.Tests.Models;
 
 public class BaseResponse<T>
 {

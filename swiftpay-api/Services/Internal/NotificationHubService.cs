@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.SignalR;
-using safefy_api.Hubs;
-using safefy_api_core.Constants;
-using safefy_api_core.Interfaces;
+using swiftpay_api.Hubs;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Interfaces;
 
-namespace safefy_api.Services.Internal;
+namespace swiftpay_api.Services.Internal;
 
 public class NotificationHubService(IHubContext<MainHub> hubContext) : INotificationHubService
 {

@@ -1,8 +1,8 @@
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Coldfy.Models.Payments;
-using safefy_api_payment.Clients.Coldfy.Models.Withdrawals;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Coldfy.Models.Payments;
+using swiftpay_api_payment.Clients.Coldfy.Models.Withdrawals;
 
-namespace safefy_api_payment.Interfaces.Acquirers;
+namespace swiftpay_api_payment.Interfaces.Acquirers;
 
 public interface IColdfyClient
 {

@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 public readonly record struct NominalFeeRule(FeeChargeMode Mode, long Fixed, int Percentage);
 

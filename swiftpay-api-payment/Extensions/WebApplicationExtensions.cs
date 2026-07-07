@@ -1,11 +1,11 @@
 using FastEndpoints;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Hubs;
-using safefy_api_payment.Middlewares;
-using safefy_api_core.Middlewares;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Hubs;
+using swiftpay_api_payment.Middlewares;
+using swiftpay_api_core.Middlewares;
 
-namespace safefy_api_payment.Extensions;
+namespace swiftpay_api_payment.Extensions;
 
 public static class WebApplicationExtensions
 {

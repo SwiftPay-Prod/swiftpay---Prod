@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_core.Database;
+namespace swiftpay_api_core.Database;
 
 /// <summary>
 /// DbContext dedicado para logs de segurança e API.

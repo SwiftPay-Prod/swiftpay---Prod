@@ -1,9 +1,9 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.Database;
-using safefy_api.Extensions;
-using safefy_api_core.Database;
-using safefy_api_core.Extensions;
+using swiftpay_api.Database;
+using swiftpay_api.Extensions;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Extensions;
 
 ThreadPool.SetMinThreads(100, 100);
 
@@ -38,7 +38,7 @@ builder.Services.AddHangfireServices(builder.Configuration);
 // SignalR (must be before services that depend on IHubContext)
 builder.Services.AddSignalRHubs();
 
-// Core Services (shared with safefy-api-payment)
+// Core Services (shared with swiftpay-api-payment)
 builder.Services.AddCoreServices();
 
 // Internal Services

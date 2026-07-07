@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.IHubBanking.Models;
+namespace swiftpay_api_payment.Clients.IHubBanking.Models;
 
 /// <summary>
 /// Resposta genérica da API IHub Banking.

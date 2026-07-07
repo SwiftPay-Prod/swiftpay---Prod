@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api.Services.Internal;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Services.Internal;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Admin.Users.CreateReferralCommissionPayment;
+namespace swiftpay_api.Endpoints.Admin.Users.CreateReferralCommissionPayment;
 
 public sealed class CreateReferralCommissionPaymentEndpoint(
     PrimaryDbContext dbContext,

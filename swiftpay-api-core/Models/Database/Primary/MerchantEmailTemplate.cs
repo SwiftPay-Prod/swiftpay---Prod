@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Models.Database;
+namespace swiftpay_api_core.Models.Database;
 
 /// <summary>
 /// Template de email configurável pelo merchant com editor de blocos

@@ -1217,7 +1217,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["safefy", "emails", "communications", "notifications"],
+  "tags": ["swiftpay", "emails", "communications", "notifications"],
   "templating": {
     "list": []
   },
@@ -1228,7 +1228,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Comunicações - Emails & Notificações",
-  "uid": "safefy-communications",
+  "uid": "swiftpay-communications",
   "version": 1,
   "weekStart": ""
 }

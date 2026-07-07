@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Users.Bulletins.ReadUnreadBulletins;
+namespace swiftpay_api.Endpoints.Users.Bulletins.ReadUnreadBulletins;
 
 public sealed class ReadUnreadBulletinsResponse : BaseResponse<List<UnreadBulletinData>>;
 

@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Documentation;
+namespace swiftpay_api_payment.Documentation;
 
 public static partial class EndpointDescriptions
 {

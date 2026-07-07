@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api_payment.EndpointsGroups;
+using swiftpay_api_payment.EndpointsGroups;
 
-namespace safefy_api_payment.Endpoints.Checkout.ReactivateOrder;
+namespace swiftpay_api_payment.Endpoints.Checkout.ReactivateOrder;
 
 public sealed class ReactivateOrderEndpoint(
     ReactivateOrderHandler handler

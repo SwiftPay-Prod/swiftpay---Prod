@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using safefy_api.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Models.Settings;
+using swiftpay_api.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api.Endpoints.Admin.Users.ReadUserReferrals;
+namespace swiftpay_api.Endpoints.Admin.Users.ReadUserReferrals;
 
 public sealed class ReadUserReferralsEndpoint(
     PrimaryDbContext dbContext,

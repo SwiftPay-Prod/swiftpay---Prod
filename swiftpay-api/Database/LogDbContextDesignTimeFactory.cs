@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api.Database;
+namespace swiftpay_api.Database;
 
 public sealed class LogDbContextDesignTimeFactory : IDesignTimeDbContextFactory<LogDbContext>
 {
@@ -23,7 +23,7 @@ public sealed class LogDbContextDesignTimeFactory : IDesignTimeDbContextFactory<
 
         var optionsBuilder = new DbContextOptionsBuilder<LogDbContext>();
         optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
-            npgsqlOptions.MigrationsAssembly("safefy-api"));
+            npgsqlOptions.MigrationsAssembly("swiftpay-api"));
 
         return new LogDbContext(optionsBuilder.Options);
     }

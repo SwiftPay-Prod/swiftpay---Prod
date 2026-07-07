@@ -1,7 +1,7 @@
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 /// <summary>
 /// Default environment provider that always returns Production.

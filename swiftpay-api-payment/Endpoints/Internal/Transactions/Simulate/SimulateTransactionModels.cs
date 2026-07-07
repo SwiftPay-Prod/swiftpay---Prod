@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Internal.Transactions.Simulate;
+namespace swiftpay_api_payment.Endpoints.Internal.Transactions.Simulate;
 
 public sealed class InternalSimulateTransactionRequest
 {

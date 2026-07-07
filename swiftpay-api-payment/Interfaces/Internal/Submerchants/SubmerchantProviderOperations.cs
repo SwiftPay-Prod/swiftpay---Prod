@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Interfaces.Internal.Submerchants;
+namespace swiftpay_api_payment.Interfaces.Internal.Submerchants;
 
 public sealed class SubmerchantProviderOperations
 {

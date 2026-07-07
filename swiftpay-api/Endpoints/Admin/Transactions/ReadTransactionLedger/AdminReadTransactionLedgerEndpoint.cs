@@ -1,9 +1,9 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
 
-namespace safefy_api.Endpoints.Admin.Transactions.ReadTransactionLedger;
+namespace swiftpay_api.Endpoints.Admin.Transactions.ReadTransactionLedger;
 
 public sealed class AdminReadTransactionLedgerEndpoint(
     PrimaryDbContext dbContext

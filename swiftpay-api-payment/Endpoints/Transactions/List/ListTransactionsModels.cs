@@ -1,12 +1,12 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.Transactions.Create;
-using safefy_api_payment.Validators;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Transactions.Create;
+using swiftpay_api_payment.Validators;
 
-namespace safefy_api_payment.Endpoints.Transactions.List;
+namespace swiftpay_api_payment.Endpoints.Transactions.List;
 
 /// <summary>
 /// Request para listar transações.

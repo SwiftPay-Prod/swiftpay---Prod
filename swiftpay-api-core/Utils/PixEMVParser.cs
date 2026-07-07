@@ -1,4 +1,4 @@
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 /// <summary>
 /// Utilitário para extrair dados de payloads PIX no formato EMV (ISO 18004 / BR Code).

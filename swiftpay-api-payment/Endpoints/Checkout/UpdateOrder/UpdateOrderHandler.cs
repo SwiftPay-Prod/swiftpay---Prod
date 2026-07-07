@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Checkout.UpdateOrder;
+namespace swiftpay_api_payment.Endpoints.Checkout.UpdateOrder;
 
 public sealed class UpdateOrderHandler(PrimaryDbContext dbContext)
 {
@@ -120,7 +120,7 @@ public sealed class UpdateOrderHandler(PrimaryDbContext dbContext)
             if (customer.Email != normalizedEmail)
             {
                 // Allow updating from placeholder email or to any other email
-                if (customer.Email.Contains("@checkout.safefy.app") || !normalizedEmail.Contains("@checkout.safefy.app"))
+                if (customer.Email.Contains("@checkout.swiftpay.app") || !normalizedEmail.Contains("@checkout.swiftpay.app"))
                 {
                     customer.Email = normalizedEmail;
                     wasUpdated = true;

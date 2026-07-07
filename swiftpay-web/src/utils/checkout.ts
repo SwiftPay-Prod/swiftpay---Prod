@@ -1,5 +1,5 @@
 export function getCheckoutUrl(shortId: string, baseUrl?: string): string {
-	const checkoutBaseUrl = baseUrl || 'https://checkout.safefypay.com.br';
+	const checkoutBaseUrl = baseUrl || 'https://checkout.swiftpay.com.br';
 	return `${checkoutBaseUrl}/${shortId}`;
 }
 

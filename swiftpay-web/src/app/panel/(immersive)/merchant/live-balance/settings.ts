@@ -4,7 +4,7 @@ import type { DashboardPeriod } from '@/types/merchant/dashboard';
 import type { LiveBalanceBackgroundId } from './backgrounds';
 import { LIVE_BALANCE_BACKGROUND_OPTIONS } from './backgrounds';
 
-const LEGACY_BACKGROUND_STORAGE_KEY = 'safefy_live_balance_background';
+const LEGACY_BACKGROUND_STORAGE_KEY = 'swiftpay_live_balance_background';
 
 const LIVE_BALANCE_ALLOWED_PERIODS: DashboardPeriod[] = [
   'today',

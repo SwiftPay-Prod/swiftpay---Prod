@@ -3,7 +3,7 @@ import type { AxiosError } from 'axios';
 
 function getEnvironmentFromCookie(): string {
 	if (typeof document === 'undefined') return 'Production';
-	const match = document.cookie.match(/(?:^|; )safefy_checkout_environment=([^;]*)/);
+	const match = document.cookie.match(/(?:^|; )swiftpay_checkout_environment=([^;]*)/);
 	return decodeURIComponent(match?.[1] ?? 'Production');
 }
 

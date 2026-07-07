@@ -1,12 +1,12 @@
 using FastEndpoints;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Mappers;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Documentation;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Mappers;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Documentation;
 
-namespace safefy_api_payment.Endpoints.Cashouts.Get;
+namespace swiftpay_api_payment.Endpoints.Cashouts.Get;
 
 public sealed class GetCashoutEndpoint(
     ICashoutService cashoutService

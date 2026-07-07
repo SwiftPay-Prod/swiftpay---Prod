@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Calculation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Calculation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Interfaces;
+namespace swiftpay_api_core.Interfaces;
 
 public interface ICalculationService
 {
@@ -44,9 +44,9 @@ public interface ICalculationService
 
     long CalculatePlatformProfit(long grossBalance, long merchantBalance);
 
-    long CalculateSafefyProfit(long safefyProfitBase, long completedPlatformPayouts);
+    long CalculateSwiftpayProfit(long swiftpayProfitBase, long completedPlatformPayouts);
 
-    long CalculateMerchantBalance(long grossBalance, long safefyProfit);
+    long CalculateMerchantBalance(long grossBalance, long swiftpayProfit);
 
     long CalculateAvailableForWithdrawal(long grossBalance, long merchantAvailableBalance);
 

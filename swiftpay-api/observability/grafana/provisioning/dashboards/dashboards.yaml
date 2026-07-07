@@ -4,7 +4,7 @@ providers:
   - name: 'Safefy Dashboards'
     orgId: 1
     folder: 'Safefy'
-    folderUid: 'safefy'
+    folderUid: 'swiftpay'
     type: file
     disableDeletion: false
     updateIntervalSeconds: 30

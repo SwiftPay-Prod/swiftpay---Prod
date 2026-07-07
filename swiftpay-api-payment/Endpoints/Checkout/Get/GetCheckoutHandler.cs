@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Checkout.Get;
+namespace swiftpay_api_payment.Endpoints.Checkout.Get;
 
 public sealed class GetCheckoutHandler(PrimaryDbContext dbContext)
 {
@@ -56,7 +56,7 @@ public sealed class GetCheckoutHandler(PrimaryDbContext dbContext)
     }
 
     private static CheckoutPublicData MapToPublicData(
-        safefy_api_core.Models.Database.Checkout checkout,
+        swiftpay_api_core.Models.Database.Checkout checkout,
         bool isExpired,
         string? expirationReason)
     {

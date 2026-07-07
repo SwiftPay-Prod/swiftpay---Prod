@@ -123,7 +123,7 @@ applyTo: 'Endpoints/**/*.cs, Services/**/*.cs, Consumers/**/*.cs, Models/**/*.cs
     - `commissionType` (`percentage` ou `fixed`)
     - `commissionValue`
     - `isActive`
-- Essa sincronização representa a comissão da Safefy na Accithus e não implica `PaymentFeeSplitHandling.AutoSplitToBank`.
+- Essa sincronização representa a comissão da SwiftPay na Accithus e não implica `PaymentFeeSplitHandling.AutoSplitToBank`.
 
 ### Accithus - contrato permitido para submerchant
 
@@ -133,7 +133,7 @@ applyTo: 'Endpoints/**/*.cs, Services/**/*.cs, Consumers/**/*.cs, Models/**/*.cs
     - aceita `tax_id` no create.
 - `PATCH /v1/submerchants/{id}` e `PATCH /v1/submerchants/{id}/resubmit` usam `UpdateSubmerchantRequest`:
     - **não enviar** `entity_type`.
-    - `tax_id` não deve ser alterado após criação; não enviar no update/resubmit da Safefy.
+    - `tax_id` não deve ser alterado após criação; não enviar no update/resubmit da SwiftPay.
     - campos permitidos para update/resubmit incluem `trade_name`, `legal_name`, `email`, `phone`, `website`, `description`, `soft_descriptor`, `birth_date`, `mother_name`, `business_type`, `product_categories`, `average_ticket`, `monthly_revenue`.
 - `POST /v1/submerchants/{id}/documents`:
     - tipos esperados de documento: PJ `SOCIAL_CONTRACT|CNPJ_CARD|FRONT_ID_DOC|BACK_ID_DOC|SELFIE_PHOTO`; PF `FRONT_ID_DOC|BACK_ID_DOC|SELFIE_PHOTO`.

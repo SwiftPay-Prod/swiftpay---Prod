@@ -1,6 +1,6 @@
 using Scalar.AspNetCore;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class DocumentationExtensions
 {

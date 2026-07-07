@@ -5,9 +5,9 @@ import { useAdmin } from '@/contexts/admin-context';
 import { adminGetDashboard } from '@/app/actions/admin/dashboard';
 import type { AdminDashboardData, AdminDashboardFilters, AdminDashboardPeriod } from '@/types/admin/dashboard';
 
-const ADMIN_DASHBOARD_PERIOD_STORAGE_KEY = 'safefy_admin_dashboard_period';
-const ADMIN_DASHBOARD_CUSTOM_START_STORAGE_KEY = 'safefy_admin_dashboard_custom_start';
-const ADMIN_DASHBOARD_CUSTOM_END_STORAGE_KEY = 'safefy_admin_dashboard_custom_end';
+const ADMIN_DASHBOARD_PERIOD_STORAGE_KEY = 'swiftpay_admin_dashboard_period';
+const ADMIN_DASHBOARD_CUSTOM_START_STORAGE_KEY = 'swiftpay_admin_dashboard_custom_start';
+const ADMIN_DASHBOARD_CUSTOM_END_STORAGE_KEY = 'swiftpay_admin_dashboard_custom_end';
 
 export const ADMIN_PERIOD_OPTIONS: { key: AdminDashboardPeriod; label: string }[] = [
 	{ key: 'today', label: 'Hoje' },

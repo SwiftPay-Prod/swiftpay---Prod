@@ -1,7 +1,7 @@
-using safefy_api_payment.Documentation;
+using swiftpay_api_payment.Documentation;
 using Scalar.AspNetCore;
 
-namespace safefy_api_payment.Extensions;
+namespace swiftpay_api_payment.Extensions;
 
 public static class DocumentationExtensions
 {
@@ -19,7 +19,7 @@ public static class DocumentationExtensions
                     Contact = new()
                     {
                         Name = "Suporte Safefy",
-                        Email = "suporte@safefypay.com.br"
+                        Email = "suporte@swiftpay.com.br"
                     }
                 };
 
@@ -45,7 +45,7 @@ public static class DocumentationExtensions
                 .EnableDarkMode()
                 .PreserveSchemaPropertyOrder()
                 .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
-                .WithFavicon("https://console-production-ff4f.up.railway.app/api/v1/buckets/safefy-dev/objects/download?preview=true&prefix=public%2Flogo-safefy-100x100.png")
+                .WithFavicon("https://console-production-ff4f.up.railway.app/api/v1/buckets/swiftpay-dev/objects/download?preview=true&prefix=public%2Flogo-swiftpay-100x100.png")
                 .WithCustomCss(scalarCss)
                 .HideModels()
                 .HideClientButton()
@@ -61,7 +61,7 @@ public static class DocumentationExtensions
                 .EnableDarkMode()
                 .PreserveSchemaPropertyOrder()
                 .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
-                .WithFavicon("https://console-production-ff4f.up.railway.app/api/v1/buckets/safefy-dev/objects/download?preview=true&prefix=public%2Flogo-safefy-100x100.png")
+                .WithFavicon("https://console-production-ff4f.up.railway.app/api/v1/buckets/swiftpay-dev/objects/download?preview=true&prefix=public%2Flogo-swiftpay-100x100.png")
                 .WithCustomCss(scalarCss)
                 .HideModels()
                 .HideClientButton()

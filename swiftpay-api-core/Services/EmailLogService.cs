@@ -1,11 +1,11 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
 using Microsoft.AspNetCore.Http;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 public class EmailLogService(
     ILogQueue<EmailLogEntry> logQueue,

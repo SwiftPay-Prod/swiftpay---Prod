@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.Coldfy.Utils;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Clients.Coldfy.Utils;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.Coldfy.Models.Withdrawals;
+namespace swiftpay_api_payment.Clients.Coldfy.Models.Withdrawals;
 
 [JsonConverter(typeof(ColdfyPixKeyTypeConverter))]
 public enum ColdfyPixKeyType

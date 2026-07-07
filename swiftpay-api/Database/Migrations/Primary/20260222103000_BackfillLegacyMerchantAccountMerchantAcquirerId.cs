@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using safefy_api_core.Database;
+using swiftpay_api_core.Database;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Primary
+namespace swiftpay_api.Database.Migrations.Primary
 {
     /// <inheritdoc />
     [DbContext(typeof(PrimaryDbContext))]

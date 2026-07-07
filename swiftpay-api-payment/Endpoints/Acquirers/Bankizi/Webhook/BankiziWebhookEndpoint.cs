@@ -1,15 +1,15 @@
 using System.Text.Json;
 using FastEndpoints;
-using safefy_api_payment.Clients.Bankizi.Models.Webhook;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_payment.EndpointsGroups.Acquirers;
-using safefy_api_payment.Services.Helpers;
+using swiftpay_api_payment.Clients.Bankizi.Models.Webhook;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_payment.EndpointsGroups.Acquirers;
+using swiftpay_api_payment.Services.Helpers;
 
-namespace safefy_api_payment.Endpoints.Acquirers.Bankizi.Webhook;
+namespace swiftpay_api_payment.Endpoints.Acquirers.Bankizi.Webhook;
 
 public sealed class BankiziWebhookEndpoint(
     IPaymentProcessingService paymentProcessingService,

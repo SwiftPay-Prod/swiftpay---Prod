@@ -3,7 +3,7 @@ description: "Use when editing checkout runtime architecture, route resolution, 
 applyTo: 'app/[checkoutId]/page.tsx, app/sandbox/[checkoutId]/page.tsx, core/checkout/application/**/*.ts, core/checkout/runtime/**/*.ts, core/checkout/runtime/**/*.tsx'
 ---
 
-# Safefy Web Checkout - Copilot Instructions
+# SwiftPay Web Checkout - Copilot Instructions
 
 Este documento descreve a arquitetura de templates do checkout e as funcionalidades compartilhadas entre eles.
 
@@ -13,7 +13,7 @@ Este documento descreve a arquitetura de templates do checkout e as funcionalida
 
 ## Visão Geral
 
-O checkout da Safefy utiliza uma arquitetura baseada em **templates**. Cada template é uma implementação visual diferente do checkout, mas todos compartilham a mesma infraestrutura de dados, tipos, formatadores e funcionalidades opcionais.
+O checkout da SwiftPay utiliza uma arquitetura baseada em **templates**. Cada template é uma implementação visual diferente do checkout, mas todos compartilham a mesma infraestrutura de dados, tipos, formatadores e funcionalidades opcionais.
 
 ### Runtime de Templates (Arquitetura Atual)
 
@@ -73,7 +73,7 @@ As rotas `app/[checkoutId]/page.tsx` e `app/sandbox/[checkoutId]/page.tsx` nao d
 ## Estrutura do Projeto
 
 ```
-safefy-web-checkout/
+swiftpay-web-checkout/
 ├── app/
 │   ├── [checkoutId]/
 │   │   └── page.tsx           # Carrega checkout e delega para runtime

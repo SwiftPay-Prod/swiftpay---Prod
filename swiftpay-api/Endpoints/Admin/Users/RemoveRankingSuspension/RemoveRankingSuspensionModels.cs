@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Admin.Users.RemoveRankingSuspension;
+namespace swiftpay_api.Endpoints.Admin.Users.RemoveRankingSuspension;
 
 public sealed class RemoveRankingSuspensionRequest
 {

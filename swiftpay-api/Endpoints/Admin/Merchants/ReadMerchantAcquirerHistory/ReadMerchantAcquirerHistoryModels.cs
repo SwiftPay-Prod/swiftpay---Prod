@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Admin.Merchants.ReadMerchantAcquirerHistory;
+namespace swiftpay_api.Endpoints.Admin.Merchants.ReadMerchantAcquirerHistory;
 
 public sealed class ReadMerchantAcquirerHistoryRequest : IPaginatedRequest
 {

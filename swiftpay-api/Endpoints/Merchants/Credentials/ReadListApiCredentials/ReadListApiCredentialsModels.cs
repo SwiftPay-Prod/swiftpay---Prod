@@ -1,12 +1,12 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api.Validators;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Validators;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.Credentials.ReadListApiCredentials;
+namespace swiftpay_api.Endpoints.Merchants.Credentials.ReadListApiCredentials;
 
 public sealed class ReadListApiCredentialsRequest : IPaginatedRequest
 {

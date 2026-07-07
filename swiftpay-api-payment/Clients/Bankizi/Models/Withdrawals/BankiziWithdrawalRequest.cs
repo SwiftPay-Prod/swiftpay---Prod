@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Clients.Bankizi.Models.Withdrawals;
+namespace swiftpay_api_payment.Clients.Bankizi.Models.Withdrawals;
 
 public sealed class BankiziWithdrawRequest
 {

@@ -50,7 +50,7 @@ Estágio 3: publish → FROM build
 
 Estágio 4: final  → FROM base
                     └─ COPY --from=publish /app/publish .
-                    └─ ENTRYPOINT ["dotnet", "safefy-api.dll"]
+                    └─ ENTRYPOINT ["dotnet", "swiftpay-api.dll"]
 ```
 
 ### swiftpay-api (Desenvolvimento) — 3 estágios + core local
@@ -111,16 +111,16 @@ checkout → setup-dotnet (10.0.x) → extract version from tag → dotnet resto
 4. Argumentos de linha de comando       (override final)
 ```
 
-### Seções de Configuração (safefy-api)
+### Seções de Configuração (swiftpay-api)
 
 | Seção | Model | Defaults Notáveis |
 |-------|-------|-------------------|
-| `PlatformSettings` | `PlatformSettingsOptions` | BaseUrl=https://safefypay.com.br, MaxLoginAttempts=5 |
+| `PlatformSettings` | `PlatformSettingsOptions` | BaseUrl=https://swiftpay.com.br, MaxLoginAttempts=5 |
 | `PaymentApi` | `PaymentApiSettings` | BaseUrl=http://localhost:5166/, InternalApiKey="" |
 | `DatabaseSettings` | `DatabaseSettingsOptions` | ConnectionString="" (obrigatório) |
 | `LogsDatabaseSettings` | `LogsDatabaseSettingsOptions` | ConnectionString="" |
-| `ValkeySettings` | `ValkeySettings` | localhost:6379, InstanceName=safefy: |
-| `JWTSettings` | `JWTSettingsOptions` | Issuer/Audience=safefypay, TokenExpiryDays=7 |
+| `ValkeySettings` | `ValkeySettings` | localhost:6379, InstanceName=swiftpay: |
+| `JWTSettings` | `JWTSettingsOptions` | Issuer/Audience=swiftpay, TokenExpiryDays=7 |
 | `EmailSettings` | `EmailSettingsOptions` | Provider=Resend, EnableSend=true |
 | `StorageSettings` | `StorageSettingsOptions` | Endpoint=sfo3.digitaloceanspaces.com, UseSSL=true |
 | `RabbitMQSettings` | `RabbitMQSettings` | Enabled=false (!) |
@@ -187,13 +187,13 @@ SignalR Hub:    /hubs/payment-status (PaymentStatusHub, CORS: CheckoutCorsPolicy
 
 **Desenvolvimento:** `AllowAnyOrigin() + AllowAnyHeader() + AllowAnyMethod() + AllowCredentials()`
 
-**Produção:** Apenas origens HTTPS `*.safefypay.com.br`
+**Produção:** Apenas origens HTTPS `*.swiftpay.com.br`
 
 ### swiftpay-api-payment
 
 Duas políticas:
 1. **Default:** `AllowAnyOrigin() + AllowAnyHeader() + AllowAnyMethod()` (sem credentials)
-2. **CheckoutCorsPolicy (SignalR):** Origem do checkout (`PlatformSettings:CheckoutBaseUrl`) OR `*.safefypay.com.br` HTTPS + Credentials
+2. **CheckoutCorsPolicy (SignalR):** Origem do checkout (`PlatformSettings:CheckoutBaseUrl`) OR `*.swiftpay.com.br` HTTPS + Credentials
 
 ---
 
@@ -257,7 +257,7 @@ valkey-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
 ## 10. Hangfire (Background Jobs)
 
 **Storage:** Valkey/Redis (`Hangfire.Redis.StackExchange`)
-**Prefix:** `safefy:hangfire:`
+**Prefix:** `swiftpay:hangfire:`
 **DB:** 0
 
 **Server:** 2 workers, filas: `["automatic-cashout", "ranking"]`, nome: `swiftpay-api-{MachineName}`

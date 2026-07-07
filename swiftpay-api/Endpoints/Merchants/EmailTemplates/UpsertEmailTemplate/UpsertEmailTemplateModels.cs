@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Merchants.EmailTemplates.Shared.Models;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Merchants.EmailTemplates.Shared.Models;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.EmailTemplates.UpsertEmailTemplate;
+namespace swiftpay_api.Endpoints.Merchants.EmailTemplates.UpsertEmailTemplate;
 
 public sealed class UpsertEmailTemplateRequest
 {

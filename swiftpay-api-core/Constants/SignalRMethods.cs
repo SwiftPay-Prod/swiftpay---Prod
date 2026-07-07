@@ -1,4 +1,4 @@
-namespace safefy_api_core.Constants;
+namespace swiftpay_api_core.Constants;
 
 public static class SignalRMethods
 {

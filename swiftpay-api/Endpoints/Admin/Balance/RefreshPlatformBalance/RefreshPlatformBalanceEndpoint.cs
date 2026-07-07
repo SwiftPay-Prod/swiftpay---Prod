@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
 
-namespace safefy_api.Endpoints.Admin.Balance.RefreshPlatformBalance;
+namespace swiftpay_api.Endpoints.Admin.Balance.RefreshPlatformBalance;
 
 public sealed class RefreshPlatformBalanceEndpoint(
     PrimaryDbContext dbContext,

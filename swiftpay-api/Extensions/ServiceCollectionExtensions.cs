@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
-using safefy_api.Interfaces;
-using safefy_api.Models.Settings;
-using safefy_api.Providers;
-using safefy_api.Services.Internal;
-using safefy_api_core.Extensions;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Services;
+using swiftpay_api.Interfaces;
+using swiftpay_api.Models.Settings;
+using swiftpay_api.Providers;
+using swiftpay_api.Services.Internal;
+using swiftpay_api_core.Extensions;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Services;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class ServiceCollectionExtensions
 {

@@ -112,14 +112,14 @@ function getColumns(
 			key: 'totalDebited',
 			header: 'Total Debitado',
 			render: (cashout) => {
-				const isLoss = cashout.safefyProfitAmount < 0;
+				const isLoss = cashout.swiftpayProfitAmount < 0;
 
 				return (
 					<div className="flex flex-col">
 						<span className="font-medium">{formatCurrency(cashout.amount)}</span>
 						<span className="text-xs text-muted">Taxa: {formatCurrency(cashout.feeAmount)}</span>
 						<span className={`text-xs ${isLoss ? 'text-danger' : 'text-success'}`}>
-							{isLoss ? 'Prejuízo' : 'Lucro'}: {formatCurrency(cashout.safefyProfitAmount)}
+							{isLoss ? 'Prejuízo' : 'Lucro'}: {formatCurrency(cashout.swiftpayProfitAmount)}
 						</span>
 					</div>
 				);
@@ -280,8 +280,8 @@ function renderMobileCashoutCard(cashout: AdminMinimalCashout, _index: number, o
 				<div className="flex flex-col gap-0.5">
 					<span className="font-medium">{formatCurrency(cashout.amount)}</span>
 					<span className="text-xs text-muted">Taxa: {formatCurrency(cashout.feeAmount)}</span>
-					<span className={`text-xs ${cashout.safefyProfitAmount < 0 ? 'text-danger' : 'text-success'}`}>
-						{cashout.safefyProfitAmount < 0 ? 'Prejuízo' : 'Lucro'}: {formatCurrency(cashout.safefyProfitAmount)}
+					<span className={`text-xs ${cashout.swiftpayProfitAmount < 0 ? 'text-danger' : 'text-success'}`}>
+						{cashout.swiftpayProfitAmount < 0 ? 'Prejuízo' : 'Lucro'}: {formatCurrency(cashout.swiftpayProfitAmount)}
 					</span>
 					<span className="text-xs text-danger">Pago: {formatCurrency(cashout.netAmount)}</span>
 				</div>

@@ -1,17 +1,17 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.Endpoints.Auth.Shared.Models;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
-using safefy_api.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Interfaces;
-using safefy_api.Mappers;
-using safefy_api_core.Models.Email;
+using swiftpay_api_core.Database;
+using swiftpay_api.Endpoints.Auth.Shared.Models;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api.Mappers;
+using swiftpay_api_core.Models.Email;
 
-namespace safefy_api.Endpoints.Auth.VerifyDevice;
+namespace swiftpay_api.Endpoints.Auth.VerifyDevice;
 
 public sealed class VerifyDeviceEndpoint(
     PrimaryDbContext dbContext,

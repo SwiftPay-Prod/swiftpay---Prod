@@ -285,7 +285,7 @@ bearer_token, base_url, webhook_token
 ### Armazenamento Seguro
 - Credenciais sensíveis (`Sensitive = true`) são criptografadas com `ICryptoUtils`
 - Chaves exibidas apenas uma vez na criação, regeneráveis a qualquer momento
-- Validação em tempo real na `safefy-api-payment` nos endpoints de criação de cobrança
+- Validação em tempo real na `swiftpay-api-payment` nos endpoints de criação de cobrança
 
 ---
 

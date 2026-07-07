@@ -1,12 +1,12 @@
 using FastEndpoints;
 using FluentValidation;
 using System.Text.Json;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.Payments.CreatePayment;
+namespace swiftpay_api.Endpoints.Merchants.Payments.CreatePayment;
 
 public sealed class CreatePaymentRequest
 {

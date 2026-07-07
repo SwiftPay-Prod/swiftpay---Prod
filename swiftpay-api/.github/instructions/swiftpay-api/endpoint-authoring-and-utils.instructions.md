@@ -23,9 +23,9 @@ Endpoints/Merchants/ReadSettings/
 ```csharp
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.ReadSettings;
+namespace swiftpay_api.Endpoints.Merchants.ReadSettings;
 
 // Request - sempre sealed class
 public sealed class ReadSettingsRequest
@@ -61,12 +61,12 @@ public sealed class ReadSettingsData
 ```csharp
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api.Models.Database;
+using swiftpay_api.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api.Models.Database;
 
-namespace safefy_api.Endpoints.Merchants.ReadSettings;
+namespace swiftpay_api.Endpoints.Merchants.ReadSettings;
 
 public sealed class ReadSettingsEndpoint(
     PrimaryDbContext dbContext
@@ -272,7 +272,7 @@ Group<FileGroup>();
 ## Utilitários (EndpointUtils)
 
 ```csharp
-using safefy_api_core.Utils;
+using swiftpay_api_core.Utils;
 
 // Obter ID do usuário autenticado
 var userId = EndpointUtils.GetUserId(User);
@@ -298,7 +298,7 @@ var userAgent = EndpointUtils.GetUserAgent(HttpContext);
 ## Utilitários de Criptografia (CryptoUtils)
 
 ```csharp
-using safefy_api_core.Utils;
+using swiftpay_api_core.Utils;
 
 // Gerar token seguro (Base64 URL-safe, 32 bytes)
 var token = CryptoUtils.GenerateToken();
@@ -329,7 +329,7 @@ var signature = CryptoUtils.ComputeHmacSha256(payload, secret);
 ## Utilitários de Cálculo de Taxas (FeeCalculator)
 
 ```csharp
-using safefy_api_core.Utils;
+using swiftpay_api_core.Utils;
 
 // Calcular taxa com base no modo de cobrança
 var fee = FeeCalculator.Calculate(amount, feeMode, fixedFee, percentageBasisPoints);

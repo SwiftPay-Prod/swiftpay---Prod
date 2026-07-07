@@ -60,7 +60,7 @@ CreateTransactionEndpoint
 | `PaymentPix` | Id, PaymentId, TxId, QrCode, CopyAndPaste, ExpiresAt (UTC+30min) |
 | `Customer` (opcional) | Se CustomerName informado sem CustomerId |
 
-### RabbitMQ Publicado: `safefy.ledger.pending`
+### RabbitMQ Publicado: `swiftpay.ledger.pending`
 
 ---
 
@@ -329,17 +329,17 @@ CashoutService.ProcessAcquirerWebhookAsync(data)
 
 | Fase | Mensagem | Fila | Quem Publica | Quem Consome |
 |------|----------|------|-------------|-------------|
-| Criação | `RecordLedgerPending` | `safefy.ledger.pending` | PixTransactionService | RecordLedgerPendingConsumer |
-| Webhook | `PaymentCompleted` | `safefy.payment.completed` | PaymentProcessingService | PaymentCompletedConsumer |
-| Pós-pagamento | `NotificationCreated` | `safefy.notification.created` | PaymentCompletedConsumer | NotificationCreatedConsumer |
-| Pós-pagamento | `SendCustomerEmails` | `safefy.email.customer` | PaymentCompletedConsumer | SendCustomerEmailsConsumer |
-| Pós-pagamento | `ProcessDigitalDelivery` | `safefy.digital.delivery` | SendCustomerEmailsConsumer | ProcessDigitalDeliveryConsumer |
-| Pós-pagamento | `SendWebhook` | `safefy.webhook.send` | PaymentCompletedConsumer | SendWebhookConsumer |
-| Pós-pagamento | `ProcessMerchantDashboard` | `safefy.dashboard.merchant` | PaymentCompletedConsumer | ProcessMerchantDashboardConsumer |
-| Pós-pagamento | `ProcessAdminDashboard` | `safefy.dashboard.admin` | PaymentCompletedConsumer | ProcessAdminDashboardConsumer |
-| Pós-pagamento | `ProcessAcquirerDashboard` | `safefy.dashboard.acquirer` | PaymentCompletedConsumer | ProcessAcquirerDashboardConsumer |
-| Saque | `ProcessCashout` | `safefy.cashout.process` | CashoutService | ProcessCashoutConsumer |
-| Saque webhook | `SendCashoutWebhook` | `safefy.cashout.webhook.send` | CashoutService | SendCashoutWebhookConsumer |
+| Criação | `RecordLedgerPending` | `swiftpay.ledger.pending` | PixTransactionService | RecordLedgerPendingConsumer |
+| Webhook | `PaymentCompleted` | `swiftpay.payment.completed` | PaymentProcessingService | PaymentCompletedConsumer |
+| Pós-pagamento | `NotificationCreated` | `swiftpay.notification.created` | PaymentCompletedConsumer | NotificationCreatedConsumer |
+| Pós-pagamento | `SendCustomerEmails` | `swiftpay.email.customer` | PaymentCompletedConsumer | SendCustomerEmailsConsumer |
+| Pós-pagamento | `ProcessDigitalDelivery` | `swiftpay.digital.delivery` | SendCustomerEmailsConsumer | ProcessDigitalDeliveryConsumer |
+| Pós-pagamento | `SendWebhook` | `swiftpay.webhook.send` | PaymentCompletedConsumer | SendWebhookConsumer |
+| Pós-pagamento | `ProcessMerchantDashboard` | `swiftpay.dashboard.merchant` | PaymentCompletedConsumer | ProcessMerchantDashboardConsumer |
+| Pós-pagamento | `ProcessAdminDashboard` | `swiftpay.dashboard.admin` | PaymentCompletedConsumer | ProcessAdminDashboardConsumer |
+| Pós-pagamento | `ProcessAcquirerDashboard` | `swiftpay.dashboard.acquirer` | PaymentCompletedConsumer | ProcessAcquirerDashboardConsumer |
+| Saque | `ProcessCashout` | `swiftpay.cashout.process` | CashoutService | ProcessCashoutConsumer |
+| Saque webhook | `SendCashoutWebhook` | `swiftpay.cashout.webhook.send` | CashoutService | SendCashoutWebhookConsumer |
 
 ---
 

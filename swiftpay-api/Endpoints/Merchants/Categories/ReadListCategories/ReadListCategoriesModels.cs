@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api.Endpoints.Merchants.Products;
-using safefy_api.Validators;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Merchants.Products;
+using swiftpay_api.Validators;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Endpoints.Merchants.Categories.ReadListCategories;
+namespace swiftpay_api.Endpoints.Merchants.Categories.ReadListCategories;
 
 public sealed class ReadListCategoriesRequest : IPaginatedRequest
 {

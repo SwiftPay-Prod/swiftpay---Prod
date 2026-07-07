@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.Products.List;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Products.List;
 
-namespace safefy_api_payment.Endpoints.Products.Get;
+namespace swiftpay_api_payment.Endpoints.Products.Get;
 
 public class GetProductRequest
 {

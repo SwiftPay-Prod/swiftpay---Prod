@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Clients.IHubBanking.Models.Webhook;
+namespace swiftpay_api_payment.Clients.IHubBanking.Models.Webhook;
 
 public static class IHubWebhookEvents
 {

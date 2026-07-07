@@ -1,4 +1,4 @@
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 public static class AddressUtils
 {

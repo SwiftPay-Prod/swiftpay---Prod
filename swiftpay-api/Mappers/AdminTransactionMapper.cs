@@ -1,8 +1,8 @@
-using safefy_api.Endpoints.Admin.Transactions.ReadListTransactions;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Admin.Transactions.ReadListTransactions;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminTransactionMapper
 {

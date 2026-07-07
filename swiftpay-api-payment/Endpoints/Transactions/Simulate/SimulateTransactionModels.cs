@@ -1,11 +1,11 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.Transactions.Create;
-using safefy_api_payment.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Transactions.Create;
+using swiftpay_api_payment.Interfaces;
 
-namespace safefy_api_payment.Endpoints.Transactions.Simulate;
+namespace swiftpay_api_payment.Endpoints.Transactions.Simulate;
 
 /// <summary>
 /// Request para simular uma transação.

@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_core.Models.Messages;
+namespace swiftpay_api_core.Models.Messages;
 
 public record CreateBulkUserNotificationMessage(
     List<Guid> UserIds,

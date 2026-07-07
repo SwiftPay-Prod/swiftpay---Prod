@@ -89,7 +89,7 @@ const ROUTE_SHORTCUTS: Record<string, string[]> = {
 };
 
 const GLOBAL_SYNONYMS =
-	'tela pagina menu navegar acesso abrir ir para atalhos painel plataforma sistema safefy';
+	'tela pagina menu navegar acesso abrir ir para atalhos painel plataforma sistema swiftpay';
 
 const SECTION_SYNONYMS: Record<string, string> = {
 	Vendas: 'venda vendas comercial pedidos catalogo loja ecommerce',

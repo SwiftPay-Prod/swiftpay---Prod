@@ -595,7 +595,7 @@ function AcquirerReconciliationCard({ acquirer }: { acquirer: AcquirerReconcilia
                 <AcquirerMetricCard title="Saidas" icon={ArrowUp01Icon} details={acquirer.out} accentClass="text-danger" />
                 <AcquirerMetricCard title="Saldo bruto" icon={Wallet03Icon} details={acquirer.grossBalance} accentClass="text-accent" />
                 <AcquirerMetricCard title="Saldo das organizacoes" icon={Wallet02Icon} details={acquirer.merchantBalance} accentClass="text-warning" />
-                <AcquirerMetricCard title="Lucro da Safefy" icon={Wallet01Icon} details={acquirer.safefyProfit} accentClass="text-success" />
+                <AcquirerMetricCard title="Lucro da SwiftPay" icon={Wallet01Icon} details={acquirer.swiftpayProfit} accentClass="text-success" />
                 <AcquirerMetricCard title="Liquidacao liquida" icon={ArrowDown01Icon} details={acquirer.settlement} accentClass="text-success" />
               </div>
             </div>

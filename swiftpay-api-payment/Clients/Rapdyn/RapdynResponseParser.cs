@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace safefy_api_payment.Clients.Rapdyn;
+namespace swiftpay_api_payment.Clients.Rapdyn;
 
 internal static class RapdynResponseParser
 {

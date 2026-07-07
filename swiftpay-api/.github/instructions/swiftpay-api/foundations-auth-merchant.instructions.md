@@ -3,9 +3,9 @@ description: "Use when editing auth, merchant onboarding flow, environment filte
 applyTo: 'Program.cs, Extensions/**/*.cs, Endpoints/Auth/**/*.cs, Endpoints/Merchants/**/*.cs, EndpointsGroups/**/*.cs, Middlewares/**/*.cs, Services/Internal/**/*.cs, Consumers/**/*.cs'
 ---
 
-# Safefy API - Copilot Instructions
+# SwiftPay API - Copilot Instructions
 
-Este documento descreve os padrões e convenções utilizados no projeto Safefy API para criação de endpoints, uso de serviços, middlewares, filtros e modelos de resposta.
+Este documento descreve os padrões e convenções utilizados no projeto SwiftPay API para criação de endpoints, uso de serviços, middlewares, filtros e modelos de resposta.
 
 ---
 
@@ -55,7 +55,7 @@ var accounts = await dbContext.Accounts
 
 ## Visão Geral da Plataforma
 
-A plataforma Safefy é um gateway de pagamentos PIX composta por duas APIs:
+A plataforma SwiftPay é um gateway de pagamentos PIX composta por duas APIs:
 
 ### Arquitetura
 
@@ -63,7 +63,7 @@ A plataforma Safefy é um gateway de pagamentos PIX composta por duas APIs:
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                              PLATAFORMA SAFEFY                               │
 ├─────────────────────────────────┬───────────────────────────────────────────┤
-│          safefy-api             │           safefy-api-payment              │
+│          swiftpay-api             │           swiftpay-api-payment              │
 │      (API Principal)            │         (API de Pagamentos)               │
 ├─────────────────────────────────┼───────────────────────────────────────────┤
 │ • Gestão de usuários            │ • Processamento de cobranças PIX          │
@@ -76,7 +76,7 @@ A plataforma Safefy é um gateway de pagamentos PIX composta por duas APIs:
 └─────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-### safefy-api (Este Projeto)
+### swiftpay-api (Este Projeto)
 API principal responsável por:
 - **Autenticação**: Sign up, sign in, recuperação de senha, confirmação de email
 - **Gestão de Usuários**: Perfil, alteração de senha, preferências
@@ -87,8 +87,8 @@ API principal responsável por:
 - **Banco de Dados**: Mantém toda a estrutura e migrations do PostgreSQL
 - **Consumer MassTransit**: Consome mensagens do RabbitMQ e envia via SignalR
 
-### safefy-api-payment (Projeto Separado)
-> Para detalhes específicos, consulte o arquivo `.github/copilot-instructions.md` no projeto safefy-api-payment.
+### swiftpay-api-payment (Projeto Separado)
+> Para detalhes específicos, consulte o arquivo `.github/copilot-instructions.md` no projeto swiftpay-api-payment.
 
 ---
 
@@ -102,7 +102,7 @@ A comunicação assíncrona entre as APIs utiliza MassTransit com RabbitMQ:
 └──────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────┐  MassTransit    ┌─────────────┐    SignalR    ┌──────────┐
-│ safefy-api-     │ ──────────────► │  safefy-api │ ────────────► │ Frontend │
+│ swiftpay-api-     │ ──────────────► │  swiftpay-api │ ────────────► │ Frontend │
 │ payment         │   (RabbitMQ)    │  (consumer) │               │          │
 │ (publisher)     │                 │             │               │          │
 └─────────────────┘                 └─────────────┘               └──────────┘
@@ -120,40 +120,40 @@ A comunicação assíncrona entre as APIs utiliza MassTransit com RabbitMQ:
 
 | Fila | Publisher | Consumer | Descrição |
 |------|-----------|----------|-----------|
-| `safefy.notification.created` | safefy-api-payment | safefy-api | Notificação criada (Merchant ou User scope), enviar via SignalR |
-| `safefy.ledger.pending` | safefy-api-payment | safefy-api-payment | Registrar transação pendente no ledger |
-| `safefy.payment.completed` | safefy-api-payment | safefy-api-payment | Processar pagamento confirmado (ledger, notificações, webhook) |
-| `safefy.cashout.process` | safefy-api-payment | safefy-api-payment | Processar saque na adquirente |
-| `safefy.webhook.send` | safefy-api-payment | safefy-api-payment | Enviar webhook para merchant |
-| `safefy.dashboard.merchant` | safefy-api | safefy-api | Processar dashboard do merchant assincronamente |
-| `safefy.dashboard.admin` | safefy-api | safefy-api | Processar dashboard admin assincronamente |
+| `swiftpay.notification.created` | swiftpay-api-payment | swiftpay-api | Notificação criada (Merchant ou User scope), enviar via SignalR |
+| `swiftpay.ledger.pending` | swiftpay-api-payment | swiftpay-api-payment | Registrar transação pendente no ledger |
+| `swiftpay.payment.completed` | swiftpay-api-payment | swiftpay-api-payment | Processar pagamento confirmado (ledger, notificações, webhook) |
+| `swiftpay.cashout.process` | swiftpay-api-payment | swiftpay-api-payment | Processar saque na adquirente |
+| `swiftpay.webhook.send` | swiftpay-api-payment | swiftpay-api-payment | Enviar webhook para merchant |
+| `swiftpay.dashboard.merchant` | swiftpay-api | swiftpay-api | Processar dashboard do merchant assincronamente |
+| `swiftpay.dashboard.admin` | swiftpay-api | swiftpay-api | Processar dashboard admin assincronamente |
 
 **Componentes:**
 
 | Componente | Projeto | Descrição |
 |------------|---------|-----------|
-| `RabbitMQSettings` | safefy-api-core | Model de configuração |
-| `IMessagePublisher` | safefy-api-core | Interface do publisher |
-| `MassTransitMessagePublisher` | safefy-api-core | Implementação do publisher (MassTransit) |
-| `NotificationCreatedConsumer` | safefy-api-core | Consumer MassTransit para notificações (SignalR) |
-| `ProcessMerchantDashboardConsumer` | safefy-api-core | Consumer para processar dashboard do merchant |
-| `ProcessAdminDashboardConsumer` | safefy-api-core | Consumer para processar dashboard admin |
-| `RecordLedgerPendingConsumer` | safefy-api-payment | Consumer para registrar ledger pendente |
-| `PaymentCompletedConsumer` | safefy-api-payment | Consumer para processar pagamento confirmado |
-| `ProcessCashoutConsumer` | safefy-api-payment | Consumer para processar saques |
-| `SendWebhookConsumer` | safefy-api-payment | Consumer para enviar webhooks |
+| `RabbitMQSettings` | swiftpay-api-core | Model de configuração |
+| `IMessagePublisher` | swiftpay-api-core | Interface do publisher |
+| `MassTransitMessagePublisher` | swiftpay-api-core | Implementação do publisher (MassTransit) |
+| `NotificationCreatedConsumer` | swiftpay-api-core | Consumer MassTransit para notificações (SignalR) |
+| `ProcessMerchantDashboardConsumer` | swiftpay-api-core | Consumer para processar dashboard do merchant |
+| `ProcessAdminDashboardConsumer` | swiftpay-api-core | Consumer para processar dashboard admin |
+| `RecordLedgerPendingConsumer` | swiftpay-api-payment | Consumer para registrar ledger pendente |
+| `PaymentCompletedConsumer` | swiftpay-api-payment | Consumer para processar pagamento confirmado |
+| `ProcessCashoutConsumer` | swiftpay-api-payment | Consumer para processar saques |
+| `SendWebhookConsumer` | swiftpay-api-payment | Consumer para enviar webhooks |
 
 **Mensagens (Models):**
 
 | Mensagem | Namespace | Descrição |
 |----------|-----------|-----------|
-| `NotificationCreatedMessage` | safefy-api-core | Notificação para envio via SignalR |
-| `RecordLedgerPendingMessage` | safefy-api-core | Dados para registro no ledger |
-| `PaymentCompletedMessage` | safefy-api-core | Dados do pagamento confirmado |
-| `ProcessCashoutMessage` | safefy-api-core | Dados do saque a processar |
-| `SendWebhookMessage` | safefy-api-core | Dados do webhook a enviar |
-| `ProcessMerchantDashboardMessage` | safefy-api-core | Dados para processar dashboard do merchant |
-| `ProcessAdminDashboardMessage` | safefy-api-core | Trigger para processar dashboard admin |
+| `NotificationCreatedMessage` | swiftpay-api-core | Notificação para envio via SignalR |
+| `RecordLedgerPendingMessage` | swiftpay-api-core | Dados para registro no ledger |
+| `PaymentCompletedMessage` | swiftpay-api-core | Dados do pagamento confirmado |
+| `ProcessCashoutMessage` | swiftpay-api-core | Dados do saque a processar |
+| `SendWebhookMessage` | swiftpay-api-core | Dados do webhook a enviar |
+| `ProcessMerchantDashboardMessage` | swiftpay-api-core | Dados para processar dashboard do merchant |
+| `ProcessAdminDashboardMessage` | swiftpay-api-core | Trigger para processar dashboard admin |
 
 **Uso no código:**
 
@@ -164,8 +164,8 @@ await messagePublisher.PublishAsync(
     new PaymentCompletedMessage { ... });
 
 // NotificationService.cs - publica automaticamente quando não há INotificationHubService
-// Se estiver na safefy-api: envia direto via SignalR (INotificationHubService)
-// Se estiver na safefy-api-payment: publica no RabbitMQ (IMessagePublisher)
+// Se estiver na swiftpay-api: envia direto via SignalR (INotificationHubService)
+// Se estiver na swiftpay-api-payment: publica no RabbitMQ (IMessagePublisher)
 ```
 
 ---
@@ -196,7 +196,7 @@ await messagePublisher.PublishAsync(
 
 4. INTEGRAÇÃO
    ├── Merchant gera credenciais de API (secretKey + client_secret)
-   └── Integra no sistema dele usando a safefy-api-payment
+   └── Integra no sistema dele usando a swiftpay-api-payment
 
 5. OPERAÇÃO
    ├── Cria cobranças via API (com callbackUrl opcional)
@@ -305,7 +305,7 @@ Fluxo funcional esperado:
 
 - Não manter DDL (`CREATE TABLE`, índices e colunas) em instructions, pois o schema evolui com frequência.
 - Fonte de verdade da modelagem:
-  - Entidades no `safefy-api-core/Models/Database`.
+  - Entidades no `swiftpay-api-core/Models/Database`.
   - Configuração EF no `PrimaryDbContext`.
   - Evolução de schema nas migrations (`Database/Migrations/*`).
 

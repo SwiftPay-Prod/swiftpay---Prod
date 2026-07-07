@@ -11,7 +11,7 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 - Faturamento `Sandbox` **não pode** desbloquear conquistas, nível, borda ou emblemas.
 - Consumers/jobs que tentarem processar conquistas em `Sandbox` devem ignorar a operação de award.
 - Endpoints de leitura de perfil/ranking/conquistas devem exibir progresso e contagem de conquistas com base em dados de `Production`.
-- Os thresholds de progressão de nível/dinastia devem ter fonte única em `safefy-api-core/Constants/UserProgressionConstants.cs` (`UserProgressionConstants.LevelThresholds`), sem duplicação local em endpoints/serviços.
+- Os thresholds de progressão de nível/dinastia devem ter fonte única em `swiftpay-api-core/Constants/UserProgressionConstants.cs` (`UserProgressionConstants.LevelThresholds`), sem duplicação local em endpoints/serviços.
 
 ### Módulo Wayne - Recuperação de Custos Operacionais
 
@@ -78,7 +78,7 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 - O startup da API principal **não deve criar processadoras por seed padrão**.
 - Novas processadoras devem ser criadas exclusivamente por fluxo administrativo (UI/API de Admin).
 - O endpoint de criação deve funcionar sem depender de registro base previamente semeado no banco.
-- Metadados padrão de adquirente (descrição, URLs base, links de documentação e `WebhookAuthMode`) devem ter fonte única em `safefy-api-core/Constants/AcquirerDefaultsConstants.cs`.
+- Metadados padrão de adquirente (descrição, URLs base, links de documentação e `WebhookAuthMode`) devem ter fonte única em `swiftpay-api-core/Constants/AcquirerDefaultsConstants.cs`.
 - O endpoint `POST /v1/admin/acquirers` deve consumir essa fonte única, sem hardcode local desses metadados.
 - O `Acquirer.Code` gerado no `POST /v1/admin/acquirers` deve ser canônico e fixo por tipo (ex.: `rapdyn`, `heartpay`), sem sufixos automáticos (`_1`, `_2`, `_clone_*`).
 - Quando o seed de adquirentes for executado (`AcquirerInitializer`), todas as processadoras devem ser criadas com `IsActive = false` por padrão.
@@ -234,7 +234,7 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 - O endpoint de leitura de ranking deve aceitar seleção de tipo e retornar, no modo indicação:
     - `totalReferrals`
     - `totalCommission`
-- O processamento assíncrono do ranking de indicações deve ocorrer em fila dedicada (`safefy.ranking.referral.process`) e consumer próprio, sem reutilizar a mesma mensagem/fila do ranking de volume.
+- O processamento assíncrono do ranking de indicações deve ocorrer em fila dedicada (`swiftpay.ranking.referral.process`) e consumer próprio, sem reutilizar a mesma mensagem/fila do ranking de volume.
 
 ### Ranking de adquirentes (admin)
 
@@ -256,7 +256,7 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
     - Fórmula do score: `score = round((((approvalRate/100)*10) + ((analyzedTransactions/1000)*5) + ((1 - failureRate/100)*5)) / 20 * 1000)`
 - O filtro por operação deve aceitar seleção múltipla de `Black` e `White` via query `operationTypes` (CSV).
 - O filtro de operação deve considerar `Acquirer.OperationTypes` (operações suportadas pela própria adquirente), e não `MerchantKyc.OperationType`.
-- O processamento do ranking de adquirentes deve ocorrer em background por fila dedicada (`safefy.ranking.acquirer.process`) e atualizar o cache a cada `5` minutos, no mesmo padrão do ranking de usuários.
+- O processamento do ranking de adquirentes deve ocorrer em background por fila dedicada (`swiftpay.ranking.acquirer.process`) e atualizar o cache a cada `5` minutos, no mesmo padrão do ranking de usuários.
 - O disparo recorrente dos rankings (`usuarios`, `indicações` e `adquirentes`) deve ser feito exclusivamente por job recorrente do Hangfire (fila `ranking`, cron de 5 minutos), sem uso de `BackgroundService` para agendamento.
 - O payload do ranking de adquirentes deve incluir:
     - identificação da adquirente
@@ -363,7 +363,7 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 - Use o endpoint `PATCH /v1/admin/platform-payouts/{id}/reprocess-pending` para reenfileirar itens de adquirente que permaneceram em `Processing`
 - O reprocessamento atua somente nos itens com `PlatformPayoutItem.Status = Processing`
 - O endpoint pode ser executado por usuários com role `Admin` ou `God` (grupo `AdminGroup`)
-- O reprocessamento não recria o saque, apenas republica o processamento dos itens pendentes na fila `safefy.platform.payout.item.process`
+- O reprocessamento não recria o saque, apenas republica o processamento dos itens pendentes na fila `swiftpay.platform.payout.item.process`
 - O endpoint deve retornar sucesso parcial quando apenas parte dos itens for reenfileirada, com auditoria de falhas por item em `ApiLogs`
 
 ### Reconciliação de Saldos da Plataforma (Admin)
@@ -373,12 +373,12 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
     - `out` (saídas / payouts out)
     - `grossBalance` (saldo bruto da adquirente)
     - `merchantBalance` (parcela do saldo pertencente às organizações)
-    - `safefyProfit` (parcela do saldo pertencente à Safefy)
+    - `swiftpayProfit` (parcela do saldo pertencente à SwiftPay)
 - Os campos legados `settlement` e `payoutsOut` devem permanecer no payload por compatibilidade retroativa, espelhando respectivamente `in` e `out`.
 - A discrepância por adquirente (`hasDiscrepancy`) deve considerar todas as dimensões acima, e não apenas `settlement`/`payoutsOut`.
 - Correções automáticas de reconciliação da plataforma/adquirente devem ser registradas como transações no ledger, nunca por sobrescrita direta de `Account.Balance`.
 - Na reconciliação da plataforma, o cálculo de `TotalAvailableForWithdrawal` deve considerar **todas** as adquirentes do ambiente para representar o saldo remanescente real da plataforma (`(AcquirerSettlement - AcquirerPayoutsOut) - MerchantAvailable` por adquirente, somado no total).
-- Esse cálculo deve refletir automaticamente ajustes manuais da plataforma por adquirente (`AcquirerAdjustment` e `AcquirerSafefyProfitAdjustment`), pois a fonte de verdade é o saldo atual das contas no ledger.
+- Esse cálculo deve refletir automaticamente ajustes manuais da plataforma por adquirente (`AcquirerAdjustment` e `AcquirerSwiftpayProfitAdjustment`), pois a fonte de verdade é o saldo atual das contas no ledger.
 
 ### Contas sistêmicas da plataforma por Environment
 
@@ -396,10 +396,10 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 - `scope = Platform` não deve mais ser usado. Ajustes globais de disponibilidade da plataforma foram descontinuados.
 - Para `scope = Acquirer`, o payload deve informar `acquirerTarget`:
     - `MerchantBalance` (ou `Settlement` por compatibilidade): ajusta o saldo global das organizações na adquirente via `AcquirerSettlement`
-    - `SafefyProfit`: ajusta o lucro Safefy da adquirente e o `TotalAvailableForWithdrawal`; os cálculos de saldo/leitura devem refletir esse ajuste por adquirente
+    - `SwiftpayProfit`: ajusta o lucro SwiftPay da adquirente e o `TotalAvailableForWithdrawal`; os cálculos de saldo/leitura devem refletir esse ajuste por adquirente
 - Para `scope = Merchant`, o ajuste deve permitir `merchantAcquirerId` opcional para direcionar o bucket correto da organização.
-- Na leitura de saldo por adquirente, o bucket de `SafefyProfit` deve ser calculado com piso zero após abatimento de saques da plataforma concluídos no ambiente (`max(0, safefyBase - platformPayoutsCompleted)`).
-- Quando o total de saques da plataforma concluídos exceder o bucket Safefy de uma adquirente, o excedente deve impactar o bucket de organizações (`merchantBalance`) via decomposição por `grossBalance - safefyProfit`.
+- Na leitura de saldo por adquirente, o bucket de `SwiftpayProfit` deve ser calculado com piso zero após abatimento de saques da plataforma concluídos no ambiente (`max(0, swiftpayBase - platformPayoutsCompleted)`).
+- Quando o total de saques da plataforma concluídos exceder o bucket SwiftPay de uma adquirente, o excedente deve impactar o bucket de organizações (`merchantBalance`) via decomposição por `grossBalance - swiftpayProfit`.
 
 ### Saques do Merchant - Regra de disponibilidade atual
 - O saldo de saque deve usar `WithdrawNowAvailable` como valor disponível para a operação atual
@@ -410,14 +410,14 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 ### Saque em Sandbox (bloqueado)
 
 - O ambiente `Sandbox` não permite criação de saque para merchant.
-- O endpoint do `safefy-api` deve propagar o ambiente corrente para a `safefy-api-payment` na criação do saque.
+- O endpoint do `swiftpay-api` deve propagar o ambiente corrente para a `swiftpay-api-payment` na criação do saque.
 - A API de pagamentos é a fonte final de validação e deve recusar qualquer tentativa de saque em `Sandbox` antes de criar `Payout`.
 
 ### Admin Cashouts - Campos financeiros na leitura
 
 - Os endpoints administrativos de saque (`GET /v1/admin/cashouts` e `GET /v1/admin/cashouts/{cashoutId}`) devem incluir, além de `feeAmount` (taxa plataforma):
     - `acquirerFeeAmount` (taxa paga para a adquirente)
-    - `safefyProfitAmount` (lucro Safefy no saque, calculado como `PlatformFee - AcquirerFee`)
+    - `swiftpayProfitAmount` (lucro SwiftPay no saque, calculado como `PlatformFee - AcquirerFee`)
 - Esses campos são obrigatórios para a modal de detalhes no painel admin.
 
 ### Saques do Merchant - Conta de origem por bucket
@@ -433,7 +433,7 @@ applyTo: 'Endpoints/Admin/**/*.cs, Endpoints/Merchants/**/*.cs, Services/Interna
 - Quando `IsUnlimitedDigitalStock = true`, é permitido apenas **1 item digital por variante**
 - Quando `IsUnlimitedDigitalStock = false`, estoque volta a obedecer `StockQuantity` do produto/variantes
 
-### Validação de Credenciais em Tempo Real (safefy-api-payment)
+### Validação de Credenciais em Tempo Real (swiftpay-api-payment)
 
 O `CredentialValidationMiddleware` valida a cada requisição autenticada se a credencial ainda está ativa:
 
@@ -472,7 +472,7 @@ O `CredentialValidationMiddleware` valida a cada requisição autenticada se a c
   - `RateLimitPerMinute`: 60 requisições/minuto
   - `RateLimitPerHour`: 1.000 requisições/hora
   - `RateLimitPerDay`: 10.000 requisições/dia
-- Aplicado na **safefy-api-payment** nos endpoints de criação de cobrança
+- Aplicado na **swiftpay-api-payment** nos endpoints de criação de cobrança
 - Retorna HTTP 429 (Too Many Requests) quando excedido
 
 **Rate Limiting de Autenticação (por Credencial):**
@@ -531,7 +531,7 @@ A plataforma possui um sistema hierárquico de configuração de taxas com fallb
 │                    HIERARQUIA DE CONFIGURAÇÃO DE TAXAS                        │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  NÍVEL 1: MerchantSettings (taxa cobrada DO merchant pela Safefy)            │
+│  NÍVEL 1: MerchantSettings (taxa cobrada DO merchant pela SwiftPay)            │
 │  ┌─────────────────────────────────────────────────────────────────┐         │
 │  │  Se configurado, usa valores específicos do merchant            │         │
 │  │  → PixApiFeeMode, PixApiFeeFixed, PixApiFeePercentage          │         │
@@ -556,7 +556,7 @@ A plataforma possui um sistema hierárquico de configuração de taxas com fallb
 │  │  → WithdrawalFeeMode, WithdrawalFeeFixed, WithdrawalFeePercentage│        │
 │  └─────────────────────────────────────────────────────────────────┘         │
 │                                                                              │
-│  SEPARADO: Acquirer (taxa cobrada PELA adquirente da Safefy)                 │
+│  SEPARADO: Acquirer (taxa cobrada PELA adquirente da SwiftPay)                 │
 │  ┌─────────────────────────────────────────────────────────────────┐         │
 │  │  Custo operacional da plataforma (invisível para merchant)      │         │
 │  │  → PixInFeeMode, PixInFeeFixed, PixInFeePercentage             │         │
@@ -585,7 +585,7 @@ A plataforma possui um sistema hierárquico de configuração de taxas com fallb
 | `CreditCardPaymentLinkInstallmentFeePercentage` | Taxa percentual adicional por parcela extra no CARTÃO via Payment Link |
 | `WithdrawalFeeMode/Fixed/Percentage` | Taxa cobrada em saques |
 
-**Taxas das Adquirentes (cobradas DA Safefy):**
+**Taxas das Adquirentes (cobradas DA SwiftPay):**
 
 | Campo | Descrição |
 |-------|-----------|
@@ -617,29 +617,29 @@ Use `FeeCalculator.CalculatePayoutAmountToSend(netAmount, acquirerFee, payoutFee
 ```
 Valores:
 - Amount (solicitado pelo merchant): R$ 500,00
-- PlatformFee (taxa Safefy visível): R$ 5,00
+- PlatformFee (taxa SwiftPay visível): R$ 5,00
 - AcquirerFee (taxa da adquirente): R$ 1,00
 - NetAmount = Amount - PlatformFee = R$ 495,00
 
 FeeDeductedFromTransfer:
-- Safefy envia: R$ 496,00 (NetAmount + AcquirerFee)
+- SwiftPay envia: R$ 496,00 (NetAmount + AcquirerFee)
 - Adquirente desconta: R$ 1,00
 - Merchant recebe: R$ 495,00 ✓
 
 FeeAddedToDebit:
-- Safefy envia: R$ 495,00 (NetAmount)
+- SwiftPay envia: R$ 495,00 (NetAmount)
 - Adquirente debita da conta: R$ 496,00 (NetAmount + AcquirerFee)
 - Merchant recebe: R$ 495,00 ✓
 ```
 
 **Split Automático de Taxas (`PaymentFeeSplitHandling`):**
 
-Algumas adquirentes enviam automaticamente a taxa da plataforma (PlatformFee) diretamente para o banco da Safefy, ao invés de creditar tudo na conta da adquirente.
+Algumas adquirentes enviam automaticamente a taxa da plataforma (PlatformFee) diretamente para o banco da SwiftPay, ao invés de creditar tudo na conta da adquirente.
 
 | Modo | Descrição |
 |------|-----------|
 | `None` | Comportamento padrão - taxa creditada como saldo disponível da plataforma |
-| `AutoSplitToBank` | Adquirente já envia a taxa direto para o banco da Safefy |
+| `AutoSplitToBank` | Adquirente já envia a taxa direto para o banco da SwiftPay |
 
 **Campos por método de pagamento:**
 - `PixFeeSplitHandling` - Configuração para PIX
@@ -735,11 +735,11 @@ As taxas das adquirentes também seguem uma hierarquia:
 
 | Entidade | Campo | Descrição |
 |----------|-------|-----------|
-| `Payment` | `PlatformFee` | Taxa Safefy cobrada do merchant |
+| `Payment` | `PlatformFee` | Taxa SwiftPay cobrada do merchant |
 | `Payment` | `AcquirerFee` | Taxa cobrada pela adquirente (invisível para merchant) |
 | `Payment` | `NetAmount` | Amount - PlatformFee (valor que merchant recebe) |
-| `Payment` | `AcquirerNetAmount` | Amount - AcquirerFee (valor que Safefy recebe) |
-| `Payout` | `PlatformFee` | Taxa Safefy cobrada do merchant |
+| `Payment` | `AcquirerNetAmount` | Amount - AcquirerFee (valor que SwiftPay recebe) |
+| `Payout` | `PlatformFee` | Taxa SwiftPay cobrada do merchant |
 | `Payout` | `AcquirerFee` | Taxa cobrada pela adquirente (invisível para merchant) |
 
 **Regras Importantes:**
@@ -752,7 +752,7 @@ As taxas das adquirentes também seguem uma hierarquia:
 
 **Cálculo de Lucro:**
 ```
-Lucro Safefy = PlatformFee - AcquirerFee
+Lucro SwiftPay = PlatformFee - AcquirerFee
 
 Exemplo (pagamento de R$ 100,00):
 - PlatformFee: R$ 2,00 (2%)

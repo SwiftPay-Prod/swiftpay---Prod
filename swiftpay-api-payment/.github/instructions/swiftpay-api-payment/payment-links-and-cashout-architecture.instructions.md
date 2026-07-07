@@ -14,7 +14,7 @@ applyTo: 'Endpoints/PaymentLinks/**/*.cs, Endpoints/Cashouts/**/*.cs, Services/*
     - A base do link deve ser configurada no `PlatformSettings` persistido no banco (via endpoint admin), nunca em env.
     - A resolucao deve considerar o metodo de pagamento da cobranca (`Pix`, `Boleto`, `CreditCard`).
     - Configuracao principal no banco:
-        - `PlatformSettings.PaymentLinkDomainOptionsJson` (opcoes por metodo com `id`, `name`, `baseUrl`, `isDefault` e `showSafefyBranding`)
+        - `PlatformSettings.PaymentLinkDomainOptionsJson` (opcoes por metodo com `id`, `name`, `baseUrl`, `isDefault` e `showSwiftPayBranding`)
     - Override por organizacao:
         - `MerchantSettings.PaymentLinkDomainSelectionJson` (selecao por `id` da opcao por metodo)
     - Campos legados (`PixPaymentLinkBaseUrl`, `BoletoPaymentLinkBaseUrl`, `CreditCardPaymentLinkBaseUrl`) ficam como fallback de compatibilidade.
@@ -81,7 +81,7 @@ applyTo: 'Endpoints/PaymentLinks/**/*.cs, Endpoints/Cashouts/**/*.cs, Services/*
 │                    ARQUITETURA DE SAQUES                                      │
 └──────────────────────────────────────────────────────────────────────────────┘
 
-          VIA API (safefy-api-payment)         VIA PAINEL (safefy-api)
+          VIA API (swiftpay-api-payment)         VIA PAINEL (swiftpay-api)
           ┌─────────────────────────┐         ┌─────────────────────────┐
           │ POST /v1/cashouts       │         │ POST /v1/internal/      │
           │ (autenticação JWT API)  │         │     cashouts            │
@@ -92,7 +92,7 @@ applyTo: 'Endpoints/PaymentLinks/**/*.cs, Endpoints/Cashouts/**/*.cs, Services/*
                                     ▼
                       ┌─────────────────────────┐
                       │    CashoutService       │
-                      │    (safefy-api-payment) │
+                      │    (swiftpay-api-payment) │
                       └───────────┬─────────────┘
                                   │
                                   ▼

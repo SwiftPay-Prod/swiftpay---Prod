@@ -1,10 +1,10 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Extensions;
-using safefy_api_core.Services;
-using safefy_api_payment.Extensions;
-using safefy_api_payment.Services.Internal;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Extensions;
+using swiftpay_api_core.Services;
+using swiftpay_api_payment.Extensions;
+using swiftpay_api_payment.Services.Internal;
 
 ThreadPool.SetMinThreads(100, 100);
 
@@ -30,7 +30,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDatabases();
 builder.Services.AddHealthChecks(builder.Configuration);
 
-// Core Services (shared with safefy-api)
+// Core Services (shared with swiftpay-api)
 builder.Services.AddCoreServices();
 
 // Helper Services

@@ -33,9 +33,9 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-comp
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsu8suCX_tCN5CB_DgtyPDjz6jIX7q1x0",
-  authDomain: "safefypay-a405c.firebaseapp.com",
-  projectId: "safefypay-a405c",
-  storageBucket: "safefypay-a405c.firebasestorage.app",
+  authDomain: "swiftpaya405c.firebaseapp.com",
+  projectId: "swiftpaya405c",
+  storageBucket: "swiftpaya405c.firebasestorage.app",
   messagingSenderId: "741958846185",
   appId: "1:741958846185:web:8348a6128a085dc29a9278"
 };
@@ -51,9 +51,9 @@ messaging.onBackgroundMessage((payload) => {
 
   const notificationOptions = {
     body: payload.data?.body || '',
-    icon: '/logos/safefy-icon-logo.png',
-    badge: '/logos/safefy-icon-logo.png',
-    tag: payload.data?.notificationId || 'safefy-notification',
+    icon: '/logos/swiftpay-icon-logo.png',
+    badge: '/logos/swiftpay-icon-logo.png',
+    tag: payload.data?.notificationId || 'swiftpay-notification',
     data: payload.data,
     vibrate: [200, 100, 200],
     requireInteraction: payload.data?.priority === 'High' || payload.data?.priority === 'Urgent',

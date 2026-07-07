@@ -1,8 +1,8 @@
 import type { DashboardPeriod } from '@/types/merchant/dashboard';
 
-export const ACQUIRER_STATS_PERIOD_STORAGE_KEY = 'safefy_acquirer_stats_period';
-export const ACQUIRER_STATS_CUSTOM_START_STORAGE_KEY = 'safefy_acquirer_stats_custom_start';
-export const ACQUIRER_STATS_CUSTOM_END_STORAGE_KEY = 'safefy_acquirer_stats_custom_end';
+export const ACQUIRER_STATS_PERIOD_STORAGE_KEY = 'swiftpay_acquirer_stats_period';
+export const ACQUIRER_STATS_CUSTOM_START_STORAGE_KEY = 'swiftpay_acquirer_stats_custom_start';
+export const ACQUIRER_STATS_CUSTOM_END_STORAGE_KEY = 'swiftpay_acquirer_stats_custom_end';
 
 export const ACQUIRER_STATS_PERIOD_OPTIONS: { key: DashboardPeriod; label: string }[] = [
 	{ key: 'today', label: 'Hoje' },

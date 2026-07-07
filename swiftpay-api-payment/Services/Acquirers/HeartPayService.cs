@@ -1,16 +1,16 @@
 using System.Diagnostics;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Utils;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.HeartPay.Models.Charges;
-using safefy_api_payment.Clients.HeartPay.Models.Payouts;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Acquirers;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.HeartPay.Models.Charges;
+using swiftpay_api_payment.Clients.HeartPay.Models.Payouts;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Services.Acquirers;
+namespace swiftpay_api_payment.Services.Acquirers;
 
 public sealed class HeartPayService(
     IHeartPayClient heartPayClient,
@@ -286,7 +286,7 @@ public sealed class HeartPayService(
         var prefix = FallbackEmailPrefixes[prefixIndex];
         var suffix = ResolveEmailSuffix(externalId);
 
-        return $"{prefix}+{suffix}@transactions.safefy.app";
+        return $"{prefix}+{suffix}@transactions.swiftpay.app";
     }
 
     private static int ResolveFallbackIndex(string? source, int size)

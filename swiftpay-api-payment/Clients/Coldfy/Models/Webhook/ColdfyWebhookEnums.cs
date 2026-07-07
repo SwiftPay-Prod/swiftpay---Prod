@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Coldfy.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Coldfy.Models.Webhook;
 
 [JsonConverter(typeof(ColdfyWebhookObjectTypeConverter))]
 public enum ColdfyWebhookObjectType

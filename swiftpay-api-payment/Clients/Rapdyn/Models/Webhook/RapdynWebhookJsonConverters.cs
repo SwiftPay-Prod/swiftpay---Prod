@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Rapdyn.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Rapdyn.Models.Webhook;
 
 public sealed class RapdynFlexibleStringConverter : JsonConverter<string?>
 {

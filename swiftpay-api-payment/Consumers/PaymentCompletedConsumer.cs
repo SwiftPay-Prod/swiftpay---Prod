@@ -2,22 +2,22 @@ using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PaymentSignalRMethods = safefy_api_payment.Constants.SignalRMethods;
-using safefy_api_payment.Hubs;
-using safefy_api_payment.Models.SignalR;
-using safefy_api_core.Constants;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Mappers;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Models.MassTransit;
-using safefy_api_core.Models.Messages;
-using safefy_api_core.Services;
-using safefy_api_core.Utils;
-using safefy_api_payment.Interfaces.Internal;
+using PaymentSignalRMethods = swiftpay_api_payment.Constants.SignalRMethods;
+using swiftpay_api_payment.Hubs;
+using swiftpay_api_payment.Models.SignalR;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Mappers;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Models.MassTransit;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_core.Services;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Interfaces.Internal;
 
-namespace safefy_api_payment.Consumers;
+namespace swiftpay_api_payment.Consumers;
 
 public sealed class PaymentCompletedConsumer(
     IServiceScopeFactory scopeFactory,

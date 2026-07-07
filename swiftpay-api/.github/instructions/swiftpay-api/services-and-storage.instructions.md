@@ -145,7 +145,7 @@ public sealed class MyEndpoint(
                ▼                                                ▼
     ┌─────────────────────┐                      ┌─────────────────────────────┐
     │ MassTransit Publish │                      │ MassTransit Publish         │
-    │ safefy.notification │                      │ safefy.notification.created │
+    │ swiftpay.notification │                      │ swiftpay.notification.created │
     └──────────┬──────────┘                      └──────────────┬──────────────┘
                │                                                │
                └───────────────────┬────────────────────────────┘

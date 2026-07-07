@@ -1,14 +1,14 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Settings;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Users.Referrals.RequestReferralPayoutPixKeyUpdate;
+namespace swiftpay_api.Endpoints.Users.Referrals.RequestReferralPayoutPixKeyUpdate;
 
 public sealed class RequestReferralPayoutPixKeyUpdateEndpoint(
     PrimaryDbContext dbContext,

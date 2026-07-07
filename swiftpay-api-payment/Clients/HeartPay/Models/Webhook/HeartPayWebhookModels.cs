@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Clients.HeartPay.Models.Webhook;
+namespace swiftpay_api_payment.Clients.HeartPay.Models.Webhook;
 
 public sealed class HeartPayWebhookResponse : BaseResponse<HeartPayWebhookData>;
 

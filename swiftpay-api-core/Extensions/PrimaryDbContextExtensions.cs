@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Npgsql;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 public static class PrimaryDbContextExtensions
 {

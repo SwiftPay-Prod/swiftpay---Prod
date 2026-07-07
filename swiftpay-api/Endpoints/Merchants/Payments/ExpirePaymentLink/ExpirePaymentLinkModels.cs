@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.Payments.ExpirePaymentLink;
+namespace swiftpay_api.Endpoints.Merchants.Payments.ExpirePaymentLink;
 
 public sealed class ExpirePaymentLinkRequest
 {

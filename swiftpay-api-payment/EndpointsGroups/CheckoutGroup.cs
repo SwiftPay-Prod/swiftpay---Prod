@@ -1,7 +1,7 @@
 using FastEndpoints;
-using safefy_api_payment.Extensions;
+using swiftpay_api_payment.Extensions;
 
-namespace safefy_api_payment.EndpointsGroups;
+namespace swiftpay_api_payment.EndpointsGroups;
 
 public class CheckoutGroup : Group
 {

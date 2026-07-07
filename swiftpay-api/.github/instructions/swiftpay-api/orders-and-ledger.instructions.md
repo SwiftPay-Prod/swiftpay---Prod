@@ -69,7 +69,7 @@ O sistema possui duas formas de receber pagamentos: **Gateway (API Direta)** e *
 
 ### Cartão de crédito - integração sem card token
 
-- A integração interna com `safefy-api-payment` para criação de transação não deve enviar `cardToken`.
+- A integração interna com `swiftpay-api-payment` para criação de transação não deve enviar `cardToken`.
 - Para fluxo de cartão, enviar campos diretos no payload interno:
     - `cardNumber`
     - `cardHolderName`

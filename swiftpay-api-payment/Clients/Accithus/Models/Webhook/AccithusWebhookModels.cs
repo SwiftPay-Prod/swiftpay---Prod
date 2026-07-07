@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.Accithus.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Accithus.Models.Webhook;
 
 public sealed class AccithusWebhookTransactionData
 {

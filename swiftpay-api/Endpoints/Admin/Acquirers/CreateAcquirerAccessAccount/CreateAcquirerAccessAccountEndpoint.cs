@@ -1,12 +1,12 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Models.Acquirer;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Models.Acquirer;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.CreateAcquirerAccessAccount;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.CreateAcquirerAccessAccount;
 
 public sealed class CreateAcquirerAccessAccountEndpoint(
     PrimaryDbContext dbContext

@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Email;
+using swiftpay_api_core.Models.Email;
 
-namespace safefy_api_core.Interfaces;
+namespace swiftpay_api_core.Interfaces;
 
 public interface IEmailService
 {

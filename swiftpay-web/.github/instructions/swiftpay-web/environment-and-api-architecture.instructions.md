@@ -1,5 +1,5 @@
 ---
-description: "Use when editing environment variable policy, SSR and Server Actions boundaries, checkout lifecycle rules, and transaction visualization integration in safefy-web."
+description: "Use when editing environment variable policy, SSR and Server Actions boundaries, checkout lifecycle rules, and transaction visualization integration in swiftpay-web."
 applyTo: '.env.example, src/services/client.ts, src/app/actions/**/*.ts, src/auth/**/*.ts, src/app/panel/**/*.tsx'
 ---
 
@@ -33,7 +33,7 @@ Este projeto utiliza dois arquivos de configuração de ambiente:
 API_URL=
 
 # .env.local (com valores)
-API_URL=https://safefy-api-staging.up.railway.app
+API_URL=https://swiftpay-api-staging.up.railway.app
 ```
 
 ### Regras importantes
@@ -66,7 +66,7 @@ API_URL=https://safefy-api-staging.up.railway.app
 ## Link de Visualização de Transação
 
 - As telas de transações de merchant e admin devem exibir ação de copiar `transactionVisualizationUrl` na listagem e no detalhe da transação.
-- A origem do link deve ser resolvida no backend (`safefy-api`) e não montada no frontend.
+- A origem do link deve ser resolvida no backend (`swiftpay-api`) e não montada no frontend.
 - Em dados de boleto do painel, priorizar `pdfUrl` da adquirente e não depender de `proxyUrl` para abertura.
 
 ## Transações Admin - Reprocessamento e Webhook Forçado

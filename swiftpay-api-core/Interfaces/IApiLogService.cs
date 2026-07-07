@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Inputs;
+using swiftpay_api_core.Models.Inputs;
 
-namespace safefy_api_core.Interfaces;
+namespace swiftpay_api_core.Interfaces;
 
 public interface IApiLogService
 {

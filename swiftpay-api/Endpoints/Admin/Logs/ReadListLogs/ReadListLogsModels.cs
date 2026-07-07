@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api.Validators;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Validators;
 
-namespace safefy_api.Endpoints.Admin.Logs.ReadListLogs;
+namespace swiftpay_api.Endpoints.Admin.Logs.ReadListLogs;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum AdminLogType

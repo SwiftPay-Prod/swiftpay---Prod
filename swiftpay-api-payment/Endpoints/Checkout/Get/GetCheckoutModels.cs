@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Checkout.Get;
+namespace swiftpay_api_payment.Endpoints.Checkout.Get;
 
 /// <summary>
 /// Request para obter dados do checkout.

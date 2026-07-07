@@ -1,10 +1,10 @@
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Clients.Coldfy.Models.Payments;
-using safefy_api_payment.Clients.Coldfy.Models.Webhook;
-using safefy_api_payment.Clients.Coldfy.Models.Withdrawals;
-using safefy_api_payment.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Clients.Coldfy.Models.Payments;
+using swiftpay_api_payment.Clients.Coldfy.Models.Webhook;
+using swiftpay_api_payment.Clients.Coldfy.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces;
 
-namespace safefy_api_payment.Services.Acquirers.Utils;
+namespace swiftpay_api_payment.Services.Acquirers.Utils;
 
 public static class ColdfyStatusConverter
 {

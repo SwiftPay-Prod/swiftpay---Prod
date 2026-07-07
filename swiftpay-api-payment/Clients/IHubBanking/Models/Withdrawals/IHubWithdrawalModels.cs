@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.IHubBanking.Models.Withdrawals;
+namespace swiftpay_api_payment.Clients.IHubBanking.Models.Withdrawals;
 
 /// <summary>
 /// Request para criar um saque (cash-out) no IHub Banking.

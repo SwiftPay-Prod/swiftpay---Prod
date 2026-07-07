@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.EndpointsGroups;
-using safefy_api.Interfaces;
-using safefy_api.Models.PaymentApi;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api.Interfaces;
+using swiftpay_api.Models.PaymentApi;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Admin.Transactions.ReprocessCompletedTransactionDev;
+namespace swiftpay_api.Endpoints.Admin.Transactions.ReprocessCompletedTransactionDev;
 
 public sealed class ReprocessCompletedTransactionDevEndpoint(
     PrimaryDbContext dbContext,

@@ -1,7 +1,7 @@
 using System.Text.Json;
-using safefy_api_payment.Clients.IHubBanking.Models;
+using swiftpay_api_payment.Clients.IHubBanking.Models;
 
-namespace safefy_api_payment.Clients.IHubBanking;
+namespace swiftpay_api_payment.Clients.IHubBanking;
 
 internal static class IHubBankingResponseParser
 {

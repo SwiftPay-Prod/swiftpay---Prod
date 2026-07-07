@@ -1642,7 +1642,7 @@
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["safefy", "security", "platform", "authentication"],
+  "tags": ["swiftpay", "security", "platform", "authentication"],
   "templating": {
     "list": []
   },
@@ -1653,7 +1653,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Plataforma Principal - Segurança & Autenticação",
-  "uid": "safefy-main-platform",
+  "uid": "swiftpay-main-platform",
   "version": 1,
   "weekStart": ""
 }

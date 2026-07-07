@@ -1,7 +1,7 @@
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Email;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Email;
 
-namespace safefy_api_payment.Providers;
+namespace swiftpay_api_payment.Providers;
 
 public class EmailTemplateProvider(IWebHostEnvironment environment) : IEmailTemplateProvider
 {

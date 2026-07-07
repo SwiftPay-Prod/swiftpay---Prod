@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Primary
+namespace swiftpay_api.Database.Migrations.Primary
 {
     /// <inheritdoc />
     public partial class AddSandboxAutomaticCashoutToMerchantSettings : Migration

@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_payment.Services.Transactions;
+namespace swiftpay_api_payment.Services.Transactions;
 
 internal static class CheckoutTemplateFeeCalculator
 {

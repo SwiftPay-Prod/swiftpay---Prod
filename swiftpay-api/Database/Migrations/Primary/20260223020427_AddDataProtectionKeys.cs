@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace safefy_api.Database.Migrations.Primary
+namespace swiftpay_api.Database.Migrations.Primary
 {
     /// <inheritdoc />
     public partial class AddDataProtectionKeys : Migration

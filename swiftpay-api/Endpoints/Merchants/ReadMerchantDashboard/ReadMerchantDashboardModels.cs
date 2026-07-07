@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Dashboard;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Dashboard;
 
-namespace safefy_api.Endpoints.Merchants.ReadMerchantDashboard;
+namespace swiftpay_api.Endpoints.Merchants.ReadMerchantDashboard;
 
 /// <summary>
 /// Nível de performance da taxa de aprovação

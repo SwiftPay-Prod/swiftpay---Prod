@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.Pluggou.Models.Transactions;
-using safefy_api_payment.Clients.Pluggou.Models.Withdrawals;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Clients.Pluggou.Models.Transactions;
+using swiftpay_api_payment.Clients.Pluggou.Models.Withdrawals;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.Pluggou.Models.Webhook;
+namespace swiftpay_api_payment.Clients.Pluggou.Models.Webhook;
 
 public sealed class PluggouWebhookResponse : BaseResponse<PluggouWebhookData>;
 

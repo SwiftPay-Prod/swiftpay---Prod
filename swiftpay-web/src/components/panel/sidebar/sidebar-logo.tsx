@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { Routes } from "@/router/routes";
-import { SafefyBrandLogo } from '@/components/ui/safefy-brand-logo';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 
 export function SidebarLogo() {
   const { isExpanded, isMobile, isOpen } = useSidebar();
@@ -14,12 +14,12 @@ export function SidebarLogo() {
   return (
     <Link href={Routes.panel.merchant.dashboard} className="flex items-center h-8">
       {showFull ? (
-        <SafefyBrandLogo iconSize={28} textClassName="text-xl" />
+        <SwiftPayBrandLogo iconSize={28} textClassName="text-xl" />
       ) : (
         <div className="relative size-8">
           <Image
-            src="/logos/safefy-icon-logo.png"
-            alt="Safefy"
+            src="/logos/swiftpay-icon-logo.png"
+            alt="SwiftPay"
             fill
             sizes="32px"
             className="object-contain"

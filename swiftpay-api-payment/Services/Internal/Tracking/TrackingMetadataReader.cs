@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace safefy_api_payment.Services.Internal.Tracking;
+namespace swiftpay_api_payment.Services.Internal.Tracking;
 
 internal static class TrackingMetadataReader
 {

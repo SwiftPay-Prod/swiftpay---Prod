@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Tests.Models;
-using safefy_api_core.Database;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Tests.Models;
+using swiftpay_api_core.Database;
 using Testcontainers.PostgreSql;
 
-namespace safefy_api_payment.Tests.Fixtures;
+namespace swiftpay_api_payment.Tests.Fixtures;
 
 /// <summary>
 /// Factory para criar instâncias da API de pagamento para testes de integração.
@@ -22,7 +22,7 @@ public class PaymentApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15.15-alpine3.22")
-        .WithDatabase("safefy_payment_test")
+        .WithDatabase("swiftpay_payment_test")
         .WithUsername("postgres")
         .WithPassword("postgres")
         .Build();
@@ -73,7 +73,7 @@ public class PaymentApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         // Encontra o diretório raiz do projeto (onde está o .sln)
         var currentDir = new DirectoryInfo(Directory.GetCurrentDirectory());
-        while (currentDir != null && !File.Exists(Path.Combine(currentDir.FullName, "safefy-api-payment.sln")))
+        while (currentDir != null && !File.Exists(Path.Combine(currentDir.FullName, "swiftpay-api-payment.sln")))
         {
             currentDir = currentDir.Parent;
         }
@@ -305,14 +305,14 @@ public class PaymentApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private static async Task PurgeRabbitMqQueuesAsync()
     {
         using var http = new HttpClient();
-        var credentials = Convert.ToBase64String("safefyuser:safefypassword"u8.ToArray());
+        var credentials = Convert.ToBase64String("swiftpayuser:swiftpaypassword"u8.ToArray());
         http.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
 
         try
         {
             var queues = await http.GetFromJsonAsync<List<RabbitMqQueueInfo>>(
-                "http://localhost:15672/api/queues/safefy");
+                "http://localhost:15672/api/queues/swiftpay");
 
             if (queues == null || queues.Count == 0)
             {
@@ -327,7 +327,7 @@ public class PaymentApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                 }
 
                 await http.DeleteAsync(
-                    $"http://localhost:15672/api/queues/safefy/{Uri.EscapeDataString(queue.Name)}/contents");
+                    $"http://localhost:15672/api/queues/swiftpay/{Uri.EscapeDataString(queue.Name)}/contents");
             }
         }
         catch

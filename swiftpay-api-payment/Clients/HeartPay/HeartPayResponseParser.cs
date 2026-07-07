@@ -1,10 +1,10 @@
 using System.Text.Json;
-using safefy_api_payment.Clients.Common;
-using safefy_api_payment.Clients.HeartPay.Models.Boletos;
-using safefy_api_payment.Clients.HeartPay.Models.Charges;
-using safefy_api_payment.Clients.HeartPay.Models.Payouts;
+using swiftpay_api_payment.Clients.Common;
+using swiftpay_api_payment.Clients.HeartPay.Models.Boletos;
+using swiftpay_api_payment.Clients.HeartPay.Models.Charges;
+using swiftpay_api_payment.Clients.HeartPay.Models.Payouts;
 
-namespace safefy_api_payment.Clients.HeartPay;
+namespace swiftpay_api_payment.Clients.HeartPay;
 
 internal static class HeartPayResponseParser
 {

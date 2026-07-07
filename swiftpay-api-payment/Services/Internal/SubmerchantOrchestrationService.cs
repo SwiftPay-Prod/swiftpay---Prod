@@ -1,8 +1,8 @@
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Interfaces.Internal;
-using safefy_api_payment.Interfaces.Internal.Submerchants;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Interfaces.Internal.Submerchants;
 
-namespace safefy_api_payment.Services.Internal;
+namespace swiftpay_api_payment.Services.Internal;
 
 public sealed class SubmerchantOrchestrationService(
     ISubmerchantProviderAdapterFactory submerchantProviderAdapterFactory

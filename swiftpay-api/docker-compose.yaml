@@ -120,7 +120,7 @@ services:
       - SmtpSettings__EnableSsl=YOUR_SMTP_ENABLE_SSL
       - SmtpSettings__EnableSend=YOUR_SMTP_ENABLE_SEND
       - EmailSettings__Provider=Resend
-      - EmailSettings__FromEmail=noreply@safefypay.com.br
+      - EmailSettings__FromEmail=noreply@swiftpay.com.br
       - EmailSettings__FromName=SWIFTPAY
       - EmailSettings__EnableSend=true
       - EmailSettings__Resend__ApiKey=YOUR_RESEND_API_KEY

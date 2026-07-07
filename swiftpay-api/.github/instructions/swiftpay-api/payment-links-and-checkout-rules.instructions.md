@@ -17,7 +17,7 @@ applyTo: 'Endpoints/**/PaymentLinks/**/*.cs, Endpoints/**/Checkouts/**/*.cs, Ser
     - A base do link deve ser configurada e persistida em `PlatformSettings` no banco (via endpoint admin), nunca por env.
     - A resolucao da URL deve ser por metodo de pagamento efetivo (`Pix`, `Boleto`, `CreditCard`).
     - Configuracao principal de dominios da plataforma:
-        - `PaymentLinkDomainOptionsJson` (lista de opcoes por metodo, com `id`, `name`, `baseUrl`, `isDefault` e `showSafefyBranding`)
+        - `PaymentLinkDomainOptionsJson` (lista de opcoes por metodo, com `id`, `name`, `baseUrl`, `isDefault` e `showSwiftPayBranding`)
     - Override por organizacao:
         - `MerchantSettings.PaymentLinkDomainSelectionJson` (seleciona o `id` da opcao por metodo)
     - Campos legados (`PixPaymentLinkBaseUrl`, `BoletoPaymentLinkBaseUrl`, `CreditCardPaymentLinkBaseUrl`) permanecem apenas como fallback de compatibilidade.
@@ -35,7 +35,7 @@ applyTo: 'Endpoints/**/PaymentLinks/**/*.cs, Endpoints/**/Checkouts/**/*.cs, Ser
 
 ### Link de visualizacao de transacao (merchant/admin)
 
-- Endpoints de transacao do `safefy-api` devem expor `transactionVisualizationUrl` para uso direto no painel:
+- Endpoints de transacao do `swiftpay-api` devem expor `transactionVisualizationUrl` para uso direto no painel:
     - `GET /v1/merchant/{merchantId}/payments`
     - `GET /v1/merchant/{merchantId}/payments/{paymentId}`
     - `GET /v1/admin/transactions`

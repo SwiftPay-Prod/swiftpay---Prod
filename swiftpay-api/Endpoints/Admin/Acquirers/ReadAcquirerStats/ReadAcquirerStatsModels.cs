@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api.Endpoints.Merchants.ReadMerchantDashboard;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Merchants.ReadMerchantDashboard;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.ReadAcquirerStats;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.ReadAcquirerStats;
 
 public sealed class ReadAcquirerStatsRequest
 {

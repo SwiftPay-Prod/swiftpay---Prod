@@ -48,9 +48,9 @@ export async function unregisterServiceWorkers(): Promise<number> {
 
 export async function clearLocalStorage() {
 	try {
-		const fcmToken = localStorage.getItem('safefy_fcm_token');
+		const fcmToken = localStorage.getItem('swiftpay_fcm_token');
 		if (fcmToken) {
-			localStorage.removeItem('safefy_fcm_token');
+			localStorage.removeItem('swiftpay_fcm_token');
 			console.log('[PWA] FCM token removed from localStorage');
 		}
 

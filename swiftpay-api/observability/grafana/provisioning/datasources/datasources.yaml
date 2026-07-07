@@ -5,12 +5,12 @@ datasources:
   - name: PostgreSQL-Primary
     type: postgres
     access: proxy
-    url: safefydb:5432
-    database: safefy
-    user: safefyuser
+    url: swiftpaydb:5432
+    database: swiftpay
+    user: swiftpayuser
     editable: false
     secureJsonData:
-      password: safefypassword
+      password: swiftpaypassword
     jsonData:
       sslmode: disable
       maxOpenConns: 10
@@ -21,8 +21,8 @@ datasources:
   - name: PostgreSQL-Logs
     type: postgres
     access: proxy
-    url: safefylogsdb:5432
-    database: safefylogs
+    url: swiftpaylogsdb:5432
+    database: swiftpaylogs
     user: logsuser
     editable: false
     secureJsonData:

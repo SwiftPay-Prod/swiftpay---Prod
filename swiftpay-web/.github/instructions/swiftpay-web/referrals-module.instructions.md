@@ -1,5 +1,5 @@
 ---
-description: "Use when implementing referral panel flows, referral actions, and commission withdrawal user experience in safefy-web."
+description: "Use when implementing referral panel flows, referral actions, and commission withdrawal user experience in swiftpay-web."
 applyTo: 'src/app/panel/**/referrals/**/*.tsx, src/app/actions/user.ts, src/types/**/*.ts, src/components/**/*.tsx'
 ---
 

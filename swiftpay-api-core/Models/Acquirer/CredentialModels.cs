@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace safefy_api_core.Models.Acquirer;
+namespace swiftpay_api_core.Models.Acquirer;
 
 /// <summary>
 /// Tipo do campo de credencial.

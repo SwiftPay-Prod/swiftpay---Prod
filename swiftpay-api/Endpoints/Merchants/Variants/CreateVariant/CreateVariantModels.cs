@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api.Endpoints.Merchants.Products;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Merchants.Products;
 
-namespace safefy_api.Endpoints.Merchants.Variants.CreateVariant;
+namespace swiftpay_api.Endpoints.Merchants.Variants.CreateVariant;
 
 public sealed class CreateVariantRequest
 {

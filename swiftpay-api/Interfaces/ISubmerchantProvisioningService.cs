@@ -1,6 +1,6 @@
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Interfaces;
+namespace swiftpay_api.Interfaces;
 
 public interface ISubmerchantProvisioningService
 {

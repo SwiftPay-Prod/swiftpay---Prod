@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using safefy_api_payment.Utils;
+using swiftpay_api_payment.Utils;
 
-namespace safefy_api_payment.Clients.HunterPay.Models.Withdrawals;
+namespace swiftpay_api_payment.Clients.HunterPay.Models.Withdrawals;
 
 public sealed class HunterPayCreateWithdrawalRequest
 {

@@ -1,6 +1,6 @@
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Auth.SendEmailConfirmation;
+namespace swiftpay_api.Endpoints.Auth.SendEmailConfirmation;
 
 public sealed class SendEmailConfirmationRequest
 {

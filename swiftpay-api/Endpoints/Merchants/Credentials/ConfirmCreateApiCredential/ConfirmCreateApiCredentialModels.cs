@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Merchants.Credentials.CreateApiCredential;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Merchants.Credentials.CreateApiCredential;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.Merchants.Credentials.ConfirmCreateApiCredential;
+namespace swiftpay_api.Endpoints.Merchants.Credentials.ConfirmCreateApiCredential;
 
 public sealed class ConfirmCreateApiCredentialRequest
 {

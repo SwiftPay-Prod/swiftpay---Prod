@@ -4,13 +4,13 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_core.Utils;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api_payment.Middlewares;
+namespace swiftpay_api_payment.Middlewares;
 
 public partial class AcquirerWebhookAuthMiddleware(RequestDelegate next)
 {

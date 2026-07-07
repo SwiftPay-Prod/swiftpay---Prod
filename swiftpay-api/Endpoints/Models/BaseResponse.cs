@@ -1,4 +1,4 @@
-namespace safefy_api.Endpoints.Models;
+namespace swiftpay_api.Endpoints.Models;
 
 public class BaseResponse
 {

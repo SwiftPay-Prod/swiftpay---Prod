@@ -1,16 +1,16 @@
 using System.Diagnostics;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Utils;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.HunterPay.Models.Transactions;
-using safefy_api_payment.Clients.HunterPay.Models.Withdrawals;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Acquirers;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.HunterPay.Models.Transactions;
+using swiftpay_api_payment.Clients.HunterPay.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Services.Acquirers;
+namespace swiftpay_api_payment.Services.Acquirers;
 
 public sealed class HunterPayService(
     IHunterPayClient hunterPayClient,
@@ -356,7 +356,7 @@ public sealed class HunterPayService(
             ? Guid.CreateVersion7().ToString("N")
             : SanitizeToken(externalId);
 
-        return $"{suffix}@safefy.local";
+        return $"{suffix}@swiftpay.local";
     }
 
     private static string ResolveCustomerPhone(string? phone)

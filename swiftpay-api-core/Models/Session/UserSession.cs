@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_core.Models.Session;
+namespace swiftpay_api_core.Models.Session;
 
 /// <summary>
 /// Represents a user session stored in Redis.

@@ -1,16 +1,16 @@
-using safefy_api_core.Interfaces;
+using swiftpay_api_core.Interfaces;
 using System.Diagnostics;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Pluggou.Models;
-using safefy_api_payment.Clients.Pluggou.Models.Transactions;
-using safefy_api_payment.Clients.Pluggou.Models.Withdrawals;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Acquirers;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Pluggou.Models;
+using swiftpay_api_payment.Clients.Pluggou.Models.Transactions;
+using swiftpay_api_payment.Clients.Pluggou.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Services.Acquirers;
+namespace swiftpay_api_payment.Services.Acquirers;
 
 public sealed class PluggouService(
     IPluggouClient pluggouClient,
@@ -223,7 +223,7 @@ public sealed class PluggouService(
             return Task.CompletedTask;
         }
 
-        return apiLogService.LogAsync(new safefy_api_core.Models.Inputs.ApiLogInput
+        return apiLogService.LogAsync(new swiftpay_api_core.Models.Inputs.ApiLogInput
         {
             Action = ApiLogAction.AcquirerRequestFailed,
             Status = ApiLogStatus.Failed,
@@ -258,7 +258,7 @@ public sealed class PluggouService(
             return email.Trim();
 
         var suffix = string.IsNullOrWhiteSpace(externalId) ? Guid.CreateVersion7().ToString("N") : externalId;
-        return $"cliente+{suffix}@safefy.com.br";
+        return $"cliente+{suffix}@swiftpay.com.br";
     }
 
     private static string ResolvePhone(string? phone)

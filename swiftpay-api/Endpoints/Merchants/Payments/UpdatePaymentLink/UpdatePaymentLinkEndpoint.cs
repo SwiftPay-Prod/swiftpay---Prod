@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api.Endpoints.Merchants.Payments.ReadPaymentLink;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Database;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Merchants.Payments.ReadPaymentLink;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Endpoints.Merchants.Payments.UpdatePaymentLink;
+namespace swiftpay_api.Endpoints.Merchants.Payments.UpdatePaymentLink;
 
 public sealed class UpdatePaymentLinkEndpoint(
     PrimaryDbContext dbContext

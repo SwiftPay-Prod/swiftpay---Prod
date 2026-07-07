@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Safefy - Gateway de Pagamentos PIX";
+export const alt = "SwiftPay - Gateway de Pagamentos PIX";
 export const size = {
   width: 1200,
   height: 630,
@@ -75,7 +75,7 @@ export default async function Image() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Safefy
+              SwiftPay
             </span>
           </div>
           <span
@@ -177,7 +177,7 @@ export default async function Image() {
             fontSize: 16,
           }}
         >
-          <span>safefypay.com.br</span>
+          <span>swiftpay.com.br</span>
         </div>
       </div>
     ),

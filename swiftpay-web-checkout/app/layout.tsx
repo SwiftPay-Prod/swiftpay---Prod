@@ -23,9 +23,9 @@ export const metadata: Metadata = {
 	title: 'Checkout - Safefy',
 	description: 'Checkout seguro e rápido',
 	icons: {
-		icon: '/safefy-icon-logo.png',
-		shortcut: '/safefy-icon-logo.png',
-		apple: '/safefy-icon-logo.png',
+		icon: '/swiftpay-icon-logo.png',
+		shortcut: '/swiftpay-icon-logo.png',
+		apple: '/swiftpay-icon-logo.png',
 	},
 	appleWebApp: {
 		capable: true,

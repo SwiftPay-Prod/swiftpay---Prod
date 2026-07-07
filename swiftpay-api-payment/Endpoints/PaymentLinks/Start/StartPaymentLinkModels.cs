@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.PaymentLinks.Get;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.PaymentLinks.Get;
 
-namespace safefy_api_payment.Endpoints.PaymentLinks.Start;
+namespace swiftpay_api_payment.Endpoints.PaymentLinks.Start;
 
 public sealed class StartPaymentLinkRequest
 {

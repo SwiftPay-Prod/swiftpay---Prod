@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Constants;
+namespace swiftpay_api_payment.Constants;
 
 public static class WebhookEvents
 {

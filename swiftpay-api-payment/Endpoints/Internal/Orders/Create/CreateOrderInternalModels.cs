@@ -1,4 +1,4 @@
-namespace safefy_api_payment.Endpoints.Internal.Orders.Create;
+namespace swiftpay_api_payment.Endpoints.Internal.Orders.Create;
 
 public sealed class InternalCreateOrderRequest
 {

@@ -61,7 +61,7 @@ Quando um novo usuário se cadastra com `refCode` válido:
     - `estimatedCommissionFromPayouts`
     - `estimatedCommissionTotal`
     - `referredUsers` com `name`, `email`, `status`, `referredAt`, `estimatedCommissionFromPayments`, `estimatedCommissionFromPayouts` e `estimatedCommissionTotal`
-- `GET /v1/users/referrals/referred-users/{referredUserId}/movements` retorna o histórico de movimentações de comissão por indicado, com resumo de lucro Safefy e comissões por origem (`Payment`/`Payout`)
+- `GET /v1/users/referrals/referred-users/{referredUserId}/movements` retorna o histórico de movimentações de comissão por indicado, com resumo de lucro SwiftPay e comissões por origem (`Payment`/`Payout`)
 - `referralCode` e `referralLink` podem vir vazios quando o usuário ainda não gerou link de indicação
 - O endpoint `POST /v1/users/referrals/generate` gera o `ReferralCode` único e retorna o `referralLink` permanente
 - O endpoint `POST /v1/users/referrals/payout-pix-key/request-update` envia código de verificação por email para alteração da chave PIX de recebimento
@@ -186,7 +186,7 @@ Para casos em que a adquirente não permite reenviar webhook e a transação/saq
 |----------|--------|-----------|
 | `POST /v1/admin/transactions/{transactionId}/dev/reprocess-completed` | POST | Reprocessa a transação via fluxo de webhook com `targetStatus` (`Completed` ou `Failed`) |
 | `POST /v1/admin/cashouts/{cashoutId}/dev/reprocess-completed` | POST | Reprocessa o saque via fluxo de webhook com `targetStatus` (`Completed`, `Failed` ou `Rejected`) |
-| `POST /v1/admin/logs/acquirer-webhooks/{webhookLogId}/dev/reprocess` | POST | Reprocessa, do lado Safefy, o payload bruto salvo no `AcquirerWebhookLogs` |
+| `POST /v1/admin/logs/acquirer-webhooks/{webhookLogId}/dev/reprocess` | POST | Reprocessa, do lado SwiftPay, o payload bruto salvo no `AcquirerWebhookLogs` |
 
 Regras:
 - Somente usuários com role `God` podem executar os endpoints

@@ -1,7 +1,7 @@
-using safefy_api.Endpoints.Admin.Ranking.ReadAcquirerRanking;
-using safefy_api_core.Models.Database;
+using swiftpay_api.Endpoints.Admin.Ranking.ReadAcquirerRanking;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminAcquirerRankingMapper
 {
@@ -46,7 +46,7 @@ public sealed class AdminAcquirerRankingMetricsRow
     public string Name { get; set; } = string.Empty;
     public string? DisplayName { get; set; }
     public string? LogoUrl { get; set; }
-    public List<safefy_api_core.Models.Database.AcquirerOperationType> OperationTypes { get; set; } = [];
+    public List<swiftpay_api_core.Models.Database.AcquirerOperationType> OperationTypes { get; set; } = [];
     public int Position { get; set; }
     public int Score { get; set; }
     public decimal ApprovalRate { get; set; }

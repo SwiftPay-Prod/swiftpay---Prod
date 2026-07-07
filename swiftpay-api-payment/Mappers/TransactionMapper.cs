@@ -1,12 +1,12 @@
-using safefy_api_core.Models.Database;
-using safefy_api_core.Constants;
-using safefy_api_core.Utils;
-using safefy_api_payment.Endpoints.Transactions.Create;
-using safefy_api_payment.Endpoints.Transactions.Get;
-using safefy_api_payment.Endpoints.Transactions.List;
-using safefy_api_payment.Endpoints.Transactions.Simulate;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Endpoints.Transactions.Create;
+using swiftpay_api_payment.Endpoints.Transactions.Get;
+using swiftpay_api_payment.Endpoints.Transactions.List;
+using swiftpay_api_payment.Endpoints.Transactions.Simulate;
 
-namespace safefy_api_payment.Mappers;
+namespace swiftpay_api_payment.Mappers;
 
 public static class TransactionMapper
 {

@@ -1,16 +1,16 @@
-using safefy_api_core.Interfaces;
+using swiftpay_api_core.Interfaces;
 using System.Diagnostics;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
-using safefy_api_payment.Clients;
-using safefy_api_payment.Clients.Accithus;
-using safefy_api_payment.Clients.Accithus.Models.CreateTransaction;
-using safefy_api_payment.Clients.Accithus.Models.Withdrawals;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Interfaces.Acquirers;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Clients;
+using swiftpay_api_payment.Clients.Accithus;
+using swiftpay_api_payment.Clients.Accithus.Models.CreateTransaction;
+using swiftpay_api_payment.Clients.Accithus.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Services.Acquirers;
+namespace swiftpay_api_payment.Services.Acquirers;
 
 public sealed class AccithusService(
     IAccithusClient accithusClient,
@@ -238,7 +238,7 @@ public sealed class AccithusService(
             return Task.CompletedTask;
         }
 
-        return apiLogService.LogAsync(new safefy_api_core.Models.Inputs.ApiLogInput
+        return apiLogService.LogAsync(new swiftpay_api_core.Models.Inputs.ApiLogInput
         {
             Action = ApiLogAction.AcquirerRequestFailed,
             Status = ApiLogStatus.Failed,
@@ -273,7 +273,7 @@ public sealed class AccithusService(
             return email.Trim();
 
         var suffix = string.IsNullOrWhiteSpace(externalId) ? Guid.CreateVersion7().ToString("N") : externalId;
-        return $"cliente+{suffix}@safefy.com.br";
+        return $"cliente+{suffix}@swiftpay.com.br";
     }
 
     private static string NormalizeDocument(string? document)

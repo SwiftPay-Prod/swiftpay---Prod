@@ -1,8 +1,8 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
+using swiftpay_api.Endpoints.Models;
 
-namespace safefy_api.Endpoints.DevTools.CreateBulletin;
+namespace swiftpay_api.Endpoints.DevTools.CreateBulletin;
 
 public sealed class CreateBulletinRequest
 {

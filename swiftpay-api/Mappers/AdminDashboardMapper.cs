@@ -1,9 +1,9 @@
-using safefy_api.Endpoints.Admin.ReadAdminDashboard;
-using safefy_api_core.Models.Dashboard;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Utils;
+using swiftpay_api.Endpoints.Admin.ReadAdminDashboard;
+using swiftpay_api_core.Models.Dashboard;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Utils;
 
-namespace safefy_api.Mappers;
+namespace swiftpay_api.Mappers;
 
 public static class AdminDashboardMapper
 {

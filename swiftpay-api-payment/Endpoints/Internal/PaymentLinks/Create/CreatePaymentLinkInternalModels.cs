@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api_payment.Endpoints.Internal.PaymentLinks.Create;
+namespace swiftpay_api_payment.Endpoints.Internal.PaymentLinks.Create;
 
 public sealed class CreatePaymentLinkInternalRequest
 {

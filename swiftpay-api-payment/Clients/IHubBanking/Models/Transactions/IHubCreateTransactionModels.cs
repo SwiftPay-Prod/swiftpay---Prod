@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace safefy_api_payment.Clients.IHubBanking.Models.Transactions;
+namespace swiftpay_api_payment.Clients.IHubBanking.Models.Transactions;
 
 /// <summary>
 /// Request para criar uma transação PIX no IHub Banking.

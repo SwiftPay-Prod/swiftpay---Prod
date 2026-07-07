@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Repositories;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Repositories;
 
-namespace safefy_api_core.Extensions;
+namespace swiftpay_api_core.Extensions;
 
 public static class RepositoryExtensions
 {

@@ -1,9 +1,9 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Acquirer;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Acquirer;
 
-namespace safefy_api.Endpoints.Admin.Acquirers.ReadAcquirerRequiredFields;
+namespace swiftpay_api.Endpoints.Admin.Acquirers.ReadAcquirerRequiredFields;
 
 public sealed class ReadAcquirerRequiredFieldsRequest
 {

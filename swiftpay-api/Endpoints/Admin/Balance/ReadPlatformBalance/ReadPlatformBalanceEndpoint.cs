@@ -1,13 +1,13 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Utils;
-using safefy_api.EndpointsGroups;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Utils;
+using swiftpay_api.EndpointsGroups;
 
-namespace safefy_api.Endpoints.Admin.Balance.ReadPlatformBalance;
+namespace swiftpay_api.Endpoints.Admin.Balance.ReadPlatformBalance;
 
 public sealed class ReadPlatformBalanceEndpoint(
     PrimaryDbContext dbContext,
@@ -93,7 +93,7 @@ public sealed class ReadPlatformBalanceEndpoint(
 
                 var merchantBalance = snapshot?.MerchantBalance ?? 0;
                 var merchantAvailableBalance = snapshot?.MerchantAvailableBalance ?? 0;
-                var safefyProfit = calculationService.CalculateAvailableForWithdrawal(grossBalance, merchantAvailableBalance);
+                var swiftpayProfit = calculationService.CalculateAvailableForWithdrawal(grossBalance, merchantAvailableBalance);
 
                 var totalAcquirerFees = acquirerFeesByAcquirer.GetValueOrDefault(acquirerId, 0);
 
@@ -121,7 +121,7 @@ public sealed class ReadPlatformBalanceEndpoint(
                     GrossBalance = grossBalance,
                     MerchantBalance = merchantBalance,
                     MerchantAvailableBalance = merchantAvailableBalance,
-                    SafefyProfit = safefyProfit,
+                    SwiftpayProfit = swiftpayProfit,
                     TotalAcquirerFees = totalAcquirerFees,
                     PayoutFeeMode = payoutFeeMode,
                     PayoutFeeFixed = payoutFeeFixed,
@@ -139,7 +139,7 @@ public sealed class ReadPlatformBalanceEndpoint(
         var totalWithdrawalFee = acquirerBalances.Sum(a => a.WithdrawalFeeIfWithdrawAll);
         var totalAvailableForWithdrawal = acquirerBalances.Sum(a => a.AvailableForWithdrawal);
         var totalAcquirerGrossBalance = acquirerBalances.Sum(a => a.GrossBalance);
-        var totalSafefyProfit = acquirerBalances.Sum(a => a.SafefyProfit);
+        var totalSafefyProfit = acquirerBalances.Sum(a => a.SwiftpayProfit);
         var totalMerchantAvailable = acquirerBalances.Sum(a => a.MerchantAvailableBalance);
         var totalMerchantBalance = acquirerBalances.Sum(a => a.MerchantBalance);
         var totalMerchantBlocked = totalMerchantBalance - totalMerchantAvailable;

@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Filters;
+namespace swiftpay_api_payment.Filters;
 
 public class IpRateLimitPreProcessor(IWebHostEnvironment environment) : IGlobalPreProcessor
 {

@@ -1,14 +1,14 @@
 using FastEndpoints;
-using safefy_api_payment.Clients.IHubBanking.Models.Webhook;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_payment.EndpointsGroups.Acquirers;
-using safefy_api_payment.Services.Helpers;
+using swiftpay_api_payment.Clients.IHubBanking.Models.Webhook;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_payment.EndpointsGroups.Acquirers;
+using swiftpay_api_payment.Services.Helpers;
 
-namespace safefy_api_payment.Endpoints.Acquirers.IHubBanking.Webhook;
+namespace swiftpay_api_payment.Endpoints.Acquirers.IHubBanking.Webhook;
 
 /// <summary>
 /// Endpoint para receber webhooks do IHub Banking (Webhook V2).

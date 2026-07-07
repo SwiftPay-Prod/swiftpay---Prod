@@ -1,10 +1,10 @@
 using FastEndpoints;
 using FluentValidation;
-using safefy_api.Endpoints.Models;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Enum;
+using swiftpay_api.Endpoints.Models;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Enum;
 
-namespace safefy_api.Endpoints.Merchants.EmailTemplates.SendTestEmail;
+namespace swiftpay_api.Endpoints.Merchants.EmailTemplates.SendTestEmail;
 
 public sealed class SendTestEmailRequest
 {

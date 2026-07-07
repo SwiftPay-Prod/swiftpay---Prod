@@ -1,4 +1,4 @@
-namespace safefy_api_core.Models.Inputs;
+namespace swiftpay_api_core.Models.Inputs;
 
 public sealed class AcquirerWebhookLogInput
 {

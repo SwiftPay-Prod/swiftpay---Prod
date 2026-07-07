@@ -12,7 +12,7 @@ interface LayoutContextType {
 
 const LayoutContext = createContext<LayoutContextType | null>(null);
 
-const LAYOUT_STORAGE_KEY = 'safefy_layout_mode';
+const LAYOUT_STORAGE_KEY = 'swiftpay_layout_mode';
 const DEFAULT_LAYOUT: LayoutMode = 'sidebar-fixed';
 
 function getStoredLayoutMode(): LayoutMode {

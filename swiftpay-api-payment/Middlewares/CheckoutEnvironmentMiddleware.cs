@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Enum;
-using safefy_api_core.Services;
+using swiftpay_api_core.Models.Enum;
+using swiftpay_api_core.Services;
 
-namespace safefy_api_payment.Middlewares;
+namespace swiftpay_api_payment.Middlewares;
 
 public class CheckoutEnvironmentMiddleware
 {

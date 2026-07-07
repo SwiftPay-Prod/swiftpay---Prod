@@ -1,7 +1,7 @@
-using safefy_api_core.Models.Ledger;
-using safefy_api_payment.Endpoints.Balance.Get;
+using swiftpay_api_core.Models.Ledger;
+using swiftpay_api_payment.Endpoints.Balance.Get;
 
-namespace safefy_api_payment.Mappers;
+namespace swiftpay_api_payment.Mappers;
 
 public static class BalanceMapper
 {

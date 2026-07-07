@@ -5,7 +5,7 @@ import type { ProductType, CheckoutColorMode, PaymentMethod, PaymentStatus } fro
 // Re-export commonly used enums
 export type { PaymentMethod, PaymentStatus } from './enums';
 
-// Enums matching safefy-api-payment models
+// Enums matching swiftpay-api-payment models
 export type CheckoutStatus = "Draft" | "Active" | "Paused" | "Archived" | "Expired";
 export type CheckoutTemplateType = "SingleOrder" | "Catalog" | "Transparent";
 export type CouponDiscountType = "FixedAmount" | "Percentage";
@@ -508,7 +508,7 @@ export interface PaymentLinkData {
   showFees: boolean;
   feeAmounts: Record<string, number>;
   passFeeToCustomer: boolean;
-  showSafefyBranding: boolean;
+  showSwiftPayBranding: boolean;
   themeMode: 'Light' | 'Dark' | 'Auto' | null;
   logoUrl: string | null;
   productName: string | null;

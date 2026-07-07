@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using FastEndpoints;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Interfaces.Internal;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Interfaces.Internal;
 
-namespace safefy_api_payment.Filters;
+namespace swiftpay_api_payment.Filters;
 
 public class MerchantRateLimitPreProcessor(IWebHostEnvironment environment) : IGlobalPreProcessor
 {

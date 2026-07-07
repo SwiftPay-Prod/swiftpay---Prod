@@ -40,6 +40,6 @@ Startup não bloqueante:
 
 ## Migrations (LogDbContext)
 
-- O `LogDbContext` pertence ao `safefy-api-core`, mas as migrations do banco de logs vivem no projeto `safefy-api`
-- O `safefy-api-payment` nao deve criar schema nem executar migrations do banco de logs
+- O `LogDbContext` pertence ao `swiftpay-api-core`, mas as migrations do banco de logs vivem no projeto `swiftpay-api`
+- O `swiftpay-api-payment` nao deve criar schema nem executar migrations do banco de logs
 - No startup do payment, validar apenas conectividade com o banco de logs

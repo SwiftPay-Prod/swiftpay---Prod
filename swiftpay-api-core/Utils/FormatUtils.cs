@@ -1,7 +1,7 @@
 using System.Globalization;
-using safefy_api_core.Models.Database;
+using swiftpay_api_core.Models.Database;
 
-namespace safefy_api_core.Utils;
+namespace swiftpay_api_core.Utils;
 
 public static class FormatUtils
 {

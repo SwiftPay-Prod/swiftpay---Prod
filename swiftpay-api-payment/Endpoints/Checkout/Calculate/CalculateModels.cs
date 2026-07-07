@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 using FastEndpoints;
 using FluentValidation;
-using safefy_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Models;
 
-namespace safefy_api_payment.Endpoints.Checkout.Calculate;
+namespace swiftpay_api_payment.Endpoints.Checkout.Calculate;
 
 public sealed class CalculateRequest
 {

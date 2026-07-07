@@ -2,14 +2,14 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using safefy_api_payment.Clients.Accithus.Models;
-using safefy_api_payment.Clients.Accithus.Models.CreateTransaction;
-using safefy_api_payment.Clients.Accithus.Models.GetTransaction;
-using safefy_api_payment.Clients.Accithus.Models.Submerchant;
-using safefy_api_payment.Clients.Accithus.Models.Withdrawals;
-using safefy_api_payment.Interfaces.Acquirers;
+using swiftpay_api_payment.Clients.Accithus.Models;
+using swiftpay_api_payment.Clients.Accithus.Models.CreateTransaction;
+using swiftpay_api_payment.Clients.Accithus.Models.GetTransaction;
+using swiftpay_api_payment.Clients.Accithus.Models.Submerchant;
+using swiftpay_api_payment.Clients.Accithus.Models.Withdrawals;
+using swiftpay_api_payment.Interfaces.Acquirers;
 
-namespace safefy_api_payment.Clients.Accithus;
+namespace swiftpay_api_payment.Clients.Accithus;
 
 public sealed class AccithusClient(
     HttpClient httpClient,

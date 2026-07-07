@@ -1,9 +1,9 @@
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using safefy_api_core.Models.Messages;
-using safefy_api_payment.Interfaces;
+using swiftpay_api_core.Models.Messages;
+using swiftpay_api_payment.Interfaces;
 
-namespace safefy_api_payment.Consumers;
+namespace swiftpay_api_payment.Consumers;
 
 public sealed class SendWebhookConsumer(
     IServiceScopeFactory scopeFactory,

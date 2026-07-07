@@ -100,8 +100,8 @@ swiftpay/
 
 | Banco | Propósito | Tecnologia | Tabelas/Domain |
 |-------|----------|-----------|----------------|
-| **Primary DB** (`safefy`) | Dados operacionais da aplicação | PostgreSQL 15-17 | Users, Merchants, Payments, Payouts, Orders, Products, Accounts (Ledger), etc. |
-| **Logs DB** (`safefylogs`) | Auditoria e logs | PostgreSQL 15 | SecurityLogs, ApiLogs, EmailLogs, AcquirerWebhookLogs |
+| **Primary DB** (`swiftpay`) | Dados operacionais da aplicação | PostgreSQL 15-17 | Users, Merchants, Payments, Payouts, Orders, Products, Accounts (Ledger), etc. |
+| **Logs DB** (`swiftpaylogs`) | Auditoria e logs | PostgreSQL 15 | SecurityLogs, ApiLogs, EmailLogs, AcquirerWebhookLogs |
 
 ### Filtro de Ambiente (Query Filter)
 O `PrimaryDbContext` aplica um filtro global de `ApiEnvironment` (Sandbox/Production) automaticamente via `IEnvironmentProvider`. Em contexto HTTP, lê o header `X-Environment`. Em Consumers/Background Jobs, usa `HybridEnvironmentProvider.SetEnvironment()`.
@@ -112,28 +112,28 @@ O `PrimaryDbContext` aplica um filtro global de `ApiEnvironment` (Sandbox/Produc
 
 | Fila | Consumidor | Propósito | Publicador |
 |------|-----------|----------|-----------|
-| `safefy.ledger.pending` | RecordLedgerPendingConsumer | Registrar pagamento pendente no ledger | swiftpay-api-payment |
-| `safefy.payment.completed` | PaymentCompletedConsumer | Processar mudança de status de pagamento | swiftpay-api-payment |
-| `safefy.webhook.send` | SendWebhookConsumer | Enviar webhook HTTP ao merchant | PaymentCompletedConsumer |
-| `safefy.cashout.process` | ProcessCashoutConsumer | Executar saque na adquirente | swiftpay-api |
-| `safefy.cashout.webhook.send` | SendCashoutWebhookConsumer | Enviar webhook de saque ao merchant | CashoutService |
-| `safefy.email.customer` | SendCustomerEmailsConsumer | Enviar emails transacionais ao cliente | PaymentCompletedConsumer |
-| `safefy.digital.delivery` | ProcessDigitalDeliveryConsumer | Liberar entrega de itens digitais | SendCustomerEmailsConsumer |
-| `safefy.notification.created` | NotificationCreatedConsumer | Enviar notificação via SignalR | Vários |
-| `safefy.push.send` | SendPushNotificationConsumer | Enviar push notification (FCM) | Vários |
-| `safefy.dashboard.merchant` | ProcessMerchantDashboardConsumer | Atualizar cache do dashboard merchant | swiftpay-api |
-| `safefy.dashboard.admin` | ProcessAdminDashboardConsumer | Atualizar cache do dashboard admin | swiftpay-api |
-| `safefy.dashboard.acquirer` | ProcessAcquirerDashboardConsumer | Atualizar cache do dashboard adquirente | swiftpay-api |
-| `safefy.ranking.process` | ProcessRankingConsumer | Processar ranking de usuários | Hangfire (5 min) |
-| `safefy.ranking.referral` | ProcessReferralRankingConsumer | Processar ranking de referrals | Hangfire |
-| `safefy.ranking.acquirer` | ProcessAcquirerRankingConsumer | Processar ranking de adquirentes | Hangfire |
-| `safefy.balance.platform` | ProcessPlatformBalanceConsumer | Calcular saldo da plataforma | Vários |
-| `safefy.platform.payout` | ProcessPlatformPayoutConsumer | Processar payout da plataforma | Admin |
-| `safefy.platform.payout.item` | ProcessPlatformPayoutItemConsumer | Processar item de payout | Administrativo |
-| `safefy.platform.reconcile` | ReconcilePlatformBalanceConsumer | Reconciliar saldo da plataforma | Administrativo |
-| `safefy.reconciliation.process` | ProcessBankReconciliationConsumer | Executar reconciliação bancária | Vários |
-| `safefy.reconciliation.start-all` | StartAllReconciliationsConsumer | Iniciar reconciliações em massa | Administrativo |
-| `safefy.referral.historical` | ProcessReferralHistoricalCommissionConsumer | Compilar comissão histórica | Administrativo |
+| `swiftpay.ledger.pending` | RecordLedgerPendingConsumer | Registrar pagamento pendente no ledger | swiftpay-api-payment |
+| `swiftpay.payment.completed` | PaymentCompletedConsumer | Processar mudança de status de pagamento | swiftpay-api-payment |
+| `swiftpay.webhook.send` | SendWebhookConsumer | Enviar webhook HTTP ao merchant | PaymentCompletedConsumer |
+| `swiftpay.cashout.process` | ProcessCashoutConsumer | Executar saque na adquirente | swiftpay-api |
+| `swiftpay.cashout.webhook.send` | SendCashoutWebhookConsumer | Enviar webhook de saque ao merchant | CashoutService |
+| `swiftpay.email.customer` | SendCustomerEmailsConsumer | Enviar emails transacionais ao cliente | PaymentCompletedConsumer |
+| `swiftpay.digital.delivery` | ProcessDigitalDeliveryConsumer | Liberar entrega de itens digitais | SendCustomerEmailsConsumer |
+| `swiftpay.notification.created` | NotificationCreatedConsumer | Enviar notificação via SignalR | Vários |
+| `swiftpay.push.send` | SendPushNotificationConsumer | Enviar push notification (FCM) | Vários |
+| `swiftpay.dashboard.merchant` | ProcessMerchantDashboardConsumer | Atualizar cache do dashboard merchant | swiftpay-api |
+| `swiftpay.dashboard.admin` | ProcessAdminDashboardConsumer | Atualizar cache do dashboard admin | swiftpay-api |
+| `swiftpay.dashboard.acquirer` | ProcessAcquirerDashboardConsumer | Atualizar cache do dashboard adquirente | swiftpay-api |
+| `swiftpay.ranking.process` | ProcessRankingConsumer | Processar ranking de usuários | Hangfire (5 min) |
+| `swiftpay.ranking.referral` | ProcessReferralRankingConsumer | Processar ranking de referrals | Hangfire |
+| `swiftpay.ranking.acquirer` | ProcessAcquirerRankingConsumer | Processar ranking de adquirentes | Hangfire |
+| `swiftpay.balance.platform` | ProcessPlatformBalanceConsumer | Calcular saldo da plataforma | Vários |
+| `swiftpay.platform.payout` | ProcessPlatformPayoutConsumer | Processar payout da plataforma | Admin |
+| `swiftpay.platform.payout.item` | ProcessPlatformPayoutItemConsumer | Processar item de payout | Administrativo |
+| `swiftpay.platform.reconcile` | ReconcilePlatformBalanceConsumer | Reconciliar saldo da plataforma | Administrativo |
+| `swiftpay.reconciliation.process` | ProcessBankReconciliationConsumer | Executar reconciliação bancária | Vários |
+| `swiftpay.reconciliation.start-all` | StartAllReconciliationsConsumer | Iniciar reconciliações em massa | Administrativo |
+| `swiftpay.referral.historical` | ProcessReferralHistoricalCommissionConsumer | Compilar comissão histórica | Administrativo |
 
 ---
 

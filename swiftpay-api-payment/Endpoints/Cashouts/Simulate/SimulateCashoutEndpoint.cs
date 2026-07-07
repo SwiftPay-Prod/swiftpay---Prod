@@ -1,12 +1,12 @@
 using FastEndpoints;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Documentation;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Documentation;
 
-namespace safefy_api_payment.Endpoints.Cashouts.Simulate;
+namespace swiftpay_api_payment.Endpoints.Cashouts.Simulate;
 
 public sealed class SimulateCashoutEndpoint(
     ICashoutService cashoutService

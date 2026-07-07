@@ -1,18 +1,18 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using safefy_api_core.Database;
-using safefy_api_payment.Documentation;
-using safefy_api_payment.EndpointsGroups;
-using safefy_api_payment.Endpoints.Models;
-using safefy_api_payment.Endpoints.Utils;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Inputs;
-using safefy_api_core.Constants;
-using safefy_api_core.Utils;
-using safefy_api_payment.Mappers;
+using swiftpay_api_core.Database;
+using swiftpay_api_payment.Documentation;
+using swiftpay_api_payment.EndpointsGroups;
+using swiftpay_api_payment.Endpoints.Models;
+using swiftpay_api_payment.Endpoints.Utils;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Constants;
+using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Mappers;
 
-namespace safefy_api_payment.Endpoints.Customers.Create;
+namespace swiftpay_api_payment.Endpoints.Customers.Create;
 
 public sealed class CreateCustomerEndpoint(
     PrimaryDbContext dbContext,

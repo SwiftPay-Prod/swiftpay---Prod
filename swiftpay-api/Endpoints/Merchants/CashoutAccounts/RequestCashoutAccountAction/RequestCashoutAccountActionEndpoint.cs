@@ -1,15 +1,15 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using safefy_api_core.Database;
-using safefy_api.EndpointsGroups;
-using safefy_api_core.Utils;
-using safefy_api_core.Models.Database;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Settings;
-using safefy_api_core.Interfaces;
+using swiftpay_api_core.Database;
+using swiftpay_api.EndpointsGroups;
+using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Interfaces;
 
-namespace safefy_api.Endpoints.Merchants.CashoutAccounts.RequestCashoutAccountAction;
+namespace swiftpay_api.Endpoints.Merchants.CashoutAccounts.RequestCashoutAccountAction;
 
 public sealed class RequestCashoutAccountActionEndpoint(
     PrimaryDbContext dbContext,

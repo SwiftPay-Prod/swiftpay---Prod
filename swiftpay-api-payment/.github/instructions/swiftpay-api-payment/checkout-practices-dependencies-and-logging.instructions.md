@@ -78,7 +78,7 @@ logger.LogWarning("Rate limit exceeded for {MerchantId}", merchantId);
 - Todo erro retornado pelos clients de adquirentes deve ser registrado via `IApiLogService`
 - Use `ApiLogAction.AcquirerRequestFailed` e `ApiLogStatus.Failed`
 - Sempre salvar `StatusCode`, `ResponseBody`, `ErrorCode`, `AcquirerId`, `AcquirerType` e `MerchantId`
-- Esses logs alimentam a tela de auditoria do admin no safefy-web
+- Esses logs alimentam a tela de auditoria do admin no swiftpay-web
 
 **Payload mínimo obrigatório para erros de adquirente/saque:**
 - `RequestBody` com payload enviado (sanitizado/mascarado para campos sensíveis)

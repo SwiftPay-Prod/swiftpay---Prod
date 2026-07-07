@@ -1,14 +1,14 @@
 using FastEndpoints;
-using safefy_api_payment.Clients.ActivePayments.Models.Webhook;
-using safefy_api_core.Database;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Database;
-using safefy_api_payment.EndpointsGroups.Acquirers;
-using safefy_api_payment.Interfaces;
-using safefy_api_payment.Services.Helpers;
-using safefy_api_payment.Services.Acquirers.Utils;
+using swiftpay_api_payment.Clients.ActivePayments.Models.Webhook;
+using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.EndpointsGroups.Acquirers;
+using swiftpay_api_payment.Interfaces;
+using swiftpay_api_payment.Services.Helpers;
+using swiftpay_api_payment.Services.Acquirers.Utils;
 
-namespace safefy_api_payment.Endpoints.Acquirers.ActivePayments.Webhook;
+namespace swiftpay_api_payment.Endpoints.Acquirers.ActivePayments.Webhook;
 
 public sealed class ActivePaymentsWebhookEndpoint(
     IPaymentProcessingService paymentProcessingService,

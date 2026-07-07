@@ -4,11 +4,11 @@ using System.Net.Mail;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Resend;
-using safefy_api_core.Interfaces;
-using safefy_api_core.Models.Email;
-using safefy_api_core.Models.Settings;
+using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Settings;
 
-namespace safefy_api_core.Services;
+namespace swiftpay_api_core.Services;
 
 public class EmailService(
     IOptions<EmailSettingsOptions> emailSettings,

@@ -1,14 +1,14 @@
-using safefy_api_core.Extensions;
+using swiftpay_api_core.Extensions;
 
-namespace safefy_api.Extensions;
+namespace swiftpay_api.Extensions;
 
 public static class DatabaseExtensions
 {
     public static IServiceCollection AddDatabases(this IServiceCollection services)
     {
-        services.AddPrimaryDbContext(migrationsAssembly: "safefy-api");
+        services.AddPrimaryDbContext(migrationsAssembly: "swiftpay-api");
 
-        services.AddLogDbContext(migrationsAssembly: "safefy-api");
+        services.AddLogDbContext(migrationsAssembly: "swiftpay-api");
 
         return services;
     }

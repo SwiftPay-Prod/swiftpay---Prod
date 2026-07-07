@@ -1,7 +1,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace safefy_api_payment.Endpoints.Internal.Cashouts.Cancel;
+namespace swiftpay_api_payment.Endpoints.Internal.Cashouts.Cancel;
 
 public sealed class CancelCashoutInternalRequest
 {
