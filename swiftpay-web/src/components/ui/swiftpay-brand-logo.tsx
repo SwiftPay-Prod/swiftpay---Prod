@@ -12,7 +12,7 @@ function joinClasses(...classes: Array<string | undefined>) {
 	return classes.filter(Boolean).join(' ');
 }
 
-const HORIZONTAL_LOGO_RATIO = 882 / 248;
+const LOGO_ASPECT_RATIO = 1439 / 1607;
 
 export function SwiftPayBrandLogo({
 	className,
@@ -21,28 +21,19 @@ export function SwiftPayBrandLogo({
 	iconSize = 32,
 	priority = false,
 }: SwiftPayBrandLogoProps) {
-	const logoWidth = Math.round(iconSize * HORIZONTAL_LOGO_RATIO);
-	const logoClassName = joinClasses('h-auto w-auto', iconClassName, textClassName);
+	const logoHeight = iconSize;
+	const logoWidth = Math.round(logoHeight * LOGO_ASPECT_RATIO);
 
 	return (
 		<div className={joinClasses('inline-flex items-center justify-center', className)}>
 			<Image
-				src="/logos/swiftpay-horizontal-light.png"
+				src="/logos/swiftpay-logo.png"
 				alt="SwiftPay"
 				width={logoWidth}
-				height={iconSize}
+				height={logoHeight}
 				sizes={`${logoWidth}px`}
 				priority={priority}
-				className={joinClasses('block dark:hidden', logoClassName)}
-			/>
-			<Image
-				src="/logos/swiftpay-horizontal-dark.png"
-				alt="SwiftPay"
-				width={logoWidth}
-				height={iconSize}
-				sizes={`${logoWidth}px`}
-				priority={priority}
-				className={joinClasses('hidden dark:block', logoClassName)}
+				className={joinClasses('h-auto w-auto', iconClassName, textClassName)}
 			/>
 		</div>
 	);
