@@ -40,7 +40,7 @@ export default function AuthPage() {
 			<DeviceRevokedModalProvider />
 			<div className="hidden lg:flex lg:flex-1 bg-black dark:bg-black relative">
 				<div className="flex flex-col justify-between items-start p-8 w-full">
-					<SwiftPayBrandLogo iconSize={30} textClassName="text-2xl" logoSrc="/logos/swiftpay-horizontal-dark.png" />
+					<span className="text-white text-2xl font-bold tracking-tight">SwiftPay</span>
 
 					<div className="max-w-lg">
 						<p className="text-neutral-400 text-lg leading-relaxed">
