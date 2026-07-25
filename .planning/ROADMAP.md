@@ -11,7 +11,7 @@
 | 5 | Config, Testes e Docs | Atualizar env vars, testes e documentação | ✅ |
 | 6 | Validação Final | Build, verificação e rename do diretório pai | ✅ |
 | 7 | Visual Redesign | Tema Vercel-style, fontes, layout, landing page | 🔷 Futuro |
-| 8 | Produção | SSL, deploy production-grade, monitoramento, backups, CI/CD | 🔷 Planejar |
+| 8 | Produção | SSL, deploy production-grade, monitoramento, backups, CI/CD | ✅ |
 
 ---
 

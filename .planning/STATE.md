@@ -10,17 +10,16 @@
 
 ## Current Phase
 
-**Phase:** 7 — Visual Redesign
-**Phase Goal:** Tema Vercel-style, fontes, layout, landing page
-**Started:** 2026-07-07
-**Completed:** —
+**Phase:** 8 — Produção
+**Phase Goal:** SSL, deploy production-grade, monitoramento, backups, CI/CD
+**Started:** 2026-07-25
+**Completed:** 2026-07-25
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-07-06)
 
 **Core value:** Processar pagamentos no Brasil de forma confiável, rápida e com suporte a múltiplos adquirentes
-**Current focus:** Rebranding Safefy → SwiftPay — COMPLETED
 
 ## Phase Memory
 
@@ -33,7 +32,9 @@ See: `.planning/PROJECT.md` (updated 2026-07-06)
 | 3 | Frontend e Assets | ✅ |
 | 4 | Mensageria e Webhooks | ✅ |
 | 5 | Config, Testes e Docs | ✅ |
-| 6 | Validação Final | ⏳ Parcial |
+| 6 | Validação Final | ✅ |
+| 7 | Visual Redesign | 🔷 Futuro |
+| 8 | Produção | ✅ |
 
 ### Quick Tasks Completed
 
@@ -41,16 +42,11 @@ See: `.planning/PROJECT.md` (updated 2026-07-06)
 |---|-------------|------|--------|-----------|
 | 260724-kyl | Apply official SwiftPay branding | 2026-07-24 | 8582444 | [260724-kyl-apply-official-swiftpay-branding-replace](./quick/260724-kyl-apply-official-swiftpay-branding-replace/) |
 
-### Current Phase
-
-| # | Phase | Status |
-|---|-------|--------|
-| 7 | Visual Redesign | 🔷 Planejar |
-
 ### Active Decisions
 
 | Decision | Due | Status |
 |----------|-----|--------|
-| Estratégia headers webhook | Fase 4 | ✅ Mudar tudo |
-| Estratégia filas RabbitMQ | Fase 4 | ✅ Mudar tudo |
-| Renomear diretório pai | Pós-rebranding | ⏳ Pendente |
+| Frontend na VPS (não Vercel) | Produção | ✅ |
+| SSL Let's Encrypt | Produção | ✅ |
+| Backup PostgreSQL automático | Produção | ✅ |
+| CI/CD GitHub Actions | Produção | ✅ |
