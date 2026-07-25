@@ -1,52 +1,47 @@
-# STATE.md
-
-## Runway Status
-
-| Check | Status |
-|-------|--------|
-| Planning initialized | ✓ |
-| Agents installed | ✓ |
-| Last crash recovery | — |
-
-## Current Phase
-
-**Phase:** 8 — Produção
-**Phase Goal:** SSL, deploy production-grade, monitoramento, backups, CI/CD
-**Started:** 2026-07-25
-**Completed:** 2026-07-25
+# Project State
 
 ## Project Reference
 
-See: `.planning/PROJECT.md` (updated 2026-07-06)
+See: .planning/PROJECT.md (updated 2026-07-25)
 
-**Core value:** Processar pagamentos no Brasil de forma confiável, rápida e com suporte a múltiplos adquirentes
+**Core value:** Processar pagamentos com rapidez e confiabilidade
+**Current focus:** Correção de logos e finalização da Fase 9 (MagicPay)
 
-## Phase Memory
+## Current Phase
 
-### Completed Phases
+**Phase 9** — Integração MagicPay como adquirente único
 
-| # | Phase | Status |
-|---|-------|--------|
-| 1 | Namespaces .NET | ✅ |
-| 2 | Arquivos e Diretórios | ✅ |
-| 3 | Frontend e Assets | ✅ |
-| 4 | Mensageria e Webhooks | ✅ |
-| 5 | Config, Testes e Docs | ✅ |
-| 6 | Validação Final | ✅ |
-| 7 | Visual Redesign | 🔷 Futuro |
-| 8 | Produção | ✅ |
+### Status
 
-### Quick Tasks Completed
+| Wave | Status | Description |
+|------|--------|-------------|
+| 9.1 | ✅ Done | Cliente HTTP MagicPay (5 endpoints) |
+| 9.2 | ✅ Done | Models de requisição/resposta/webhook |
+| 9.3 | ✅ Done | MagicPayService (PIX + Saque via IAcquirerService) |
+| 9.4 | ✅ Done | Webhook endpoint com validação HMAC |
+| 9.5 | ✅ Done | Cartão de Crédito e Boleto via MagicPay |
+| 9.6 | ✅ Done | Seed, DI, registros, build |
+| 9.7 | ✅ Done | Deploy produção |
+| 9.8 | 🔴 Pending | Correção de logos (safefy → swiftpay) |
 
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
-| 260724-kyl | Apply official SwiftPay branding | 2026-07-24 | 8582444 | [260724-kyl-apply-official-swiftpay-branding-replace](./quick/260724-kyl-apply-official-swiftpay-branding-replace/) |
+### Blockers
+
+- (none)
+
+## Memory
 
 ### Active Decisions
 
-| Decision | Due | Status |
-|----------|-----|--------|
-| Frontend na VPS (não Vercel) | Produção | ✅ |
-| SSL Let's Encrypt | Produção | ✅ |
-| Backup PostgreSQL automático | Produção | ✅ |
-| CI/CD GitHub Actions | Produção | ✅ |
+- MagicPay é adquirente único
+- API Key nos DefaultCredentials do seed
+- Webhook HMAC usa header X-Signature
+
+### Gotchas
+
+- Logos horizontais (`swiftpay-horizontal-dark.png`, etc.) foram apenas renomeados de safefy-* mas conteúdo da imagem ainda é Safefy
+- Docker build cache não invalidou no primeiro deploy (precisa rebuild manual)
+- `AcquirerClientResponse<T>` requer `using swiftpay_api_payment.Clients;`
+
+---
+
+*Last updated: 2026-07-25*
