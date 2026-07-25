@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-07-25)
 | 9.5 | ✅ Done | Cartão de Crédito e Boleto via MagicPay |
 | 9.6 | ✅ Done | Seed, DI, registros, build |
 | 9.7 | ✅ Done | Deploy produção |
-| 9.8 | 🔴 Pending | Correção de logos (safefy → swiftpay) |
+| 9.8 | ✅ Done | Correção de logos (safefy → swiftpay) |
 
 ### Blockers
 
