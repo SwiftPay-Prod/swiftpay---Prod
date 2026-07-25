@@ -1,12 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
 import { Accordion, Switch, ListBox, Header, Label, Description, Separator, Popover, Button } from '@heroui/react';
 import { AvatarUser } from '@/components/ui/avatar-user';
 import type { Key } from '@react-types/shared';
 import { Icon } from '@/components/ui/icon';
 import {
 	ArrowDown01Icon,
+	Logout01Icon,
 	SecurityLockIcon,
 	Settings05Icon,
 	StarAward02Icon,
@@ -17,6 +19,7 @@ import { useSidebar } from '@/contexts/sidebar-context';
 import { useMerchant } from '@/contexts/merchant-context';
 import { useUser } from '@/contexts/user-context';
 import { UserMetaCard } from '@/components/panel/header/user-meta-card';
+import { ConfirmationModal } from '@/components/ui/confirmation-modal';
 import type { MerchantLevel } from '@/types/merchant/achievements';
 import { Routes } from '@/router/routes';
 import { useEnvironment } from '@/contexts/environment-context';
@@ -35,6 +38,8 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 	const showFull = forceFull || (isMobile ? isOpen : isExpanded);
 	const { isSandbox, toggleEnvironment, isChangingEnvironment } = useEnvironment();
 	const { isVisible: isBalanceVisible } = useBalanceVisibility();
+	const [isPending, startTransition] = useTransition();
+	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
 	const showEnvironmentSwitch =
 		selectedMerchant && isMerchantApproved(selectedMerchant.status, selectedMerchant.kycStatus);
@@ -58,6 +63,13 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 		navigateTo(Routes.panel.referrals);
 	};
 
+	const performLogout = () => {
+		startTransition(async () => {
+			closeSidebar();
+			router.push("/api/auth/signout");
+		});
+	};
+
 	function handleUserMenuAction(key: Key) {
 		switch (String(key)) {
 			case 'profile':
@@ -77,6 +89,9 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 				break;
 			case 'apienvironment':
 				toggleEnvironment();
+				break;
+			case 'logout':
+				setShowLogoutConfirm(true);
 				break;
 			default:
 				break;
@@ -139,6 +154,13 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 						<Description>Preferências pessoais</Description>
 					</div>
 				</ListBox.Item>
+				<ListBox.Item key="logout" id="logout" textValue="Sair" className="text-danger">
+					<Icon icon={Logout01Icon} className="icon-md" />
+					<div className="flex flex-col">
+						<Label>Sair</Label>
+						<Description>Encerrar sessão</Description>
+					</div>
+				</ListBox.Item>
 			</ListBox.Section>
 			{showEnvironmentSwitch && (
 				<>
@@ -168,53 +190,77 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 
 	if (!showFull) {
 		return (
-			<div className="flex justify-center py-2">
-				<Popover>
-					<Popover.Trigger>
-						<Button variant="ghost" isIconOnly className="h-9 w-9" aria-label="Menu do usuário">
-							<AvatarUser
-								name={user.name}
-								profileImageUrl={user.profileImageUrl}
-								borderImageUrl={user.selectedBorderImageUrl}
-								size="sm"
-							/>
-						</Button>
-					</Popover.Trigger>
-					<Popover.Content placement="right" className="w-72">
-						<Popover.Dialog>{userActions}</Popover.Dialog>
-					</Popover.Content>
-				</Popover>
-			</div>
+			<>
+				<div className="flex justify-center py-2">
+					<Popover>
+						<Popover.Trigger>
+							<Button variant="ghost" isIconOnly className="h-9 w-9" aria-label="Menu do usuário">
+								<AvatarUser
+									name={user.name}
+									profileImageUrl={user.profileImageUrl}
+									borderImageUrl={user.selectedBorderImageUrl}
+									size="sm"
+								/>
+							</Button>
+						</Popover.Trigger>
+						<Popover.Content placement="right" className="w-72">
+							<Popover.Dialog>{userActions}</Popover.Dialog>
+						</Popover.Content>
+					</Popover>
+				</div>
+				<ConfirmationModal
+					isOpen={showLogoutConfirm}
+					onOpenChange={setShowLogoutConfirm}
+					title="Sair da plataforma"
+					description="Tem certeza que deseja encerrar sua sessão agora?"
+					confirmLabel="Sair"
+					status="danger"
+					isPending={isPending}
+					onConfirm={performLogout}
+				/>
+			</>
 		);
 	}
 
 	return (
-		<div className="flex flex-col gap-2">
-			{isMobile && levelInfo && (
-				<UserMetaCard
-					level={levelInfo.current as MerchantLevel}
-					progress={levelInfo.progress}
-					displayName={levelInfo.currentDisplayName}
-					nextLevelDisplayName={levelInfo.nextLevelDisplayName}
-					totalVolume={levelInfo.totalVolume}
-					maxThreshold={levelInfo.maxThreshold}
-					isBalanceVisible={isBalanceVisible}
-					size="sidebar"
-				/>
-			)}
-			<Accordion hideSeparator className="px-0">
-				<Accordion.Item id="user-menu">
-					<Accordion.Heading>
-						<Accordion.Trigger className="flex items-center gap-2 w-full hover:bg-surface-secondary rounded-lg p-2 transition-colors">
-							{userTrigger}
-							<Accordion.Indicator>
-								<Icon icon={ArrowDown01Icon} className="icon-sm text-muted shrink-0" />
-							</Accordion.Indicator>
-						</Accordion.Trigger>
-					</Accordion.Heading>
-					<Accordion.Panel>{userActions}</Accordion.Panel>
-				</Accordion.Item>
-			</Accordion>
-		</div>
+		<>
+			<div className="flex flex-col gap-2">
+				{isMobile && levelInfo && (
+					<UserMetaCard
+						level={levelInfo.current as MerchantLevel}
+						progress={levelInfo.progress}
+						displayName={levelInfo.currentDisplayName}
+						nextLevelDisplayName={levelInfo.nextLevelDisplayName}
+						totalVolume={levelInfo.totalVolume}
+						maxThreshold={levelInfo.maxThreshold}
+						isBalanceVisible={isBalanceVisible}
+						size="sidebar"
+					/>
+				)}
+				<Accordion hideSeparator className="px-0">
+					<Accordion.Item id="user-menu">
+						<Accordion.Heading>
+							<Accordion.Trigger className="flex items-center gap-2 w-full hover:bg-surface-secondary rounded-lg p-2 transition-colors">
+								{userTrigger}
+								<Accordion.Indicator>
+									<Icon icon={ArrowDown01Icon} className="icon-sm text-muted shrink-0" />
+								</Accordion.Indicator>
+							</Accordion.Trigger>
+						</Accordion.Heading>
+						<Accordion.Panel>{userActions}</Accordion.Panel>
+					</Accordion.Item>
+				</Accordion>
+			</div>
+			<ConfirmationModal
+				isOpen={showLogoutConfirm}
+				onOpenChange={setShowLogoutConfirm}
+				title="Sair da plataforma"
+				description="Tem certeza que deseja encerrar sua sessão agora?"
+				confirmLabel="Sair"
+				status="danger"
+				isPending={isPending}
+				onConfirm={performLogout}
+			/>
+		</>
 	);
 }
