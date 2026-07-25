@@ -3,6 +3,7 @@ using System.Diagnostics;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Utils;
+using swiftpay_api_payment.Clients;
 using swiftpay_api_payment.Clients.MagicPay.Models;
 using swiftpay_api_payment.Endpoints.Utils;
 using swiftpay_api_payment.Interfaces;
