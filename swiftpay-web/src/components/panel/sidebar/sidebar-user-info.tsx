@@ -7,6 +7,7 @@ import type { Key } from '@react-types/shared';
 import { Icon } from '@/components/ui/icon';
 import {
 	ArrowDown01Icon,
+	Logout01Icon,
 	SecurityLockIcon,
 	Settings05Icon,
 	StarAward02Icon,
@@ -58,6 +59,11 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 		navigateTo(Routes.panel.referrals);
 	};
 
+	const handleLogout = () => {
+		if (isMobile) closeSidebar();
+		router.push('/api/auth/signout');
+	};
+
 	function handleUserMenuAction(key: Key) {
 		switch (String(key)) {
 			case 'profile':
@@ -74,6 +80,9 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 				break;
 			case 'settings':
 				handleSettings();
+				break;
+			case 'logout':
+				handleLogout();
 				break;
 			case 'apienvironment':
 				toggleEnvironment();
@@ -137,6 +146,14 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 					<div className="flex flex-col">
 						<Label>Ajustes</Label>
 						<Description>Preferências pessoais</Description>
+					</div>
+				</ListBox.Item>
+				<Separator />
+				<ListBox.Item key="logout" id="logout" textValue="Sair">
+					<Icon icon={Logout01Icon} className="icon-md text-danger" />
+					<div className="flex flex-col">
+						<Label className="text-danger">Sair</Label>
+						<Description>Encerrar sessão atual</Description>
 					</div>
 				</ListBox.Item>
 			</ListBox.Section>
