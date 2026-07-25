@@ -10,6 +10,7 @@ using swiftpay_api_core.Utils;
 using swiftpay_api_payment.Clients.ActivePayments.Models.CreateBillet;
 using swiftpay_api_payment.Clients.Coldfy.Models.Payments;
 using swiftpay_api_payment.Clients.HeartPay.Models.Boletos;
+using swiftpay_api_payment.Clients.MagicPay.Models;
 using swiftpay_api_payment.Interfaces;
 using swiftpay_api_payment.Interfaces.Acquirers;
 using swiftpay_api_payment.Interfaces.Internal;
@@ -26,6 +27,7 @@ public class BoletoTransactionService(
     IActivePaymentsClient activePaymentsClient,
     IColdfyClient coldfyClient,
     IHeartPayClient heartPayClient,
+    IMagicPayClient magicPayClient,
     IMessagePublisher messagePublisher,
     IMerchantCalculationService merchantCalculationService,
     IApiLogService apiLogService,
@@ -484,6 +486,89 @@ public class BoletoTransactionService(
                         PixCopyAndPaste = heartPayResponse.Data.BrCode,
                         PixExpiresAt = EnsureUtc(heartPayResponse.Data.PixExpiresAt),
                         DueDate = EnsureUtc(heartPayResponse.Data.DueDate ?? input.BoletoDueDate)
+                    };
+
+                    boletoDto = MapBoletoDto(boletoEntity);
+                }
+                else if (acquirerConfig.AcquirerType == AcquirerType.MagicPay)
+                {
+                    var apiKey = acquirerConfig.Config.GetRequiredCredential("apiKey");
+                    var normalizedDocument = new string(customerDocument.Where(char.IsDigit).ToArray());
+                    var dueDateStr = input.BoletoDueDate.Value.ToString("yyyy-MM-dd");
+
+                    var magicPayRequest = new MagicPayPaymentRequest
+                    {
+                        Amount = input.Amount,
+                        Currency = "BRL",
+                        Method = MagicPayPaymentMethod.BOLETO,
+                        Description = input.BoletoInstructions ?? input.Description,
+                        ExternalRef = input.ExternalId ?? payment.Id.ToString("N"),
+                        NotificationUrl = BuildWebhookUrl(acquirerConfig.Config, acquirerConfig.AcquirerType),
+                        Payer = new MagicPayPayer
+                        {
+                            Name = customer.Name,
+                            TaxId = normalizedDocument,
+                            Email = customer.Email,
+                            Phone = ResolveCustomerPhone(customer.Phone, input.CustomerPhone)
+                        },
+                        Boleto = new MagicPayBoleto
+                        {
+                            DueDate = dueDateStr,
+                            Instructions = input.BoletoInstructions ?? input.Description,
+                            Street = address.Street,
+                            Number = address.Number,
+                            Complement = address.Complement,
+                            District = address.District,
+                            City = address.City,
+                            State = address.State,
+                            ZipCode = address.ZipCode
+                        }
+                    };
+
+                    var magicPayResponse = await magicPayClient.CreatePaymentAsync(
+                        acquirerConfig.Config.ApiBaseUrl,
+                        apiKey,
+                        magicPayRequest);
+
+                    if (!magicPayResponse.Success || magicPayResponse.Data == null || string.IsNullOrWhiteSpace(magicPayResponse.Data.Id))
+                    {
+                        await apiLogService.LogAsync(new swiftpay_api_core.Models.Inputs.ApiLogInput
+                        {
+                            Action = ApiLogAction.AcquirerRequestFailed,
+                            Status = ApiLogStatus.Failed,
+                            MerchantId = input.MerchantId,
+                            HttpMethod = "POST",
+                            Endpoint = $"{acquirerConfig.Config.ApiBaseUrl}/payment",
+                            StatusCode = magicPayResponse.StatusCode ?? 0,
+                            Details = $"CreateBoleto: {magicPayResponse.ErrorMessage ?? "Erro ao processar requisicao."}",
+                            ErrorCode = magicPayResponse.ErrorCode,
+                            ResponseBody = magicPayResponse.ResponseBody,
+                            AcquirerId = acquirerConfig.Config.AcquirerId,
+                            AcquirerType = acquirerConfig.AcquirerType.ToString(),
+                            ResourceType = ApiLogResourceType.Payment
+                        });
+
+                        return PaymentMethodResult.Fail(
+                            BuildBoletoAcquirerFailureMessage(magicPayResponse.ErrorMessage),
+                            PaymentApiErrorCodes.InternalError,
+                            500);
+                    }
+
+                    payment.AcquirerPaymentId = magicPayResponse.Data.Id;
+                    payment.AcquirerStatus = magicPayResponse.Data.Status.ToString();
+
+                    boletoEntity = new swiftpay_api_core.Models.Database.PaymentBoleto
+                    {
+                        Id = Guid.CreateVersion7(),
+                        PaymentId = payment.Id,
+                        Barcode = magicPayResponse.Data.Data?.Barcode,
+                        DigitableLine = magicPayResponse.Data.Data?.DigitableLine,
+                        PdfUrl = magicPayResponse.Data.Data?.PdfUrl,
+                        RecipientName = null,
+                        RecipientDocument = null,
+                        PixCopyAndPaste = magicPayResponse.Data.Data?.Copypaste,
+                        PixExpiresAt = null,
+                        DueDate = EnsureUtc(input.BoletoDueDate)
                     };
 
                     boletoDto = MapBoletoDto(boletoEntity);

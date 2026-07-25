@@ -274,7 +274,8 @@ public enum AcquirerType
     Pluggou,
     HunterPay,
     HeartPay,
-    Accithus
+    Accithus,
+    MagicPay
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]

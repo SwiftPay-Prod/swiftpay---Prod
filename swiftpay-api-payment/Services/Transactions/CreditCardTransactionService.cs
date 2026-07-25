@@ -12,6 +12,7 @@ using swiftpay_api_core.Utils;
 using swiftpay_api_payment.Clients;
 using swiftpay_api_payment.Clients.Accithus;
 using swiftpay_api_payment.Clients.Accithus.Models.CreateTransaction;
+using swiftpay_api_payment.Clients.MagicPay.Models;
 using swiftpay_api_payment.Interfaces;
 using swiftpay_api_payment.Interfaces.Acquirers;
 using swiftpay_api_payment.Interfaces.Internal;
@@ -24,6 +25,7 @@ public class CreditCardTransactionService(
     PrimaryDbContext dbContext,
     IAcquirerConfigService acquirerConfigService,
     IAccithusClient accithusClient,
+    IMagicPayClient magicPayClient,
     IMessagePublisher messagePublisher,
     IMerchantCalculationService merchantCalculationService,
     IApiLogService apiLogService,
@@ -178,7 +180,7 @@ public class CreditCardTransactionService(
                     400);
             }
 
-            if (acquirerConfig.AcquirerType != AcquirerType.Accithus)
+            if (acquirerConfig.AcquirerType != AcquirerType.Accithus && acquirerConfig.AcquirerType != AcquirerType.MagicPay)
             {
                 return PaymentMethodResult.Fail(
                     "Adquirente configurado não suporta cartão de crédito.",
@@ -186,7 +188,16 @@ public class CreditCardTransactionService(
                     400);
             }
 
-            if (!acquirerConfig.Config.HasCredential("publicKey") || !acquirerConfig.Config.HasCredential("secretKey"))
+            var supportsAccithus = acquirerConfig.AcquirerType == AcquirerType.Accithus;
+            if (supportsAccithus && (!acquirerConfig.Config.HasCredential("publicKey") || !acquirerConfig.Config.HasCredential("secretKey")))
+            {
+                return PaymentMethodResult.Fail(
+                    "Credenciais de adquirente não configuradas.",
+                    PaymentApiErrorCodes.InvalidCredentials,
+                    400);
+            }
+
+            if (!supportsAccithus && !acquirerConfig.Config.HasCredential("apiKey"))
             {
                 return PaymentMethodResult.Fail(
                     "Credenciais de adquirente não configuradas.",
@@ -231,7 +242,7 @@ public class CreditCardTransactionService(
                 payment.AcquirerStatus = "pending";
                 paymentCreditCard = CreatePaymentCreditCard(payment.Id, input, cardData, null, null, null);
             }
-            else
+            else if (supportsAccithus)
             {
                 var authHeader = AccithusClient.BuildAuthHeader(
                     acquirerConfig.Config.GetRequiredCredential("publicKey"),
@@ -266,7 +277,7 @@ public class CreditCardTransactionService(
 
                 if (!response.Success || response.Data == null || string.IsNullOrWhiteSpace(response.Data.Id))
                 {
-                    await LogAcquirerErrorAsync(acquirerConfig.Config, response, requestPayload, stopwatch.ElapsedMilliseconds);
+                    await LogAccithusErrorAsync(acquirerConfig.Config, response, requestPayload, stopwatch.ElapsedMilliseconds);
 
                     return PaymentMethodResult.Fail(
                         response.ErrorMessage ?? "Falha ao processar pagamento com cartão.",
@@ -288,6 +299,63 @@ public class CreditCardTransactionService(
                     response.Data.Nsu ?? cardResponse?.Nsu,
                     response.Data.Last4 ?? cardResponse?.Last4,
                     response.Data.Installments ?? cardResponse?.Installments);
+            }
+            else
+            {
+                var apiKey = acquirerConfig.Config.GetRequiredCredential("apiKey");
+
+                var magicPayRequest = new MagicPayPaymentRequest
+                {
+                    Amount = input.Amount,
+                    Currency = "BRL",
+                    Method = MagicPayPaymentMethod.CREDIT_CARD,
+                    Description = input.Description,
+                    ExternalRef = input.ExternalId ?? payment.Id.ToString("N"),
+                    NotificationUrl = AcquirerWebhookUtils.BuildWebhookUrl(acquirerConfig.Config.PlatformBaseUrl, AcquirerType.MagicPay),
+                    Payer = new MagicPayPayer
+                    {
+                        Name = customer.Name,
+                        TaxId = customer.Document,
+                        Email = customer.Email
+                    },
+                    Card = new MagicPayCard
+                    {
+                        Number = cardData.Number,
+                        HolderName = cardData.HolderName,
+                        ExpirationMonth = cardData.ExpirationMonth.ToString("D2"),
+                        ExpirationYear = cardData.ExpirationYear.ToString(),
+                        Cvv = cardCvv
+                    },
+                    Installments = input.Installments
+                };
+
+                var stopwatch = Stopwatch.StartNew();
+                var response = await magicPayClient.CreatePaymentAsync(acquirerConfig.Config.ApiBaseUrl, apiKey, magicPayRequest);
+                stopwatch.Stop();
+
+                if (!response.Success || response.Data == null || string.IsNullOrWhiteSpace(response.Data.Id))
+                {
+                    await LogMagicPayErrorAsync(acquirerConfig.Config, response, magicPayRequest, stopwatch.ElapsedMilliseconds);
+
+                    return PaymentMethodResult.Fail(
+                        response.ErrorMessage ?? "Falha ao processar pagamento com cartão.",
+                        PaymentApiErrorCodes.InternalError,
+                        500);
+                }
+
+                payment.AcquirerPaymentId = response.Data.Id;
+                payment.AcquirerTransactionId = response.Data.Id;
+                payment.AcquirerStatus = response.Data.Status.ToString();
+
+                paymentCreditCard = CreatePaymentCreditCard(
+                    payment.Id,
+                    input,
+                    cardData,
+                    response.Data.Data?.Brand,
+                    response.Data.Data?.AuthorizationCode,
+                    response.Data.Data?.Nsu,
+                    response.Data.Data?.Last4,
+                    response.Data.Data?.Installments);
             }
 
             dbContext.Payments.Add(payment);
@@ -502,7 +570,7 @@ public class CreditCardTransactionService(
             });
     }
 
-    private async Task LogAcquirerErrorAsync(
+    private async Task LogAccithusErrorAsync(
         AcquirerConfig config,
         AcquirerClientResponse<AccithusCreateTransactionResponse> response,
         AccithusCreateTransactionRequest request,
@@ -522,6 +590,31 @@ public class CreditCardTransactionService(
             ResponseBody = response.ResponseBody,
             AcquirerId = config.AcquirerId,
             AcquirerType = AcquirerType.Accithus.ToString(),
+            ResourceType = ApiLogResourceType.Payment,
+            ResponseTimeMs = responseTimeMs
+        });
+    }
+
+    private async Task LogMagicPayErrorAsync(
+        AcquirerConfig config,
+        AcquirerClientResponse<MagicPayPaymentResponse> response,
+        MagicPayPaymentRequest request,
+        long responseTimeMs)
+    {
+        await apiLogService.LogAsync(new ApiLogInput
+        {
+            Action = ApiLogAction.AcquirerRequestFailed,
+            Status = ApiLogStatus.Failed,
+            MerchantId = config.MerchantId,
+            HttpMethod = "POST",
+            Endpoint = $"{config.ApiBaseUrl}/payment",
+            StatusCode = response.StatusCode ?? 0,
+            Details = $"CreatePayment: {response.ErrorMessage ?? "Erro ao processar requisição."}",
+            ErrorCode = response.ErrorCode,
+            RequestBody = AcquirerApiLogUtils.BuildRequestBody(config, "CreatePayment", request),
+            ResponseBody = response.ResponseBody,
+            AcquirerId = config.AcquirerId,
+            AcquirerType = AcquirerType.MagicPay.ToString(),
             ResourceType = ApiLogResourceType.Payment,
             ResponseTimeMs = responseTimeMs
         });

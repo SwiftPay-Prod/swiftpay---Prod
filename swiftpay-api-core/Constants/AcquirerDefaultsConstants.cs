@@ -87,6 +87,15 @@ public static class AcquirerDefaultsConstants
                 DocumentationUrl = "https://docs.accithus.com",
                 WebhookDocumentationUrl = "https://docs.accithus.com/webhooks",
                 WebhookAuthMode = WebhookAuthMode.HmacSha256
+            },
+            [AcquirerType.MagicPay] = new()
+            {
+                Description = "MagicPay - Gateway completo de pagamentos com suporte a PIX, Boleto e Cartao de Credito.",
+                ApiBaseUrlProduction = "https://api.system-magicpay.com/v1",
+                ApiBaseUrlSandbox = "https://api.system-magicpay.com/v1",
+                DocumentationUrl = "https://app.system-magicpay.com/docs/introduction/start",
+                WebhookDocumentationUrl = "https://app.system-magicpay.com/docs/webhooks/overview",
+                WebhookAuthMode = WebhookAuthMode.HmacSha256
             }
         };
 

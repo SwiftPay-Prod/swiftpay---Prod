@@ -4,6 +4,7 @@ using swiftpay_api_payment.Clients.Bankizi;
 using swiftpay_api_payment.Clients.Coldfy;
 using swiftpay_api_payment.Clients.HeartPay;
 using swiftpay_api_payment.Clients.HunterPay;
+using swiftpay_api_payment.Clients.MagicPay;
 using swiftpay_api_payment.Clients.IHubBanking;
 using swiftpay_api_payment.Clients.Pluggou;
 using swiftpay_api_payment.Clients.Rapdyn;
@@ -94,6 +95,7 @@ public static class ServiceCollectionExtensions
         services.AddAcquirerHttpClient<IHunterPayClient, HunterPayClient>("hunterpay");
         services.AddAcquirerHttpClient<IHeartPayClient, HeartPayClient>("heartpay");
         services.AddAcquirerHttpClient<IAccithusClient, AccithusClient>("accithus");
+        services.AddAcquirerHttpClient<IMagicPayClient, MagicPayClient>("magicpay");
 
         services.AddScoped<IAcquirerService, ActivePaymentsService>();
         services.AddScoped<IAcquirerService, BankiziService>();
@@ -104,6 +106,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAcquirerService, HunterPayService>();
         services.AddScoped<IAcquirerService, HeartPayService>();
         services.AddScoped<IAcquirerService, AccithusService>();
+        services.AddScoped<IAcquirerService, MagicPayService>();
         services.AddScoped<IAcquirerServiceFactory, AcquirerServiceFactory>();
 
         return services;

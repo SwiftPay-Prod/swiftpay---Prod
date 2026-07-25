@@ -18,6 +18,7 @@ public static class AcquirerWebhookUtils
             AcquirerType.HunterPay => "/v1/internal/hunterpay/webhooks",
             AcquirerType.HeartPay => "/v1/internal/heartpay/webhooks",
             AcquirerType.Accithus => "/v1/internal/accithus/webhooks",
+            AcquirerType.MagicPay => "/v1/internal/magicpay/webhooks",
             _ => null
         };
     }

@@ -21,6 +21,7 @@ public class PrimaryDbInitialize
             InitializeWayneProtocolSettings(context);
             InitializeSystemAccounts(context);
             InitializeSystemUsers(context);
+            AcquirerInitializer.InitializeAcquirers(context);
             AcquirerInitializer.UpdateAcquirerCredentialSchemas(context);
             AcquirerInitializer.UpdateHunterPayConfiguration(context);
             AcquirerInitializer.UpdateHeartPayConfiguration(context);

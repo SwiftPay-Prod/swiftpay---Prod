@@ -88,4 +88,9 @@ public static class SystemAcquirerIds
     /// Instituição de Pagamento Accithus
     /// </summary>
     public static readonly Guid Accithus = Guid.Parse("00000000-0000-0000-0000-000000000208");
+
+    /// <summary>
+    /// MagicPay - Gateway de pagamentos PIX, Boleto e Cartao de Credito
+    /// </summary>
+    public static readonly Guid MagicPay = Guid.Parse("00000000-0000-0000-0000-000000000210");
 }

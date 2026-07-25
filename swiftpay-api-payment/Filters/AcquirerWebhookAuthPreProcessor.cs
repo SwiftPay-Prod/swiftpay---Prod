@@ -184,7 +184,8 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
             || headerName.Equals("X-Api-Key", StringComparison.OrdinalIgnoreCase)
             || headerName.Equals("X-Webhook-Code", StringComparison.OrdinalIgnoreCase)
             || headerName.Equals("X-Webhook-Signature", StringComparison.OrdinalIgnoreCase)
-            || headerName.Equals("X-HeartPay-Signature", StringComparison.OrdinalIgnoreCase);
+            || headerName.Equals("X-HeartPay-Signature", StringComparison.OrdinalIgnoreCase)
+            || headerName.Equals("X-Signature", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string? ResolveLocation(HttpContext context)
@@ -300,6 +301,11 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
             return await ValidateHeartPaySignatureAsync(context, acquirer.WebhookToken);
         }
 
+        if (IsAcquirerCodeFamily(acquirer.Code, "magicpay"))
+        {
+            return await ValidateMagicPaySignatureAsync(context, acquirer.WebhookToken);
+        }
+
         if (!context.Request.Headers.TryGetValue("X-Webhook-Signature", out var signatureHeader))
             return false;
 
@@ -410,6 +416,56 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
             return true;
 
         var expectedBase64FromHex = ComputeBase64Signature(payloadBytes, hexKeyBytes);
+        return SecureCompare(expectedBase64FromHex, normalizedSignature);
+    }
+
+    private static async Task<bool> ValidateMagicPaySignatureAsync(HttpContext context, string webhookToken)
+    {
+        if (!context.Request.Headers.TryGetValue("X-Signature", out var signatureHeader))
+            return false;
+
+        var providedSignature = signatureHeader.ToString().Trim();
+        if (string.IsNullOrWhiteSpace(providedSignature))
+            return false;
+
+        context.Request.Body.Position = 0;
+        using var bodyStream = new MemoryStream();
+        try
+        {
+            await context.Request.Body.CopyToAsync(bodyStream, CancellationToken.None);
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
+
+        var bodyBytes = bodyStream.ToArray();
+        context.Request.Body.Position = 0;
+
+        var normalizedSignature = providedSignature;
+        if (normalizedSignature.StartsWith("sha256=", StringComparison.OrdinalIgnoreCase))
+            normalizedSignature = normalizedSignature[7..];
+        else if (normalizedSignature.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase))
+            normalizedSignature = normalizedSignature[7..];
+
+        var tokenBytes = Encoding.UTF8.GetBytes(webhookToken);
+        var expectedHex = ComputeHexSignature(bodyBytes, tokenBytes);
+        if (IsHexString(normalizedSignature) && SecureCompare(expectedHex, normalizedSignature.ToLowerInvariant()))
+            return true;
+
+        var expectedBase64 = ComputeBase64Signature(bodyBytes, tokenBytes);
+        if (SecureCompare(expectedBase64, normalizedSignature))
+            return true;
+
+        var hexKeyBytes = TryGetHexKeyBytes(webhookToken);
+        if (hexKeyBytes == null)
+            return false;
+
+        var expectedHexFromHex = ComputeHexSignature(bodyBytes, hexKeyBytes);
+        if (IsHexString(normalizedSignature) && SecureCompare(expectedHexFromHex, normalizedSignature.ToLowerInvariant()))
+            return true;
+
+        var expectedBase64FromHex = ComputeBase64Signature(bodyBytes, hexKeyBytes);
         return SecureCompare(expectedBase64FromHex, normalizedSignature);
     }
 

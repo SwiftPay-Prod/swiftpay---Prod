@@ -229,6 +229,11 @@ public partial class AcquirerWebhookAuthMiddleware(RequestDelegate next)
             return await ValidateHeartPayHmacSignatureAsync(context, acquirer.WebhookToken);
         }
 
+        if (string.Equals(acquirer.Code, "magicpay", StringComparison.OrdinalIgnoreCase))
+        {
+            return await ValidateMagicPayHmacSignatureAsync(context, acquirer.WebhookToken);
+        }
+
         if (!context.Request.Headers.TryGetValue("X-Webhook-Signature", out var signatureHeader))
         {
             return false;
@@ -281,6 +286,32 @@ public partial class AcquirerWebhookAuthMiddleware(RequestDelegate next)
         }
 
         var expectedSignature = ComputeHmacSha256Hex($"{timestamp}.{body}", webhookToken);
+        return SecureCompare(signature.ToLowerInvariant(), expectedSignature);
+    }
+
+    private static async Task<bool> ValidateMagicPayHmacSignatureAsync(HttpContext context, string webhookToken)
+    {
+        if (!context.Request.Headers.TryGetValue("X-Signature", out var signatureHeader))
+        {
+            return false;
+        }
+
+        var signature = signatureHeader.ToString().Trim();
+        if (string.IsNullOrWhiteSpace(signature))
+        {
+            return false;
+        }
+
+        context.Request.EnableBuffering();
+
+        string body;
+        using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8, leaveOpen: true))
+        {
+            body = await reader.ReadToEndAsync();
+            context.Request.Body.Position = 0;
+        }
+
+        var expectedSignature = ComputeHmacSha256Hex(body, webhookToken);
         return SecureCompare(signature.ToLowerInvariant(), expectedSignature);
     }
 

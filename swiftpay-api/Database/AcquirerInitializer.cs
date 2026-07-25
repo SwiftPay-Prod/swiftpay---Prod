@@ -362,6 +362,50 @@ public static class AcquirerInitializer
 
             context.Acquirers.Add(accithus);
         }
+
+        if (!context.Acquirers.Any(a => a.Id == SystemAcquirerIds.MagicPay))
+        {
+            var metadata = AcquirerDefaultsConstants.GetMetadata(AcquirerType.MagicPay);
+
+            var magicPaySchema = CredentialUtils.BuildSchema(
+                ("apiKey", "API Key", CredentialFieldType.Password, true, "Ex: C28pm-...", "Chave de API fornecida pela MagicPay")
+            );
+
+            var magicPay = new Acquirer
+            {
+                Id = SystemAcquirerIds.MagicPay,
+                Name = "MagicPay",
+                Code = "magicpay",
+                Description = metadata.Description,
+                Type = AcquirerType.MagicPay,
+                IsActive = true,
+                ApiBaseUrl = metadata.ApiBaseUrlProduction,
+                ApiBaseUrlProduction = metadata.ApiBaseUrlProduction,
+                ApiBaseUrlSandbox = metadata.ApiBaseUrlSandbox,
+                AuthType = "bearer",
+                CredentialSchema = magicPaySchema,
+                DefaultCredentials = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
+                {
+                    { "apiKey", "C28pm-n4XX2NWjvyvOimNF63ThtQKIGv1eJ6ne2eujo" }
+                }),
+                DefaultCredentialsSandbox = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
+                {
+                    { "apiKey", "C28pm-n4XX2NWjvyvOimNF63ThtQKIGv1eJ6ne2eujo" }
+                }),
+                SupportsPix = true,
+                SupportsBoleto = true,
+                SupportsCreditCard = true,
+                SupportsWithdrawal = true,
+                SupportsRefund = true,
+                WebhookAuthMode = metadata.WebhookAuthMode,
+                WebhookToken = "C28pm-n4XX2NWjvyvOimNF63ThtQKIGv1eJ6ne2eujo",
+                WebhookAllowedIps = null,
+                DocumentationUrl = metadata.DocumentationUrl,
+                WebhookDocumentationUrl = metadata.WebhookDocumentationUrl
+            };
+
+            context.Acquirers.Add(magicPay);
+        }
     }
 
     public static void UpdateAcquirerCredentialSchemas(PrimaryDbContext context)
@@ -407,6 +451,9 @@ public static class AcquirerInitializer
                 AcquirerType.Accithus => CredentialUtils.BuildSchema(
                     ("publicKey", "Public Key", CredentialFieldType.Text, true, "Ex: pk_live_...", "Chave publica fornecida pela Accithus"),
                     ("secretKey", "Secret Key", CredentialFieldType.Password, true, "Ex: sk_live_...", "Chave secreta fornecida pela Accithus")
+                ),
+                AcquirerType.MagicPay => CredentialUtils.BuildSchema(
+                    ("apiKey", "API Key", CredentialFieldType.Password, true, "Ex: C28pm-...", "Chave de API fornecida pela MagicPay")
                 ),
                 _ => null
             };
