@@ -41,7 +41,7 @@ export function Sidebar({ user }: SidebarProps) {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto bg-surface border-r border-divider">
+    <div className="flex flex-col h-full bg-surface border-r border-divider">
       <div className="flex items-center justify-center px-4 py-3 border-b border-divider shrink-0 relative">
         <SidebarLogo />
 
