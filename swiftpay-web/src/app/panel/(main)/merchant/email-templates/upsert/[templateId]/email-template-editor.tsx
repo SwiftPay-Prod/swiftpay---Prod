@@ -313,7 +313,7 @@ function createDefaultTemplate(type: MerchantEmailTemplateType): EmailTemplateDa
 		enabled: true,
 		subject: 'Atualização do seu pedido',
 		blocks: baseBlocks,
-		primaryColor: '#6366F1',
+		primaryColor: '#171717',
 		backgroundColor: '#F3F4F6',
 		containerBackgroundColor: '#FFFFFF',
 		textColorMode: 'dark',
@@ -352,7 +352,7 @@ export function EmailTemplateEditor({ templatePromise, merchantId, templateType 
 	const [name, setName] = useState(template.name ?? 'Template padrão');
 	const [subject, setSubject] = useState(template.subject ?? 'Atualização do seu pedido');
 	const [enabled, setEnabled] = useState(template.enabled ?? true);
-	const [primaryColor, setPrimaryColor] = useState(template.primaryColor ?? '#6366F1');
+	const [primaryColor, setPrimaryColor] = useState(template.primaryColor ?? '#171717');
 	const [backgroundColor, setBackgroundColor] = useState(template.backgroundColor ?? '#F3F4F6');
 	const [containerBackgroundColor, setContainerBackgroundColor] = useState(template.containerBackgroundColor ?? '#ffffff');
 	const [textColorMode, setTextColorMode] = useState<'dark' | 'light'>((template.textColorMode as 'dark' | 'light') ?? 'dark');
@@ -363,7 +363,7 @@ export function EmailTemplateEditor({ templatePromise, merchantId, templateType 
 			name: template.name ?? 'Template padrão',
 			subject: template.subject ?? 'Atualização do seu pedido',
 			enabled: template.enabled ?? true,
-			primaryColor: template.primaryColor ?? '#6366F1',
+			primaryColor: template.primaryColor ?? '#171717',
 			backgroundColor: template.backgroundColor ?? '#F3F4F6',
 			containerBackgroundColor: template.containerBackgroundColor ?? '#ffffff',
 			textColorMode: (template.textColorMode as 'dark' | 'light') ?? 'dark',

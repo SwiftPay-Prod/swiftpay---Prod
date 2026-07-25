@@ -121,7 +121,7 @@ public sealed class ReadPlatformBalanceEndpoint(
                     GrossBalance = grossBalance,
                     MerchantBalance = merchantBalance,
                     MerchantAvailableBalance = merchantAvailableBalance,
-                    SwiftpayProfit = swiftpayProfit,
+                    SwiftPayProfit = swiftpayProfit,
                     TotalAcquirerFees = totalAcquirerFees,
                     PayoutFeeMode = payoutFeeMode,
                     PayoutFeeFixed = payoutFeeFixed,
@@ -139,7 +139,7 @@ public sealed class ReadPlatformBalanceEndpoint(
         var totalWithdrawalFee = acquirerBalances.Sum(a => a.WithdrawalFeeIfWithdrawAll);
         var totalAvailableForWithdrawal = acquirerBalances.Sum(a => a.AvailableForWithdrawal);
         var totalAcquirerGrossBalance = acquirerBalances.Sum(a => a.GrossBalance);
-        var totalSwiftPayProfit = acquirerBalances.Sum(a => a.SwiftpayProfit);
+        var totalSwiftPayProfit = acquirerBalances.Sum(a => a.SwiftPayProfit);
         var totalMerchantAvailable = acquirerBalances.Sum(a => a.MerchantAvailableBalance);
         var totalMerchantBalance = acquirerBalances.Sum(a => a.MerchantBalance);
         var totalMerchantBlocked = totalMerchantBalance - totalMerchantAvailable;

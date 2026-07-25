@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [
 			{
+				protocol: 'http',
+				hostname: 'localhost',
+				port: '9000',
+				pathname: '/swiftpay-storage/**',
+			},
+			{
 				hostname: 'bucket-staging-13ce.up.railway.app',
 				pathname: '/swiftpay-dev/**',
 			},

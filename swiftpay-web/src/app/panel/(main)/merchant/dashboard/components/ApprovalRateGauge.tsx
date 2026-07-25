@@ -9,11 +9,11 @@ import { approvalRateLevelParse } from '@/parse';
 import { ApprovalRateLevel } from '@/types/enums';
 
 const GAUGE_SEGMENTS = [
-	{ name: '0–15%', value: 15, color: '#ef4444' },
-	{ name: '15–25%', value: 10, color: '#f59e0b' },
-	{ name: '25–35%', value: 10, color: '#eab308' },
-	{ name: '35–50%', value: 15, color: '#3b82f6' },
-	{ name: '50%+', value: 50, color: '#22c55e' },
+	{ name: '0–15%', value: 15, color: '#d4d4d4' },
+	{ name: '15–25%', value: 10, color: '#a3a3a3' },
+	{ name: '25–35%', value: 10, color: '#737373' },
+	{ name: '35–50%', value: 15, color: '#404040' },
+	{ name: '50%+', value: 50, color: '#171717' },
 ];
 
 const LEVEL_COLOR_MAP: Record<string, string> = {

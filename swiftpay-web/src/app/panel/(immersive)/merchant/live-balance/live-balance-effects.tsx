@@ -272,7 +272,7 @@ function ConfettiBurst({ burstKey, amount }: { burstKey: number; amount: number 
 					ticks: 260,
 					drift: 0.08,
 					origin: { x: 0.12, y: 0.58 },
-					colors: ['#34d399', '#10b981', '#fde047', '#f59e0b', '#ffffff'],
+					colors: ['#ffffff', '#d4d4d4', '#a3a3a3', '#737373', '#000000'],
 					shapes: ['square', 'circle'],
 				},
 				{
@@ -286,7 +286,7 @@ function ConfettiBurst({ burstKey, amount }: { burstKey: number; amount: number 
 					ticks: 260,
 					drift: -0.08,
 					origin: { x: 0.88, y: 0.58 },
-					colors: ['#34d399', '#10b981', '#fde047', '#f59e0b', '#ffffff'],
+					colors: ['#ffffff', '#d4d4d4', '#a3a3a3', '#737373', '#000000'],
 					shapes: ['square', 'circle'],
 				},
 				{
@@ -299,7 +299,7 @@ function ConfettiBurst({ burstKey, amount }: { burstKey: number; amount: number 
 					gravity: 1.08,
 					ticks: 220,
 					origin: { x: 0.5, y: 0.42 },
-					colors: ['#34d399', '#10b981', '#fde047', '#f59e0b', '#ffffff'],
+					colors: ['#ffffff', '#d4d4d4', '#a3a3a3', '#737373', '#000000'],
 					shapes: ['circle'],
 				},
 			]}

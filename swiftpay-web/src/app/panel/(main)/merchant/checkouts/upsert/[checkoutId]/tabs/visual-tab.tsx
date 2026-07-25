@@ -57,8 +57,8 @@ const PRESET_COLORS = [
 	{ name: 'Índigo', hex: '#6366F1', dark: '#4338CA' },
 ];
 
-const PRIMARY_DEFAULT = '#1886ed';
-const SECONDARY_DEFAULT = '#1D4ED8';
+const PRIMARY_DEFAULT = '#171717';
+const SECONDARY_DEFAULT = '#525252';
 
 function GradientPreviewLarge({
 	primaryColor,

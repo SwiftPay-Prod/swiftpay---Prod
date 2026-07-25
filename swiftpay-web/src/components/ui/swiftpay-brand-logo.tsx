@@ -6,6 +6,7 @@ interface SwiftPayBrandLogoProps {
 	textClassName?: string;
 	iconSize?: number;
 	priority?: boolean;
+	logoSrc?: string;
 }
 
 function joinClasses(...classes: Array<string | undefined>) {
@@ -20,6 +21,7 @@ export function SwiftPayBrandLogo({
 	textClassName,
 	iconSize = 32,
 	priority = false,
+	logoSrc = '/logos/swiftpay-logo.png',
 }: SwiftPayBrandLogoProps) {
 	const logoHeight = iconSize;
 	const logoWidth = Math.round(logoHeight * LOGO_ASPECT_RATIO);
@@ -27,7 +29,7 @@ export function SwiftPayBrandLogo({
 	return (
 		<div className={joinClasses('inline-flex items-center justify-center', className)}>
 			<Image
-				src="/logos/swiftpay-logo.png"
+				src={logoSrc}
 				alt="SwiftPay"
 				width={logoWidth}
 				height={logoHeight}

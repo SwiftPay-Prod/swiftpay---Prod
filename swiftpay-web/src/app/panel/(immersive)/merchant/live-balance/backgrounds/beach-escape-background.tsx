@@ -101,10 +101,10 @@ export function BeachEscapeBackground({ className }: LiveBalanceBackgroundProps)
 
     function drawSky(width: number, height: number) {
       const skyGradient = context.createLinearGradient(0, 0, 0, height * 0.72);
-      skyGradient.addColorStop(0, '#4cc5ff');
-      skyGradient.addColorStop(0.26, '#88e4ff');
-      skyGradient.addColorStop(0.62, '#ffd7a3');
-      skyGradient.addColorStop(1, '#ffb36f');
+      skyGradient.addColorStop(0, '#d4d4d4');
+      skyGradient.addColorStop(0.26, '#a3a3a3');
+      skyGradient.addColorStop(0.62, '#737373');
+      skyGradient.addColorStop(1, '#525252');
       context.fillStyle = skyGradient;
       context.fillRect(0, 0, width, height);
 

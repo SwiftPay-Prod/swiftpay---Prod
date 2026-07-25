@@ -219,64 +219,42 @@ public sealed class SignInEndpoint(
             return;
         }
 
-        // New/unknown device - require verification
-        await securityLog.LogAsync(new SecurityLogInput
-        {
-            Action = SecurityLogAction.SuspiciousLogin,
-            Status = SecurityLogStatus.Warning,
-            UserId = user.Id,
-            Details = $"New device detected. DeviceId: {deviceId}, IP: {ipAddress}, Location: {location}"
-        });
-
-        // Generate verification code
-        var code = CryptoUtils.GenerateCode();
-        var codeHash = CryptoUtils.ComputeSha256Hash(code);
-        var expiresAt = now.AddMinutes(10);
-
-        // Invalidate any existing codes for this user
-        var existingCodes = await dbContext.DeviceVerificationCodes
-            .Where(dvc => dvc.UserId == user.Id && dvc.UsedAt == null && dvc.ExpiresAt > now)
-            .ToListAsync(ct);
-
-        foreach (var existingCode in existingCodes)
-        {
-            existingCode.UsedAt = now;
-        }
-
-        var verificationCode = new DeviceVerificationCode
+        // Auto-trust new device (device verification disabled)
+        dbContext.TrustedDevices.Add(new TrustedDevice
         {
             UserId = user.Id,
-            CodeHash = codeHash,
             DeviceId = deviceId,
             DeviceName = deviceInfo.DeviceName,
             Browser = deviceInfo.Browser,
             OperatingSystem = deviceInfo.OperatingSystem,
-            IpAddress = ipAddress,
-            Location = location,
-            UserAgent = userAgent,
-            ExpiresAt = expiresAt
-        };
+            LastIpAddress = ipAddress,
+            LastLocation = location,
+            LastUsedAt = now,
+            IsActive = true
+        });
 
-        dbContext.DeviceVerificationCodes.Add(verificationCode);
-        await dbContext.SaveChangesAsync(ct);
+        await CompleteLoginAsync(user, ipAddress, location, userAgent, now, ct);
 
-        // Send verification email
-        await SendDeviceVerificationEmailAsync(user, code, deviceInfo.DeviceName ?? "Dispositivo desconhecido", ipAddress, location, brazilTime);
+        var autoSession = await sessionService.CreateSessionAsync(user, deviceId, ipAddress, userAgent);
+        var autoJwt = tokenService.GenerateToken(autoSession.SessionId, user.Id);
 
-        await Send.ResponseAsync(new SignInResponse
+        await Send.OkAsync(new SignInResponse
         {
             Data = new SignInResponseData
             {
-                RequiresDeviceVerification = true,
-                DeviceVerification = new DeviceVerificationInfo
+                RequiresDeviceVerification = false,
+                Auth = new AuthResponse
                 {
-                    VerificationId = verificationCode.Id,
-                    MaskedEmail = MaskEmail(user.Email),
-                    ExpiresAt = expiresAt,
-                    DeviceId = deviceId
+                    User = UserMapper.ToUserInfo(user),
+                    Tokens = new()
+                    {
+                        AccessToken = autoJwt.AccessToken,
+                        AccessTokenExpiresAt = autoJwt.ExpiredAt,
+                        SessionId = autoSession.SessionId
+                    }
                 }
             }
-        }, 200, ct);
+        }, ct);
     }
 
     private async Task CompleteLoginAsync(User user, string ipAddress, string location, string userAgent, DateTime now, CancellationToken ct)

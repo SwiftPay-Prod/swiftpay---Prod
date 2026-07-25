@@ -241,9 +241,8 @@ const trackingPlatformConfigs: Record<string, TrackingPlatformConfig> = {
 		fallbackIcon: Link01Icon,
 	},
 	otimizey: {
-		bgColor: '#10b981',
+		bgColor: '#171717',
 		fgColor: '#ffffff',
-		fallbackIcon: AnalyticsUpIcon,
 	},
 };
 

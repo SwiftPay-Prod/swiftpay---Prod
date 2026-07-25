@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Icon } from '@/components/ui/icon';
 import { AlertCircleIcon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { Routes } from '@/router/routes';
 
@@ -40,9 +39,8 @@ export function ConfirmEmailContent({
       containerClassName="min-h-screen"
     >
       <div className="absolute inset-0 z-50 flex flex-col">
-        <div className="flex justify-between items-center p-4 lg:p-6">
+        <div className="p-4 lg:p-6">
           <SwiftPayLogo />
-          <ThemeToggle />
         </div>
         
         <div className="flex-1 flex items-center justify-center p-4">

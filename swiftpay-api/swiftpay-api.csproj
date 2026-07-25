@@ -51,6 +51,6 @@
 
 
   <ItemGroup>
-    <None Include="Templates/Email/**" CopyToPublishDirectory="Always" />
+    <None Include="Templates/Email/**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
   </ItemGroup>
 </Project>

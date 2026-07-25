@@ -58,7 +58,7 @@ export function MainKpiSection({
 				iconColor="text-success"
 				label="Saldo Disponível"
 				tooltip="Valor disponível para saque agora. Atualizado em tempo real."
-				value={<AnimatedCurrency value={balance.available} className={`text-xl font-bold text-success ${valueClassName}`} />}
+				value={<AnimatedCurrency value={balance.available} className={`text-xl font-bold text-foreground ${valueClassName}`} />}
 				isProcessing={false}
 			/>
 			<KpiCard
@@ -67,7 +67,7 @@ export function MainKpiSection({
 				iconColor="text-accent"
 				label="Total de Vendas"
 				tooltip="Total de vendas descontando as taxas da plataforma no período filtrado."
-				value={<AnimatedCurrency value={kpis.totalNetVolume} className={`text-xl font-bold text-accent ${valueClassName}`} />}
+				value={<AnimatedCurrency value={kpis.totalNetVolume} className={`text-xl font-bold text-foreground ${valueClassName}`} />}
 				growth={kpis.volumeGrowth}
 				growthComparisonLabel={kpis.growthComparisonLabel}
 				isProcessing={cacheInfo.isProcessing}

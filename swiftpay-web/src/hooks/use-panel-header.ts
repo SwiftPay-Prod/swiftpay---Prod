@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useTransition, useCallback } from 'react';
-import { useTheme } from 'next-themes';
+import { useState, useEffect, useTransition } from 'react';
 import { useSidebar } from '@/contexts/sidebar-context';
 import { useMerchant } from '@/contexts/merchant-context';
 import { useEnvironment } from '@/contexts/environment-context';
@@ -19,9 +18,7 @@ export function usePanelHeader({ user }: UsePanelHeaderProps) {
   const { toggleSidebar } = useSidebar();
   const { balance, selectedMerchant, levelInfo } = useMerchant();
   const { isSandboxVisible, environment } = useEnvironment();
-  const { setTheme, theme } = useTheme();
 
-  const isDark = theme === 'dark';
   const isAdmin = user?.role ? isAdminRole(user.role as UserRole) : false;
   const lifetimeVolume = balance?.totals?.lifetimeVolume ?? null;
   const merchantBalance = balance?.balance ?? null;
@@ -50,17 +47,12 @@ export function usePanelHeader({ user }: UsePanelHeaderProps) {
     });
   }, [isAdmin, environment]);
 
-  const toggleTheme = useCallback(() => {
-    setTheme(isDark ? 'light' : 'dark');
-  }, [isDark, setTheme]);
-
   const acquirers = platformRevenue?.acquirerRevenues ?? [];
   const totalAcquirers = platformRevenue?.totalAcquirers ?? 0;
   const hasMoreAcquirers = totalAcquirers > acquirers.length;
 
   return {
     sidebar: { toggleSidebar },
-    theme: { isDark, toggleTheme },
     balance: {
       isVisible: isBalanceVisible,
       toggleVisibility: toggleBalanceVisibility,

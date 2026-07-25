@@ -61,7 +61,7 @@ export const checkoutOnboardingFormSchema = z
     callbackUrl: z.string().default(''),
 
     // Visual
-    primaryColor: z.string().default('#1886ed'),
+    primaryColor: z.string().default('#171717'),
     secondaryColor: z.string().default(''),
     colorMode: z.nativeEnum(CheckoutColorMode).default(CheckoutColorMode.Single),
     logoUrl: z.string().default(''),

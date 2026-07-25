@@ -1,11 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
-
-const inter = Inter({
-	variable: '--font-inter',
-	subsets: ['latin'],
-});
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -14,8 +8,8 @@ export const viewport: Viewport = {
 	userScalable: false,
 	viewportFit: 'cover',
 	themeColor: [
-		{ media: '(prefers-color-scheme: dark)', color: '#0a0f1a' },
-		{ media: '(prefers-color-scheme: light)', color: '#f7f9fc' },
+		{ media: '(prefers-color-scheme: dark)', color: '#000000' },
+		{ media: '(prefers-color-scheme: light)', color: '#ffffff' },
 	],
 };
 
@@ -41,7 +35,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR" suppressHydrationWarning>
-			<body suppressHydrationWarning className={`${inter.className} antialiased`}>
+			<body suppressHydrationWarning className="antialiased">
 				{children}
 			</body>
 		</html>

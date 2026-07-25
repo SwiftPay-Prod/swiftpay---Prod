@@ -8,7 +8,7 @@ export default function SplashPage() {
 			<SplashRedirect />
 			<div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-linear-to-br from-accent/5 via-transparent to-accent/10">
 				<div className="flex flex-col items-center gap-6">
-					<Image src="/logos/swiftpay-icon-logo.png" alt="SwiftPay"  width={300} height={300} />
+					<Image src="/logos/swiftpay-logo.png" alt="SwiftPay"  width={290} height={300} />
 					<Spinner color="accent" size="lg" />
 				</div>
 			</div>

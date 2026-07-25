@@ -8,8 +8,8 @@ export function GoldDynastyBackground({ className }: LiveBalanceBackgroundProps)
     <div
       className={cn(
         'absolute inset-0 overflow-hidden',
-        'bg-[radial-gradient(circle_at_top,#51411f_0%,#17120a_24%,#090705_55%,#010101_100%)]',
-        'dark:bg-[radial-gradient(circle_at_top,#4a3912_0%,#120d07_22%,#050403_58%,#000000_100%)]',
+        'bg-[radial-gradient(circle_at_top,#404040_0%,#1a1a1a_24%,#0a0a0a_55%,#000000_100%)]',
+        'dark:bg-[radial-gradient(circle_at_top,#404040_0%,#1a1a1a_22%,#0a0a0a_58%,#000000_100%)]',
         className
       )}
     >

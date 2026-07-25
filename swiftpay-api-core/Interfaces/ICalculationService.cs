@@ -44,7 +44,7 @@ public interface ICalculationService
 
     long CalculatePlatformProfit(long grossBalance, long merchantBalance);
 
-    long CalculateSwiftpayProfit(long swiftpayProfitBase, long completedPlatformPayouts);
+    long CalculateSwiftPayProfit(long swiftpayProfitBase, long completedPlatformPayouts);
 
     long CalculateMerchantBalance(long grossBalance, long swiftpayProfit);
 

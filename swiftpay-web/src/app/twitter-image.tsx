@@ -20,7 +20,7 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)",
+          background: "linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #262626 100%)",
           fontFamily: "Inter, sans-serif",
         }}
       >
@@ -45,7 +45,7 @@ export default async function Image() {
                 width: 80,
                 height: 80,
                 borderRadius: 20,
-                background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+                background: "#ffffff",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -56,11 +56,11 @@ export default async function Image() {
                 height="48"
                 viewBox="0 0 24 24"
                 fill="none"
-                style={{ color: "white" }}
+                style={{ color: "#000000" }}
               >
                 <path
                   d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  stroke="white"
+                  stroke="black"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -81,7 +81,7 @@ export default async function Image() {
           <span
             style={{
               fontSize: 32,
-              color: "#a1a1aa",
+              color: "#a3a3a3",
               textAlign: "center",
               maxWidth: 800,
             }}
@@ -101,21 +101,21 @@ export default async function Image() {
                 alignItems: "center",
                 gap: 8,
                 padding: "12px 24px",
-                background: "rgba(34, 197, 94, 0.15)",
+                background: "rgba(255, 255, 255, 0.1)",
                 borderRadius: 12,
-                border: "1px solid rgba(34, 197, 94, 0.3)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
               }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 13l4 4L19 7"
-                  stroke="#22c55e"
+                  stroke="#a3a3a3"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
-              <span style={{ color: "#22c55e", fontSize: 18, fontWeight: 500 }}>
+              <span style={{ color: "#a3a3a3", fontSize: 18, fontWeight: 500 }}>
                 API Simples
               </span>
             </div>
@@ -125,21 +125,21 @@ export default async function Image() {
                 alignItems: "center",
                 gap: 8,
                 padding: "12px 24px",
-                background: "rgba(34, 197, 94, 0.15)",
+                background: "rgba(255, 255, 255, 0.1)",
                 borderRadius: 12,
-                border: "1px solid rgba(34, 197, 94, 0.3)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
               }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 13l4 4L19 7"
-                  stroke="#22c55e"
+                  stroke="#a3a3a3"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
-              <span style={{ color: "#22c55e", fontSize: 18, fontWeight: 500 }}>
+              <span style={{ color: "#a3a3a3", fontSize: 18, fontWeight: 500 }}>
                 100% Seguro
               </span>
             </div>
@@ -149,15 +149,15 @@ export default async function Image() {
                 alignItems: "center",
                 gap: 8,
                 padding: "12px 24px",
-                background: "rgba(34, 197, 94, 0.15)",
+                background: "rgba(255, 255, 255, 0.1)",
                 borderRadius: 12,
-                border: "1px solid rgba(34, 197, 94, 0.3)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
               }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M5 13l4 4L19 7"
-                  stroke="#22c55e"
+                  stroke="#a3a3a3"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -173,7 +173,7 @@ export default async function Image() {
             display: "flex",
             alignItems: "center",
             gap: 8,
-            color: "#71717a",
+            color: "#525252",
             fontSize: 16,
           }}
         >
@@ -186,4 +186,3 @@ export default async function Image() {
     }
   );
 }
-

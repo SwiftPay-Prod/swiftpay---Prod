@@ -148,7 +148,7 @@ body {
 	.default,
 	[data-theme='light'],
 	[data-theme='default'] {
-		--accent: #171717;
+		--accent: #22c55e;
 		--accent-foreground: #ffffff;
 		--background: #ffffff;
 		--border: #d4d4d4;
@@ -160,14 +160,14 @@ body {
 		--secondary-foreground: #171717;
 		--secondary-soft: color-mix(in srgb, var(--secondary) 15%, transparent);
 		--secondary-soft-hover: color-mix(in srgb, var(--secondary) 20%, transparent);
-		--brand: #50a06c;
+		--brand: #22c55e;
 		--brand-soft: color-mix(in srgb, var(--brand) 15%, transparent);
 		--field-background: #ffffff;
 		--field-foreground: #171717;
 		--field-placeholder: #a3a3a3;
-		--focus: #171717;
+		--focus: #22c55e;
 		--foreground: #171717;
-		--link: #171717;
+		--link: #22c55e;
 		--muted: #a3a3a3;
 		--overlay: #ffffff;
 		--overlay-foreground: #171717;
@@ -175,7 +175,7 @@ body {
 		--segment: #ffffff;
 		--segment-foreground: #171717;
 		--separator: #d4d4d4;
-		--success: #50a06c;
+		--success: #22c55e;
 		--success-foreground: #ffffff;
 		--surface: #f7f7f7;
 		--surface-foreground: #171717;
@@ -195,7 +195,7 @@ body {
 	.dark,
 	[data-theme='dark'] {
 		color-scheme: dark;
-		--accent: #ededed;
+		--accent: #22c55e;
 		--accent-foreground: #171717;
 		--background: #000000;
 		--border: #404040;
@@ -206,9 +206,9 @@ body {
 		--field-background: #111111;
 		--field-foreground: #ededed;
 		--field-placeholder: #525252;
-		--focus: #ededed;
+		--focus: #22c55e;
 		--foreground: #ededed;
-		--link: #ededed;
+		--link: #22c55e;
 		--muted: #737373;
 		--overlay: #1a1a1a;
 		--overlay-foreground: #ededed;
@@ -220,9 +220,9 @@ body {
 		--secondary-foreground: #ededed;
 		--secondary-soft: color-mix(in srgb, var(--secondary) 15%, transparent);
 		--secondary-soft-hover: color-mix(in srgb, var(--secondary) 20%, transparent);
-		--brand: #83c49b;
+		--brand: #22c55e;
 		--brand-soft: color-mix(in srgb, var(--brand) 15%, transparent);
-		--success: #83c49b;
+		--success: #22c55e;
 		--success-foreground: #171717;
 		--surface: #0a0a0a;
 		--surface-foreground: #ededed;

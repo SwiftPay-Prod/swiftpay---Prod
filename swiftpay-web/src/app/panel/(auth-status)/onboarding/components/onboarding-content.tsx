@@ -4,7 +4,6 @@ import { Button } from '@heroui/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Logout01Icon } from '@hugeicons/core-free-icons';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Icon } from '@/components/ui/icon';
 import { Routes } from '@/router/routes';
 import type { UserOnboardingData } from '@/types/user/onboarding';
@@ -30,18 +29,11 @@ export function OnboardingContent({ userName, initialData }: OnboardingContentPr
 					<div className="flex flex-col">
 						<div className="mb-2">
 							<Image
-								src="/logos/swiftpay-horizontal-dark.png"
+								src="/logos/swiftpay-logo.png"
 								alt="SwiftPay"
-								width={146}
-								height={32}
-								className="h-8 w-auto dark:hidden"
-							/>
-							<Image
-								src="/logos/swiftpay-horizontal-light.png"
-								alt="SwiftPay"
-								width={146}
-								height={32}
-								className="hidden h-8 w-auto dark:block"
+								width={96}
+								height={99}
+								className="h-24 w-auto"
 							/>
 						</div>
 						<p className="text-sm text-muted">Primeiros passos</p>
@@ -50,7 +42,6 @@ export function OnboardingContent({ userName, initialData }: OnboardingContentPr
 						</h1>
 					</div>
 					<div className="flex items-center gap-2">
-						<ThemeToggle />
 						<Button variant="ghost" size="sm" onPress={() => router.push('/api/auth/signout')}>
 							<Icon icon={Logout01Icon} className="icon-md" />
 							Sair

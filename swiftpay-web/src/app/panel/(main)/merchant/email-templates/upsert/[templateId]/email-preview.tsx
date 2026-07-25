@@ -75,7 +75,7 @@ export function EmailPreview({
 	const borderColor = adjustColorBrightness(containerBackgroundColor, -10);
 
 	const config: EmailRenderConfig = {
-		primaryColor: primaryColor || '#6366f1',
+		primaryColor: primaryColor || '#171717',
 		backgroundColor: backgroundColor || '#f4f4f5',
 		containerBackgroundColor,
 		cardBackgroundColor: cardBgColor,
@@ -447,7 +447,7 @@ function renderTrackingInfoBlock(block: EmailBlock, config: EmailRenderConfig): 
 				<p style="color: ${config.primaryColor}; font-weight: 600; font-size: 14px; margin: 0 0 6px 0;">
                     ${escapeHtml(title)}
                 </p>
-				<span style="display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #a16207; background-color: #fef3c7; border-radius: 999px; margin: 0 0 12px 0;">
+				<span style="display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #737373; background-color: #e5e5e5; border-radius: 999px; margin: 0 0 12px 0;">
 					Em breve
 				</span>
                 <p style="color: ${config.textColor}; font-size: 14px; margin: 0 0 5px 0;">
@@ -573,7 +573,7 @@ function renderOrderSummaryBlock(config: EmailRenderConfig): string {
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; color: ${config.mutedColor}; font-size: 14px;">Desconto</td>
-                        <td align="right" style="padding: 8px 0; color: #10b981; font-size: 14px;">-[[order_discount]]</td>
+                        <td align="right" style="padding: 8px 0; color: ${config.mutedColor}; font-size: 14px;">-[[order_discount]]</td>
                     </tr>
                     <tr>
                         <td colspan="2" style="padding: 10px 0 0 0;">

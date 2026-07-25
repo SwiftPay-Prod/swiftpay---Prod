@@ -87,7 +87,7 @@ export function HeroProTemplate({ checkout, isSandbox = false, initialCalculatio
 	const [initialUrlOrderId] = useState(() => searchParams.get('orderId'));
 	const [isRecoveringOrder, setIsRecoveringOrder] = useState(!!initialUrlOrderId);
 
-	const primaryColor = config.primaryColor || '#3B82F6';
+	const primaryColor = config.primaryColor || '#171717';
 	const secondaryColor = config.secondaryColor || null;
 	const colorMode = config.colorMode ?? (secondaryColor ? 'Gradient' : 'Single');
 	const effectiveSecondaryColor = colorMode === 'Gradient' ? secondaryColor : null;

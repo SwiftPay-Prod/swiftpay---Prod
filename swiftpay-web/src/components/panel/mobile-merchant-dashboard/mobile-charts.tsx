@@ -55,11 +55,11 @@ const weeklyChartConfig = {
 } satisfies ChartConfig;
 
 const GAUGE_COLORS = {
-	danger: '#ef4444',
-	warning: '#f59e0b',
-	yellow: '#eab308',
-	accent: '#3b82f6',
-	success: '#22c55e',
+	danger: '#d4d4d4',
+	warning: '#a3a3a3',
+	yellow: '#737373',
+	accent: '#404040',
+	success: '#171717',
 };
 
 const GAUGE_DATA = [

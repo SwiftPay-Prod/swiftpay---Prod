@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conta de Saque Ativada - SwiftPay</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 40px 0; background-color: #f3f4f6;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Header com Banner -->
+        <div style="padding: 0;">
+            <img src="https://app.imagify.io/media/2/7a132807-6419-4ffe-8b69-0daed808481f/banner-email.png" alt="SwiftPay Banner" style="width: 100%; height: auto; display: block; border-radius: 8px 8px 0 0;">
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div style="padding: 32px 40px;">
+            <h1 style="font-size: 24px; font-weight: bold; color: #16a34a; text-align: center; margin: 0 0 24px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span>✅ Conta de Saque Ativada!</span>
+            </h1>
+            
+            <p style="font-size: 16px; color: #4b5563; margin: 0 0 16px 0;">
+                Olá, [[NAME]]!
+            </p>
+            
+            <p style="font-size: 16px; color: #4b5563; margin: 0 0 24px 0;">
+                Sua conta de saque foi <strong>verificada e ativada</strong> com sucesso na organização <strong>[[MERCHANT_NAME]]</strong>. Agora você pode realizar saques para esta conta.
+            </p>
+
+            <!-- Detalhes da Conta -->
+            <div style="background-color: #f0fdf4; border: 1px solid #16a34a; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+                <h2 style="font-size: 16px; font-weight: 600; color: #166534; margin: 0 0 12px 0;">📋 Conta Ativada</h2>
+                <table style="width: 100%; font-size: 14px;">
+                    <tr>
+                        <td style="color: #6b7280; padding: 4px 0;">Tipo de Chave:</td>
+                        <td style="color: #1f2937; font-weight: 500; text-align: right;">[[PIX_KEY_TYPE]]</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #6b7280; padding: 4px 0;">Chave PIX:</td>
+                        <td style="color: #1f2937; font-weight: 500; text-align: right; font-family: monospace;">[[PIX_KEY]]</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #6b7280; padding: 4px 0;">Titular:</td>
+                        <td style="color: #1f2937; font-weight: 500; text-align: right;">[[HOLDER_NAME]]</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #6b7280; padding: 4px 0;">Conta Padrão:</td>
+                        <td style="color: #1f2937; font-weight: 500; text-align: right;">[[IS_DEFAULT]]</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- O que você pode fazer -->
+            <div style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+                <h2 style="font-size: 16px; font-weight: 600; color: #1e40af; margin: 0 0 12px 0;">🚀 Próximos Passos</h2>
+                <p style="font-size: 14px; color: #1e40af; margin: 0 0 8px 0; display: flex; align-items: flex-start; gap: 8px;">
+                    <span>•</span>
+                    <span>Acesse o painel e solicite seu primeiro saque</span>
+                </p>
+                <p style="font-size: 14px; color: #1e40af; margin: 0 0 8px 0; display: flex; align-items: flex-start; gap: 8px;">
+                    <span>•</span>
+                    <span>Acompanhe o status dos seus saques em tempo real</span>
+                </p>
+                <p style="font-size: 14px; color: #1e40af; margin: 0; display: flex; align-items: flex-start; gap: 8px;">
+                    <span>•</span>
+                    <span>Cadastre mais contas de saque se necessário</span>
+                </p>
+            </div>
+
+            <!-- Aviso de Segurança -->
+            <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                <p style="font-size: 14px; color: #92400e; margin: 0; display: flex; align-items: flex-start; gap: 8px;">
+                    <span>⚠️</span>
+                    <span>Se você <strong>não reconhece</strong> esta ação, entre em contato com nosso suporte imediatamente.</span>
+                </p>
+            </div>
+
+            <!-- Informações da Requisição -->
+            <div style="background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                <p style="font-size: 12px; color: #6b7280; margin: 0 0 4px 0;"><strong>Data:</strong> [[DATE]] às [[TIME]]</p>
+                <p style="font-size: 12px; color: #6b7280; margin: 0 0 4px 0;"><strong>IP:</strong> [[IP_ADDRESS]]</p>
+                <p style="font-size: 12px; color: #6b7280; margin: 0;"><strong>Localização:</strong> [[LOCATION]]</p>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+            
+            <p style="font-size: 14px; color: #6b7280; text-align: center; margin: 0;">
+                Este é um e-mail automático. Por favor, não responda.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div style="background-color: #f9fafb; border-radius: 0 0 8px 8px; padding: 24px;">
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin: 0 0 8px 0;">
+                © 2025 SwiftPay
+            </p>
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin: 0;">
+                <a href="mailto:suporte@swiftpay.com.br" style="color: #2563eb; text-decoration: none;">
+                    suporte@swiftpay.com.br
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,13 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import { Providers } from "./providers";
-import { Clarity } from "@/components/clarity";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
 
 const appUrl =
   process.env.NEXT_PUBLIC_APP_URL ||
@@ -15,7 +8,7 @@ const appUrl =
 const ogImageUrl = new URL("/images/og.png", appUrl).toString();
 
 export const viewport: Viewport = {
-  themeColor: "#22c55e",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -98,8 +91,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`} suppressHydrationWarning>
-        <Clarity />
+      <body className="antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

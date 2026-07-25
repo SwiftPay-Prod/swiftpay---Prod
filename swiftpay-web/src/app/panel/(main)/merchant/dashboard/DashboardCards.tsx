@@ -79,9 +79,9 @@ export function KpiCard({
   return (
     <Card className={`${cardClassName ?? ''} ${isProcessing ? 'opacity-70' : ''}`.trim()}>
       <Card.Content className={`flex flex-col gap-2 p-4 ${contentClassName ?? ''}`.trim()}>
-        <div className={`flex min-w-0 items-center gap-2 ${iconColor}`}>
-          <Icon icon={icon} className={`${isMain ? 'icon-md' : 'icon-sm'} shrink-0`} />
-          <span className="truncate text-sm font-medium">{label}</span>
+        <div className="flex min-w-0 items-center gap-2">
+          <Icon icon={icon} className={`${iconColor} ${isMain ? 'icon-md' : 'icon-sm'} shrink-0`} />
+          <span className="truncate text-sm font-medium text-foreground">{label}</span>
           {tooltip && (
             <Tooltip>
               <Tooltip.Trigger>
@@ -178,9 +178,9 @@ export function BalanceCards({ balance }: { balance: MerchantBalanceData }) {
       {cards.map((card) => (
         <Card key={card.key} className={`bg-linear-to-br ${card.gradient}`}>
           <Card.Content className="flex flex-col gap-2 p-4">
-            <div className={`flex items-center gap-2 ${card.iconColor}`}>
-              <Icon icon={card.icon} className="icon-md" />
-              <span className="text-sm font-medium">{card.label}</span>
+            <div className="flex items-center gap-2">
+              <Icon icon={card.icon} className={`${card.iconColor} icon-md`} />
+              <span className="text-sm font-medium text-foreground">{card.label}</span>
               <Tooltip>
                 <Tooltip.Trigger>
                   <Icon icon={InformationCircleIcon} className="icon-xs cursor-help opacity-60" />

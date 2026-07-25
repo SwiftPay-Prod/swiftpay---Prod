@@ -30,7 +30,7 @@ interface BlockSettingsProps {
 	primaryColor?: string;
 }
 
-export function BlockSettings({ block, onUpdate, primaryColor = '#6366F1' }: BlockSettingsProps) {
+export function BlockSettings({ block, onUpdate, primaryColor = '#171717' }: BlockSettingsProps) {
 	const parse = emailBlockTypeParse[block.type];
 
 	function handleContentChange(content: string) {

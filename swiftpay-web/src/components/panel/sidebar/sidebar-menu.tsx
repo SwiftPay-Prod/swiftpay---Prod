@@ -164,10 +164,10 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 	) : null;
 
 	const buttonClassName = [
-		'font-normal rounded-l-none rounded-r-lg transition-[background-color,color,transform,opacity,border-color] duration-160 ease-out',
-		showFull ? 'w-full justify-start gap-3' : 'w-9 h-9',
+		'font-normal transition-all duration-150',
+		showFull ? 'w-full justify-start gap-3 rounded-md' : 'w-8 h-8 rounded-md',
 		effectClassName,
-		active ? '!bg-default !text-accent' : '',
+		active ? '!bg-default !text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50',
 		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
 	]
 		.filter(Boolean)
@@ -226,9 +226,9 @@ function PopoverMenuItem({ item, onClose }: PopoverMenuItemProps) {
 	) : null;
 
 	const buttonClassName = [
-		'w-full justify-start gap-3 font-normal rounded-l-none rounded-r-lg transition-[background-color,color,transform,opacity,border-color] duration-160 ease-out',
+		'w-full justify-start gap-3 font-normal rounded-md transition-all duration-150',
 		effectClassName,
-		active ? '!bg-default !text-accent' : '',
+		active ? '!bg-default !text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50',
 		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
 	]
 		.filter(Boolean)
@@ -266,7 +266,7 @@ function MenuSectionComponent({ section, showFull }: MenuSectionComponentProps) 
 	if (!showFull) {
 		if (!sectionIcon) return null;
 
-		const triggerClassName = ['w-9 h-9 transition-all duration-200 ease-out', hasActiveItem ? '!bg-accent-soft !text-accent' : '']
+		const triggerClassName = ['w-8 h-8 transition-all duration-150', hasActiveItem ? '!bg-default !text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50']
 			.filter(Boolean)
 			.join(' ');
 
@@ -282,7 +282,7 @@ function MenuSectionComponent({ section, showFull }: MenuSectionComponentProps) 
 					</Tooltip.Trigger>
 					<Popover.Content placement="right" className="w-72">
 						<Popover.Dialog>
-							<div className="mb-2 px-2 text-xs font-medium tracking-wider text-muted-foreground">{section.title}</div>
+							<div className="mb-2 px-2 text-xs font-medium tracking-wide text-muted">{section.title}</div>
 							<div className="flex flex-col">
 								{section.items.map((item) => (
 									<PopoverMenuItem key={item.path} item={item} onClose={() => setIsPopoverOpen(false)} />
@@ -297,8 +297,8 @@ function MenuSectionComponent({ section, showFull }: MenuSectionComponentProps) 
 	}
 
 	const triggerClassName = [
-		'group my-0.5 flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-xs tracking-wider transition-colors duration-160 hover:bg-default',
-		hasActiveItem ? 'bg-accent-soft text-accent-soft-foreground' : 'text-muted-foreground',
+		'group my-0.5 flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-medium tracking-wide transition-all duration-150',
+		hasActiveItem ? 'bg-default text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50',
 	].join(' ');
 
 	return (
@@ -328,7 +328,7 @@ export function SidebarMenu({ sections, forceFull = false }: SidebarMenuProps) {
 
 	if (!showFull) {
 		return (
-			<nav className="flex flex-col items-center gap-1 sidebar-animate-in">
+			<nav className="flex flex-col items-center gap-0.5 sidebar-animate-in">
 				{sections.map((section) => (
 					<MenuSectionComponent key={section.title} section={section} showFull={showFull} />
 				))}
@@ -337,7 +337,7 @@ export function SidebarMenu({ sections, forceFull = false }: SidebarMenuProps) {
 	}
 
 	return (
-		<nav className="flex flex-col gap-2 sidebar-animate-in">
+		<nav className="flex flex-col sidebar-animate-in">
 			<DisclosureGroup
 				allowsMultipleExpanded
 				expandedKeys={isHydrated ? expandedKeys : EMPTY_SET}

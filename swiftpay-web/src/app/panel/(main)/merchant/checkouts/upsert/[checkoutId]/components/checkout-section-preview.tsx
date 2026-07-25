@@ -1,7 +1,3 @@
-'use client';
-
-import { Image } from '@heroui/react';
-
 interface CheckoutSectionPreviewProps {
 	src: string;
 	title: string;
@@ -16,11 +12,10 @@ export function CheckoutSectionPreview({ src, title, description }: CheckoutSect
 				{description && <span className="text-[10px] text-muted">{description}</span>}
 			</div>
 			<div className="relative overflow-hidden rounded-lg border border-divider shadow-sm">
-				<Image
+				<img
 					src={src}
 					alt={title}
 					className="w-full object-cover aspect-[16/9]"
-					fallbackSrc="https://placehold.co/600x400?text=Preview+Indispon%C3%ADvel"
 				/>
 			</div>
 		</div>

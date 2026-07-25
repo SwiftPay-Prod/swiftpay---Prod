@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conta Bloqueada - SwiftPay</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 40px 0; background-color: #f3f4f6;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <!-- Header com Banner -->
+        <div style="background-color: #ffffff; border-radius: 8px 8px 0 0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <img src="https://app.imagify.io/media/2/7a132807-6419-4ffe-8b69-0daed808481f/banner-email.png" alt="SwiftPay Banner" style="width: 100%; height: auto; display: block; border-radius: 8px 8px 0 0;">
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div style="background-color: #ffffff; padding: 32px 40px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <!-- Título com ícone -->
+            <div style="text-align: center; margin-bottom: 24px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                        <path d="M12 7V13M12 17H12.01M10.29 3.86L1.82 18A2 2 0 0 0 3.24 21H20.76A2 2 0 0 0 22.18 18L13.71 3.86A2 2 0 0 0 10.29 3.86Z" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span style="font-size: 24px; font-weight: bold; color: #1f2937;">Sua conta foi bloqueada</span>
+                </span>
+            </div>
+
+            <!-- Saudação -->
+            <p style="font-size: 16px; color: #4b5563; margin: 0 0 16px 0;">
+                Olá, [[NAME]]!
+            </p>
+
+            <!-- Texto explicativo -->
+            <p style="font-size: 16px; color: #4b5563; margin: 0 0 24px 0;">
+                Sua conta foi bloqueada após [[FAILED_ATTEMPTS]] tentativas de login incorretas.
+            </p>
+
+            <!-- Seção de Detalhes -->
+            <div style="background-color: #f9fafb; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+                <p style="font-size: 16px; font-weight: 600; color: #374151; margin: 0 0 16px 0;">
+                    Detalhes das tentativas de acesso:
+                </p>
+                
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="padding: 12px 0; vertical-align: top;">
+                            <span style="display: inline-flex; align-items: center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                                    <path d="M20 10V7C20 5.89543 19.1046 5 18 5H6C4.89543 5 4 5.89543 4 7V10M20 10V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V10M20 10H4M8 3V7M16 3V7" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 600; color: #4b5563;">Data/Hora:</span>
+                            </span>
+                        </td>
+                        <td style="padding: 12px 0;">
+                            <span style="font-size: 14px; color: #1f2937;">[[DATE]] às [[TIME]]</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px 0; vertical-align: top;">
+                            <span style="display: inline-flex; align-items: center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                                    <path d="M2 12C2 13.6569 3.34315 15 5 15C6.65685 15 8 13.6569 8 12C8 10.3431 6.65685 9 5 9C3.34315 9 2 10.3431 2 12ZM2 12H22M10 12C10 13.6569 11.3431 15 13 15C14.6569 15 16 13.6569 16 12C16 10.3431 14.6569 9 13 9C11.3431 9 10 10.3431 10 12ZM18 12C18 13.6569 19.3431 15 21 15C22.6569 15 24 13.6569 24 12C24 10.3431 22.6569 9 21 9C19.3431 9 18 10.3431 18 12Z" stroke="#6B7280" stroke-width="2"/>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 600; color: #4b5563;">Endereço IP:</span>
+                            </span>
+                        </td>
+                        <td style="padding: 12px 0;">
+                            <span style="font-size: 14px; color: #1f2937;">[[IP_ADDRESS]]</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px 0; vertical-align: top;">
+                            <span style="display: inline-flex; align-items: center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                                    <circle cx="12" cy="10" r="3" stroke="#6B7280" stroke-width="2"/>
+                                    <path d="M12 21.7C17.3 17 20 13 20 10A8 8 0 1 0 4 10C4 13 6.7 17 12 21.7Z" stroke="#6B7280" stroke-width="2"/>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 600; color: #4b5563;">Localização:</span>
+                            </span>
+                        </td>
+                        <td style="padding: 12px 0;">
+                            <span style="font-size: 14px; color: #1f2937;">[[LOCATION]]</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px 0; vertical-align: top;">
+                            <span style="display: inline-flex; align-items: center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="#6B7280" stroke-width="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21" stroke="#6B7280" stroke-width="2"/>
+                                    <line x1="12" y1="17" x2="12" y2="21" stroke="#6B7280" stroke-width="2"/>
+                                </svg>
+                                <span style="font-size: 14px; font-weight: 600; color: #4b5563;">Dispositivo:</span>
+                            </span>
+                        </td>
+                        <td style="padding: 12px 0;">
+                            <span style="font-size: 14px; color: #1f2937;">[[USER_AGENT]]</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Como desbloquear -->
+            <p style="font-size: 16px; font-weight: 600; color: #1f2937; margin: 0 0 16px 0;">
+                Como desbloquear sua conta?
+            </p>
+
+            <p style="font-size: 16px; color: #4b5563; margin: 0 0 24px 0;">
+                Para desbloquear sua conta, você precisa redefinir sua senha. Clique no botão abaixo:
+            </p>
+
+            <!-- Botão CTA -->
+            <div style="text-align: center; margin-bottom: 24px;">
+                <a href="[[RESET_PASSWORD_URL]]" style="background-color: #2563eb; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;">
+                    Redefinir Senha
+                </a>
+            </div>
+
+            <!-- Alerta de Segurança -->
+            <div style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 16px; margin-bottom: 24px;">
+                <span style="display: inline-flex; align-items: flex-start;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-right: 8px; margin-top: 2px; flex-shrink: 0;">
+                        <path d="M12 7V13M12 17H12.01M10.29 3.86L1.82 18A2 2 0 0 0 3.24 21H20.76A2 2 0 0 0 22.18 18L13.71 3.86A2 2 0 0 0 10.29 3.86Z" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span style="font-size: 14px; color: #991b1b;">
+                        Se você não reconhece essas tentativas de acesso, alguém pode estar tentando acessar sua conta. Recomendamos que você redefina sua senha imediatamente.
+                    </span>
+                </span>
+            </div>
+
+            <!-- Linha horizontal -->
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+
+            <!-- Texto automático -->
+            <p style="font-size: 14px; color: #6b7280; text-align: center; margin: 0;">
+                Este é um e-mail automático. Por favor, não responda.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div style="background-color: #f9fafb; padding: 24px; border-radius: 0 0 8px 8px;">
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin: 0 0 8px 0;">
+                © 2025 SwiftPay
+            </p>
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin: 0;">
+                <a href="mailto:suporte@swiftpay.com.br" style="color: #2563eb; text-decoration: none;">
+                    suporte@swiftpay.com.br
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

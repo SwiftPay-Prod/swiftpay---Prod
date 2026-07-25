@@ -98,7 +98,7 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 				<h1 className="text-2xl font-bold">Entrar</h1>
 			</div>
 
-			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
+			<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 				{error && <p className="text-danger text-sm text-center bg-danger/10 py-2 px-4 rounded-lg">{error}</p>}
 
 				<TextField variant="secondary" isRequired value={email} onChange={setEmail} name="email" type="email">
@@ -139,9 +139,9 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 					Esqueceu a senha?
 				</Link>
 
-				<AsyncButton type="submit" variant="primary" isPending={isLoading} className="w-full">
-					Entrar
-				</AsyncButton>
+				<button type="submit" disabled={isLoading} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-accent text-accent-foreground font-semibold h-10 px-4 text-sm hover:opacity-90 transition-all disabled:opacity-50">
+					{isLoading ? 'Entrando...' : 'Entrar'}
+				</button>
 			</form>
 
 			<div className="flex items-center gap-4">

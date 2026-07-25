@@ -385,7 +385,7 @@ export function ProductsTab({ checkout, merchantId, onRefresh, onDraftChange }: 
 					<CheckoutSectionPreview
 						title="Lista de Produtos"
 						description="Veja como os produtos e variações são exibidos para o cliente. Você pode reordenar os itens arrastando-os na lista ao lado."
-						imageUrl="https://placehold.co/600x800?text=Preview+Lista+de+Produtos"
+						src="https://placehold.co/600x800?text=Preview+Lista+de+Produtos"
 					/>
 				</div>
 			</div>

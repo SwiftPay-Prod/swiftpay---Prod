@@ -12,16 +12,16 @@ export function SidebarLogo() {
   const showFull = isMobile ? isOpen : isExpanded;
 
   return (
-    <Link href={Routes.panel.merchant.dashboard} className="flex items-center h-8">
+    <Link href={Routes.panel.merchant.dashboard} className="flex items-center">
       {showFull ? (
-        <SwiftPayBrandLogo iconSize={28} textClassName="text-xl" />
+        <SwiftPayBrandLogo iconSize={56} />
       ) : (
-        <div className="relative size-8">
+        <div className="relative mx-auto size-10">
           <Image
-            src="/logos/swiftpay-icon-logo.png"
+            src="/logos/swiftpay-logo.png"
             alt="SwiftPay"
             fill
-            sizes="32px"
+            sizes="40px"
             className="object-contain"
             priority
           />

@@ -61,65 +61,52 @@ export function CustomerTab({ checkout, onSave, isSaving, onFormChange, onDraftC
 
 	return (
 		<CheckoutTabSaveLayout hasChanges={hasChanges} onSave={onSave} isSaving={isSaving}>
-			return (
-				<CheckoutTabSaveLayout hasChanges={hasChanges} onSave={onSave} isSaving={isSaving}>
-					<div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-						<div className="lg:col-span-7">
-							<SectionAccordion
-								id="customer-data"
-								icon={UserIcon}
-								title="Dados do Cliente"
-								summary={`Telefone ${requireCustomerPhone ? 'Ativo' : 'Inativo'} • Documento ${requireCustomerDocument ? 'Ativo' : 'Inativo'} • Endereço ${requireCustomerAddress ? 'Ativo' : 'Inativo'}`}
-								bodyClassName="p-4"
-							>
-								<div className="space-y-4">
-									<div className="rounded-lg bg-accent-soft p-3">
-										<p className="text-sm text-accent-soft-foreground">
-											<strong>Nome</strong> e <strong>E-mail</strong> do cliente são sempre obrigatórios em todos os
-											checkouts.
-										</p>
-									</div>
+			<div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+				<div className="lg:col-span-7">
+					<SectionAccordion
+						id="customer-data"
+						icon={UserIcon}
+						title="Dados do Cliente"
+						summary={`Telefone ${requireCustomerPhone ? 'Ativo' : 'Inativo'} • Documento ${requireCustomerDocument ? 'Ativo' : 'Inativo'} • Endereço ${requireCustomerAddress ? 'Ativo' : 'Inativo'}`}
+						bodyClassName="p-4"
+					>
+						<div className="space-y-4">
+							<div className="rounded-lg bg-accent-soft p-3">
+								<p className="text-sm text-accent-soft-foreground">
+									<strong>Nome</strong> e <strong>E-mail</strong> do cliente são sempre obrigatórios em todos os
+									checkouts.
+								</p>
+							</div>
 
-									<CheckoutSwitchSettingRow
-										title="Exigir telefone"
-										icon={CallIcon}
-										isSelected={requireCustomerPhone}
-										onChange={(isSelected) => onFormChange({ requireCustomerPhone: isSelected })}
-									/>
+							<CheckoutSwitchSettingRow
+								title="Exigir telefone"
+								icon={CallIcon}
+								isSelected={requireCustomerPhone}
+								onChange={(isSelected) => onFormChange({ requireCustomerPhone: isSelected })}
+							/>
 
-									<CheckoutSwitchSettingRow
-										title="Exigir CPF/CNPJ"
-										icon={File01Icon}
-										isSelected={requireCustomerDocument}
-										onChange={(isSelected) => onFormChange({ requireCustomerDocument: isSelected })}
-									/>
+							<CheckoutSwitchSettingRow
+								title="Exigir CPF/CNPJ"
+								icon={File01Icon}
+								isSelected={requireCustomerDocument}
+								onChange={(isSelected) => onFormChange({ requireCustomerDocument: isSelected })}
+							/>
 
-									<CheckoutSwitchSettingRow
-										title="Exigir endereço"
-										icon={Location01Icon}
-										isSelected={requireCustomerAddress}
-										onChange={(isSelected) => onFormChange({ requireCustomerAddress: isSelected })}
-									/>
-								</div>
-							</SectionAccordion>
-						</div>
-
-						<div className="lg:col-span-5">
-							<CheckoutSectionPreview
-								title="Formulário do Cliente"
-								description="Visualize como os campos de dados do cliente aparecem no checkout. Campos obrigatórios são marcados com asterisco."
-								src="https://placehold.co/600x800?text=Preview+Dados+do+Cliente"
+							<CheckoutSwitchSettingRow
+								title="Exigir endereço"
+								icon={Location01Icon}
+								isSelected={requireCustomerAddress}
+								onChange={(isSelected) => onFormChange({ requireCustomerAddress: isSelected })}
 							/>
 						</div>
-					</div>
-				</CheckoutTabSaveLayout>
-			);
+					</SectionAccordion>
+				</div>
 
 				<div className="lg:col-span-5">
 					<CheckoutSectionPreview
 						title="Formulário do Cliente"
 						description="Visualize como os campos de dados do cliente aparecem no checkout. Campos obrigatórios são marcados com asterisco."
-						imageUrl="https://placehold.co/600x800?text=Preview+Dados+do+Cliente"
+						src="https://placehold.co/600x800?text=Preview+Dados+do+Cliente"
 					/>
 				</div>
 			</div>
