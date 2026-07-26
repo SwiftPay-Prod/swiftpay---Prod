@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Card } from '@heroui/react';
-import Image from 'next/image';
 import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { SignInForm } from '@/components/auth/forms/signin-form';
 import { SignUpForm } from '@/components/auth/forms/signup-form';
@@ -11,10 +10,6 @@ import { StatusModalProvider } from '@/components/auth/status-modal-provider';
 import { DeviceRevokedModalProvider } from '@/components/auth/device-revoked-modal-provider';
 
 type AuthView = 'signin' | 'signup' | 'forgot-password';
-
-function SwiftPayLogo() {
-	return <SwiftPayBrandLogo iconSize={30} textClassName="text-2xl" />;
-}
 
 export default function AuthPage() {
 	const [view, setView] = useState<AuthView>('signin');
@@ -36,39 +31,12 @@ export default function AuthPage() {
 	}
 
 	return (
-		<div className="h-dvh flex dark:bg-black bg-white">
+		<div className="min-h-dvh flex items-center justify-center bg-white p-4">
 			<StatusModalProvider />
 			<DeviceRevokedModalProvider />
-			<div className="hidden lg:flex lg:flex-1 bg-black dark:bg-black relative">
-				<div className="flex flex-col justify-between items-start p-8 w-full">
-					<Image
-						src="/logos/swiftpay-logo.png"
-						alt="SwiftPay"
-						width={120}
-						height={134}
-						className="object-contain"
-						priority
-					/>
-
-					<div className="max-w-lg">
-						<p className="text-neutral-400 text-lg leading-relaxed">
-							&quot;A solu&ccedil;&atilde;o mais segura e confi&aacute;vel para seus pagamentos. Gerencie suas
-							transa&ccedil;&otilde;es com total seguran&ccedil;a e praticidade.&quot;
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<div className="flex-1 flex flex-col lg:max-w-xl relative bg-white">
-				<div className="p-4 lg:p-6">
-					<div className="lg:hidden">
-						<SwiftPayLogo />
-					</div>
-				</div>
-
-				<div className="flex-1 flex items-center justify-center p-4 lg:p-8">
-					<Card className="w-full max-w-md p-8">{renderForm()}</Card>
-				</div>
+			<div className="w-full max-w-md flex flex-col items-center gap-6">
+				<SwiftPayBrandLogo iconSize={40} />
+				<Card className="w-full p-8">{renderForm()}</Card>
 			</div>
 		</div>
 	);
