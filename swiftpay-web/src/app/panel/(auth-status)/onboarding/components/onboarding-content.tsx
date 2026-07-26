@@ -8,6 +8,7 @@ import { Icon } from '@/components/ui/icon';
 import { Routes } from '@/router/routes';
 import type { UserOnboardingData } from '@/types/user/onboarding';
 import { OnboardingForm } from '@/app/panel/(auth-status)/onboarding/forms/onboarding-form';
+import { performClientLogout } from '@/utils/auth-utils';
 import { useOnboardingForm } from '@/app/panel/(auth-status)/onboarding/hooks/use-onboarding-form';
 
 interface OnboardingContentProps {
@@ -42,7 +43,7 @@ export function OnboardingContent({ userName, initialData }: OnboardingContentPr
 						</h1>
 					</div>
 					<div className="flex items-center gap-2">
-						<Button variant="ghost" size="sm" onPress={() => router.push('/api/auth/signout')}>
+						<Button variant="ghost" size="sm" onPress={() => performClientLogout()}>
 							<Icon icon={Logout01Icon} className="icon-md" />
 							Sair
 						</Button>

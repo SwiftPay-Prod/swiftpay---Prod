@@ -25,6 +25,7 @@ import { Routes } from '@/router/routes';
 import { useEnvironment } from '@/contexts/environment-context';
 import { isMerchantApproved } from '@/utils/merchant-utils';
 import { useBalanceVisibility } from '@/hooks/use-balance-visibility';
+import { performClientLogout } from '@/utils/auth-utils';
 
 interface SidebarUserInfoProps {
 	forceFull?: boolean;
@@ -66,7 +67,7 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 	const performLogout = () => {
 		startTransition(async () => {
 			closeSidebar();
-			router.push("/api/auth/signout");
+			await performClientLogout();
 		});
 	};
 
