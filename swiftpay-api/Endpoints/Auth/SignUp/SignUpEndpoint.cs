@@ -1,15 +1,12 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using swiftpay_api_core.Database;
 using swiftpay_api.Endpoints.Auth.Shared.Models;
 using swiftpay_api_core.Utils;
 using swiftpay_api.EndpointsGroups;
 using swiftpay_api.Interfaces;
 using swiftpay_api_core.Models.Database;
-using swiftpay_api_core.Models.Email;
 using swiftpay_api_core.Models.Inputs;
-using swiftpay_api_core.Models.Settings;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api.Mappers;
 
@@ -20,10 +17,8 @@ public sealed class SignUpEndpoint(
     ITokenService tokenService,
     ISessionService sessionService,
     ISecurityLogService securityLog,
-    IEmailService emailService,
     INotificationService notificationService,
     IReferralCommissionCompilationService referralCommissionCompilationService,
-    IOptions<PlatformSettingsOptions> platformSettings,
     IGeoLocationService geoLocationService
 ) : Endpoint<SignUpRequest, SignUpResponse>
 {
@@ -89,6 +84,7 @@ public sealed class SignUpEndpoint(
             Password = passwordHash,
             PasswordChangedAt = DateTime.UtcNow,
             LastLoginAt = DateTime.UtcNow,
+            EmailVerified = true,
             ReferralCode = await GenerateUniqueReferralCodeAsync(ct),
             ReferredByUserId = referrerUser?.Id,
             ReferredAt = referrerUser != null ? DateTime.UtcNow : null
@@ -104,21 +100,6 @@ public sealed class SignUpEndpoint(
                 user.Id,
                 ct);
         }
-
-        var token = CryptoUtils.GenerateToken();
-        var tokenHash = CryptoUtils.ComputeSha256Hash(token);
-        var expiresInHours = 24;
-
-        var confirmationToken = new EmailConfirmationToken
-        {
-            UserId = user.Id,
-            TokenHash = tokenHash,
-            Status = EmailConfirmationTokenStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddHours(expiresInHours),
-            CreatedAt = DateTime.UtcNow
-        };
-
-        dbContext.EmailConfirmationTokens.Add(confirmationToken);
 
         var ipAddress = EndpointUtils.GetIpAddress(HttpContext);
         var geoLocation = await geoLocationService.GetLocationAsync(ipAddress);
@@ -170,11 +151,6 @@ public sealed class SignUpEndpoint(
         {
             _ = NotifyReferrerAsync(referrerUser, user);
         }
-
-        var baseUrl = platformSettings.Value.BaseUrl.TrimEnd('/');
-        var confirmationUrl = $"{baseUrl}/confirm-email?token={token}&email={Uri.EscapeDataString(user.Email)}";
-
-        await SendEmailConfirmationAsync(user, confirmationUrl, expiresInHours);
 
         var effectiveDeviceId = deviceId ?? req.DeviceId ?? Guid.NewGuid().ToString("N");
         var session = await sessionService.CreateSessionAsync(user, effectiveDeviceId, ipAddress, userAgent);
@@ -264,26 +240,4 @@ public sealed class SignUpEndpoint(
         return ($"{browser} on {os}", browser, os);
     }
 
-    private async Task SendEmailConfirmationAsync(User user, string confirmationUrl, int expiresInHours)
-    {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Confirme seu e-mail - SwiftPay",
-                EmailTemplate.EmailConfirmation,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CONFIRMATION_URL", confirmationUrl },
-                    { "EXPIRES_IN", expiresInHours.ToString() }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }
