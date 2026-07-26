@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Card } from '@heroui/react';
+import Image from 'next/image';
 import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { SignInForm } from '@/components/auth/forms/signin-form';
 import { SignUpForm } from '@/components/auth/forms/signup-form';
@@ -40,7 +41,14 @@ export default function AuthPage() {
 			<DeviceRevokedModalProvider />
 			<div className="hidden lg:flex lg:flex-1 bg-black dark:bg-black relative">
 				<div className="flex flex-col justify-between items-start p-8 w-full">
-					<span className="text-white text-2xl font-bold tracking-tight">SwiftPay</span>
+					<Image
+						src="/logos/swiftpay-logo.png"
+						alt="SwiftPay"
+						width={120}
+						height={134}
+						className="object-contain"
+						priority
+					/>
 
 					<div className="max-w-lg">
 						<p className="text-neutral-400 text-lg leading-relaxed">
