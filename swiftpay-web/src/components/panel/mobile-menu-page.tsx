@@ -36,14 +36,12 @@ export function MobileMenuPage({ sections, user }: MobileMenuPageProps) {
 				<SidebarKbar sections={sections} user={user} forceFull />
 			</div>
 
-			{/* Menu sections — accordion */}
-			<div className="flex-1 px-3 py-2">
+			{/* Menu sections + User info — scrollable */}
+			<div className="flex-1 overflow-y-auto px-3 py-2">
 				<SidebarMenu sections={sections} forceFull />
-			</div>
-
-			{/* User info + logout */}
-			<div className="shrink-0 border-t border-divider px-3 py-2">
-				<SidebarUserInfo forceFull />
+				<div className="border-t border-divider mt-6 pt-4 pb-2">
+					<SidebarUserInfo forceFull />
+				</div>
 			</div>
 		</div>
 	);

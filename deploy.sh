@@ -13,10 +13,11 @@ echo "=== Deploying SwiftPay v${VERSION} to ${HOST} ==="
 echo "Copying docker-compose.production.yaml..."
 sshpass -p "${PASS}" scp -o StrictHostKeyChecking=no swiftpay-api/docker-compose.production.yaml "${USER}@${HOST}:${REMOTE_DIR}/docker-compose.production.yaml"
 
-# 2. Copy .env.production if exists
+# 2. Copy .env.production if exists (as both .env and .env.production)
 if [ -f .env.production ]; then
   echo "Copying .env.production..."
   sshpass -p "${PASS}" scp -o StrictHostKeyChecking=no .env.production "${USER}@${HOST}:${REMOTE_DIR}/.env.production"
+  sshpass -p "${PASS}" ssh -o StrictHostKeyChecking=no "${USER}@${HOST}" "cp ${REMOTE_DIR}/.env.production ${REMOTE_DIR}/.env"
 fi
 
 # 3. SSH and deploy
