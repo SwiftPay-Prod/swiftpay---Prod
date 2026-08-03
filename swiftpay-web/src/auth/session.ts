@@ -6,7 +6,8 @@ import type { MinimalMerchant } from '@/types/merchant/crud';
 import type { SessionData } from '@/types/session';
 import { UserStatus, PaymentEnvironment } from '@/types/enums';
 import { BaseCookie } from '@/constants/base';
-import { refreshSession } from '@/app/actions/session';
+import { getSession } from '@/app/actions/session';
+import { deleteCookie, readCookie, readParsedCookie, setCookie } from '@/lib/server-cookies';
 
 export async function setAuthCookies(tokens: AuthTokens): Promise<void> {
 	const cookieStore = await cookies();
@@ -51,39 +52,16 @@ export async function updateAccessToken(accessToken: string, expiresAt: string):
 }
 
 export async function getAccessToken(): Promise<string | null> {
-	return 'mock-access-token';
+	return readCookie(BaseCookie.accessToken);
 }
 
 export async function getSessionData(): Promise<SessionData | null> {
-	return {
-		user: {
-			id: 'mock-user-1',
-			name: 'Admin SwiftPay',
-			email: 'admin@swiftpay.com',
-			role: 'admin' as any,
-			status: 'active' as any,
-			emailVerified: true,
-			profileImageUrl: null,
-			selectedBorderImageUrl: null,
-		},
-		activeMerchant: {
-			id: 'mock-merchant-1',
-			name: 'SwiftPay Organização',
-			email: 'suporte@swiftpay.com.br',
-			document: '12.345.678/0001-90',
-			status: 'active' as any,
-			kycStatus: 'approved' as any,
-			availableBalance: 0,
-			fees: null,
-			onboardingStep: 'completed' as any,
-			onboardingCompletedAt: new Date().toISOString(),
-			createdAt: new Date().toISOString(),
-		} as any,
-	} as any;
+	const response = await getSession();
+	return response?.data ?? null;
 }
 
 export async function isAuthenticated(): Promise<boolean> {
-	return true;
+	return (await getAccessToken()) !== null;
 }
 
 export async function clearAuthCookies(): Promise<void> {
@@ -111,23 +89,8 @@ export async function setSelectedMerchant(merchant: MinimalMerchant): Promise<vo
 	});
 }
 
-export async function getSelectedMerchant(): Promise<MinimalMerchant | null> {
-	const cookieStore = await cookies();
-	const selectedMerchant = cookieStore.get(BaseCookie.selectedMerchant)?.value;
-	if (!selectedMerchant) {
-		return {
-			id: 'mock-merchant-1',
-			name: 'SwiftPay Organização',
-			status: 'active' as any,
-			kycStatus: 'approved' as any,
-		} as MinimalMerchant;
-	}
-	
-	try {
-		return JSON.parse(decodeURIComponent(selectedMerchant)) as MinimalMerchant;
-	} catch {
-		return null;
-	}
+	export async function getSelectedMerchant(): Promise<MinimalMerchant | null> {
+	return readParsedCookie<MinimalMerchant>(BaseCookie.selectedMerchant);
 }
 
 export async function clearSelectedMerchant(): Promise<void> {

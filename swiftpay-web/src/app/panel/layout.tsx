@@ -1,4 +1,17 @@
-import { UserRole, UserStatus, MerchantStatus, MerchantKycStatus, MerchantOnboardingStep, PaymentEnvironment } from '@/types/enums';
+import { redirect } from 'next/navigation';
+import type { UserInfo } from '@/types/auth';
+import type { MinimalMerchant } from '@/types/merchant/crud';
+import {
+  getAccessToken,
+  getDeviceIdCookie,
+  getSelectedMerchant,
+  getSessionData,
+  getSidebarExpanded,
+} from '@/auth/session';
+import { listMerchants } from '@/app/actions/merchant/crud';
+import { getApiUrl } from '@/app/actions/auth';
+import { Routes } from '@/router/routes';
+import { resolveDocsUrl } from '@/constants/useful-links';
 import { SignalRProvider } from '@/contexts/signalr-context';
 import { AuthHubProvider } from '@/providers/auth-hub-provider';
 import { PWARedirectHandler } from '@/components/pwa-redirect-handler';
@@ -9,50 +22,51 @@ export default async function PanelRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const mockUser = {
-    id: 'mock-user-1',
-    name: 'Admin SwiftPay',
-    email: 'admin@swiftpay.com',
-    role: UserRole.Admin,
-    status: UserStatus.Active,
-    emailVerified: true,
-    profileImageUrl: null,
-    selectedBorderImageUrl: null,
+  const [session, accessToken, apiUrl, deviceId, sidebarExpanded] = await Promise.all([
+    getSessionData(),
+    getAccessToken(),
+    getApiUrl(),
+    getDeviceIdCookie(),
+    getSidebarExpanded(),
+  ]);
+
+  if (!session || !session.emailVerified || !accessToken) {
+    redirect(Routes.home);
+  }
+
+  const user: UserInfo = {
+    id: session.userId,
+    name: session.name,
+    email: session.email,
+    role: session.role,
+    status: session.status,
+    emailVerified: session.emailVerified,
+    profileImageUrl: session.profileImageUrl ?? null,
+    selectedBorderImageUrl: session.selectedBorderImageUrl ?? null,
   };
 
-  const mockMerchant = {
-    id: 'mock-merchant-1',
-    name: 'SwiftPay Organização',
-    email: 'suporte@swiftpay.com.br',
-    document: '12.345.678/0001-90',
-    status: MerchantStatus.Active,
-    kycStatus: MerchantKycStatus.Approved,
-    availableBalance: 0,
-    fees: null,
-    onboardingStep: MerchantOnboardingStep.Completed,
-    onboardingCompletedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-  };
+  const merchantsResponse = await listMerchants();
+  const merchants: MinimalMerchant[] = merchantsResponse?.data?.items ?? [];
+  const selectedMerchant = await getSelectedMerchant();
 
   const publicConfig = {
-    docsUrl: 'https://docs.swiftpay.com.br',
+    docsUrl: resolveDocsUrl(),
     integrationUrl: null,
-    checkoutUrl: null,
   };
 
   return (
-    <SignalRProvider apiUrl="" accessToken={null} deviceId="">
+    <SignalRProvider apiUrl={apiUrl} accessToken={accessToken} deviceId={deviceId ?? ''}>
       <AuthHubProvider>
         <PWARedirectHandler />
         <PanelProviders
-          user={mockUser}
-          merchants={[mockMerchant]}
-          selectedMerchant={mockMerchant}
-          apiUrl=""
-          accessToken={null}
+          user={user}
+          merchants={merchants}
+          selectedMerchant={selectedMerchant}
+          apiUrl={apiUrl}
+          accessToken={accessToken}
           publicConfig={publicConfig}
-          initialEnvironment={PaymentEnvironment.Production}
-          initialSidebarExpanded={true}
+          initialEnvironment={session.environment}
+          initialSidebarExpanded={sidebarExpanded}
           initialUnreadCount={0}
           initialUserUnreadCount={0}
         >
