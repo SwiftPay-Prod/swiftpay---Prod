@@ -436,11 +436,13 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 				<div className="rounded-lg bg-surface-secondary p-4">
 					<SectionTitle icon={<Icon icon={Wallet01Icon} className="icon-sm" />} title="Dados PIX" />
 					{payment.pix.copyAndPaste && payment.status === 'Pending' && (
-						<div className="flex flex-col items-center gap-4 mb-6 p-6 bg-white rounded-xl border border-divider shadow-sm">
-							<QRCodeSVG value={payment.pix.copyAndPaste} size={180} level="M" marginSize={2} className="rounded-lg" />
+						<div className="flex flex-col items-center gap-4 mb-6 p-6 bg-card rounded-xl border border-border shadow-sm">
+							<div className="p-3 bg-white rounded-lg">
+								<QRCodeSVG value={payment.pix.copyAndPaste} size={180} level="M" marginSize={0} />
+							</div>
 							<div className="flex flex-col items-center gap-1">
-								<span className="text-sm font-medium text-black/80">Escaneie o QR Code</span>
-								<span className="text-xs text-black/50">ou use o código Pix Copia e Cola abaixo</span>
+								<span className="text-sm font-medium text-foreground">Escaneie o QR Code</span>
+								<span className="text-xs text-muted-foreground">ou use o código Pix Copia e Cola abaixo</span>
 							</div>
 							<Button variant="secondary" className="gap-2" onPress={() => onOpenQrModal?.(payment.pix!.copyAndPaste!)}>
 								<Icon icon={ArrowExpand01Icon} className="icon-sm" />
@@ -579,12 +581,12 @@ function QrCodeModal({
 							<Icon icon={Wallet01Icon} className="icon-md" />
 						</Modal.Icon>
 						<Modal.Heading>QR Code PIX</Modal.Heading>
-						<p className="text-sm text-muted">Escaneie o código ou use o PIX Copia e Cola</p>
+						<p className="text-sm text-muted-foreground">Escaneie o código ou use o PIX Copia e Cola</p>
 					</Modal.Header>
 					<Modal.Body>
 						<div className="flex flex-col items-center gap-6">
-							<div className="p-6 bg-white rounded-xl border border-divider shadow-sm">
-								<QRCodeSVG value={copyAndPaste} size={280} level="M" marginSize={2} className="rounded-lg" />
+							<div className="p-4 bg-white rounded-xl border border-border shadow-sm">
+								<QRCodeSVG value={copyAndPaste} size={280} level="M" marginSize={0} className="rounded-lg" />
 							</div>
 							<div className="w-full">
 								<CopyableValue value={copyAndPaste} label="PIX Copia e Cola" />

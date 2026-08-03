@@ -312,6 +312,16 @@ public class CreditCardTransactionService(
                     Description = input.Description,
                     ExternalRef = input.ExternalId ?? payment.Id.ToString("N"),
                     NotificationUrl = AcquirerWebhookUtils.BuildWebhookUrl(acquirerConfig.Config.PlatformBaseUrl, AcquirerType.MagicPay),
+                    Items =
+                    [
+                        new MagicPayItem
+                        {
+                            Name = input.Description ?? "Pagamento Cartao",
+                            Quantity = 1,
+                            Price = input.Amount,
+                            Type = "DIGITAL"
+                        }
+                    ],
                     Payer = new MagicPayPayer
                     {
                         Name = customer.Name,

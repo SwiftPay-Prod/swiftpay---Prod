@@ -23,7 +23,7 @@ export function getTierGradientClass(position: number): string {
 export function getTierStyle(position: number): string {
 	if (position === 1) return 'ring-2 ring-foreground ring-offset-1 ring-offset-background animate-pulse';
 	if (position === 2) return 'ring-2 ring-muted ring-offset-1 ring-offset-background animate-pulse';
-	if (position === 3) return 'ring-2 ring-[#525252] ring-offset-1 ring-offset-background animate-pulse';
+	if (position === 3) return 'ring-2 ring-orange-500/60 ring-offset-1 ring-offset-background animate-pulse';
 	if (position <= 10) return 'ring-2 ring-accent/60 ring-offset-1 ring-offset-background';
 	return 'ring-1 ring-divider ring-offset-1 ring-offset-background';
 }
@@ -31,7 +31,7 @@ export function getTierStyle(position: number): string {
 export function getTierTextClasses(position: number): { name: string; value: string } {
 	if (position === 1) return { name: 'text-foreground font-semibold', value: 'text-foreground font-semibold' };
 	if (position === 2) return { name: 'text-muted font-semibold', value: 'text-muted font-semibold' };
-	if (position === 3) return { name: 'text-[#525252] font-semibold', value: 'text-[#525252] font-semibold' };
+	if (position === 3) return { name: 'text-orange-500 font-semibold', value: 'text-orange-500 font-semibold' };
 	if (position <= 10) return { name: 'text-accent font-medium', value: 'text-accent font-semibold' };
 	return { name: 'font-medium', value: 'font-semibold' };
 }

@@ -208,7 +208,7 @@ a:hover {
 
 .http-method-badge--patch,
 [class*="badge"][class*="patch"] {
-    background-color: #8b5cf6 !important;
+    background-color: #525252 !important;
 }
 
 .http-method-badge--delete,

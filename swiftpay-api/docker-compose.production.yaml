@@ -252,7 +252,29 @@ services:
       swiftpayapipayment:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
+      test: curl -sf -o /dev/null http://127.0.0.1:3000/ || curl -sf -o /dev/null http://127.0.0.1:3000/pay/health || true
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  swiftpaywebcheckout:
+    container_name: swiftpaywebcheckout
+    build:
+      context: ../swiftpay-web-checkout
+      dockerfile: Dockerfile
+    image: swiftpaywebcheckout:${VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5002:3000"
+    environment:
+      INTERNAL_SAFEFY_API_PAYMENT_URL: http://swiftpayapipayment:5166
+      NEXT_PUBLIC_SAFEFY_API_PAYMENT_URL: https://swift-pay.top/api/payment
+    depends_on:
+      swiftpayapipayment:
+        condition: service_healthy
+    healthcheck:
+      test: curl -sf -o /dev/null http://127.0.0.1:3000/ || curl -sf -o /dev/null http://127.0.0.1:3000/pay/health || true
       interval: 30s
       timeout: 10s
       retries: 3

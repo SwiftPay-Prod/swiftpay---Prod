@@ -141,7 +141,7 @@ export const merchantOperationTypeParse: Record<NonNullable<MerchantKycOperation
 		label: 'White',
 		color: 'default',
 		icon: <Icon icon={RubberDuckIcon} size={14} />,
-		className: 'bg-white text-black border border-gray-300',
+		className: 'bg-card text-foreground border border-border',
 	},
 	Black: {
 		label: 'Black',

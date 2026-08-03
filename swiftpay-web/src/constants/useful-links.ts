@@ -1,4 +1,4 @@
-export const DEFAULT_DOCS_URL = 'https://docs.swiftpay.com.br';
+export const DEFAULT_DOCS_URL = 'https://swift-pay.top/docs';
 
 export const USEFUL_LINKS = {
 	supportPhone: '+55 11 9 3481-9868',

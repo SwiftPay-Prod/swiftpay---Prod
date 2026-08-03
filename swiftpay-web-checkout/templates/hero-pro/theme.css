@@ -28,14 +28,14 @@
 
 	/* Text Colors */
 	--hero-text: oklch(99.11% 0 253.83);
-	--hero-text-muted: oklch(70.5% 0 253.83);
-	--hero-text-subtle: oklch(55.17% 0 253.83);
-	--hero-text-placeholder: oklch(55.17% 0 253.83);
+	--hero-text-muted: oklch(78% 0 253.83);
+	--hero-text-subtle: oklch(68% 0 253.83);
+	--hero-text-placeholder: oklch(68% 0 253.83);
 	--hero-text-success: oklch(73.29% 0.1935 150.81);
 	--hero-text-info: oklch(72% 0.15 253.83);
 	--hero-text-warning: oklch(82.03% 0.1388 76.34);
 	--hero-text-danger: oklch(65.32% 0.2328 25.74);
-	--hero-text-brand: oklch(72% 0.19 312);
+	--hero-text-brand: oklch(0.85 0.22 115);
 
 	/* Border Colors */
 	--hero-border: oklch(28% 0 253.83);
@@ -58,10 +58,10 @@
 	--hero-badge-service-text: oklch(82.03% 0.1388 76.34);
 
 	/* Accent Colors (SwiftPay Brand) */
-	--hero-accent: oklch(62.04% 0.1951 253.83);
-	--hero-accent-light: oklch(62.04% 0.1951 253.83 / 0.15);
-	--hero-accent-muted: oklch(62.04% 0.1951 253.83 / 0.09);
-	--hero-accent-foreground: oklch(99.11% 0 0);
+	--hero-accent: oklch(0.85 0.22 115);
+	--hero-accent-light: oklch(0.85 0.22 115 / 0.15);
+	--hero-accent-muted: oklch(0.85 0.22 115 / 0.09);
+	--hero-accent-foreground: oklch(0.08 0.01 115);
 
 	/* Ring/Focus Colors */
 	--hero-ring: oklch(28% 0 253.83);
@@ -90,14 +90,14 @@
 
 	/* Text Colors */
 	--hero-text: oklch(99.11% 0 253.83);
-	--hero-text-muted: oklch(70.5% 0 253.83);
-	--hero-text-subtle: oklch(55.17% 0 253.83);
-	--hero-text-placeholder: oklch(55.17% 0 253.83);
+	--hero-text-muted: oklch(78% 0 253.83);
+	--hero-text-subtle: oklch(68% 0 253.83);
+	--hero-text-placeholder: oklch(68% 0 253.83);
 	--hero-text-success: oklch(73.29% 0.1935 150.81);
 	--hero-text-info: oklch(72% 0.15 253.83);
 	--hero-text-warning: oklch(82.03% 0.1388 76.34);
 	--hero-text-danger: oklch(65.32% 0.2328 25.74);
-	--hero-text-brand: oklch(72% 0.19 312);
+	--hero-text-brand: oklch(0.85 0.22 115);
 
 	/* Border Colors */
 	--hero-border: oklch(28% 0 253.83);
@@ -120,10 +120,10 @@
 	--hero-badge-service-text: oklch(82.03% 0.1388 76.34);
 
 	/* Accent Colors (SwiftPay Brand) */
-	--hero-accent: oklch(62.04% 0.1951 253.83);
-	--hero-accent-light: oklch(62.04% 0.1951 253.83 / 0.15);
-	--hero-accent-muted: oklch(62.04% 0.1951 253.83 / 0.09);
-	--hero-accent-foreground: oklch(99.11% 0 0);
+	--hero-accent: oklch(0.85 0.22 115);
+	--hero-accent-light: oklch(0.85 0.22 115 / 0.15);
+	--hero-accent-muted: oklch(0.85 0.22 115 / 0.09);
+	--hero-accent-foreground: oklch(0.08 0.01 115);
 
 	/* Ring/Focus Colors */
 	--hero-ring: oklch(28% 0 253.83);
@@ -156,14 +156,14 @@
 
 	/* Text Colors */
 	--hero-text: oklch(21.03% 0 253.83);
-	--hero-text-muted: oklch(55.17% 0 253.83);
-	--hero-text-subtle: oklch(55.17% 0 253.83);
-	--hero-text-placeholder: oklch(65% 0 253.83);
+	--hero-text-muted: oklch(42% 0 253.83);
+	--hero-text-subtle: oklch(45% 0 253.83);
+	--hero-text-placeholder: oklch(50% 0 253.83);
 	--hero-text-success: oklch(44% 0.14 150.81);
 	--hero-text-info: oklch(42% 0.18 253.83);
 	--hero-text-warning: oklch(48% 0.13 72.33);
 	--hero-text-danger: oklch(50% 0.2 25.74);
-	--hero-text-brand: oklch(50% 0.2 312);
+	--hero-text-brand: oklch(0.65 0.20 115);
 
 	/* Border Colors */
 	--hero-border: oklch(90% 0 253.83);
@@ -186,10 +186,10 @@
 	--hero-badge-service-text: oklch(44% 0.12 72.33);
 
 	/* Accent Colors (SwiftPay Brand) */
-	--hero-accent: oklch(62.04% 0.1951 253.83);
-	--hero-accent-light: oklch(62.04% 0.1951 253.83 / 0.12);
-	--hero-accent-muted: oklch(62.04% 0.1951 253.83 / 0.06);
-	--hero-accent-foreground: oklch(99.11% 0 0);
+	--hero-accent: oklch(0.65 0.20 115);
+	--hero-accent-light: oklch(0.65 0.20 115 / 0.12);
+	--hero-accent-muted: oklch(0.65 0.20 115 / 0.06);
+	--hero-accent-foreground: oklch(1 0 0);
 
 	/* Ring/Focus Colors */
 	--hero-ring: oklch(90% 0 253.83);

@@ -13,10 +13,10 @@ public static class DocumentationExtensions
 
     public static WebApplication UseDocumentation(this WebApplication app, IWebHostEnvironment environment)
     {
+        app.MapOpenApi();
+
         if (environment.IsDevelopment())
         {
-            app.MapOpenApi();
-
             app.MapScalarApiReference("docs", (options, httpContext) =>
             {
                 options
@@ -25,16 +25,23 @@ public static class DocumentationExtensions
                     .PreserveSchemaPropertyOrder();
             });
         }
-
-        if (environment.IsStaging())
+        else if (environment.IsStaging())
         {
-            app.MapOpenApi();
-
             app.MapScalarApiReference("docs", (options, httpContext) =>
             {
                 options
                     .WithTitle("SwiftPay Api - Staging")
                     .WithTheme(ScalarTheme.Saturn)
+                    .PreserveSchemaPropertyOrder();
+            });
+        }
+        else
+        {
+            app.MapScalarApiReference("docs", (options, httpContext) =>
+            {
+                options
+                    .WithTitle("SwiftPay Api")
+                    .WithTheme(ScalarTheme.BluePlanet)
                     .PreserveSchemaPropertyOrder();
             });
         }

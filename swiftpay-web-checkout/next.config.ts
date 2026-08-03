@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
 	output: 'standalone',
 	generateBuildId: async () => 'swiftpay-web-checkout-stable-build',
 	async rewrites() {
-		const paymentApiUrl = process.env.INTERNAL_SAFEFY_API_PAYMENT_URL || process.env.NEXT_PUBLIC_SAFEFY_API_PAYMENT_URL;
+		const paymentApiUrl = process.env.INTERNAL_SWIFTPAY_API_PAYMENT_URL || process.env.NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL;
 
 		if (!paymentApiUrl) {
 			return [];

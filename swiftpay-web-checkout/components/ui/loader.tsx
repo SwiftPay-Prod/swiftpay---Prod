@@ -75,20 +75,10 @@ export function FullPageLoader() {
   const isDark = useSystemTheme();
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4"
-      style={{
-        backgroundColor: isDark ? "#09090b" : "#fafafa",
-      }}
-    >
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background">
       <div className="flex flex-col items-center gap-6">
         <Loader dotSize="lg" color="auto" />
-        <p
-          className="text-sm animate-pulse"
-          style={{
-            color: isDark ? "#a1a1aa" : "#71717a",
-          }}
-        >
+        <p className="text-sm animate-pulse text-muted-foreground">
           Carregando checkout...
         </p>
       </div>

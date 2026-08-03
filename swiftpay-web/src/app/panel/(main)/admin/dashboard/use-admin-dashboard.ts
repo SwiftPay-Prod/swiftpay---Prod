@@ -129,30 +129,37 @@ export function useAdminDashboard() {
 
 		let cancelled = false;
 
-		adminGetDashboard(currentFilters).then((response) => {
-			if (cancelled) return;
+		adminGetDashboard(currentFilters)
+			.then((response) => {
+				if (cancelled) return;
 
-			if (response?.error) {
-				setError(response.error.message);
-			} else if (response?.data) {
-				const fallbackPeriod = currentFilters.period ?? 'this_week';
-				const fallbackPeriodInfo = {
-					period: fallbackPeriod,
-					startDate: currentFilters.startDate ?? customRange.startDate,
-					endDate: currentFilters.endDate ?? customRange.endDate,
-					label: getPeriodLabel(fallbackPeriod),
-				};
+				if (response?.error) {
+					setError(response.error.message || 'Erro ao carregar dashboard');
+				} else if (response?.data) {
+					const fallbackPeriod = currentFilters.period ?? 'this_week';
+					const fallbackPeriodInfo = {
+						period: fallbackPeriod,
+						startDate: currentFilters.startDate ?? customRange.startDate,
+						endDate: currentFilters.endDate ?? customRange.endDate,
+						label: getPeriodLabel(fallbackPeriod),
+					};
 
-				setData({
-					...response.data,
-					periodInfo: response.data.periodInfo ?? fallbackPeriodInfo,
-					growth: response.data.growth ?? DEFAULT_GROWTH,
-				});
-				setError(null);
-			}
-			setFetchedKey({ key: dashboardRefreshKey, filters: currentFilters });
-		});
-
+					setData({
+						...response.data,
+						periodInfo: response.data.periodInfo ?? fallbackPeriodInfo,
+						growth: response.data.growth ?? DEFAULT_GROWTH,
+					});
+					setError(null);
+				} else {
+					setError('Sem dados disponíveis para o período selecionado.');
+				}
+				setFetchedKey({ key: dashboardRefreshKey, filters: currentFilters });
+			})
+			.catch((err) => {
+				if (cancelled) return;
+				setError(err?.message || 'Falha ao comunicar com o servidor.');
+				setFetchedKey({ key: dashboardRefreshKey, filters: currentFilters });
+			});
 		return () => {
 			cancelled = true;
 		};

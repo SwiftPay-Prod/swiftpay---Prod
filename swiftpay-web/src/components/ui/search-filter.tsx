@@ -69,7 +69,7 @@ export function SearchFilter({
 
 	return (
 		<SearchField variant="secondary" value={resolvedValue} onChange={handleChange} onClear={handleClear} className={className}>
-			{label && <Label className="mb-1.5 text-sm text-muted">{label}</Label>}
+			{label && <Label className="mb-1.5 text-sm text-muted-foreground">{label}</Label>}
 			<SearchField.Group>
 				<SearchField.SearchIcon />
 				<SearchField.Input placeholder={placeholder} />

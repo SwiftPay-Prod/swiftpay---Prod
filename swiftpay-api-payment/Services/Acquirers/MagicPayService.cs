@@ -38,9 +38,20 @@ public sealed class MagicPayService(
         var pixRequest = new MagicPayPaymentRequest
         {
             Amount = request.Amount,
+            Currency = "BRL",
             Method = MagicPayPaymentMethod.PIX,
-            Description = request.Description,
+            Description = request.Description ?? "Pagamento PIX",
             ExternalRef = txId,
+            Items =
+            [
+                new MagicPayItem
+                {
+                    Name = request.Description ?? "Pagamento PIX",
+                    Quantity = 1,
+                    Price = request.Amount,
+                    Type = "DIGITAL"
+                }
+            ],
             Payer = !string.IsNullOrEmpty(request.CustomerDocument) || !string.IsNullOrEmpty(request.CustomerName)
                 ? new MagicPayPayer
                 {

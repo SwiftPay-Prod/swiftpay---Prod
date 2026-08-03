@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -17,9 +21,12 @@ export const metadata: Metadata = {
 	title: 'Checkout - SwiftPay',
 	description: 'Checkout seguro e rápido',
 	icons: {
-		icon: '/swiftpay-icon-logo.png',
-		shortcut: '/swiftpay-icon-logo.png',
-		apple: '/swiftpay-icon-logo.png',
+		icon: [
+			{ url: '/favicon.ico', sizes: 'any' },
+			{ url: '/favicon.png', type: 'image/png' },
+		],
+		shortcut: '/favicon.png',
+		apple: '/apple-touch-icon.png',
 	},
 	appleWebApp: {
 		capable: true,
@@ -34,7 +41,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="pt-BR" suppressHydrationWarning>
+		<html lang="pt-BR" suppressHydrationWarning className={cn("font-sans", inter.variable)}>
 			<body suppressHydrationWarning className="antialiased">
 				{children}
 			</body>

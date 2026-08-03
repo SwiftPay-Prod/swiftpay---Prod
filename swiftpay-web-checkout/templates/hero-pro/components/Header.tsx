@@ -45,7 +45,7 @@ export function Header({ primaryColor, secondaryColor, logoUrl, bannerUrl, heade
 									/>
 								</div>
 							) : (
-									<SwiftPayBrandLogo className="shrink-0" iconSize={40} variant="light" priority />
+									<SwiftPayBrandLogo className="shrink-0" iconSize={40} priority />
 							)}
 							<div className="min-w-0 flex-1">
 								<h1 className="text-3xl font-extrabold italic text-white truncate">{headerMessage || 'CHECKOUT SEGURO'}</h1>

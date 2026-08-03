@@ -1,3 +1,5 @@
+'use client';
+
 import { Skeleton, Card } from '@heroui/react';
 
 interface ReferralsTableSkeletonProps {

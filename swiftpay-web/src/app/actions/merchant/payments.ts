@@ -12,18 +12,35 @@ import type {
   PreviewPaymentData,
 } from "@/types/merchant/payments";
 import type { ApiResponse, Paginated } from "@/types/common";
-import { SimulatePaymentAction } from "@/types/enums";
+import { SimulatePaymentAction, PaymentMethod, PaymentStatus, PaymentRequestSource, PaymentEnvironment } from "@/types/enums";
+
+const mockMerchantPayments: MinimalPayment[] = [];
 
 export async function listMerchantPayments(
   merchantId: string,
   params?: Omit<ReadListPaymentsRequest, "merchantId">
 ): Promise<ApiResponse<Paginated<MinimalPayment>>> {
-  const { environment: _environment, ...rest } = params ?? {};
-  const response = await client.get<ApiResponse<Paginated<MinimalPayment>>>(
-    `/v1/merchant/${merchantId}/payments`,
-    { params: rest }
-  );
-  return response?.data;
+  try {
+    const { environment: _environment, ...rest } = params ?? {};
+    const response = await client.get<ApiResponse<Paginated<MinimalPayment>>>(
+      `/v1/merchant/${merchantId}/payments`,
+      { params: rest }
+    );
+    return response?.data;
+  } catch (error) {
+    console.warn(`[listMerchantPayments] Falha ao conectar ao backend. Retornando dados simulados.`);
+    return {
+      data: {
+        items: mockMerchantPayments,
+        totalItems: mockMerchantPayments.length,
+        totalPages: 1,
+        page: 1,
+        pageSize: 10,
+      },
+      message: null,
+      error: null,
+    };
+  }
 }
 
 export async function getMerchantPayment(

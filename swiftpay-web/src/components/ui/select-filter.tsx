@@ -76,7 +76,7 @@ export function SelectFilter<T extends string>({
 				onChange={(key) => onChange((key || allValue) as T)}
 				isDisabled={isDisabled}
 			>
-				<Label className="mb-1.5 text-sm text-muted">{label}</Label>
+				<Label className="mb-1.5 text-sm text-muted-foreground">{label}</Label>
 				<Select.Trigger>
 					<Select.Value>{renderValue()}</Select.Value>
 					<Select.Indicator />

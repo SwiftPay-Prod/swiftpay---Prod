@@ -504,6 +504,16 @@ public class BoletoTransactionService(
                         Description = input.BoletoInstructions ?? input.Description,
                         ExternalRef = input.ExternalId ?? payment.Id.ToString("N"),
                         NotificationUrl = BuildWebhookUrl(acquirerConfig.Config, acquirerConfig.AcquirerType),
+                        Items =
+                        [
+                            new MagicPayItem
+                            {
+                                Name = input.Description ?? "Pagamento Boleto",
+                                Quantity = 1,
+                                Price = input.Amount,
+                                Type = "DIGITAL"
+                            }
+                        ],
                         Payer = new MagicPayPayer
                         {
                             Name = customer.Name,

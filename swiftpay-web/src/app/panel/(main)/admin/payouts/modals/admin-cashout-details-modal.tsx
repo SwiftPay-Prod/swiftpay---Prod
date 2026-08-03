@@ -170,7 +170,7 @@ function LedgerSection({ cashout }: LedgerSectionProps) {
 										<div className="flex flex-col gap-0.5">
 											<span className="text-sm font-medium text-foreground">{tx.title}</span>
 										</div>
-										<span className="text-xs text-foreground/40">{formatDate(tx.timestamp)}</span>
+										<span className="text-xs text-muted-foreground">{formatDate(tx.timestamp)}</span>
 									</div>
 
 									<div className="divide-y divide-foreground/5">

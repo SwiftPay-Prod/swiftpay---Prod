@@ -52,7 +52,7 @@ export default function NotFound() {
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <HugeiconsIcon icon={Search01Icon} className="w-8 h-8 text-blue-400" />
+              <HugeiconsIcon icon={Search01Icon} className="w-8 h-8 text-accent" />
             </motion.div>
           </div>
         </motion.div>
@@ -63,7 +63,7 @@ export default function NotFound() {
           transition={{ delay: 0.3 }}
           className="mb-2"
         >
-          <span className="text-8xl font-black bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="text-8xl font-black bg-linear-to-r from-accent to-emerald-600 bg-clip-text text-transparent">
             404
           </span>
         </motion.div>
@@ -93,7 +93,7 @@ export default function NotFound() {
         >
           <Link
             href="/demo"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 transition-all"
           >
             <HugeiconsIcon icon={Home01Icon} className="w-4 h-4" />
             Ir para a demo

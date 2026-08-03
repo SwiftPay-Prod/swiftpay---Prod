@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using swiftpay_api_payment.Clients.MagicPay.Models;
+using swiftpay_api_payment.Clients.MagicPay.Utils;
 using swiftpay_api_payment.Interfaces.Acquirers;
 
 namespace swiftpay_api_payment.Clients.MagicPay;
@@ -15,7 +16,8 @@ public sealed class MagicPayClient(
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        Converters = { new MagicPayDateTimeConverter(), new MagicPayDateTimeRequiredConverter() }
     };
 
     public async Task<AcquirerClientResponse<MagicPayPaymentResponse>> CreatePaymentAsync(string baseUrl, string apiKey, MagicPayPaymentRequest request)

@@ -4,11 +4,11 @@ import { Button, InputGroup, Label, Link, TextField } from '@heroui/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Routes } from '@/router/routes';
-import { AsyncButton } from '@/components/ui/async-button';
 import { getOrCreateDeviceId } from '@/utils/device';
 import { DeviceVerificationForm } from './device-verification-form';
 import { Icon } from '@/components/ui/icon';
 import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
+import { Separator } from '@/components/ui/separator';
 
 interface SignInFormProps {
 	onSwitchToSignUp: () => void;
@@ -99,7 +99,9 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 			</div>
 
 			<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-				{error && <p className="text-danger text-sm text-center bg-danger/10 py-2 px-4 rounded-lg">{error}</p>}
+				{error && (
+					<p className="text-destructive text-sm text-center bg-destructive/10 py-2 px-4 rounded-lg">{error}</p>
+				)}
 
 				<TextField variant="secondary" isRequired value={email} onChange={setEmail} name="email" type="email">
 					<Label>Endereço de Email</Label>
@@ -139,24 +141,31 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 					Esqueceu a senha?
 				</Link>
 
-				<button type="submit" disabled={isLoading} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-accent text-accent-foreground font-semibold h-10 px-4 text-sm hover:opacity-90 transition-all disabled:opacity-50">
+				<button
+					type="submit"
+					disabled={isLoading}
+					className="group/button inline-flex shrink-0 items-center justify-center rounded-4xl bg-primary text-primary-foreground text-sm font-medium whitespace-nowrap h-10 px-6 transition-all disabled:opacity-50 hover:bg-primary/80 select-none"
+				>
 					{isLoading ? 'Entrando...' : 'Entrar'}
 				</button>
 			</form>
 
 			<div className="flex items-center gap-4">
-				<div className="flex-1 border-t border-divider" />
-				<span className="text-default-500 text-sm">OU</span>
-				<div className="flex-1 border-t border-divider" />
+				<Separator className="flex-1" />
+				<span className="text-muted-foreground text-xs uppercase tracking-wider">Ou</span>
+				<Separator className="flex-1" />
 			</div>
 
 			<div className="text-center text-sm">
-				<span className="text-default-500">Precisa criar uma conta? </span>
-				<Link onPress={onSwitchToSignUp} className="cursor-pointer">
+				<span className="text-muted-foreground">Precisa criar uma conta? </span>
+				<button
+					type="button"
+					onClick={onSwitchToSignUp}
+					className="text-primary underline-offset-4 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm font-medium"
+				>
 					Cadastre-se
-				</Link>
+				</button>
 			</div>
 		</div>
 	);
 }
-

@@ -17,7 +17,7 @@ interface RankingRowProps {
 
 const TIER: Record<number, { rowCss: string; numCls: string; valCls: string }> = {
 	1: { rowCss: 'ranking-row-gold', numCls: 'text-yellow-500', valCls: 'text-yellow-500' },
-	2: { rowCss: 'ranking-row-silver', numCls: 'text-slate-400', valCls: 'text-slate-400' },
+	2: { rowCss: 'ranking-row-silver', numCls: 'text-muted-foreground', valCls: 'text-muted-foreground' },
 	3: { rowCss: 'ranking-row-bronze', numCls: 'text-orange-400', valCls: 'text-orange-400' },
 };
 
