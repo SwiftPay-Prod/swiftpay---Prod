@@ -20,10 +20,8 @@ public sealed class AkkadPagClient(
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
-    public async Task<AcquirerClientResponse<AkkadPagPaymentResponse>> CreatePaymentAsync(AcquirerConfig config, AkkadPagPaymentRequest request)
+    public async Task<AcquirerClientResponse<AkkadPagPaymentResponse>> CreatePaymentAsync(string publicKey, string secretKey, AkkadPagPaymentRequest request)
     {
-        var publicKey = config.GetCredential("publicKey");
-        var secretKey = config.GetCredential("secretKey");
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(secretKey))
         {
             return new AcquirerClientResponse<AkkadPagPaymentResponse>
@@ -33,13 +31,11 @@ public sealed class AkkadPagClient(
             };
         }
 
-        return await SendAsync<AkkadPagPaymentResponse>(config, HttpMethod.Post, "transactions", request, null, publicKey, secretKey);
+        return await SendAsync<AkkadPagPaymentResponse>(publicKey, secretKey, HttpMethod.Post, "transactions", request, null);
     }
 
-    public async Task<AcquirerClientResponse<AkkadPagPaymentResponse>> GetPaymentAsync(AcquirerConfig config, string paymentId)
+    public async Task<AcquirerClientResponse<AkkadPagPaymentResponse>> GetPaymentAsync(string publicKey, string secretKey, string paymentId)
     {
-        var publicKey = config.GetCredential("publicKey");
-        var secretKey = config.GetCredential("secretKey");
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(secretKey))
         {
             return new AcquirerClientResponse<AkkadPagPaymentResponse>
@@ -49,14 +45,11 @@ public sealed class AkkadPagClient(
             };
         }
 
-        return await SendAsync<AkkadPagPaymentResponse>(config, HttpMethod.Get, $"transactions/{paymentId}", null, null, publicKey, secretKey);
+        return await SendAsync<AkkadPagPaymentResponse>(publicKey, secretKey, HttpMethod.Get, $"transactions/{paymentId}", null, null);
     }
 
-    public async Task<AcquirerClientResponse<AkkadPagWithdrawalResponse>> CreateTransferAsync(AcquirerConfig config, AkkadPagWithdrawalRequest request)
+    public async Task<AcquirerClientResponse<AkkadPagWithdrawalResponse>> CreateTransferAsync(string publicKey, string secretKey, string withdrawalKey, AkkadPagWithdrawalRequest request)
     {
-        var publicKey = config.GetCredential("publicKey");
-        var secretKey = config.GetCredential("secretKey");
-        var withdrawalKey = config.GetCredential("withdrawalKey");
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(withdrawalKey))
         {
             return new AcquirerClientResponse<AkkadPagWithdrawalResponse>
@@ -66,16 +59,14 @@ public sealed class AkkadPagClient(
             };
         }
 
-        return await SendAsync<AkkadPagWithdrawalResponse>(config, HttpMethod.Post, "transfers", request, new Dictionary<string, string>
+        return await SendAsync<AkkadPagWithdrawalResponse>(publicKey, secretKey, HttpMethod.Post, "transfers", request, new Dictionary<string, string>
         {
             ["x-withdrawal-key"] = withdrawalKey
-        }, publicKey, secretKey);
+        });
     }
 
-    public async Task<AcquirerClientResponse<AkkadPagWithdrawalResponse>> GetTransferAsync(AcquirerConfig config, string transferId)
+    public async Task<AcquirerClientResponse<AkkadPagWithdrawalResponse>> GetTransferAsync(string publicKey, string secretKey, string transferId)
     {
-        var publicKey = config.GetCredential("publicKey");
-        var secretKey = config.GetCredential("secretKey");
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(secretKey))
         {
             return new AcquirerClientResponse<AkkadPagWithdrawalResponse>
@@ -85,13 +76,11 @@ public sealed class AkkadPagClient(
             };
         }
 
-        return await SendAsync<AkkadPagWithdrawalResponse>(config, HttpMethod.Get, $"transfers/{transferId}", null, null, publicKey, secretKey);
+        return await SendAsync<AkkadPagWithdrawalResponse>(publicKey, secretKey, HttpMethod.Get, $"transfers/{transferId}", null, null);
     }
 
-    public async Task<AcquirerClientResponse<AkkadPagCompanyDetailsResponse>> GetCompanyDetailsAsync(AcquirerConfig config)
+    public async Task<AcquirerClientResponse<AkkadPagCompanyDetailsResponse>> GetCompanyDetailsAsync(string publicKey, string secretKey)
     {
-        var publicKey = config.GetCredential("publicKey");
-        var secretKey = config.GetCredential("secretKey");
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(secretKey))
         {
             return new AcquirerClientResponse<AkkadPagCompanyDetailsResponse>
@@ -101,10 +90,10 @@ public sealed class AkkadPagClient(
             };
         }
 
-        return await SendAsync<AkkadPagCompanyDetailsResponse>(config, HttpMethod.Get, "company/details", null, null, publicKey, secretKey);
+        return await SendAsync<AkkadPagCompanyDetailsResponse>(publicKey, secretKey, HttpMethod.Get, "company/details", null, null);
     }
 
-    private async Task<AcquirerClientResponse<T>> SendAsync<T>(AcquirerConfig config, HttpMethod method, string relativeUrl, object? payload, IReadOnlyDictionary<string, string>? headers, string publicKey, string secretKey)
+    private async Task<AcquirerClientResponse<T>> SendAsync<T>(string publicKey, string secretKey, HttpMethod method, string relativeUrl, object? payload, IReadOnlyDictionary<string, string>? headers)
     {
         var stopwatch = Stopwatch.StartNew();
         try

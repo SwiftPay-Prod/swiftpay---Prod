@@ -19,9 +19,16 @@ public static class PaymentEndpointUtils
 
     public static Guid? GetMerchantId(ClaimsPrincipal user)
     {
-        var merchantIdClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        
-        if (string.IsNullOrEmpty(merchantIdClaim) || !Guid.TryParse(merchantIdClaim, out var merchantId))
+        var merchantIdClaim = user.Claims.FirstOrDefault(c => c.Type == "merchant_id")?.Value;
+
+        if (!string.IsNullOrEmpty(merchantIdClaim) && Guid.TryParse(merchantIdClaim, out var merchantId))
+        {
+            return merchantId;
+        }
+
+        merchantIdClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(merchantIdClaim) || !Guid.TryParse(merchantIdClaim, out merchantId))
             return null;
 
         return merchantId;
