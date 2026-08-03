@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { usePanelHeader } from '@/hooks/use-panel-header';
 import { useMerchant } from '@/contexts/merchant-context';
 import { NotificationPopover } from './notifications';
-import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { Routes } from '@/router/routes';
 import type { UserInfo } from '@/types/auth';
 
