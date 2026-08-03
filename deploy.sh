@@ -4,7 +4,8 @@ set -e
 VERSION=${1:-latest}
 HOST=${DEPLOY_HOST:-169.58.70.201}
 USER=${DEPLOY_USER:-root}
-PASS=${DEPLOY_PASS:-SWpay28MG}
+# Credencial deve vir de variavel de ambiente — nunca hardcode
+PASS=${DEPLOY_PASS:?DEPLOY_PASS nao definido}
 REMOTE_DIR=/root/swiftpay/swiftpay-api
 
 echo "=== Deploying SwiftPay v${VERSION} to ${HOST} ==="

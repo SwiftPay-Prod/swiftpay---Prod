@@ -260,3 +260,10 @@ OpenCover/
 .paket/
 paket-files/
 _GitProjectMetadata/
+.gstack/
+
+# Backups locais e artefatos de auditoria (nao versionar)
+swiftpay-web-backup-*/
+swiftpay-web-checkout-backup-*/
+AUDIT-*.md
+*.log
