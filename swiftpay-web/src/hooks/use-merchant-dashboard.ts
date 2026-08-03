@@ -149,7 +149,7 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 
 		getMerchantDashboard(merchantId, currentFilters)
 			.then((response) => {
-				const resData = response?.data ?? (response && 'kpis' in (response as any) ? (response as any) : null);
+				const resData = response?.data;
 				if (resData) {
 					setData(resData);
 					setError(null);

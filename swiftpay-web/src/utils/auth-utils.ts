@@ -1,6 +1,9 @@
+import { signOut } from '@/app/actions/auth';
+import { clearAuthCookies } from '@/auth/session';
+
 export async function performClientLogout() {
-	const { signOut } = await import('@/app/actions/auth');
 	await signOut();
+	await clearAuthCookies();
 	document.cookie.split(';').forEach(c => {
 		document.cookie = c.replace(/^ +/, '').replace(/=.*/, `=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`);
 	});

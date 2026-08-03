@@ -13,8 +13,7 @@ import type {
 } from "@/types/admin/transactions";
 import type { ApiResponse, Paginated } from "@/types/common";
 import { PaymentEnvironment, PaymentMethod, PaymentRequestSource, PaymentStatus } from "@/types/enums";
-
-const mockAdminTransactions: AdminMinimalTransaction[] = [];
+import type { AxiosError } from "axios";
 
 export async function adminListTransactions(
   params?: AdminListTransactionsRequest
@@ -26,18 +25,9 @@ export async function adminListTransactions(
     );
     return response?.data;
   } catch (error) {
-    console.warn(`[adminListTransactions] Falha ao conectar ao backend. Retornando dados simulados.`);
-    return {
-      data: {
-        items: mockAdminTransactions,
-        totalItems: mockAdminTransactions.length,
-        totalPages: 1,
-        page: 1,
-        pageSize: 10,
-      },
-      message: null,
-      error: null,
-    };
+    const err = error as AxiosError<ApiResponse<Paginated<AdminMinimalTransaction>>>;
+    if (err.response?.data) return err.response.data;
+    return { data: null, message: null, error: { message: "Erro ao listar transações" } };
   }
 }
 
