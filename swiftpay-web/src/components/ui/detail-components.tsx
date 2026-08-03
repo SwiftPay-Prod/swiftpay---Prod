@@ -14,7 +14,7 @@ interface DetailRowProps {
 export function DetailRow({ label, value, mono = false }: DetailRowProps) {
 	return (
 		<div className="flex flex-col gap-1 min-w-0 overflow-hidden">
-			<span className="text-xs text-foreground/60">{label}</span>
+			<span className="text-xs text-muted-foreground">{label}</span>
 			<span className={`text-sm font-medium text-foreground break-all ${mono ? 'font-mono text-xs' : ''}`}>
 				{value ?? '-'}
 			</span>
@@ -28,7 +28,7 @@ interface CopyableValueProps {
 }
 
 export function CopyableValue({ value, label }: CopyableValueProps) {
-	if (!value) return <span className="text-foreground/50">-</span>;
+	if (!value) return <span className="text-muted-foreground">-</span>;
 
 	function handleCopy() {
 		void navigator.clipboard.writeText(value!).catch(() => undefined);

@@ -14,18 +14,9 @@ export function SidebarLogo() {
   return (
     <Link href={Routes.panel.merchant.dashboard} className="flex items-center">
       {showFull ? (
-        <SwiftPayBrandLogo iconSize={56} />
+        <SwiftPayBrandLogo iconSize={42} showText={true} />
       ) : (
-        <div className="relative mx-auto size-10">
-          <Image
-            src="/logos/swiftpay-logo.png"
-            alt="SwiftPay"
-            fill
-            sizes="40px"
-            className="object-contain"
-            priority
-          />
-        </div>
+        <SwiftPayBrandLogo iconSize={36} showText={false} />
       )}
     </Link>
   );

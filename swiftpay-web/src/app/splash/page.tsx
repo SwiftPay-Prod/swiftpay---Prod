@@ -1,6 +1,6 @@
 import { Spinner } from '@heroui/react';
 import { SplashRedirect } from '@/components/splash-redirect';
-import Image from 'next/image';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 
 export default function SplashPage() {
 	return (
@@ -8,7 +8,7 @@ export default function SplashPage() {
 			<SplashRedirect />
 			<div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-linear-to-br from-accent/5 via-transparent to-accent/10">
 				<div className="flex flex-col items-center gap-6">
-					<Image src="/logos/swiftpay-logo.png" alt="SwiftPay"  width={290} height={300} />
+					<SwiftPayBrandLogo iconSize={80} textClassName="text-4xl" />
 					<Spinner color="accent" size="lg" />
 				</div>
 			</div>

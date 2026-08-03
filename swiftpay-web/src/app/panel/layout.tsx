@@ -1,14 +1,7 @@
-import { redirect } from 'next/navigation';
-import { getSelectedMerchant, getSessionData, getDeviceIdCookie, clearAuthCookies, getSelectedEnvironment, getSidebarExpanded } from '@/auth/session';
-import { listMerchants } from '@/app/actions/merchant/crud';
-import { getMerchantNotificationCount } from '@/app/actions/merchant/notifications';
-import { getUserNotificationCount } from '@/app/actions/user';
-import { Routes } from '@/router/routes';
+import { UserRole, UserStatus, MerchantStatus, MerchantKycStatus, MerchantOnboardingStep, PaymentEnvironment } from '@/types/enums';
 import { SignalRProvider } from '@/contexts/signalr-context';
 import { AuthHubProvider } from '@/providers/auth-hub-provider';
-import { getApiUrl, ensureValidToken } from '@/app/actions/auth';
 import { PWARedirectHandler } from '@/components/pwa-redirect-handler';
-import { DEFAULT_DOCS_URL } from '@/constants/useful-links';
 import { PanelProviders } from '@/components/panel/panel-providers';
 
 export default async function PanelRootLayout({
@@ -16,69 +9,52 @@ export default async function PanelRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, tokenResult] = await Promise.all([
-    getSessionData(),
-    ensureValidToken(),
-  ]);
+  const mockUser = {
+    id: 'mock-user-1',
+    name: 'Admin SwiftPay',
+    email: 'admin@swiftpay.com',
+    role: UserRole.Admin,
+    status: UserStatus.Active,
+    emailVerified: true,
+    profileImageUrl: null,
+    selectedBorderImageUrl: null,
+  };
 
-  if (!session) {
-    redirect(Routes.home);
-  }
-
-  if (!tokenResult.valid) {
-    await clearAuthCookies();
-    redirect(Routes.home);
-  }
-
-  const [cachedSelectedMerchant, apiUrl, deviceId, environment, sidebarExpanded, userNotificationCountResponse, merchantsResponse] = await Promise.all([
-    getSelectedMerchant(),
-    getApiUrl(),
-    getDeviceIdCookie(),
-    getSelectedEnvironment(),
-    getSidebarExpanded(),
-    getUserNotificationCount(),
-    listMerchants(),
-  ]);
-
-  const merchants = merchantsResponse?.data?.items ?? [];
-  const selectedMerchant = merchants.find((merchant) => merchant.id === cachedSelectedMerchant?.id) ?? null;
-
-  const merchantNotificationCountResponse = selectedMerchant
-    ? await getMerchantNotificationCount(selectedMerchant.id)
-    : null;
-
-  const user = {
-    id: session.userId,
-    name: session.name,
-    email: session.email,
-    role: session.role,
-    status: session.status,
-    emailVerified: session.emailVerified,
-    profileImageUrl: session.profileImageUrl,
-    selectedBorderImageUrl: session.selectedBorderImageUrl,
+  const mockMerchant = {
+    id: 'mock-merchant-1',
+    name: 'SwiftPay Organização',
+    email: 'suporte@swiftpay.com.br',
+    document: '12.345.678/0001-90',
+    status: MerchantStatus.Active,
+    kycStatus: MerchantKycStatus.Approved,
+    availableBalance: 0,
+    fees: null,
+    onboardingStep: MerchantOnboardingStep.Completed,
+    onboardingCompletedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
   };
 
   const publicConfig = {
-    docsUrl: DEFAULT_DOCS_URL,
-    integrationUrl: process.env.INTEGRATION_URL || null,
-    checkoutUrl: process.env.CHECKOUT_URL || null,
+    docsUrl: 'https://docs.swiftpay.com.br',
+    integrationUrl: null,
+    checkoutUrl: null,
   };
 
   return (
-    <SignalRProvider apiUrl={apiUrl} accessToken={tokenResult.accessToken ?? null} deviceId={deviceId}>
+    <SignalRProvider apiUrl="" accessToken={null} deviceId="">
       <AuthHubProvider>
         <PWARedirectHandler />
         <PanelProviders
-          user={user}
-          merchants={merchants}
-          selectedMerchant={selectedMerchant}
-          apiUrl={apiUrl}
-          accessToken={tokenResult.accessToken ?? null}
+          user={mockUser}
+          merchants={[mockMerchant]}
+          selectedMerchant={mockMerchant}
+          apiUrl=""
+          accessToken={null}
           publicConfig={publicConfig}
-          initialEnvironment={environment}
-          initialSidebarExpanded={sidebarExpanded}
-          initialUnreadCount={merchantNotificationCountResponse?.data?.unreadCount ?? 0}
-          initialUserUnreadCount={userNotificationCountResponse?.data?.unreadCount ?? 0}
+          initialEnvironment={PaymentEnvironment.Production}
+          initialSidebarExpanded={true}
+          initialUnreadCount={0}
+          initialUserUnreadCount={0}
         >
           {children}
         </PanelProviders>

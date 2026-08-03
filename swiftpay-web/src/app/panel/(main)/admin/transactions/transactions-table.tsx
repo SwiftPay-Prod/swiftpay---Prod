@@ -96,14 +96,14 @@ function getColumns(
 			header: 'Organização',
 			render: (transaction) => (
 				<div className="flex items-center gap-2">
-					<Icon icon={Building02Icon} className="icon-sm text-muted shrink-0" />
+					<Icon icon={Building02Icon} className="icon-sm text-muted-foreground shrink-0" />
 					<div className="flex flex-col">
 						<AdminMerchantLink
 							merchantId={transaction.merchant.id}
 							name={transaction.merchant.name}
 							className="text-sm truncate max-w-40 text-accent hover:underline"
 						/>
-						<DocumentDisplay document={transaction.merchant.document} className="text-xs text-muted" />
+						<DocumentDisplay document={transaction.merchant.document} className="text-xs text-muted-foreground" />
 					</div>
 				</div>
 			),
@@ -113,7 +113,7 @@ function getColumns(
 			header: 'Processadora',
 			render: (transaction) => {
 				if (!transaction.acquirer) {
-					return <span className="text-sm text-muted">-</span>;
+					return <span className="text-sm text-muted-foreground">-</span>;
 				}
 				const displayName = getAcquirerDisplayName(transaction.acquirer);
 				return (
@@ -130,7 +130,7 @@ function getColumns(
 						<div className="flex flex-col">
 							<span className="text-sm">{displayName}</span>
 							<ProviderCategoryChip category={transaction.acquirer.providerCategory} size="sm" />
-							{transaction.acquirer.nominal && <span className="text-xs text-muted italic">{transaction.acquirer.nominal}</span>}
+							{transaction.acquirer.nominal && <span className="text-xs text-muted-foreground italic">{transaction.acquirer.nominal}</span>}
 						</div>
 					</div>
 				);
@@ -145,7 +145,7 @@ function getColumns(
 				return (
 					<div className="flex flex-col">
 						<span className="font-medium">{formatCurrency(transaction.amount)}</span>
-						<span className="text-xs text-muted">Taxa: {formatCurrency(transaction.fee)}</span>
+						<span className="text-xs text-muted-foreground">Taxa: {formatCurrency(transaction.fee)}</span>
 						<span className={`text-xs ${isLoss ? 'text-danger' : 'text-success'}`}>
 							{isLoss ? 'Prejuízo' : 'Lucro'}: {formatCurrency(transaction.profit)}
 						</span>
@@ -199,12 +199,12 @@ function getColumns(
 			header: 'Pagador',
 			render: (transaction) => {
 				if (!transaction.pix?.payerName) {
-					return <span className="text-sm text-muted">-</span>;
+					return <span className="text-sm text-muted-foreground">-</span>;
 				}
 				return (
 					<div className="flex flex-col">
 						<span className="text-sm truncate max-w-40">{transaction.pix.payerName}</span>
-						{transaction.pix.payerBank && <span className="text-xs text-muted">{transaction.pix.payerBank}</span>}
+						{transaction.pix.payerBank && <span className="text-xs text-muted-foreground">{transaction.pix.payerBank}</span>}
 					</div>
 				);
 			},
@@ -212,7 +212,7 @@ function getColumns(
 		{
 			key: 'createdAt',
 			header: 'Criado em',
-			render: (transaction) => <span className="text-sm text-muted">{formatDate(transaction.createdAt)}</span>,
+			render: (transaction) => <span className="text-sm text-muted-foreground">{formatDate(transaction.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
@@ -293,11 +293,11 @@ function renderMobileTransactionCard(transaction: AdminMinimalTransaction, _inde
 				<div className="flex items-start justify-between gap-2">
 					<div className="flex flex-col gap-0.5 min-w-0">
 						<div className="flex items-center gap-1.5">
-							<Icon icon={Building02Icon} className="icon-xs text-muted shrink-0" />
+							<Icon icon={Building02Icon} className="icon-xs text-muted-foreground shrink-0" />
 							<span className="text-sm font-medium truncate">{transaction.merchant.name}</span>
 						</div>
 						{transaction.merchant.document && (
-							<DocumentDisplay document={transaction.merchant.document} className="text-xs text-muted" />
+							<DocumentDisplay document={transaction.merchant.document} className="text-xs text-muted-foreground" />
 						)}
 					</div>
 					<Chip
@@ -319,14 +319,14 @@ function renderMobileTransactionCard(transaction: AdminMinimalTransaction, _inde
 						<div className="flex flex-col min-w-0">
 							<span className="text-xs font-medium truncate">{getAcquirerDisplayName(transaction.acquirer)}</span>
 							<ProviderCategoryChip category={transaction.acquirer.providerCategory} size="sm" />
-							{transaction.acquirer.nominal && <span className="text-xs text-muted italic">{transaction.acquirer.nominal}</span>}
+							{transaction.acquirer.nominal && <span className="text-xs text-muted-foreground italic">{transaction.acquirer.nominal}</span>}
 						</div>
 					</div>
 				)}
 				<div className="flex items-start justify-between gap-2">
 					<div className="flex flex-col gap-0.5">
 						<span className="font-medium">{formatCurrency(transaction.amount)}</span>
-						<span className="text-xs text-muted">Taxa: {formatCurrency(transaction.fee)}</span>
+						<span className="text-xs text-muted-foreground">Taxa: {formatCurrency(transaction.fee)}</span>
 						<span className={`text-xs ${transaction.profit < 0 ? 'text-danger' : 'text-success'}`}>
 							{transaction.profit < 0 ? 'Prejuízo' : 'Lucro'}: {formatCurrency(transaction.profit)}
 						</span>
@@ -341,13 +341,13 @@ function renderMobileTransactionCard(transaction: AdminMinimalTransaction, _inde
 				</div>
 				{transaction.pix?.payerName && (
 					<div className="flex flex-col gap-0.5">
-						<span className="text-xs text-muted truncate">{transaction.pix.payerName}</span>
+						<span className="text-xs text-muted-foreground truncate">{transaction.pix.payerName}</span>
 						{transaction.pix.payerBank && (
-							<span className="text-xs text-muted">{transaction.pix.payerBank}</span>
+							<span className="text-xs text-muted-foreground">{transaction.pix.payerBank}</span>
 						)}
 					</div>
 				)}
-				<span className="text-xs text-muted">{formatDate(transaction.createdAt)}</span>
+				<span className="text-xs text-muted-foreground">{formatDate(transaction.createdAt)}</span>
 			</div>
 		</div>
 	);

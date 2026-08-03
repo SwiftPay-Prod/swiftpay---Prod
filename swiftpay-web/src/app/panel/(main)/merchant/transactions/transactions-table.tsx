@@ -119,7 +119,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 					return <PhoneLink phone={payment.customer!.phone!} className="text-sm" />;
 				}
 
-				return <span className="text-sm text-muted">-</span>;
+				return <span className="text-sm text-muted-foreground">-</span>;
 			},
 		},
 		{
@@ -128,7 +128,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			render: (payment) => (
 				<div className="flex flex-col">
 					<span className="font-medium">{formatCurrency(payment.amount)}</span>
-					<span className="text-xs text-muted">Taxa: {formatCurrency(payment.fee)}</span>
+					<span className="text-xs text-muted-foreground">Taxa: {formatCurrency(payment.fee)}</span>
 				</div>
 			),
 		},
@@ -189,13 +189,13 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			sortable: false,
 			render: (payment) => {
 				if (!payment.pix?.payerName) {
-					return <span className="text-sm text-muted">-</span>;
+					return <span className="text-sm text-muted-foreground">-</span>;
 				}
 				return (
 					<div className="flex flex-col">
 						<span className="text-sm truncate max-w-40">{payment.pix.payerName}</span>
 						{payment.pix.payerBank && (
-							<span className="text-xs text-muted">{payment.pix.payerBank}</span>
+							<span className="text-xs text-muted-foreground">{payment.pix.payerBank}</span>
 						)}
 					</div>
 				);
@@ -205,7 +205,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			key: 'createdAt',
 			header: 'Criado em',
 			render: (payment) => (
-				<span className="text-sm text-muted">{formatDate(payment.createdAt)}</span>
+				<span className="text-sm text-muted-foreground">{formatDate(payment.createdAt)}</span>
 			),
 		},
 		{
@@ -306,7 +306,7 @@ function renderMobileTransactionCard(
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
 					<span className="font-semibold text-sm truncate block">{payment.customer?.name ?? 'Cliente não informado'}</span>
-					<p className="mt-0.5 text-xs text-muted truncate">
+					<p className="mt-0.5 text-xs text-muted-foreground truncate">
 						{methodParsed.label} • {formatDate(payment.createdAt)}
 					</p>
 				</div>
@@ -325,17 +325,17 @@ function renderMobileTransactionCard(
 			<div className="mt-2">
 				<div className="grid grid-cols-2 gap-3">
 					<div className="min-w-0">
-						<p className="text-xs text-muted">Valor</p>
+						<p className="text-xs text-muted-foreground">Valor</p>
 						<p className="mt-1 text-sm font-semibold truncate">{formatCurrency(payment.amount)}</p>
-						<p className="text-xs text-muted">Taxa: {formatCurrency(payment.fee)}</p>
+						<p className="text-xs text-muted-foreground">Taxa: {formatCurrency(payment.fee)}</p>
 					</div>
 					<div className="min-w-0">
-						<p className="text-xs text-muted">Líquido</p>
+						<p className="text-xs text-muted-foreground">Líquido</p>
 						<p className="mt-1 text-sm font-semibold text-success truncate">{formatCurrency(payment.netAmount)}</p>
 					</div>
 				</div>
 				<div className="mt-2 border-t border-divider pt-2">
-					<p className="text-xs text-muted">Origem</p>
+					<p className="text-xs text-muted-foreground">Origem</p>
 					{(() => {
 						const source = getPaymentRequestSource(payment);
 						const sourceBadge = getRequestSourceBadge(source);
@@ -349,7 +349,7 @@ function renderMobileTransactionCard(
 									</Chip>
 								</div>
 								{source === PaymentRequestSource.Checkout && (
-									<p className="text-xs text-muted truncate">{payment.checkoutName ?? 'Checkout não identificado'}</p>
+									<p className="text-xs text-muted-foreground truncate">{payment.checkoutName ?? 'Checkout não identificado'}</p>
 								)}
 							</>
 						);
@@ -357,10 +357,10 @@ function renderMobileTransactionCard(
 				</div>
 				{payment.pix?.payerName && (
 					<div className="mt-2 border-t border-divider pt-2">
-						<p className="text-xs text-muted">Pagador</p>
+						<p className="text-xs text-muted-foreground">Pagador</p>
 						<p className="mt-1 text-sm truncate">{payment.pix.payerName}</p>
 						{payment.pix.payerBank && (
-							<p className="text-xs text-muted truncate">{payment.pix.payerBank}</p>
+							<p className="text-xs text-muted-foreground truncate">{payment.pix.payerBank}</p>
 						)}
 					</div>
 				)}

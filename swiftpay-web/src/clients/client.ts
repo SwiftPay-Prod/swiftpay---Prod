@@ -30,7 +30,7 @@ const client = axios.create({
 	},
 });
 
-const isRequestTimingEnabled = process.env.SAFEFY_API_LOG_REQUEST_TIMING === 'true';
+const isRequestTimingEnabled = process.env.SWIFTPAY_API_LOG_REQUEST_TIMING === 'true';
 
 function getRequestUrl(baseURL?: string, url?: string): string {
 	if (!url) return baseURL ?? '';

@@ -129,9 +129,7 @@ function MenuItemBadge({ item, isReviewRoute, statusChip }: MenuItemBadgeProps) 
 
 	if (item.badgeText) {
 		return (
-			<Chip variant="soft" color={item.badgeColor || 'default'} size="sm" className="ml-auto">
-				{item.badgeText}
-			</Chip>
+			<span className="mockup-sidebar-badge ml-auto">{item.badgeText}</span>
 		);
 	}
 
@@ -164,28 +162,28 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 	) : null;
 
 	const buttonClassName = [
-		'font-normal transition-all duration-150',
-		showFull ? 'w-full justify-start gap-3 rounded-md' : 'w-8 h-8 rounded-md',
+		showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
 		effectClassName,
-		active ? '!bg-default !text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50',
+		active
+			? 'mockup-sidebar-item active'
+			: 'mockup-sidebar-item',
 		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
+		!showFull && active ? '!bg-brand-soft !text-accent rounded-md' : '',
+		!showFull && !active ? 'rounded-md text-muted-foreground hover:text-foreground hover:bg-default/50' : '',
 	]
 		.filter(Boolean)
 		.join(' ');
 
 	const menuButton = (
-		<Button
-			variant="ghost"
-			size="md"
-			isIconOnly={!showFull}
-			isDisabled={item.isDisabled}
+		<button
+			disabled={item.isDisabled}
 			className={buttonClassName}
-			onPress={() => navigate(item)}
+			onClick={() => navigate(item)}
 		>
-			{icon}
+			{icon && <span className="shrink-0">{icon}</span>}
 			{showFull && <span className="truncate">{item.title}</span>}
 			{showFull && <MenuItemBadge item={item} isReviewRoute={isReviewRoute} statusChip={statusChip} />}
-		</Button>
+		</button>
 	);
 
 	if (!showFull) {
@@ -297,8 +295,8 @@ function MenuSectionComponent({ section, showFull }: MenuSectionComponentProps) 
 	}
 
 	const triggerClassName = [
-		'group my-0.5 flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-medium tracking-wide transition-all duration-150',
-		hasActiveItem ? 'bg-default text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50',
+		'group my-0.5 flex w-full items-center justify-between rounded-md px-3 py-2 transition-all duration-150',
+		'mockup-sidebar-section-title !mb-0 !pl-3',
 	].join(' ');
 
 	return (

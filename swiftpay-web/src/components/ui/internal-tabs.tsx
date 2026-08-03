@@ -198,8 +198,8 @@ export function InternalTabs({
 	}, [isVertical, items, visibleIdSet]);
 
 	const baseListClassName = isVertical
-		? 'flex-col w-full *:h-8 *:w-full *:justify-start *:px-3 *:text-sm *:font-normal *:whitespace-nowrap'
-		: 'w-full *:h-8 *:w-fit *:px-3 *:text-sm *:font-normal *:whitespace-nowrap';
+		? 'flex-col w-full *:h-9 *:w-full *:justify-start *:px-4 *:text-sm *:font-medium *:whitespace-nowrap rounded-xl bg-card/60 p-1 border border-border/50'
+		: 'w-full flex items-center gap-1.5 *:h-9 *:w-fit *:px-4 *:text-sm *:whitespace-nowrap rounded-xl bg-card/60 p-1 border border-border/50 overflow-x-auto scrollbar-none';
 
 	const list = (
 		<Tabs.List aria-label={ariaLabel} className={baseListClassName}>
@@ -207,13 +207,13 @@ export function InternalTabs({
 				<Tabs.Tab
 					key={item.id}
 					id={item.id}
-					className={`border-transparent focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${!isVertical && !visibleIdSet.has(item.id) ? 'hidden' : ''}`}
+					className={`group relative flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 cursor-pointer border-transparent focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 text-muted-foreground hover:text-foreground hover:bg-secondary/20 data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[selected=true]:font-semibold data-[selected=true]:shadow-sm ${!isVertical && !visibleIdSet.has(item.id) ? 'hidden' : ''}`}
 				>
 					<div className="flex items-center gap-2 whitespace-nowrap">
 						{item.icon}
 						<span className="whitespace-nowrap">{item.label}</span>
 					</div>
-					<Tabs.Indicator className={isVertical ? 'bg-accent left-0' : 'bg-accent'} />
+					<Tabs.Indicator className="hidden" />
 				</Tabs.Tab>
 			))}
 			{!isVertical && overflowItems.length > 0 && (

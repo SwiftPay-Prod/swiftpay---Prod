@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import Image from 'next/image';
+import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { useRouter } from 'next/navigation';
 import { Logout01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
@@ -29,13 +29,7 @@ export function OnboardingContent({ userName, initialData }: OnboardingContentPr
 				<header className="flex items-center justify-between gap-2">
 					<div className="flex flex-col">
 						<div className="mb-2">
-							<Image
-								src="/logos/swiftpay-logo.png"
-								alt="SwiftPay"
-								width={96}
-								height={99}
-								className="h-24 w-auto"
-							/>
+							<SwiftPayBrandLogo iconSize={40} textClassName="text-2xl" />
 						</div>
 						<p className="text-sm text-muted">Primeiros passos</p>
 						<h1 className="text-xl font-semibold text-foreground sm:text-2xl">

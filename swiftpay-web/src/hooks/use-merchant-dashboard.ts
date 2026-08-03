@@ -147,17 +147,23 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 
 		let cancelled = false;
 
-		getMerchantDashboard(merchantId, currentFilters).then((response) => {
-			if (cancelled) return;
-
-			if (response?.error) {
-				setError(response.error.message);
-			} else if (response?.data) {
-				setData(response.data);
-				setError(null);
-			}
-			setFetchedKey({ key: dashboardRefreshKey, merchantId, filters: currentFilters });
-		});
+		getMerchantDashboard(merchantId, currentFilters)
+			.then((response) => {
+				const resData = response?.data ?? (response && 'kpis' in (response as any) ? (response as any) : null);
+				if (resData) {
+					setData(resData);
+					setError(null);
+				} else if (response?.error) {
+					setError(response.error.message || 'Erro ao carregar dashboard');
+				} else {
+					setError(null);
+				}
+				setFetchedKey({ key: dashboardRefreshKey, merchantId, filters: currentFilters });
+			})
+			.catch((err) => {
+				setError(err?.message || 'Erro de conexão com o servidor');
+				setFetchedKey({ key: dashboardRefreshKey, merchantId, filters: currentFilters });
+			});
 
 		return () => {
 			cancelled = true;

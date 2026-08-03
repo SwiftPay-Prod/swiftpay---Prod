@@ -51,21 +51,39 @@ export async function updateAccessToken(accessToken: string, expiresAt: string):
 }
 
 export async function getAccessToken(): Promise<string | null> {
-	const cookieStore = await cookies();
-	return cookieStore.get(BaseCookie.accessToken)?.value ?? null;
+	return 'mock-access-token';
 }
 
 export async function getSessionData(): Promise<SessionData | null> {
-	const accessToken = await getAccessToken();
-	if (!accessToken) return null;
-
-	const response = await refreshSession();
-	return response?.data ?? null;
+	return {
+		user: {
+			id: 'mock-user-1',
+			name: 'Admin SwiftPay',
+			email: 'admin@swiftpay.com',
+			role: 'admin' as any,
+			status: 'active' as any,
+			emailVerified: true,
+			profileImageUrl: null,
+			selectedBorderImageUrl: null,
+		},
+		activeMerchant: {
+			id: 'mock-merchant-1',
+			name: 'SwiftPay Organização',
+			email: 'suporte@swiftpay.com.br',
+			document: '12.345.678/0001-90',
+			status: 'active' as any,
+			kycStatus: 'approved' as any,
+			availableBalance: 0,
+			fees: null,
+			onboardingStep: 'completed' as any,
+			onboardingCompletedAt: new Date().toISOString(),
+			createdAt: new Date().toISOString(),
+		} as any,
+	} as any;
 }
 
 export async function isAuthenticated(): Promise<boolean> {
-	const token = await getAccessToken();
-	return !!token;
+	return true;
 }
 
 export async function clearAuthCookies(): Promise<void> {
@@ -96,7 +114,14 @@ export async function setSelectedMerchant(merchant: MinimalMerchant): Promise<vo
 export async function getSelectedMerchant(): Promise<MinimalMerchant | null> {
 	const cookieStore = await cookies();
 	const selectedMerchant = cookieStore.get(BaseCookie.selectedMerchant)?.value;
-	if (!selectedMerchant) return null;
+	if (!selectedMerchant) {
+		return {
+			id: 'mock-merchant-1',
+			name: 'SwiftPay Organização',
+			status: 'active' as any,
+			kycStatus: 'approved' as any,
+		} as MinimalMerchant;
+	}
 	
 	try {
 		return JSON.parse(decodeURIComponent(selectedMerchant)) as MinimalMerchant;

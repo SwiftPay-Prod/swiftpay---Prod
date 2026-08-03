@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Image from 'next/image';
 
 interface SwiftPayBrandLogoProps {
@@ -5,38 +6,39 @@ interface SwiftPayBrandLogoProps {
 	iconClassName?: string;
 	textClassName?: string;
 	iconSize?: number;
+	showText?: boolean;
 	priority?: boolean;
-	logoSrc?: string;
 }
-
-function joinClasses(...classes: Array<string | undefined>) {
-	return classes.filter(Boolean).join(' ');
-}
-
-const LOGO_ASPECT_RATIO = 1439 / 1607;
 
 export function SwiftPayBrandLogo({
-	className,
-	iconClassName,
-	textClassName,
-	iconSize = 32,
-	priority = false,
-	logoSrc = '/logos/swiftpay-logo.png',
+	className = '',
+	iconClassName = '',
+	textClassName = '',
+	iconSize = 40,
+	showText = false,
+	priority = true,
 }: SwiftPayBrandLogoProps) {
-	const logoHeight = iconSize;
-	const logoWidth = Math.round(logoHeight * LOGO_ASPECT_RATIO);
-
 	return (
-		<div className={joinClasses('inline-flex items-center justify-center', className)}>
-			<Image
-				src={logoSrc}
-				alt="SwiftPay"
-				width={logoWidth}
-				height={logoHeight}
-				sizes={`${logoWidth}px`}
-				priority={priority}
-				className={joinClasses('h-auto w-auto', iconClassName, textClassName)}
-			/>
+		<div className={`inline-flex items-center gap-3 select-none ${className}`}>
+			<div
+				className={`relative flex items-center justify-center shrink-0 transition-transform duration-200 hover:scale-105 ${iconClassName}`}
+				style={{ width: iconSize, height: iconSize }}
+			>
+				<Image
+					src="/swiftpay-obsidian-logo.png"
+					alt="SwiftPay"
+					width={512}
+					height={512}
+					priority={priority}
+					className="w-full h-full object-contain scale-110 drop-shadow-[0_4px_12px_rgba(163,230,53,0.35)]"
+				/>
+			</div>
+
+			{showText && (
+				<span className={`font-extrabold tracking-tight text-foreground text-xl ${textClassName}`}>
+					Swift<span className="text-brand">Pay</span>
+				</span>
+			)}
 		</div>
 	);
 }

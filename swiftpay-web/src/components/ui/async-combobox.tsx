@@ -131,7 +131,7 @@ export function AsyncCombobox({
 			</Label>
 			<ComboBox.InputGroup className="relative">
 				{leadingIcon && (
-					<span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 icon-sm text-muted">
+					<span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 icon-sm text-muted-foreground">
 						{leadingIcon}
 					</span>
 				)}
@@ -155,7 +155,7 @@ export function AsyncCombobox({
 						onPress={handleClear}
 						aria-label="Limpar seleção"
 					>
-						<Icon icon={Cancel01Icon} className="icon-sm text-muted" />
+						<Icon icon={Cancel01Icon} className="icon-sm text-muted-foreground" />
 					</Button>
 				) : (
 					<ComboBox.Trigger className="absolute right-3 top-1/2 -translate-y-1/2" />
@@ -164,7 +164,7 @@ export function AsyncCombobox({
 			<ComboBox.Popover className="rounded-lg border border-divider p-2 shadow-lg">
 				<div className="flex flex-col gap-2">
 					{!isSearchReady && !value && (
-						<span className="text-xs text-muted px-2">
+						<span className="text-xs text-muted-foreground px-2">
 							Digite pelo menos {minSearchLength} caractere{minSearchLength > 1 ? 's' : ''}
 						</span>
 					)}
@@ -172,7 +172,7 @@ export function AsyncCombobox({
 						<ListBox
 							className="max-h-48 overflow-y-auto"
 							renderEmptyState={() => (
-								<div className="py-3 text-center text-xs text-muted">{isLoading ? 'Buscando...' : emptyMessage}</div>
+								<div className="py-3 text-center text-xs text-muted-foreground">{isLoading ? 'Buscando...' : emptyMessage}</div>
 							)}
 						>
 							{options.map((option) => (
@@ -192,7 +192,7 @@ export function AsyncCombobox({
 										<div className="flex items-center justify-between gap-3">
 											<div className="flex flex-col">
 												<span>{option.label}</span>
-												{option.description && <span className="text-xs text-muted">{option.description}</span>}
+												{option.description && <span className="text-xs text-muted-foreground">{option.description}</span>}
 											</div>
 											{option.endContent}
 										</div>

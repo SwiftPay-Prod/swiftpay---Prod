@@ -118,8 +118,8 @@ function LedgerTimelineContent({ fetchPromise }: LedgerTimelineProps) {
 	if (!ledgerData || ledgerData.entries.length === 0) {
 		return (
 			<div className="flex flex-col items-center justify-center py-12 text-center">
-				<Icon icon={CheckListIcon} className="icon-xl text-foreground/30 mb-3" />
-				<p className="text-foreground/60">Nenhum registro no ledger para esta transação</p>
+				<Icon icon={CheckListIcon} className="icon-xl text-muted-foreground mb-3" />
+				<p className="text-muted-foreground">Nenhum registro no ledger para esta transação</p>
 			</div>
 		);
 	}
@@ -128,7 +128,7 @@ function LedgerTimelineContent({ fetchPromise }: LedgerTimelineProps) {
 		<div className="flex flex-col gap-5">
 			<div className="grid grid-cols-3 gap-3 rounded-lg border border-foreground/10 bg-surface p-4">
 				<div className="flex flex-col gap-1">
-					<div className="flex items-center gap-2 text-xs text-foreground/50">
+					<div className="flex items-center gap-2 text-xs text-muted-foreground">
 						<Icon icon={Wallet01Icon} className="icon-sm" />
 						<span>Taxa Plataforma</span>
 					</div>
@@ -137,7 +137,7 @@ function LedgerTimelineContent({ fetchPromise }: LedgerTimelineProps) {
 					</span>
 				</div>
 				<div className="flex flex-col gap-1">
-					<div className="flex items-center gap-2 text-xs text-foreground/50">
+					<div className="flex items-center gap-2 text-xs text-muted-foreground">
 						<Icon icon={WalletRemove01Icon} className="icon-sm" />
 						<span>Taxa Adquirente</span>
 					</div>
@@ -146,7 +146,7 @@ function LedgerTimelineContent({ fetchPromise }: LedgerTimelineProps) {
 					</span>
 				</div>
 				<div className="flex flex-col gap-1">
-					<div className="flex items-center gap-2 text-xs text-foreground/50">
+					<div className="flex items-center gap-2 text-xs text-muted-foreground">
 						<Icon icon={Analytics01Icon} className="icon-sm" />
 						<span>Lucro SwiftPay</span>
 					</div>
@@ -191,9 +191,9 @@ function LedgerTimelineContent({ fetchPromise }: LedgerTimelineProps) {
 									<div className="flex items-center justify-between gap-3 border-b border-foreground/5 bg-foreground/2 px-4 py-3">
 										<div className="flex flex-col gap-0.5">
 											<span className="text-sm font-medium text-foreground">{tx.title}</span>
-											<span className="text-xs text-foreground/50">{tx.description}</span>
+											<span className="text-xs text-muted-foreground">{tx.description}</span>
 										</div>
-										<span className="text-xs text-foreground/40">{formatDate(tx.timestamp)}</span>
+										<span className="text-xs text-muted-foreground">{formatDate(tx.timestamp)}</span>
 									</div>
 
 									<div className="divide-y divide-foreground/5">

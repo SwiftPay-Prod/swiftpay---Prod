@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Providers } from "./providers";
 import "./globals.css";
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const appUrl =
   process.env.NEXT_PUBLIC_APP_URL ||
@@ -79,8 +83,12 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/logos/favicon.png",
-    apple: "/logos/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -90,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning className={cn("font-sans", inter.variable)}>
       <body className="antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>

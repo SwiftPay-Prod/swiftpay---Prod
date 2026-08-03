@@ -136,7 +136,7 @@ export const acquirerOperationTypeParse: Record<AcquirerOperationType, TParse & 
 		color: 'default',
 		description: 'Operação regular (white label)',
 		icon: <Icon icon={RubberDuckIcon} size={14} />,
-		className: 'bg-white text-black border border-gray-300',
+		className: 'bg-card text-foreground border border-border',
 	},
 	Black: {
 		label: 'Black',
