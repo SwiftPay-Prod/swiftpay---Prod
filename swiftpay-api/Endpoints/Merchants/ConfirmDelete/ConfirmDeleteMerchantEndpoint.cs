@@ -164,8 +164,7 @@ public sealed class ConfirmDeleteMerchantEndpoint(
 
         // Send confirmation email (await to avoid DbContext disposal issues)
         var now = DateTime.UtcNow;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         await SendDeletionConfirmationEmailAsync(merchant.User, merchant, ipAddress, location, brazilTime);
 

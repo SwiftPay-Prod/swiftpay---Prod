@@ -89,8 +89,7 @@ public sealed class ResetPasswordEndpoint(
         resetCode.Status = PasswordResetCodeStatus.Used;
 
         var now = DateTime.UtcNow;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         user.Password = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
         user.PasswordChangedAt = now;

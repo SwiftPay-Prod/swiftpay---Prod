@@ -97,8 +97,7 @@ public sealed class ConfirmChangePasswordEndpoint(
         await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordChange, Status = SecurityLogStatus.Success, UserId = userId, Details = "Senha alterada com sucesso." });
 
         var now = DateTime.UtcNow;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         await SendPasswordChangedEmailAsync(dbUser, ipAddress, location, brazilTime);
 

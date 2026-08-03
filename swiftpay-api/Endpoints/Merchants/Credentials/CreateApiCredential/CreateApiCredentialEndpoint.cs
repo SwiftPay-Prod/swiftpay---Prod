@@ -98,8 +98,7 @@ public sealed class CreateApiCredentialEndpoint(
         if (user != null)
         {
             var now = DateTime.UtcNow;
-            var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
             _ = emailService.SendAsync(
                 user.Email,

@@ -146,8 +146,7 @@ public sealed class RequestCashoutAccountActionEndpoint(
 
         var user = merchant.User;
         var now = DateTime.UtcNow;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         var (emailSubject, actionDescription) = GetEmailContent(req.ActionType);
 

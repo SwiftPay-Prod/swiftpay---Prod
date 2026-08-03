@@ -38,8 +38,7 @@ public sealed class SignInEndpoint(
         var userAgent = EndpointUtils.GetUserAgent(HttpContext);
         var emailLower = req.Email.ToLower().Trim();
         var now = DateTime.UtcNow;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         var geoLocation = await geoLocationService.GetLocationAsync(ipAddress);
         var location = geoLocation.DisplayLocation;

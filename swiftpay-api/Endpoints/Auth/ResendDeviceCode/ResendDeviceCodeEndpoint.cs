@@ -27,8 +27,7 @@ public sealed class ResendDeviceCodeEndpoint(
     public override async Task HandleAsync(ResendDeviceCodeRequest req, CancellationToken ct)
     {
         var now = DateTime.UtcNow;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         var existingVerification = await dbContext.DeviceVerificationCodes
             .Include(dvc => dvc.User)

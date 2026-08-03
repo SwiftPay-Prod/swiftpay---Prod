@@ -128,8 +128,7 @@ public sealed class RequestDeleteApiCredentialEndpoint(
         try
         {
             var now = DateTime.UtcNow;
-            var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
             await emailService.SendAsync(
                 user.Email,

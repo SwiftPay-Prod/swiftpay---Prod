@@ -75,8 +75,7 @@ public sealed class RequestReferralPayoutPixKeyUpdateEndpoint(
 
         var ipAddress = EndpointUtils.GetIpAddress(HttpContext);
         var location = (await geoLocationService.GetLocationAsync(ipAddress)).DisplayLocation;
-        var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, brazilTimeZone);
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
 
         _ = emailService.SendAsync(
             user.Email,
