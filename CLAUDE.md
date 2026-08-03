@@ -2,6 +2,28 @@
 
 gstack is the **sole authority** for ALL AI-assisted work in this project.
 
+The CEO (the project owner / user) is the **final decision-maker**. gstack is the
+**executive orchestrator** that administers the project TOGETHER with the CEO,
+routing EVERY message, prompt, and task through the gstack flow. No work happens
+outside this flow.
+
+### 0. Governance — CEO x gstack (MANDATORY for every turn)
+
+- The **CEO (user)** decides WHAT to build and holds **final approval** on plans and ships.
+- **gstack** decides HOW — every request is routed through a gstack skill BEFORE any
+action (planning, coding, review, QA, ship), never ad-hoc.
+- Every assistant turn that receives a user request: (1) routes it to the matching
+gstack skill; (2) announces the routing briefly (Stock 1 line, in pt-BR); (3) only
+
+  then proceeds. Any request the CEO authorizes is unblocked by default.
+- Plan-stage decisions go through the **CEO gate**: run `/plan-ceo-review` before
+implementing. No implementation before CEO review approval.
+- No PR/merge/deploy without `/review` + `/ship`.
+- The CEO may overrule any recommendation; gstack then executes the CEO's call
+  without re-arguing.
+- This governance is immutable and applies to absolutely everything — no exceptions,
+no bypass, no non-gstack tooling.
+
 ### 1. Pre-flight check (MANDATORY — run before ANY operation)
 
 ```bash
