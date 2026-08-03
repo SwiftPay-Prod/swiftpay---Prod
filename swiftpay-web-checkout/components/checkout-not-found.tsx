@@ -109,13 +109,6 @@ export function CheckoutNotFound({ message, errorType }: CheckoutNotFoundProps) 
             >
               <HugeiconsIcon icon={IconComponent} className="w-32 h-32 text-zinc-300 dark:text-zinc-600 mx-auto" strokeWidth={1} />
             </motion.div>
-            <motion.div
-              className="absolute -top-2 -right-2"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            >
-              <span className="text-4xl">✨</span>
-            </motion.div>
           </div>
         </motion.div>
 
@@ -156,7 +149,7 @@ export function CheckoutNotFound({ message, errorType }: CheckoutNotFoundProps) 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="mt-8 text-sm text-zinc-400 dark:text-zinc-500"
+          className="mt-8 text-sm text-zinc-500 dark:text-zinc-300"
         >
           Se o problema persistir, entre em contato com o vendedor.
         </motion.p>

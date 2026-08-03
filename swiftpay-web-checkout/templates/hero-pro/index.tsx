@@ -120,7 +120,7 @@ export function HeroProTemplate({ checkout, isSandbox = false, initialCalculatio
 	const [theme, setTheme] = useState<ThemeMode>('dark');
 	const [orderData, setOrderData] = useState<OrderData | null>(null);
 	const orderDataRef = useRef<OrderData | null>(null);
-	const paymentApiUrl = process.env.NEXT_PUBLIC_SAFEFY_API_PAYMENT_URL ?? null;
+	const paymentApiUrl = process.env.NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL ?? null;
 
 	useEffect(() => {
 		orderDataRef.current = orderData;
