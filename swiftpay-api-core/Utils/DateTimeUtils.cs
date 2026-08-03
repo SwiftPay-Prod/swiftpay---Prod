@@ -2,20 +2,47 @@ namespace swiftpay_api_core.Utils;
 
 public static class DateTimeUtils
 {
-    public static readonly TimeZoneInfo BrasiliaTimeZone =
-        TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+    private static readonly TimeZoneInfo? BrasiliaTimeZoneLinux;
+    private static readonly TimeZoneInfo? BrasiliaTimeZoneWindows;
+
+    static DateTimeUtils()
+    {
+        try
+        {
+            BrasiliaTimeZoneLinux = TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
+        }
+        catch
+        {
+            BrasiliaTimeZoneLinux = null;
+        }
+
+        try
+        {
+            BrasiliaTimeZoneWindows = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+        }
+        catch
+        {
+            BrasiliaTimeZoneWindows = null;
+        }
+    }
+
+    public static TimeZoneInfo BrasiliaTimeZone => ResolvedBrazilTimeZone;
+
+    private static TimeZoneInfo ResolvedBrazilTimeZone =>
+        BrasiliaTimeZoneLinux ?? BrasiliaTimeZoneWindows
+        ?? throw new InvalidOperationException("Brazil timezone is not available on this system.");
 
     /// <summary>
     /// Retorna o horário atual no fuso de Brasília
     /// </summary>
     public static DateTime GetBrasiliaTime() =>
-        TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, BrasiliaTimeZone);
+        TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, ResolvedBrazilTimeZone);
 
     /// <summary>
     /// Converte um DateTime UTC para o fuso de Brasília
     /// </summary>
     public static DateTime ToBrasiliaTime(DateTime utcDateTime) =>
-        TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, BrasiliaTimeZone);
+        TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, ResolvedBrazilTimeZone);
 
     /// <summary>
     /// Retorna o início do dia atual no fuso de Brasília, convertido para UTC.
@@ -24,7 +51,7 @@ public static class DateTimeUtils
     public static DateTime GetTodayStartUtc()
     {
         var brasiliaToday = GetBrasiliaTime().Date;
-        return TimeZoneInfo.ConvertTimeToUtc(brasiliaToday, BrasiliaTimeZone);
+        return TimeZoneInfo.ConvertTimeToUtc(brasiliaToday, ResolvedBrazilTimeZone);
     }
 
     /// <summary>
@@ -33,7 +60,7 @@ public static class DateTimeUtils
     public static DateTime GetTodayEndUtc()
     {
         var brasiliaToday = GetBrasiliaTime().Date.AddDays(1).AddTicks(-1);
-        return TimeZoneInfo.ConvertTimeToUtc(brasiliaToday, BrasiliaTimeZone);
+        return TimeZoneInfo.ConvertTimeToUtc(brasiliaToday, ResolvedBrazilTimeZone);
     }
 
     /// <summary>
@@ -43,7 +70,7 @@ public static class DateTimeUtils
     {
         var brasiliaToday = GetBrasiliaTime().Date;
         var startOfWeek = brasiliaToday.AddDays(-(int)brasiliaToday.DayOfWeek);
-        return TimeZoneInfo.ConvertTimeToUtc(startOfWeek, BrasiliaTimeZone);
+        return TimeZoneInfo.ConvertTimeToUtc(startOfWeek, ResolvedBrazilTimeZone);
     }
 
     /// <summary>
@@ -53,7 +80,7 @@ public static class DateTimeUtils
     {
         var brasiliaToday = GetBrasiliaTime().Date;
         var startOfMonth = new DateTime(brasiliaToday.Year, brasiliaToday.Month, 1);
-        return TimeZoneInfo.ConvertTimeToUtc(startOfMonth, BrasiliaTimeZone);
+        return TimeZoneInfo.ConvertTimeToUtc(startOfMonth, ResolvedBrazilTimeZone);
     }
 
     /// <summary>
@@ -74,7 +101,7 @@ public static class DateTimeUtils
     public static DateTime GetDaysAgoUtc(int days)
     {
         var brasiliaDate = GetBrasiliaTime().Date.AddDays(-days);
-        return TimeZoneInfo.ConvertTimeToUtc(brasiliaDate, BrasiliaTimeZone);
+        return TimeZoneInfo.ConvertTimeToUtc(brasiliaDate, ResolvedBrazilTimeZone);
     }
 
     /// <summary>
