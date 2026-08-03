@@ -27,7 +27,8 @@ public static class CorsExtensions
                         Uri.TryCreate(origin, UriKind.Absolute, out var uri)
                         && uri.Scheme == Uri.UriSchemeHttps
                         && (uri.Host.Equals("swiftpay.com.br", StringComparison.OrdinalIgnoreCase)
-                            || uri.Host.EndsWith(".swiftpay.com.br", StringComparison.OrdinalIgnoreCase)))
+                            || uri.Host.EndsWith(".swiftpay.com.br", StringComparison.OrdinalIgnoreCase)
+                            || uri.Host.EndsWith(".vercel.app", StringComparison.OrdinalIgnoreCase)))
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

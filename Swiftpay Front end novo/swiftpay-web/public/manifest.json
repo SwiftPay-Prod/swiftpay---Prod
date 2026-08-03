@@ -1,0 +1,28 @@
+{
+  "name": "SwiftPay - Gateway de Pagamentos PIX",
+  "short_name": "SwiftPay",
+  "description": "Gateway de pagamentos PIX. Integre pagamentos PIX em sua plataforma com nossa API simples e segura.",
+  "start_url": "/splash",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/logos/swiftpay-icon-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logos/swiftpay-icon-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "lang": "pt-BR",
+  "dir": "ltr"
+}

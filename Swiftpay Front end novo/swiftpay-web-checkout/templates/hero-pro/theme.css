@@ -1,0 +1,626 @@
+/**
+ * Hero Pro Template - Theme CSS
+ * 
+ * Este arquivo define todas as variáveis CSS e classes utilitárias
+ * para os temas dark e light do template Hero Pro.
+ * 
+ * Uso: Adicione data-theme="dark" ou data-theme="light" no container principal.
+ * As classes hero-* automaticamente aplicam as cores corretas.
+ */
+
+/* =================================================================
+   CSS Variables - Default (Dark Theme)
+   ================================================================= */
+
+:root {
+	/* Background Colors */
+	--hero-bg-page: oklch(12% 0 253.83);
+	--hero-bg-card: oklch(21.03% 0 253.83);
+	--hero-bg-card-hover: oklch(27.21% 0 253.83);
+	--hero-bg-input: oklch(21.03% 0 253.83);
+	--hero-bg-input-focus: oklch(25.7% 0 253.83);
+	--hero-bg-muted: oklch(27.4% 0 253.83);
+	--hero-bg-subtle: oklch(27.4% 0 253.83);
+	--hero-bg-success: oklch(18% 0.04 150.81);
+	--hero-bg-info: oklch(18% 0.03 253.83);
+	--hero-bg-warning: oklch(18% 0.04 76.34);
+	--hero-bg-danger: oklch(17% 0.04 24.63);
+
+	/* Text Colors */
+	--hero-text: oklch(99.11% 0 253.83);
+	--hero-text-muted: oklch(78% 0 253.83);
+	--hero-text-subtle: oklch(68% 0 253.83);
+	--hero-text-placeholder: oklch(68% 0 253.83);
+	--hero-text-success: oklch(73.29% 0.1935 150.81);
+	--hero-text-info: oklch(72% 0.15 253.83);
+	--hero-text-warning: oklch(82.03% 0.1388 76.34);
+	--hero-text-danger: oklch(65.32% 0.2328 25.74);
+	--hero-text-brand: oklch(0.85 0.22 115);
+
+	/* Border Colors */
+	--hero-border: oklch(28% 0 253.83);
+	--hero-border-muted: oklch(25% 0 253.83);
+	--hero-border-focus: oklch(62.04% 0.1951 253.83);
+	--hero-border-success: oklch(38% 0.12 150.81);
+	--hero-border-info: oklch(32% 0.09 253.83);
+	--hero-border-warning: oklch(38% 0.09 76.34);
+	--hero-border-danger: oklch(32% 0.12 24.63);
+
+	/* Badge/Chip Colors - Product Types (aligned with swiftpay-web) */
+	/* Physical: accent (blue) */
+	--hero-badge-physical-bg: oklch(22% 0.05 253.83);
+	--hero-badge-physical-text: oklch(72% 0.15 253.83);
+	/* Digital: success (green) */
+	--hero-badge-digital-bg: oklch(22% 0.05 150.81);
+	--hero-badge-digital-text: oklch(73.29% 0.1935 150.81);
+	/* Service: warning (yellow/amber) */
+	--hero-badge-service-bg: oklch(22% 0.05 76.34);
+	--hero-badge-service-text: oklch(82.03% 0.1388 76.34);
+
+	/* Accent Colors (SwiftPay Brand) */
+	--hero-accent: oklch(0.85 0.22 115);
+	--hero-accent-light: oklch(0.85 0.22 115 / 0.15);
+	--hero-accent-muted: oklch(0.85 0.22 115 / 0.09);
+	--hero-accent-foreground: oklch(0.08 0.01 115);
+
+	/* Ring/Focus Colors */
+	--hero-ring: oklch(28% 0 253.83);
+
+	/* Separator */
+	--hero-separator: oklch(25% 0 253.83);
+
+	/* Disabled State */
+	--hero-disabled-bg: oklch(27.4% 0 253.83);
+	--hero-disabled-text: oklch(55.17% 0 253.83);
+}
+
+[data-theme='dark'] {
+	/* Background Colors */
+	--hero-bg-page: oklch(12% 0 253.83);
+	--hero-bg-card: oklch(21.03% 0 253.83);
+	--hero-bg-card-hover: oklch(27.21% 0 253.83);
+	--hero-bg-input: oklch(21.03% 0 253.83);
+	--hero-bg-input-focus: oklch(25.7% 0 253.83);
+	--hero-bg-muted: oklch(27.4% 0 253.83);
+	--hero-bg-subtle: oklch(27.4% 0 253.83);
+	--hero-bg-success: oklch(18% 0.04 150.81);
+	--hero-bg-info: oklch(18% 0.03 253.83);
+	--hero-bg-warning: oklch(18% 0.04 76.34);
+	--hero-bg-danger: oklch(17% 0.04 24.63);
+
+	/* Text Colors */
+	--hero-text: oklch(99.11% 0 253.83);
+	--hero-text-muted: oklch(78% 0 253.83);
+	--hero-text-subtle: oklch(68% 0 253.83);
+	--hero-text-placeholder: oklch(68% 0 253.83);
+	--hero-text-success: oklch(73.29% 0.1935 150.81);
+	--hero-text-info: oklch(72% 0.15 253.83);
+	--hero-text-warning: oklch(82.03% 0.1388 76.34);
+	--hero-text-danger: oklch(65.32% 0.2328 25.74);
+	--hero-text-brand: oklch(0.85 0.22 115);
+
+	/* Border Colors */
+	--hero-border: oklch(28% 0 253.83);
+	--hero-border-muted: oklch(25% 0 253.83);
+	--hero-border-focus: oklch(62.04% 0.1951 253.83);
+	--hero-border-success: oklch(38% 0.12 150.81);
+	--hero-border-info: oklch(32% 0.09 253.83);
+	--hero-border-warning: oklch(38% 0.09 76.34);
+	--hero-border-danger: oklch(32% 0.12 24.63);
+
+	/* Badge/Chip Colors - Product Types (aligned with swiftpay-web) */
+	/* Physical: accent (blue) */
+	--hero-badge-physical-bg: oklch(22% 0.05 253.83);
+	--hero-badge-physical-text: oklch(72% 0.15 253.83);
+	/* Digital: success (green) */
+	--hero-badge-digital-bg: oklch(22% 0.05 150.81);
+	--hero-badge-digital-text: oklch(73.29% 0.1935 150.81);
+	/* Service: warning (yellow/amber) */
+	--hero-badge-service-bg: oklch(22% 0.05 76.34);
+	--hero-badge-service-text: oklch(82.03% 0.1388 76.34);
+
+	/* Accent Colors (SwiftPay Brand) */
+	--hero-accent: oklch(0.85 0.22 115);
+	--hero-accent-light: oklch(0.85 0.22 115 / 0.15);
+	--hero-accent-muted: oklch(0.85 0.22 115 / 0.09);
+	--hero-accent-foreground: oklch(0.08 0.01 115);
+
+	/* Ring/Focus Colors */
+	--hero-ring: oklch(28% 0 253.83);
+
+	/* Separator */
+	--hero-separator: oklch(25% 0 253.83);
+
+	/* Disabled State */
+	--hero-disabled-bg: oklch(27.4% 0 253.83);
+	--hero-disabled-text: oklch(55.17% 0 253.83);
+}
+
+/* =================================================================
+   CSS Variables - Light Theme
+   ================================================================= */
+
+[data-theme='light'] {
+	/* Background Colors */
+	--hero-bg-page: oklch(97.02% 0 253.83);
+	--hero-bg-card: oklch(100% 0 253.83);
+	--hero-bg-card-hover: oklch(93.73% 0 253.83);
+	--hero-bg-input: oklch(100% 0 253.83);
+	--hero-bg-input-focus: oklch(100% 0 253.83);
+	--hero-bg-muted: oklch(95.24% 0 253.83);
+	--hero-bg-subtle: oklch(97.02% 0 253.83);
+	--hero-bg-success: oklch(96% 0.03 150.81);
+	--hero-bg-info: oklch(96% 0.02 253.83);
+	--hero-bg-warning: oklch(97% 0.03 76.34);
+	--hero-bg-danger: oklch(96% 0.03 25.74);
+
+	/* Text Colors */
+	--hero-text: oklch(21.03% 0 253.83);
+	--hero-text-muted: oklch(42% 0 253.83);
+	--hero-text-subtle: oklch(45% 0 253.83);
+	--hero-text-placeholder: oklch(50% 0 253.83);
+	--hero-text-success: oklch(44% 0.14 150.81);
+	--hero-text-info: oklch(42% 0.18 253.83);
+	--hero-text-warning: oklch(48% 0.13 72.33);
+	--hero-text-danger: oklch(50% 0.2 25.74);
+	--hero-text-brand: oklch(0.65 0.20 115);
+
+	/* Border Colors */
+	--hero-border: oklch(90% 0 253.83);
+	--hero-border-muted: oklch(93% 0 253.83);
+	--hero-border-focus: oklch(62.04% 0.1951 253.83);
+	--hero-border-success: oklch(82% 0.1 150.81);
+	--hero-border-info: oklch(84% 0.08 253.83);
+	--hero-border-warning: oklch(88% 0.1 76.34);
+	--hero-border-danger: oklch(85% 0.12 25.74);
+
+	/* Badge/Chip Colors - Product Types (aligned with swiftpay-web) */
+	/* Physical: accent (blue) */
+	--hero-badge-physical-bg: oklch(93% 0.04 253.83);
+	--hero-badge-physical-text: oklch(42% 0.18 253.83);
+	/* Digital: success (green) */
+	--hero-badge-digital-bg: oklch(93% 0.04 150.81);
+	--hero-badge-digital-text: oklch(38% 0.14 150.81);
+	/* Service: warning (yellow/amber) */
+	--hero-badge-service-bg: oklch(95% 0.05 76.34);
+	--hero-badge-service-text: oklch(44% 0.12 72.33);
+
+	/* Accent Colors (SwiftPay Brand) */
+	--hero-accent: oklch(0.65 0.20 115);
+	--hero-accent-light: oklch(0.65 0.20 115 / 0.12);
+	--hero-accent-muted: oklch(0.65 0.20 115 / 0.06);
+	--hero-accent-foreground: oklch(1 0 0);
+
+	/* Ring/Focus Colors */
+	--hero-ring: oklch(90% 0 253.83);
+
+	/* Separator */
+	--hero-separator: oklch(92% 0 253.83);
+
+	/* Disabled State */
+	--hero-disabled-bg: oklch(92% 0 253.83);
+	--hero-disabled-text: oklch(65% 0 253.83);
+}
+
+/* =================================================================
+   Utility Classes - Backgrounds
+   ================================================================= */
+
+.hero-bg {
+	background-color: var(--hero-bg-page);
+}
+
+.hero-bg-page {
+	background-color: var(--hero-bg-page);
+}
+
+.hero-bg-card {
+	background-color: var(--hero-bg-card);
+}
+
+.hero-bg-card-hover {
+	background-color: var(--hero-bg-card-hover);
+}
+
+.hero-bg-input {
+	background-color: var(--hero-bg-input);
+}
+
+.hero-bg-muted {
+	background-color: var(--hero-bg-muted);
+}
+
+.hero-bg-subtle {
+	background-color: var(--hero-bg-subtle);
+}
+
+.hero-bg-success {
+	background-color: var(--hero-bg-success);
+}
+
+.hero-bg-info {
+	background-color: var(--hero-bg-info);
+}
+
+.hero-bg-warning {
+	background-color: var(--hero-bg-warning);
+}
+
+.hero-bg-danger {
+	background-color: var(--hero-bg-danger);
+}
+
+/* =================================================================
+   Utility Classes - Text
+   ================================================================= */
+
+.hero-text {
+	color: var(--hero-text);
+}
+
+.hero-text-muted {
+	color: var(--hero-text-muted);
+}
+
+.hero-text-subtle {
+	color: var(--hero-text-subtle);
+}
+
+.hero-text-success {
+	color: var(--hero-text-success);
+}
+
+.hero-text-info {
+	color: var(--hero-text-info);
+}
+
+.hero-text-warning {
+	color: var(--hero-text-warning);
+}
+
+.hero-text-danger {
+	color: var(--hero-text-danger);
+}
+
+.hero-text-brand {
+	color: var(--hero-text-brand);
+}
+
+.hero-text-secondary {
+	color: var(--hero-text-muted);
+}
+
+.hero-alert-info-text {
+	color: var(--hero-text-info);
+}
+
+/* =================================================================
+   Utility Classes - Borders
+   ================================================================= */
+
+.hero-border {
+	border-color: var(--hero-border);
+}
+
+.hero-border-muted {
+	border-color: var(--hero-border-muted);
+}
+
+.hero-border-success {
+	border-color: var(--hero-border-success);
+}
+
+.hero-border-info {
+	border-color: var(--hero-border-info);
+}
+
+.hero-border-warning {
+	border-color: var(--hero-border-warning);
+}
+
+.hero-border-danger {
+	border-color: var(--hero-border-danger);
+}
+
+/* =================================================================
+   Utility Classes - Separator
+   ================================================================= */
+
+.hero-separator {
+	background-color: var(--hero-separator);
+}
+
+/* =================================================================
+   Component Classes - Card
+   ================================================================= */
+
+.hero-card {
+	background-color: var(--hero-bg-card);
+	border: 1px solid var(--hero-border);
+	border-radius: 2.5rem;
+	padding: 1.5rem;
+}
+
+.hero-card-flat {
+	background-color: var(--hero-bg-card);
+	border-radius: 1rem;
+}
+
+/* =================================================================
+   Component Classes - Input
+   ================================================================= */
+
+.hero-input {
+	background-color: var(--hero-bg-input);
+	border-color: var(--hero-border);
+	color: var(--hero-text);
+    border-radius: 1rem;
+}
+
+.hero-input::placeholder {
+	color: var(--hero-text-placeholder);
+}
+
+.hero-input:focus {
+	background-color: var(--hero-bg-input-focus);
+	border-color: var(--hero-focus-color, var(--hero-border-focus));
+	outline: none;
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--hero-focus-color, var(--hero-border-focus)) 30%, transparent);
+}
+
+.hero-input:disabled {
+	background-color: var(--hero-disabled-bg);
+	color: var(--hero-disabled-text);
+	cursor: not-allowed;
+}
+
+/* =================================================================
+   Component Classes - Badge
+   ================================================================= */
+
+.hero-badge-physical {
+	background-color: var(--hero-badge-physical-bg);
+	color: var(--hero-badge-physical-text);
+}
+
+.hero-badge-digital {
+	background-color: var(--hero-badge-digital-bg);
+	color: var(--hero-badge-digital-text);
+}
+
+.hero-badge-service {
+	background-color: var(--hero-badge-service-bg);
+	color: var(--hero-badge-service-text);
+}
+
+/* =================================================================
+   Component Classes - Alert/Notice
+   ================================================================= */
+
+.hero-alert-success {
+	background-color: var(--hero-bg-success);
+	border: 1px solid var(--hero-border-success);
+	color: var(--hero-text-success);
+}
+
+.hero-alert-info {
+	background-color: var(--hero-bg-info);
+	border: 1px solid var(--hero-border-info);
+	color: var(--hero-text-info);
+}
+
+.hero-alert-warning {
+	background-color: var(--hero-bg-warning);
+	border: 1px solid var(--hero-border-warning);
+	color: var(--hero-text-warning);
+}
+
+.hero-alert-danger {
+	background-color: var(--hero-bg-danger);
+	border: 1px solid var(--hero-border-danger);
+	color: var(--hero-text-danger);
+}
+
+/* =================================================================
+   Component Classes - Button
+   ================================================================= */
+
+.hero-btn-submit {
+    border-radius: 1.5rem;
+}
+
+.hero-btn-disabled {
+	background-color: var(--hero-disabled-bg) !important;
+	color: var(--hero-disabled-text) !important;
+	cursor: not-allowed !important;
+    border-radius: 1.5rem;
+}
+
+.hero-btn-submit:disabled {
+	background-color: var(--hero-disabled-bg) !important;
+	color: var(--hero-disabled-text) !important;
+	cursor: not-allowed !important;
+    border-radius: 1.5rem;
+}
+
+/* =================================================================
+   Component Classes - Secondary Button (Payment Methods, etc.)
+   ================================================================= */
+
+.hero-button-secondary {
+	background-color: var(--hero-bg-muted);
+	color: var(--hero-text-muted);
+	transition: all 0.2s ease;
+    border-radius: 1.5rem;
+}
+
+.hero-button-secondary:hover:not(:disabled) {
+	background-color: var(--hero-bg-card-hover);
+	color: var(--hero-text);
+    border-radius: 1.5rem;
+}
+
+/* =================================================================
+   Component Classes - Surface (Inner Card/Container)
+   ================================================================= */
+
+.hero-surface {
+	background-color: var(--hero-bg-subtle);
+}
+
+/* =================================================================
+   Component Classes - Select
+   ================================================================= */
+
+.hero-select {
+	background-color: var(--hero-bg-input);
+	border-color: var(--hero-border);
+	color: var(--hero-text);
+}
+
+.hero-select:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px var(--hero-ring);
+}
+
+.hero-select option {
+	background-color: var(--hero-bg-card);
+	color: var(--hero-text);
+}
+
+/* =================================================================
+   Hover States (use with @apply or combine in Tailwind)
+   ================================================================= */
+
+.hover\:hero-bg-card-hover:hover {
+	background-color: var(--hero-bg-card-hover);
+}
+
+/* Hover utility without escaping (alternative) */
+.hero-hover-card:hover {
+	background-color: var(--hero-bg-card-hover);
+}
+
+/* =================================================================
+   Mobile Typography - Smaller fonts on mobile devices
+   ================================================================= */
+
+@media (max-width: 1023px) {
+	.hero-template {
+		font-size: 14px;
+	}
+
+	.hero-template h1 {
+		font-size: 1.5rem;
+	}
+
+	.hero-template h2 {
+		font-size: 1.25rem;
+	}
+
+	.hero-template h3 {
+		font-size: 1rem;
+	}
+
+	.hero-template p,
+	.hero-template span,
+	.hero-template label,
+	.hero-template button {
+		font-size: 0.875rem;
+	}
+
+	.hero-template .text-xs {
+		font-size: 0.65rem;
+	}
+
+	.hero-template .text-sm {
+		font-size: 0.75rem;
+	}
+
+	.hero-template .text-base {
+		font-size: 0.8rem;
+	}
+
+	.hero-template .text-lg {
+		font-size: 0.9rem;
+	}
+
+	.hero-template .text-xl {
+		font-size: 1rem;
+	}
+
+	.hero-template .text-2xl {
+		font-size: 1.125rem;
+	}
+
+	.hero-template .text-3xl {
+		font-size: 1.25rem;
+	}
+
+	.hero-template .text-4xl {
+		font-size: 1.5rem;
+	}
+
+	.hero-template .text-\[10px\] {
+		font-size: 8px;
+	}
+
+	.hero-template .text-\[9px\] {
+		font-size: 7px;
+	}
+
+	.hero-card {
+		padding: 1rem;
+		border-radius: 1.5rem;
+	}
+
+	.hero-input {
+		font-size: 16px; /* Prevent iOS zoom */
+		padding-top: 0.625rem;
+		padding-bottom: 0.625rem;
+		padding-right: 0.875rem;
+		/* padding-left is controlled by Tailwind classes (pl-10 for icon, pl-4 without) */
+	}
+}
+
+/* =================================================================
+   Component Classes - Accent (SwiftPay Brand)
+   ================================================================= */
+
+.hero-accent-text {
+	color: var(--hero-accent);
+}
+
+.hero-btn-accent {
+	background-color: var(--hero-accent);
+	color: var(--hero-accent-foreground);
+	border-radius: 0.75rem;
+	transition: opacity 0.2s ease;
+}
+
+.hero-btn-accent:hover:not(:disabled) {
+	opacity: 0.9;
+}
+
+.hero-method-selected {
+	background-color: var(--hero-accent-muted);
+	border-color: var(--hero-accent);
+	box-shadow: 0 0 0 1px color-mix(in srgb, var(--hero-accent) 30%, transparent);
+}
+
+.hero-method-icon-selected {
+	background-color: var(--hero-accent-light);
+	color: var(--hero-accent);
+}
+
+.hero-radio-selected {
+	border-color: var(--hero-accent);
+}
+
+.hero-radio-dot {
+	background-color: var(--hero-accent);
+}
+
+.hero-spinner {
+	border-color: var(--hero-accent) transparent var(--hero-accent) var(--hero-accent);
+}
