@@ -96,6 +96,15 @@ public static class AcquirerDefaultsConstants
                 DocumentationUrl = "https://app.system-magicpay.com/docs/introduction/start",
                 WebhookDocumentationUrl = "https://app.system-magicpay.com/docs/webhooks/overview",
                 WebhookAuthMode = WebhookAuthMode.HmacSha256
+            },
+            [AcquirerType.AkkadPag] = new()
+            {
+                Description = "AkkadPag - Gateway de pagamentos focado em PIX.",
+                ApiBaseUrlProduction = "https://api.akkadpag.com/v1",
+                ApiBaseUrlSandbox = "https://api.akkadpag.com/v1",
+                DocumentationUrl = "https://app.akkadpag.com/docs",
+                WebhookDocumentationUrl = "https://app.akkadpag.com/docs/webhooks",
+                WebhookAuthMode = WebhookAuthMode.Token
             }
         };
 

@@ -8,6 +8,8 @@ using swiftpay_api_payment.Clients.MagicPay;
 using swiftpay_api_payment.Clients.IHubBanking;
 using swiftpay_api_payment.Clients.Pluggou;
 using swiftpay_api_payment.Clients.Rapdyn;
+using swiftpay_api_payment.Clients.AkkadPag;
+using System.Net.Http.Headers;
 using swiftpay_api_payment.Endpoints.Checkout.Calculate;
 using swiftpay_api_payment.Endpoints.Checkout.CreateOrder;
 using swiftpay_api_payment.Endpoints.Checkout.Get;
@@ -96,6 +98,12 @@ public static class ServiceCollectionExtensions
         services.AddAcquirerHttpClient<IHeartPayClient, HeartPayClient>("heartpay");
         services.AddAcquirerHttpClient<IAccithusClient, AccithusClient>("accithus");
         services.AddAcquirerHttpClient<IMagicPayClient, MagicPayClient>("magicpay");
+        services.AddHttpClient<IAkkadPagClient, AkkadPagClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri("https://api.akkadpag.com/v1/");
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        });
 
         services.AddScoped<IAcquirerService, ActivePaymentsService>();
         services.AddScoped<IAcquirerService, BankiziService>();
@@ -107,6 +115,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAcquirerService, HeartPayService>();
         services.AddScoped<IAcquirerService, AccithusService>();
         services.AddScoped<IAcquirerService, MagicPayService>();
+        services.AddScoped<IAcquirerService, AkkadPagService>();
         services.AddScoped<IAcquirerServiceFactory, AcquirerServiceFactory>();
 
         return services;

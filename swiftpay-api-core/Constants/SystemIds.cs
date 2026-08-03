@@ -93,4 +93,9 @@ public static class SystemAcquirerIds
     /// MagicPay - Gateway de pagamentos PIX, Boleto e Cartao de Credito
     /// </summary>
     public static readonly Guid MagicPay = Guid.Parse("00000000-0000-0000-0000-000000000210");
+
+    /// <summary>
+    /// AkkadPag - Gateway de pagamentos PIX
+    /// </summary>
+    public static readonly Guid AkkadPag = Guid.Parse("00000000-0000-0000-0000-000000000211");
 }

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -275,7 +275,8 @@ public enum AcquirerType
     HunterPay,
     HeartPay,
     Accithus,
-    MagicPay
+    MagicPay,
+    AkkadPag
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
