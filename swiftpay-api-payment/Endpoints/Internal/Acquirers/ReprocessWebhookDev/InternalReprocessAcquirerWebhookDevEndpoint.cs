@@ -125,6 +125,7 @@ public sealed class InternalReprocessAcquirerWebhookDevEndpoint(
             AcquirerType.Coldfy => await ReprocessColdfyAsync(requestBody, ct),
             AcquirerType.Pluggou => await ReprocessPluggouAsync(requestBody, ct),
             AcquirerType.HunterPay => await ReprocessHunterPayAsync(requestBody, ct),
+            AcquirerType.AkkadPag => await ReprocessAkkadPagAsync(requestBody, ct),
             _ => ReplayResult.Fail("Tipo de adquirente nao suportado para reprocessamento.", "unsupported_acquirer_type")
         };
     }
@@ -810,6 +811,133 @@ public sealed class InternalReprocessAcquirerWebhookDevEndpoint(
         return ReplayResult.OkPayment(paymentResult.PaymentId, paymentResult.NewStatus?.ToString());
     }
 
+    private async Task<ReplayResult> ReprocessAkkadPagAsync(string requestBody, CancellationToken ct)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(requestBody);
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("transaction", out var transactionElement))
+            {
+                var id = transactionElement.GetProperty("id").GetString();
+                if (string.IsNullOrWhiteSpace(id))
+                    return ReplayResult.OkPayment(null, "Ignored");
+
+                var status = transactionElement.GetProperty("status").GetString();
+                var paymentStatus = AkkadPagStatusConverter.ToPaymentStatus(status);
+
+                var endToEndId = transactionElement.TryGetProperty("pix", out var pixElement) && pixElement.TryGetProperty("endToEnd", out var endToEndElement)
+                    ? endToEndElement.GetString()
+                    : null;
+
+                var payerName = transactionElement.TryGetProperty("payer", out var payerElement) && payerElement.TryGetProperty("name", out var payerNameElement)
+                    ? payerNameElement.GetString()
+                    : null;
+
+                var payerDocument = transactionElement.TryGetProperty("payer", out var payerDocElement) && payerDocElement.TryGetProperty("document", out var payerDocumentElement)
+                    ? payerDocumentElement.GetString()
+                    : null;
+
+                var paymentResult = await paymentProcessingService.ProcessAcquirerWebhookAsync(new AcquirerWebhookData
+                {
+                    AcquirerType = AcquirerType.AkkadPag,
+                    AcquirerPaymentId = id,
+                    TxId = id,
+                    Status = paymentStatus,
+                    EndToEndId = endToEndId,
+                    PayerName = payerName,
+                    PayerDocument = payerDocument,
+                    ErrorMessage = paymentStatus switch
+                    {
+                        PaymentStatus.Failed => "Pagamento recusado pela AkkadPag.",
+                        PaymentStatus.Cancelled => "Pagamento cancelado na AkkadPag.",
+                        _ => null
+                    }
+                }, ct);
+
+                if (!paymentResult.Success)
+                {
+                    return ReplayResult.Fail(
+                        paymentResult.ErrorMessage ?? "Falha ao processar webhook de transacao.",
+                        paymentResult.PaymentNotFound ? "transaction_not_found" : "reprocess_failed",
+                        paymentResult.PaymentNotFound ? 404 : 400);
+                }
+
+                return ReplayResult.OkPayment(paymentResult.PaymentId, paymentResult.NewStatus?.ToString());
+            }
+
+            if (root.TryGetProperty("withdrawal", out var withdrawalElement))
+            {
+                var id = withdrawalElement.GetProperty("id").GetString();
+                if (string.IsNullOrWhiteSpace(id))
+                    return ReplayResult.OkPayout(null, "Ignored");
+
+                var status = withdrawalElement.GetProperty("status").GetString();
+                var withdrawStatus = AkkadPagStatusConverter.ToWithdrawStatus(status);
+                var payoutStatus = withdrawStatus switch
+                {
+                    WithdrawStatus.Completed => PayoutStatus.Completed,
+                    WithdrawStatus.Failed => PayoutStatus.Failed,
+                    WithdrawStatus.Processing => PayoutStatus.Processing,
+                    _ => PayoutStatus.Processing
+                };
+
+                var rejectReason = payoutStatus is PayoutStatus.Failed or PayoutStatus.Rejected
+                    ? "Saque recusado pela AkkadPag."
+                    : null;
+
+                DateTime? completedAt = null;
+                if (payoutStatus == PayoutStatus.Completed)
+                {
+                    if (withdrawalElement.TryGetProperty("paidAt", out var paidAtElement) && paidAtElement.ValueKind == JsonValueKind.String && DateTime.TryParse(paidAtElement.GetString(), out var paidAt))
+                    {
+                        completedAt = paidAt;
+                    }
+                    else
+                    {
+                        completedAt = DateTime.UtcNow;
+                    }
+                }
+
+                var payoutResult = await cashoutService.ProcessAcquirerWebhookAsync(new AcquirerCashoutWebhookData
+                {
+                    AcquirerType = AcquirerType.AkkadPag,
+                    TxId = id,
+                    Status = payoutStatus,
+                    AcquirerTransactionId = id,
+                    RejectReason = rejectReason,
+                    CompletedAt = completedAt
+                }, ct);
+
+                if (payoutResult.PayoutNotFound)
+                {
+                    await platformPayoutWebhookService.TryProcessWebhookAsync(
+                        AcquirerType.AkkadPag,
+                        id,
+                        payoutStatus,
+                        null,
+                        id,
+                        rejectReason,
+                        ct);
+
+                    return ReplayResult.OkPayout(null, payoutStatus.ToString());
+                }
+
+                if (!payoutResult.Success)
+                    return ReplayResult.Fail(payoutResult.ErrorMessage ?? "Falha ao processar webhook de saque.", "reprocess_failed");
+
+                return ReplayResult.OkPayout(payoutResult.PayoutId, payoutResult.Status?.ToString());
+            }
+
+            return ReplayResult.Ok();
+        }
+        catch (Exception ex)
+        {
+            return ReplayResult.Fail($"Falha ao reprocessar webhook AkkadPag: {ex.Message}", "reprocess_exception");
+        }
+    }
+
     private static T? Deserialize<T>(string json)
     {
         try
@@ -850,6 +978,7 @@ public sealed class InternalReprocessAcquirerWebhookDevEndpoint(
             "coldfy" => AcquirerType.Coldfy,
             "pluggou" => AcquirerType.Pluggou,
             "hunterpay" => AcquirerType.HunterPay,
+            "akkadpag" => AcquirerType.AkkadPag,
             _ => default
         };
 
