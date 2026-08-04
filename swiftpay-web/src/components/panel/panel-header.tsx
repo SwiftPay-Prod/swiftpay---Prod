@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { usePanelHeader } from '@/hooks/use-panel-header';
 import { useMerchant } from '@/contexts/merchant-context';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { NotificationPopover } from './notifications';
 import { Routes } from '@/router/routes';
 import type { UserInfo } from '@/types/auth';
@@ -66,9 +67,9 @@ export function PanelHeader({ title, user }: PanelHeaderProps) {
 					</button>
 
 					<div className="flex items-center gap-1">
+						<ThemeToggle />
 						<NotificationPopover />
 					</div>
-
 					<button
 						type="button"
 						onClick={() => triggerDashboardRefresh()}
