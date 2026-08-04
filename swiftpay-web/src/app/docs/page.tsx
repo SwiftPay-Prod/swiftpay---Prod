@@ -38,7 +38,7 @@ export default function PublicDocsPage() {
       <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-pink-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">
-            F
+            S
           </div>
           <div>
             <h1 className="font-bold text-slate-900 text-base leading-tight">SwiftPay</h1>
@@ -64,7 +64,7 @@ export default function PublicDocsPage() {
         <div className="p-5 border-b border-slate-100 hidden md:block">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 text-white flex items-center justify-center font-bold text-xl shadow-sm">
-              F
+              S
             </div>
             <div>
               <h2 className="font-bold text-slate-900 text-lg leading-tight">SwiftPay</h2>
