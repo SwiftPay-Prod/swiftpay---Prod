@@ -60,8 +60,7 @@ export default function PublicDocsPage() {
           <div className="flex items-center gap-2">
             <SwiftPayBrandLogo showText={true} iconSize={36} textClassName="text-xl" />
           </div>
-
-        {/* Search Input */}
+        </div>
         <div className="px-4 py-3 border-b border-slate-100">
           <div className="relative">
             <SearchIcon className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
@@ -72,8 +71,8 @@ export default function PublicDocsPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-800 placeholder-slate-400"
             />
+          </div>
         </div>
-
         {/* Navigation Items */}
         <nav className="flex-1 overflow-y-auto p-3 space-y-1">
           {filteredNavItems.map((item) => {
@@ -95,6 +94,7 @@ export default function PublicDocsPage() {
               >
                 <div className="flex items-center gap-2.5">
                   <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`} />
+                  <span>{item.label}</span>
                 </div>
                 {item.badge && (
                   <span className="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">
@@ -151,6 +151,7 @@ export default function PublicDocsPage() {
               </span>
               <div>
                 <strong className="font-semibold text-slate-900">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba "Configurações e API" e copie sua Chave Secreta (<code className="text-xs bg-slate-100 text-emerald-600 px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-slate-100 text-emerald-600 px-1.5 py-0.5 rounded font-mono">secretKey</code>).
+              </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center mt-0.5">
@@ -158,6 +159,7 @@ export default function PublicDocsPage() {
               </span>
               <div>
                 <strong className="font-semibold text-slate-900">Autentique suas Requisições:</strong> Para toda chamada à API, obtenha o token JWT em <code className="text-xs bg-slate-100 text-emerald-600 px-1.5 py-0.5 rounded font-mono">POST /v1/auth/token</code> e inclua no cabeçalho HTTP <code className="text-xs bg-slate-100 text-emerald-600 px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;token&gt;</code>.
+              </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center mt-0.5">
@@ -165,6 +167,7 @@ export default function PublicDocsPage() {
               </span>
               <div>
                 <strong className="font-semibold text-slate-900">Crie sua Primeira Transação:</strong> Use o endpoint <code className="text-xs bg-slate-100 text-emerald-600 px-1.5 py-0.5 rounded font-mono">POST /v1/transactions</code> para gerar sua primeira cobrança PIX instantânea com QR Code e Pix Copia e Cola.
+              </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center mt-0.5">
@@ -182,6 +185,7 @@ export default function PublicDocsPage() {
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">Autenticação</h2>
           <p className="text-sm text-slate-600 leading-relaxed">
             A autenticação é feita via OAuth2 Client Credentials ou Token JWT. Envie sua chave no cabeçalho <code className="text-xs bg-slate-100 text-emerald-600 px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;accessToken&gt;</code> em todas as requisições. Requisições sem uma chave válida retornarão um erro <code className="text-xs bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded font-mono">401 Unauthorized</code>.
+          </p>
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -420,6 +424,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
               <div>
                 <span className="font-bold text-slate-900 block">URL de Webhook (Transações PIX):</span>
                 <code className="text-emerald-600 font-mono bg-white px-2 py-1 rounded border border-slate-200 block mt-1">
+                  https://swift-pay.top/v1/internal/akkadpag/webhooks/transactions
                 </code>
               </div>
             </div>
@@ -427,6 +432,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
               <div>
                 <span className="font-bold text-slate-900 block">URL de Webhook (Saques / Payouts):</span>
                 <code className="text-emerald-600 font-mono bg-white px-2 py-1 rounded border border-slate-200 block mt-1">
+                  https://swift-pay.top/v1/internal/akkadpag/webhooks/withdrawals
                 </code>
               </div>
             </div>
@@ -553,6 +559,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
                 )
               }
               className="inline-flex items-center gap-2 text-xs font-semibold bg-white text-emerald-700 hover:bg-emerald-50 px-4 py-2.5 rounded-xl shadow-sm transition-colors"
+            >
               {copiedSection === 'ai-prompt' ? (
                 <>
                   <CheckIcon className="w-4 h-4 text-emerald-600" />
@@ -571,6 +578,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-xs font-semibold bg-emerald-800/50 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl transition-colors border border-emerald-400/30"
+            >
               <DownloadIcon className="w-4 h-4" />
               <span>Baixar OpenAPI Spec (JSON)</span>
             </a>
