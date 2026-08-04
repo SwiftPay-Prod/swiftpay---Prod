@@ -20,6 +20,7 @@ export function isPrivateRoute(pathname: string): boolean {
 }
 
 export function isPublicRoute(pathname: string): boolean {
+  if (pathname === '/docs' || pathname.startsWith('/docs/')) return true;
   const config = findRouteConfig(pathname);
   return config?.type === RouteType.Public;
 }
