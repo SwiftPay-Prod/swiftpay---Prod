@@ -7,7 +7,6 @@ import { useMerchant } from '@/contexts/merchant-context';
 import { PanelSidebar } from './panel-sidebar';
 import { PanelHeader } from './panel-header';
 import { PanelContent } from './panel-content';
-import { SandboxWarningBar } from './sandbox-warning-bar';
 import { getPageTitle } from '@/utils/utils-routes';
 import { BulletinProvider } from '@/providers/bulletin-provider';
 import type { UserInfo } from '@/types/auth';
@@ -39,7 +38,6 @@ export function PanelLayout({ children }: PanelLayoutProps) {
 function PanelLayoutInner({ user, title, children }: { user: UserInfo; title?: string; children: ReactNode }) {
 	return (
 		<div className="flex flex-col h-dvh">
-			<SandboxWarningBar />
 			<div className="flex flex-1 min-h-0">
 				<PanelSidebar user={user} />
 

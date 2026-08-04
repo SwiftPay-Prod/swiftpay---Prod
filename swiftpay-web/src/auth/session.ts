@@ -194,26 +194,8 @@ export async function clearDeviceRevokedModal(): Promise<void> {
 	cookieStore.delete(BaseCookie.deviceRevokedModal);
 }
 
-export async function setSelectedEnvironment(environment: PaymentEnvironment): Promise<void> {
-	const cookieStore = await cookies();
-
-	cookieStore.set(BaseCookie.selectedEnvironment, environment, {
-		httpOnly: false,
-		secure: process.env.NODE_ENV === 'production',
-		sameSite: 'lax',
-		maxAge: 60 * 60 * 24 * 365,
-		path: '/',
-	});
-}
-
 export async function getSelectedEnvironment(): Promise<PaymentEnvironment> {
-	const cookieStore = await cookies();
-	const env = cookieStore.get(BaseCookie.selectedEnvironment)?.value;
-	
-	if (env === PaymentEnvironment.Sandbox) {
-		return PaymentEnvironment.Sandbox;
-	}
-	
+	// Sandbox desativado na plataforma — o header X-Api-Environment é sempre Produção.
 	return PaymentEnvironment.Production;
 }
 

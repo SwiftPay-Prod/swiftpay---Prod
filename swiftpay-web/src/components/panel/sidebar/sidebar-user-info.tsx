@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import { Accordion, Switch, ListBox, Header, Label, Description, Separator, Popover, Button } from '@heroui/react';
+import { Accordion, ListBox, Header, Label, Description, Popover, Button } from '@heroui/react';
 import { AvatarUser } from '@/components/ui/avatar-user';
 import type { Key } from '@react-types/shared';
 import { Icon } from '@/components/ui/icon';
@@ -22,8 +22,6 @@ import { UserMetaCard } from '@/components/panel/header/user-meta-card';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
 import type { MerchantLevel } from '@/types/merchant/achievements';
 import { Routes } from '@/router/routes';
-import { useEnvironment } from '@/contexts/environment-context';
-import { isMerchantApproved } from '@/utils/merchant-utils';
 import { useBalanceVisibility } from '@/hooks/use-balance-visibility';
 import { performClientLogout } from '@/utils/auth-utils';
 
@@ -34,16 +32,12 @@ interface SidebarUserInfoProps {
 export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 	const router = useRouter();
 	const { isExpanded, isMobile, isOpen, closeSidebar } = useSidebar();
-	const { selectedMerchant, levelInfo } = useMerchant();
+	const { levelInfo } = useMerchant();
 	const { user } = useUser();
 	const showFull = forceFull || (isMobile ? isOpen : isExpanded);
-	const { isSandbox, toggleEnvironment, isChangingEnvironment } = useEnvironment();
 	const { isVisible: isBalanceVisible } = useBalanceVisibility();
 	const [isPending, startTransition] = useTransition();
 	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
-	const showEnvironmentSwitch =
-		selectedMerchant && isMerchantApproved(selectedMerchant.status, selectedMerchant.kycStatus);
 
 	const navigateTo = (path: string) => {
 		if (isMobile) {
@@ -87,9 +81,6 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 				break;
 			case 'settings':
 				handleSettings();
-				break;
-			case 'apienvironment':
-				toggleEnvironment();
 				break;
 			case 'logout':
 				setShowLogoutConfirm(true);
@@ -163,29 +154,6 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 					</div>
 				</ListBox.Item>
 			</ListBox.Section>
-			{showEnvironmentSwitch && (
-				<>
-					<Separator />
-					<ListBox.Section>
-						<ListBox.Item
-							key="apienvironment"
-							id="apienvironment"
-							textValue="Ambiente"
-							isDisabled={isChangingEnvironment}
-						>
-							<Switch isSelected={isSandbox} isDisabled={isChangingEnvironment}>
-								<Switch.Control className={isSandbox ? 'bg-warning' : ''}>
-									<Switch.Thumb />
-								</Switch.Control>
-							</Switch>
-							<div className="flex flex-col">
-								<Label>{isSandbox ? 'Sandbox' : 'Produção'}</Label>
-								<Description>{isChangingEnvironment ? 'Alterando...' : 'Alterar ambiente'}</Description>
-							</div>
-						</ListBox.Item>
-					</ListBox.Section>
-				</>
-			)}
 		</ListBox>
 	);
 
