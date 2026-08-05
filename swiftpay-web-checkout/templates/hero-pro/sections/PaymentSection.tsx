@@ -80,6 +80,8 @@ export function PaymentSection({
 	const boletoDisabled = !boletoEnabled || true;
 
 	const hasAnyPaymentMethod = pixEnabled || creditCardEnabled || boletoEnabled;
+	const enabledMethodCount = [pixEnabled, creditCardEnabled, boletoEnabled].filter(Boolean).length;
+	const isSingleMethod = enabledMethodCount === 1;
 
 	const installmentOptions = useMemo(() => {
 		const options = [];
@@ -120,21 +122,24 @@ export function PaymentSection({
 						</div>
 					)}
 
-					{/* Payment Methods */}
-					<div className="flex gap-2 mb-2">
-						{pixEnabled && (
-							<button
-								type="button"
-								onClick={() => onPaymentMethodChange(paymentMethod === 'Pix' ? null : 'Pix')}
-								className={`flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
-									paymentMethod === 'Pix' ? 'text-white shadow-lg' : 'hero-button-secondary'
-								}`}
-								style={paymentMethod === 'Pix' ? { background: gradientStyle } : undefined}
-							>
-								<Icon icon={QrCodeIcon} className="icon-md" />
-								PIX
-							</button>
-						)}
+					{/* Payment Methods — only show the selector when there is more than one method available.
+					    With a single method (PIX-only), the selection is redundant: the method is already
+					    pre-selected and the content below communicates it. */}
+					{!isSingleMethod && (
+						<div className="flex gap-2 mb-2">
+							{pixEnabled && (
+								<button
+									type="button"
+									onClick={() => onPaymentMethodChange(paymentMethod === 'Pix' ? null : 'Pix')}
+									className={`flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
+										paymentMethod === 'Pix' ? 'text-white shadow-lg' : 'hero-button-secondary'
+									}`}
+									style={paymentMethod === 'Pix' ? { background: gradientStyle } : undefined}
+								>
+									<Icon icon={QrCodeIcon} className="icon-md" />
+									PIX
+								</button>
+							)}
 						{creditCardEnabled && (
 							<button
 								type="button"
@@ -163,7 +168,8 @@ export function PaymentSection({
 								Boleto
 							</button>
 						)}
-					</div>
+						</div>
+					)}
 					{errors.paymentMethod && <p className="text-red-500 text-xs mb-4">{errors.paymentMethod}</p>}
 				</>
 			)}
