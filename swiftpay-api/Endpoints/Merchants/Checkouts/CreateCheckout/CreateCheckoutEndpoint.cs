@@ -17,7 +17,7 @@ public sealed class CreateCheckoutEndpoint(
     IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<CreateCheckoutRequest, CreateCheckoutResponse>
 {
-    private const string DefaultCheckoutPrimaryColor = "#1886ed";
+    private const string DefaultCheckoutPrimaryColor = "#059669";
 
     public override void Configure()
     {

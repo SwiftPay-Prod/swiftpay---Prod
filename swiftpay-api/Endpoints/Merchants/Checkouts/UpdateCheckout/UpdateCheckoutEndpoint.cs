@@ -16,7 +16,7 @@ public sealed class UpdateCheckoutEndpoint(
     IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<UpdateCheckoutRequest, UpdateCheckoutResponse>
 {
-    private const string DefaultCheckoutPrimaryColor = "#1886ed";
+    private const string DefaultCheckoutPrimaryColor = "#059669";
 
     private static bool CanActivateCheckout(Checkout checkout)
     {

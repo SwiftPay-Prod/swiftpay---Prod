@@ -26,7 +26,7 @@ import {
 	validateCheckoutOnboardingReview,
 } from '../schemas/checkout-upsert-form-schema';
 
-const CHECKOUT_PRIMARY_COLOR_DEFAULT = '#171717';
+const CHECKOUT_PRIMARY_COLOR_DEFAULT = '#059669';
 
 // ── Draft State Interfaces ──
 
