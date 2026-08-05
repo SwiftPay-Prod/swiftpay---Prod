@@ -155,3 +155,16 @@ See: .planning/PROJECT.md (updated 2026-07-25)
   Host header). Para `checkout.swift-pay.top` basta: registro A no painel SD
   (ns1/ns2.sdparking.com.br) → `certbot certonly --nginx -d checkout.swift-pay.top` →
   trocar server_name + CheckoutBaseUrl. TODO: versionar o arquivo nginx no repo.
+
+## 2026-08-05 — Paleta do checkout: azul → SwiftPay (esmeralda #059669)
+
+- CEO: "o checkout está com paleta azul, não deveria ser a paleta SwiftPay?".
+- Causa: checkout "Gusta" criado sem cor → default da API `DefaultCheckoutPrimaryColor
+  = "#1886ed"` (azul) em Create/UpdateCheckoutEndpoint; painel default `#171717`;
+  template fallback `#171717`.
+- Fix (commit `c142bd3`): default → `#059669` (esmeralda-600, paleta das docs; lime
+  #a3e635 fica como accent). Motivo: botão/header usam `text-white` sobre primaryColor —
+  lime com texto branco quebraria contraste (~1.9:1); esmeralda mantém AA.
+- Dados: `UPDATE CheckoutConfigs SET PrimaryColor='#059669'` para o checkout Gusta
+  (verificado ao vivo: link "Termos de Uso" = rgb(5,150,105)). Deploy dos 3 apps em
+  andamento (swiftpayapi, swiftpayweb, swiftpaywebcheckout).
