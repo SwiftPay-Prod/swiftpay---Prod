@@ -509,7 +509,7 @@ function PixView({
 			{(countdown.isExpired || paymentLink.pix?.expiresAt) && (
 				<div className="mb-4 px-4 py-2 rounded-xl inline-flex items-center gap-2 hero-surface">
 					{countdown.isExpired ? (
-						<span className="text-sm text-red-400 font-medium">Código expirado</span>
+						<span className="text-sm hero-text-danger font-medium">Código expirado</span>
 					) : (
 						<span className="text-sm hero-text-secondary">
 							Expira em{' '}
