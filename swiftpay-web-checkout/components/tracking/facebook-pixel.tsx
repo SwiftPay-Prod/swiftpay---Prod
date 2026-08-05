@@ -39,6 +39,7 @@ export function FacebookPixel({ config }: FacebookPixelProps) {
         <Image
           height={1}
           width={1}
+          unoptimized
           style={{ display: 'none' }}
           src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1${testEventCodeParam}`}
           alt=""

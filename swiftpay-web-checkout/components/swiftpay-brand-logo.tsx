@@ -30,6 +30,7 @@ export function SwiftPayBrandLogo({
 					width={512}
 					height={512}
 					priority={priority}
+					unoptimized
 					className="w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(163,230,53,0.3)]"
 				/>
 			</div>
