@@ -168,3 +168,16 @@ See: .planning/PROJECT.md (updated 2026-07-25)
 - Dados: `UPDATE CheckoutConfigs SET PrimaryColor='#059669'` para o checkout Gusta
   (verificado ao vivo: link "Termos de Uso" = rgb(5,150,105)). Deploy dos 3 apps em
   andamento (swiftpayapi, swiftpayweb, swiftpaywebcheckout).
+
+## 2026-08-05 — Checkout: remoção do seletor redundante de PIX (PIX-only)
+
+- CEO: "por que o botão de PIX está ali se já existe o botão de confirmar pagamento?".
+- Causa: o componente `PaymentSection` renderizava os botões de seleção de método (PIX,
+  Cartão, Boleto). Com a plataforma PIX-only, o botão "PIX" era um seletor redundante que
+  exigia um clique extra para mostrar a caixa "Pagamento instantâneo" antes de confirmar.
+- Fix (commit `69ed035`): `PaymentSection.tsx` oculta a linha de botões seletores quando há
+  apenas um método disponível (`isSingleMethod = enabledMethodCount === 1`). Como o PIX
+  já vem pré-selecionado, a caixa informativa ("Pagamento instantâneo / O QR Code será
+  gerado após confirmar o pedido") é exibida diretamente.
+- Verificado em prod (`swiftpaywebcheckout` `DONE_0`, healthy): `hasPixButton: false`,
+  `hasPixInfo: true`, `hasConfirm: true` em `https://swift-pay.top/checkout/yd4ohjuzzv`.
