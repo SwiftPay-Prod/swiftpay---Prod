@@ -45,3 +45,20 @@ See: .planning/PROJECT.md (updated 2026-07-25)
 ---
 
 *Last updated: 2026-07-25*
+
+## 2026-08-05 — Payment link error fix (env var rename)
+
+- **Bug (pergunta do CEO "oque diabos é isso ao gerar um link e testar")**: checkout SSR renderizava
+  "Algo deu errado / Nao foi possivel conectar ao servidor" em todo payment link.
+- **Root cause**: rename safefy→swiftpay (commit `02e608e`) atualizou `clients/client.ts` para ler
+  `INTERNAL_SWIFTPAY_API_PAYMENT_URL`, mas `docker-compose.production.yaml` continuava setando
+  `INTERNAL_SAFEFY_API_PAYMENT_URL`. Em runtime o baseURL do axios (server-side) ficava `undefined` →
+  o fetch SSR a `/v1/payment-links/{token}` lançava exceção → catch → `api_error` → tela de erro.
+  GET direto da API (`/api/payment/v1/payment-links/...`) sempre funcionou (200) — por isso só o
+  checkout quebrava.
+- **Fix (`5c33364`, deployado)**: compose renomeado para `INTERNAL_SWIFTPAY_API_PAYMENT_URL` /
+  `NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL` (+ `.bak`); Dockerfile do checkout ganhou
+  `ARG/ENV NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL` + `build.args` no compose (inlining no bundle client,
+  hero-pro). `.env` local do checkout corrigido (gitignored).
+- **Verificado em prod**: container com envs corretos; página `https://swift-pay.top/checkout/pay_...`
+  renderiza R$ 56,00 + PIX sem strings de erro; `NEXT_PUBLIC` inlined em `.next/static`.
