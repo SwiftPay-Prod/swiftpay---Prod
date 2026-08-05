@@ -101,3 +101,37 @@ See: .planning/PROJECT.md (updated 2026-07-25)
   "Código PIX Copia e Cola: 00020101021226...", countdown "Expira em 40:12", zero recursos falhando.
 - Nota: `IsPixEnabled()` resolve `PixEnabled ?? Acquirer.PixEnabled` — AkkadPag tem
   `PixEnabled=true` na adquirente; Boleto/CreditCard `false` (PIX-only mantido).
+
+## 2026-08-05 — Contraste do tema dark (link de pagamento) + domínio checkout.swiftpay.com.br
+
+### Problema 1 — Textos escuros sobre fundo escuro (link de pagamento)
+- CEO: "vários textos escuros sendo que o fundo é escuro". Medição no browser: footer
+  "Pagamento processado com segurança / SSL / Seguro / Protegido" a 2.60:1, descrição
+  do produto a 2.57:1, "Código expirado" a 2.63:1 (mínimo WCAG AA = 4.5:1).
+- Causa: variáveis do tema dark em `swiftpay-web-checkout/templates/hero-pro/theme.css`
+  muito escuras (`--hero-text-subtle: oklch(68%)`, `--hero-text-muted: 78%`,
+  `--hero-text-danger: 65.32%`) + `text-red-400` hardcoded no label "Código expirado".
+- Fix (commits `d2a4166`, `61d336a`): `--hero-text-subtle` 68→80%, `--hero-text-muted`
+  78→84%, `--hero-text-placeholder` 68→75%, `--hero-text-danger` 65.32→76%,
+  `--hero-disabled-text` 55.17→65% (blocos `:root` e `[data-theme='dark']`; tema light
+  intocado). Label "Código expirado" → `hero-text-danger`.
+- Verificado em prod: footer 2.60→5.48:1, descrição 2.57→5.43:1, "Produto" 7.10,
+  "Aguardando pagamento" 7.10. Deploy imagem `04621ec40ae1` (healthy).
+
+### Problema 2 — checkout.swiftpay.com.br "off"
+- Causa raiz: **NXDOMAIN** — não existe registro DNS para `checkout.swiftpay.com.br`
+  (verificado com `host`/`getent` na VPS). O `CheckoutBaseUrl` do appsettings é
+  `https://checkout.swiftpay.com.br` → URL do checkout aponta para domínio inexistente.
+- Checkout "Gusta" (`yd4ohjuzzv`, merchant 019fac5d) está Active/Production no banco,
+  template `modern-checkout` (019fcf4c) ativo; renderiza OK em
+  `https://swift-pay.top/checkout/yd4ohjuzzv` (200, "Checkout yd4ohjuzzv").
+- App roda com `basePath: '/checkout'` → nginx do domínio raiz precisa reescrever
+  `/<shortId>` → `/checkout/<shortId>` (assets `/checkout/_next/...` passam direto).
+- Pronto na VPS (testado via Host header, HTTP 200 em rota e assets):
+  `/etc/nginx/sites-available/checkout.swiftpay.com.br` (sites-enabled, nginx -t OK):
+  `location /` com `rewrite ^/(.*)$ /checkout/$1 break;` + `location /checkout/` passthrough,
+  ambos → 127.0.0.1:5002. Bloco 443 comentado (cert ainda não existe).
+- **PENDENTE (externo)**: criar registro DNS `checkout.swiftpay.com.br A 169.58.70.201`
+  no provedor do domínio .com.br (CEO/registrar). Depois: `certbot certonly --nginx -d
+  checkout.swiftpay.com.br` e ativar o bloco 443.
+- Arquivo nginx a versionar no repo: `deploy/nginx/checkout.swiftpay.com.br` (TODO).
