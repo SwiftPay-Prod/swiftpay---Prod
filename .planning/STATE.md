@@ -212,3 +212,23 @@ See: .planning/PROJECT.md (updated 2026-07-25)
   8 itens de nav sem dead links, copiar cURL → "Copiado!", `/v1/*` → 401, openapi json 200,
   scalar 200. Deploy: rsync (sem --delete) + rebuild swiftpayweb (`BUILD_WEB_DONE_0`,
   `UP_WEB_DONE_0`, healthy).
+
+## 2026-08-05 — CRASH no logout: `.env.production` com domínios mortos (swiftpay.com.br)
+
+- CEO: ao deslogar no painel, "Application error: a client-side exception has occurred
+  while loading swift-pay.top" em /panel/merchant/dashboard.
+- Causa raiz (rastreada via requestfailed): o redirect do `/api/auth/signout` apontava para
+  `https://painel.swiftpay.com.br/` — domínio de TERCEIROS (não é do CEO) que não resolve
+  DNS. O valor veio de `swiftpay-web/.env.production` (NEXT_PUBLIC_APP_URL / NEXT_PUBLIC_API_URL
+  = api.swiftpay.com.br) INLINADO no build (`COPY . .` + `npm run build` com NODE_ENV=production).
+  Env do compose não sobrescreve NEXT_PUBLIC_* já compilado. O fetch do logout seguia o
+  redirect → DNS fail → reject dentro do startTransition → error boundary do React.
+- Fix: `.env.production` do web e do checkout corrigidos para URLs reais (swift-pay.top /
+  http://swiftpayapi:5279 / https://swift-pay.top/api/payment). Arquivos são gitignored —
+  fix via rsync. Defaults envenenados do `swiftpay-api-payment/appsettings.json`
+  (BaseUrl/CheckoutBaseUrl) corrigidos no repo (commit `1c19195`; runtime já era sobrescrito
+  pelo compose).
+- Verificado após rebuild (BUILD_DONE_0, UP_DONE_0, healthy): bundle sem
+  api.swiftpay.com.br/painel.swiftpay.com.br (0 chunks); logout GET → redirect para
+  swift-pay.top/ → tela de login renderizada, zero DNS fail, zero page errors; login admin
+  (POST /api/auth/signin 200) → dashboard; payment-link → 200 Pending com QR.
