@@ -181,3 +181,34 @@ See: .planning/PROJECT.md (updated 2026-07-25)
   gerado após confirmar o pedido") é exibida diretamente.
 - Verificado em prod (`swiftpaywebcheckout` `DONE_0`, healthy): `hasPixButton: false`,
   `hasPixInfo: true`, `hasConfirm: true` em `https://swift-pay.top/checkout/yd4ohjuzzv`.
+
+## 2026-08-05 — Docs `/docs`: tema dark + auditoria de conteúdo (AkkadPag, botões mortos, endpoints reais)
+
+- CEO (2 screenshots + msg): "não era pra ser em um tema escuro?" e "está tudo invisível";
+  depois: "essa documentação está correta? era pra citar a AkkadPag sendo o gateway multi
+  provedor? tem botões que não acontecem nada; é adequada para uma API REST para sellers?".
+- Tema: página `/docs` estava hardcoded LIGHT (`bg-slate-50`/`bg-white`/`text-slate-900`).
+  Convertida para dark (`bg-slate-950` + cards `bg-slate-900`, texto `text-slate-50/200/300/400`,
+  badges emerald/rose/amber/blue/roxo clareados). Tabela de erros: headers `text-slate-200`
+  sobre `bg-slate-800/60`, corpo `text-slate-200` — contraste AA (antes o corpo `text-slate-700`
+  não era gerado no CSS do build → texto fantasma).
+- AkkadPag removido da doc pública (8 ocorrências: sidebar "Saques (AkkadPag)", curl com
+  credencial `teste-akkadpag`, "Criar Cobrança PIX (AkkadPag)", "Teste AkkadPag SwiftPay",
+  webhooks internos `/v1/internal/akkadpag/...`, prompt IA). Gateway é multi-provedor —
+  seller não deve ver o adquirente. Webhooks reescritos: seller configura a URL da PRÓPRIA
+  aplicação no portal; payload de exemplo documentado.
+- Botões mortos: nav tinha 3 links sem `<section>` (`recorrente`, `vendedor`, `reembolsos` —
+  features inexistentes na API pública) → removidos. "Baixar OpenAPI Spec" apontava para
+  `/openapi/v1.json` (404) → agora `https://swift-pay.top/api/payment/openapi/v1.json` (200,
+  spec real "SwiftPay - Pix Gateway", 30 paths) + novo link "Documentação Interativa (OpenAPI)"
+  → `https://swift-pay.top/api/payment/docs` (Scalar UI dark, já existia no payment API).
+- Precisão: `customerName/customerDocument/customerEmail` não são obrigatórios (validator)
+  → "Opcional". Adicionados GET /v1/transactions (lista), GET /v1/balance (saldo) e seção
+  Saques completa (GET lista, GET por id, POST cancel). Typo "Reเกre" → "Gere".
+- Infra: nginx ganhou `location /v1/ { proxy_pass http://127.0.0.1:5166; }` — antes `/v1/*`
+  caía no Next (404); agora a base pública documentada `https://swift-pay.top/v1/*` funciona
+  (401 sem token = rota existe). Config versionada em `infra/nginx/swift-pay.top.conf`.
+- Commits: `669bc4b` (docs page). Verificado em prod: bg dark lab(2.48), tabela legível,
+  8 itens de nav sem dead links, copiar cURL → "Copiado!", `/v1/*` → 401, openapi json 200,
+  scalar 200. Deploy: rsync (sem --delete) + rebuild swiftpayweb (`BUILD_WEB_DONE_0`,
+  `UP_WEB_DONE_0`, healthy).
