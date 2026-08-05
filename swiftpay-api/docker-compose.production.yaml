@@ -263,13 +263,15 @@ services:
     build:
       context: ../swiftpay-web-checkout
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swift-pay.top/api/payment
     image: swiftpaywebcheckout:${VERSION:-latest}
     restart: unless-stopped
     ports:
       - "127.0.0.1:5002:3000"
     environment:
-      INTERNAL_SAFEFY_API_PAYMENT_URL: http://swiftpayapipayment:5166
-      NEXT_PUBLIC_SAFEFY_API_PAYMENT_URL: https://swift-pay.top/api/payment
+      INTERNAL_SWIFTPAY_API_PAYMENT_URL: http://swiftpayapipayment:5166
+      NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swift-pay.top/api/payment
     depends_on:
       swiftpayapipayment:
         condition: service_healthy
