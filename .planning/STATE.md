@@ -135,3 +135,23 @@ See: .planning/PROJECT.md (updated 2026-07-25)
   no provedor do domínio .com.br (CEO/registrar). Depois: `certbot certonly --nginx -d
   checkout.swiftpay.com.br` e ativar o bloco 443.
 - Arquivo nginx a versionar no repo: `deploy/nginx/checkout.swiftpay.com.br` (TODO).
+
+## 2026-08-05 — Domínio do checkout resolvido: usar swift-pay.top (próprio)
+
+- **Esclarecimento do CEO**: o domínio real é `swift-pay.top`. `swiftpay.com.br` NÃO é
+  do CEO — é de terceiros (RDAP: registrado 2025-08-27, expira 2026-08-27, DNS Cloudflare,
+  aponta para 72.60.57.206). Não comprar nada.
+- `CheckoutBaseUrl` no appsettings apontava para `https://checkout.swiftpay.com.br`
+  (domínio de terceiros, NXDOMAIN no subdomínio) → URL de checkout quebrada por config.
+- Fix (commit `ab708b8`): `PlatformSettings__CheckoutBaseUrl: https://swift-pay.top/checkout`
+  adicionado ao docker-compose.production.yaml (override por env — sem rebuild C#,
+  só `up -d --force-recreate swiftpayapi`), appsettings.json e fallback do painel
+  (`swiftpay-web/src/utils/checkout.ts`) atualizados.
+- Verificado: env no container = `PlatformSettings__CheckoutBaseUrl=https://swift-pay.top/checkout`;
+  URL final do checkout Gusta = `https://swift-pay.top/checkout/yd4ohjuzzv` (200, renderiza);
+  link de pagamento segue 200. Containers healthy.
+- **Pré-pronto na VPS** (para quando quiser domínio dedicado): `/etc/nginx/sites-available/
+  checkout.swiftpay.com.br` com rewrite `/<shortId>` → `/checkout/<shortId>` (testado via
+  Host header). Para `checkout.swift-pay.top` basta: registro A no painel SD
+  (ns1/ns2.sdparking.com.br) → `certbot certonly --nginx -d checkout.swift-pay.top` →
+  trocar server_name + CheckoutBaseUrl. TODO: versionar o arquivo nginx no repo.
