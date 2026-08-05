@@ -82,3 +82,22 @@ See: .planning/PROJECT.md (updated 2026-07-25)
      `unoptimized`.
 - **Verificado em prod**: tema dark aplicado (`data-theme=dark`), card centralizado (512px,
   x=528/1568), logo 512x512 ok, **zero recursos com erro** no browser; `scrollHeight=780`.
+
+## 2026-08-05 — "Nenhum adquirente configurado" ao clicar em Pagar (PIX)
+
+- **Bug 3 (relatado pelo CEO)**: ao testar o link de pagamento e clicar em "Pagar", a API retornava
+  "Nenhum adquirente configurado. Entre em contato com o suporte." (400, `no_acquirer_configured`).
+- **Root cause**: o merchant do link (`019fac5d` "SwiftPay", admin-as-merchant, Status Active)
+  **não tinha nenhuma linha em `MerchantAcquirers`** — os 3 vínculos existentes eram de outros
+  merchants (Gustavo→MagicPay, "vendas..."→MagicPay, Mateus→AkkadPag). `GetMerchantAcquirerAsync`
+  retorna null sem vínculo ativo → erro.
+- **Fix (dados, sem deploy)**: `POST /v1/admin/merchant/{id}/acquirer` (endpoint admin real, com
+  cookie JWT do admin) → MerchantAcquirer `019fcf69-cdf1-7abf-a8c1-bcd88ea79e0b`: AkkadPag
+  `...0211`, `IsActive=true`, `IsDefault=true`, `ActivatedAt=now`, credenciais mescladas das
+  `DefaultCredentials` da adquirente (publicKey/secretKey reais), fees copiadas da adquirente
+  (PixInFeePercentage=1). `ProviderCategory=Acquirer` → submerchant provisioning é no-op (sem KYC).
+- **Verificado em prod**: `POST /v1/payment-links/{token}/start` method=Pix → 200, cobrança Pending
+  com `pix.txId` + QR Code EMV real da AkkadPag. Browser: Pagar → tela "Aguardando pagamento",
+  "Código PIX Copia e Cola: 00020101021226...", countdown "Expira em 40:12", zero recursos falhando.
+- Nota: `IsPixEnabled()` resolve `PixEnabled ?? Acquirer.PixEnabled` — AkkadPag tem
+  `PixEnabled=true` na adquirente; Boleto/CreditCard `false` (PIX-only mantido).
