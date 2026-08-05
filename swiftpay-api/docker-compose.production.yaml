@@ -145,6 +145,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://0.0.0.0:5279
       PlatformSettings__BaseUrl: https://swift-pay.top
+      PlatformSettings__CheckoutBaseUrl: https://swift-pay.top/checkout
       PlatformSettings__MaxLoginAttempts: "5"
       PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}
       PaymentApi__BaseUrl: http://swiftpayapipayment:5166/
