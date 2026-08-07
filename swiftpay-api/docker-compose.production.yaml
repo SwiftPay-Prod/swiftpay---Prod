@@ -268,7 +268,7 @@ services:
   swiftpaywebcheckout:
     container_name: swiftpaywebcheckout
     build:
-      context: ../swiftpay-web-checkout
+      context: ../swiftpay-web-checkout-new
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
@@ -287,50 +287,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-    image: swiftpayweb:${VERSION:-latest}
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:3001:3000"
-    environment:
-      NEXT_PUBLIC_API_URL: https://swiftpayment.info/api
-      INTERNAL_API_URL: http://swiftpayapi:5279
-      NEXT_PUBLIC_APP_URL: https://swiftpayment.info
-      NEXT_PUBLIC_DOCS_URL: https://swiftpayment.info/docs
-    depends_on:
-      swiftpayapi:
-        condition: service_healthy
-      swiftpayapipayment:
-        condition: service_healthy
-    healthcheck:
-      test: curl -sf -o /dev/null http://127.0.0.1:3000/ || curl -sf -o /dev/null http://127.0.0.1:3000/pay/health || true
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-
-  swiftpaywebcheckout:
-    container_name: swiftpaywebcheckout
-    build:
-      context: ../swiftpay-web-checkout
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
-    image: swiftpaywebcheckout:${VERSION:-latest}
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:5002:3000"
-    environment:
-      INTERNAL_SWIFTPAY_API_PAYMENT_URL: http://swiftpayapipayment:5166
-      NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
-    depends_on:
-      swiftpayapipayment:
-        condition: service_healthy
-    healthcheck:
-      test: curl -sf -o /dev/null http://127.0.0.1:3000/ || curl -sf -o /dev/null http://127.0.0.1:3000/pay/health || true
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
 volumes:
   swiftpaydb_data:
