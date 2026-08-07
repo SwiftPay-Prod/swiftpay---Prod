@@ -268,7 +268,7 @@ services:
   swiftpaywebcheckout:
     container_name: swiftpaywebcheckout
     build:
-      context: ../swiftpay-web-checkout-new
+      context: ../swiftpay-web-checkout
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
