@@ -1,4 +1,4 @@
-﻿---
+---
 description: "Use when editing auth, merchant onboarding flow, environment filtering, trusted devices, and core architecture foundations."
 applyTo: 'Program.cs, Extensions/**/*.cs, Endpoints/Auth/**/*.cs, Endpoints/Merchants/**/*.cs, EndpointsGroups/**/*.cs, Middlewares/**/*.cs, Services/Internal/**/*.cs, Consumers/**/*.cs'
 ---
@@ -325,6 +325,41 @@ Fluxo funcional esperado:
 - Contratos exatos de payload e campos retornados devem ser lidos dos modelos e endpoints atuais da API, sem replicar JSON fixo nas instructions.
 
 ---
+
+## Autenticação via Firebase (Email + Google)
+
+Desde 2026-08 o Firebase é a fonte de identidade da plataforma (`ProjectId` `swiftpay-878c0`). O backend .NET valida o ID token Firebase e emite o JWT de plataforma (device trust, onboarding, roles e status continuam no backend).
+
+### Identidade Firebase no `User`
+
+- `User.FirebaseUid` — UID Firebase (claim `sub`) do último login.
+- `User.FirebaseProvider` — provider do último login (`password` | `google.com`).
+- A identidade é email-first: o `User` de plataforma é resolvido por email, não por UID. Um email loga por e-mail OU Google; `FirebaseProvider`/`FirebaseUid` refletem o último subject que autenticou.
+- Migration EF: `Database/Migrations/Primary/20260806100000_AddFirebaseIdentityFields.cs` (colunas `FirebaseUid`, `FirebaseProvider` na tabela `Users`).
+
+### Verificação de ID token
+
+- `IFirebaseAuthService.VerifyIdTokenAsync(idToken)` (`Services/Internal/FirebaseAuthService.cs`) valida assinatura RS256 contra os certificados públicos do Google selecionados pelo `kid` do header, com validação de `iss`, `aud` e `exp`, e cache do metadata com TTL ~1h.
+- `FirebaseSettings` (appsettings.json): `ProjectId = swiftpay-878c0`; `Enabled=false` por padrão — a verificação RS256 funciona sem service account.
+
+### Endpoints
+
+| Endpoint | Método | Descrição |
+|----------|--------|-----------|
+| `POST /v1/auth/firebase-signin` | POST | Login com `idToken` (email/senha OU Google). Resolve o `User` por email e emite JWT de sessão |
+| `POST /v1/auth/firebase-signup` | POST | Cria `User` com `{ idToken, name, whatsApp, deviceId, refCode }`. Reutilizável para provisioning de primeiro login Google (`USER_NOT_FOUND` no sign-in → signup com o mesmo token) |
+
+### Regra de verificação de e-mail (autoridade no backend)
+
+- `sign_in_provider == "password"` com `email_verified == false` → **403** `EMAIL_NOT_VERIFIED` / `requiresEmailVerification: true` no sign-in/signup, **sem emitir JWT de plataforma**.
+- `sign_in_provider == "google.com"` → passa (a conta Google já é verificada).
+- `firebase-signup` para e-mail não verificado NÃO emite JWT (responde `requiresEmailVerification: true`).
+- O guard no `SessionValidationMiddleware` reforça: sessão com `EmailVerified == false` é bloqueada (403 `EMAIL_NOT_VERIFIED`), salvo os paths em `EmailVerifiedExemptPaths` (allowlist dedicado, separado de `ExcludedPaths` — não reutilizar `ExcludedPaths` para isso, pois pula validação inteira).
+
+### Sincronização
+
+- `user.EmailVerified`, `FirebaseUid`, `FirebaseProvider` são sincronizados idempotentemente a cada `firebase-signin` bem-sucedido.
+- Primeiro e-mail de um usuário recém-criado nasce com `EmailVerified=false`; a tela de verificação do cliente usa `getIdToken(true)` (forceRefresh) para evitar o claim `email_verified` obsoleto em loop.
 
 
 
