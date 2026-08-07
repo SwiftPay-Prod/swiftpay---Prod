@@ -1,0 +1,78 @@
+import type { NextConfig } from 'next';
+
+const deployBuildId =
+	process.env.NEXT_BUILD_ID ??
+	process.env.DO_GIT_COMMIT_SHA ??
+	process.env.SOURCE_COMMIT ??
+	process.env.SOURCE_VERSION ??
+	process.env.GITHUB_SHA;
+
+const nextConfig: NextConfig = {
+	typescript: {
+		ignoreBuildErrors: true,
+	},
+	experimental: {
+		serverActions: {
+			bodySizeLimit: '10mb',
+		},
+	},
+	reactCompiler: true,
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'localhost',
+				port: '9000',
+				pathname: '/swiftpay-storage/**',
+			},
+			{
+				hostname: 'bucket-staging-13ce.up.railway.app',
+				pathname: '/swiftpay-dev/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'swiftpay-staging.nyc3.cdn.digitaloceanspaces.com',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'swiftpay-staging.nyc3.digitaloceanspaces.com',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'nyc3.digitaloceanspaces.com',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'swiftpay-prod.nyc3.cdn.digitaloceanspaces.com',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'swiftpay-prod.nyc3.digitaloceanspaces.com',
+				pathname: '/**',
+			},
+			{
+				hostname: '*.up.railway.app',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'storage.swiftpay.com.br',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'swift-pay.top',
+				pathname: '/**',
+			},
+		],
+	},
+	output: 'standalone',
+	generateBuildId: async () =>
+		deployBuildId?.trim() || `local-${Date.now().toString(36)}`,
+};
+
+export default nextConfig;

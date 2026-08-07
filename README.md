@@ -1,82 +1,36 @@
-# SWIFTPAY
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Plataforma brasileira de gateway de pagamentos white-label com foco em PIX, cartão de crédito e boleto.
+## Getting Started
 
-## Arquitetura
-
-```
-swiftpay/
-├── swiftpay-api-core/           # .NET 10 - Biblioteca compartilhada (entidades, serviços, ledger)
-├── swiftpay-api/                # .NET 10 - API de gestão (FastEndpoints)
-├── swiftpay-api-payment/        # .NET 10 - Gateway de pagamentos (FastEndpoints)
-├── swiftpay-web/                # Next.js 16 - Painel administrativo (React 19)
-└── swiftpay-web-checkout/       # Next.js 16 - Checkout público (React 19)
-```
-
-## Stack Tecnológica
-
-| Camada | Tecnologia |
-|--------|-----------|
-| **Backend** | .NET 10, C# |
-| **Frontend** | Next.js 16, React 19, TypeScript |
-| **ORM** | Entity Framework Core 10 + Npgsql |
-| **Banco** | PostgreSQL 17 |
-| **Cache** | Valkey (Redis-compatível) |
-| **Mensageria** | RabbitMQ + MassTransit |
-| **Tempo Real** | SignalR |
-| **Background Jobs** | Hangfire |
-| **UI** | HeroUI v3, Tailwind CSS v4 |
-| **Armazenamento** | S3 (DigitalOcean Spaces) |
-| **Push Notifications** | Firebase Cloud Messaging |
-| **Observability** | Grafana |
-
-## Funcionalidades
-
-- ⚡ Pagamentos PIX com QR Code dinâmico
-- 💳 Cartão de crédito com parcelamento
-- 📄 Boleto bancário
-- 🔗 Links de pagamento compartilháveis
-- 🛒 Checkout público multi-template
-- 📊 Dashboard em tempo real
-- 💰 Sistema de ledger contábil (dupla entrada)
-- 🔄 Saques automáticos e manuais
-- 🏆 Programa de indicações com comissionamento
-- 🎯 Metas e conquistas (gamificação)
-- 🔌 9 adquirentes integradas (arquitetura plugável)
-- 🌙 Tema dark/light
-- 📱 PWA (Progressive Web App)
-- 🔔 Notificações push (FCM) e em tempo real (SignalR)
-- 📈 Tracking multi-plataforma (Facebook, TikTok, Google, etc.)
-
-## Pré-requisitos
-
-- Node.js 20+
-- .NET 10 SDK
-- Docker e Docker Compose
-- PostgreSQL 17
-- Valkey/Redis
-
-## Desenvolvimento Local
+First, run the development server:
 
 ```bash
-# Clone o repositório
-git clone https://github.com/matspectrum-ai/SWIFTPAY.git
-cd SWIFTPAY
-
-# Inicie a infraestrutura
-cd swiftpay-api
-docker compose -f docker-compose.development.yaml up -d
-
-# Execute as APIs
-cd ../swiftpay-api-core && dotnet build
-cd ../swiftpay-api && dotnet run
-cd ../swiftpay-api-payment && dotnet run
-
-# Execute os frontends
-cd ../swiftpay-web && npm install && npm run dev
-cd ../swiftpay-web-checkout && npm install && npm run dev
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## Licença
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-MIT
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and client.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
