@@ -496,7 +496,7 @@ public static class AcquirerInitializer
                 SupportsRefund = false,
                 MinPixAmount = 100,
                 MaxPixAmount = 0,
-                WebhookAuthMode = metadata.WebhookAuthMode,
+                WebhookAuthMode = WebhookAuthMode.None,
                 WebhookToken = null,
                 WebhookAllowedIps = null,
                 DocumentationUrl = metadata.DocumentationUrl,
