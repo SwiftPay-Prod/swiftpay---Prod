@@ -1,5 +1,5 @@
-import { LandingPage } from '@/components/landing/landing-page';
+import { AuthPageClient } from './auth-page-client';
 
 export default function RootLandingPage() {
-	return <LandingPage />;
+	return <AuthPageClient />;
 }
