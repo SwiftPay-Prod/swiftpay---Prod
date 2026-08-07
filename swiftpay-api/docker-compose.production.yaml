@@ -144,8 +144,8 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://0.0.0.0:5279
-      PlatformSettings__BaseUrl: https://swift-pay.top
-      PlatformSettings__CheckoutBaseUrl: https://swift-pay.top/checkout
+      PlatformSettings__BaseUrl: https://swiftpayment.info
+      PlatformSettings__CheckoutBaseUrl: https://swiftpayment.info/checkout
       PlatformSettings__MaxLoginAttempts: "5"
       PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}
       PaymentApi__BaseUrl: http://swiftpayapipayment:5166/
@@ -158,7 +158,7 @@ services:
       JWTSettings__TokenExpire: "86400"
       JWTSettings__RefreshTokenExpire: "604800"
       EmailSettings__Provider: Resend
-      EmailSettings__FromEmail: noreply@swift-pay.top
+      EmailSettings__FromEmail: noreply@swiftpayment.info
       EmailSettings__FromName: SWIFTPAY
       EmailSettings__EnableSend: "true"
       EmailSettings__Resend__ApiKey: ${RESEND_API_KEY?err}
@@ -167,7 +167,11 @@ services:
       StorageSettings__SecretKey: ${STORAGE_SECRET_KEY?err}
       StorageSettings__BucketName: swiftpay-storage
       StorageSettings__UseSSL: "false"
-      StorageSettings__PublicUrl: https://swift-pay.top/api/storage
+      StorageSettings__PublicUrl: https://swiftpayment.info/api/storage
+      EmailSettings__EnableSend: "true"
+      EmailSettings__Resend__ApiKey: ${RESEND_API_KEY?err}
+      StorageSettings__Endpoint: swiftpaystorage:9000
+      StorageSettings__AccessKey: ${STORAGE_ACCESS_KEY?err}
       RabbitMQSettings__HostName: swiftpayrabbitmq
       RabbitMQSettings__Port: "5672"
       RabbitMQSettings__UserName: ${RABBITMQ_USER:-swiftpayuser}
@@ -211,11 +215,11 @@ services:
       - "127.0.0.1:5166:5166"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: http://0.0.0.0:5166
+      PlatformSettings__BaseUrl: https://swiftpayment.info
       DatabaseSettings__ConnectionString: Host=swiftpaydb;Port=5432;Database=swiftpay;Username=swiftpayuser;Password=${DB_PASSWORD?err}
       LogsDatabaseSettings__ConnectionString: Host=swiftpaylogsdb;Port=5432;Database=swiftpaylogs;Username=logsuser;Password=${LOGS_DB_PASSWORD?err}
       JWTSettings__Secret: ${PAYMENT_JWT_SECRET?err}
-      PlatformSettings__BaseUrl: https://swift-pay.top
+      PlatformSettings__BaseUrl: https://swiftpayment.info
       PlatformSettings__ApiVersion: v1
       PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}
       RabbitMQSettings__HostName: swiftpayrabbitmq
@@ -245,14 +249,10 @@ services:
       context: ../swiftpay-web
       dockerfile: Dockerfile
     image: swiftpayweb:${VERSION:-latest}
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:3001:3000"
-    environment:
-      NEXT_PUBLIC_API_URL: https://swift-pay.top/api
+      NEXT_PUBLIC_API_URL: https://swiftpayment.info/api
       INTERNAL_API_URL: http://swiftpayapi:5279
-      NEXT_PUBLIC_APP_URL: https://swift-pay.top
-      NEXT_PUBLIC_DOCS_URL: https://swift-pay.top/docs
+      NEXT_PUBLIC_APP_URL: https://swiftpayment.info
+      NEXT_PUBLIC_DOCS_URL: https://swiftpayment.info/docs
     depends_on:
       swiftpayapi:
         condition: service_healthy
@@ -267,18 +267,18 @@ services:
 
   swiftpaywebcheckout:
     container_name: swiftpaywebcheckout
-    build:
+        NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
       context: ../swiftpay-web-checkout
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swift-pay.top/api/payment
+        NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
     image: swiftpaywebcheckout:${VERSION:-latest}
     restart: unless-stopped
     ports:
       - "127.0.0.1:5002:3000"
     environment:
       INTERNAL_SWIFTPAY_API_PAYMENT_URL: http://swiftpayapipayment:5166
-      NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swift-pay.top/api/payment
+      NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
     depends_on:
       swiftpayapipayment:
         condition: service_healthy

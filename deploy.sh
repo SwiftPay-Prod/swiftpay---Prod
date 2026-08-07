@@ -38,4 +38,4 @@ sshpass -p "${PASS}" ssh -o StrictHostKeyChecking=no "${USER}@${HOST}" bash -s <
 EOF
 
 echo "=== Deploy complete ==="
-echo "Site: https://swift-pay.top"
+echo "Site: https://swiftpayment.info"
