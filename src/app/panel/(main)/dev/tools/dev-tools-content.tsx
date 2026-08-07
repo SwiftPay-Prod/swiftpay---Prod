@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition, useEffect, useCallback, useRef } from 'react';
-const isPushSupported = typeof window !== 'undefined' && isPushSupported;
+const isPushSupported = typeof window !== 'undefined' && 'Notification' in window && 'serviceWorker' in navigator;
 import { Card, TextField, Label, Input, TextArea, Button, Separator, ListBox, Chip, Skeleton, Switch, Select } from '@heroui/react';
 import {
 	Atom01Icon,
@@ -48,6 +48,7 @@ function UserListSkeleton() {
 }
 
 export function DevToolsContent() {
+	const [permission, setPermission] = useState<string>('default');
 	const [isPending, startTransition] = useTransition();
 	const [isSearching, startSearchTransition] = useTransition();
 	const [title, setTitle] = useState('🧪 Teste de Notificação');
