@@ -10,6 +10,8 @@ import { Routes } from './routes';
 const SYSTEM_ROUTES: RouteConfig[] = [
 	{ path: Routes.home, title: 'Início', type: RouteType.Public, showInMenu: false },
 	{ path: Routes.confirmEmail, title: 'Confirmar Email', type: RouteType.Open, showInMenu: false },
+	{ path: Routes.verifyEmail, title: 'Verificar Email', type: RouteType.Open, showInMenu: false },
+	{ path: Routes.panel.dashboard, title: 'Painel', type: RouteType.Private, showInMenu: false },
 	{
 		path: Routes.panel.verifyEmail,
 		title: 'Verificar Email',

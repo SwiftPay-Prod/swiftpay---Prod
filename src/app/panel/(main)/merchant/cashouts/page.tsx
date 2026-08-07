@@ -11,12 +11,15 @@ interface CashoutsPageProps {
 	searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const PREVIEW_MERCHANT_ID = 'preview-merchant-id';
 
 export default async function CashoutsPage({ searchParams }: CashoutsPageProps) {
 	const params = await searchParams;
 	const merchant = await getSelectedMerchant().catch(() => null);
-	const merchantId = merchant?.id ?? PREVIEW_MERCHANT_ID;
+	if (!merchant) {
+		redirect(Routes.panel.merchant.new);
+	}
+
+	const merchantId = merchant.id;
 
 	const initialTab = params.tab === 'automatic' ? 'automatic' : params.tab === 'accounts' ? 'accounts' : 'cashouts';
 

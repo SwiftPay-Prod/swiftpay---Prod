@@ -192,7 +192,7 @@ export default function PublicDocsPage() {
               <button
                 onClick={() =>
                   copyToClipboard(
-                    `curl --location 'https://swift-pay.top/v1/auth/token' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n    "grant_type": "client_credentials",\n    "publicKey": "sua_public_key_aqui",\n    "secretKey": "sua_secret_key_aqui"\n  }'`,
+                    `curl --location 'https://swiftpayment.info/v1/auth/token' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n    "grant_type": "client_credentials",\n    "publicKey": "sua_public_key_aqui",\n    "secretKey": "sua_secret_key_aqui"\n  }'`,
                     'auth-curl'
                   )
                 }
@@ -214,7 +214,7 @@ export default function PublicDocsPage() {
 
             <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
 {`# 1. Gerar Token Bearer (Client Credentials)
-curl --location 'https://swift-pay.top/v1/auth/token' \\
+curl --location 'https://swiftpayment.info/v1/auth/token' \\
   --header 'Content-Type: application/json' \\
   --data '{
     "grant_type": "client_credentials",
@@ -376,7 +376,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
           </p>
 
           <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
-{`curl --location 'https://swift-pay.top/v1/transactions/019fc9e7-6ef3-7a91-98ec-baef52f1fc0c' \\
+{`curl --location 'https://swiftpayment.info/v1/transactions/019fc9e7-6ef3-7a91-98ec-baef52f1fc0c' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'`}
           </pre>
 
@@ -391,7 +391,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
             Lista as transações da sua conta com paginação e filtros opcionais por status, método, período ou ID externo.
           </p>
           <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
-{`curl --location 'https://swift-pay.top/v1/transactions?page=1&pageSize=20&status=Paid&startDate=2026-08-01&endDate=2026-08-31' \\
+{`curl --location 'https://swiftpayment.info/v1/transactions?page=1&pageSize=20&status=Paid&startDate=2026-08-01&endDate=2026-08-31' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'
 
 # Resposta (200 OK)
@@ -422,7 +422,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
             Retorna o saldo disponível, pendente e reservado da sua conta, além do volume movimentado no período.
           </p>
           <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
-{`curl --location 'https://swift-pay.top/v1/balance' \\
+{`curl --location 'https://swiftpayment.info/v1/balance' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'
 
 # Resposta (200 OK)
@@ -520,7 +520,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
           </div>
 
           <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
-{`curl --location 'https://swift-pay.top/v1/cashouts' \\
+{`curl --location 'https://swiftpayment.info/v1/cashouts' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...' \\
   --header 'Content-Type: application/json' \\
   --data '{
@@ -713,7 +713,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
             <button
               onClick={() =>
                 copyToClipboard(
-                  `Você é um desenvolvedor sênior especialista na API REST da SwiftPay.\nImplemente uma integração completa com a API SwiftPay no domínio https://swift-pay.top.\nUse a OpenAPI Spec oficial como fonte da verdade: https://swift-pay.top/api/payment/openapi/v1.json\nFluxo básico:\n1. POST /v1/auth/token para obter token Bearer OAuth2 client_credentials com publicKey e secretKey.\n2. POST /v1/transactions para criar cobrança PIX com amount em centavos, customerName, customerDocument, customerEmail.\n3. Consulte status em GET /v1/transactions/{id} e saldo em GET /v1/balance.\n4. Configure a URL de webhook da aplicação no portal para receber eventos em tempo real.`,
+                  `Você é um desenvolvedor sênior especialista na API REST da SwiftPay.\nImplemente uma integração completa com a API SwiftPay no domínio https://swiftpayment.info.\nUse a OpenAPI Spec oficial como fonte da verdade: https://swiftpayment.info/api/payment/openapi/v1.json\nFluxo básico:\n1. POST /v1/auth/token para obter token Bearer OAuth2 client_credentials com publicKey e secretKey.\n2. POST /v1/transactions para criar cobrança PIX com amount em centavos, customerName, customerDocument, customerEmail.\n3. Consulte status em GET /v1/transactions/{id} e saldo em GET /v1/balance.\n4. Configure a URL de webhook da aplicação no portal para receber eventos em tempo real.`,
                   'ai-prompt'
                 )
               }
@@ -733,7 +733,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
             </button>
 
             <a
-              href="https://swift-pay.top/api/payment/docs"
+              href="https://swiftpayment.info/api/payment/docs"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-xs font-semibold bg-slate-900 text-emerald-300 hover:bg-emerald-500/15 px-4 py-2.5 rounded-xl shadow-sm transition-colors"
@@ -743,7 +743,7 @@ curl --location 'https://swift-pay.top/v1/auth/token' \\
             </a>
 
             <a
-              href="https://swift-pay.top/api/payment/openapi/v1.json"
+              href="https://swiftpayment.info/api/payment/openapi/v1.json"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-xs font-semibold bg-emerald-800/50 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl transition-colors border border-emerald-400/30"

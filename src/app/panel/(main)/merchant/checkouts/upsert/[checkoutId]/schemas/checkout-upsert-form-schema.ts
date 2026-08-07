@@ -61,6 +61,21 @@ export const checkoutOnboardingFormSchema = z
     cancelUrl: z.string().default(''),
     callbackUrl: z.string().default(''),
 
+    // Contact
+    contactWhatsAppEnabled: z.boolean().default(false),
+    contactWhatsAppNumber: z.string().default(''),
+    contactTelegramEnabled: z.boolean().default(false),
+    contactTelegramUsername: z.string().default(''),
+    contactEmailEnabled: z.boolean().default(false),
+    contactEmail: z.string().default(''),
+
+    // Messages
+    pageTitle: z.string().default(''),
+    headerMessage: z.string().default(''),
+    subHeaderMessage: z.string().default(''),
+    footerMessage: z.string().default(''),
+    successMessage: z.string().default(''),
+
     // Visual
     primaryColor: z.string().default('#171717'),
     secondaryColor: z.string().default(''),

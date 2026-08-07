@@ -42,7 +42,6 @@ import type { ApiResponse, Paginated } from '@/types/common';
 import {
 	adminPreviewPlatformPayout,
 	adminCreatePlatformPayout,
-	adminCreateSimulatedPlatformPayout,
 } from '@/app/actions/admin/platform-payouts';
 import { formatCurrency, formattedCurrencyToCents } from '@/utils/currency';
 import { maskPixKey } from '@/utils/input-masks';
@@ -304,7 +303,6 @@ function PlatformPayoutForm({
 	const [amountFormatted, setAmountFormatted] = useState('');
 	const autoInputRef = useRef<CurrencyCentsInputRef>(null);
 	const manualRefsMap = useRef<Record<string, CurrencyCentsInputRef | null>>({});
-	const [isSimulated, setIsSimulated] = useState(false);
 	const [notes, setNotes] = useState('');
 	const [distributionMode, setDistributionMode] = useState<'auto' | 'manual'>('auto');
 	const [userSelectedAccountId, setUserSelectedAccountId] = useState<string | null>(null);
@@ -343,13 +341,12 @@ function PlatformPayoutForm({
 
 	const amountInCents = formattedCurrencyToCents(amountFormatted) ?? 0;
 	const isInsufficientAvailable =
-		!isSimulated &&
 		distributionMode === 'auto' &&
 		amountInCents > 0 &&
 		totalAvailableAmount > 0 &&
 		amountInCents > totalAvailableAmount;
 	const isManualTotalExceeded =
-		!isSimulated && distributionMode === 'manual' && manualTotalAmount > 0 && manualTotalAmount > totalAvailableAmount;
+		distributionMode === 'manual' && manualTotalAmount > 0 && manualTotalAmount > totalAvailableAmount;
 
 	const manualItemsForCreate = buildManualRequest(availabilityItems, selectedAcquirers, manualAmounts);
 	const hasAmount = distributionMode === 'auto' ? amountInCents > 0 : manualItemsForCreate.length > 0;
@@ -410,17 +407,11 @@ function PlatformPayoutForm({
 							totalAmount: amountInCents,
 						};
 
-			const response = isSimulated
-				? await adminCreateSimulatedPlatformPayout({
-						platformPayoutAccountId: selectedAccountId,
-						...payload,
-						notes: notes.trim() || undefined,
-					})
-				: await adminCreatePlatformPayout({
-						platformPayoutAccountId: selectedAccountId,
-						...payload,
-						notes: notes.trim() || undefined,
-					});
+			const response = await adminCreatePlatformPayout({
+				platformPayoutAccountId: selectedAccountId,
+				...payload,
+				notes: notes.trim() || undefined,
+			});
 
 			if (response?.error) {
 				toast('Erro ao criar saque', {
@@ -432,10 +423,8 @@ function PlatformPayoutForm({
 				return;
 			}
 
-			toast(isSimulated ? 'Saque simulado criado' : 'Saque criado', {
-				description:
-					response?.message ??
-					(isSimulated ? 'O saque simulado foi criado com sucesso.' : 'O saque foi criado com sucesso.'),
+			toast('Saque criado', {
+				description: response?.message ?? 'O saque foi criado com sucesso.',
 				indicator: <Icon icon={CheckmarkCircle02Icon} className="icon-sm" />,
 				variant: 'success',
 			});
@@ -565,25 +554,6 @@ function PlatformPayoutForm({
 					</div>
 				)}
 
-				<div className="rounded-xl flex flex-col gap-3">
-					<div className="flex items-center justify-between gap-3">
-						<div className="flex flex-col gap-1">
-							<span className="text-sm font-medium text-foreground">Saque simulado</span>
-							<span className="text-xs text-foreground/60">
-								Marque para registrar um saque externo sem executar transferência real.
-							</span>
-						</div>
-						<Switch
-							aria-label="Saque simulado"
-							isSelected={isSimulated}
-							onChange={setIsSimulated}
-						>
-							<Switch.Control>
-								<Switch.Thumb />
-							</Switch.Control>
-						</Switch>
-					</div>
-				</div>
 
 				<div className="rounded-xl flex flex-col gap-3">
 					<div className="flex items-center gap-2">

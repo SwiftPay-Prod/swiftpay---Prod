@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useTransition, useMemo } from 'react';
-const isPushSupported = typeof window !== 'undefined' && isPushSupported;
 import { Card, Description, Label, Switch, Chip, Skeleton, Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
@@ -28,6 +27,7 @@ import { toast } from '@heroui/react';
 import { Notification03Icon } from '@hugeicons/core-free-icons';
 import type { NotificationPreferencesData } from '@/types/user';
 import { resolvePushNotificationsDocsUrl } from '@/constants/useful-links';
+import { usePushNotifications } from '@/hooks/use-push-notifications';
 
 function PreferencesSkeleton() {
 	return (
@@ -64,14 +64,17 @@ export default function UserSettingsPage() {
 	const [isPending, startTransition] = useTransition();
 	const [isLoadingPreferences, setIsLoadingPreferences] = useState(true);
 	const [preferences, setPreferences] = useState<NotificationPreferencesData | null>(null);
-	const isEnabled = false;
-	const isLoading = false;
-	const permission = 'default';
-	const isIOSBrowser = false;
-	const isIOSPWA = false;
-	const lastError = null;
-	const enablePushNotifications = async () => false;
-	const disablePushNotifications = async () => {};
+	const {
+		isSupported: isPushSupported,
+		isEnabled,
+		isLoading,
+		permission,
+		isIOSBrowser,
+		isIOSPWA,
+		lastError,
+		enablePushNotifications,
+		disablePushNotifications,
+	} = usePushNotifications();
 	const { docsUrl } = usePublicConfig();
 	const pushNotificationsDocsUrl = resolvePushNotificationsDocsUrl(docsUrl);
 

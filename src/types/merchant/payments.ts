@@ -1,4 +1,4 @@
-import { PaymentEnvironment, PaymentMethod, PaymentStatus, CallbackStatus, SimulatePaymentAction, OrderStatus, OrderFulfillmentStatus, PaymentRequestSource } from "../enums";
+import { PaymentEnvironment, PaymentMethod, PaymentStatus, CallbackStatus, OrderStatus, OrderFulfillmentStatus, PaymentRequestSource } from "../enums";
 import type { PaginationParams } from "../common";
 
 export interface MinimalPaymentPix {
@@ -187,27 +187,6 @@ export interface CreatePaymentData {
   boleto: CreatePaymentBoletoData | null;
 }
 
-export interface SimulatePaymentRequest {
-  transactionId: string;
-  action: SimulatePaymentAction;
-}
-
-export interface SimulatePaymentPixData {
-  txId: string | null;
-  endToEndId: string | null;
-  payerName: string | null;
-  payerDocument: string | null;
-  payerBank: string | null;
-}
-
-export interface SimulatePaymentData {
-  id: string;
-  status: PaymentStatus;
-  simulatedAction: string;
-  completedAt: string | null;
-  refundedAt: string | null;
-  pix: SimulatePaymentPixData | null;
-}
 
 export interface PreviewPaymentRequest {
   amount: number;

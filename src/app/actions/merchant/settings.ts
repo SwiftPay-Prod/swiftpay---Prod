@@ -15,30 +15,9 @@ import type {
 import type { UpdateMerchantAutoCashoutRequest } from "@/types/automatic-cashout";
 import type { ApiResponse } from "@/types/common";
 
-import { AutomaticCashoutFrequency } from "@/types/enums";
-
 export async function getMerchantSettings(
   merchantId: string
 ): Promise<ApiResponse<ReadSettingsData>> {
-  if (merchantId.startsWith('preview-merchant') || merchantId === 'preview-merchant-id') {
-    return {
-      data: {
-        id: 'sett_1',
-        merchantId,
-        selfNominalSwitchEnabled: true,
-        isAutomaticCashoutEnabled: false,
-        automaticCashoutFrequency: AutomaticCashoutFrequency.Daily,
-        automaticCashoutMinAmount: 100,
-        automaticCashoutMaxAmount: 50000,
-        automaticCashoutPayoutAccountId: null,
-        nextAutomaticCashoutAttemptAt: null,
-        updatedAt: new Date().toISOString(),
-      },
-      message: null,
-      error: null,
-    };
-  }
-
   const response = await client.get<ApiResponse<ReadSettingsData>>(
     `/v1/merchant/${merchantId}/settings`
   );

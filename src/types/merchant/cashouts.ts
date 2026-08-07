@@ -1,4 +1,4 @@
-import { PaymentEnvironment, PayoutStatus, PixKeyType, SimulateCashoutAction } from '../enums';
+import { PaymentEnvironment, PayoutStatus, PixKeyType } from '../enums';
 import type { PaginationParams } from '../common';
 
 export interface CashoutAccountSummary {
@@ -98,21 +98,6 @@ export interface CashoutsFilters {
 	sortOrder?: 'asc' | 'desc';
 }
 
-export interface SimulateCashoutRequest {
-	cashoutId: string;
-	action: SimulateCashoutAction;
-}
-
-export interface SimulateCashoutPixData {
-	endToEndId: string | null;
-	acquirerTransactionId: string | null;
-}
-
-export interface SimulateCashoutData {
-	id: string;
-	status: PayoutStatus;
-	pix: SimulateCashoutPixData;
-}
 
 export interface PreviewCashoutRequest {
 	amount: number;

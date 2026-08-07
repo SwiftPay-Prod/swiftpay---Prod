@@ -28,6 +28,7 @@ interface FeaturesTabProps {
 	isOnboarding?: boolean;
 	onDraftChange?: (draft: {
 		couponEnabled: boolean;
+		minimumValue: number | null;
 		showTimer: boolean;
 		timerMinutes: number;
 		hasPendingChanges: boolean;
@@ -167,7 +168,7 @@ export function FeaturesTab({
 			timerMinutes: formData.timerMinutes,
 			hasPendingChanges: hasChanges,
 		});
-	}, [formData.couponEnabled, formData.showTimer, formData.timerMinutes, hasChanges, onDraftChange]);
+	}, [formData.couponEnabled, formData.showTimer, formData.minimumValue, formData.timerMinutes, hasChanges, onDraftChange]);
 
 	function updateFormData(updates: Partial<FormData>) {
 		onFormChange(updates);

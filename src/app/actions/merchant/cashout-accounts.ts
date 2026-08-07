@@ -9,34 +9,13 @@ import type {
 	RequestCashoutAccountActionData,
 	ViewCashoutAccountData,
 } from '@/types/merchant/cashout-accounts';
-import { PayoutAccountActionType, PayoutAccountStatus, PixKeyType } from '@/types/enums';
+import { PayoutAccountActionType, PayoutAccountStatus } from '@/types/enums';
 import type { ApiResponse } from '@/types/common';
 
 export async function listCashoutAccounts(
 	merchantId: string,
 	filters?: CashoutAccountsFilters
 ): Promise<ApiResponse<ListCashoutAccountsData>> {
-	if (merchantId.startsWith('preview-merchant') || merchantId === 'preview-merchant-id') {
-		return {
-			data: {
-				items: [
-					{
-						id: 'acc_1',
-						pixKeyType: PixKeyType.Cnpj,
-						pixKey: '12.345.678/0001-90',
-						holderName: 'SwiftPay Ltda',
-						bankName: 'Banco Itaú',
-						status: PayoutAccountStatus.Active,
-						isDefault: true,
-						createdAt: new Date(Date.now() - 86400000 * 30).toISOString(),
-					},
-				],
-				totalItems: 1,
-			},
-			message: null,
-			error: null,
-		};
-	}
 
 	const params = new URLSearchParams();
 

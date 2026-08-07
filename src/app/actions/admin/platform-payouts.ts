@@ -121,15 +121,6 @@ export async function adminCancelPlatformPayout(
 	return response?.data;
 }
 
-export async function adminCreateSimulatedPlatformPayout(
-	data: AdminCreatePlatformPayoutRequest
-): Promise<ApiResponse<AdminPlatformPayoutData>> {
-	const response = await client.post<ApiResponse<AdminPlatformPayoutData>>(
-		"/v1/admin/platform-payouts/simulated",
-		data
-	);
-	return response?.data;
-}
 
 export async function adminReprocessPlatformPayoutItemDev(
 	id: string,

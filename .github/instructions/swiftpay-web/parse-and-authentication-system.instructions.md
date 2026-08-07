@@ -129,29 +129,40 @@ const COLORS: Record<Status, string> = {...};
 ## Sistema de Autenticação
 
 ### Rotas Públicas
-- `/` - Página inicial
-- `/` - Login
-- `/` - Cadastro
-- `/` - Recuperação de senha
+- `/` - Landing page e modal de autenticação
+- `/verify-email` - Verificação do e-mail Firebase antes da emissão do JWT da plataforma
 
 ### Rotas Privadas
-- `/panel/*` - Todas as rotas dentro do painel requerem autenticação
+- `/panel/*` - Todas as rotas dentro do painel requerem o cookie `swiftpay_access_token`
+- `/panel/verify-email` - Fluxo legado para sessões da plataforma ainda não verificadas
+
+### Firebase Auth
+- E-mail/senha e Google devem autenticar primeiro no Firebase Client SDK.
+- O frontend deve enviar o Firebase ID token somente para os proxies same-origin:
+  - `POST /api/auth/firebase-signin` -> `POST /v1/auth/firebase-signin`
+  - `POST /api/auth/firebase-signup` -> `POST /v1/auth/firebase-signup`
+- Somente o backend valida o ID token, provisiona/localiza o usuário e emite o JWT SwiftPay.
+- Os proxies Next.js gravam o JWT em cookie `httpOnly`; componentes client nunca persistem o JWT da plataforma.
+- Cadastro por e-mail sem verificação não recebe JWT. A confirmação ocorre em `/verify-email` e o usuário autentica novamente depois.
+- Recuperação de senha usa `sendPasswordResetEmail` do Firebase. Não manter fallbacks, usuários ou merchants simulados.
+- Firebase Auth usa um app Firebase nomeado e separado do app legado de Messaging. Configure `NEXT_PUBLIC_FIREBASE_AUTH_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` e `NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID`; o project ID deve ser o mesmo validado pelo backend.
 
 ### Proxy (Guard de Rotas)
-- O arquivo `src/proxy.ts` gerencia a autenticação das rotas
-- Usuários não autenticados são redirecionados para `/`
-- Usuários autenticados acessando rotas de auth são redirecionados para `/panel/dashboard`
+- O arquivo `src/proxy.ts` gerencia a autenticação das rotas.
+- Usuários não autenticados são redirecionados para `/`.
+- Usuários autenticados acessando rotas públicas de autenticação são redirecionados para `/panel/dashboard`.
 
 ### Cookies de Autenticação
-- `swiftpay_access_token` - Token de acesso (httpOnly)
-- `swiftpay_refresh_token` - Token de refresh (httpOnly)
-- `swiftpay_user_info` - Informações do usuário (httpOnly)
+- `swiftpay_access_token` - Token de acesso da plataforma (`httpOnly`)
+- `swiftpay_access_token_expires_at` - Expiração usada pelo frontend
+- `swiftpay_device_id` - Identificador do dispositivo confiável
 
 ### Onboarding de Usuário (pós-verificação)
 - Fluxo dedicado: onboarding de usuário é separado do onboarding de organização (merchant).
 - Rota de onboarding do usuário: `/panel/onboarding` (fora de `(main)`, dentro de `(auth-status)`).
 - Ordem de gate no proxy:
-  - Se `emailVerified = false` -> `/panel/verify-email`
+  - Sem JWT da plataforma -> `/`
+  - Sessão legada com `emailVerified = false` -> `/panel/verify-email`
   - Se `emailVerified = true` e `userOnboardingCompleted = false` -> `/panel/onboarding`
   - Após concluir onboarding -> fluxo padrão de merchant/admin.
 - A tela de onboarding deve usar `SystemAccordion` em uma única página, com stepper no topo e bloqueio progressivo por etapa.

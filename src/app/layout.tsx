@@ -4,7 +4,7 @@ import "./globals.css";
 
 const appUrl =
   process.env.NEXT_PUBLIC_APP_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://swift-pay.top");
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://swiftpayment.info");
 const ogImageUrl = new URL("/opengraph.png", appUrl).toString();
 
 export const viewport: Viewport = {

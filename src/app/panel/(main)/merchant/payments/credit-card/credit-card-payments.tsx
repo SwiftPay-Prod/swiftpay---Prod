@@ -17,7 +17,6 @@ import { PaymentStatus, PaymentMethod } from '@/types/enums';
 import type { MinimalPayment, PaymentDetails } from '@/types/merchant/payments';
 import type { ApiResponse, Paginated } from '@/types/common';
 
-const PREVIEW_MERCHANT_ID = 'preview-merchant-id';
 
 const statusOptions = [
 	{ value: 'all', label: 'Todos os status' },

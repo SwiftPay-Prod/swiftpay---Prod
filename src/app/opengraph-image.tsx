@@ -174,7 +174,7 @@ export default async function Image() {
             fontSize: 14,
           }}
         >
-          <span>swift-pay.top</span>
+          <span>swiftpayment.info</span>
         </div>
       </div>
     ),

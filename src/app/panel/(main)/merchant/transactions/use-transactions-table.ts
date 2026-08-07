@@ -6,15 +6,13 @@ import { Icon } from '@/components/ui/icon';
 import { CheckmarkCircle02Icon, CancelCircleIcon } from '@hugeicons/core-free-icons';
 import {
 	listMerchantPayments,
-	simulatePayment,
 	getMerchantPayment,
 	resendWebhook,
 } from '@/app/actions/merchant/payments';
 import { getMerchantFees } from '@/app/actions/merchant/settings';
 import { useEnvironment } from '@/contexts/environment-context';
 import { useDebounce } from '@/hooks/use-debounce';
-import { simulatePaymentActionParse } from '@/parse';
-import { PaymentEnvironment, PaymentMethod, PaymentStatus, SimulatePaymentAction } from '@/types/enums';
+import { PaymentMethod, PaymentStatus } from '@/types/enums';
 import type { MinimalPayment, PaymentDetails } from '@/types/merchant/payments';
 import type { Paginated, ApiResponse } from '@/types/common';
 import type { FeesPromise } from './modals/create-transaction-modal';
@@ -43,7 +41,6 @@ interface CreateModalState {
 }
 
 interface ActionState {
-	simulatingPaymentId: string | null;
 	resendingWebhookId: string | null;
 }
 
@@ -68,7 +65,6 @@ const initialCreateModal: CreateModalState = {
 };
 
 const initialActionState: ActionState = {
-	simulatingPaymentId: null,
 	resendingWebhookId: null,
 };
 
@@ -91,7 +87,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 
 	const debouncedSearch = useDebounce(filters.search);
 
-	const isSandbox = environment === PaymentEnvironment.Sandbox;
 	const currentParams = JSON.stringify({
 		merchantId,
 		environment,
@@ -226,28 +221,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		handleRefresh();
 	}, [handleRefresh]);
 
-	// Payment actions
-	const handleSimulate = useCallback(async (paymentId: string, action: SimulatePaymentAction) => {
-		setActionState((prev) => ({ ...prev, simulatingPaymentId: paymentId }));
-		const res = await simulatePayment(merchantId, paymentId, action);
-		setActionState((prev) => ({ ...prev, simulatingPaymentId: null }));
-
-		if (res?.error) {
-			toast('Erro na simulação', {
-				description: res.error.message ?? 'Erro ao simular pagamento',
-				variant: 'danger',
-				indicator: createElement(Icon, { icon: CancelCircleIcon, className: 'icon-sm' }),
-			});
-		} else {
-			toast('Simulação realizada', {
-				description: res?.message ?? `Pagamento ${simulatePaymentActionParse[action].label.toLowerCase()} com sucesso`,
-				variant: 'success',
-				indicator: createElement(Icon, { icon: CheckmarkCircle02Icon, className: 'icon-sm' }),
-			});
-			handleRefresh();
-		}
-	}, [merchantId, handleRefresh]);
-
 	const handleResendWebhook = useCallback(async (payment: MinimalPayment) => {
 		setActionState((prev) => ({ ...prev, resendingWebhookId: payment.id }));
 		const res = await resendWebhook(merchantId, payment.id);
@@ -269,10 +242,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		}
 	}, [merchantId, handleRefresh]);
 
-	// Permission checks
-	const canSimulate = useCallback((payment: MinimalPayment) => {
-		return !readOnly && isSandbox && payment.status === PaymentStatus.Pending;
-	}, [readOnly, isSandbox]);
 
 	const canResendWebhook = useCallback((payment: MinimalPayment) => {
 		return !readOnly && payment.status === PaymentStatus.Completed && payment.hasCallbackUrl;
@@ -313,11 +282,8 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		},
 		actions: {
 			openDetails,
-			handleSimulate,
 			handleResendWebhook,
-			simulatingPaymentId: actionState.simulatingPaymentId,
 			resendingWebhookId: actionState.resendingWebhookId,
-			canSimulate,
 			canResendWebhook,
 		},
 		context: {

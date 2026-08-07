@@ -222,7 +222,7 @@ export interface CheckoutOnboardingController {
 	handleShareCheckoutLink: () => void;
 }
 
-export type CheckoutStepSaveKey = 'payments' | 'customer' | 'features' | 'urls' | 'visual';
+export type CheckoutStepSaveKey = 'payments' | 'customer' | 'features' | 'urls' | 'contact' | 'messages' | 'visual';
 
 function supportsTracking(checkout: CheckoutData | null): boolean {
 	if (!checkout?.template) {
@@ -279,6 +279,18 @@ function buildOnboardingFormDefaults(checkout: CheckoutData | null): CheckoutOnb
 		successUrl: config?.successUrl ?? '',
 		cancelUrl: config?.cancelUrl ?? '',
 		callbackUrl: config?.callbackUrl ?? '',
+
+		contactWhatsAppEnabled: config?.contactWhatsAppEnabled ?? false,
+		contactWhatsAppNumber: config?.contactWhatsAppNumber ?? '',
+		contactTelegramEnabled: config?.contactTelegramEnabled ?? false,
+		contactTelegramUsername: config?.contactTelegramUsername ?? '',
+		contactEmailEnabled: config?.contactEmailEnabled ?? false,
+		contactEmail: config?.contactEmail ?? '',
+		pageTitle: config?.pageTitle ?? '',
+		headerMessage: config?.headerMessage ?? '',
+		subHeaderMessage: config?.subHeaderMessage ?? '',
+		footerMessage: config?.footerMessage ?? '',
+		successMessage: config?.successMessage ?? '',
 		primaryColor: config?.primaryColor ?? CHECKOUT_PRIMARY_COLOR_DEFAULT,
 		secondaryColor: config?.secondaryColor ?? '',
 		colorMode: config?.colorMode ?? CheckoutColorMode.Single,
@@ -916,8 +928,6 @@ export function useCheckoutOnboarding({
 			if (response?.error || !response?.data) {
 				const errorMessage =
 					response?.error?.message ||
-					(Array.isArray(response?.error?.details) ? String(response.error.details[0]) : null) ||
-					(Array.isArray(response?.errors) ? String(response.errors[0]) : null) ||
 					'Não foi possível salvar as configurações.';
 
 				toast('Erro ao salvar', {

@@ -244,6 +244,14 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://swiftpayment.info/api
+        NEXT_PUBLIC_PAYMENT_API_URL: https://swiftpayment.info/api/payment
+        NEXT_PUBLIC_APP_URL: https://swiftpayment.info
+        NEXT_PUBLIC_DOCS_URL: https://swiftpayment.info/docs
+        NEXT_PUBLIC_FIREBASE_AUTH_API_KEY: ${NEXT_PUBLIC_FIREBASE_AUTH_API_KEY?err}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-swiftpay-878c0.firebaseapp.com}
+        NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
     image: swiftpayweb:${VERSION:-latest}
     restart: unless-stopped
     ports:
@@ -254,6 +262,9 @@ services:
       INTERNAL_API_URL: http://swiftpayapi:5279
       NEXT_PUBLIC_APP_URL: https://swiftpayment.info
       NEXT_PUBLIC_DOCS_URL: https://swiftpayment.info/docs
+      NEXT_PUBLIC_FIREBASE_AUTH_API_KEY: ${NEXT_PUBLIC_FIREBASE_AUTH_API_KEY?err}
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-swiftpay-878c0.firebaseapp.com}
+      NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
     depends_on:
       swiftpayapi:
         condition: service_healthy

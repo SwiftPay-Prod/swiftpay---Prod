@@ -337,6 +337,7 @@ export interface CheckoutConfigData {
   id: string;
   // Payment Settings
   pixEnabled: boolean;
+  pixExpirationMinutes: number;
   creditCardEnabled: boolean;
   boletoEnabled: boolean;
   minimumValue: number | null;
@@ -485,6 +486,7 @@ export interface ReadListCheckoutTemplatesRequest extends PaginationParams {
 
 export interface CreateCheckoutRequest {
   name: string;
+  environment?: PaymentEnvironment;
   minimumValue?: number;
 }
 
@@ -506,6 +508,7 @@ export interface UpdateCheckoutRequest {
   couponEnabled?: boolean;
   shippingEnabled?: boolean;
   minimumValue?: number | null;
+  fixedShippingAmount?: number;
   clearFixedShippingAmount?: boolean;
   requireCustomerPhone?: boolean;
   requireCustomerAddress?: boolean;

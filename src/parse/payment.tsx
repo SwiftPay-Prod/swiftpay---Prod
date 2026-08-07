@@ -12,8 +12,6 @@ import {
   LedgerEntryType,
   AccountType,
   CallbackStatus,
-  SimulatePaymentAction,
-  SimulateCashoutAction,
   CashoutEvaluateAction,
   ApprovalRateLevel,
 } from '@/types/enums';
@@ -456,73 +454,6 @@ export const callbackStatusParse: Record<CallbackStatus, TParse> = {
   },
 };
 
-export const simulatePaymentActionParse: Record<SimulatePaymentAction, TParse> = {
-  complete: {
-    label: 'Completar',
-    color: 'success',
-    description: 'Simula o pagamento como concluído',
-    icon: <Icon icon={CheckmarkCircle02Icon} className="icon-sm" />,
-  },
-  expire: {
-    label: 'Expirar',
-    color: 'warning',
-    description: 'Simula o pagamento como expirado',
-    icon: <Icon icon={HourglassIcon} className="icon-sm" />,
-  },
-  fail: {
-    label: 'Falhar',
-    color: 'danger',
-    description: 'Simula o pagamento como falhou',
-    icon: <Icon icon={CancelCircleIcon} className="icon-sm" />,
-  },
-  refund: {
-    label: 'Reembolsar',
-    color: 'secondary',
-    description: 'Simula o reembolso do pagamento',
-    icon: <Icon icon={UndoIcon} className="icon-sm" />,
-  },
-};
-
-export const simulateCashoutActionParse: Record<SimulateCashoutAction, TParse> = {
-  Complete: {
-    label: 'Completar',
-    color: 'success',
-    description: 'Simula o saque como concluído',
-    icon: <Icon icon={CheckmarkCircle02Icon} className="icon-sm" />,
-  },
-  Fail: {
-    label: 'Falhar',
-    color: 'danger',
-    description: 'Simula o saque como falhou',
-    icon: <Icon icon={CancelCircleIcon} className="icon-sm" />,
-  },
-  Reject: {
-    label: 'Rejeitar',
-    color: 'danger',
-    description: 'Simula o saque como rejeitado',
-    icon: <Icon icon={CancelCircleIcon} className="icon-sm" />,
-  },
-};
-
-export const simulatePaymentActionOptions = Object.entries(simulatePaymentActionParse).map(
-  ([key, value]) => ({
-    value: key as SimulatePaymentAction,
-    label: value.label,
-    icon: value.icon,
-    color: value.color,
-    description: value.description,
-  })
-);
-
-export const simulateCashoutActionOptions = Object.entries(simulateCashoutActionParse).map(
-  ([key, value]) => ({
-    value: key as SimulateCashoutAction,
-    label: value.label,
-    icon: value.icon,
-    color: value.color,
-    description: value.description,
-  })
-);
 
 export const cashoutEvaluateActionParse: Record<CashoutEvaluateAction, TParse> = {
   Approve: {

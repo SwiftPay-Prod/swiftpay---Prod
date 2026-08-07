@@ -1,16 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useState, createElement } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useEnvironment } from '@/contexts/environment-context';
 import { useDebounce } from '@/hooks/use-debounce';
-import { listCashouts, getCashout, simulateCashout } from '@/app/actions/merchant/cashouts';
+import { listCashouts, getCashout } from '@/app/actions/merchant/cashouts';
 import { listCashoutAccounts } from '@/app/actions/merchant/cashout-accounts';
 import { getMerchantBalance } from '@/app/actions/merchant/balance';
-import { toast } from '@heroui/react';
-import { Icon } from '@/components/ui/icon';
-import { CheckmarkCircle02Icon, CancelCircleIcon } from '@hugeicons/core-free-icons';
-import { simulateCashoutActionParse } from '@/parse';
-import { PayoutAccountStatus, PayoutStatus, SimulateCashoutAction } from '@/types/enums';
+import { PayoutAccountStatus, PayoutStatus } from '@/types/enums';
 import type { CashoutListItem, CashoutDetailData } from '@/types/merchant/cashouts';
 import type { ListCashoutAccountsData } from '@/types/merchant/cashout-accounts';
 import type { ReadBalanceData } from '@/types/merchant/balance';
@@ -52,7 +48,6 @@ interface CancelModalState {
 }
 
 interface ActionState {
-	simulatingCashoutId: string | null;
 	isRefreshing: boolean;
 }
 
@@ -88,7 +83,6 @@ const initialCancelModal: CancelModalState = {
 };
 
 const initialAction: ActionState = {
-	simulatingCashoutId: null,
 	isRefreshing: false,
 };
 
@@ -98,7 +92,7 @@ interface UseCashoutsTableProps {
 }
 
 export function useCashoutsTable({ merchantId, readOnly = false }: UseCashoutsTableProps) {
-	const { environment, isSandboxVisible } = useEnvironment();
+	const { environment } = useEnvironment();
 
 	const [filters, setFilters] = useState<FiltersState>(initialFilters);
 	const [payoutAccountsState, setPayoutAccountsState] = useState<PayoutAccountsState>(initialPayoutAccounts);
@@ -267,39 +261,12 @@ export function useCashoutsTable({ merchantId, readOnly = false }: UseCashoutsTa
 		refresh();
 	}, [closeCancelModal, refresh]);
 
-	const simulate = useCallback(
-		async (cashoutId: string, action: SimulateCashoutAction) => {
-			setActionState((prev) => ({ ...prev, simulatingCashoutId: cashoutId }));
-			const response = await simulateCashout(merchantId, cashoutId, action);
-			setActionState((prev) => ({ ...prev, simulatingCashoutId: null }));
-
-			if (response?.error) {
-				toast('Erro ao simular saque', {
-					description: response.error.message ?? 'Tente novamente.',
-					variant: 'danger',
-					indicator: createElement(Icon, { icon: CancelCircleIcon, className: 'icon-sm' }),
-				});
-			} else {
-				toast('Simulação realizada', {
-					description: `Saque ${simulateCashoutActionParse[action].label.toLowerCase()} com sucesso.`,
-					variant: 'success',
-					indicator: createElement(Icon, { icon: CheckmarkCircle02Icon, className: 'icon-sm' }),
-				});
-				refresh();
-			}
-		},
-		[merchantId, refresh]
-	);
 
 	const canCancel = useCallback(
 		(cashout: CashoutListItem) => !readOnly && cashout.status === 'Pending',
 		[readOnly]
 	);
 
-	const canSimulate = useCallback(
-		(cashout: CashoutListItem) => !readOnly && isSandboxVisible && (cashout.status === 'Pending' || cashout.status === 'Processing'),
-		[readOnly, isSandboxVisible]
-	);
 
 	return {
 		data: {
@@ -343,10 +310,7 @@ export function useCashoutsTable({ merchantId, readOnly = false }: UseCashoutsTa
 		},
 		actions: {
 			refresh,
-			simulate,
 			canCancel,
-			canSimulate,
-			simulatingCashoutId: actionState.simulatingCashoutId,
 		},
 		context: {
 			merchantId,

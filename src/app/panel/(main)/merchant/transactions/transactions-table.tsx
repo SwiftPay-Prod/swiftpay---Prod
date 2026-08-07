@@ -2,7 +2,7 @@
 
 import { Button, Card, Chip, Tooltip, Dropdown, toast } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import { AddCircleIcon, CreditCardIcon, PlayCircleIcon, ViewIcon, SentIcon, MoreHorizontalCircle01Icon, SourceCodeSquareIcon, Link02Icon, ShoppingCartCheck01Icon, Copy01Icon, CheckmarkCircle02Icon, CancelCircleIcon } from '@hugeicons/core-free-icons';
+import { AddCircleIcon, CreditCardIcon, ViewIcon, SentIcon, MoreHorizontalCircle01Icon, SourceCodeSquareIcon, Link02Icon, ShoppingCartCheck01Icon, Copy01Icon, CheckmarkCircle02Icon, CancelCircleIcon } from '@hugeicons/core-free-icons';
 import { PageHeader } from '@/components/ui/page-header';
 import {
 	paymentStatusParse,
@@ -10,7 +10,6 @@ import {
 	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
-	simulatePaymentActionOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
@@ -20,7 +19,7 @@ import { SelectFilter } from '@/components/ui/select-filter';
 import { MerchantTransactionDetailsModal } from './modals/merchant-transaction-details-modal';
 import { CreateTransactionModal } from './modals/create-transaction-modal';
 import { EmailLink, PhoneLink } from '@/components/ui/data-links';
-import { SimulatePaymentAction, PaymentRequestSource, PaymentStatus } from '@/types/enums';
+import { PaymentRequestSource, PaymentStatus } from '@/types/enums';
 import type { MinimalPayment } from '@/types/merchant/payments';
 import type { DataTableColumn } from '@/components/ui/data-table';
 import { useTransactionsTable } from './use-transactions-table';
@@ -38,11 +37,8 @@ const methodOptions = parseToFilterOptions(paymentMethodParse, 'Todos os método
 interface ColumnConfig {
 	onView: (id: string) => void;
 	onCopyVisualizationLink: (url: string) => Promise<void>;
-	onSimulate: (id: string, action: SimulatePaymentAction) => void;
 	onResendWebhook: (payment: MinimalPayment) => void;
-	simulatingId: string | null;
 	resendingWebhookId: string | null;
-	canSimulate: (payment: MinimalPayment) => boolean;
 	canResendWebhook: (payment: MinimalPayment) => boolean;
 }
 
@@ -83,7 +79,7 @@ function getRequestSourceBadge(source: PaymentRequestSource) {
 }
 
 function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
-	const { onView, onCopyVisualizationLink, onSimulate, onResendWebhook, simulatingId, canSimulate, canResendWebhook } = config;
+	const { onView, onCopyVisualizationLink, onResendWebhook, resendingWebhookId, canResendWebhook } = config;
 
 	return [
 		{
@@ -236,39 +232,20 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 							</Button>
 						</Tooltip>
 					)}
-					{(canResendWebhook(payment) || canSimulate(payment)) && (
+					{canResendWebhook(payment) && (
 						<Dropdown>
 							<Tooltip>
-								<Button isIconOnly variant="tertiary" aria-label="Mais ações" isPending={simulatingId === payment.id}>
+								<Button isIconOnly variant="tertiary" aria-label="Mais ações" isPending={resendingWebhookId === payment.id}>
 									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 									<Tooltip.Content>Mais ações</Tooltip.Content>
 								</Button>
 							</Tooltip>
 							<Dropdown.Popover className="min-w-48">
 								<Dropdown.Menu aria-label="Ações da transação">
-									{canResendWebhook(payment) && (
-										<Dropdown.Item id="resend-webhook" textValue="Reenviar webhook" className="text-secondary" onPress={() => onResendWebhook(payment)}>
-											<Icon icon={SentIcon} className="icon-xs text-secondary" />
-											Reenviar webhook
-										</Dropdown.Item>
-									)}
-									{canSimulate(payment) && simulatePaymentActionOptions.map((item) => {
-										const colorClass = {
-											success: 'text-success',
-											warning: 'text-warning',
-											danger: 'text-danger',
-											secondary: 'text-secondary',
-											accent: 'text-accent',
-											default: 'text-foreground',
-										}[item.color] || 'text-foreground';
-
-										return (
-											<Dropdown.Item key={item.value} id={item.value} textValue={item.label} className={colorClass} onPress={() => onSimulate(payment.id, item.value)}>
-												<Icon icon={PlayCircleIcon} className="icon-xs" />
-												{item.label}
-											</Dropdown.Item>
-										);
-									})}
+									<Dropdown.Item id="resend-webhook" textValue="Reenviar webhook" className="text-secondary" onPress={() => onResendWebhook(payment)}>
+										<Icon icon={SentIcon} className="icon-xs text-secondary" />
+										Reenviar webhook
+									</Dropdown.Item>
 								</Dropdown.Menu>
 							</Dropdown.Popover>
 						</Dropdown>
@@ -393,11 +370,8 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 	const columns = getColumns({
 		onView: actions.openDetails,
 		onCopyVisualizationLink: handleCopyVisualizationLink,
-		onSimulate: actions.handleSimulate,
 		onResendWebhook: actions.handleResendWebhook,
-		simulatingId: actions.simulatingPaymentId,
 		resendingWebhookId: actions.resendingWebhookId,
-		canSimulate: actions.canSimulate,
 		canResendWebhook: actions.canResendWebhook,
 	});
 
@@ -558,24 +532,6 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 										<Icon icon={SentIcon} className="icon-sm" />
 										Reenviar webhook
 									</Button>
-								)}
-								{actions.canSimulate(payment) && (
-									<>
-										<div className="h-px bg-divider my-1" />
-										<p className="text-xs text-muted px-1">Simular ação</p>
-										{simulatePaymentActionOptions.map((item) => (
-											<Button
-												key={item.value}
-												variant="secondary"
-												className="w-full justify-start"
-												isPending={actions.simulatingPaymentId === payment.id}
-												onPress={() => { actions.handleSimulate(payment.id, item.value); close(); }}
-											>
-												{item.icon}
-												{item.label}
-											</Button>
-										))}
-									</>
 								)}
 							</div>
 						),

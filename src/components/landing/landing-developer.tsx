@@ -16,7 +16,7 @@ export function LandingDeveloper() {
 	const [copied, setCopied] = useState(false);
 
 	const codeExamples = {
-		curl: `curl -X POST "https://swift-pay.top/v1/payment-links" \\
+		curl: `curl -X POST "https://swiftpayment.info/v1/payment-links" \\
   -H "Authorization: Bearer sec_live_948f..." \\
   -H "Content-Type: application/json" \\
   -d '{

@@ -4,8 +4,10 @@ export const Routes = {
   signUp: '/',
   forgotPassword: '/',
   confirmEmail: '/confirm-email',
+  verifyEmail: '/verify-email',
 
   panel: {
+    dashboard: '/panel/dashboard',
     verifyEmail: '/panel/verify-email',
     onboarding: '/panel/onboarding',
     notifications: '/panel/notifications',

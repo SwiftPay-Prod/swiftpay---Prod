@@ -392,18 +392,6 @@ export enum CallbackStatus {
   Failed = "Failed",
 }
 
-export enum SimulatePaymentAction {
-  Complete = "complete",
-  Expire = "expire",
-  Fail = "fail",
-  Refund = "refund",
-}
-
-export enum SimulateCashoutAction {
-  Complete = "Complete",
-  Fail = "Fail",
-  Reject = "Reject",
-}
 
 export enum CouponStatus {
   Active = "Active",

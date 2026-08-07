@@ -10,7 +10,6 @@ interface ProductsPageProps {
 	searchParams: Promise<{ type?: string }>;
 }
 
-const PREVIEW_MERCHANT_ID = 'preview-merchant-id';
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
 	const params = await searchParams;
@@ -18,7 +17,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 		getSelectedMerchant().catch(() => null),
 		getSelectedEnvironment().catch(() => PaymentEnvironment.Production),
 	]);
-	const merchantId = merchant?.id ?? PREVIEW_MERCHANT_ID;
+	if (!merchant) {
+		redirect(Routes.panel.merchant.new);
+	}
+
+	const merchantId = merchant.id;
 
 	const initialTab = params.type === 'physical' ? 'physical' : 'digital';
 	const productType: ProductType = initialTab === 'physical' ? ('physical' as ProductType) : ('digital' as ProductType);

@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'swift-pay.top',
+				hostname: 'swiftpayment.info',
 				pathname: '/**',
 			},
 		],

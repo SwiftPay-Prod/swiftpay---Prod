@@ -1,11 +1,14 @@
+import { redirect } from 'next/navigation';
+import { Routes } from '@/router/routes';
 import { getSelectedMerchant } from '@/auth/session';
 import { CreditCardPayments } from './credit-card-payments';
 
-const PREVIEW_MERCHANT_ID = 'preview-merchant-id';
 
 export default async function CreditCardPaymentsPage() {
 	const merchant = await getSelectedMerchant().catch(() => null);
-	const merchantId = merchant?.id ?? PREVIEW_MERCHANT_ID;
+	if (!merchant) {
+		redirect(Routes.panel.merchant.new);
+	}
 
-	return <CreditCardPayments merchantId={merchantId} />;
+	return <CreditCardPayments merchantId={merchant.id} />;
 }

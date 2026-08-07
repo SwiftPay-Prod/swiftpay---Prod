@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Button, Card, Chip, Tooltip, Dropdown } from '@heroui/react';
-import { AddCircleIcon, CancelCircleIcon, Settings02Icon, PlayCircleIcon, ViewIcon, Wallet03Icon, MoreHorizontalCircle01Icon } from '@hugeicons/core-free-icons';
+import { AddCircleIcon, CancelCircleIcon, Settings02Icon, ViewIcon, Wallet03Icon, MoreHorizontalCircle01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { PageHeader } from '@/components/ui/page-header';
 import {
@@ -11,7 +11,6 @@ import {
 	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
-	simulateCashoutActionOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
@@ -27,7 +26,7 @@ import { useCashoutsTable } from './use-cashouts-table';
 import { getMerchantSettings } from '@/app/actions/merchant/settings';
 import { adminGetMerchantSettings } from '@/app/actions/admin/merchants';
 import { listCashoutAccounts } from '@/app/actions/merchant/cashout-accounts';
-import { AutomaticCashoutFrequency, PaymentEnvironment, PayoutAccountStatus, PayoutStatus, SimulateCashoutAction } from '@/types/enums';
+import { AutomaticCashoutFrequency, PaymentEnvironment, PayoutAccountStatus, PayoutStatus } from '@/types/enums';
 import type { CashoutListItem } from '@/types/merchant/cashouts';
 import type { ListCashoutAccountsData } from '@/types/merchant/cashout-accounts';
 import type { ReadSettingsData } from '@/types/merchant/settings';
@@ -80,14 +79,11 @@ const statusOptions = parseToFilterOptions(payoutStatusParse, 'Todos os status')
 interface ColumnsConfig {
 	onView: (id: string) => void;
 	onCancel: (cashout: CashoutListItem) => void;
-	onSimulate: (cashoutId: string, action: SimulateCashoutAction) => void;
-	simulatingCashoutId: string | null;
 	canCancel: (cashout: CashoutListItem) => boolean;
-	canSimulate: (cashout: CashoutListItem) => boolean;
 }
 
 function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
-	const { onView, onCancel, onSimulate, simulatingCashoutId, canCancel, canSimulate } = config;
+	const { onView, onCancel, canCancel } = config;
 
 	return [
 		{
@@ -167,39 +163,20 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
 							<Tooltip.Content>Ver detalhes</Tooltip.Content>
 						</Button>
 					</Tooltip>
-					{(canSimulate(cashout) || canCancel(cashout)) && (
+					{canCancel(cashout) && (
 						<Dropdown>
 							<Tooltip>
-								<Button isIconOnly variant="tertiary" aria-label="Mais ações" isPending={simulatingCashoutId === cashout.id}>
+								<Button isIconOnly variant="tertiary" aria-label="Mais ações">
 									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 									<Tooltip.Content>Mais ações</Tooltip.Content>
 								</Button>
 							</Tooltip>
 							<Dropdown.Popover className="min-w-48">
 								<Dropdown.Menu aria-label="Ações do saque">
-									{canSimulate(cashout) && simulateCashoutActionOptions.map((item) => {
-										const colorClass = {
-											success: 'text-success',
-											warning: 'text-warning',
-											danger: 'text-danger',
-											secondary: 'text-secondary',
-											accent: 'text-accent',
-											default: 'text-foreground',
-										}[item.color] || 'text-foreground';
-
-										return (
-											<Dropdown.Item key={item.value} id={item.value} textValue={item.label} className={colorClass} onPress={() => onSimulate(cashout.id, item.value)}>
-												{item.icon}
-												{item.label}
-											</Dropdown.Item>
-										);
-									})}
-									{canCancel(cashout) && (
-										<Dropdown.Item id="cancel" textValue="Cancelar saque" className="text-danger" onPress={() => onCancel(cashout)}>
-											<Icon icon={CancelCircleIcon} className="icon-xs text-danger" />
-											Cancelar saque
-										</Dropdown.Item>
-									)}
+									<Dropdown.Item id="cancel" textValue="Cancelar saque" className="text-danger" onPress={() => onCancel(cashout)}>
+										<Icon icon={CancelCircleIcon} className="icon-xs text-danger" />
+										Cancelar saque
+									</Dropdown.Item>
 								</Dropdown.Menu>
 							</Dropdown.Popover>
 						</Dropdown>
@@ -321,10 +298,7 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 	const columns = getColumns({
 		onView: modals.details.open,
 		onCancel: modals.cancel.open,
-		onSimulate: actions.simulate,
-		simulatingCashoutId: actions.simulatingCashoutId,
 		canCancel: actions.canCancel,
-		canSimulate: actions.canSimulate,
 	});
 
 	const renderFiltersContent = () => (
@@ -464,24 +438,6 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 								<Icon icon={ViewIcon} className="icon-sm" />
 								Ver detalhes
 							</Button>
-							{actions.canSimulate(cashout) && (
-								<>
-									<div className="h-px bg-divider my-1" />
-									<p className="text-xs text-muted px-1">Simular ação</p>
-									{simulateCashoutActionOptions.map((item) => (
-										<Button
-											key={item.value}
-											variant="secondary"
-											className="w-full justify-start"
-											isPending={actions.simulatingCashoutId === cashout.id}
-											onPress={() => { actions.simulate(cashout.id, item.value); close(); }}
-										>
-											{item.icon}
-											{item.label}
-										</Button>
-									))}
-								</>
-							)}
 							{actions.canCancel(cashout) && (
 								<Button
 									variant="secondary"

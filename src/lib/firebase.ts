@@ -1,7 +1,22 @@
-import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage, type Messaging } from 'firebase/messaging';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  getIdToken,
+  onAuthStateChanged,
+  signOut,
+  type User as FirebaseUser,
+} from 'firebase/auth';
+export type { FirebaseUser };
 
-const firebaseConfig = {
+import { initializeApp, getApps, type FirebaseApp, type FirebaseOptions } from 'firebase/app';
+ import { getMessaging, getToken, onMessage, type Messaging } from 'firebase/messaging';
+
+const messagingFirebaseConfig = {
   apiKey: "AIzaSyAsu8suCX_tCN5CB_DgtyPDjz6jIX7q1x0",
   authDomain: "swiftpaya405c.firebaseapp.com",
   projectId: "swiftpaya405c",
@@ -10,7 +25,14 @@ const firebaseConfig = {
   appId: "1:741958846185:web:8348a6128a085dc29a9278"
 };
 
+const authFirebaseConfig: FirebaseOptions = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_AUTH_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID,
+};
+
 let app: FirebaseApp | null = null;
+let authApp: FirebaseApp | null = null;
 let messaging: Messaging | null = null;
 
 export function isIOSPWA(): boolean {
@@ -59,7 +81,7 @@ export function getFirebaseApp(): FirebaseApp {
   if (!app) {
     const apps = getApps();
     const existingApp = apps.length > 0 ? apps[0] : null;
-    app = existingApp ?? initializeApp(firebaseConfig);
+    app = existingApp ?? initializeApp(messagingFirebaseConfig);
   }
   
   return app;
@@ -169,3 +191,77 @@ export function onForegroundMessage(callback: (payload: unknown) => void): (() =
   return onMessage(fcmMessaging, callback);
 }
 
+const AUTH_APP_NAME = 'swiftpay-auth';
+
+function getFirebaseAuthApp(): FirebaseApp {
+  if (typeof window === 'undefined') {
+    throw new Error('Firebase Auth can only be initialized on the client side');
+  }
+
+  if (!authFirebaseConfig.apiKey || !authFirebaseConfig.authDomain || !authFirebaseConfig.projectId) {
+    throw new Error('Firebase Auth não está configurado para este ambiente.');
+  }
+
+  if (!authApp) {
+    const existingApp = getApps().find((candidate) => candidate.name === AUTH_APP_NAME);
+    authApp = existingApp ?? initializeApp(authFirebaseConfig, AUTH_APP_NAME);
+  }
+
+  return authApp;
+}
+
+let auth: ReturnType<typeof getAuth> | null = null;
+
+export function getFirebaseAuth() {
+  if (typeof window === 'undefined') {
+    throw new Error('Firebase Auth can only be used on the client side');
+  }
+
+  if (!auth) {
+    auth = getAuth(getFirebaseAuthApp());
+  }
+
+  return auth;
+}
+
+export async function signInWithFirebaseEmail(email: string, password: string) {
+  const authInstance = getFirebaseAuth();
+  const credential = await signInWithEmailAndPassword(authInstance, email, password);
+  return credential.user;
+}
+
+export async function signInWithFirebaseGoogle() {
+  const authInstance = getFirebaseAuth();
+  const provider = new GoogleAuthProvider();
+  const credential = await signInWithPopup(authInstance, provider);
+  return credential.user;
+}
+
+export async function createFirebaseUser(email: string, password: string) {
+  const authInstance = getFirebaseAuth();
+  const credential = await createUserWithEmailAndPassword(authInstance, email, password);
+  return credential.user;
+}
+
+export async function sendFirebaseEmailVerification(user: FirebaseUser) {
+  await sendEmailVerification(user);
+}
+
+export async function getFirebaseIdToken(user: FirebaseUser, forceRefresh = false) {
+  return await getIdToken(user, forceRefresh);
+}
+
+export function onFirebaseAuthStateChanged(callback: (user: FirebaseUser | null) => void) {
+  const authInstance = getFirebaseAuth();
+  return onAuthStateChanged(authInstance, callback);
+}
+
+export async function signOutFirebase() {
+  const authInstance = getFirebaseAuth();
+  await signOut(authInstance);
+}
+
+export async function sendFirebasePasswordReset(email: string) {
+  const authInstance = getFirebaseAuth();
+  await sendPasswordResetEmail(authInstance, email);
+}

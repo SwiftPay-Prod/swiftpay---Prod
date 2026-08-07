@@ -1,11 +1,15 @@
+import { redirect } from 'next/navigation';
+import { Routes } from '@/router/routes';
 import { getSelectedMerchant } from '@/auth/session';
 import { CustomersTable } from './customers-table';
 
-const PREVIEW_MERCHANT_ID = 'preview-merchant-id';
 
 export default async function CustomersPage() {
 	const merchant = await getSelectedMerchant().catch(() => null);
+	if (!merchant) {
+		redirect(Routes.panel.merchant.new);
+	}
 
-	return <CustomersTable merchantId={merchant?.id ?? PREVIEW_MERCHANT_ID} />;
+	return <CustomersTable merchantId={merchant.id} />;
 }
 
