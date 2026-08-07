@@ -6040,6 +6040,9 @@ namespace swiftpay_api.Database.Migrations.Primary
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("ProfileImageId");
 
                     b.HasIndex("ReferralCode")

@@ -112,14 +112,18 @@ public sealed class FirebaseAuthService(
                 return null;
             }
 
-            if (payload.TryGetProperty("exp", out var expEl) && expEl.TryGetInt64(out var exp))
+            // exp is mandatory: a token with no expiry must never be accepted indefinitely.
+            if (!payload.TryGetProperty("exp", out var expEl) || !expEl.TryGetInt64(out var exp))
             {
-                var expUtc = DateTimeOffset.FromUnixTimeSeconds(exp).UtcDateTime;
-                if (expUtc <= DateTime.UtcNow.AddMinutes(-5))
-                {
-                    logger.LogWarning("Firebase token expired.");
-                    return null;
-                }
+                logger.LogWarning("Firebase token missing 'exp' claim.");
+                return null;
+            }
+
+            var expUtc = DateTimeOffset.FromUnixTimeSeconds(exp).UtcDateTime;
+            if (expUtc <= DateTime.UtcNow.AddMinutes(-5))
+            {
+                logger.LogWarning("Firebase token expired.");
+                return null;
             }
 
             return new FirebaseTokenClaims
@@ -143,10 +147,14 @@ public sealed class FirebaseAuthService(
         var projectId = settings.Value.ProjectId;
         var issuer = $"https://securetoken.google.com/{projectId}";
 
-        var cacheKey = $"{projectId}:{kid}";
-        if (CertCache.TryGetValue(cacheKey, out var cached) && !cached.IsExpired)
+        // Cache the whole cert set per project (bounded: one entry per project), not per
+        // arbitrary kid — an attacker-supplied kid must not grow the cache unboundedly
+        // or trigger a fresh Google fetch per unknown kid.
+        if (CertCache.TryGetValue(projectId, out var cached) && !cached.IsExpired)
         {
-            return (cached.PublicKey, issuer, projectId);
+            if (!cached.PublicKeys.TryGetValue(kid, out var hit) || hit is null)
+                return (null, issuer, projectId);
+            return (hit, issuer, projectId);
         }
 
         try
@@ -158,14 +166,21 @@ public sealed class FirebaseAuthService(
             var json = await response.Content.ReadAsStringAsync(ct);
             var certs = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
 
-            if (certs is null || !certs.TryGetValue(kid, out var pem))
+            if (certs is null || certs.Count == 0)
                 return (null, issuer, projectId);
 
-            var publicKey = ImportRsaPublicKey(pem);
-            if (publicKey is null)
+            var keys = new Dictionary<string, RSA>(StringComparer.Ordinal);
+            foreach (var (candidateKid, pem) in certs)
+            {
+                var imported = ImportRsaPublicKey(pem);
+                if (imported is not null)
+                    keys[candidateKid] = imported;
+            }
+
+            if (!keys.TryGetValue(kid, out var publicKey))
                 return (null, issuer, projectId);
 
-            CertCache[cacheKey] = new CachedCerts(publicKey, DateTime.UtcNow.AddSeconds(CertCacheTtlSeconds));
+            CertCache[projectId] = new CachedCerts(keys, DateTime.UtcNow.AddSeconds(CertCacheTtlSeconds));
             return (publicKey, issuer, projectId);
         }
         catch (Exception ex)
@@ -230,7 +245,7 @@ public sealed class FirebaseAuthService(
         return true;
     }
 
-    private sealed record CachedCerts(RSA PublicKey, DateTime ExpiresAt)
+    private sealed record CachedCerts(Dictionary<string, RSA> PublicKeys, DateTime ExpiresAt)
     {
         public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
     }

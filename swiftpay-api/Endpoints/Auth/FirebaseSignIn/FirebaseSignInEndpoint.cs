@@ -120,6 +120,7 @@ public sealed class FirebaseSignInEndpoint(
 
             await Send.ResponseAsync(new FirebaseSignInResponse
             {
+                Error = new("Verifique seu e-mail para continuar.") { Code = "EMAIL_NOT_VERIFIED" },
                 Data = new FirebaseSignInResponseData { RequiresEmailVerification = true }
             }, 403, ct);
             return;
