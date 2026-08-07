@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using swiftpay_api_core.Models.Enum;
@@ -17,6 +17,10 @@ public class User : BaseEntity
     public string Password { get; set; } = null!;
 
     public bool EmailVerified { get; set; } = false;
+
+    // Firebase identity
+    public string? FirebaseUid { get; set; }
+    public string? FirebaseProvider { get; set; }
 
     // Two-Factor Authentication
     public bool TwoFactorEnabled { get; set; } = false;
