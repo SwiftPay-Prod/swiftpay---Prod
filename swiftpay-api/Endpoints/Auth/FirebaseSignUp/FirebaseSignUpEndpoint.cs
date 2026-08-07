@@ -7,6 +7,7 @@ using swiftpay_api.EndpointsGroups;
 using swiftpay_api.Interfaces;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Inputs;
 using swiftpay_api.Mappers;
 
 namespace swiftpay_api.Endpoints.Auth.FirebaseSignUp;
@@ -163,7 +164,7 @@ public sealed class FirebaseSignUpEndpoint(
         }, cancellation: ct);
     }
 
-    private async Task<string> GenerateReferralCodeAsync(CancellationToken ct)
+    private async Task<string> GenerateUniqueReferralCodeAsync(CancellationToken ct)
     {
         for (var attempt = 0; attempt < 10; attempt++)
         {

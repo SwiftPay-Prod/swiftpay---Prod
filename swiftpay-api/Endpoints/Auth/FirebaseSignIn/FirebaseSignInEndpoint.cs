@@ -7,6 +7,7 @@ using swiftpay_api.EndpointsGroups;
 using swiftpay_api.Interfaces;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Interfaces;
+using swiftpay_api_core.Models.Inputs;
 using swiftpay_api.Mappers;
 
 namespace swiftpay_api.Endpoints.Auth.FirebaseSignIn;
