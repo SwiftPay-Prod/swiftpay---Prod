@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition, useEffect, useCallback, useRef } from 'react';
+const isPushSupported = typeof window !== 'undefined' && isPushSupported;
 import { Card, TextField, Label, Input, TextArea, Button, Separator, ListBox, Chip, Skeleton, Switch, Select } from '@heroui/react';
 import {
 	Atom01Icon,
@@ -197,7 +198,7 @@ export function DevToolsContent() {
 		addLog(`User Agent: ${navigator.userAgent}`, 'info');
 		addLog(`Platform: ${navigator.platform}`, 'info');
 		addLog(`Language: ${navigator.language}`, 'info');
-		addLog(`Push Supported: ${'Notification' in window && 'serviceWorker' in navigator}`, 'info');
+		addLog(`Push Supported: ${isPushSupported}`, 'info');
 		addLog(`Notification Permission: ${permission}`, 'info');
 		addLog(`Service Worker: ${'serviceWorker' in navigator ? 'Supported' : 'Not supported'}`, 'info');
 
@@ -317,7 +318,7 @@ export function DevToolsContent() {
 							<div className="flex items-center gap-2">
 								<span className="font-medium">Suporte:</span>
 								<span>
-									{'Notification' in window && 'serviceWorker' in navigator ? '✓' : '✗'} {'Notification' in window && 'serviceWorker' in navigator ? 'Suportado' : 'Não suportado'}
+									{isPushSupported ? '✓' : '✗'} {isPushSupported ? 'Suportado' : 'Não suportado'}
 								</span>
 							</div>
 							<div className="flex items-center gap-2">
