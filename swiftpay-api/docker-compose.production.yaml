@@ -215,7 +215,7 @@ services:
       DatabaseSettings__ConnectionString: Host=swiftpaydb;Port=5432;Database=swiftpay;Username=swiftpayuser;Password=${DB_PASSWORD?err}
       LogsDatabaseSettings__ConnectionString: Host=swiftpaylogsdb;Port=5432;Database=swiftpaylogs;Username=logsuser;Password=${LOGS_DB_PASSWORD?err}
       JWTSettings__Secret: ${PAYMENT_JWT_SECRET?err}
-      PlatformSettings__BaseUrl: http://swiftpayapi:5279
+      PlatformSettings__BaseUrl: https://swift-pay.top
       PlatformSettings__ApiVersion: v1
       PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}
       RabbitMQSettings__HostName: swiftpayrabbitmq

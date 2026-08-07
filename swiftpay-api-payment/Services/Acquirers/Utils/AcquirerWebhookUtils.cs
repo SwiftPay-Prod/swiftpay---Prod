@@ -19,7 +19,7 @@ public static class AcquirerWebhookUtils
             AcquirerType.HeartPay => "/v1/internal/heartpay/webhooks",
             AcquirerType.Accithus => "/v1/internal/accithus/webhooks",
             AcquirerType.MagicPay => "/v1/internal/magicpay/webhooks",
-            AcquirerType.FlevoPay => "/v1/internal/flevopay/webhooks",
+            AcquirerType.FlevoPay => "/v1/internal/flevopay/webhooks/transactions",
             _ => null
         };
     }
