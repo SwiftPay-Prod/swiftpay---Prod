@@ -3,7 +3,6 @@ using swiftpay_api_core.Constants;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Models.Enum;
-using BCrypt.Net;
 using System.Text.Json;
 
 namespace swiftpay_api.Database;
@@ -20,7 +19,6 @@ public class PrimaryDbInitialize
             InitializePlatformSettings(context);
             InitializeWayneProtocolSettings(context);
             InitializeSystemAccounts(context);
-            InitializeSystemUsers(context);
             AcquirerInitializer.InitializeAcquirers(context);
             AcquirerInitializer.UpdateAcquirerCredentialSchemas(context);
             AcquirerInitializer.UpdateHunterPayConfiguration(context);
@@ -148,25 +146,6 @@ public class PrimaryDbInitialize
                 CreatedAt = now,
                 UpdatedAt = now
             });
-        }
-    }
-
-    private static void InitializeSystemUsers(PrimaryDbContext context)
-    {
-        if (!context.Users.Any(u => u.Id == SystemUserIds.Admin))
-        {
-            var adminUser = new User
-            {
-                Id = SystemUserIds.Admin,
-                Name = "Administrador",
-                Email = "admin@swiftpay.com.br",
-                Password = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-                Role = UserRole.Admin,
-                Status = UserStatus.Active,
-                EmailVerified = true
-            };
-
-            context.Users.Add(adminUser);
         }
     }
 
