@@ -18,4 +18,7 @@ public class BaseResponse<T>
 public class ErrorResponse(string? message = default)
 {
     public string? Message { get; set; } = message;
+
+    /// <summary>Machine-readable error code (e.g. EMAIL_NOT_VERIFIED, USER_NOT_FOUND).</summary>
+    public string? Code { get; set; }
 }

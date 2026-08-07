@@ -202,6 +202,10 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
             .IsUnique()
             .HasFilter("\"ReferralCode\" IS NOT NULL");
 
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
         modelBuilder.Entity<ReferralCommissionPayment>().HasKey(rcp => rcp.Id);
 
         modelBuilder.Entity<ReferralCommissionPayment>()

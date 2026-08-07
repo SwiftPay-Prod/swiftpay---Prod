@@ -32,6 +32,18 @@ public class SessionValidationMiddleware(RequestDelegate next)
         "/hubs/notifications"
     };
 
+    /// <summary>
+    /// Paths that may be accessed with an unverified email session.
+    /// Deliberately SEPARATE from <see cref="ExcludedPaths"/>: this allowlist still requires a
+    /// valid platform session (signature, existence, active status, trusted device) and only
+    /// skips the email-verified guard. Currently empty — email verification is enforced on every
+    /// authenticated route; the client-side verification flow uses the public /verify-email page
+    /// (driven by the Firebase client session, no platform JWT).
+    /// </summary>
+    private static readonly HashSet<string> EmailVerifiedExemptPaths = new(StringComparer.OrdinalIgnoreCase)
+    {
+    };
+
     public async Task InvokeAsync(
         HttpContext context,
         ISessionService sessionService,
@@ -81,6 +93,14 @@ public class SessionValidationMiddleware(RequestDelegate next)
         {
             await sessionService.InvalidateSessionAsync(sessionId);
             await WriteUnauthorizedResponse(context, "device_revoked", "Este dispositivo foi removido. Por favor, faça login novamente.");
+            return;
+        }
+
+        // Email verification guard (defense in depth). A session with an unverified email is
+        // only allowed on the dedicated allowlist (which still validates the session).
+        if (!session.EmailVerified && !EmailVerifiedExemptPaths.Contains(path))
+        {
+            await WriteUnauthorizedResponse(context, "EMAIL_NOT_VERIFIED", "Verifique seu e-mail para continuar.", 403);
             return;
         }
 
@@ -155,9 +175,9 @@ public class SessionValidationMiddleware(RequestDelegate next)
         return false;
     }
 
-    private static async Task WriteUnauthorizedResponse(HttpContext context, string code, string message)
+    private static async Task WriteUnauthorizedResponse(HttpContext context, string code, string message, int statusCode = StatusCodes.Status401Unauthorized)
     {
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
 
         var response = new

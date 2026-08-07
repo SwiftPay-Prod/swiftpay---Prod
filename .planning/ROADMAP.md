@@ -11,7 +11,7 @@ Integração completa da MagicPay como adquirente único.
 - [x] 9.5 — Cartão + Boleto
 - [x] 9.6 — Seed, DI, registros
 - [x] 9.7 — Deploy produção
-- [ ] 9.8 — Correção logos (safefy → swiftpay)
+- [x] 9.8 — Correção logos (safefy → swiftpay)
 
 ## Phase 10 — Testes e Estabilização (Next)
 
