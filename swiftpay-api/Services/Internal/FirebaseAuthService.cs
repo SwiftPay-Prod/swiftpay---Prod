@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
@@ -178,28 +179,15 @@ public sealed class FirebaseAuthService(
     {
         try
         {
-            var rsa = RSA.Create();
-            rsa.ImportFromPem(pem);
-            return rsa;
+            // Google cert metadata serves X.509 certificates. RSA.ImportFromPem does NOT
+            // accept "BEGIN CERTIFICATE" blocks (only PUBLIC KEY / PRIVATE KEY), so the
+            // public key must be extracted via X509Certificate2.GetRSAPublicKey().
+            using var cert = X509Certificate2.CreateFromPem(pem);
+            return cert.GetRSAPublicKey();
         }
         catch
         {
-            // fallback: PEM may have line breaks / header differences
-            try
-            {
-                var clean = pem.Replace("-----BEGIN CERTIFICATE-----", "")
-                               .Replace("-----END CERTIFICATE-----", "")
-                               .Replace("\r", "").Replace("\n", "");
-                if (string.IsNullOrWhiteSpace(clean))
-                    return null;
-                var rsa = RSA.Create();
-                rsa.ImportFromPem(clean.Trim());
-                return rsa;
-            }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
     }
 
