@@ -105,6 +105,15 @@ public static class AcquirerDefaultsConstants
                 DocumentationUrl = "https://app.akkadpag.com/docs",
                 WebhookDocumentationUrl = "https://app.akkadpag.com/docs/webhooks",
                 WebhookAuthMode = WebhookAuthMode.Token
+            },
+            [AcquirerType.FlevoPay] = new()
+            {
+                Description = "FlevoPay - Gateway de pagamentos focado em PIX.",
+                ApiBaseUrlProduction = "https://app.flevopay.com.br/api/v1",
+                ApiBaseUrlSandbox = "https://app.flevopay.com.br/api/v1",
+                DocumentationUrl = "https://app.flevopay.com.br",
+                WebhookDocumentationUrl = "https://app.flevopay.com.br",
+                WebhookAuthMode = WebhookAuthMode.Token
             }
         };
 

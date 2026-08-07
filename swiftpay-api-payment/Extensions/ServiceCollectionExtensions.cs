@@ -9,6 +9,7 @@ using swiftpay_api_payment.Clients.IHubBanking;
 using swiftpay_api_payment.Clients.Pluggou;
 using swiftpay_api_payment.Clients.Rapdyn;
 using swiftpay_api_payment.Clients.AkkadPag;
+using swiftpay_api_payment.Clients.FlevoPay;
 using System.Net.Http.Headers;
 using swiftpay_api_payment.Endpoints.Checkout.Calculate;
 using swiftpay_api_payment.Endpoints.Checkout.CreateOrder;
@@ -104,6 +105,12 @@ public static class ServiceCollectionExtensions
             client.Timeout = TimeSpan.FromSeconds(30);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         });
+        services.AddHttpClient<IFlevoPayClient, FlevoPayClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri("https://app.flevopay.com.br/api/v1/");
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        });
 
         services.AddScoped<IAcquirerService, ActivePaymentsService>();
         services.AddScoped<IAcquirerService, BankiziService>();
@@ -116,6 +123,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAcquirerService, AccithusService>();
         services.AddScoped<IAcquirerService, MagicPayService>();
         services.AddScoped<IAcquirerService, AkkadPagService>();
+        services.AddScoped<IAcquirerService, FlevoPayService>();
         services.AddScoped<IAcquirerServiceFactory, AcquirerServiceFactory>();
 
         return services;

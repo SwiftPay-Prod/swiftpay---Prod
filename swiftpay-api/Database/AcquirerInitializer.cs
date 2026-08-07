@@ -456,6 +456,55 @@ public static class AcquirerInitializer
 
             context.Acquirers.Add(akkadPag);
         }
+
+        if (!context.Acquirers.Any(a => a.Id == SystemAcquirerIds.FlevoPay))
+        {
+            var metadata = AcquirerDefaultsConstants.GetMetadata(AcquirerType.FlevoPay);
+
+            var flevoPaySchema = CredentialUtils.BuildSchema(
+                ("secretKey", "Secret Key", CredentialFieldType.Password, true, "Ex: sk_...", "Chave secreta fornecida pela FlevoPay (enviada no header X-API-Key)"),
+                ("accountId", "ID da Conta", CredentialFieldType.Text, false, "Ex: 10165", "ID da conta/loja na FlevoPay")
+            );
+
+            var flevoPay = new Acquirer
+            {
+                Id = SystemAcquirerIds.FlevoPay,
+                Name = "FlevoPay",
+                Code = "flevopay",
+                Description = metadata.Description,
+                Type = AcquirerType.FlevoPay,
+                IsActive = true,
+                ApiBaseUrl = metadata.ApiBaseUrlProduction,
+                ApiBaseUrlProduction = metadata.ApiBaseUrlProduction,
+                ApiBaseUrlSandbox = metadata.ApiBaseUrlSandbox,
+                AuthType = "api_key",
+                CredentialSchema = flevoPaySchema,
+                DefaultCredentials = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
+                {
+                    { "secretKey", "sk_73303e505904b9fc56b1bbdf2b95947156fd124975feb16f60a3de89f3314202" },
+                    { "accountId", "10165" }
+                }),
+                DefaultCredentialsSandbox = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
+                {
+                    { "secretKey", "sk_73303e505904b9fc56b1bbdf2b95947156fd124975feb16f60a3de89f3314202" },
+                    { "accountId", "10165" }
+                }),
+                SupportsPix = true,
+                SupportsBoleto = false,
+                SupportsCreditCard = false,
+                SupportsWithdrawal = false,
+                SupportsRefund = false,
+                MinPixAmount = 100,
+                MaxPixAmount = 0,
+                WebhookAuthMode = metadata.WebhookAuthMode,
+                WebhookToken = null,
+                WebhookAllowedIps = null,
+                DocumentationUrl = metadata.DocumentationUrl,
+                WebhookDocumentationUrl = metadata.WebhookDocumentationUrl
+            };
+
+            context.Acquirers.Add(flevoPay);
+        }
     }
 
     public static void UpdateAcquirerCredentialSchemas(PrimaryDbContext context)

@@ -276,7 +276,8 @@ public enum AcquirerType
     HeartPay,
     Accithus,
     MagicPay,
-    AkkadPag
+    AkkadPag,
+    FlevoPay
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
