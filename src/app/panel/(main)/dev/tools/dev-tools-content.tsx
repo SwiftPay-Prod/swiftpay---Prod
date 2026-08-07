@@ -197,7 +197,7 @@ export function DevToolsContent() {
 		addLog(`User Agent: ${navigator.userAgent}`, 'info');
 		addLog(`Platform: ${navigator.platform}`, 'info');
 		addLog(`Language: ${navigator.language}`, 'info');
-		addLog(`Push Supported: ${isSupported}`, 'info');
+		addLog(`Push Supported: ${'Notification' in window && 'serviceWorker' in navigator}`, 'info');
 		addLog(`Notification Permission: ${permission}`, 'info');
 		addLog(`Service Worker: ${'serviceWorker' in navigator ? 'Supported' : 'Not supported'}`, 'info');
 
@@ -317,7 +317,7 @@ export function DevToolsContent() {
 							<div className="flex items-center gap-2">
 								<span className="font-medium">Suporte:</span>
 								<span>
-									{isSupported ? '✓' : '✗'} {isSupported ? 'Suportado' : 'Não suportado'}
+									{'Notification' in window && 'serviceWorker' in navigator ? '✓' : '✗'} {'Notification' in window && 'serviceWorker' in navigator ? 'Suportado' : 'Não suportado'}
 								</span>
 							</div>
 							<div className="flex items-center gap-2">

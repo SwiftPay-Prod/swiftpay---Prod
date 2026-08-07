@@ -157,7 +157,7 @@ export default function UserSettingsPage() {
 		if (isIOSBrowser) {
 			return 'Para ativar notificações push no iOS, instale o app como PWA na tela inicial.';
 		}
-		if (!isSupported) {
+		if (!'Notification' in window && 'serviceWorker' in navigator) {
 			return 'Seu navegador não suporta notificações push. Tente usar Chrome, Edge ou Safari.';
 		}
 		if (permission === 'denied') {
@@ -242,7 +242,7 @@ export default function UserSettingsPage() {
 								<Description className="text-sm">{getPushStatusMessage()}</Description>
 							</div>
 						</div>
-						{isSupported && permission !== 'denied' && (
+						{'Notification' in window && 'serviceWorker' in navigator && permission !== 'denied' && (
 							<AsyncButton
 								variant={isEnabled ? 'tertiary' : 'primary'}
 								size="sm"
