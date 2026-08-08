@@ -94,7 +94,7 @@ public sealed class AkkadPagService(
             Success = true,
             AcquirerId = config.AcquirerId,
             AcquirerPaymentId = response.Data.Id,
-            TxId = txId,
+            TxId = response.Data.Id,
             QrCode = response.Data.Pix.CopyPaste,
             CopyAndPaste = response.Data.Pix.CopyPaste,
             ExpiresAt = response.Data.Pix.ExpiresAt ?? expiresAt
