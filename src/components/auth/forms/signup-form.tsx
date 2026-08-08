@@ -14,9 +14,10 @@ import { InternationalPhoneInput } from '@/components/ui/international-phone-inp
 import { isValidPhone } from '@/utils/validations';
 import {
 	createFirebaseUser,
-	signInWithFirebaseGoogle,
+	signInOrCreatePlatformUserWithGoogle,
 	sendFirebaseEmailVerification,
 	getFirebaseIdToken,
+	signOutFirebase,
 	type FirebaseUser,
 } from '@/lib/firebase';
 
@@ -175,36 +176,16 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 	async function handleGoogleSignUp() {
 		setIsLoading(true);
 		setError(null);
-		if (!whatsApp || !isValidPhone(whatsApp)) {
-			setError('Informe um WhatsApp válido com o DDI do país antes de continuar com Google');
-			setIsLoading(false);
-			return;
-		}
-
-		if (refCode && (isReferralLoading || referralError || !isReferralValid)) {
-			setError(referralError ?? 'Aguarde a validação do código de indicação');
-			setIsLoading(false);
-			return;
-		}
 
 		try {
-			const firebaseUser = await signInWithFirebaseGoogle();
-			const signupName = name.trim() || firebaseUser.displayName?.trim();
-			if (!signupName) {
-				throw new Error('Informe seu nome antes de continuar com Google');
-			}
-			const data = await submitFirebaseSignup(firebaseUser, signupName);
-
-			if (data?.data?.requiresEmailVerification) {
-				await sendFirebaseEmailVerification(firebaseUser);
-				setCreatedEmail(firebaseUser.email ?? email);
-				setRequiresEmailVerification(true);
-				return;
-			}
-
-			toast.success('Conta criada com sucesso!');
+			const result = await signInOrCreatePlatformUserWithGoogle({
+				deviceId: deviceId || undefined,
+				refCode: isReferralValid ? refCode : undefined,
+			});
+			toast.success(result.isNewAccount ? 'Conta criada com sucesso!' : 'Login realizado com sucesso!');
 			router.push(Routes.panel.dashboard);
 		} catch (err) {
+			await signOutFirebase().catch(() => undefined);
 			const message = err instanceof Error ? err.message : 'Erro ao conectar com o servidor';
 
 			if (message.includes('auth/popup-closed-by-user')) {
@@ -249,7 +230,7 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 			</div>
 
 			<div className="flex flex-col gap-3">
-				<Button type="button" variant="secondary" onPress={handleGoogleSignUp} isDisabled={isLoading} className="w-full">
+				<Button type="button" variant="secondary" onPress={handleGoogleSignUp} isPending={isLoading} className="w-full">
 					<Icon icon={GoogleIcon} className="icon-sm" />
 					<span>Criar conta com Google</span>
 				</Button>

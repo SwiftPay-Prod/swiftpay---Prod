@@ -237,6 +237,86 @@ export async function signInWithFirebaseGoogle() {
   return credential.user;
 }
 
+interface PlatformAuthResponse {
+  error?: {
+    code?: string;
+    message?: string;
+  } | null;
+}
+
+interface PlatformAuthRequestResult {
+  response: Response;
+  data: PlatformAuthResponse;
+}
+
+export interface GooglePlatformAuthOptions {
+  deviceId?: string;
+  refCode?: string;
+}
+
+export interface GooglePlatformAuthResult {
+  isNewAccount: boolean;
+}
+
+async function requestPlatformAuth(path: '/api/auth/firebase-signin' | '/api/auth/firebase-signup', body: Record<string, string | undefined>): Promise<PlatformAuthRequestResult> {
+  const response = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await response.json() as PlatformAuthResponse;
+  return { response, data };
+}
+
+export async function signInOrCreatePlatformUserWithGoogle({
+  deviceId,
+  refCode,
+}: GooglePlatformAuthOptions = {}): Promise<GooglePlatformAuthResult> {
+  const firebaseUser = await signInWithFirebaseGoogle();
+  const idToken = await getFirebaseIdToken(firebaseUser, false);
+  const signInResult = await requestPlatformAuth('/api/auth/firebase-signin', {
+    idToken,
+    deviceId,
+  });
+
+  if (signInResult.response.ok) {
+    return { isNewAccount: false };
+  }
+
+  if (signInResult.data.error?.code !== 'USER_NOT_FOUND') {
+    throw new Error(signInResult.data.error?.message || 'Erro ao autenticar com o Google');
+  }
+
+  const name = firebaseUser.displayName?.trim() || firebaseUser.email?.split('@')[0]?.trim();
+  if (!name) {
+    throw new Error('Sua conta Google não informou um nome válido.');
+  }
+
+  const signUpResult = await requestPlatformAuth('/api/auth/firebase-signup', {
+    idToken,
+    name,
+    deviceId,
+    refCode,
+  });
+
+  if (signUpResult.response.ok) {
+    return { isNewAccount: true };
+  }
+
+  if (signUpResult.data.error?.code === 'USER_ALREADY_EXISTS') {
+    const retrySignInResult = await requestPlatformAuth('/api/auth/firebase-signin', {
+      idToken,
+      deviceId,
+    });
+    if (retrySignInResult.response.ok) {
+      return { isNewAccount: false };
+    }
+    throw new Error(retrySignInResult.data.error?.message || 'Erro ao autenticar com o Google');
+  }
+
+  throw new Error(signUpResult.data.error?.message || 'Erro ao criar conta com o Google');
+}
+
 export async function createFirebaseUser(email: string, password: string) {
   const authInstance = getFirebaseAuth();
   const credential = await createUserWithEmailAndPassword(authInstance, email, password);

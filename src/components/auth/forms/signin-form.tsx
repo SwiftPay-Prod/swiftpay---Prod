@@ -9,8 +9,8 @@ import { Icon } from '@/components/ui/icon';
 import { ViewIcon, ViewOffIcon, GoogleIcon } from '@hugeicons/core-free-icons';
 import { Separator } from '@/components/ui/separator';
 import {
+	signInOrCreatePlatformUserWithGoogle,
 	signInWithFirebaseEmail,
-	signInWithFirebaseGoogle,
 	sendFirebaseEmailVerification,
 	signOutFirebase,
 } from '@/lib/firebase';
@@ -87,29 +87,9 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 		setError(null);
 
 		try {
-			const user = await signInWithFirebaseGoogle();
-			const idToken = await user.getIdToken();
-
-			const response = await fetch('/api/auth/firebase-signin', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ idToken, deviceId }),
+			await signInOrCreatePlatformUserWithGoogle({
+				deviceId: deviceId || undefined,
 			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				const code = data?.error?.code;
-				if (code === 'USER_NOT_FOUND') {
-					await signOutFirebase().catch(() => undefined);
-					onSwitchToSignUp();
-					return;
-				}
-				await signOutFirebase().catch(() => undefined);
-				setError(data?.error?.message || 'Erro ao autenticar com o Google');
-				return;
-			}
-
 			router.push(Routes.panel.dashboard);
 		} catch (err) {
 			await signOutFirebase().catch(() => undefined);
@@ -174,7 +154,7 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 				<Separator className="flex-1" />
 			</div>
 
-			<Button type="button" variant="secondary" onPress={handleGoogleSubmit} isDisabled={isLoading} className="w-full">
+			<Button type="button" variant="secondary" onPress={handleGoogleSubmit} isPending={isLoading} className="w-full">
 				<Icon icon={GoogleIcon} className="icon-sm" />
 				<span>Entrar com Google</span>
 			</Button>
