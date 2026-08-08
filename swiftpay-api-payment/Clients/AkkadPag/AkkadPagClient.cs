@@ -34,18 +34,18 @@ public sealed class AkkadPagClient(
         return await SendAsync<AkkadPagPaymentResponse>(publicKey, secretKey, HttpMethod.Post, "transactions", request, null);
     }
 
-    public async Task<AcquirerClientResponse<AkkadPagPaymentResponse>> GetPaymentAsync(string publicKey, string secretKey, string paymentId)
+    public async Task<AcquirerClientResponse<AkkadPagPaymentDetailsResponse>> GetPaymentAsync(string publicKey, string secretKey, string paymentId)
     {
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(secretKey))
         {
-            return new AcquirerClientResponse<AkkadPagPaymentResponse>
+            return new AcquirerClientResponse<AkkadPagPaymentDetailsResponse>
             {
                 Success = false,
                 ErrorMessage = "AkkadPag credentials are missing."
             };
         }
 
-        return await SendAsync<AkkadPagPaymentResponse>(publicKey, secretKey, HttpMethod.Get, $"transactions/{paymentId}", null, null);
+        return await SendAsync<AkkadPagPaymentDetailsResponse>(publicKey, secretKey, HttpMethod.Get, $"transactions/{paymentId}", null, null);
     }
 
     public async Task<AcquirerClientResponse<AkkadPagWithdrawalResponse>> CreateTransferAsync(string publicKey, string secretKey, string withdrawalKey, AkkadPagWithdrawalRequest request)

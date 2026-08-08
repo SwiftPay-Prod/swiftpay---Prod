@@ -119,7 +119,8 @@ public sealed class AkkadPagService(
         var response = await akkadPagClient.GetPaymentAsync(publicKey, secretKey, txId);
         stopwatch.Stop();
 
-        if (!response.Success || response.Data == null)
+        var payment = response.Data?.Data;
+        if (!response.Success || payment == null)
         {
             await LogClientErrorAsync(config, "GetPixStatus", $"{config.ApiBaseUrl}/transactions/{txId}", "GET", ApiLogResourceType.Payment, response, new { txId }, stopwatch.ElapsedMilliseconds);
             return new PixStatusResult
@@ -132,9 +133,9 @@ public sealed class AkkadPagService(
         return new PixStatusResult
         {
             Success = true,
-            Status = AkkadPagStatusConverter.ToPaymentStatus(response.Data.Status),
-            EndToEndId = response.Data.Pix?.EndToEnd,
-            CompletedAt = response.Data.PaidAt
+            Status = AkkadPagStatusConverter.ToPaymentStatus(payment.Status),
+            EndToEndId = payment.Pix?.EndToEnd,
+            CompletedAt = payment.PaidAt
         };
     }
 

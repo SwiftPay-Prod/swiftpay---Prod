@@ -104,6 +104,18 @@ public record AkkadPagPaymentResponse
     public DateTime? UpdatedAt { get; init; }
 }
 
+public record AkkadPagPaymentDetailsResponse
+{
+    [JsonPropertyName("statusCode")]
+    public int StatusCode { get; init; }
+
+    [JsonPropertyName("message")]
+    public string? Message { get; init; }
+
+    [JsonPropertyName("data")]
+    public AkkadPagPaymentResponse? Data { get; init; }
+}
+
 public record AkkadPagPix
 {
     [JsonPropertyName("copy_paste")]
