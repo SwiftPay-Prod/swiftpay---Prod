@@ -36,8 +36,18 @@ export async function adminGetPlatformBalance(): Promise<ApiResponse<AdminPlatfo
     const response = await client.get<any>("/v1/admin/balance");
     const raw = response?.data;
     if (!raw || raw.error) return { data: null, message: null, error: { message: "Não foi possível carregar o balanço." } };
-    const data = (raw.data && typeof raw.data === 'object' && !Array.isArray(raw.data) && 'totalPlatformBalance' in raw.data) ? raw.data : (raw.totalPlatformBalance !== undefined ? raw : null);
-    if (!data) return { data: null, message: null, error: { message: "Formato inesperado do backend." } };
+    const data =
+      raw.data &&
+      typeof raw.data === "object" &&
+      !Array.isArray(raw.data) &&
+      "totalPlatformOperationalBalance" in raw.data
+        ? raw.data
+        : raw.totalPlatformOperationalBalance !== undefined
+          ? raw
+          : null;
+    if (!data) {
+      return { data: null, message: null, error: { message: "Formato inesperado do backend." } };
+    }
     return { data, message: raw.message ?? null, error: null };
   } catch {
     return { data: null, message: null, error: { message: "Não foi possível carregar o balanço." } };
