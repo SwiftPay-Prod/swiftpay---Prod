@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import {
 	signInOrCreatePlatformUserWithGoogle,
 	signInWithFirebaseEmail,
-	sendFirebaseEmailVerification,
+	sendAccountVerificationEmail,
 	signOutFirebase,
 } from '@/lib/firebase';
 
@@ -55,7 +55,7 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 			if (!response.ok) {
 				const code = data?.error?.code;
 				if (code === 'EMAIL_NOT_VERIFIED') {
-					await sendFirebaseEmailVerification(user);
+					await sendAccountVerificationEmail(user);
 					router.push(Routes.verifyEmail);
 					return;
 				}

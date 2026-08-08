@@ -14,6 +14,7 @@ import {
 export type { FirebaseUser };
 
 import { initializeApp, getApps, type FirebaseApp, type FirebaseOptions } from 'firebase/app';
+import { sendEmailConfirmation } from '@/app/actions/auth';
  import { getMessaging, getToken, onMessage, type Messaging } from 'firebase/messaging';
 
 const messagingFirebaseConfig = {
@@ -323,8 +324,23 @@ export async function createFirebaseUser(email: string, password: string) {
   return credential.user;
 }
 
-export async function sendFirebaseEmailVerification(user: FirebaseUser) {
-  await sendEmailVerification(user);
+export type AccountVerificationProvider = 'swiftpay' | 'firebase';
+
+export async function sendAccountVerificationEmail(user: FirebaseUser): Promise<AccountVerificationProvider> {
+  const email = user.email?.trim();
+  if (!email) {
+    throw new Error('A conta autenticada não possui um e-mail válido.');
+  }
+
+  const platformResponse = await sendEmailConfirmation({ email });
+  if (!platformResponse?.error) {
+    return 'swiftpay';
+  }
+
+  await sendEmailVerification(user, {
+    url: `${window.location.origin}/?auth=signin`,
+  });
+  return 'firebase';
 }
 
 export async function getFirebaseIdToken(user: FirebaseUser, forceRefresh = false) {

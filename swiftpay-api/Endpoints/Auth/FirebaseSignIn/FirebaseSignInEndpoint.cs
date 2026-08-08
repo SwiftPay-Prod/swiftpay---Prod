@@ -105,17 +105,11 @@ public sealed class FirebaseSignInEndpoint(
             return;
         }
 
-        // Email verification gate (backend authority): password provider requires a verified email.
-        if (string.Equals(claims.SignInProvider, "password", StringComparison.OrdinalIgnoreCase) && !claims.EmailVerified)
+        // Password users may be verified either by Firebase or by SwiftPay's
+        // signed confirmation link delivered through the transactional email provider.
+        var emailVerified = claims.EmailVerified || user.EmailVerified;
+        if (string.Equals(claims.SignInProvider, "password", StringComparison.OrdinalIgnoreCase) && !emailVerified)
         {
-            // Sync User.EmailVerified if it drifted.
-            if (user.EmailVerified)
-            {
-                user.EmailVerified = false;
-                await dbContext.SaveChangesAsync(ct);
-                await sessionService.UpdateEmailVerifiedAsync(user.Id, false);
-            }
-
             await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignIn, Status = SecurityLogStatus.Failed, UserId = user.Id, Details = "Email not verified (password provider)" });
 
             await Send.ResponseAsync(new FirebaseSignInResponse
@@ -129,7 +123,7 @@ public sealed class FirebaseSignInEndpoint(
         // Sync identity idempotently + last login info
         user.FirebaseUid = claims.Uid;
         user.FirebaseProvider = claims.SignInProvider;
-        user.EmailVerified = claims.EmailVerified;
+        user.EmailVerified = emailVerified;
         user.FailedLoginAttempts = 0;
         user.LastLoginAt = now;
         user.LastLoginIpAddress = ipAddress;

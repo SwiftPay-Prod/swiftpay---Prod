@@ -7,7 +7,7 @@ import { MailOpen01Icon, Refresh03Icon, ArrowRight01Icon } from '@hugeicons/core
 import { useRouter } from 'next/navigation';
 import {
 	onFirebaseAuthStateChanged,
-	sendFirebaseEmailVerification,
+	sendAccountVerificationEmail,
 	signOutFirebase,
 	type FirebaseUser,
 } from '@/lib/firebase';
@@ -44,7 +44,7 @@ export default function PublicVerifyEmailPage() {
 		setSuccess(false);
 
 		try {
-			await sendFirebaseEmailVerification(user);
+			await sendAccountVerificationEmail(user);
 			setSuccess(true);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Erro ao reenviar verificação.';
@@ -63,13 +63,8 @@ export default function PublicVerifyEmailPage() {
 		setIsChecking(true);
 		setError(null);
 		try {
-			await user.reload();
-			if (!user.emailVerified) {
-				setError('A confirmação ainda não foi identificada. Abra o link enviado e tente novamente.');
-				return;
-			}
 			await signOutFirebase();
-			router.replace(Routes.home);
+			router.replace(`${Routes.home}?auth=signin`);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Não foi possível confirmar o e-mail.';
 			setError(message);
@@ -113,7 +108,7 @@ export default function PublicVerifyEmailPage() {
 					</Button>
 					<Button variant="secondary" onPress={handleReturnToLogin} isPending={isChecking} className="w-full">
 						<Icon icon={ArrowRight01Icon} className="icon-sm" />
-						Já confirmei, voltar para o login
+						Já confirmei, entrar novamente
 					</Button>
 				</div>
 			</Card>

@@ -81,12 +81,30 @@ public sealed class SendEmailConfirmationEndpoint(
         dbContext.EmailConfirmationTokens.Add(confirmationToken);
         await dbContext.SaveChangesAsync(ct);
 
-        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.EmailConfirmationRequest, Status = SecurityLogStatus.Success, UserId = user.Id });
-
         var baseUrl = platformSettings.Value.BaseUrl.TrimEnd('/');
         var confirmationUrl = $"{baseUrl}/confirm-email?token={token}&email={Uri.EscapeDataString(user.Email)}";
 
-        await SendEmailConfirmationAsync(user, confirmationUrl, expiresInHours);
+        try
+        {
+            await SendEmailConfirmationAsync(user, confirmationUrl, expiresInHours);
+        }
+        catch
+        {
+            confirmationToken.Status = EmailConfirmationTokenStatus.ExpiredByNewToken;
+            await dbContext.SaveChangesAsync(ct);
+            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.EmailConfirmationRequest, Status = SecurityLogStatus.Failed, UserId = user.Id, Details = "Transactional email provider rejected the confirmation email" });
+
+            await Send.ResponseAsync(new SendEmailConfirmationResponse
+            {
+                Error = new("Não foi possível enviar o e-mail de confirmação pelo provedor principal.")
+                {
+                    Code = "EMAIL_DELIVERY_FAILED"
+                }
+            }, 503, ct);
+            return;
+        }
+
+        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.EmailConfirmationRequest, Status = SecurityLogStatus.Success, UserId = user.Id });
 
         await Send.OkAsync(new SendEmailConfirmationResponse
         {
@@ -94,26 +112,19 @@ public sealed class SendEmailConfirmationEndpoint(
         }, ct);
     }
 
-    private async Task SendEmailConfirmationAsync(User user, string confirmationUrl, int expiresInHours)
+    private Task SendEmailConfirmationAsync(User user, string confirmationUrl, int expiresInHours)
     {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Confirme seu e-mail - SwiftPay",
-                EmailTemplate.EmailConfirmation,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CONFIRMATION_URL", confirmationUrl },
-                    { "EXPIRES_IN", expiresInHours.ToString() }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
+        return emailService.SendAsync(
+            user.Email,
+            "Confirme seu e-mail - SwiftPay",
+            EmailTemplate.EmailConfirmation,
+            new Dictionary<string, string>
+            {
+                { "NAME", user.Name },
+                { "CONFIRMATION_URL", confirmationUrl },
+                { "EXPIRES_IN", expiresInHours.ToString() }
+            },
+            userId: user.Id
+        );
     }
 }
