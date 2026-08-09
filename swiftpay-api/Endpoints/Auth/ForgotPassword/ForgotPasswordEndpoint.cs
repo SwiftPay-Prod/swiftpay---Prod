@@ -1,19 +1,24 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Utils;
 using swiftpay_api.EndpointsGroups;
 using swiftpay_api_core.Interfaces;
-using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Settings;
 using swiftpay_api_core.Models.Email;
 using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Models.Database;
 
 namespace swiftpay_api.Endpoints.Auth.ForgotPassword;
 
 public sealed class ForgotPasswordEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
-    ISecurityLogService securityLog
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
+    ISecurityLogService securityLog,
+    IOptions<JWTSettingsOptions> jwtSettings,
+    IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<ForgotPasswordRequest, ForgotPasswordResponse>
 {
     public override void Configure()
@@ -25,77 +30,64 @@ public sealed class ForgotPasswordEndpoint(
 
     public override async Task HandleAsync(ForgotPasswordRequest req, CancellationToken ct)
     {
-        var emailLower = req.Email.ToLower().Trim();
-
+        var emailLower = req.Email.ToLowerInvariant().Trim();
         var user = await dbContext.Users
             .OrderBy(u => u.Id)
             .FirstOrDefaultAsync(u => u.Email == emailLower, ct);
 
-        if (user == null)
-        {
-            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordResetRequest, Status = SecurityLogStatus.Failed, Details = $"User not found: {emailLower}" });
+        var now = DateTime.UtcNow;
+        var cooldownWindow = FloorToWindow(now, TimeSpan.FromMinutes(15));
+        var emailHmac = CryptoUtils.ComputeHmacSha256(emailLower, jwtSettings.Value.Secret);
+        var queued = false;
 
-            await Send.OkAsync(new ForgotPasswordResponse
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
+
+        if (user is not null && !string.IsNullOrWhiteSpace(user.FirebaseUid))
+        {
+            await emailIntentWriter.Add(new EmailIntentAddRequest
             {
-                Message = "Se o e-mail estiver cadastrado, você receberá um código de recuperação."
+                Dedupe = EmailIntentDedupeKey.PasswordReset(emailHmac, cooldownWindow),
+                MessageType = EmailMessageType.PasswordReset,
+                RecipientAddress = user.Email,
+                Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+                CorrelationId = HttpContext.TraceIdentifier,
+                Inputs = new Dictionary<string, string>
+                {
+                    ["NAME"] = user.Name
+                },
+                AuthAction = new EmailIntentAuthActionRequest
+                {
+                    ActionType = EmailAuthActionType.PasswordReset,
+                    FirebaseUid = user.FirebaseUid,
+                    ContinueUrl = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=signin"
+                }
             }, ct);
-            return;
+            queued = true;
         }
 
-        var existingCodes = await dbContext.PasswordResetCodes
-            .Where(p => p.UserId == user.Id && p.Status == PasswordResetCodeStatus.Pending)
-            .ToListAsync(ct);
-
-        foreach (var existingCode in existingCodes)
-        {
-            existingCode.Status = PasswordResetCodeStatus.ExpiredByNewCode;
-        }
-
-        var code = CryptoUtils.GenerateCode();
-        var codeHash = CryptoUtils.ComputeSha256Hash(code);
-
-        var passwordResetCode = new PasswordResetCode
-        {
-            UserId = user.Id,
-            CodeHash = codeHash,
-            Status = PasswordResetCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(5),
-            CreatedAt = DateTime.UtcNow
-        };
-
-        dbContext.PasswordResetCodes.Add(passwordResetCode);
         await dbContext.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
 
-        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordResetRequest, Status = SecurityLogStatus.Success, UserId = user.Id });
-
-        await SendPasswordResetCodeEmailAsync(user, code);
-
-        await Send.OkAsync(new ForgotPasswordResponse
+        if (queued)
         {
-            Message = "Se o e-mail estiver cadastrado, você receberá um código de recuperação."
-        }, ct);
+            emailIntentRelaySignal.Signal();
+            await securityLog.LogAsync(new SecurityLogInput
+            {
+                Action = SecurityLogAction.PasswordResetRequest,
+                Status = SecurityLogStatus.Success,
+                UserId = user!.Id
+            });
+        }
+
+        await Send.ResponseAsync(new ForgotPasswordResponse
+        {
+            Message = "Se o e-mail estiver cadastrado, você receberá um link de recuperação."
+        }, 202, ct);
     }
 
-    private async Task SendPasswordResetCodeEmailAsync(User user, string code)
+    private static DateTime FloorToWindow(DateTime utcNow, TimeSpan window)
     {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Código de recuperação de senha - SwiftPay",
-                EmailTemplate.PasswordReset,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CODE", code },
-                    { "EXPIRES_IN", "5" }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
+        var ticks = utcNow.Ticks - (utcNow.Ticks % window.Ticks);
+        return new DateTime(ticks, DateTimeKind.Utc);
     }
 }

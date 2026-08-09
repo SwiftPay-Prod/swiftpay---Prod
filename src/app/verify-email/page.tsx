@@ -7,10 +7,10 @@ import { MailOpen01Icon, Refresh03Icon, ArrowRight01Icon } from '@hugeicons/core
 import { useRouter } from 'next/navigation';
 import {
 	onFirebaseAuthStateChanged,
-	sendAccountVerificationEmail,
 	signOutFirebase,
 	type FirebaseUser,
 } from '@/lib/firebase';
+import { sendEmailConfirmation } from '@/app/actions/auth';
 import { Routes } from '@/router/routes';
 
 export default function PublicVerifyEmailPage() {
@@ -38,13 +38,16 @@ export default function PublicVerifyEmailPage() {
 	}, [user, router]);
 
 	async function handleResend() {
-		if (!user) return;
+		if (!email) return;
 		setIsResending(true);
 		setError(null);
 		setSuccess(false);
 
 		try {
-			await sendAccountVerificationEmail(user);
+			const response = await sendEmailConfirmation({ email });
+			if (response.error) {
+				throw new Error(response.error.message ?? 'Erro ao reenviar verificação.');
+			}
 			setSuccess(true);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Erro ao reenviar verificação.';

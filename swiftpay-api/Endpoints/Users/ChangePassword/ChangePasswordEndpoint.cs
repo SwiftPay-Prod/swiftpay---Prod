@@ -12,7 +12,8 @@ namespace swiftpay_api.Endpoints.Users.ChangePassword;
 
 public sealed class ChangePasswordEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
     ISecurityLogService securityLog
 ) : Endpoint<ChangePasswordRequest, ChangePasswordResponse>
 {
@@ -67,53 +68,53 @@ public sealed class ChangePasswordEndpoint(
             existingCode.Status = PasswordChangeCodeStatus.ExpiredByNewCode;
         }
 
+        var now = DateTime.UtcNow;
         var code = CryptoUtils.GenerateCode();
         var codeHash = CryptoUtils.ComputeSha256Hash(code);
         var newPasswordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
 
         var passwordChangeCode = new PasswordChangeCode
         {
+            Id = Guid.NewGuid(),
             UserId = dbUser.Id,
             CodeHash = codeHash,
             NewPasswordHash = newPasswordHash,
             Status = PasswordChangeCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(10),
-            CreatedAt = DateTime.UtcNow
+            ExpiresAt = now.AddMinutes(10),
+            CreatedAt = now
         };
 
         dbContext.PasswordChangeCodes.Add(passwordChangeCode);
-        await dbContext.SaveChangesAsync(ct);
-
-        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordChange, Status = SecurityLogStatus.Warning, UserId = userId, Details = "Código de confirmação enviado." });
-
-        await SendPasswordChangeCodeEmailAsync(dbUser, code);
-
-        await Send.OkAsync(new ChangePasswordResponse
+        var cooldownWindow = FloorToWindow(now, TimeSpan.FromMinutes(10));
+        var emailHandle = await emailIntentWriter.Add(new EmailIntentAddRequest
         {
-            Message = "Código de confirmação enviado para seu e-mail."
+            Dedupe = EmailIntentDedupeKey.PasswordChange(dbUser.Id, cooldownWindow),
+            MessageType = EmailMessageType.PasswordChangeCode,
+            RecipientAddress = dbUser.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, dbUser.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = dbUser.Name,
+                ["CODE"] = code,
+                ["EXPIRES_IN"] = "10"
+            }
         }, ct);
+        await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
+
+        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordChange, Status = SecurityLogStatus.Warning, UserId = userId, Details = "Código de confirmação enfileirado." });
+
+        await Send.ResponseAsync(new ChangePasswordResponse
+        {
+            Data = new ChangePasswordData(emailHandle.Id, "Pending"),
+            Message = "Código de confirmação enfileirado para envio."
+        }, 202, ct);
     }
 
-    private async Task SendPasswordChangeCodeEmailAsync(User user, string code)
+    private static DateTime FloorToWindow(DateTime utcNow, TimeSpan window)
     {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Código de confirmação de alteração de senha - SwiftPay",
-                EmailTemplate.PasswordChangeCode,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CODE", code },
-                    { "EXPIRES_IN", "10" }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
+        var ticks = utcNow.Ticks - (utcNow.Ticks % window.Ticks);
+        return new DateTime(ticks, DateTimeKind.Utc);
     }
 }

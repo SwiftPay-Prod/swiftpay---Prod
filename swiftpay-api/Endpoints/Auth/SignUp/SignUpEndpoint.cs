@@ -65,7 +65,7 @@ public sealed class SignUpEndpoint(
 
         if (emailExists)
         {
-            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignUp, Status = SecurityLogStatus.Failed, Details = $"Email already in use: {emailLower}" });
+            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignUp, Status = SecurityLogStatus.Failed, Details = "Email already in use" });
 
             await Send.ResponseAsync(new SignUpResponse
             {

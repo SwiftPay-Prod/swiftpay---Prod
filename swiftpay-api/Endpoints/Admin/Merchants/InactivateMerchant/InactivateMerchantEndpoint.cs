@@ -14,7 +14,7 @@ public sealed class InactivateMerchantEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     INotificationService notificationService,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter
 ) : Endpoint<InactivateMerchantRequest, InactivateMerchantResponse>
 {
     public override void Configure()
@@ -36,6 +36,7 @@ public sealed class InactivateMerchantEndpoint(
         }
 
         var merchant = await dbContext.Merchants
+            .Include(m => m.User)
             .OrderBy(m => m.Id)
             .FirstOrDefaultAsync(m => m.Id == req.MerchantId, ct);
 
@@ -82,6 +83,24 @@ public sealed class InactivateMerchantEndpoint(
         merchant.InactiveReason = req.Reason;
         merchant.UpdatedAt = DateTime.UtcNow;
 
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.MerchantInactivated,
+                merchant.Id,
+                merchant.Id),
+            MessageType = EmailMessageType.MerchantInactivated,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name ?? "Usuário",
+                ["MERCHANT_NAME"] = merchant.Name ?? "Organização",
+                ["REASON"] = req.Reason
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -99,26 +118,6 @@ public sealed class InactivateMerchantEndpoint(
             requiresMerchantRefresh: true
         );
 
-        var user = await dbContext.Users
-            .OrderBy(u => u.Id)
-            .FirstOrDefaultAsync(u => u.Id == merchant.UserId, ct);
-
-        if (user != null)
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Sua organização foi inativada",
-                EmailTemplate.MerchantInactivated,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name ?? "Usuário" },
-                    { "MERCHANT_NAME", merchant.Name ?? "Organização" },
-                    { "REASON", req.Reason }
-                },
-                user.Id,
-                merchant.Id
-            );
-        }
 
         await Send.OkAsync(new InactivateMerchantResponse
         {

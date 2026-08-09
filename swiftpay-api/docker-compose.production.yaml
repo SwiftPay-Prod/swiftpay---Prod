@@ -173,6 +173,7 @@ services:
       RabbitMQSettings__UserName: ${RABBITMQ_USER:-swiftpayuser}
       RabbitMQSettings__Password: ${RABBITMQ_PASSWORD?err}
       RabbitMQSettings__VirtualHost: swiftpay
+      RabbitMQSettings__Enabled: "true"
       ValkeySettings__ConnectionString: swiftpayvalkey:6379
       FirebaseSettings__Enabled: ${FIREBASE_ENABLED:-false}
       FirebaseSettings__ProjectId: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
@@ -180,6 +181,11 @@ services:
       FirebaseSettings__PrivateKey: ${FIREBASE_PRIVATE_KEY:-}
       FirebaseSettings__ClientEmail: ${FIREBASE_CLIENT_EMAIL:-}
       FirebaseSettings__ClientId: ${FIREBASE_CLIENT_ID:-}
+      EmailPlatformSettings__Enabled: ${EMAIL_PLATFORM_ENABLED:-false}
+      EmailPlatformSettings__FirebaseProjectId: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/firebase-email-worker.json
+    volumes:
+      - ${FIREBASE_EMAIL_WORKER_CREDENTIALS:-/run/secrets/firebase-email-worker.json}:/run/secrets/firebase-email-worker.json:ro
     depends_on:
       swiftpaydb:
         condition: service_healthy
@@ -194,7 +200,7 @@ services:
       swiftpaystorage-init:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5279/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5279/health/ready"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -223,6 +229,12 @@ services:
       RabbitMQSettings__UserName: ${RABBITMQ_USER:-swiftpayuser}
       RabbitMQSettings__Password: ${RABBITMQ_PASSWORD?err}
       RabbitMQSettings__VirtualHost: swiftpay
+      RabbitMQSettings__Enabled: "true"
+      EmailSettings__Provider: Resend
+      EmailSettings__FromEmail: noreply@swiftpayment.info
+      EmailSettings__FromName: SWIFTPAY
+      EmailSettings__EnableSend: "true"
+      EmailSettings__Resend__ApiKey: ${RESEND_API_KEY?err}
     depends_on:
       swiftpaydb:
         condition: service_healthy
@@ -233,7 +245,7 @@ services:
       swiftpayrabbitmq:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5166/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:5166/health/ready"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -271,7 +283,7 @@ services:
       swiftpayapipayment:
         condition: service_healthy
     healthcheck:
-      test: curl -sf -o /dev/null http://127.0.0.1:3000/ || curl -sf -o /dev/null http://127.0.0.1:3000/pay/health || true
+      test: ["CMD", "curl", "-s", "-o", "/dev/null", "http://127.0.0.1:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -294,7 +306,7 @@ services:
       swiftpayapipayment:
         condition: service_healthy
     healthcheck:
-      test: curl -sf -o /dev/null http://127.0.0.1:3000/ || curl -sf -o /dev/null http://127.0.0.1:3000/pay/health || true
+      test: ["CMD", "curl", "-s", "-o", "/dev/null", "http://127.0.0.1:3000/"]
       interval: 30s
       timeout: 10s
       retries: 3

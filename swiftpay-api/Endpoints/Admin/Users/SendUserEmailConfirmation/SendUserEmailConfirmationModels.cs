@@ -18,4 +18,6 @@ public sealed class SendUserEmailConfirmationRequestValidator : Validator<SendUs
     }
 }
 
-public sealed class SendUserEmailConfirmationResponse : BaseResponse<string>;
+public sealed class SendUserEmailConfirmationResponse : BaseResponse<SendUserEmailConfirmationData>;
+
+public sealed record SendUserEmailConfirmationData(Guid EmailMessageId, string EmailStatus);

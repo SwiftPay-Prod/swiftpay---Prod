@@ -15,7 +15,6 @@ import { isValidPhone } from '@/utils/validations';
 import {
 	createFirebaseUser,
 	signInOrCreatePlatformUserWithGoogle,
-	sendAccountVerificationEmail,
 	getFirebaseIdToken,
 	signOutFirebase,
 	type FirebaseUser,
@@ -148,7 +147,6 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 			const data = await submitFirebaseSignup(firebaseUser);
 
 			if (data?.data?.requiresEmailVerification) {
-				await sendAccountVerificationEmail(firebaseUser);
 				setCreatedEmail(email);
 				setRequiresEmailVerification(true);
 				return;

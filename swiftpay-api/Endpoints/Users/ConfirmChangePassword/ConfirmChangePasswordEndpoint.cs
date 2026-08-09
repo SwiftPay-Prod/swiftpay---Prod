@@ -12,7 +12,8 @@ namespace swiftpay_api.Endpoints.Users.ConfirmChangePassword;
 
 public sealed class ConfirmChangePasswordEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService
 ) : Endpoint<ConfirmChangePasswordRequest, ConfirmChangePasswordResponse>
@@ -87,48 +88,43 @@ public sealed class ConfirmChangePasswordEndpoint(
             return;
         }
 
+        var now = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
         passwordChangeCode.Status = PasswordChangeCodeStatus.Used;
         dbUser.Password = passwordChangeCode.NewPasswordHash;
-        dbUser.PasswordChangedAt = DateTime.UtcNow;
-        dbUser.UpdatedAt = DateTime.UtcNow;
+        dbUser.PasswordChangedAt = now;
+        dbUser.UpdatedAt = now;
+
+        var emailHandle = await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PasswordChanged,
+                dbUser.Id,
+                passwordChangeCode.Id),
+            MessageType = EmailMessageType.PasswordChanged,
+            RecipientAddress = dbUser.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, dbUser.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = dbUser.Name,
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
 
         await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
 
         await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordChange, Status = SecurityLogStatus.Success, UserId = userId, Details = "Senha alterada com sucesso." });
 
-        var now = DateTime.UtcNow;
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-        await SendPasswordChangedEmailAsync(dbUser, ipAddress, location, brazilTime);
-
         await Send.OkAsync(new ConfirmChangePasswordResponse
         {
+            Data = new ConfirmChangePasswordData(emailHandle.Id, "Pending"),
             Message = "Senha alterada com sucesso. Por motivos de segurança, você foi desconectado de todos os dispositivos."
         }, ct);
     }
 
-    private async Task SendPasswordChangedEmailAsync(User user, string ipAddress, string location, DateTime brazilTime)
-    {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Sua senha foi alterada - SwiftPay",
-                EmailTemplate.PasswordChanged,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

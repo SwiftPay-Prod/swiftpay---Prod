@@ -88,6 +88,7 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
     public DbSet<DigitalItem> DigitalItems { get; set; }
     public DbSet<MerchantEmailTemplate> MerchantEmailTemplates { get; set; }
     public DbSet<MerchantEmailSettings> MerchantEmailSettings { get; set; }
+    public DbSet<EmailIntent> EmailIntents { get; set; }
     public DbSet<StockMovement> StockMovements { get; set; }
     public DbSet<ReferralCommissionPayment> ReferralCommissionPayments { get; set; }
     public DbSet<ReferralCommissionWithdrawalRequest> ReferralCommissionWithdrawalRequests { get; set; }
@@ -184,6 +185,61 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
         modelBuilder.Entity<MerchantNominalAbTest>().HasKey(mat => mat.Id);
         modelBuilder.Entity<MerchantAcquirerChangeHistory>().HasKey(mach => mach.Id);
         modelBuilder.Entity<MerchantSettingsChangeHistory>().HasKey(msch => msch.Id);
+
+        var emailIntent = modelBuilder.Entity<EmailIntent>();
+        emailIntent.ToTable("email_intents", table =>
+        {
+            table.HasCheckConstraint(
+                "CK_email_intents_RequestHash_Length",
+                "length(\"RequestHash\") = 64");
+            table.HasCheckConstraint(
+                "CK_email_intents_EnvelopeHash_Length",
+                "\"EnvelopeHash\" IS NULL OR length(\"EnvelopeHash\") = 64");
+            table.HasCheckConstraint(
+                "CK_email_intents_Attempts_NonNegative",
+                "\"MaterializationAttemptCount\" >= 0 AND \"PublishAttemptCount\" >= 0");
+            table.HasCheckConstraint(
+                "CK_email_intents_TerminalSummary_Complete",
+                "(\"TerminalStatus\" IS NULL AND \"TerminalOccurredAt\" IS NULL AND \"TerminalRecordedAt\" IS NULL) OR " +
+                "(\"TerminalStatus\" IS NOT NULL AND \"TerminalOccurredAt\" IS NOT NULL AND \"TerminalRecordedAt\" IS NOT NULL)");
+        });
+        emailIntent.HasKey(intent => intent.Id);
+        emailIntent.Property(intent => intent.Id).ValueGeneratedNever();
+        emailIntent.Property(intent => intent.DedupeKey).HasMaxLength(512).IsRequired();
+        emailIntent.Property(intent => intent.RequestHash).HasColumnType("character(64)").IsRequired();
+        emailIntent.Property(intent => intent.EnvelopeHash).HasColumnType("character(64)");
+        emailIntent.Property(intent => intent.IntentKind).HasMaxLength(32).IsRequired();
+        emailIntent.Property(intent => intent.MessageType).HasMaxLength(96).IsRequired();
+        emailIntent.Property(intent => intent.DeliveryClass).HasMaxLength(32).IsRequired();
+        emailIntent.Property(intent => intent.RecipientAddress).HasMaxLength(320).IsRequired();
+        emailIntent.Property(intent => intent.OwnerType).HasMaxLength(32).IsRequired();
+        emailIntent.Property(intent => intent.RequestPayloadJson).HasColumnType("jsonb").IsRequired();
+        emailIntent.Property(intent => intent.AuthActionType).HasMaxLength(32);
+        emailIntent.Property(intent => intent.FirebaseUid).HasMaxLength(128);
+        emailIntent.Property(intent => intent.ContinueUrl).HasMaxLength(2048);
+        emailIntent.Property(intent => intent.CorrelationId).HasMaxLength(128).IsRequired();
+        emailIntent.Property(intent => intent.State).HasMaxLength(48).IsRequired();
+        emailIntent.Property(intent => intent.MaterializationLeaseToken).HasMaxLength(64).IsConcurrencyToken();
+        emailIntent.Property(intent => intent.Subject).HasMaxLength(998);
+        emailIntent.Property(intent => intent.HtmlBody).HasMaxLength(131072);
+        emailIntent.Property(intent => intent.TextBody).HasMaxLength(131072);
+        emailIntent.Property(intent => intent.ActionLink).HasMaxLength(8192);
+        emailIntent.Property(intent => intent.PublishLeaseToken).HasMaxLength(64).IsConcurrencyToken();
+        emailIntent.Property(intent => intent.LastErrorClass).HasMaxLength(128);
+        emailIntent.Property(intent => intent.LastErrorCode).HasMaxLength(128);
+        emailIntent.Property(intent => intent.TerminalStatus).HasMaxLength(32);
+        emailIntent.Property(intent => intent.TerminalErrorCode).HasMaxLength(128);
+        emailIntent.HasIndex(intent => intent.DedupeKey)
+            .IsUnique()
+            .HasDatabaseName("UX_email_intents_DedupeKey");
+        emailIntent.HasIndex(intent => new { intent.State, intent.NextMaterializationAt, intent.Id })
+            .HasDatabaseName("IX_email_intents_MaterializationRecovery");
+        emailIntent.HasIndex(intent => new { intent.State, intent.NextPublishAt, intent.Id })
+            .HasDatabaseName("IX_email_intents_PublishRecovery");
+        emailIntent.HasIndex(intent => new { intent.OwnerType, intent.OwnerId, intent.Id })
+            .HasDatabaseName("IX_email_intents_Owner");
+        emailIntent.HasIndex(intent => new { intent.TerminalStatus, intent.TerminalRecordedAt, intent.Id })
+            .HasDatabaseName("IX_email_intents_TerminalSummary");
 
         // FK Keys and Relationships
         modelBuilder.Entity<Merchant>()

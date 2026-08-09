@@ -98,6 +98,18 @@ public static class ServicesExtensions
         return services;
     }
 
+    public static IServiceCollection AddEmailTemplateRenderer(this IServiceCollection services)
+    {
+        services.AddSingleton<IEmailTemplateRenderer, EmailTemplateRenderer>();
+        return services;
+    }
+
+    public static IServiceCollection AddEmailIntentWriter(this IServiceCollection services)
+    {
+        services.AddScoped<IEmailIntentWriter, EmailIntentWriter>();
+        return services;
+    }
+
     public static IServiceCollection AddEmailTemplateService(this IServiceCollection services)
     {
         services.AddScoped<IEmailBlockRenderer, EmailBlockRenderer>();

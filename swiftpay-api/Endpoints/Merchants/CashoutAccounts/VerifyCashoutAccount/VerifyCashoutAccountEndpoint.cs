@@ -15,7 +15,7 @@ public sealed class VerifyCashoutAccountEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     INotificationService notificationService
 ) : Endpoint<VerifyCashoutAccountRequest, VerifyCashoutAccountResponse>
 {
@@ -161,6 +161,33 @@ public sealed class VerifyCashoutAccountEndpoint(
             payoutAccount.IsDefault = true;
         }
 
+        var now = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PayoutAccountCreated,
+                payoutAccount.Id,
+                verificationCode.Id),
+            MessageType = EmailMessageType.PayoutAccountCreated,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["PIX_KEY_TYPE"] = GetPixKeyTypeDisplayName(payoutAccount.PixKeyType),
+                ["PIX_KEY"] = MaskPixKey(payoutAccount.PixKey, payoutAccount.PixKeyType),
+                ["HOLDER_NAME"] = payoutAccount.HolderName ?? "-",
+                ["IS_DEFAULT"] = payoutAccount.IsDefault ? "Sim" : "Não",
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         // Registrar log de segurança
@@ -181,31 +208,6 @@ public sealed class VerifyCashoutAccountEndpoint(
             actionLabel: "Ver contas de saque"
         );
 
-        // Enviar e-mail de confirmação
-        var user = merchant.User;
-        var now = DateTime.UtcNow;
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-        _ = emailService.SendAsync(
-            user.Email,
-            "✅ Conta de Saque Ativada - SwiftPay",
-            EmailTemplate.PayoutAccountCreated,
-            new Dictionary<string, string>
-            {
-                { "NAME", user.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                { "PIX_KEY_TYPE", GetPixKeyTypeDisplayName(payoutAccount.PixKeyType) },
-                { "PIX_KEY", MaskPixKey(payoutAccount.PixKey, payoutAccount.PixKeyType) },
-                { "HOLDER_NAME", payoutAccount.HolderName ?? "-" },
-                { "IS_DEFAULT", payoutAccount.IsDefault ? "Sim" : "Não" },
-                { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                { "TIME", brazilTime.ToString("HH:mm:ss") },
-                { "IP_ADDRESS", ipAddress },
-                { "LOCATION", location }
-            },
-            userId: user.Id,
-            merchantId: merchant.Id
-        );
 
         await Send.OkAsync(new VerifyCashoutAccountResponse
         {

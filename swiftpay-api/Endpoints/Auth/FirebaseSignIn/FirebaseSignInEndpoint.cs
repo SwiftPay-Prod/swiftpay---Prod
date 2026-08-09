@@ -66,7 +66,7 @@ public sealed class FirebaseSignInEndpoint(
             {
                 Action = SecurityLogAction.SignIn,
                 Status = SecurityLogStatus.Failed,
-                Details = $"Firebase sign-in, user not found: {emailLower}"
+                Details = "Firebase sign-in user not found"
             });
 
             await Send.ResponseAsync(new FirebaseSignInResponse

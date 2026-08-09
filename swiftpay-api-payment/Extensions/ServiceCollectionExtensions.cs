@@ -49,6 +49,7 @@ public static class ServiceCollectionExtensions
         services.AddGeoLocationService();
         services.AddNotificationService();
         services.AddEmailService();
+        services.AddEmailIntentWriter();
         services.AddEmailTemplateService();
         services.AddLedgerRepository();
         services.AddMerchantCalculationService();

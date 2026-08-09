@@ -14,7 +14,7 @@ namespace swiftpay_api.Endpoints.Merchants.CashoutAccounts.ResendCashoutVerifica
 public sealed class ResendCashoutVerificationCodeEndpoint(
     PrimaryDbContext dbContext,
     IGeoLocationService geoLocationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<ResendCashoutVerificationCodeRequest, ResendCashoutVerificationCodeResponse>
 {
@@ -94,6 +94,9 @@ public sealed class ResendCashoutVerificationCodeEndpoint(
         var codeHash = CryptoUtils.ComputeSha256Hash(code);
         var expirationMinutes = platformSettings.Value.VerificationCodeExpirationMinutes;
 
+        var requestedAt = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(requestedAt, DateTimeUtils.BrasiliaTimeZone);
+
         var verificationCode = new PayoutAccountVerificationCode
         {
             Id = Guid.CreateVersion7(),
@@ -101,38 +104,41 @@ public sealed class ResendCashoutVerificationCodeEndpoint(
             UserId = userId.Value,
             CodeHash = codeHash,
             Status = PayoutAccountVerificationCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes)
+            ExpiresAt = requestedAt.AddMinutes(expirationMinutes),
+            CreatedAt = requestedAt,
+            UpdatedAt = requestedAt
         };
 
         dbContext.PayoutAccountVerificationCodes.Add(verificationCode);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.CashoutAccountAction(
+                merchant.Id,
+                payoutAccount.Id.ToString("N"),
+                "Create",
+                requestedAt),
+            MessageType = EmailMessageType.PayoutAccountActionVerification,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["ACTION_DESCRIPTION"] = "ativar uma conta de saque",
+                ["PIX_KEY_TYPE"] = GetPixKeyTypeDisplayName(payoutAccount.PixKeyType),
+                ["PIX_KEY"] = MaskUtils.MaskPixKey(payoutAccount.PixKey, payoutAccount.PixKeyType.ToString()),
+                ["CODE"] = code,
+                ["EXPIRES_IN"] = expirationMinutes.ToString(),
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
-        // Enviar e-mail com novo código
-        var user = merchant.User;
-        var now = DateTime.UtcNow;
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-        _ = emailService.SendAsync(
-            user.Email,
-            "🔐 Novo Código de Verificação - SwiftPay",
-            EmailTemplate.PayoutAccountActionVerification,
-            new Dictionary<string, string>
-            {
-                { "NAME", user.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                { "ACTION_DESCRIPTION", "ativar uma conta de saque" },
-                { "PIX_KEY_TYPE", GetPixKeyTypeDisplayName(payoutAccount.PixKeyType) },
-                { "PIX_KEY", MaskUtils.MaskPixKey(payoutAccount.PixKey, payoutAccount.PixKeyType.ToString()) },
-                { "CODE", code },
-                { "EXPIRES_IN", expirationMinutes.ToString() },
-                { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                { "TIME", brazilTime.ToString("HH:mm:ss") },
-                { "IP_ADDRESS", ipAddress },
-                { "LOCATION", location }
-            },
-            userId: user.Id,
-            merchantId: merchant.Id
-        );
 
         await Send.OkAsync(new ResendCashoutVerificationCodeResponse
         {

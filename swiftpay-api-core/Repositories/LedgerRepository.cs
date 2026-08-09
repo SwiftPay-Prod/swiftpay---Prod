@@ -245,76 +245,17 @@ public class LedgerRepository(PrimaryDbContext dbContext) : ILedgerRepository
         string? notes = null,
         LedgerTransactionStatus status = LedgerTransactionStatus.Approved)
     {
+        if (dbContext.Database.CurrentTransaction is not null)
+            return await PersistAsync();
+
         var strategy = dbContext.Database.CreateExecutionStrategy();
-        
         return await strategy.ExecuteAsync(async () =>
         {
             await using var transaction = await dbContext.Database.BeginTransactionAsync();
-            
             try
             {
-                foreach (var (accountId, delta) in balanceUpdates)
-                {
-                    var rowsAffected = await dbContext.Database.ExecuteSqlRawAsync(
-                        "UPDATE \"Accounts\" SET \"Balance\" = \"Balance\" + {0}, \"UpdatedAt\" = {1} WHERE \"Id\" = {2}",
-                        delta, DateTime.UtcNow, accountId);
-                    
-                    if (rowsAffected == 0)
-                    {
-                        throw new InvalidOperationException($"Account {accountId} not found for balance update.");
-                    }
-                }
-
-                var ledgerTransaction = new LedgerTransaction
-                {
-                    Amount = amount,
-                    Operation = operation,
-                    Status = status,
-                    PaymentId = paymentId,
-                    PayoutId = payoutId,
-                    PlatformPayoutId = platformPayoutId,
-                    PlatformPayoutItemId = platformPayoutItemId,
-                    Notes = notes,
-                    LedgerEntries = entries
-                };
-
-                dbContext.LedgerTransactions.Add(ledgerTransaction);
-
-                foreach (var entry in entries)
-                {
-                    entry.LedgerTransactionId = ledgerTransaction.Id;
-                }
-
-                if (merchantBalanceDeltas != null)
-                {
-                    await dbContext.Database.ExecuteSqlRawAsync(
-                        """
-                        UPDATE "MerchantBalances" SET
-                            "LifetimeVolume"   = "LifetimeVolume"   + {0},
-                            "LifetimeFeesPaid" = "LifetimeFeesPaid" + {1},
-                            "LifetimePayouts"  = "LifetimePayouts"  + {2},
-                            "LifetimeRefunds"  = "LifetimeRefunds"  + {3},
-                            "VolumeToday"      = "VolumeToday"      + {4},
-                            "VolumeThisWeek"   = "VolumeThisWeek"   + {5},
-                            "VolumeThisMonth"  = "VolumeThisMonth"  + {6},
-                            "UpdatedAt"        = {7}
-                        WHERE "MerchantId" = {8} AND "Environment" = {9}
-                        """,
-                        merchantBalanceDeltas.LifetimeVolumeDelta,
-                        merchantBalanceDeltas.LifetimeFeesPaidDelta,
-                        merchantBalanceDeltas.LifetimePayoutsDelta,
-                        merchantBalanceDeltas.LifetimeRefundsDelta,
-                        merchantBalanceDeltas.VolumeTodayDelta,
-                        merchantBalanceDeltas.VolumeThisWeekDelta,
-                        merchantBalanceDeltas.VolumeThisMonthDelta,
-                        DateTime.UtcNow,
-                        merchantBalanceDeltas.MerchantId,
-                        merchantBalanceDeltas.Environment.ToString());
-                }
-
-                await dbContext.SaveChangesAsync();
+                var ledgerTransaction = await PersistAsync();
                 await transaction.CommitAsync();
-
                 return ledgerTransaction;
             }
             catch
@@ -323,6 +264,66 @@ public class LedgerRepository(PrimaryDbContext dbContext) : ILedgerRepository
                 throw;
             }
         });
+
+        async Task<LedgerTransaction> PersistAsync()
+        {
+            foreach (var (accountId, delta) in balanceUpdates)
+            {
+                var rowsAffected = await dbContext.Database.ExecuteSqlRawAsync(
+                    "UPDATE \"Accounts\" SET \"Balance\" = \"Balance\" + {0}, \"UpdatedAt\" = {1} WHERE \"Id\" = {2}",
+                    delta, DateTime.UtcNow, accountId);
+
+                if (rowsAffected == 0)
+                    throw new InvalidOperationException($"Account {accountId} not found for balance update.");
+            }
+
+            var ledgerTransaction = new LedgerTransaction
+            {
+                Amount = amount,
+                Operation = operation,
+                Status = status,
+                PaymentId = paymentId,
+                PayoutId = payoutId,
+                PlatformPayoutId = platformPayoutId,
+                PlatformPayoutItemId = platformPayoutItemId,
+                Notes = notes,
+                LedgerEntries = entries
+            };
+
+            dbContext.LedgerTransactions.Add(ledgerTransaction);
+            foreach (var entry in entries)
+                entry.LedgerTransactionId = ledgerTransaction.Id;
+
+            if (merchantBalanceDeltas != null)
+            {
+                await dbContext.Database.ExecuteSqlRawAsync(
+                    """
+                    UPDATE "MerchantBalances" SET
+                        "LifetimeVolume"   = "LifetimeVolume"   + {0},
+                        "LifetimeFeesPaid" = "LifetimeFeesPaid" + {1},
+                        "LifetimePayouts"  = "LifetimePayouts"  + {2},
+                        "LifetimeRefunds"  = "LifetimeRefunds"  + {3},
+                        "VolumeToday"      = "VolumeToday"      + {4},
+                        "VolumeThisWeek"   = "VolumeThisWeek"   + {5},
+                        "VolumeThisMonth"  = "VolumeThisMonth"  + {6},
+                        "UpdatedAt"        = {7}
+                    WHERE "MerchantId" = {8} AND "Environment" = {9}
+                    """,
+                    merchantBalanceDeltas.LifetimeVolumeDelta,
+                    merchantBalanceDeltas.LifetimeFeesPaidDelta,
+                    merchantBalanceDeltas.LifetimePayoutsDelta,
+                    merchantBalanceDeltas.LifetimeRefundsDelta,
+                    merchantBalanceDeltas.VolumeTodayDelta,
+                    merchantBalanceDeltas.VolumeThisWeekDelta,
+                    merchantBalanceDeltas.VolumeThisMonthDelta,
+                    DateTime.UtcNow,
+                    merchantBalanceDeltas.MerchantId,
+                    merchantBalanceDeltas.Environment.ToString());
+            }
+
+            await dbContext.SaveChangesAsync();
+            return ledgerTransaction;
+        }
     }
 
     public async Task<long> GetAccountBalanceAsync(Guid accountId)

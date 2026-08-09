@@ -20,6 +20,7 @@ public static class AcquirerWebhookUtils
             AcquirerType.Accithus => "/v1/internal/accithus/webhooks",
             AcquirerType.MagicPay => "/v1/internal/magicpay/webhooks",
             AcquirerType.FlevoPay => "/v1/internal/flevopay/webhooks/transactions",
+            AcquirerType.AkkadPag => "/v1/internal/akkadpag/webhooks/transactions",
             _ => null
         };
     }

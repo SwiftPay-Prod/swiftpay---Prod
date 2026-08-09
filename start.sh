@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# AVISO: este script é somente para desenvolvimento local.
+# NÃO execute em produção. Use docker-compose.production.yaml.
+
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DOTNET_PATH="/home/matspectrum-ai/dotnet10"
 

@@ -15,7 +15,7 @@ public sealed class EvaluateMerchantKycEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     INotificationService notificationService,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter
 ) : Endpoint<EvaluateMerchantKycRequest, EvaluateMerchantKycResponse>
 {
     public override void Configure()
@@ -109,6 +109,24 @@ public sealed class EvaluateMerchantKycEndpoint(
             merchant.MerchantKyc.UpdatedAt = DateTime.UtcNow;
         }
 
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.KycApproved,
+                merchant.Id,
+                merchant.Id),
+            MessageType = EmailMessageType.KycApproved,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "",
+                ["DASHBOARD_URL"] = "https://app.swiftpay.com.br/dashboard"
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -128,19 +146,6 @@ public sealed class EvaluateMerchantKycEndpoint(
             requiresMerchantRefresh: true
         );
 
-        _ = emailService.SendAsync(
-            merchant.User.Email,
-            "Cadastro Aprovado - SwiftPay",
-            EmailTemplate.KycApproved,
-            new Dictionary<string, string>
-            {
-                { "NAME", merchant.User.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "" },
-                { "DASHBOARD_URL", "https://app.swiftpay.com.br/dashboard" }
-            },
-            userId: merchant.UserId,
-            merchantId: merchant.Id
-        );
     }
 
     private async Task HandleRejectionAsync(Merchant merchant, EvaluateMerchantKycRequest req, Guid adminId, CancellationToken ct)
@@ -155,6 +160,25 @@ public sealed class EvaluateMerchantKycEndpoint(
             merchant.MerchantKyc.RejectionReason = req.Reason;
             merchant.MerchantKyc.UpdatedAt = DateTime.UtcNow;
         }
+
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.KycRejected,
+                merchant.Id,
+                merchant.Id),
+            MessageType = EmailMessageType.KycRejected,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "",
+                ["REASON"] = req.Reason ?? "",
+                ["ONBOARDING_URL"] = "https://app.swiftpay.com.br/onboarding"
+            }
+        }, ct);
 
         await dbContext.SaveChangesAsync(ct);
 
@@ -174,20 +198,6 @@ public sealed class EvaluateMerchantKycEndpoint(
             requiresMerchantRefresh: true
         );
 
-        _ = emailService.SendAsync(
-            merchant.User.Email,
-            "Cadastro Rejeitado - SwiftPay",
-            EmailTemplate.KycRejected,
-            new Dictionary<string, string>
-            {
-                { "NAME", merchant.User.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "" },
-                { "REASON", req.Reason ?? "" },
-                { "ONBOARDING_URL", "https://app.swiftpay.com.br/onboarding" }
-            },
-            userId: merchant.UserId,
-            merchantId: merchant.Id
-        );
     }
 
     private async Task HandleComplementAsync(Merchant merchant, EvaluateMerchantKycRequest req, Guid adminId, CancellationToken ct)
@@ -221,6 +231,26 @@ public sealed class EvaluateMerchantKycEndpoint(
             }
         }
 
+        var pendingItemsHtml = BuildPendingItemsHtml(req.PendingItems);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.KycComplement,
+                merchant.Id,
+                merchant.Id),
+            MessageType = EmailMessageType.KycComplement,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "",
+                ["PENDING_ITEMS_HTML"] = pendingItemsHtml,
+                ["COMPLEMENT_URL"] = "https://app.swiftpay.com.br/panel/merchants/review"
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -244,22 +274,6 @@ public sealed class EvaluateMerchantKycEndpoint(
             requiresMerchantRefresh: true
         );
 
-        var pendingItemsHtml = BuildPendingItemsHtml(req.PendingItems);
-
-        _ = emailService.SendAsync(
-            merchant.User.Email,
-            "Complemento Solicitado - SwiftPay",
-            EmailTemplate.KycComplement,
-            new Dictionary<string, string>
-            {
-                { "NAME", merchant.User.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "" },
-                { "PENDING_ITEMS_HTML", pendingItemsHtml },
-                { "COMPLEMENT_URL", "https://app.swiftpay.com.br/panel/merchants/review" }
-            },
-            userId: merchant.UserId,
-            merchantId: merchant.Id
-        );
     }
 
     private static string BuildPendingItemsHtml(List<EvaluatePendingItemRequest>? items)

@@ -12,7 +12,7 @@ namespace swiftpay_api.Endpoints.Users.Referrals.RequestReferralPayoutPixKeyUpda
 
 public sealed class RequestReferralPayoutPixKeyUpdateEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     IGeoLocationService geoLocationService,
     IOptions<PlatformSettingsOptions> platformSettings
 ) : EndpointWithoutRequest<RequestReferralPayoutPixKeyUpdateResponse>
@@ -71,27 +71,29 @@ public sealed class RequestReferralPayoutPixKeyUpdateEndpoint(
         user.ReferralPayoutPixKeyVerificationCodeFailedAttempts = 0;
         user.UpdatedAt = now;
 
-        await dbContext.SaveChangesAsync(ct);
-
         var ipAddress = EndpointUtils.GetIpAddress(HttpContext);
         var location = (await geoLocationService.GetLocationAsync(ipAddress)).DisplayLocation;
         var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-        _ = emailService.SendAsync(
-            user.Email,
-            "🔐 Código para confirmar chave PIX de indicação - SwiftPay",
-            EmailTemplate.ReferralPayoutPixKeyVerification,
-            new Dictionary<string, string>
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.ReferralPixKeyChange(user.Id, now),
+            MessageType = EmailMessageType.ReferralPayoutPixKeyVerification,
+            RecipientAddress = user.Email,
+            Owner = new(EmailIntentOwnerType.User, user.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
             {
-                { "NAME", user.Name },
-                { "CODE", code },
-                { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                { "TIME", brazilTime.ToString("HH:mm:ss") },
-                { "IP_ADDRESS", ipAddress },
-                { "LOCATION", location }
-            },
-            userId: user.Id
-        );
+                ["NAME"] = user.Name,
+                ["CODE"] = code,
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
+        await dbContext.SaveChangesAsync(ct);
+
 
         await Send.OkAsync(new RequestReferralPayoutPixKeyUpdateResponse
         {

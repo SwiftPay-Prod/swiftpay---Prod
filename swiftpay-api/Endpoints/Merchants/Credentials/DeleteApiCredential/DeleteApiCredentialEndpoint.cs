@@ -14,7 +14,7 @@ public sealed class DeleteApiCredentialEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     INotificationService notificationService
 ) : Endpoint<DeleteApiCredentialRequest, DeleteApiCredentialResponse>
 {
@@ -85,6 +85,34 @@ public sealed class DeleteApiCredentialEndpoint(
         // Get user email for notification BEFORE saving (to avoid DbContext concurrency issues)
         var user = await dbContext.Users.OrderBy(u => u.Id).FirstOrDefaultAsync(u => u.Id == userId, ct);
 
+        if (user != null)
+        {
+            var now = DateTime.UtcNow;
+            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
+            await emailIntentWriter.Add(new EmailIntentAddRequest
+            {
+                Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                    EmailMessageType.ApiCredentialRevoked,
+                    credential.Id,
+                    credential.Id),
+                MessageType = EmailMessageType.ApiCredentialRevoked,
+                RecipientAddress = user.Email,
+                Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+                CorrelationId = HttpContext.TraceIdentifier,
+                Inputs = new Dictionary<string, string>
+                {
+                    ["NAME"] = user.Name,
+                    ["CREDENTIAL_NAME"] = credential.Name ?? $"Credencial {credential.Environment}",
+                    ["ENVIRONMENT"] = credential.Environment.ToString(),
+                    ["MERCHANT_NAME"] = merchant.Name ?? "Merchant",
+                    ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                    ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                    ["IP_ADDRESS"] = ipAddress,
+                    ["LOCATION"] = location
+                }
+            }, ct);
+        }
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.MerchantUpdated, Status = SecurityLogStatus.Success, UserId = userId, Details = $"Credencial de API {credential.Id} revogada para o merchant {merchant.Id}" });
@@ -97,31 +125,6 @@ public sealed class DeleteApiCredentialEndpoint(
             NotificationPriority.High
         );
 
-        // Send email notification (fire-and-forget)
-        if (user != null)
-        {
-            var now = DateTime.UtcNow;
-            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-            _ = emailService.SendAsync(
-                user.Email,
-                "🔒 Credencial de API revogada - SwiftPay",
-                EmailTemplate.ApiCredentialRevoked,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CREDENTIAL_NAME", credential.Name ?? $"Credencial {credential.Environment}" },
-                    { "ENVIRONMENT", credential.Environment.ToString() },
-                    { "MERCHANT_NAME", merchant.Name ?? "Merchant" },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id
-            );
-        }
 
         await Send.OkAsync(new DeleteApiCredentialResponse
         {

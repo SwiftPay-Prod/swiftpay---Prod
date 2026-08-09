@@ -14,7 +14,7 @@ public sealed class SuspendMerchantEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     INotificationService notificationService,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter
 ) : Endpoint<SuspendMerchantRequest, SuspendMerchantResponse>
 {
     public override void Configure()
@@ -36,6 +36,7 @@ public sealed class SuspendMerchantEndpoint(
         }
 
         var merchant = await dbContext.Merchants
+            .Include(m => m.User)
             .OrderBy(m => m.Id)
             .FirstOrDefaultAsync(m => m.Id == req.MerchantId, ct);
 
@@ -82,6 +83,24 @@ public sealed class SuspendMerchantEndpoint(
         merchant.SuspendedReason = req.Reason;
         merchant.UpdatedAt = DateTime.UtcNow;
 
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.MerchantSuspended,
+                merchant.Id,
+                merchant.Id),
+            MessageType = EmailMessageType.MerchantSuspended,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name ?? "Usuário",
+                ["MERCHANT_NAME"] = merchant.Name ?? "Organização",
+                ["REASON"] = req.Reason
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -99,26 +118,6 @@ public sealed class SuspendMerchantEndpoint(
             requiresMerchantRefresh: true
         );
 
-        var user = await dbContext.Users
-            .OrderBy(u => u.Id)
-            .FirstOrDefaultAsync(u => u.Id == merchant.UserId, ct);
-
-        if (user != null)
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Sua organização foi suspensa",
-                EmailTemplate.MerchantSuspended,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name ?? "Usuário" },
-                    { "MERCHANT_NAME", merchant.Name ?? "Organização" },
-                    { "REASON", req.Reason }
-                },
-                user.Id,
-                merchant.Id
-            );
-        }
 
         await Send.OkAsync(new SuspendMerchantResponse
         {

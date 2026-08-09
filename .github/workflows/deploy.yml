@@ -17,7 +17,36 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
+            set -Eeuo pipefail
             cd /root/swiftpay/swiftpay-api
-            git pull
-            docker compose --env-file .env.production -f docker-compose.production.yaml up -d --build
+
+            ENV_FILE=/root/swiftpay/.env.production
+            COMPOSE_FILE=docker-compose.production.yaml
+            PREVIOUS_COMMIT=$(git rev-parse HEAD)
+
+            git diff --quiet
+            git diff --cached --quiet
+
+            rollback() {
+              exit_code=$?
+              trap - ERR
+              echo "Deploy failed; rolling back to ${PREVIOUS_COMMIT}"
+              git reset --hard "${PREVIOUS_COMMIT}"
+              if ! docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240; then
+                echo "Rollback failed; manual intervention required" >&2
+              fi
+              exit "${exit_code}"
+            }
+            trap rollback ERR
+
+            git pull --ff-only
+            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" config --quiet
+            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240
+
+            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5279/health/live
+            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5279/health/ready
+            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5166/health/live
+            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5166/health/ready
+
+            trap - ERR
             docker image prune -f

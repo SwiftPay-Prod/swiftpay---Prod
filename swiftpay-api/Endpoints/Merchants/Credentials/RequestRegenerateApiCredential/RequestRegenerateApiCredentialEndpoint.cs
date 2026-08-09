@@ -12,7 +12,7 @@ namespace swiftpay_api.Endpoints.Merchants.Credentials.RequestRegenerateApiCrede
 
 public sealed class RequestRegenerateApiCredentialEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService
 ) : Endpoint<RequestRegenerateApiCredentialRequest, RequestRegenerateApiCredentialResponse>
@@ -98,22 +98,57 @@ public sealed class RequestRegenerateApiCredentialEndpoint(
         var code = CryptoUtils.GenerateCode();
         var codeHash = CryptoUtils.ComputeSha256Hash(code);
 
+        var requestedAt = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(requestedAt, DateTimeUtils.BrasiliaTimeZone);
+
         var apiCredentialCode = new ApiCredentialCode
         {
+            Id = Guid.CreateVersion7(),
             MerchantId = merchant.Id,
             UserId = userId.Value,
             CredentialId = credential.Id,
             CodeHash = codeHash,
             Action = ApiCredentialCodeAction.Regenerate,
             Status = ApiCredentialCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(10),
+            ExpiresAt = requestedAt.AddMinutes(10),
             CredentialName = credential.Name,
             CredentialEnvironment = credential.Environment,
             CredentialAllowedIpRange = credential.AllowedIpRange,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = requestedAt,
+            UpdatedAt = requestedAt
         };
 
         dbContext.ApiCredentialCodes.Add(apiCredentialCode);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.ApiCredentialCode(
+                merchant.Id,
+                apiCredentialCode.Id.ToString("N"),
+                ApiCredentialCodeAction.Regenerate.ToString(),
+                requestedAt),
+            MessageType = EmailMessageType.ApiCredentialCode,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["CREDENTIAL_NAME"] = credential.Name ?? $"Credencial {credential.Environment}",
+                ["ENVIRONMENT"] = credential.Environment.ToString(),
+                ["CODE"] = code,
+                ["EXPIRES_IN"] = "10",
+                ["TITLE"] = "Regenerar Credencial de API",
+                ["TITLE_ICON"] = "🔄",
+                ["TITLE_COLOR"] = "#f59e0b",
+                ["DESCRIPTION"] = "Você solicitou a regeneração das chaves desta credencial de API. As chaves antigas deixarão de funcionar.",
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -124,7 +159,6 @@ public sealed class RequestRegenerateApiCredentialEndpoint(
             Details = $"Código de regeneração de credencial solicitado para credential {credential.Id}"
         });
 
-        await SendCodeEmailAsync(merchant.User, merchant, credential, code, ipAddress, location);
 
         await Send.OkAsync(new RequestRegenerateApiCredentialResponse
         {
@@ -132,41 +166,4 @@ public sealed class RequestRegenerateApiCredentialEndpoint(
         }, ct);
     }
 
-    private async Task SendCodeEmailAsync(User user, Merchant merchant, MerchantApiCredential credential, string code, string ipAddress, string location)
-    {
-        try
-        {
-            var now = DateTime.UtcNow;
-            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-            await emailService.SendAsync(
-                user.Email,
-                "🔄 Regenerar Credencial de API - SwiftPay",
-                EmailTemplate.ApiCredentialCode,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                    { "CREDENTIAL_NAME", credential.Name ?? $"Credencial {credential.Environment}" },
-                    { "ENVIRONMENT", credential.Environment.ToString() },
-                    { "CODE", code },
-                    { "EXPIRES_IN", "10" },
-                    { "TITLE", "Regenerar Credencial de API" },
-                    { "TITLE_ICON", "🔄" },
-                    { "TITLE_COLOR", "#f59e0b" },
-                    { "DESCRIPTION", "Você solicitou a regeneração das chaves desta credencial de API. As chaves antigas deixarão de funcionar." },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

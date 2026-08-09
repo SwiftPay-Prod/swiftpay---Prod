@@ -17,7 +17,7 @@ public sealed class CreateCashoutAccountEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     INotificationService notificationService,
     IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<CreateCashoutAccountRequest, CreateCashoutAccountResponse>
@@ -113,6 +113,9 @@ public sealed class CreateCashoutAccountEndpoint(
         var codeHash = CryptoUtils.ComputeSha256Hash(code);
         var expirationMinutes = platformSettings.Value.VerificationCodeExpirationMinutes;
 
+        var requestedAt = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(requestedAt, DateTimeUtils.BrasiliaTimeZone);
+
         var verificationCode = new PayoutAccountVerificationCode
         {
             Id = Guid.CreateVersion7(),
@@ -120,10 +123,38 @@ public sealed class CreateCashoutAccountEndpoint(
             UserId = userId.Value,
             CodeHash = codeHash,
             Status = PayoutAccountVerificationCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes)
+            ExpiresAt = requestedAt.AddMinutes(expirationMinutes),
+            CreatedAt = requestedAt,
+            UpdatedAt = requestedAt
         };
 
         dbContext.PayoutAccountVerificationCodes.Add(verificationCode);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PayoutAccountActionVerification,
+                payoutAccount.Id,
+                verificationCode.Id),
+            MessageType = EmailMessageType.PayoutAccountActionVerification,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["ACTION_DESCRIPTION"] = "ativar uma nova conta de saque",
+                ["PIX_KEY_TYPE"] = GetPixKeyTypeDisplayName(req.PixKeyType),
+                ["PIX_KEY"] = MaskUtils.MaskPixKey(req.PixKey, req.PixKeyType.ToString()),
+                ["CODE"] = code,
+                ["EXPIRES_IN"] = expirationMinutes.ToString(),
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -142,31 +173,6 @@ public sealed class CreateCashoutAccountEndpoint(
             NotificationPriority.Normal
         );
 
-        var user = merchant.User;
-        var now = DateTime.UtcNow;
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-        _ = emailService.SendAsync(
-            user.Email,
-            "🔐 Verificação de Conta de Saque - SwiftPay",
-            EmailTemplate.PayoutAccountActionVerification,
-            new Dictionary<string, string>
-            {
-                { "NAME", user.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                { "ACTION_DESCRIPTION", "ativar uma nova conta de saque" },
-                { "PIX_KEY_TYPE", GetPixKeyTypeDisplayName(req.PixKeyType) },
-                { "PIX_KEY", MaskUtils.MaskPixKey(req.PixKey, req.PixKeyType.ToString()) },
-                { "CODE", code },
-                { "EXPIRES_IN", expirationMinutes.ToString() },
-                { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                { "TIME", brazilTime.ToString("HH:mm:ss") },
-                { "IP_ADDRESS", ipAddress },
-                { "LOCATION", location }
-            },
-            userId: user.Id,
-            merchantId: merchant.Id
-        );
 
         await Send.ResponseAsync(new CreateCashoutAccountResponse
         {

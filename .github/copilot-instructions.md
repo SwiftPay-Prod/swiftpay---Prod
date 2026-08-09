@@ -3,6 +3,19 @@
 Este arquivo principal agora funciona como índice de navegação.
 O conteúdo detalhado foi dividido em arquivos menores por contexto para facilitar manutenção, revisão e atualização incremental.
 
+## Regra universal e absoluta de contexto
+
+Antes de qualquer ação, todo agente deve ler:
+
+1. [`../AGENTS.md`](../AGENTS.md), contrato universal;
+2. [`../CLAUDE.md`](../CLAUDE.md), governança gstack obrigatória;
+3. [`../TODOS.md`](../TODOS.md), ledger canônico e handoff atual;
+4. [`../docs/agent-context-governance.md`](../docs/agent-context-governance.md), ciclo de documentação;
+5. decisões e arquitetura relacionadas em `docs/decisions/` e `docs/architecture/`;
+6. instruções temáticas aplicáveis listadas abaixo.
+
+Toda tarefa, TODO, decisão, bloqueio, risco, tentativa, alteração e verificação deve ser registrada em artefatos versionados. Chat, memória local e logs nunca podem ser a única fonte. Antes de encerrar, atualize `TODOS.md` com evidências, arquivos alterados, trabalho restante e próxima ação. Nunca registre valores de segredos.
+
 ## Como usar
 
 1. Use este arquivo para localizar rapidamente o tema desejado.

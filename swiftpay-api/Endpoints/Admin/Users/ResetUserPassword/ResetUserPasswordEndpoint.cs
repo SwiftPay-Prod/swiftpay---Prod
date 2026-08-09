@@ -13,7 +13,8 @@ namespace swiftpay_api.Endpoints.Admin.Users.ResetUserPassword;
 public sealed class ResetUserPasswordEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal
 ) : Endpoint<ResetUserPasswordRequest, ResetUserPasswordResponse>
 {
     public override void Configure()
@@ -61,33 +62,30 @@ public sealed class ResetUserPasswordEndpoint(
         dbUser.PasswordChangedAt = DateTime.UtcNow;
         dbUser.UpdatedAt = DateTime.UtcNow;
 
-        await dbContext.SaveChangesAsync(ct);
+        var emailHandle = await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.ManualOperation(
+                EmailMessageType.AdminPasswordReset,
+                Guid.NewGuid()),
+            MessageType = EmailMessageType.AdminPasswordReset,
+            RecipientAddress = dbUser.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, dbUser.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = dbUser.Name,
+                ["PASSWORD"] = temporaryPassword
+            }
+        }, ct);
 
-        // Send email with temporary password
-        try
-        {
-            await emailService.SendAsync(
-                dbUser.Email,
-                "Sua senha foi redefinida - SwiftPay",
-                EmailTemplate.AdminPasswordReset,
-                new Dictionary<string, string>
-                {
-                    { "NAME", dbUser.Name },
-                    { "TEMPORARY_PASSWORD", temporaryPassword }
-                },
-                userId: dbUser.Id
-            );
-        }
-        catch
-        {
-            // Don't fail if email fails
-        }
+        await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
 
         await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordResetComplete, Status = SecurityLogStatus.Success, UserId = adminId, Details = $"Senha do usuário {dbUser.Id} resetada pelo admin." });
 
         await Send.OkAsync(new ResetUserPasswordResponse
         {
-            Data = new ResetUserPasswordData(temporaryPassword)
+            Data = new ResetUserPasswordData(temporaryPassword, emailHandle.Id, "Pending")
         }, ct);
     }
 }

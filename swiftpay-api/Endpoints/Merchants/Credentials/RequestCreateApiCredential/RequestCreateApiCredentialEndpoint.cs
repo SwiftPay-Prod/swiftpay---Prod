@@ -12,7 +12,7 @@ namespace swiftpay_api.Endpoints.Merchants.Credentials.RequestCreateApiCredentia
 
 public sealed class RequestCreateApiCredentialEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService
 ) : Endpoint<RequestCreateApiCredentialRequest, RequestCreateApiCredentialResponse>
@@ -78,22 +78,57 @@ public sealed class RequestCreateApiCredentialEndpoint(
         var codeHash = CryptoUtils.ComputeSha256Hash(code);
         var credentialName = req.Name ?? $"Credencial {req.Environment}";
 
+        var requestedAt = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(requestedAt, DateTimeUtils.BrasiliaTimeZone);
+
         var apiCredentialCode = new ApiCredentialCode
         {
+            Id = Guid.CreateVersion7(),
             MerchantId = merchant.Id,
             UserId = userId.Value,
             CredentialId = null,
             CodeHash = codeHash,
             Action = ApiCredentialCodeAction.Create,
             Status = ApiCredentialCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(10),
+            ExpiresAt = requestedAt.AddMinutes(10),
             CredentialName = credentialName,
             CredentialEnvironment = req.Environment,
             CredentialAllowedIpRange = req.AllowedIpRange,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = requestedAt,
+            UpdatedAt = requestedAt
         };
 
         dbContext.ApiCredentialCodes.Add(apiCredentialCode);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.ApiCredentialCode(
+                merchant.Id,
+                apiCredentialCode.Id.ToString("N"),
+                ApiCredentialCodeAction.Create.ToString(),
+                requestedAt),
+            MessageType = EmailMessageType.ApiCredentialCode,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["CREDENTIAL_NAME"] = credentialName,
+                ["ENVIRONMENT"] = req.Environment.ToString(),
+                ["CODE"] = code,
+                ["EXPIRES_IN"] = "10",
+                ["TITLE"] = "Criar Credencial de API",
+                ["TITLE_ICON"] = "🔑",
+                ["TITLE_COLOR"] = "#2563eb",
+                ["DESCRIPTION"] = "Você solicitou a criação de uma nova credencial de API.",
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -104,7 +139,6 @@ public sealed class RequestCreateApiCredentialEndpoint(
             Details = $"Código de criação de credencial solicitado para merchant {merchant.Id}"
         });
 
-        await SendCodeEmailAsync(merchant.User, merchant, credentialName, req.Environment.ToString(), code, "Criar Credencial de API", "🔑", "#2563eb", "Você solicitou a criação de uma nova credencial de API.", ipAddress, location);
 
         await Send.OkAsync(new RequestCreateApiCredentialResponse
         {
@@ -112,41 +146,4 @@ public sealed class RequestCreateApiCredentialEndpoint(
         }, ct);
     }
 
-    private async Task SendCodeEmailAsync(User user, Merchant merchant, string credentialName, string environment, string code, string title, string titleIcon, string titleColor, string description, string ipAddress, string location)
-    {
-        try
-        {
-            var now = DateTime.UtcNow;
-            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-            await emailService.SendAsync(
-                user.Email,
-                $"{titleIcon} {title} - SwiftPay",
-                EmailTemplate.ApiCredentialCode,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                    { "CREDENTIAL_NAME", credentialName },
-                    { "ENVIRONMENT", environment },
-                    { "CODE", code },
-                    { "EXPIRES_IN", "10" },
-                    { "TITLE", title },
-                    { "TITLE_ICON", titleIcon },
-                    { "TITLE_COLOR", titleColor },
-                    { "DESCRIPTION", description },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

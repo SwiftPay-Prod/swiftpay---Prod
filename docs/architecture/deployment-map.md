@@ -5,19 +5,22 @@
 ---
 
 ## 1. Topologia de Serviços
-
-### Produção (`docker-compose.yaml`)
+### Produção (`docker-compose.production.yaml`)
 
 | Serviço | Container | Imagem | Porta | Health Check | Dependências |
 |---------|-----------|--------|-------|-------------|-------------|
 | **swiftpaydb** | swiftpaydb | `postgres:15.15-alpine3.22` | 5432:5432 | `pg_isready` (10s/5s/5) | — |
 | **swiftpaylogsdb** | swiftpaylogsdb | `postgres:15.15-alpine3.22` | 5433:5432 | `pg_isready` (10s/5s/5) | — |
 | **swiftpaymail** | swiftpaymail | `mailhog/mailhog:latest` | 8025:8025, 1025:1025 | — | — |
+| **swiftpayrabbitmq** | swiftpayrabbitmq | `rabbitmq:3.13-management-alpine` | 5672:5672, 15672:15672 | `rabbitmq-diagnostics ping` (10s/5s/5) | — |
+| **swiftpayvalkey** | swiftpayvalkey | `valkey/valkey:8-alpine` | 6379:6379 | `valkey-cli ping` (10s/5s/5) | — |
+| **swiftpaystorage** | swiftpaystorage | `minio/minio:RELEASE.2025-09-07T16-13-09Z` | 9000:9000, 9001:9001 | `curl /minio/health/live` (10s/5s/5) | — |
+| **swiftpaystorage-init** | swiftpaystorage-init | `minio/minio:RELEASE.2025-09-07T16-13-09Z` | — | — | swiftpaystorage (healthy) |
 | **grafana** | grafana | `grafana/grafana:10.2.3` | 3001:3000 | — | — |
-| **swiftpayvalkey** | swiftpayvalkey | `valkey/valkey:8-alpine` | 6379:6379 | `valkey-cli ping` | — |
-| **swiftpayapi** | swiftpayapi | Custom build (Dockerfile) | 5279:5279 | — | swiftpaydb (healthy), swiftpaylogsdb (healthy), swiftpaymail (started), swiftpayvalkey (healthy) |
-| **swiftpayapipayment** | swiftpayapipayment | Custom build (Dockerfile) | 5166:5166 | — | swiftpaydb (healthy), swiftpaylogsdb (healthy), swiftpayapi (started) |
-| **swiftpayweb** | swiftpayweb | Custom build (swiftpay-web/Dockerfile) | 3000:3000 | — | swiftpayapi (started), swiftpayapipayment (started) |
+| **swiftpayapi** | swiftpayapi | Custom build (Dockerfile) | 5279:5279 | `curl /health/ready` (30s/10s/3) | swiftpaydb (healthy), swiftpaylogsdb (healthy), swiftpaymail (started), swiftpayvalkey (healthy), swiftpaystorage-init (completed) |
+| **swiftpayapipayment** | swiftpayapipayment | Custom build (Dockerfile) | 5166:5166 | `curl /health/ready` (30s/10s/3) | swiftpaydb (healthy), swiftpaylogsdb (healthy), swiftpayapi (started) |
+| **swiftpayweb** | swiftpayweb | Custom build (swiftpay-web/Dockerfile) | 3000:3000 | `curl /` (30s/10s/3) | swiftpayapi (started), swiftpayapipayment (started) |
+| **swiftpaywebcheckout** | swiftpaywebcheckout | Custom build (swiftpay-web-checkout/Dockerfile) | 5002:3000 | `curl /` (30s/10s/3) | swiftpayapipayment (healthy) |
 
 ### Desenvolvimento (`docker-compose.development.yaml` — adicionais além de produção)
 
@@ -29,6 +32,7 @@
 | **swiftpaydb** | `postgres:17-alpine` (PG 17) | 5432:5432 |
 | **swiftpayweb** | Custom build | 3001:3000 |
 
+> Nota operacional: `start.sh` é somente para desenvolvimento local. Em produção, use `docker-compose.production.yaml` e o fluxo documentado de deploy/rollback.
 ---
 
 ## 2. Docker — Padrões Multi-Stage Build
@@ -141,18 +145,18 @@ No ambiente `Production`:
 ```
 [Staging]      UseStagingDocsAuth()
 [!Dev]         UseHttpsRedirection()
-[!Dev]         UseRateLimiter()
-               UseCors()
-               UseCorrelationId()
-               UseAuthentication()
-               UseSessionValidation()
-               UseAuthorization()
-               UseSecurityLogContext()
-               UseApiLogContext()
-               UseMiniProfiler()
-               UseFastEndpoints()
-
-Health Checks:  /health/live  (liveness — sem predicados)
+| [Staging]      | UseStagingDocsAuth() |
+| [!Dev]         | UseHttpsRedirection() |
+| [!Dev]         | UseRateLimiter() |
+|                | UseCors() |
+|                | UseCorrelationId() |
+|                | UseAuthentication() |
+|                | UseSessionValidation() |
+|                | UseAuthorization() |
+|                | UseSecurityLogContext() |
+|                | UseApiLogContext() |
+|                | UseMiniProfiler() *(apenas Development/Staging)* |
+|                | UseFastEndpoints() |
                 /health/ready (readiness — checks completos)
                 /health       (full health)
 
@@ -181,13 +185,7 @@ SignalR Hub:    /hubs/payment-status (PaymentStatusHub, CORS: CheckoutCorsPolicy
 
 ---
 
-## 6. CORS — Regras
-
-### swiftpay-api
-
-**Desenvolvimento:** `AllowAnyOrigin() + AllowAnyHeader() + AllowAnyMethod() + AllowCredentials()`
-
-**Produção:** Apenas origens HTTPS `*.swiftpay.com.br`
+:**Produção:** Apenas origens HTTPS `swiftpay.com.br` e `*.swiftpay.com.br`
 
 ### swiftpay-api-payment
 

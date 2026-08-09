@@ -23,6 +23,8 @@ public static class ServiceCollectionExtensions
         services.AddGeoLocationService();
         services.AddNotificationService();
         services.AddEmailService();
+        services.AddEmailIntentWriter();
+        services.AddEmailIntentRelay();
         services.AddLedgerRepository();
         services.AddLedgerService();
         services.AddPushNotificationService();

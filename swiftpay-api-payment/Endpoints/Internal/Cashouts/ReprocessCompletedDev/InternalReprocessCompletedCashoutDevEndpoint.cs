@@ -17,7 +17,7 @@ public sealed class InternalReprocessCompletedCashoutDevEndpoint(
     PrimaryDbContext dbContext,
     ILedgerService ledgerService,
     INotificationService notificationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     IMessagePublisher messagePublisher,
     IReferralCommissionCompilationService referralCommissionCompilationService
 ) : Endpoint<InternalReprocessCompletedCashoutDevRequest, InternalReprocessCompletedCashoutDevResponse>
@@ -185,6 +185,7 @@ public sealed class InternalReprocessCompletedCashoutDevEndpoint(
             payout.CompletedAt = DateTime.UtcNow;
             payout.FailureReason = null;
             payout.UpdatedAt = DateTime.UtcNow;
+            await AddPayoutCompletedEmailIntentAsync(payout, ct);
             await dbContext.SaveChangesAsync(ct);
         }
         else if (isCurrentBlocked && isTargetTerminal)
@@ -247,6 +248,7 @@ public sealed class InternalReprocessCompletedCashoutDevEndpoint(
             payout.CompletedAt = DateTime.UtcNow;
             payout.FailureReason = null;
             payout.UpdatedAt = DateTime.UtcNow;
+            await AddPayoutCompletedEmailIntentAsync(payout, ct);
             await dbContext.SaveChangesAsync(ct);
         }
 
@@ -284,21 +286,6 @@ public sealed class InternalReprocessCompletedCashoutDevEndpoint(
                 payout.Environment,
                 actionUrl: $"/payouts/{payout.Id}");
 
-            if (payout.Merchant?.User?.Email != null)
-            {
-                _ = emailService.SendAsync(
-                    payout.Merchant.User.Email,
-                    "✅ Saque Concluído - SwiftPay",
-                    EmailTemplate.PayoutCompleted,
-                    new Dictionary<string, string>
-                    {
-                        { "NAME", payout.Merchant.User.Name ?? "Merchant" },
-                        { "AMOUNT", FormatUtils.FormatCurrencyNumber(payout.NetAmount) },
-                        { "PIX_KEY", maskedKey },
-                        { "DATE", DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm") },
-                        { "TRANSACTION_ID", payout.AcquirerTransactionId ?? "N/A" }
-                    });
-            }
 
             await referralCommissionCompilationService.RegisterPayoutCompletedMovementAsync(
                 payout.Id,
@@ -365,5 +352,37 @@ public sealed class InternalReprocessCompletedCashoutDevEndpoint(
                     payout.ToWebhookMessage(WebhookEvents.Cashout.Cancelled));
             }
         }
+    }
+
+    private async Task AddPayoutCompletedEmailIntentAsync(Payout payout, CancellationToken ct)
+    {
+        if (payout.Merchant?.User?.Email == null)
+            return;
+
+        var resolvedPixKey = payout.PayoutAccount?.PixKey ?? payout.InlinePixKey;
+        var resolvedPixKeyType = payout.PayoutAccount?.PixKeyType.ToString() ?? payout.InlinePixKeyType;
+        var maskedKey = !string.IsNullOrEmpty(resolvedPixKey) && !string.IsNullOrEmpty(resolvedPixKeyType)
+            ? MaskUtils.MaskPixKey(resolvedPixKey, resolvedPixKeyType)
+            : "N/A";
+
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PayoutCompleted,
+                payout.Id,
+                payout.Id),
+            MessageType = EmailMessageType.PayoutCompleted,
+            RecipientAddress = payout.Merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, payout.MerchantId),
+            CorrelationId = $"payout:{payout.Id:N}:completed",
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = payout.Merchant.User.Name ?? "Merchant",
+                ["AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.NetAmount),
+                ["PIX_KEY"] = maskedKey,
+                ["DATE"] = (payout.CompletedAt ?? payout.UpdatedAt).ToString("dd/MM/yyyy HH:mm"),
+                ["TRANSACTION_ID"] = payout.AcquirerTransactionId ?? "N/A"
+            }
+        }, ct);
     }
 }

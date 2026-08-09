@@ -2,6 +2,18 @@
 
 > **Data de análise:** 21/05/2026
 
+## 0. Entrada universal para agentes
+
+Antes dos arquivos temáticos descritos neste mapa, todo agente deve ler:
+
+1. [`../../AGENTS.md`](../../AGENTS.md);
+2. [`../../CLAUDE.md`](../../CLAUDE.md);
+3. [`../../TODOS.md`](../../TODOS.md);
+4. [`../agent-context-governance.md`](../agent-context-governance.md);
+5. decisões aplicáveis em [`../decisions/`](../decisions/).
+
+Esses artefatos tornam obrigatório registrar em Git toda tarefa, decisão, tentativa, risco, bloqueio e evidência. Instruções locais complementam a governança universal; não a substituem.
+
 ---
 
 ## 1. Visão Geral

@@ -16,7 +16,7 @@ public sealed class SubmitOnboardingEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     INotificationService notificationService,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter
 ) : Endpoint<SubmitOnboardingRequest, SubmitOnboardingResponse>
 {
     public override void Configure()
@@ -79,6 +79,23 @@ public sealed class SubmitOnboardingEndpoint(
         merchant.KycSubmittedAt = DateTime.UtcNow;
         merchant.UpdatedAt = DateTime.UtcNow;
 
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.KycSubmitted,
+                merchant.Id,
+                merchant.Id),
+            MessageType = EmailMessageType.KycSubmitted,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? ""
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.MerchantOnboardingCompleted, Status = SecurityLogStatus.Success, UserId = userId, Details = $"Merchant onboarding completed: {merchant.Id}" });
@@ -93,19 +110,6 @@ public sealed class SubmitOnboardingEndpoint(
             NotificationPriority.Normal
         );
 
-        // Send confirmation email
-        _ = emailService.SendAsync(
-            merchant.User.Email,
-            "Cadastro Recebido - SwiftPay",
-            EmailTemplate.KycSubmitted,
-            new Dictionary<string, string>
-            {
-                { "NAME", merchant.User.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "" }
-            },
-            userId: merchant.UserId,
-            merchantId: merchant.Id
-        );
 
         await Send.ResponseAsync(new SubmitOnboardingResponse
         {

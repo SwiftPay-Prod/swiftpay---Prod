@@ -15,7 +15,8 @@ namespace swiftpay_api.Endpoints.Auth.ResetPassword;
 
 public sealed class ResetPasswordEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService,
     IHubContext<MainHub> authHub
@@ -43,7 +44,7 @@ public sealed class ResetPasswordEndpoint(
 
         if (user == null)
         {
-            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordResetComplete, Status = SecurityLogStatus.Failed, Details = $"User not found: {emailLower}" });
+            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordResetComplete, Status = SecurityLogStatus.Failed, Details = "User not found" });
 
             await Send.ResponseAsync(new ResetPasswordResponse
             {
@@ -117,7 +118,28 @@ public sealed class ResetPasswordEndpoint(
         user.IsLockedOut = false;
         user.LockedOutAt = null;
 
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PasswordChanged,
+                user.Id,
+                resetCode.Id),
+            MessageType = EmailMessageType.PasswordChanged,
+            RecipientAddress = user.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = user.Name,
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
 
         if (trustedDevices.Count > 0)
         {
@@ -126,7 +148,6 @@ public sealed class ResetPasswordEndpoint(
 
         await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.PasswordResetComplete, Status = SecurityLogStatus.Success, UserId = user.Id });
 
-        await SendPasswordChangedEmailAsync(user, ipAddress, location, brazilTime);
 
         await Send.OkAsync(new ResetPasswordResponse
         {
@@ -134,28 +155,4 @@ public sealed class ResetPasswordEndpoint(
         }, ct);
     }
 
-    private async Task SendPasswordChangedEmailAsync(User user, string ipAddress, string location, DateTime brazilTime)
-    {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "Sua senha foi alterada - SwiftPay",
-                EmailTemplate.PasswordChanged,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

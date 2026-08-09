@@ -50,6 +50,16 @@ If GSTACK_MISSING: **STOP IMMEDIATELY.** Do not proceed, do not work around, do 
 - **Never ship** without running /review and /qa first
 - **Never merge** without /ship
 
+
+### 2.1 Durable context for every agent (ABSOLUTE)
+
+- Every task, TODO, decision, assumption, blocker, risk, attempted approach, changed artifact, and verification result MUST be recorded in durable, versioned repository artifacts.
+- Chat history, terminal output, harness TODOs, local memory, and `~/.gstack` artifacts MAY supplement context but MUST NEVER be its only source.
+- Every agent MUST start with `AGENTS.md`, `TODOS.md`, and `docs/agent-context-governance.md`, then read relevant `docs/decisions/`, `docs/architecture/`, and module instructions.
+- Before yielding, every agent MUST update `TODOS.md` with completed work, evidence, remaining work, blockers, changed files, and the next concrete action.
+- Durable context MUST NEVER contain secret values or unnecessary personal data. Record only safe metadata about secret ownership, storage, rotation, and validation.
+- The full contract is defined in `AGENTS.md`; the lifecycle and handoff format are defined in `docs/agent-context-governance.md`.
+
 ### 3. Required workflow (100% compliance)
 
 | Phase | What to run |

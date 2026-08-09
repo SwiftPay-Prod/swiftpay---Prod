@@ -14,7 +14,8 @@ namespace swiftpay_api.Endpoints.Auth.ResendDeviceCode;
 public sealed class ResendDeviceCodeEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal
 ) : Endpoint<ResendDeviceCodeRequest, ResendDeviceCodeResponse>
 {
     public override void Configure()
@@ -72,6 +73,7 @@ public sealed class ResendDeviceCodeEndpoint(
 
         var newVerification = new DeviceVerificationCode
         {
+            Id = Guid.NewGuid(),
             UserId = user.Id,
             CodeHash = codeHash,
             DeviceId = existingVerification.DeviceId,
@@ -85,7 +87,27 @@ public sealed class ResendDeviceCodeEndpoint(
         };
 
         dbContext.DeviceVerificationCodes.Add(newVerification);
+        var cooldownWindow = FloorToWindow(now, TimeSpan.FromMinutes(10));
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.DeviceVerification(user.Id, newVerification.DeviceId, cooldownWindow),
+            MessageType = EmailMessageType.DeviceVerification,
+            RecipientAddress = user.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = user.Name,
+                ["CODE"] = code,
+                ["DEVICE_NAME"] = existingVerification.DeviceName ?? "Dispositivo desconhecido",
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = existingVerification.IpAddress ?? "Desconhecido",
+                ["LOCATION"] = existingVerification.Location ?? "Desconhecido"
+            }
+        }, ct);
         await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
 
         await securityLog.LogAsync(new SecurityLogInput
         {
@@ -95,10 +117,7 @@ public sealed class ResendDeviceCodeEndpoint(
             Details = $"Device verification code resent for device {existingVerification.DeviceName}"
         });
 
-        // Send verification email
-        await SendDeviceVerificationEmailAsync(user, code, existingVerification.DeviceName ?? "Dispositivo desconhecido", existingVerification.IpAddress, existingVerification.Location, brazilTime);
-
-        await Send.OkAsync(new ResendDeviceCodeResponse
+        await Send.ResponseAsync(new ResendDeviceCodeResponse
         {
             Data = new ResendDeviceCodeData
             {
@@ -106,33 +125,12 @@ public sealed class ResendDeviceCodeEndpoint(
                 ExpiresAt = expiresAt
             },
             Message = "Código reenviado com sucesso!"
-        }, ct);
+        }, 202, ct);
     }
 
-    private async Task SendDeviceVerificationEmailAsync(User user, string code, string deviceName, string? ipAddress, string? location, DateTime brazilTime)
+    private static DateTime FloorToWindow(DateTime utcNow, TimeSpan window)
     {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "🔐 Código de verificação de dispositivo - SwiftPay",
-                EmailTemplate.DeviceVerification,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CODE", code },
-                    { "DEVICE_NAME", deviceName },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress ?? "Desconhecido" },
-                    { "LOCATION", location ?? "Desconhecido" }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
+        var ticks = utcNow.Ticks - (utcNow.Ticks % window.Ticks);
+        return new DateTime(ticks, DateTimeKind.Utc);
     }
 }

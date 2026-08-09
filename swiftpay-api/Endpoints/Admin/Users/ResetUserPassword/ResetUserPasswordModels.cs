@@ -20,4 +20,7 @@ public sealed class ResetUserPasswordRequestValidator : Validator<ResetUserPassw
 
 public sealed class ResetUserPasswordResponse : BaseResponse<ResetUserPasswordData>;
 
-public sealed record ResetUserPasswordData(string TemporaryPassword);
+public sealed record ResetUserPasswordData(
+    string TemporaryPassword,
+    Guid EmailMessageId,
+    string EmailStatus);

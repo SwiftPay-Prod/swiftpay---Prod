@@ -3,6 +3,11 @@
 Este arquivo principal agora funciona como índice de navegação.
 O conteúdo detalhado foi dividido em arquivos menores por contexto para facilitar manutenção, revisão e atualização incremental.
 
+## Regra universal e absoluta de contexto
+
+Antes de qualquer ação, leia [`../../AGENTS.md`](../../AGENTS.md), [`../../CLAUDE.md`](../../CLAUDE.md), [`../../TODOS.md`](../../TODOS.md) e [`../../docs/agent-context-governance.md`](../../docs/agent-context-governance.md). Toda tarefa, decisão, tentativa, risco, bloqueio e evidência deve ser versionada; chat e memória local nunca podem ser a única fonte. Atualize `TODOS.md` antes de encerrar e nunca registre segredos.
+
+
 ## Como usar
 
 1. Use este arquivo para localizar rapidamente o tema desejado.

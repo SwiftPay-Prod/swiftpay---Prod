@@ -20,7 +20,7 @@ public class CashoutService(
     ILedgerService ledgerService,
     IMessagePublisher messagePublisher,
     INotificationService notificationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     ISandboxService sandboxService,
     ILogger<CashoutService> logger
 ) : ICashoutService
@@ -43,6 +43,8 @@ public class CashoutService(
             input.PixKey,
             input.PixKeyType,
             false,
+            null,
+            null,
             ct);
 
         if (error != null)
@@ -101,6 +103,8 @@ public class CashoutService(
             null,
             null,
             false,
+            input.IpAddress,
+            input.Location,
             ct);
 
         if (error != null)
@@ -326,6 +330,7 @@ public class CashoutService(
         payout.FailureReason = reason;
         payout.ProcessedAt = DateTime.UtcNow;
 
+        await AddPayoutRejectedEmailIntentAsync(payout, reason, ct);
         await dbContext.SaveChangesAsync(ct);
 
         await SendPayoutRejectedNotificationsAsync(payout, reason);
@@ -572,6 +577,8 @@ public class CashoutService(
         var payouts = new List<Payout>();
         var remainingAmount = input.Amount;
 
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
+
         foreach (var bucket in bucketsWithBalance)
         {
             if (remainingAmount <= 0) break;
@@ -608,6 +615,18 @@ public class CashoutService(
                 PaymentApiErrorCodes.InsufficientBalance);
         }
 
+        EmailIntentHandle? requestedEmailIntent = null;
+        if (requiresApproval)
+        {
+            requestedEmailIntent = await AddPayoutRequestedEmailIntentAsync(
+                payouts.First(),
+                payoutAccount!,
+                merchant,
+                input.IpAddress,
+                input.Location,
+                ct);
+        }
+
         await dbContext.SaveChangesAsync(ct);
 
         var processedPayouts = new List<Payout>();
@@ -618,23 +637,14 @@ public class CashoutService(
             var ledgerError = await RecordPayoutInLedgerAsync(input.MerchantId, payout, resolvedPk, resolvedPkt, payout.PlatformFee);
             if (ledgerError != null)
             {
-                foreach (var processedPayout in processedPayouts)
-                {
-                    await ledgerService.RecordWithdrawalFailedAsync(
-                        input.MerchantId,
-                        processedPayout.Id,
-                        processedPayout.MerchantAcquirerId,
-                        processedPayout.Amount,
-                        processedPayout.PlatformFee,
-                        "Rollback: falha ao processar saque consolidado");
-                }
-
-                dbContext.Payouts.RemoveRange(payouts);
-                await dbContext.SaveChangesAsync(ct);
+                await transaction.RollbackAsync(ct);
+                dbContext.ChangeTracker.Clear();
                 return ledgerError;
             }
             processedPayouts.Add(payout);
         }
+
+        await transaction.CommitAsync(ct);
 
         if (requiresApproval)
         {
@@ -687,6 +697,8 @@ public class CashoutService(
         string? pixKey,
         string? pixKeyType,
         bool consolidateAllAcquirers,
+        string? requestIpAddress,
+        string? requestLocation,
         CancellationToken ct)
     {
         var merchantValidation = await ValidateMerchantForWithdrawAsync(merchantId, ct);
@@ -740,10 +752,24 @@ public class CashoutService(
 
         var requiresApproval = DetermineApprovalRequirement(merchantSettings, platformSettings);
 
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
+
         var payout = CreatePayoutEntity(merchantId, payoutAccount?.Id, merchantAcquirer.Id, amount, fees, environment, externalId, callbackUrl, pixKey, pixKeyType,
             acquirerDisplayName: merchantAcquirer.Acquirer?.DisplayName ?? merchantAcquirer.Acquirer?.Name,
             acquirerNominal: merchantAcquirer.Acquirer?.Nominal);
         dbContext.Payouts.Add(payout);
+        EmailIntentHandle? requestedEmailIntent = null;
+        if (requiresApproval && requestIpAddress != null)
+        {
+            requestedEmailIntent = await AddPayoutRequestedEmailIntentAsync(
+                payout,
+                payoutAccount,
+                merchant,
+                requestIpAddress,
+                requestLocation,
+                ct);
+        }
+
         await dbContext.SaveChangesAsync(ct);
 
         var resolvedPixKey = payoutAccount?.PixKey ?? pixKey ?? string.Empty;
@@ -751,10 +777,12 @@ public class CashoutService(
         var ledgerError = await RecordPayoutInLedgerAsync(merchantId, payout, resolvedPixKey, resolvedPixKeyType, fees.PlatformFee);
         if (ledgerError != null)
         {
-            dbContext.Payouts.Remove(payout);
-            await dbContext.SaveChangesAsync(ct);
+            await transaction.RollbackAsync(ct);
+            dbContext.ChangeTracker.Clear();
             return (null, null, false, ledgerError);
         }
+
+        await transaction.CommitAsync(ct);
 
         return (payout, payoutAccount, requiresApproval, null);
     }
@@ -1000,57 +1028,91 @@ public class CashoutService(
             .FirstOrDefaultAsync(ct);
     }
 
+    private async Task<EmailIntentHandle> AddPayoutRequestedEmailIntentAsync(
+        Payout payout,
+        MerchantPayoutAccount? payoutAccount,
+        Merchant merchant,
+        string ipAddress,
+        string? location,
+        CancellationToken ct)
+    {
+        var pixKey = payoutAccount?.PixKey ?? payout.InlinePixKey ?? string.Empty;
+        var rawPixKeyType = payoutAccount?.PixKeyType.ToString() ?? payout.InlinePixKeyType ?? string.Empty;
+        var pixKeyType = Enum.TryParse<PixKeyType>(rawPixKeyType, out var parsedKeyType)
+            ? FormatUtils.GetPixKeyTypeDisplayName(parsedKeyType)
+            : rawPixKeyType;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(payout.RequestedAt, DateTimeUtils.BrasiliaTimeZone);
+
+        return await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PayoutRequested,
+                payout.Id,
+                payout.Id),
+            MessageType = EmailMessageType.PayoutRequested,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = $"payout:{payout.Id:N}:requested",
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["PAYOUT_ID"] = payout.Id.ToString(),
+                ["AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.Amount),
+                ["FEE_AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.PlatformFee),
+                ["NET_AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.NetAmount),
+                ["PIX_KEY_TYPE"] = pixKeyType,
+                ["PIX_KEY"] = MaskUtils.MaskPixKey(pixKey, rawPixKeyType),
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location ?? "Desconhecido"
+            }
+        }, ct);
+    }
+
+    private async Task AddPayoutRejectedEmailIntentAsync(Payout payout, string reason, CancellationToken ct)
+    {
+        var user = payout.Merchant?.User;
+        if (user?.Email == null)
+            return;
+
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.PayoutRejected,
+                payout.Id,
+                payout.Id),
+            MessageType = EmailMessageType.PayoutRejected,
+            RecipientAddress = user.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, payout.MerchantId),
+            CorrelationId = $"payout:{payout.Id:N}:rejected",
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = user.Name,
+                ["MERCHANT_NAME"] = payout.Merchant!.Name ?? "Sua organização",
+                ["AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.Amount),
+                ["FEE_AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.PlatformFee),
+                ["NET_AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.NetAmount),
+                ["REASON"] = reason,
+                ["DATE"] = (payout.ProcessedAt ?? payout.UpdatedAt).ToString("dd/MM/yyyy HH:mm:ss")
+            }
+        }, ct);
+    }
+
     private async Task SendPayoutRequestedNotificationsAsync(
         Payout payout,
         MerchantPayoutAccount? payoutAccount,
         string ipAddress,
         string? location)
     {
-        var pixKeyForDisplay = payoutAccount?.PixKey ?? payout.InlinePixKey ?? string.Empty;
-        var rawPixKeyType = payoutAccount?.PixKeyType.ToString() ?? payout.InlinePixKeyType ?? string.Empty;
-        var pixKeyTypeDisplayName = Enum.TryParse<PixKeyType>(rawPixKeyType, out var parsedKeyType)
-            ? FormatUtils.GetPixKeyTypeDisplayName(parsedKeyType)
-            : rawPixKeyType;
-        var merchant = await dbContext.Merchants
-            .Include(m => m.User)
-            .Where(m => m.Id == payout.MerchantId)
-            .OrderBy(m => m.Id)
-            .FirstOrDefaultAsync();
-
-        if (merchant == null) return;
-
-        _ = notificationService.CreatePayoutNotificationAsync(
+        await notificationService.CreatePayoutNotificationAsync(
             payout.MerchantId,
             NotificationTemplates.Payout.Pending.Title,
             NotificationTemplates.Payout.Pending.Message(payout.NetAmount),
             NotificationStatusType.PayoutPending,
             payout.Environment,
             actionUrl: NotificationTemplates.Routes.Cashouts);
-
-        var user = merchant.User;
-        var brazilTime = FormatUtils.GetBrazilTime();
-
-        _ = emailService.SendAsync(
-            user.Email,
-            "💸 Saque Solicitado - SwiftPay",
-            EmailTemplate.PayoutRequested,
-            new Dictionary<string, string>
-            {
-                { "NAME", user.Name },
-                { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                { "PAYOUT_ID", payout.Id.ToString() },
-                { "AMOUNT", FormatUtils.FormatCurrencyNumber(payout.Amount) },
-                { "FEE_AMOUNT", FormatUtils.FormatCurrencyNumber(payout.PlatformFee) },
-                { "NET_AMOUNT", FormatUtils.FormatCurrencyNumber(payout.NetAmount) },
-                { "PIX_KEY_TYPE", pixKeyTypeDisplayName },
-                { "PIX_KEY", MaskUtils.MaskPixKey(pixKeyForDisplay, rawPixKeyType) },
-                { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                { "TIME", brazilTime.ToString("HH:mm:ss") },
-                { "IP_ADDRESS", ipAddress },
-                { "LOCATION", location ?? "Desconhecido" }
-            },
-            userId: user.Id,
-            merchantId: merchant.Id);
     }
 
     private async Task SendPayoutRejectedNotificationsAsync(Payout payout, string reason)
@@ -1063,28 +1125,6 @@ public class CashoutService(
             payout.Environment,
             actionUrl: NotificationTemplates.Routes.Cashouts);
 
-        var merchant = payout.Merchant;
-        var user = merchant?.User;
-
-        if (user?.Email != null)
-        {
-            _ = emailService.SendAsync(
-                user.Email,
-                "❌ Saque Rejeitado - SwiftPay",
-                EmailTemplate.PayoutRejected,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "MERCHANT_NAME", merchant!.Name ?? "Sua organização" },
-                    { "AMOUNT", FormatUtils.FormatCurrencyNumber(payout.Amount) },
-                    { "FEE_AMOUNT", FormatUtils.FormatCurrencyNumber(payout.PlatformFee) },
-                    { "NET_AMOUNT", FormatUtils.FormatCurrencyNumber(payout.NetAmount) },
-                    { "REASON", reason },
-                    { "DATE", DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm:ss") }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id);
-        }
     }
 
     public async Task<ProcessCashoutWebhookResult> ProcessAcquirerWebhookAsync(AcquirerCashoutWebhookData data, CancellationToken ct = default)
@@ -1218,8 +1258,7 @@ public class CashoutService(
                         };
                     }
 
-                    payout.Status = PayoutStatus.Failed;
-                    payout.FailureReason = data.RejectReason ?? "Falha no processamento";
+                    var payoutFailureReason = data.RejectReason ?? "Falha no processamento";
 
                     var ledgerResultFailed = await ledgerService.RecordWithdrawalFailedAsync(
                         payout.MerchantId,
@@ -1227,7 +1266,7 @@ public class CashoutService(
                         payout.MerchantAcquirerId,
                         payout.Amount,
                         payout.PlatformFee,
-                        payout.FailureReason);
+                        payoutFailureReason);
 
                     if (!ledgerResultFailed.Success)
                     {
@@ -1240,6 +1279,9 @@ public class CashoutService(
                         };
                     }
 
+                    payout.Status = PayoutStatus.Failed;
+                    payout.FailureReason = payoutFailureReason;
+                    await AddPayoutRejectedEmailIntentAsync(payout, payout.FailureReason, ct);
                     await dbContext.SaveChangesAsync(ct);
                     await SendPayoutRejectedNotificationsAsync(payout, payout.FailureReason);
                     await PublishCashoutWebhookIfConfiguredAsync(payout, WebhookEvents.Cashout.Failed);
@@ -1314,8 +1356,7 @@ public class CashoutService(
                         };
                     }
 
-                    payout.Status = PayoutStatus.Rejected;
-                    payout.FailureReason = data.RejectReason ?? "Saque rejeitado pela adquirente";
+                    var payoutRejectionReason = data.RejectReason ?? "Saque rejeitado pela adquirente";
 
                     var ledgerResultRejected = await ledgerService.RecordWithdrawalFailedAsync(
                         payout.MerchantId,
@@ -1323,7 +1364,7 @@ public class CashoutService(
                         payout.MerchantAcquirerId,
                         payout.Amount,
                         payout.PlatformFee,
-                        payout.FailureReason);
+                        payoutRejectionReason);
 
                     if (!ledgerResultRejected.Success)
                     {
@@ -1336,6 +1377,9 @@ public class CashoutService(
                         };
                     }
 
+                    payout.Status = PayoutStatus.Rejected;
+                    payout.FailureReason = payoutRejectionReason;
+                    await AddPayoutRejectedEmailIntentAsync(payout, payout.FailureReason, ct);
                     await dbContext.SaveChangesAsync(ct);
                     await SendPayoutRejectedNotificationsAsync(payout, payout.FailureReason);
                     await PublishCashoutWebhookIfConfiguredAsync(payout, WebhookEvents.Cashout.Rejected);
@@ -1539,6 +1583,7 @@ public class CashoutService(
         {
             var payout = await dbContext.Payouts
                 .Include(p => p.Merchant)
+                    .ThenInclude(m => m.User)
                 .Include(p => p.PayoutAccount)
                 .Include(p => p.MerchantAcquirer)
                     .ThenInclude(ma => ma!.Acquirer)
@@ -1553,6 +1598,7 @@ public class CashoutService(
         {
             var payout = await dbContext.Payouts
                 .Include(p => p.Merchant)
+                    .ThenInclude(m => m.User)
                 .Include(p => p.PayoutAccount)
                 .Include(p => p.MerchantAcquirer)
                     .ThenInclude(ma => ma!.Acquirer)
@@ -1570,6 +1616,7 @@ public class CashoutService(
             {
                 return await dbContext.Payouts
                     .Include(p => p.Merchant)
+                        .ThenInclude(m => m.User)
                     .Include(p => p.PayoutAccount)
                     .Include(p => p.MerchantAcquirer)
                         .ThenInclude(ma => ma!.Acquirer)

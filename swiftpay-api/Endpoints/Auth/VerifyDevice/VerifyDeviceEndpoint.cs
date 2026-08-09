@@ -18,7 +18,8 @@ public sealed class VerifyDeviceEndpoint(
     ITokenService tokenService,
     ISessionService sessionService,
     ISecurityLogService securityLog,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal
 ) : Endpoint<VerifyDeviceRequest, VerifyDeviceResponse>
 {
     public override void Configure()
@@ -141,7 +142,30 @@ public sealed class VerifyDeviceEndpoint(
         user.LastLoginUserAgent = verification.UserAgent;
         user.LastLoginLocation = verification.Location;
 
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.DeviceAdded,
+                user.Id,
+                verification.Id),
+            MessageType = EmailMessageType.DeviceAdded,
+            RecipientAddress = user.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["name"] = user.Name ?? "Usuário",
+                ["device_name"] = verification.DeviceName ?? "Dispositivo",
+                ["browser"] = verification.Browser ?? "Desconhecido",
+                ["operating_system"] = verification.OperatingSystem ?? "Desconhecido",
+                ["ip_address"] = verification.IpAddress ?? ipAddress ?? "Não identificado",
+                ["location"] = verification.Location ?? "Desconhecida",
+                ["date"] = now.ToString("dd/MM/yyyy 'às' HH:mm")
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
 
         await securityLog.LogAsync(new SecurityLogInput
         {
@@ -151,22 +175,6 @@ public sealed class VerifyDeviceEndpoint(
             Details = $"Device verified and trusted: {verification.DeviceName}"
         });
 
-        _ = emailService.SendAsync(
-            user.Email,
-            "Novo dispositivo conectado à sua conta",
-            EmailTemplate.DeviceAdded,
-            new Dictionary<string, string>
-            {
-                { "name", user.Name ?? "Usuário" },
-                { "device_name", verification.DeviceName ?? "Dispositivo" },
-                { "browser", verification.Browser ?? "Desconhecido" },
-                { "operating_system", verification.OperatingSystem ?? "Desconhecido" },
-                { "ip_address", verification.IpAddress ?? ipAddress ?? "Não identificado" },
-                { "location", verification.Location ?? "Desconhecida" },
-                { "date", now.ToString("dd/MM/yyyy 'às' HH:mm") }
-            },
-            user.Id
-        );
 
         var session = await sessionService.CreateSessionAsync(user, verification.DeviceId, verification.IpAddress ?? ipAddress, verification.UserAgent);
         var jwt = tokenService.GenerateToken(session.SessionId, user.Id);

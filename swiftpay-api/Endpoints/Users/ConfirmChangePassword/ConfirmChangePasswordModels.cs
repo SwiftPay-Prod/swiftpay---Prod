@@ -23,4 +23,6 @@ public sealed class ConfirmChangePasswordValidator : Validator<ConfirmChangePass
     }
 }
 
-public sealed class ConfirmChangePasswordResponse : BaseResponse;
+public sealed class ConfirmChangePasswordResponse : BaseResponse<ConfirmChangePasswordData>;
+
+public sealed record ConfirmChangePasswordData(Guid EmailMessageId, string EmailStatus);

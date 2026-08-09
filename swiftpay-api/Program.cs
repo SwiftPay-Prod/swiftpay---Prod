@@ -41,6 +41,9 @@ builder.Services.AddSignalRHubs();
 // Core Services (shared with swiftpay-api-payment)
 builder.Services.AddCoreServices();
 
+// Firestore email outbox and worker
+builder.Services.AddEmailOutboxWorker(builder.Configuration, builder.Environment);
+
 // Internal Services
 builder.Services.AddInternalServices();
 

@@ -12,7 +12,7 @@ namespace swiftpay_api.Endpoints.Merchants.RequestDelete;
 
 public sealed class RequestDeleteMerchantEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     ISecurityLogService securityLog
 ) : Endpoint<RequestDeleteMerchantRequest, RequestDeleteMerchantResponse>
 {
@@ -80,17 +80,36 @@ public sealed class RequestDeleteMerchantEndpoint(
         var code = CryptoUtils.GenerateCode();
         var codeHash = CryptoUtils.ComputeSha256Hash(code);
 
+        var requestedAt = DateTime.UtcNow;
         var deletionCode = new MerchantDeletionCode
         {
+            Id = Guid.CreateVersion7(),
             MerchantId = merchant.Id,
             UserId = userId.Value,
             CodeHash = codeHash,
             Status = MerchantDeletionCodeStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(10),
-            CreatedAt = DateTime.UtcNow
+            ExpiresAt = requestedAt.AddMinutes(10),
+            CreatedAt = requestedAt,
+            UpdatedAt = requestedAt
         };
 
         dbContext.MerchantDeletionCodes.Add(deletionCode);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.MerchantDeletion(merchant.Id, requestedAt),
+            MessageType = EmailMessageType.MerchantDeletionCode,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["CODE"] = code,
+                ["EXPIRES_IN"] = "10"
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -101,8 +120,6 @@ public sealed class RequestDeleteMerchantEndpoint(
             Details = $"Código de exclusão solicitado para merchant {merchant.Id}"
         });
 
-        // Send email with deletion code
-        await SendDeletionCodeEmailAsync(merchant.User, merchant, code);
 
         await Send.OkAsync(new RequestDeleteMerchantResponse
         {
@@ -110,28 +127,4 @@ public sealed class RequestDeleteMerchantEndpoint(
         }, ct);
     }
 
-    private async Task SendDeletionCodeEmailAsync(User user, Merchant merchant, string code)
-    {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "⚠️ Código de confirmação para exclusão - SwiftPay",
-                EmailTemplate.MerchantDeletionCode,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                    { "CODE", code },
-                    { "EXPIRES_IN", "10" }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

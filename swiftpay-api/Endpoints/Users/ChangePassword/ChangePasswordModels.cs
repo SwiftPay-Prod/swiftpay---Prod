@@ -36,4 +36,6 @@ public sealed class ChangePasswordValidator : Validator<ChangePasswordRequest>
     }
 }
 
-public sealed class ChangePasswordResponse : BaseResponse;
+public sealed class ChangePasswordResponse : BaseResponse<ChangePasswordData>;
+
+public sealed record ChangePasswordData(Guid EmailMessageId, string EmailStatus);

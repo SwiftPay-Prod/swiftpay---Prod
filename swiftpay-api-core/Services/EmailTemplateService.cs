@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
@@ -13,7 +15,7 @@ namespace swiftpay_api_core.Services;
 public sealed class EmailTemplateService(
     PrimaryDbContext dbContext,
     IEmailBlockRenderer blockRenderer,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter
 ) : IEmailTemplateService
 {
     public async Task<EmailSendResult> SendAsync(
@@ -39,7 +41,7 @@ public sealed class EmailTemplateService(
 
         AddTypeSpecificVariables(type, context, template, variables, config);
 
-        return await RenderAndSendAsync(template, variables, context.CustomerEmail, merchant?.Id, ct);
+        return await RenderAndQueueAsync(type, context, template, variables, context.CustomerEmail, merchant?.Id, ct);
     }
 
     public async Task<bool> IsNewCustomerAsync(
@@ -224,7 +226,6 @@ public sealed class EmailTemplateService(
 
         template = MerchantEmailTemplate.CreateDefault(merchantId, type, environment);
         dbContext.MerchantEmailTemplates.Add(template);
-        await dbContext.SaveChangesAsync(ct);
 
         return template;
     }
@@ -275,7 +276,9 @@ public sealed class EmailTemplateService(
         };
     }
 
-    private async Task<EmailSendResult> RenderAndSendAsync(
+    private async Task<EmailSendResult> RenderAndQueueAsync(
+        MerchantEmailTemplateType type,
+        EmailTemplateContext context,
         MerchantEmailTemplate template,
         Dictionary<string, string> variables,
         string recipientEmail,
@@ -286,22 +289,46 @@ public sealed class EmailTemplateService(
         {
             var config = GetRenderConfig(template, null);
             var html = blockRenderer.RenderBlocks(template.Blocks, variables, config);
-
             var subject = ReplaceSubjectVariables(template.Subject, variables);
+            var ownerId = merchantId ?? context.MerchantId;
 
-            await emailService.SendHtmlAsync(
-                recipientEmail,
-                subject,
-                html,
-                merchantId: merchantId,
-                templateName: template.Type.ToString());
+            await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
+
+            await emailIntentWriter.Add(new EmailIntentAddRequest
+            {
+                Dedupe = EmailIntentDedupeKey.ManualOperation(
+                    EmailMessageType.CustomHtml,
+                    CreateOperationId(context.MerchantId, type, context.OrderNumber)),
+                MessageType = EmailMessageType.CustomHtml,
+                RecipientAddress = recipientEmail,
+                Owner = new(EmailIntentOwnerType.Merchant, ownerId),
+                CorrelationId = $"merchant-template:{context.MerchantId:N}:{type}",
+                CustomHtml = new EmailIntentCustomHtmlRequest
+                {
+                    Subject = subject,
+                    Body = TrustedEmailHtmlValue.FromTrustedSource(html, subject)
+                }
+            }, ct);
+            await dbContext.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
 
             return EmailSendResult.Ok();
         }
-        catch (Exception ex)
+        catch
         {
-            return EmailSendResult.Error(ex.Message);
+            return EmailSendResult.Error("Não foi possível enfileirar o email.");
         }
+    }
+
+    private static Guid CreateOperationId(
+        Guid merchantId,
+        MerchantEmailTemplateType type,
+        string? orderNumber)
+    {
+        var source = $"{merchantId:N}:{type}:{orderNumber ?? "none"}";
+        Span<byte> hash = stackalloc byte[32];
+        SHA256.HashData(Encoding.UTF8.GetBytes(source), hash);
+        return new Guid(hash[..16]);
     }
 
     private static string ReplaceSubjectVariables(string subject, Dictionary<string, string> variables)

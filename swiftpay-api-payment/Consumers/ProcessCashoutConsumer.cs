@@ -34,7 +34,7 @@ public sealed class ProcessCashoutConsumer(
             var ledgerService = scope.ServiceProvider.GetRequiredService<ILedgerService>();
             var withdrawService = scope.ServiceProvider.GetRequiredService<IWithdrawService>();
             var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
-            var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+            var emailIntentWriter = scope.ServiceProvider.GetRequiredService<IEmailIntentWriter>();
             var messagePublisher = scope.ServiceProvider.GetRequiredService<IMessagePublisher>();
             var referralCommissionCompilationService = scope.ServiceProvider.GetRequiredService<IReferralCommissionCompilationService>();
 
@@ -133,8 +133,9 @@ public sealed class ProcessCashoutConsumer(
             {
                 case WithdrawStatus.Completed:
                     await HandleCompletedAsync(
-                        dbContext, ledgerService, notificationService, emailService, messagePublisher,
-                        payout, resolvedPixKey, resolvedPixKeyType, merchantAcquirer, withdrawResult, referralCommissionCompilationService);
+                        dbContext, ledgerService, notificationService, emailIntentWriter, messagePublisher,
+                        payout, resolvedPixKey, resolvedPixKeyType, merchantAcquirer, withdrawResult,
+                        referralCommissionCompilationService, context.CancellationToken);
                     break;
 
                 case WithdrawStatus.Processing:
@@ -168,19 +169,16 @@ public sealed class ProcessCashoutConsumer(
         PrimaryDbContext dbContext,
         ILedgerService ledgerService,
         INotificationService notificationService,
-        IEmailService emailService,
+        IEmailIntentWriter emailIntentWriter,
         IMessagePublisher messagePublisher,
         Payout payout,
         string pixKey,
         string pixKeyType,
         MerchantAcquirer merchantAcquirer,
         WithdrawServiceResult result,
-        IReferralCommissionCompilationService referralCommissionCompilationService)
+        IReferralCommissionCompilationService referralCommissionCompilationService,
+        CancellationToken ct)
     {
-        payout.Status = PayoutStatus.Completed;
-        payout.CompletedAt = DateTime.UtcNow;
-        payout.AcquirerTransactionId = result.AcquirerTransactionId ?? result.AcquirerTxId;
-        payout.AcquirerStatus = "DONE";
 
         var ledgerResult = await ledgerService.RecordWithdrawalCompletedAsync(
             payout.MerchantId,
@@ -201,14 +199,45 @@ public sealed class ProcessCashoutConsumer(
                 $"Failed to record payout completion for {payout.Id}: {ledgerResult.ErrorMessage}");
         }
 
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
+        payout.Status = PayoutStatus.Completed;
+        payout.CompletedAt = DateTime.UtcNow;
+        payout.AcquirerTransactionId = result.AcquirerTransactionId ?? result.AcquirerTxId;
+        payout.AcquirerStatus = "DONE";
+
+        if (payout.Merchant?.User?.Email != null)
+        {
+            await emailIntentWriter.Add(new EmailIntentAddRequest
+            {
+                Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                    EmailMessageType.PayoutCompleted,
+                    payout.Id,
+                    payout.Id),
+                MessageType = EmailMessageType.PayoutCompleted,
+                RecipientAddress = payout.Merchant.User.Email,
+                Owner = new(EmailIntentOwnerType.Merchant, payout.MerchantId),
+                CorrelationId = $"payout:{payout.Id:N}:completed",
+                Inputs = new Dictionary<string, string>
+                {
+                    ["NAME"] = payout.Merchant.User.Name ?? "Merchant",
+                    ["AMOUNT"] = FormatUtils.FormatCurrencyNumber(payout.NetAmount),
+                    ["PIX_KEY"] = MaskUtils.MaskPixKey(pixKey, pixKeyType),
+                    ["DATE"] = payout.CompletedAt.Value.ToString("dd/MM/yyyy HH:mm"),
+                    ["TRANSACTION_ID"] = result.AcquirerTransactionId ?? "N/A"
+                }
+            }, ct);
+        }
+
         await referralCommissionCompilationService.RegisterPayoutCompletedMovementAsync(
             payout.Id,
             payout.MerchantId,
             payout.PlatformFee - payout.AcquirerFee,
             payout.Environment,
-            payout.CompletedAt ?? DateTime.UtcNow);
+            payout.CompletedAt.Value,
+            ct);
 
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
 
         await notificationService.CreatePayoutNotificationAsync(
             payout.MerchantId,
@@ -220,21 +249,6 @@ public sealed class ProcessCashoutConsumer(
             payout.Environment,
             actionUrl: $"/payouts/{payout.Id}");
 
-        if (payout.Merchant?.User?.Email != null)
-        {
-            _ = emailService.SendAsync(
-                payout.Merchant.User.Email,
-                "✅ Saque Concluído - SwiftPay",
-                EmailTemplate.PayoutCompleted,
-                new Dictionary<string, string>
-                {
-                    { "NAME", payout.Merchant.User.Name ?? "Merchant" },
-                    { "AMOUNT", FormatUtils.FormatCurrencyNumber(payout.NetAmount) },
-                    { "PIX_KEY", MaskUtils.MaskPixKey(pixKey, pixKeyType) },
-                    { "DATE", DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm") },
-                    { "TRANSACTION_ID", result.AcquirerTransactionId ?? "N/A" }
-                });
-        }
 
         if (!string.IsNullOrWhiteSpace(payout.CallbackUrl))
         {

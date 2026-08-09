@@ -4,7 +4,7 @@ import { Button, InputGroup, Label, TextField } from '@heroui/react';
 import { useState } from 'react';
 import { toast } from '@heroui/react';
 import { AsyncButton } from '@/components/ui/async-button';
-import { sendFirebasePasswordReset } from '@/lib/firebase';
+import { forgotPassword } from '@/app/actions/auth';
 
 interface ForgotPasswordFormProps {
 	onSwitchToSignIn: () => void;
@@ -23,12 +23,16 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
 		setSuccess(false);
 
 		try {
-			await sendFirebasePasswordReset(email);
+			const response = await forgotPassword({ email });
+			if (response.error) {
+				setError(response.error.message ?? 'Erro ao solicitar recuperação de senha');
+				return;
+			}
+
 			setSuccess(true);
-			toast.success('Link de redefinição enviado!');
-		} catch (err) {
-			const message = err instanceof Error ? err.message : 'Erro ao conectar com o servidor';
-			setError(message);
+			toast.success('Se a conta existir, o link será enviado.');
+		} catch {
+			setError('Erro ao conectar com o servidor');
 		} finally {
 			setIsLoading(false);
 		}

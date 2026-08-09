@@ -1,4 +1,5 @@
 using FastEndpoints;
+using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using swiftpay_api_core.Database;
 using swiftpay_api.Endpoints.Auth.Shared.Models;
@@ -8,6 +9,8 @@ using swiftpay_api.Interfaces;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_core.Models.Email;
+using swiftpay_api_core.Models.Settings;
 using swiftpay_api.Mappers;
 
 namespace swiftpay_api.Endpoints.Auth.FirebaseSignUp;
@@ -20,7 +23,10 @@ public sealed class FirebaseSignUpEndpoint(
     ISecurityLogService securityLog,
     INotificationService notificationService,
     IReferralCommissionCompilationService referralCommissionCompilationService,
-    IGeoLocationService geoLocationService
+    IGeoLocationService geoLocationService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
+    IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<FirebaseSignUpRequest, FirebaseSignUpResponse>
 {
     public override void Configure()
@@ -44,8 +50,8 @@ public sealed class FirebaseSignUpEndpoint(
 
         var emailLower = claims.Email.ToLowerInvariant().Trim();
         var refCode = req.RefCode?.Trim().ToUpperInvariant();
-
         User? referrerUser = null;
+
         if (!string.IsNullOrWhiteSpace(refCode))
         {
             referrerUser = await dbContext.Users
@@ -62,78 +68,134 @@ public sealed class FirebaseSignUpEndpoint(
             }
         }
 
-        // Email-first: single account per email.
-        var emailExists = await dbContext.Users
-            .AnyAsync(u => u.Email == emailLower, ct);
-
-        if (emailExists)
-        {
-            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignUp, Status = SecurityLogStatus.Failed, Details = $"Email already in use: {emailLower}" });
-
-            await Send.ResponseAsync(new FirebaseSignUpResponse
-            {
-                Error = new("E-mail já está em uso.") { Code = "USER_ALREADY_EXISTS" }
-            }, 409, ct);
-            return;
-        }
-
         var now = DateTime.UtcNow;
-        var isGoogle = string.Equals(claims.SignInProvider, "google.com", StringComparison.OrdinalIgnoreCase);
-        var emailVerified = claims.EmailVerified;
-        var emitsJwt = emailVerified; // email/password unverified => no platform JWT
-
-        var user = new User
-        {
-            Name = req.Name.Trim(),
-            Email = emailLower,
-            WhatsApp = req.WhatsApp?.Trim(),
-            Password = BCrypt.Net.BCrypt.HashPassword(CryptoUtils.GenerateSecurePassword()),
-            PasswordChangedAt = now,
-            EmailVerified = emailVerified,
-            FirebaseUid = claims.Uid,
-            FirebaseProvider = claims.SignInProvider,
-            ReferralCode = await GenerateUniqueReferralCodeAsync(ct),
-            ReferredByUserId = referrerUser?.Id,
-            ReferredAt = referrerUser != null ? now : null
-        };
-
-        dbContext.Users.Add(user);
-        await dbContext.SaveChangesAsync(ct);
-
-        if (referrerUser != null)
-        {
-            await referralCommissionCompilationService.EnsureReferralLinkStructuresAsync(referrerUser.Id, user.Id, ct);
-            _ = NotifyReferrerAsync(referrerUser, user);
-        }
-
         var ipAddress = EndpointUtils.GetIpAddress(HttpContext);
         var userAgent = EndpointUtils.GetUserAgent(HttpContext);
         var geoLocation = await geoLocationService.GetLocationAsync(ipAddress);
         var location = geoLocation.DisplayLocation;
         var deviceId = req.DeviceId ?? Guid.NewGuid().ToString("N");
+        var deviceInfo = ExtractDeviceInfo(userAgent);
+        var referralCode = await GenerateUniqueReferralCodeAsync(ct);
+        var isNewUser = false;
+        var queuedVerification = false;
+        User user;
 
-        // Trust the first device (mirrors legacy sign-up/device auto-trust).
-        var (deviceName, browser, os) = ExtractDeviceInfo(userAgent);
-        dbContext.TrustedDevices.Add(new TrustedDevice
+        await using (var transaction = await dbContext.Database.BeginTransactionAsync(ct))
         {
-            UserId = user.Id,
-            DeviceId = deviceId,
-            DeviceName = deviceName,
-            Browser = browser,
-            OperatingSystem = os,
-            LastIpAddress = ipAddress,
-            LastLocation = location,
-            LastUsedAt = now,
-            IsActive = true
+            user = await dbContext.Users
+                .FirstOrDefaultAsync(candidate => candidate.FirebaseUid == claims.Uid, ct);
+
+            if (user is null)
+            {
+                var emailExists = await dbContext.Users
+                    .AnyAsync(candidate => candidate.Email == emailLower, ct);
+                if (emailExists)
+                {
+                    await transaction.RollbackAsync(ct);
+                    await Send.ResponseAsync(new FirebaseSignUpResponse
+                    {
+                        Error = new("E-mail já está em uso.") { Code = "USER_ALREADY_EXISTS" }
+                    }, 409, ct);
+                    return;
+                }
+
+                user = new User
+                {
+                    Name = req.Name.Trim(),
+                    Email = emailLower,
+                    WhatsApp = req.WhatsApp?.Trim(),
+                    Password = BCrypt.Net.BCrypt.HashPassword(CryptoUtils.GenerateSecurePassword()),
+                    PasswordChangedAt = now,
+                    EmailVerified = claims.EmailVerified,
+                    FirebaseUid = claims.Uid,
+                    FirebaseProvider = claims.SignInProvider,
+                    ReferralCode = referralCode,
+                    ReferredByUserId = referrerUser?.Id,
+                    ReferredAt = referrerUser is not null ? now : null
+                };
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync(ct);
+                isNewUser = true;
+            }
+            else if (!string.Equals(user.Email, emailLower, StringComparison.OrdinalIgnoreCase))
+            {
+                await transaction.RollbackAsync(ct);
+                await Send.ResponseAsync(new FirebaseSignUpResponse
+                {
+                    Error = new("A identidade autenticada não corresponde à conta SwiftPay.") { Code = "IDENTITY_CONFLICT" }
+                }, 409, ct);
+                return;
+            }
+            user.EmailVerified = user.EmailVerified || claims.EmailVerified;
+            user.FirebaseProvider = claims.SignInProvider;
+
+            if (user.ReferredByUserId.HasValue)
+            {
+                await referralCommissionCompilationService.EnsureReferralLinkStructuresAsync(
+                    user.ReferredByUserId.Value,
+                    user.Id,
+                    ct);
+            }
+
+            var deviceExists = await dbContext.TrustedDevices
+                .AnyAsync(device => device.UserId == user.Id && device.DeviceId == deviceId, ct);
+            if (!deviceExists)
+            {
+                dbContext.TrustedDevices.Add(new TrustedDevice
+                {
+                    UserId = user.Id,
+                    DeviceId = deviceId,
+                    DeviceName = deviceInfo.DeviceName,
+                    Browser = deviceInfo.Browser,
+                    OperatingSystem = deviceInfo.OperatingSystem,
+                    LastIpAddress = ipAddress,
+                    LastLocation = location,
+                    LastUsedAt = now,
+                    IsActive = true
+                });
+            }
+
+            if (!user.EmailVerified)
+            {
+                await emailIntentWriter.Add(new EmailIntentAddRequest
+                {
+                    Dedupe = EmailIntentDedupeKey.SignupVerification(claims.Uid, "1"),
+                    MessageType = EmailMessageType.EmailConfirmation,
+                    RecipientAddress = user.Email,
+                    Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+                    CorrelationId = HttpContext.TraceIdentifier,
+                    Inputs = new Dictionary<string, string>
+                    {
+                        ["NAME"] = user.Name
+                    },
+                    AuthAction = new EmailIntentAuthActionRequest
+                    {
+                        ActionType = EmailAuthActionType.VerifyEmail,
+                        FirebaseUid = claims.Uid,
+                        ContinueUrl = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=signin"
+                    }
+                }, ct);
+                queuedVerification = true;
+            }
+
+            await dbContext.SaveChangesAsync(ct);
+            await transaction.CommitAsync(ct);
+        }
+
+        if (queuedVerification)
+            emailIntentRelaySignal.Signal();
+
+        await securityLog.LogAsync(new SecurityLogInput
+        {
+            Action = SecurityLogAction.SignUp,
+            Status = SecurityLogStatus.Success,
+            UserId = user.Id
         });
 
-        await dbContext.SaveChangesAsync(ct);
+        if (isNewUser && referrerUser is not null)
+            await NotifyReferrerAsync(referrerUser, user);
 
-        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignUp, Status = SecurityLogStatus.Success, UserId = user.Id });
-
-        // Google provisioning / verified email => issue JWT immediately.
-        // Unverified email/password => respond requiresEmailVerification, NO JWT.
-        if (!emitsJwt)
+        if (!user.EmailVerified)
         {
             await Send.ResponseAsync(new FirebaseSignUpResponse
             {

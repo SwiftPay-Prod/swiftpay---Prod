@@ -12,7 +12,7 @@ namespace swiftpay_api.Endpoints.Merchants.ConfirmDelete;
 
 public sealed class ConfirmDeleteMerchantEndpoint(
     PrimaryDbContext dbContext,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     ISecurityLogService securityLog,
     INotificationService notificationService,
     IGeoLocationService geoLocationService
@@ -136,6 +136,29 @@ public sealed class ConfirmDeleteMerchantEndpoint(
             }
         }
 
+        var now = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.MerchantDeleted,
+                merchant.Id,
+                deletionCode.Id),
+            MessageType = EmailMessageType.MerchantDeleted,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["MERCHANT_NAME"] = merchant.Name ?? "Sua organização",
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -162,11 +185,6 @@ public sealed class ConfirmDeleteMerchantEndpoint(
             // Don't fail the request if notification fails
         }
 
-        // Send confirmation email (await to avoid DbContext disposal issues)
-        var now = DateTime.UtcNow;
-        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-        await SendDeletionConfirmationEmailAsync(merchant.User, merchant, ipAddress, location, brazilTime);
 
         await Send.OkAsync(new ConfirmDeleteMerchantResponse
         {
@@ -174,30 +192,4 @@ public sealed class ConfirmDeleteMerchantEndpoint(
         }, ct);
     }
 
-    private async Task SendDeletionConfirmationEmailAsync(User user, Merchant merchant, string ipAddress, string location, DateTime brazilTime)
-    {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "🗑️ Sua organização foi excluída - SwiftPay",
-                EmailTemplate.MerchantDeleted,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "MERCHANT_NAME", merchant.Name ?? "Sua organização" },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

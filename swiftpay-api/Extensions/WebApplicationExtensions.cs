@@ -34,7 +34,10 @@ public static class WebApplicationExtensions
         app.UseSecurityLogContext();
         app.UseApiLogContext();
 
-        app.UseMiniProfiler();
+        if (!environment.IsProduction())
+        {
+            app.UseMiniProfiler();
+        }
 
         app.UseFastEndpoints(config =>
         {

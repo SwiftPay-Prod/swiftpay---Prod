@@ -20,7 +20,8 @@ public sealed class SignInEndpoint(
     ITokenService tokenService,
     ISessionService sessionService,
     ISecurityLogService securityLog,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
     IGeoLocationService geoLocationService,
     IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<SignInRequest, SignInResponse>
@@ -49,7 +50,7 @@ public sealed class SignInEndpoint(
 
         if (user == null)
         {
-            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignIn, Status = SecurityLogStatus.Failed, Details = $"User not found: {emailLower}" });
+            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignIn, Status = SecurityLogStatus.Failed, Details = "User not found" });
 
             await Send.ResponseAsync(new SignInResponse
             {
@@ -106,10 +107,33 @@ public sealed class SignInEndpoint(
                 action = SecurityLogAction.AccountLocked;
                 details = $"Account permanently locked after {maxAttempts} failed attempts";
 
+                await emailIntentWriter.Add(new EmailIntentAddRequest
+                {
+                    Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                        EmailMessageType.AccountLocked,
+                        user.Id,
+                        Guid.NewGuid()),
+                    MessageType = EmailMessageType.AccountLocked,
+                    RecipientAddress = user.Email,
+                    Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+                    CorrelationId = HttpContext.TraceIdentifier,
+                    Inputs = new Dictionary<string, string>
+                    {
+                        ["NAME"] = user.Name,
+                        ["FAILED_ATTEMPTS"] = maxAttempts.ToString(),
+                        ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                        ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                        ["IP_ADDRESS"] = ipAddress,
+                        ["LOCATION"] = location,
+                        ["USER_AGENT"] = userAgent,
+                        ["RESET_PASSWORD_URL"] = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=forgot-password"
+                    }
+                }, ct);
+
                 await dbContext.SaveChangesAsync(ct);
+                emailIntentRelaySignal.Signal();
                 await securityLog.LogAsync(new SecurityLogInput { Action = action, Status = SecurityLogStatus.Failed, UserId = user.Id, Details = details });
 
-                await SendAccountLockedEmailAsync(user, maxAttempts, ipAddress, location, userAgent, brazilTime);
 
                 await Send.ResponseAsync(new SignInResponse
                 {
@@ -304,77 +328,4 @@ public sealed class SignInEndpoint(
         return (deviceName, browser, os);
     }
 
-    private static string MaskEmail(string email)
-    {
-        var parts = email.Split('@');
-        if (parts.Length != 2)
-            return "***@***.***";
-
-        var local = parts[0];
-        var domain = parts[1];
-
-        var maskedLocal = local.Length <= 2
-            ? new string('*', local.Length)
-            : local[0] + new string('*', local.Length - 2) + local[^1];
-
-        return $"{maskedLocal}@{domain}";
-    }
-
-    private async Task SendAccountLockedEmailAsync(User user, int attempts, string ipAddress, string location, string userAgent, DateTime brazilTime)
-    {
-        try
-        {
-            var baseUrl = platformSettings.Value.BaseUrl;
-            var resetPasswordUrl = $"{baseUrl}/auth/forgot-password";
-
-            await emailService.SendAsync(
-                user.Email,
-                "⚠️ Sua conta foi bloqueada - SwiftPay",
-                EmailTemplate.AccountLocked,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "FAILED_ATTEMPTS", attempts.ToString() },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location },
-                    { "USER_AGENT", userAgent },
-                    { "RESET_PASSWORD_URL", resetPasswordUrl }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
-
-    private async Task SendDeviceVerificationEmailAsync(User user, string code, string deviceName, string ipAddress, string location, DateTime brazilTime)
-    {
-        try
-        {
-            await emailService.SendAsync(
-                user.Email,
-                "🔐 Código de verificação de dispositivo - SwiftPay",
-                EmailTemplate.DeviceVerification,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CODE", code },
-                    { "DEVICE_NAME", deviceName },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id
-            );
-        }
-        catch
-        {
-            // Don't fail the request if email fails
-        }
-    }
 }

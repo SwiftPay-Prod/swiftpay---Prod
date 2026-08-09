@@ -2,6 +2,7 @@ using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using swiftpay_api_core.Database;
+using swiftpay_api_core.Interfaces;
 using swiftpay_api.EndpointsGroups;
 using swiftpay_api_core.Utils;
 using swiftpay_api.Mappers;
@@ -9,12 +10,14 @@ using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Models.Enum;
 using swiftpay_api_core.Models.Settings;
 using System.Text.RegularExpressions;
+using Npgsql;
 
 namespace swiftpay_api.Endpoints.Merchants.Checkouts.CreateCheckout;
 
 public sealed class CreateCheckoutEndpoint(
     PrimaryDbContext dbContext,
-    IOptions<PlatformSettingsOptions> platformSettings
+    IOptions<PlatformSettingsOptions> platformSettings,
+    IEnvironmentProvider environmentProvider
 ) : Endpoint<CreateCheckoutRequest, CreateCheckoutResponse>
 {
     private const string DefaultCheckoutPrimaryColor = "#059669";
@@ -51,9 +54,11 @@ public sealed class CreateCheckoutEndpoint(
         }
 
         var slug = GenerateSlug(req.Name);
-        
-        // Verifica unicidade global do slug
+        var environment = environmentProvider.CurrentEnvironment;
+
+        // Verifica unicidade global do slug (índice único em todo o banco, não por ambiente)
         var slugExists = await dbContext.Checkouts
+            .IgnoreQueryFilters()
             .AnyAsync(c => c.Slug == slug, ct);
 
         if (slugExists)
@@ -64,6 +69,7 @@ public sealed class CreateCheckoutEndpoint(
             {
                 slug = $"{baseSlug}-{Guid.NewGuid().ToString()[..6]}";
                 slugExists = await dbContext.Checkouts
+                    .IgnoreQueryFilters()
                     .AnyAsync(c => c.Slug == slug, ct);
             } while (slugExists);
         }
@@ -75,6 +81,7 @@ public sealed class CreateCheckoutEndpoint(
         {
             shortId = CryptoUtils.GenerateShortId();
             shortIdExists = await dbContext.Checkouts
+                .IgnoreQueryFilters()
                 .AnyAsync(c => c.ShortId == shortId, ct);
         } while (shortIdExists);
 
@@ -86,7 +93,7 @@ public sealed class CreateCheckoutEndpoint(
             Slug = slug,
             ShortId = shortId,
             Status = CheckoutStatus.Draft,
-            Environment = req.Environment
+            Environment = environment
         };
 
         var config = new CheckoutConfig
@@ -107,13 +114,71 @@ public sealed class CreateCheckoutEndpoint(
         checkout.Config = config;
 
         dbContext.Checkouts.Add(checkout);
-        await dbContext.SaveChangesAsync(ct);
+
+        const int MaxSlugRetries = 5;
+        for (var attempt = 0; ; attempt++)
+        {
+            try
+            {
+                await dbContext.SaveChangesAsync(ct);
+                break;
+            }
+            catch (DbUpdateException ex) when (attempt < MaxSlugRetries && IsUniqueSlugViolation(ex))
+            {
+                // Race: o slug foi tomado entre o check e o insert. Gera outro e tenta de novo.
+                slug = $"{slug}-{Guid.NewGuid().ToString()[..6]}";
+                dbContext.ChangeTracker.Clear();
+
+                checkout = new Checkout
+                {
+                    MerchantId = req.MerchantId,
+                    CheckoutTemplateId = null,
+                    Name = req.Name.Trim(),
+                    Slug = slug,
+                    ShortId = shortId,
+                    Status = CheckoutStatus.Draft,
+                    Environment = environment
+                };
+                var newConfig = new CheckoutConfig
+                {
+                    PixEnabled = true,
+                    CreditCardEnabled = false,
+                    BoletoEnabled = false,
+                    PixExpirationMinutes = 30,
+                    CouponEnabled = false,
+                    ShippingEnabled = false,
+                    RequireCustomerAddress = false,
+                    RequireCustomerDocument = false,
+                    PrimaryColor = DefaultCheckoutPrimaryColor,
+                    ColorMode = CheckoutColorMode.Single
+                };
+                checkout.Config = newConfig;
+                dbContext.Checkouts.Add(checkout);
+            }
+            catch (DbUpdateException ex) when (attempt >= MaxSlugRetries && IsUniqueSlugViolation(ex))
+            {
+                await Send.ResponseAsync(new CreateCheckoutResponse
+                {
+                    Error = new("Não foi possível criar o checkout: conflito de identificador. Tente novamente.")
+                }, 409, ct);
+                return;
+            }
+        }
 
         await Send.ResponseAsync(new CreateCheckoutResponse
         {
             Data = CheckoutMapper.ToData(checkout, platformSettings.Value.CheckoutBaseUrl),
             Message = "Checkout criado com sucesso!"
         }, 201, ct);
+    }
+
+    private static bool IsUniqueSlugViolation(DbUpdateException ex)
+    {
+        return ex.InnerException is PostgresException
+        {
+            SqlState: "23505",
+            ConstraintName: "IX_Checkouts_Slug"
+        };
     }
 
     private static string GenerateSlug(string name)

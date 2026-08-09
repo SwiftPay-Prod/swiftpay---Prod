@@ -42,14 +42,16 @@ export function VerifyEmailContent({ user, accessToken, apiUrl }: VerifyEmailCon
 	function handleResendEmail() {
 		startResendTransition(async () => {
 			setErrorMessage(null);
-			const response = await sendEmailConfirmation({ email: user.email });
 
-			if (response.error) {
-				setErrorMessage(response.error.message);
-				return;
+			try {
+				const response = await sendEmailConfirmation({ email: user.email });
+				if (response.error) {
+					throw new Error(response.error.message ?? 'Erro ao reenviar verificação.');
+				}
+				setEmailSent(true);
+			} catch (error) {
+				setErrorMessage(error instanceof Error ? error.message : 'Erro ao reenviar verificação.');
 			}
-
-			setEmailSent(true);
 		});
 	}
 

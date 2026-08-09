@@ -4,6 +4,7 @@ using swiftpay_api.EndpointsGroups;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Email;
 using swiftpay_api_core.Utils;
 
 namespace swiftpay_api.Endpoints.Merchants.EmailTemplates.SendTestEmail;
@@ -11,7 +12,7 @@ namespace swiftpay_api.Endpoints.Merchants.EmailTemplates.SendTestEmail;
 public sealed class SendTestEmailEndpoint(
     PrimaryDbContext dbContext,
     IEmailBlockRenderer emailBlockRenderer,
-    IEmailService emailService
+    IEmailIntentWriter emailIntentWriter
 ) : Endpoint<SendTestEmailRequest, SendTestEmailResponse>
 {
     public override void Configure()
@@ -63,17 +64,27 @@ public sealed class SendTestEmailEndpoint(
 
         var subject = $"[TESTE] {req.Subject}";
 
-        await emailService.SendHtmlAsync(
-            to: req.Email,
-            subject: subject,
-            htmlContent: htmlContent,
-            userId: userId.Value,
-            merchantId: merchant.Id,
-            templateName: $"Test_{req.Type}");
+        var operationId = Guid.CreateVersion7();
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.ManualOperation(EmailMessageType.CustomHtml, operationId),
+            MessageType = EmailMessageType.CustomHtml,
+            RecipientAddress = req.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            CustomHtml = new EmailIntentCustomHtmlRequest
+            {
+                Subject = subject,
+                Body = TrustedEmailHtmlValue.FromTrustedSource(
+                    htmlContent,
+                    $"Email de teste do template {req.Type} para {merchant.Name ?? "Minha Loja"}.")
+            }
+        }, ct);
+        await dbContext.SaveChangesAsync(ct);
 
         await Send.OkAsync(new SendTestEmailResponse
         {
-            Message = $"Email de teste enviado para {req.Email}!"
+            Message = "Email de teste enfileirado com sucesso."
         }, ct);
     }
 }

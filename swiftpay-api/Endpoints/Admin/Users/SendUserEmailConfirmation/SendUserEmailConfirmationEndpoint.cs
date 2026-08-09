@@ -15,7 +15,8 @@ namespace swiftpay_api.Endpoints.Admin.Users.SendUserEmailConfirmation;
 public sealed class SendUserEmailConfirmationEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
     IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<SendUserEmailConfirmationRequest, SendUserEmailConfirmationResponse>
 {
@@ -59,62 +60,55 @@ public sealed class SendUserEmailConfirmationEndpoint(
             return;
         }
 
-        // Invalidate existing tokens
-        var existingTokens = await dbContext.EmailConfirmationTokens
-            .Where(t => t.UserId == dbUser.Id && t.Status == EmailConfirmationTokenStatus.Pending)
-            .ToListAsync(ct);
-
-        foreach (var token in existingTokens)
+        if (string.IsNullOrWhiteSpace(dbUser.FirebaseUid))
         {
-            token.Status = EmailConfirmationTokenStatus.ExpiredByNewToken;
-        }
-
-        // Create new token
-        var tokenValue = CryptoUtils.GenerateToken();
-        var tokenHash = CryptoUtils.ComputeSha256Hash(tokenValue);
-        var expiresInHours = 24;
-
-        var confirmationToken = new EmailConfirmationToken
-        {
-            UserId = dbUser.Id,
-            TokenHash = tokenHash,
-            Status = EmailConfirmationTokenStatus.Pending,
-            ExpiresAt = DateTime.UtcNow.AddHours(expiresInHours),
-            CreatedAt = DateTime.UtcNow
-        };
-
-        dbContext.EmailConfirmationTokens.Add(confirmationToken);
-        await dbContext.SaveChangesAsync(ct);
-
-        var baseUrl = platformSettings.Value.BaseUrl.TrimEnd('/');
-        var confirmationUrl = $"{baseUrl}/confirm-email?token={tokenValue}&email={Uri.EscapeDataString(dbUser.Email)}";
-
-        // Send email
-        try
-        {
-            await emailService.SendAsync(
-                dbUser.Email,
-                "Confirme seu e-mail - SwiftPay",
-                EmailTemplate.EmailConfirmation,
-                new Dictionary<string, string>
+            await Send.ResponseAsync(new SendUserEmailConfirmationResponse
+            {
+                Error = new("A conta ainda não possui identidade Firebase vinculada.")
                 {
-                    { "NAME", dbUser.Name },
-                    { "CONFIRMATION_URL", confirmationUrl },
-                    { "EXPIRES_IN", expiresInHours.ToString() }
-                },
-                userId: dbUser.Id
-            );
-        }
-        catch
-        {
-            // Don't fail if email fails
+                    Code = "FIREBASE_IDENTITY_REQUIRED"
+                }
+            }, 409, ct);
+            return;
         }
 
-        await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.EmailConfirmationRequest, Status = SecurityLogStatus.Success, UserId = adminId, Details = $"Email de verificação enviado para o usuário {dbUser.Id} pelo admin." });
-
-        await Send.OkAsync(new SendUserEmailConfirmationResponse
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
+        var emailHandle = await emailIntentWriter.Add(new EmailIntentAddRequest
         {
-            Data = new("Email de confirmação enviado com sucesso.")
+            Dedupe = EmailIntentDedupeKey.ManualOperation(
+                EmailMessageType.EmailConfirmation,
+                Guid.NewGuid()),
+            MessageType = EmailMessageType.EmailConfirmation,
+            RecipientAddress = dbUser.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, dbUser.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = dbUser.Name
+            },
+            AuthAction = new EmailIntentAuthActionRequest
+            {
+                ActionType = EmailAuthActionType.VerifyEmail,
+                FirebaseUid = dbUser.FirebaseUid,
+                ContinueUrl = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=signin"
+            }
         }, ct);
+        await dbContext.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
+        emailIntentRelaySignal.Signal();
+
+        await securityLog.LogAsync(new SecurityLogInput
+        {
+            Action = SecurityLogAction.EmailConfirmationRequest,
+            Status = SecurityLogStatus.Success,
+            UserId = adminId,
+            Details = $"Email de verificação enfileirado para o usuário {dbUser.Id} pelo admin."
+        });
+
+        await Send.ResponseAsync(new SendUserEmailConfirmationResponse
+        {
+            Data = new SendUserEmailConfirmationData(emailHandle.Id, "Pending"),
+            Message = "Email de confirmação enfileirado."
+        }, 202, ct);
     }
 }

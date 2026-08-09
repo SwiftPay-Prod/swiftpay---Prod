@@ -8,10 +8,10 @@ import { getOrCreateDeviceId } from '@/utils/device';
 import { Icon } from '@/components/ui/icon';
 import { ViewIcon, ViewOffIcon, GoogleIcon } from '@hugeicons/core-free-icons';
 import { Separator } from '@/components/ui/separator';
+import { sendEmailConfirmation } from '@/app/actions/auth';
 import {
 	signInOrCreatePlatformUserWithGoogle,
 	signInWithFirebaseEmail,
-	sendAccountVerificationEmail,
 	signOutFirebase,
 } from '@/lib/firebase';
 
@@ -55,7 +55,7 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 			if (!response.ok) {
 				const code = data?.error?.code;
 				if (code === 'EMAIL_NOT_VERIFIED') {
-					await sendAccountVerificationEmail(user);
+					await sendEmailConfirmation({ email });
 					router.push(Routes.verifyEmail);
 					return;
 				}

@@ -16,7 +16,7 @@ public sealed class ConfirmCreateApiCredentialEndpoint(
     PrimaryDbContext dbContext,
     ISecurityLogService securityLog,
     IGeoLocationService geoLocationService,
-    IEmailService emailService,
+    IEmailIntentWriter emailIntentWriter,
     INotificationService notificationService
 ) : Endpoint<ConfirmCreateApiCredentialRequest, ConfirmCreateApiCredentialResponse>
 {
@@ -43,6 +43,7 @@ public sealed class ConfirmCreateApiCredentialEndpoint(
         var location = geoLocation.DisplayLocation;
 
         var merchant = await dbContext.Merchants
+            .Include(m => m.User)
             .OrderBy(m => m.Id)
             .FirstOrDefaultAsync(m => m.Id == req.MerchantId && m.UserId == userId, ct);
 
@@ -113,6 +114,31 @@ public sealed class ConfirmCreateApiCredentialEndpoint(
         };
 
         dbContext.MerchantApiCredentials.Add(credential);
+        var now = DateTime.UtcNow;
+        var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
+        await emailIntentWriter.Add(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.BusinessTransition(
+                EmailMessageType.ApiCredentialCreated,
+                credential.Id,
+                apiCredentialCode.Id),
+            MessageType = EmailMessageType.ApiCredentialCreated,
+            RecipientAddress = merchant.User.Email,
+            Owner = new(EmailIntentOwnerType.Merchant, merchant.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = merchant.User.Name,
+                ["CREDENTIAL_NAME"] = credential.Name ?? $"Credencial {credential.Environment}",
+                ["ENVIRONMENT"] = credential.Environment.ToString(),
+                ["MERCHANT_NAME"] = merchant.Name ?? "Merchant",
+                ["DATE"] = brazilTime.ToString("dd/MM/yyyy"),
+                ["TIME"] = brazilTime.ToString("HH:mm:ss"),
+                ["IP_ADDRESS"] = ipAddress,
+                ["LOCATION"] = location
+            }
+        }, ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         await securityLog.LogAsync(new SecurityLogInput
@@ -123,7 +149,6 @@ public sealed class ConfirmCreateApiCredentialEndpoint(
             Details = $"Credencial de API criada para o merchant {merchant.Id} no ambiente {credential.Environment}"
         });
 
-        var user = await dbContext.Users.OrderBy(u => u.Id).FirstOrDefaultAsync(u => u.Id == userId, ct);
 
         _ = notificationService.CreateSecurityNotificationAsync(
             req.MerchantId,
@@ -132,30 +157,6 @@ public sealed class ConfirmCreateApiCredentialEndpoint(
             NotificationPriority.High
         );
 
-        if (user != null)
-        {
-            var now = DateTime.UtcNow;
-            var brazilTime = TimeZoneInfo.ConvertTimeFromUtc(now, DateTimeUtils.BrasiliaTimeZone);
-
-            _ = emailService.SendAsync(
-                user.Email,
-                "🔑 Nova credencial de API criada - SwiftPay",
-                EmailTemplate.ApiCredentialCreated,
-                new Dictionary<string, string>
-                {
-                    { "NAME", user.Name },
-                    { "CREDENTIAL_NAME", credential.Name ?? $"Credencial {credential.Environment}" },
-                    { "ENVIRONMENT", credential.Environment.ToString() },
-                    { "MERCHANT_NAME", merchant.Name ?? "Merchant" },
-                    { "DATE", brazilTime.ToString("dd/MM/yyyy") },
-                    { "TIME", brazilTime.ToString("HH:mm:ss") },
-                    { "IP_ADDRESS", ipAddress },
-                    { "LOCATION", location }
-                },
-                userId: user.Id,
-                merchantId: merchant.Id
-            );
-        }
 
         await Send.ResponseAsync(new ConfirmCreateApiCredentialResponse
         {

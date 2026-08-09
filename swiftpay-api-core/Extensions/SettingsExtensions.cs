@@ -17,6 +17,9 @@ public static class SettingsExtensions
         services.Configure<EmailSettingsOptions>(
             configuration.GetSection(EmailSettingsOptions.EmailSettings));
 
+        services.Configure<EmailPlatformSettings>(
+            configuration.GetSection(EmailPlatformSettings.SectionName));
+
         services.Configure<RabbitMQSettings>(
             configuration.GetSection(RabbitMQSettings.RabbitMQ));
 

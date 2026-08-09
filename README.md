@@ -1,5 +1,18 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Governança e contexto do projeto
+
+Todo agente ou colaborador deve começar por estes artefatos:
+
+- [`AGENTS.md`](AGENTS.md): contrato universal e obrigatório para agentes;
+- [`CLAUDE.md`](CLAUDE.md): governança gstack;
+- [`TODOS.md`](TODOS.md): tarefas, bloqueios, evidências e handoff atuais;
+- [`docs/agent-context-governance.md`](docs/agent-context-governance.md): ciclo de contexto durável;
+- [`docs/decisions/`](docs/decisions/): decisões e justificativas;
+- [`docs/architecture/`](docs/architecture/): mapas do sistema.
+
+Nenhuma tarefa ou decisão pode existir somente em chat ou memória local. Não registre segredos nesses documentos.
+
 ## Getting Started
 
 First, run the development server:

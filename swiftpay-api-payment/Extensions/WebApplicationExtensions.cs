@@ -41,7 +41,10 @@ public static class WebApplicationExtensions
         app.UseCheckoutEnvironment();
         app.UseApiLogContext();
 
-        app.UseMiniProfiler();
+        if (!app.Environment.IsProduction())
+        {
+            app.UseMiniProfiler();
+        }
 
         app.UseFastEndpoints(config =>
         {
