@@ -1,16 +1,42 @@
-name: Deploy
+name: Deploy SwiftPay
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      services:
+        description: "Services to deploy"
+        required: false
+        type: choice
+        default: "api payment web checkout"
+        options:
+          - api
+          - payment
+          - web
+          - checkout
+          - api payment
+          - web checkout
+          - api payment web checkout
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.set.outputs.services }}
+    steps:
+      - uses: actions/checkout@v4
 
-jobs:
-  deploy:
+      - name: Set target services
+        id: set
+        run: echo "services=${{ github.event_name == 'workflow_dispatch' && inputs.services || 'api payment web checkout' }}" >> $GITHUB_OUTPUT
+
+  deploy-api:
+    needs: validate
+    if: contains(needs.validate.outputs.services, 'api')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy to VPS
+      - name: Deploy swiftpay-api
         uses: appleboy/ssh-action@v1
         with:
           host: 169.58.70.201
@@ -32,7 +58,7 @@ jobs:
               trap - ERR
               echo "Deploy failed; rolling back to ${PREVIOUS_COMMIT}"
               git reset --hard "${PREVIOUS_COMMIT}"
-              if ! docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240; then
+              if ! docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --wait --wait-timeout 240 swiftpayapi swiftpayapipayment; then
                 echo "Rollback failed; manual intervention required" >&2
               fi
               exit "${exit_code}"
@@ -41,12 +67,58 @@ jobs:
 
             git pull --ff-only
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" config --quiet
-            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240
+            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayapi swiftpayapipayment
 
             curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5279/health/live
             curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5279/health/ready
             curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5166/health/live
             curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5166/health/ready
+
+            trap - ERR
+            docker image prune -f
+
+  deploy-web:
+    needs: validate
+    if: contains(needs.validate.outputs.services, 'web') || contains(needs.validate.outputs.services, 'checkout')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy web services
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -Eeuo pipefail
+            cd /root/swiftpay
+
+            ENV_FILE=/root/swiftpay/.env.production
+            COMPOSE_FILE=docker-compose.production.yaml
+            PREVIOUS_COMMIT=$(git rev-parse HEAD)
+
+            git diff --quiet
+            git diff --cached --quiet
+
+            rollback() {
+              exit_code=$?
+              trap - ERR
+              echo "Deploy failed; rolling back to ${PREVIOUS_COMMIT}"
+              git reset --hard "${PREVIOUS_COMMIT}"
+              if ! docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout; then
+                echo "Rollback failed; manual intervention required" >&2
+              fi
+              exit "${exit_code}"
+            }
+            trap rollback ERR
+
+            git pull --ff-only
+            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" config --quiet
+            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout
+
+            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:3001/
+            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5002/
 
             trap - ERR
             docker image prune -f

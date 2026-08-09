@@ -76,9 +76,27 @@ public sealed class FirestoreEmailOutboxStore : IEmailOutboxPublisher, IEmailOut
         Utc(nowUtc);
         var ids = new HashSet<Guid>();
         var take = Math.Clamp(limit, 1, 200);
-        await AddIdsAsync(Outbox.WhereEqualTo("status", "RetryScheduled").WhereLessThanOrEqualTo("nextAttemptAt", nowUtc).Limit(take), ids, cancellationToken);
-        if (ids.Count < take)
-            await AddIdsAsync(Outbox.WhereEqualTo("status", "Processing").WhereLessThanOrEqualTo("leaseExpiresAt", nowUtc).Limit(take - ids.Count), ids, cancellationToken);
+
+        await foreach (var doc in Outbox.Limit(take).StreamAsync(cancellationToken))
+        {
+            var status = OptionalString(doc, "status");
+            if (status == "RetryScheduled")
+            {
+                var next = OptionalDate(doc, "nextAttemptAt");
+                if (next is { } nextAttemptAt && nextAttemptAt <= nowUtc && Guid.TryParseExact(doc.Id, "N", out var retryId))
+                    ids.Add(retryId);
+            }
+            else if (status == "Processing")
+            {
+                var lease = OptionalDate(doc, "leaseExpiresAt");
+                if (lease is { } leaseExpiresAt && leaseExpiresAt <= nowUtc && Guid.TryParseExact(doc.Id, "N", out var procId))
+                    ids.Add(procId);
+            }
+
+            if (ids.Count >= take)
+                break;
+        }
+
         return ids.ToArray();
     }
 
