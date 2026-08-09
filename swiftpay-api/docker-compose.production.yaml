@@ -298,11 +298,11 @@ services:
     image: swiftpaywebcheckout:${VERSION:-latest}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:5002:3000"
-    environment:
-      INTERNAL_SWIFTPAY_API_PAYMENT_URL: http://swiftpayapipayment:5166
-      NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
-    depends_on:
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-o", "/dev/null", "http://127.0.0.1:3000/checkout/pay"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
       swiftpayapipayment:
         condition: service_healthy
     healthcheck:
