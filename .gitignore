@@ -44,3 +44,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local backup artifacts (never commit)
+*.tar.gz
+*.bak
+/swiftpay-web/

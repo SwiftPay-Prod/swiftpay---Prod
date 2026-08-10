@@ -247,3 +247,33 @@ Trabalho restante: concluir gate CEO; gate Eng; implementação; testes; nenhum 
 Próxima ação única: proprietário escolher o modo de revisão CEO.
 Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md e docs/architecture/firebase-email-platform.md.
 ```
+
+## Acesso SSH à VPS — 2026-08-10
+
+- `DONE` Validar acesso SSH de root à VPS `169.58.70.201` (host `vmi3463530`, Ubuntu 6.8, uptime 16 dias) a partir do sandbox Freebuff via `sshpass` (instalado no sandbox; mesmo mecanismo `DEPLOY_PASS` do `deploy.sh`). Segredo de autenticação usado apenas em memória, não registrado em nenhum artefato durável — senha deve ser rotacionada pelo proprietário.
+- `DONE` Inspecionar estado dos containers na VPS: todos `healthy` — `swiftpayweb` (3001), `swiftpaywebcheckout` (5002), `swiftpayapi` (5279), `swiftpayapipayment` (5166), `swiftpaydb` (5432), `swiftpaylogsdb` (5433), `swiftpayrabbitmq` (5672/15672), `swiftpayvalkey` (6379), `swiftpaystorage` (9000-9001).
+- `PENDING` Disco `/` em 87% (167G/193G) — investigar maior consumidor e planejar limpeza/expansão.
+- Próxima ação: definir com o proprietário qual operação executar na VPS (diagnóstico, deploy, limpeza de disco).
+
+## Configuração de preview (Freebuff Cloud) — 2026-08-10
+
+- `DONE` Inspecionar o monorepo SwiftPay conectado (`SwiftPay-Prod/swiftpay---Prod`): raiz = `swiftpay-web` (Next.js 16 + React 19, App Router); módulos irmãos `swiftpay-api`, `swiftpay-api-payment`, `swiftpay-api-core` (.NET 10) e `swiftpay-web-checkout` (checkout público).
+- `DONE` Configurar comandos duráveis no `package.json` (fonte detectada pela plataforma): install = `npm ci` (lockfile presente, igual ao `vercel.json`); dev/preview = `next dev --webpack`; build = `next build`. Removido `--port 5009` do script `dev` para honrar o `PORT` injetado pela plataforma (bind em 0.0.0.0 é o default do `next dev`).
+- `BLOCKED` CLI `freebuff-preview`/`freebuff-env`/`freebuff-deploy` não está disponível neste sandbox (não é binário, pacote npm/bun nem comando do shell); o registro da plataforma via `freebuff-preview set-install/set/build` não pôde ser executado. Comandos ficaram em `package.json` para detecção automática no Start Preview da UI. Nenhum preview foi iniciado (solicitado explicitamente).
+- `DONE` Mapear env vars do frontend (`package.json` raiz), conforme `.env.example`: `NEXT_PUBLIC_API_URL`, `INTERNAL_API_URL`, `NEXT_PUBLIC_APP_URL`, `INTEGRATION_URL`, `SWIFTPAY_API_LOG_REQUEST_TIMING`, `NEXT_PUBLIC_PAYMENT_API_URL`, `NEXT_PUBLIC_FIREBASE_AUTH_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID`. O checkout público exige `INTERNAL_SWIFTPAY_API_PAYMENT_URL` e `NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL`. Nenhum segredo foi registrado.
+- Arquivo alterado: `package.json` (script `dev`).
+- Próxima ação: proprietário iniciar o preview pela UI e, se necessário, preencher as env vars acima nas API Keys; validação local `npm ci && npm run dev` segue pendente (node_modules ausente neste sandbox).
+
+## Auditoria VPS vs GitHub (plataforma de email + remoção Firebase) — 2026-08-10
+
+- `DONE` Verificar que os commits do GitHub (`origin/main` = `27d5ef1`: plataforma de email outbox + remoção do Firebase auth) são corretos e condizentes com o código da VPS em produção. Método: hash-comparison (`git hash-object` vs `git rev-parse 27d5ef1:path`) de **todos** os arquivos do commit vs worktree da VPS.
+- `RESULTADO` Apenas 4 divergências reais:
+  - `swiftpay-api/Endpoints/Auth/SignUp/SignUpEndpoint.cs` — worktree da VPS é a versão **pré-fix** (não envia intent de confirmação de email no signup); o GitHub contém o fix (`IEmailIntentWriter` + `EmailConfirmation`). **Decisão: NÃO pushear a versão da VPS; mantido o fix do GitHub.**
+  - 2 arquivos de teste (`EmailIntentRelayTests.cs`, `EmailMessageTemplateCatalogTests.cs`) — versões do worktree divergem; mantidas as versões commitadas do GitHub.
+  - 2 tarballs de backup (~24MB) deletados no worktree da VPS; removidos do repo neste commit.
+- `DONE` Referências penduradas: zero usos de `IFirebaseAuthService`/`FirebaseAuthService`/`FirebaseSignIn/SignUp` no código (.cs/ts/tsx). `User.cs` sem campos Firebase. Push notifications intactas (`src/lib/firebase.ts` mantém `getMessaging`/`onMessage`/`getToken` + `firebase-messaging-sw.js`).
+- `DONE` Plataforma de email íntegra: `AddEmailOutboxWorker` registrado no `Program.cs`; services/worker presentes (`EmailOutboxWorkerService`, `ResendEmailProviderTransport`, `FirestoreEmailOutboxStore`...); migrations `AddEmailIntentsOutbox` + `RemoveFirebaseIdentityFields` (SQL `DROP COLUMN IF EXISTS` idempotente; `Down()` restaura). Containers rebuildados HOJE (api 06:10Z, web 10:52Z, payment 03:39Z) e saudáveis; outbox enviando emails em produção (log "Email intent ... accepted by provider").
+- `NOTE` Produção roda `SignUpEndpoint` pré-fix: confirmação de email no signup **não é enviada** até o próximo deploy a partir do GitHub.
+- `NOTE` Deploy via GitHub Actions segue bloqueado até o clone da VPS ser ressincronizado: histórico divergiu (`git pull --ff-only` falharia; worktree com 75 M + 10 D + 53 ??, em grande parte já sincronizado com o GitHub). Próxima ação recomendada (exige decisão do proprietário): `git reset --hard origin/main` na VPS após este push.
+- `DONE` Commit + push neste workstream: remoção dos 2 `*.tar.gz`, `.gitignore` (novas regras `*.tar.gz`, `*.bak`, `/swiftpay-web/`), registro deste diagnóstico. `package.json` (script dev p/ preview Freebuff) permanece como alteração local não commitada, fora deste escopo.
+- Próxima ação única: proprietário decidir sobre a ressincronização da VPS e sobre limpeza do lixo local (cópia aninhada `swiftpay-web/` de 1,2 GB, `swiftpay-sync.tar.gz`, `docker-compose.production.yaml.bak`).
