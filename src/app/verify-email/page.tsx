@@ -5,17 +5,11 @@ import { Card, Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { MailOpen01Icon, Refresh03Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { useRouter } from 'next/navigation';
-import {
-	onFirebaseAuthStateChanged,
-	signOutFirebase,
-	type FirebaseUser,
-} from '@/lib/firebase';
 import { sendEmailConfirmation } from '@/app/actions/auth';
 import { Routes } from '@/router/routes';
 
 export default function PublicVerifyEmailPage() {
 	const router = useRouter();
-	const [user, setUser] = useState<FirebaseUser | null>(null);
 	const [email, setEmail] = useState<string>('');
 	const [isResending, setIsResending] = useState(false);
 	const [isChecking, setIsChecking] = useState(false);
@@ -23,19 +17,10 @@ export default function PublicVerifyEmailPage() {
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
-		const unsubscribe = onFirebaseAuthStateChanged((firebaseUser) => {
-			setUser(firebaseUser);
-			setEmail(firebaseUser?.email ?? '');
-		});
-
-		return unsubscribe;
+		const params = new URLSearchParams(window.location.search);
+		const emailParam = params.get('email') ?? '';
+		if (emailParam) setEmail(emailParam);
 	}, []);
-
-	useEffect(() => {
-		if (user?.emailVerified) {
-			void signOutFirebase().finally(() => router.replace(Routes.home));
-		}
-	}, [user, router]);
 
 	async function handleResend() {
 		if (!email) return;
@@ -58,15 +43,9 @@ export default function PublicVerifyEmailPage() {
 	}
 
 	async function handleReturnToLogin() {
-		if (!user) {
-			router.push(Routes.home);
-			return;
-		}
-
 		setIsChecking(true);
 		setError(null);
 		try {
-			await signOutFirebase();
 			router.replace(`${Routes.home}?auth=signin`);
 		} catch (err) {
 			const message = err instanceof Error ? err.message : 'Não foi possível confirmar o e-mail.';
@@ -76,20 +55,6 @@ export default function PublicVerifyEmailPage() {
 		}
 	}
 
-	if (!user) {
-		return (
-			<div className="min-h-screen flex items-center justify-center bg-background p-4">
-				<Card className="flex w-full max-w-lg flex-col items-center gap-6 p-8 text-center">
-					<h1 className="text-2xl font-semibold">Verifique seu e-mail</h1>
-					<p className="text-default-500">Acesse o login para continuar com a verificação do seu e-mail.</p>
-					<Button variant="primary" onPress={() => router.push(Routes.home)} className="w-full">
-						Ir para o Login
-					</Button>
-				</Card>
-			</div>
-		);
-	}
-
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-background p-4">
 			<Card className="flex w-full max-w-lg flex-col items-center gap-6 p-8 text-center">
@@ -97,7 +62,13 @@ export default function PublicVerifyEmailPage() {
 					<Icon icon={MailOpen01Icon} className="icon-xl text-warning" />
 					<h1 className="text-2xl font-semibold">Verifique seu e-mail</h1>
 					<p className="text-default-500">
-						Enviamos um link de confirmação para <strong className="text-foreground">{email}</strong>
+						{email ? (
+							<>
+								Enviamos um link de confirmação para <strong className="text-foreground">{email}</strong>
+							</>
+						) : (
+							'Informe seu e-mail para reenviar o link de verificação.'
+						)}
 					</p>
 				</div>
 

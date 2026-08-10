@@ -8,12 +8,7 @@ import { getOrCreateDeviceId } from '@/utils/device';
 import { Icon } from '@/components/ui/icon';
 import { ViewIcon, ViewOffIcon, GoogleIcon } from '@hugeicons/core-free-icons';
 import { Separator } from '@/components/ui/separator';
-import { sendEmailConfirmation } from '@/app/actions/auth';
-import {
-	signInOrCreatePlatformUserWithGoogle,
-	signInWithFirebaseEmail,
-	signOutFirebase,
-} from '@/lib/firebase';
+import { sendEmailConfirmation, signIn } from '@/app/actions/auth';
 
 interface SignInFormProps {
 	onSwitchToSignUp: () => void;
@@ -30,7 +25,6 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 	const [error, setError] = useState<string | null>(null);
 	const [deviceId, setDeviceId] = useState<string>('');
 
-
 	useEffect(() => {
 		setDeviceId(getOrCreateDeviceId());
 	}, []);
@@ -41,71 +35,21 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 		setError(null);
 
 		try {
-			const user = await signInWithFirebaseEmail(email, password);
-			const idToken = await user.getIdToken();
+			const result = await signIn({ email, password, deviceId });
 
-			const response = await fetch('/api/auth/firebase-signin', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ idToken, deviceId }),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				const code = data?.error?.code;
-				if (code === 'EMAIL_NOT_VERIFIED') {
-					await sendEmailConfirmation({ email });
-					router.push(Routes.verifyEmail);
-					return;
-				}
-				await signOutFirebase().catch(() => undefined);
-				setError(data?.error?.message || 'Erro ao fazer login');
+			if (!result?.data) {
+				setError(result?.error?.message || 'Erro ao fazer login');
 				return;
 			}
 
 			router.push(Routes.panel.dashboard);
 		} catch (err) {
-			await signOutFirebase().catch(() => undefined);
 			const message = err instanceof Error ? err.message : 'Erro ao conectar com o servidor';
-			if (message.includes('auth/user-not-found') || message.includes('auth/wrong-password')) {
-				setError('E-mail ou senha inválidos.');
-			} else if (message.includes('auth/too-many-requests')) {
-				setError('Muitas tentativas. Tente novamente em instantes.');
-			} else if (message.includes('auth/network-request-failed')) {
-				setError('Erro de conexão. Verifique sua internet e tente novamente.');
-			} else {
-				setError(message);
-			}
+			setError(message);
 		} finally {
 			setIsLoading(false);
 		}
 	}
-
-	async function handleGoogleSubmit() {
-		setIsLoading(true);
-		setError(null);
-
-		try {
-			await signInOrCreatePlatformUserWithGoogle({
-				deviceId: deviceId || undefined,
-			});
-			router.push(Routes.panel.dashboard);
-		} catch (err) {
-			await signOutFirebase().catch(() => undefined);
-			const message = err instanceof Error ? err.message : 'Erro ao conectar com o servidor';
-			if (message.includes('auth/popup-closed-by-user')) {
-				setError('Autenticação cancelada.');
-			} else if (message.includes('auth/network-request-failed')) {
-				setError('Erro de conexão. Verifique sua internet e tente novamente.');
-			} else {
-				setError(message);
-			}
-		} finally {
-			setIsLoading(false);
-		}
-	}
-
 
 	return (
 		<div className="flex flex-col gap-6">
@@ -147,17 +91,6 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 					Entrar com E-mail
 				</Button>
 			</form>
-
-			<div className="flex items-center gap-4">
-				<Separator className="flex-1" />
-				<span className="text-default-500 text-xs uppercase tracking-wider">Ou</span>
-				<Separator className="flex-1" />
-			</div>
-
-			<Button type="button" variant="secondary" onPress={handleGoogleSubmit} isPending={isLoading} className="w-full">
-				<Icon icon={GoogleIcon} className="icon-sm" />
-				<span>Entrar com Google</span>
-			</Button>
 
 			<div className="text-center text-sm">
 				<span className="text-default-500">Ainda não tem conta? </span>

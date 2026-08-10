@@ -257,7 +257,7 @@ public sealed class EmailIntentRelayTests : IAsyncLifetime
         public int CallCount => _callCount;
 
         public Task<string> GenerateAsync(
-            PlatformAuthActionLinkRequest request,
+            EmailAuthActionLinkRequest request,
             CancellationToken cancellationToken = default)
         {
             var sequence = Interlocked.Increment(ref _callCount);

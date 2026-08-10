@@ -9,6 +9,8 @@ public enum EmailDeliveryClass
 }
 
 public enum EmailIntentKind
+{
+    Template = 0,
     PlatformAuthAction = 1,
     PaymentAction = 2,
     AccountAction = 3,
@@ -106,13 +108,6 @@ public readonly record struct EmailIntentHandle(Guid Id, EmailDeliveryClass Deli
 public sealed record EmailIntentAuthActionRequest
 {
     public required EmailAuthActionType ActionType { get; init; }
-    public required string ContinueUrl { get; init; }
-}
-
-public sealed record PlatformAuthActionLinkRequest
-{
-    public required EmailAuthActionType ActionType { get; init; }
-    public required string RecipientAddress { get; init; }
     public required string ContinueUrl { get; init; }
 }
 

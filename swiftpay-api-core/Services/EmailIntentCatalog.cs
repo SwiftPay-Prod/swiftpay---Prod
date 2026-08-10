@@ -1,3 +1,189 @@
+using System.Buffers;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using swiftpay_api_core.Models.Email;
+
+namespace swiftpay_api_core.Services;
+
+public static class EmailIntentCatalog
+{
+    public static EmailIntentCatalogDefinition GetDefinition(EmailMessageType messageType)
+    {
+        return messageType switch
+        {
+            EmailMessageType.KycApproved => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.KycRejected => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.KycComplement => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.MerchantInactivated => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.MerchantSuspended => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.AdminPasswordReset => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.EmailConfirmation => AuthAction(messageType, EmailAuthActionType.VerifyEmail),
+            EmailMessageType.PasswordReset => AuthAction(messageType, EmailAuthActionType.PasswordReset),
+            EmailMessageType.DeviceVerification => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.PasswordChanged => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.AccountLocked => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.DeviceAdded => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.PayoutAccountActionVerification => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.PayoutAccountCreated => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.MerchantDeleted => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.ApiCredentialCreated => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.ApiCredentialRevoked => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.ApiCredentialRegenerated => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.ApiCredentialCode => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.CustomHtml => Template(messageType, EmailDeliveryClass.Notification),
+            EmailMessageType.MerchantDeletionCode => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.KycSubmitted => Template(messageType, EmailDeliveryClass.Notification),
+            EmailMessageType.PasswordChangeCode => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.ReferralPayoutPixKeyVerification => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.PayoutCompleted => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.PayoutRequested => Template(messageType, EmailDeliveryClass.Critical),
+            EmailMessageType.PayoutRejected => Template(messageType, EmailDeliveryClass.Critical),
+            _ => throw new EmailIntentValidationException("The message type is not present in the email intent catalog.")
+        };
+    }
+
+    public static void ValidateDedupeFamily(EmailMessageType messageType, EmailIntentDedupeFamily family)
+    {
+        var valid = messageType switch
+        {
+            EmailMessageType.KycApproved or
+            EmailMessageType.KycRejected or
+            EmailMessageType.KycComplement or
+            EmailMessageType.MerchantInactivated or
+            EmailMessageType.MerchantSuspended or
+            EmailMessageType.PasswordChanged or
+            EmailMessageType.AccountLocked or
+            EmailMessageType.DeviceAdded or
+            EmailMessageType.PayoutAccountCreated or
+            EmailMessageType.MerchantDeleted or
+            EmailMessageType.ApiCredentialCreated or
+            EmailMessageType.ApiCredentialRevoked or
+            EmailMessageType.ApiCredentialRegenerated or
+            EmailMessageType.KycSubmitted or
+            EmailMessageType.PayoutCompleted or
+            EmailMessageType.PayoutRequested or
+            EmailMessageType.PayoutRejected
+                => family == EmailIntentDedupeFamily.BusinessTransition,
+
+            EmailMessageType.AdminPasswordReset
+                => family == EmailIntentDedupeFamily.ManualOperation,
+
+            EmailMessageType.EmailConfirmation
+                => family is EmailIntentDedupeFamily.SignupVerification
+                    or EmailIntentDedupeFamily.VerificationResend
+                    or EmailIntentDedupeFamily.ManualOperation,
+
+            EmailMessageType.PasswordReset
+                => family == EmailIntentDedupeFamily.PasswordReset,
+
+            EmailMessageType.DeviceVerification
+                => family == EmailIntentDedupeFamily.DeviceVerification,
+
+            EmailMessageType.PayoutAccountActionVerification
+                => family is EmailIntentDedupeFamily.BusinessTransition
+                    or EmailIntentDedupeFamily.CashoutAccountAction,
+
+            EmailMessageType.ApiCredentialCode
+                => family == EmailIntentDedupeFamily.ApiCredentialCode,
+
+            EmailMessageType.CustomHtml
+                => family == EmailIntentDedupeFamily.ManualOperation,
+
+            EmailMessageType.MerchantDeletionCode
+                => family == EmailIntentDedupeFamily.MerchantDeletion,
+
+            EmailMessageType.PasswordChangeCode
+                => family == EmailIntentDedupeFamily.PasswordChange,
+
+            EmailMessageType.ReferralPayoutPixKeyVerification
+                => family == EmailIntentDedupeFamily.ReferralPixKeyChange,
+
+            _ => false
+        };
+
+        if (!valid)
+            throw new EmailIntentValidationException("The dedupe family is not valid for the catalogued message type.");
+    }
+
+    private static EmailIntentCatalogDefinition Template(
+        EmailMessageType messageType,
+        EmailDeliveryClass deliveryClass)
+    {
+        return new EmailIntentCatalogDefinition(
+            messageType,
+            EmailIntentKind.Template,
+            deliveryClass,
+            TemplateVersion: 1,
+            RequiredAuthActionType: null);
+    }
+
+    private static EmailIntentCatalogDefinition AuthAction(
+        EmailMessageType messageType,
+        EmailAuthActionType actionType)
+    {
+        return new EmailIntentCatalogDefinition(
+            messageType,
+            EmailIntentKind.PlatformAuthAction,
+            EmailDeliveryClass.Critical,
+            TemplateVersion: 1,
+            RequiredAuthActionType: actionType);
+    }
+}
+
+public sealed record EmailEnvelopeHashInput
+{
+    public required string RecipientAddress { get; init; }
+    public required string Subject { get; init; }
+    public required string HtmlBody { get; init; }
+    public string? TextBody { get; init; }
+    public string? ActionLink { get; init; }
+    public required DateTime SendBefore { get; init; }
+}
+
+public static class EmailIntentHash
+{
+    public static string ComputeEnvelopeHash(EmailEnvelopeHashInput envelope)
+    {
+        ArgumentNullException.ThrowIfNull(envelope);
+        var recipient = EmailIntentCanonicalizer.NormalizeRecipient(envelope.RecipientAddress);
+        if (string.IsNullOrWhiteSpace(envelope.Subject))
+            throw new EmailIntentValidationException("The frozen envelope subject is required.");
+        if (string.IsNullOrWhiteSpace(envelope.HtmlBody))
+            throw new EmailIntentValidationException("The frozen HTML body is required.");
+        if (envelope.SendBefore.Kind != DateTimeKind.Utc)
+            throw new EmailIntentValidationException("SendBefore must use UTC.");
+
+        var buffer = new ArrayBufferWriter<byte>(1024);
+        using (var writer = new Utf8JsonWriter(buffer))
+        {
+            writer.WriteStartObject();
+            if (envelope.ActionLink is null)
+                writer.WriteNull("actionLink");
+            else
+                writer.WriteString("actionLink", envelope.ActionLink);
+            writer.WriteString("htmlBody", envelope.HtmlBody);
+            writer.WriteString("recipient", recipient);
+            writer.WriteString("sendBefore", envelope.SendBefore);
+            writer.WriteString("subject", envelope.Subject);
+            if (envelope.TextBody is null)
+                writer.WriteNull("textBody");
+            else
+                writer.WriteString("textBody", envelope.TextBody);
+            writer.WriteEndObject();
+        }
+
+        return ComputeSha256(buffer.WrittenSpan);
+    }
+
+    internal static string ComputeSha256(ReadOnlySpan<byte> bytes)
+    {
+        Span<byte> hash = stackalloc byte[SHA256.HashSizeInBytes];
+        SHA256.HashData(bytes, hash);
+        return Convert.ToHexStringLower(hash);
+    }
+}
 internal readonly record struct CanonicalEmailIntentRequest(
     string RecipientAddress,
     string CorrelationId,

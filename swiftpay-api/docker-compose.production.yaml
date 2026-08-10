@@ -1,92 +1,68 @@
+version: "3.8"
+
 services:
   swiftpaydb:
     container_name: swiftpaydb
-    image: postgres:17-alpine
+    image: postgres:15-alpine
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5432:5432"
     environment:
-      POSTGRES_USER: swiftpayuser
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-swiftpaypassword}
+      POSTGRES_USER: swiftpay
+      POSTGRES_PASSWORD: ${DB_PASSWORD?err}
       POSTGRES_DB: swiftpay
-    command:
-      - "postgres"
-      - "-c"
-      - "shared_buffers=2GB"
-      - "-c"
-      - "work_mem=16MB"
-      - "-c"
-      - "max_connections=100"
     volumes:
       - swiftpaydb_data:/var/lib/postgresql/data
+    networks:
+      - swiftpay-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U swiftpay -d swiftpay"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
-    deploy:
-      resources:
-        limits:
-          memory: 4G
-        reservations:
-          memory: 1G
 
   swiftpaylogsdb:
     container_name: swiftpaylogsdb
     image: postgres:15-alpine
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5433:5432"
     environment:
-      POSTGRES_USER: logsuser
-      POSTGRES_PASSWORD: ${LOGS_DB_PASSWORD:-logspassword}
+      POSTGRES_USER: swiftpaylogs
+      POSTGRES_PASSWORD: ${LOGS_DB_PASSWORD?err}
       POSTGRES_DB: swiftpaylogs
-    command:
-      - "postgres"
-      - "-c"
-      - "shared_buffers=1GB"
-      - "-c"
-      - "work_mem=8MB"
-      - "-c"
-      - "max_connections=50"
     volumes:
       - swiftpaylogsdb_data:/var/lib/postgresql/data
+    networks:
+      - swiftpay-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U swiftpaylogs -d swiftpaylogs"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
 
   swiftpayrabbitmq:
     container_name: swiftpayrabbitmq
-    image: rabbitmq:3.13-management-alpine
+    image: rabbitmq:3-management-alpine
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5672:5672"
-      - "127.0.0.1:15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-swiftpayuser}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-swiftpaypassword}
-      RABBITMQ_DEFAULT_VHOST: swiftpay
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD?err}
     volumes:
       - swiftpayrabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - swiftpay-network
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      test: ["CMD-SHELL", "rabbitmq-diagnostics check_port_connectivity"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 20s
 
   swiftpayvalkey:
     container_name: swiftpayvalkey
     image: valkey/valkey:8-alpine
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:6379:6379"
-    command: valkey-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
     volumes:
       - swiftpayvalkey_data:/data
+    networks:
+      - swiftpay-network
     healthcheck:
       test: ["CMD", "valkey-cli", "ping"]
       interval: 10s
@@ -95,97 +71,29 @@ services:
 
   swiftpaystorage:
     container_name: swiftpaystorage
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    image: minio/minio:latest
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:9000:9000"
-      - "127.0.0.1:9001:9001"
-    environment:
-      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY:-local_dev_storage_access_key}
-      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY:-local_dev_storage_secret_key}
     command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY?err}
+      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY?err}
     volumes:
       - swiftpaystorage_data:/data
+    networks:
+      - swiftpay-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
       interval: 10s
       timeout: 5s
-      retries: 5
-
-  swiftpaystorage-init:
-    container_name: swiftpaystorage-init
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
-    restart: "no"
-    depends_on:
-      swiftpaystorage:
-        condition: service_healthy
-    environment:
-      MINIO_ROOT_USER: ${STORAGE_ACCESS_KEY:-local_dev_storage_access_key}
-      MINIO_ROOT_PASSWORD: ${STORAGE_SECRET_KEY:-local_dev_storage_secret_key}
-    entrypoint: >
-      /bin/sh -c "
-      until mc alias set swiftpaystorage http://swiftpaystorage:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}; do sleep 2; done;
-      mc mb --ignore-existing swiftpaystorage/swiftpay-storage;
-      mc anonymous set download swiftpaystorage/swiftpay-storage;
-      "
+      retries: 10
+      start_period: 15s
 
   swiftpayapi:
-    container_name: swiftpayapi
     build:
       context: ..
       dockerfile: swiftpay-api/Dockerfile
     image: swiftpayapi:${VERSION:-latest}
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5279:5279"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: http://0.0.0.0:5279
-      PlatformSettings__BaseUrl: https://swiftpayment.info
-      PlatformSettings__CheckoutBaseUrl: https://swiftpayment.info/checkout
-      PlatformSettings__MaxLoginAttempts: "5"
-      PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}
-      PaymentApi__BaseUrl: http://swiftpayapipayment:5166/
-      PaymentApi__InternalApiKey: ${INTERNAL_API_KEY?err}
-      DatabaseSettings__ConnectionString: Host=swiftpaydb;Port=5432;Database=swiftpay;Username=swiftpayuser;Password=${DB_PASSWORD?err}
-      LogsDatabaseSettings__ConnectionString: Host=swiftpaylogsdb;Port=5432;Database=swiftpaylogs;Username=logsuser;Password=${LOGS_DB_PASSWORD?err}
-      JWTSettings__Secret: ${API_JWT_SECRET?err}
-      JWTSettings__Issuer: swiftpay
-      JWTSettings__Audience: swiftpay
-      JWTSettings__TokenExpire: "86400"
-      JWTSettings__RefreshTokenExpire: "604800"
-      EmailSettings__Provider: Resend
-      EmailSettings__FromEmail: noreply@swiftpayment.info
-      EmailSettings__FromName: SWIFTPAY
-      EmailSettings__EnableSend: "true"
-      EmailSettings__Resend__ApiKey: ${RESEND_API_KEY?err}
-      StorageSettings__Endpoint: swiftpaystorage:9000
-      StorageSettings__AccessKey: ${STORAGE_ACCESS_KEY?err}
-      StorageSettings__SecretKey: ${STORAGE_SECRET_KEY?err}
-      StorageSettings__BucketName: swiftpay-storage
-      StorageSettings__UseSSL: "false"
-      StorageSettings__PublicUrl: https://swiftpayment.info/api/storage
-      RabbitMQSettings__HostName: swiftpayrabbitmq
-      RabbitMQSettings__Port: "5672"
-      RabbitMQSettings__UserName: ${RABBITMQ_USER:-swiftpayuser}
-      RabbitMQSettings__Password: ${RABBITMQ_PASSWORD?err}
-      RabbitMQSettings__VirtualHost: swiftpay
-      RabbitMQSettings__Enabled: "true"
-      ValkeySettings__ConnectionString: swiftpayvalkey:6379
-      FirebaseSettings__Enabled: ${FIREBASE_ENABLED:-false}
-      FirebaseSettings__ProjectId: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
-      FirebaseSettings__PrivateKeyId: ${FIREBASE_PRIVATE_KEY_ID:-}
-      FirebaseSettings__PrivateKey: ${FIREBASE_PRIVATE_KEY:-}
-      FirebaseSettings__ClientEmail: ${FIREBASE_CLIENT_EMAIL:-}
-      FirebaseSettings__ClientId: ${FIREBASE_CLIENT_ID:-}
-      EmailPlatformSettings__Enabled: ${EMAIL_PLATFORM_ENABLED:-false}
-      EmailPlatformSettings__FirebaseProjectId: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
-      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/firebase-email-worker.json
-    volumes:
-      - ${FIREBASE_EMAIL_WORKER_CREDENTIALS:-/run/secrets/firebase-email-worker.json}:/run/secrets/firebase-email-worker.json:ro
     depends_on:
       swiftpaydb:
         condition: service_healthy
@@ -196,97 +104,57 @@ services:
       swiftpayvalkey:
         condition: service_healthy
       swiftpaystorage:
-        condition: service_started
-      swiftpaystorage-init:
-        condition: service_completed_successfully
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5279/health/ready"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=swiftpaydb;Database=swiftpay;Username=swiftpay;Password=${DB_PASSWORD?err}
+      ConnectionStrings__LogsDb: Host=swiftpaylogsdb;Database=swiftpaylogs;Username=swiftpaylogs;Password=${LOGS_DB_PASSWORD?err}
+      RabbitMQ__Host: swiftpayrabbitmq
+      RabbitMQ__UserName: ${RABBITMQ_USER:-swiftpayuser}
+      RabbitMQ__Password: ${RABBITMQ_PASSWORD?err}
+      StorageSettings__AccessKey: ${STORAGE_ACCESS_KEY?err}
+      StorageSettings__SecretKey: ${STORAGE_SECRET_KEY?err}
+      StorageSettings__ServiceUrl: http://swiftpaystorage:9000
+      ApiSettings__JwtSecret: ${API_JWT_SECRET?err}
+      InternalApiSettings__ApiKey: ${INTERNAL_API_KEY?err}
+      EmailSettings__Resend__ApiKey: ${RESEND_API_KEY?err}
+      EmailPlatformSettings__Enabled: "true"
+      FirebaseSettings__Enabled: "false"
+    secrets:
+      - firebase-email-worker
+    networks:
+      - swiftpay-network
 
   swiftpayapipayment:
-    container_name: swiftpayapipayment
     build:
       context: ..
       dockerfile: swiftpay-api-payment/Dockerfile
     image: swiftpayapipayment:${VERSION:-latest}
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:5166:5166"
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      ASPNETCORE_URLS: http://0.0.0.0:5166
-      DatabaseSettings__ConnectionString: Host=swiftpaydb;Port=5432;Database=swiftpay;Username=swiftpayuser;Password=${DB_PASSWORD?err}
-      LogsDatabaseSettings__ConnectionString: Host=swiftpaylogsdb;Port=5432;Database=swiftpaylogs;Username=logsuser;Password=${LOGS_DB_PASSWORD?err}
-      JWTSettings__Secret: ${PAYMENT_JWT_SECRET?err}
-      PlatformSettings__BaseUrl: https://swiftpayment.info
-      PlatformSettings__ApiVersion: v1
-      PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}
-      RabbitMQSettings__HostName: swiftpayrabbitmq
-      RabbitMQSettings__Port: "5672"
-      RabbitMQSettings__UserName: ${RABBITMQ_USER:-swiftpayuser}
-      RabbitMQSettings__Password: ${RABBITMQ_PASSWORD?err}
-      RabbitMQSettings__VirtualHost: swiftpay
-      RabbitMQSettings__Enabled: "true"
-      EmailSettings__Provider: Resend
-      EmailSettings__FromEmail: noreply@swiftpayment.info
-      EmailSettings__FromName: SWIFTPAY
-      EmailSettings__EnableSend: "true"
-      EmailSettings__Resend__ApiKey: ${RESEND_API_KEY?err}
     depends_on:
       swiftpaydb:
         condition: service_healthy
-      swiftpaylogsdb:
-        condition: service_healthy
-      swiftpayapi:
-        condition: service_started
-      swiftpayrabbitmq:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5166/health/ready"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=swiftpaydb;Database=swiftpay;Username=swiftpay;Password=${DB_PASSWORD?err}
+      ApiSettings__JwtSecret: ${PAYMENT_JWT_SECRET?err}
+      InternalApiSettings__ApiKey: ${INTERNAL_API_KEY?err}
+    networks:
+      - swiftpay-network
 
   swiftpayweb:
-    container_name: swiftpayweb
     build:
       context: ..
       dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: https://swiftpayment.info/api
-        NEXT_PUBLIC_PAYMENT_API_URL: https://swiftpayment.info/api/payment
-        NEXT_PUBLIC_APP_URL: https://swiftpayment.info
-        NEXT_PUBLIC_DOCS_URL: https://swiftpayment.info/docs
-        NEXT_PUBLIC_FIREBASE_AUTH_API_KEY: ${NEXT_PUBLIC_FIREBASE_AUTH_API_KEY?err}
-        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-swiftpay-878c0.firebaseapp.com}
-        NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
     image: swiftpayweb:${VERSION:-latest}
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:3001:3000"
     environment:
       NEXT_PUBLIC_API_URL: https://swiftpayment.info/api
-      NEXT_PUBLIC_PAYMENT_API_URL: https://swiftpayment.info/api/payment
-      INTERNAL_API_URL: http://swiftpayapi:5279
-      NEXT_PUBLIC_APP_URL: https://swiftpayment.info
-      NEXT_PUBLIC_DOCS_URL: https://swiftpayment.info/docs
       NEXT_PUBLIC_FIREBASE_AUTH_API_KEY: ${NEXT_PUBLIC_FIREBASE_AUTH_API_KEY?err}
       NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-swiftpay-878c0.firebaseapp.com}
-      NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID: ${FIREBASE_PROJECT_ID:-swiftpay-878c0}
-    depends_on:
-      swiftpayapi:
-        condition: service_healthy
-      swiftpayapipayment:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-s", "-o", "/dev/null", "http://127.0.0.1:3000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID: ${NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID:-swiftpay-878c0}
+    networks:
+      - swiftpay-network
 
   swiftpaywebcheckout:
     container_name: swiftpaywebcheckout
@@ -297,19 +165,20 @@ services:
         NEXT_PUBLIC_SWIFTPAY_API_PAYMENT_URL: https://swiftpayment.info/api/payment
     image: swiftpaywebcheckout:${VERSION:-latest}
     restart: unless-stopped
-    ports:
+    depends_on:
+      swiftpayapipayment:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-s", "-o", "/dev/null", "http://127.0.0.1:3000/checkout/pay"]
       interval: 30s
       timeout: 10s
       retries: 3
-      swiftpayapipayment:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-s", "-o", "/dev/null", "http://127.0.0.1:3000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    networks:
+      - swiftpay-network
+
+secrets:
+  firebase-email-worker:
+    file: /run/secrets/firebase-email-worker.json
 
 volumes:
   swiftpaydb_data:
@@ -317,3 +186,7 @@ volumes:
   swiftpaystorage_data:
   swiftpayrabbitmq_data:
   swiftpayvalkey_data:
+
+networks:
+  swiftpay-network:
+    driver: bridge

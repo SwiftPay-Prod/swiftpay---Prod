@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Email;
 using swiftpay_api_core.Models.Settings;
 
@@ -6,11 +7,15 @@ namespace swiftpay_api_core.Services;
 
 public sealed class PlatformAuthActionLinkGenerator : IPlatformAuthActionLinkGenerator
 {
-    private readonly EmailPlatformSettings _settings;
+    private readonly PlatformSettingsOptions _platformSettings;
+    private readonly EmailPlatformSettings _emailPlatformSettings;
 
-    public PlatformAuthActionLinkGenerator(IOptions<EmailPlatformSettings> settings)
+    public PlatformAuthActionLinkGenerator(
+        IOptions<PlatformSettingsOptions> platformSettings,
+        IOptions<EmailPlatformSettings> emailPlatformSettings)
     {
-        _settings = settings.Value;
+        _platformSettings = platformSettings.Value;
+        _emailPlatformSettings = emailPlatformSettings.Value;
     }
 
     public Task<string> GenerateAsync(
@@ -21,16 +26,16 @@ public sealed class PlatformAuthActionLinkGenerator : IPlatformAuthActionLinkGen
         cancellationToken.ThrowIfCancellationRequested();
 
         var continueUrl = ValidateContinueUrl(request.ContinueUrl);
-        var actionType = request.ActionType switch
+        _ = continueUrl;
+
+        var baseUrl = _platformSettings.BaseUrl.TrimEnd('/');
+        var link = request.ActionType switch
         {
-            EmailAuthActionType.VerifyEmail => "verify-email",
-            EmailAuthActionType.PasswordReset => "forgot-password",
-            EmailAuthActionType.EmailSignIn => "signin",
+            EmailAuthActionType.VerifyEmail => $"{baseUrl}/verify-email?email={Uri.EscapeDataString(request.RecipientAddress)}",
+            EmailAuthActionType.PasswordReset => $"{baseUrl}/?auth=forgot-password&email={Uri.EscapeDataString(request.RecipientAddress)}",
+            EmailAuthActionType.EmailSignIn => $"{baseUrl}/?auth=signin&email={Uri.EscapeDataString(request.RecipientAddress)}",
             _ => throw new EmailIntentValidationException("The auth action type is not supported.")
         };
-
-        var baseUrl = _settings.BaseUrl.TrimEnd('/');
-        var link = $"{baseUrl}/?auth={actionType}&token={request.RecipientAddress}";
 
         return Task.FromResult(link);
     }
@@ -50,11 +55,29 @@ public sealed class PlatformAuthActionLinkGenerator : IPlatformAuthActionLinkGen
                 "The continue URL must be an absolute HTTPS URL without credentials or a custom port.");
         }
 
+        var allowed = _emailPlatformSettings.ContinueUrlAllowedHosts.Any(host =>
+            string.Equals(NormalizeHost(host), uri.IdnHost, StringComparison.OrdinalIgnoreCase));
+        if (!allowed)
+            throw new EmailIntentValidationException("The auth action continue URL host is not allowlisted.");
+
         return new UriBuilder(uri)
         {
             Scheme = Uri.UriSchemeHttps,
             Host = uri.IdnHost.ToLowerInvariant(),
             Port = -1
         }.Uri.AbsoluteUri;
+    }
+
+    private static string NormalizeHost(string host)
+    {
+        if (string.IsNullOrWhiteSpace(host) ||
+            host.Contains('/', StringComparison.Ordinal) ||
+            host.Contains(':', StringComparison.Ordinal) ||
+            host.Contains('*', StringComparison.Ordinal))
+        {
+            throw new EmailIntentValidationException("The auth action continue URL allowlist contains an invalid host.");
+        }
+
+        return new UriBuilder(Uri.UriSchemeHttps, host.Trim()).Uri.IdnHost;
     }
 }

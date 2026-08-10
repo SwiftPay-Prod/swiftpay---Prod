@@ -11,7 +11,7 @@ import type { UserInfo } from '@/types/auth';
 import { signOut } from '@/app/actions/auth';
 import { clearAuthCookies, setStatusModal, setDeviceRevokedModal, setUserForStatusModal } from '@/auth/session';
 import { Routes } from '@/router/routes';
-import { signOutFirebase } from '@/lib/firebase';
+
 
 interface AuthHubProviderProps {
 	children: ReactNode;
@@ -30,7 +30,7 @@ export function AuthHubProvider({ children }: AuthHubProviderProps) {
 			});
 			await setStatusModal();
 			
-			await signOutFirebase().catch(() => undefined);
+			
 			await signOut();
 			await clearAuthCookies();
 			
@@ -41,7 +41,7 @@ export function AuthHubProvider({ children }: AuthHubProviderProps) {
 	const handleDeviceRevoked = useCallback(async (data: DeviceRevokedData) => {
 		await setDeviceRevokedModal(data.deviceName, data.reason);
 		
-		await signOutFirebase().catch(() => undefined);
+		
 		await clearAuthCookies();
 		
 		router.push(Routes.home);

@@ -83,8 +83,6 @@ public sealed class EmailMessageTemplateCatalogTests
         rendered.TextBody.Should().Be("Conteúdo aprovado");
     }
 
-    [Fact]
-
     private static EmailMessageTemplateValues CreateValues(EmailMessageTemplateDefinition definition)
     {
         if (definition.MessageType == EmailMessageType.CustomHtml)

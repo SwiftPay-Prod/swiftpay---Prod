@@ -1,16 +1,3 @@
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  getIdToken,
-  onAuthStateChanged,
-  signOut,
-  type User as FirebaseUser,
-} from 'firebase/auth';
-export type { FirebaseUser };
-
 import { initializeApp, getApps, type FirebaseApp, type FirebaseOptions } from 'firebase/app';
  import { getMessaging, getToken, onMessage, type Messaging } from 'firebase/messaging';
 
@@ -23,14 +10,9 @@ const messagingFirebaseConfig = {
   appId: "1:741958846185:web:8348a6128a085dc29a9278"
 };
 
-const authFirebaseConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_AUTH_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID,
-};
+const messagingFirebaseConfigOptions: FirebaseOptions = messagingFirebaseConfig;
 
 let app: FirebaseApp | null = null;
-let authApp: FirebaseApp | null = null;
 let messaging: Messaging | null = null;
 
 export function isIOSPWA(): boolean {
@@ -79,7 +61,7 @@ export function getFirebaseApp(): FirebaseApp {
   if (!app) {
     const apps = getApps();
     const existingApp = apps.length > 0 ? apps[0] : null;
-    app = existingApp ?? initializeApp(messagingFirebaseConfig);
+    app = existingApp ?? initializeApp(messagingFirebaseConfigOptions);
   }
   
   return app;
@@ -188,151 +170,3 @@ export function onForegroundMessage(callback: (payload: unknown) => void): (() =
 
   return onMessage(fcmMessaging, callback);
 }
-
-const AUTH_APP_NAME = 'swiftpay-auth';
-
-function getFirebaseAuthApp(): FirebaseApp {
-  if (typeof window === 'undefined') {
-    throw new Error('Firebase Auth can only be initialized on the client side');
-  }
-
-  if (!authFirebaseConfig.apiKey || !authFirebaseConfig.authDomain || !authFirebaseConfig.projectId) {
-    throw new Error('Firebase Auth não está configurado para este ambiente.');
-  }
-
-  if (!authApp) {
-    const existingApp = getApps().find((candidate) => candidate.name === AUTH_APP_NAME);
-    authApp = existingApp ?? initializeApp(authFirebaseConfig, AUTH_APP_NAME);
-  }
-
-  return authApp;
-}
-
-let auth: ReturnType<typeof getAuth> | null = null;
-
-export function getFirebaseAuth() {
-  if (typeof window === 'undefined') {
-    throw new Error('Firebase Auth can only be used on the client side');
-  }
-
-  if (!auth) {
-    auth = getAuth(getFirebaseAuthApp());
-  }
-
-  return auth;
-}
-
-export async function signInWithFirebaseEmail(email: string, password: string) {
-  const authInstance = getFirebaseAuth();
-  const credential = await signInWithEmailAndPassword(authInstance, email, password);
-  return credential.user;
-}
-
-export async function signInWithFirebaseGoogle() {
-  const authInstance = getFirebaseAuth();
-  const provider = new GoogleAuthProvider();
-  const credential = await signInWithPopup(authInstance, provider);
-  return credential.user;
-}
-
-interface PlatformAuthResponse {
-  error?: {
-    code?: string;
-    message?: string;
-  } | null;
-}
-
-interface PlatformAuthRequestResult {
-  response: Response;
-  data: PlatformAuthResponse;
-}
-
-export interface GooglePlatformAuthOptions {
-  deviceId?: string;
-  refCode?: string;
-}
-
-export interface GooglePlatformAuthResult {
-  isNewAccount: boolean;
-}
-
-async function requestPlatformAuth(path: '/api/auth/firebase-signin' | '/api/auth/firebase-signup', body: Record<string, string | undefined>): Promise<PlatformAuthRequestResult> {
-  const response = await fetch(path, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await response.json() as PlatformAuthResponse;
-  return { response, data };
-}
-
-export async function signInOrCreatePlatformUserWithGoogle({
-  deviceId,
-  refCode,
-}: GooglePlatformAuthOptions = {}): Promise<GooglePlatformAuthResult> {
-  const firebaseUser = await signInWithFirebaseGoogle();
-  const idToken = await getFirebaseIdToken(firebaseUser, false);
-  const signInResult = await requestPlatformAuth('/api/auth/firebase-signin', {
-    idToken,
-    deviceId,
-  });
-
-  if (signInResult.response.ok) {
-    return { isNewAccount: false };
-  }
-
-  if (signInResult.data.error?.code !== 'USER_NOT_FOUND') {
-    throw new Error(signInResult.data.error?.message || 'Erro ao autenticar com o Google');
-  }
-
-  const name = firebaseUser.displayName?.trim() || firebaseUser.email?.split('@')[0]?.trim();
-  if (!name) {
-    throw new Error('Sua conta Google não informou um nome válido.');
-  }
-
-  const signUpResult = await requestPlatformAuth('/api/auth/firebase-signup', {
-    idToken,
-    name,
-    deviceId,
-    refCode,
-  });
-
-  if (signUpResult.response.ok) {
-    return { isNewAccount: true };
-  }
-
-  if (signUpResult.data.error?.code === 'USER_ALREADY_EXISTS') {
-    const retrySignInResult = await requestPlatformAuth('/api/auth/firebase-signin', {
-      idToken,
-      deviceId,
-    });
-    if (retrySignInResult.response.ok) {
-      return { isNewAccount: false };
-    }
-    throw new Error(retrySignInResult.data.error?.message || 'Erro ao autenticar com o Google');
-  }
-
-  throw new Error(signUpResult.data.error?.message || 'Erro ao criar conta com o Google');
-}
-
-export async function createFirebaseUser(email: string, password: string) {
-  const authInstance = getFirebaseAuth();
-  const credential = await createUserWithEmailAndPassword(authInstance, email, password);
-  return credential.user;
-}
-
-
-export async function getFirebaseIdToken(user: FirebaseUser, forceRefresh = false) {
-  return await getIdToken(user, forceRefresh);
-}
-
-export function onFirebaseAuthStateChanged(callback: (user: FirebaseUser | null) => void) {
-  const authInstance = getFirebaseAuth();
-  return onAuthStateChanged(authInstance, callback);
-}
-
-export async function signOutFirebase() {
-  const authInstance = getFirebaseAuth();
-  await signOut(authInstance);
-}
-

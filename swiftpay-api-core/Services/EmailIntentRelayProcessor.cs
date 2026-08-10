@@ -18,6 +18,7 @@ public readonly record struct EmailRelayBatchResult(int Materialized, int Publis
 public sealed class EmailIntentRelayProcessor(
     PrimaryDbContext dbContext,
     IEmailMessageTemplateCatalog templateCatalog,
+    IEmailTemplateRenderer templateRenderer,
     IPlatformAuthActionLinkGenerator authLinkGenerator,
     IEmailOutboxPublisher outboxPublisher,
     IOptions<EmailPlatformSettings> settings,
@@ -107,7 +108,7 @@ public sealed class EmailIntentRelayProcessor(
                     throw new EmailIntentValidationException("The persisted auth action request is incomplete.");
 
                 authLink = await authLinkGenerator.GenerateAsync(
-                    new PlatformAuthActionLinkRequest
+                    new EmailAuthActionLinkRequest
                     {
                         ActionType = intent.AuthActionType.Value,
                         RecipientAddress = intent.RecipientAddress,
@@ -170,6 +171,7 @@ public sealed class EmailIntentRelayProcessor(
         catch (Exception)
         {
             await FinishMaterializationFailureAsync(intent, now, "PlatformActionUnavailable", retryable: true, cancellationToken);
+        }
     }
 
     private async Task<int> ProcessPublicationsAsync(DateTime now, CancellationToken cancellationToken)

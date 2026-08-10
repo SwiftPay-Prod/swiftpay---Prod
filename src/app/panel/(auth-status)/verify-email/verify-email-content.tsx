@@ -9,7 +9,7 @@ import { sendEmailConfirmation, signOut } from '@/app/actions/auth';
 import { refreshSession } from '@/app/actions/session';
 import { clearAuthCookies } from '@/auth/session';
 import { Routes } from '@/router/routes';
-import { signOutFirebase } from '@/lib/firebase';
+
 import type { UserInfo } from '@/types/auth';
 import { useStandaloneHub } from '@/hub/use-standalone-hub';
 import { SignalRMethods } from '@/lib/signalr/methods';
@@ -57,7 +57,7 @@ export function VerifyEmailContent({ user, accessToken, apiUrl }: VerifyEmailCon
 
 	function handleSignOut() {
 		startSignOutTransition(async () => {
-			await signOutFirebase().catch(() => undefined);
+			
 			await signOut();
 			await clearAuthCookies();
 			router.push(Routes.home);
