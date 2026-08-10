@@ -91,8 +91,17 @@ public sealed class SignUpEndpoint(
         };
 
         dbContext.Users.Add(user);
-        await dbContext.SaveChangesAsync(ct);
-
+        await emailIntentRelaySignal.SignalAsync(new EmailIntentAddRequest
+        {
+            Dedupe = EmailIntentDedupeKey.EmailConfirmation(user.Id),
+            MessageType = EmailMessageType.EmailConfirmation,
+            RecipientAddress = user.Email,
+            Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+            Inputs = new Dictionary<string, string>
+            {
+                ["NAME"] = user.Name
+            }
+        }, ct);
         if (referrerUser != null)
         {
             await referralCommissionCompilationService.EnsureReferralLinkStructuresAsync(
