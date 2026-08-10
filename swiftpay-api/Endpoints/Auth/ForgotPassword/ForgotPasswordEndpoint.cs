@@ -42,7 +42,7 @@ public sealed class ForgotPasswordEndpoint(
 
         await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
 
-        if (user is not null && !string.IsNullOrWhiteSpace(user.FirebaseUid))
+        if (user is not null)
         {
             await emailIntentWriter.Add(new EmailIntentAddRequest
             {
@@ -58,7 +58,6 @@ public sealed class ForgotPasswordEndpoint(
                 AuthAction = new EmailIntentAuthActionRequest
                 {
                     ActionType = EmailAuthActionType.PasswordReset,
-                    FirebaseUid = user.FirebaseUid,
                     ContinueUrl = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=signin"
                 }
             }, ct);

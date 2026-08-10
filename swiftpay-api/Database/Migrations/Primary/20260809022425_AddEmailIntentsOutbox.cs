@@ -28,7 +28,7 @@ namespace swiftpay_api.Database.Migrations.Primary
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
                     RequestPayloadJson = table.Column<string>(type: "jsonb", nullable: false),
                     AuthActionType = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true),
-                    FirebaseUid = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    
                     ContinueUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
                     CooldownWindowUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CorrelationId = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),

@@ -170,14 +170,14 @@ public sealed class EmailIntentRelayTests : IAsyncLifetime
 
     private EmailIntentRelayProcessor CreateProcessor(
         PrimaryDbContext context,
-        IFirebaseAuthActionLinkGenerator links,
+        IPlatformAuthActionLinkGenerator links,
         IEmailOutboxPublisher publisher,
         TimeProvider clock)
     {
         var settings = Options.Create(new EmailPlatformSettings
         {
             Enabled = true,
-            FirebaseProjectId = "swiftpay-878c0",
+            
             ContinueUrlAllowedHosts = ["swiftpayment.info"],
             RelayBatchSize = 10,
             RelayLeaseSeconds = 60,
@@ -238,7 +238,6 @@ public sealed class EmailIntentRelayTests : IAsyncLifetime
             AuthAction = new EmailIntentAuthActionRequest
             {
                 ActionType = EmailAuthActionType.VerifyEmail,
-                FirebaseUid = $"firebase-{operation:N}",
                 ContinueUrl = "https://swiftpayment.info/panel/verify-email"
             }
         };
@@ -252,13 +251,13 @@ public sealed class EmailIntentRelayTests : IAsyncLifetime
                 : throw new InvalidOperationException("Unexpected template."));
     }
 
-    private sealed class RecordingLinkGenerator : IFirebaseAuthActionLinkGenerator
+    private sealed class RecordingLinkGenerator : IPlatformAuthActionLinkGenerator
     {
         private int _callCount;
         public int CallCount => _callCount;
 
         public Task<string> GenerateAsync(
-            EmailAuthActionLinkRequest request,
+            PlatformAuthActionLinkRequest request,
             CancellationToken cancellationToken = default)
         {
             var sequence = Interlocked.Increment(ref _callCount);

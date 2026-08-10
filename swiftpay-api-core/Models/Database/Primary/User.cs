@@ -18,9 +18,6 @@ public class User : BaseEntity
 
     public bool EmailVerified { get; set; } = false;
 
-    // Firebase identity
-    public string? FirebaseUid { get; set; }
-    public string? FirebaseProvider { get; set; }
 
     // Two-Factor Authentication
     public bool TwoFactorEnabled { get; set; } = false;

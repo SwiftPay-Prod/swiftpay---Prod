@@ -83,8 +83,6 @@ public sealed class EmailIntentPersistenceTests : IAsyncLifetime
                 Name = "Atomic Signup",
                 Email = "atomic-signup@example.com",
                 Password = "not-used",
-                FirebaseUid = "firebase-atomic-signup",
-                FirebaseProvider = "password",
                 ReferralCode = "ATOMIC123"
             };
             context.Users.Add(user);
@@ -100,7 +98,7 @@ public sealed class EmailIntentPersistenceTests : IAsyncLifetime
             var writer = new EmailIntentWriter(context);
             await writer.Add(new EmailIntentAddRequest
             {
-                Dedupe = EmailIntentDedupeKey.SignupVerification(user.FirebaseUid, "1"),
+                Dedupe = EmailIntentDedupeKey.SignupVerification(user.Email, "1"),
                 MessageType = EmailMessageType.EmailConfirmation,
                 RecipientAddress = user.Email,
                 Owner = new EmailIntentOwner(EmailIntentOwnerType.User, userId),
@@ -109,7 +107,6 @@ public sealed class EmailIntentPersistenceTests : IAsyncLifetime
                 AuthAction = new EmailIntentAuthActionRequest
                 {
                     ActionType = EmailAuthActionType.VerifyEmail,
-                    FirebaseUid = user.FirebaseUid,
                     ContinueUrl = "https://swiftpayment.info/?auth=signin"
                 }
             });

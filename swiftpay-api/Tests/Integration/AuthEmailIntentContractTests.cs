@@ -27,8 +27,6 @@ public sealed class AuthEmailIntentContractTests(SwiftPayApiFactory factory)
                 Name = "Anonymous Contract",
                 Email = existingEmail,
                 Password = "not-used",
-                FirebaseUid = $"firebase-{Guid.NewGuid():N}",
-                FirebaseProvider = "password",
                 ReferralCode = $"T{Guid.NewGuid():N}"[..12]
             });
             await dbContext.SaveChangesAsync();

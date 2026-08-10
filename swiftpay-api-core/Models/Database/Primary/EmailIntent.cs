@@ -29,7 +29,6 @@ public sealed class EmailIntent : BaseEntity
     public Guid OwnerId { get; private set; }
     public string RequestPayloadJson { get; private set; } = null!;
     public EmailAuthActionType? AuthActionType { get; private set; }
-    public string? FirebaseUid { get; private set; }
     public string? ContinueUrl { get; private set; }
     public DateTime? CooldownWindowUtc { get; private set; }
     public string CorrelationId { get; private set; } = null!;
@@ -84,7 +83,6 @@ public sealed class EmailIntent : BaseEntity
             OwnerId = request.Owner.Id,
             RequestPayloadJson = canonical.RequestPayloadJson,
             AuthActionType = request.AuthAction?.ActionType,
-            FirebaseUid = canonical.FirebaseUid,
             ContinueUrl = canonical.ContinueUrl,
             CooldownWindowUtc = request.Dedupe.CooldownWindowUtc,
             CorrelationId = canonical.CorrelationId,

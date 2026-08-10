@@ -36,7 +36,7 @@ public sealed class SendEmailConfirmationEndpoint(
         await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
         var queued = false;
 
-        if (user is { EmailVerified: false } && !string.IsNullOrWhiteSpace(user.FirebaseUid))
+        if (user is { EmailVerified: false })
         {
             var now = DateTime.UtcNow;
             var cooldownWindow = FloorToWindow(now, TimeSpan.FromMinutes(15));
@@ -44,7 +44,7 @@ public sealed class SendEmailConfirmationEndpoint(
 
             await emailIntentWriter.Add(new EmailIntentAddRequest
             {
-                Dedupe = EmailIntentDedupeKey.VerificationResend(user.FirebaseUid, cooldownWindow),
+                Dedupe = EmailIntentDedupeKey.VerificationResend(emailLower, cooldownWindow),
                 MessageType = EmailMessageType.EmailConfirmation,
                 RecipientAddress = user.Email,
                 Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
@@ -56,7 +56,6 @@ public sealed class SendEmailConfirmationEndpoint(
                 AuthAction = new EmailIntentAuthActionRequest
                 {
                     ActionType = EmailAuthActionType.VerifyEmail,
-                    FirebaseUid = user.FirebaseUid,
                     ContinueUrl = continueUrl
                 }
             }, ct);

@@ -18,8 +18,7 @@ public readonly record struct EmailRelayBatchResult(int Materialized, int Publis
 public sealed class EmailIntentRelayProcessor(
     PrimaryDbContext dbContext,
     IEmailMessageTemplateCatalog templateCatalog,
-    IEmailTemplateRenderer templateRenderer,
-    IFirebaseAuthActionLinkGenerator authLinkGenerator,
+    IPlatformAuthActionLinkGenerator authLinkGenerator,
     IEmailOutboxPublisher outboxPublisher,
     IOptions<EmailPlatformSettings> settings,
     TimeProvider timeProvider,
@@ -102,13 +101,13 @@ public sealed class EmailIntentRelayProcessor(
         {
             var payload = ParsePayload(intent.RequestPayloadJson);
             string? authLink = null;
-            if (intent.IntentKind == EmailIntentKind.FirebaseAuthAction)
+            if (intent.IntentKind == EmailIntentKind.PlatformAuthAction)
             {
                 if (!intent.AuthActionType.HasValue || string.IsNullOrWhiteSpace(intent.ContinueUrl))
-                    throw new EmailIntentValidationException("The persisted Firebase Auth action request is incomplete.");
+                    throw new EmailIntentValidationException("The persisted auth action request is incomplete.");
 
                 authLink = await authLinkGenerator.GenerateAsync(
-                    new EmailAuthActionLinkRequest
+                    new PlatformAuthActionLinkRequest
                     {
                         ActionType = intent.AuthActionType.Value,
                         RecipientAddress = intent.RecipientAddress,
@@ -132,12 +131,6 @@ public sealed class EmailIntentRelayProcessor(
                         : TrustedEmailHtmlValue.FromTrustedSource(payload.CustomHtml, payload.CustomText!)
                 });
             var allowlistHosts = _settings.ContinueUrlAllowedHosts.AsEnumerable();
-            if (!string.IsNullOrWhiteSpace(_settings.FirebaseProjectId))
-            {
-                var projectId = _settings.FirebaseProjectId.Trim();
-                allowlistHosts = allowlistHosts.Concat(
-                    [$"{projectId}.firebaseapp.com", $"{projectId}.web.app"]);
-            }
             var allowlist = new EmailUrlAllowlist(allowlistHosts);
             var rendered = templateRenderer.Render(bound.Definition.Template, bound.Parameters, allowlist);
             var sendBefore = now.Add(bound.Definition.SendWithin);
@@ -176,8 +169,7 @@ public sealed class EmailIntentRelayProcessor(
         }
         catch (Exception)
         {
-            await FinishMaterializationFailureAsync(intent, now, "FirebaseActionUnavailable", retryable: true, cancellationToken);
-        }
+            await FinishMaterializationFailureAsync(intent, now, "PlatformActionUnavailable", retryable: true, cancellationToken);
     }
 
     private async Task<int> ProcessPublicationsAsync(DateTime now, CancellationToken cancellationToken)

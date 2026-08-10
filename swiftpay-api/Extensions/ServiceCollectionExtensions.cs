@@ -48,7 +48,6 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<StartupWarmupService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ISessionService, SessionService>();
-        services.AddScoped<IFirebaseAuthService, FirebaseAuthService>();
         services.AddScoped<IStorageService, StorageService>();
         services.AddScoped<INotificationHubService, NotificationHubService>();
         services.AddScoped<IDashboardHubService, DashboardHubService>();

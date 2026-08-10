@@ -84,25 +84,6 @@ public sealed class EmailMessageTemplateCatalogTests
     }
 
     [Fact]
-    public async Task FirebaseGenerator_ShouldRejectInvalidContinueUrlBeforeUsingAdminSdk()
-    {
-        var generator = new FirebaseAuthActionLinkGenerator(
-            Options.Create(new EmailPlatformSettings
-            {
-                FirebaseProjectId = "swiftpay-878c0",
-                ContinueUrlAllowedHosts = ["swiftpayment.info"]
-            }));
-
-        var action = () => generator.GenerateAsync(
-            new EmailAuthActionLinkRequest
-            {
-                ActionType = EmailAuthActionType.VerifyEmail,
-                RecipientAddress = "user@example.com",
-                ContinueUrl = "https://evil.example/continue"
-            });
-
-        await action.Should().ThrowAsync<EmailIntentValidationException>();
-    }
 
     private static EmailMessageTemplateValues CreateValues(EmailMessageTemplateDefinition definition)
     {

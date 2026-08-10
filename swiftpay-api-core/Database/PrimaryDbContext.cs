@@ -215,7 +215,6 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
         emailIntent.Property(intent => intent.OwnerType).HasMaxLength(32).IsRequired();
         emailIntent.Property(intent => intent.RequestPayloadJson).HasColumnType("jsonb").IsRequired();
         emailIntent.Property(intent => intent.AuthActionType).HasMaxLength(32);
-        emailIntent.Property(intent => intent.FirebaseUid).HasMaxLength(128);
         emailIntent.Property(intent => intent.ContinueUrl).HasMaxLength(2048);
         emailIntent.Property(intent => intent.CorrelationId).HasMaxLength(128).IsRequired();
         emailIntent.Property(intent => intent.State).HasMaxLength(48).IsRequired();

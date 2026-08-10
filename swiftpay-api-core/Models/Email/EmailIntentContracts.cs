@@ -9,11 +9,13 @@ public enum EmailDeliveryClass
 }
 
 public enum EmailIntentKind
-{
-    Template = 0,
-    FirebaseAuthAction = 1
+    PlatformAuthAction = 1,
+    PaymentAction = 2,
+    AccountAction = 3,
+    PayoutAction = 4,
+    KycAction = 5,
+    ReferralAction = 6
 }
-
 public enum EmailAuthActionType
 {
     VerifyEmail = 0,
@@ -101,13 +103,19 @@ public enum EmailMessageType
 public readonly record struct EmailIntentOwner(EmailIntentOwnerType Type, Guid Id);
 
 public readonly record struct EmailIntentHandle(Guid Id, EmailDeliveryClass DeliveryClass);
-
 public sealed record EmailIntentAuthActionRequest
 {
     public required EmailAuthActionType ActionType { get; init; }
-    public required string FirebaseUid { get; init; }
     public required string ContinueUrl { get; init; }
 }
+
+public sealed record PlatformAuthActionLinkRequest
+{
+    public required EmailAuthActionType ActionType { get; init; }
+    public required string RecipientAddress { get; init; }
+    public required string ContinueUrl { get; init; }
+}
+
 public sealed record EmailIntentCustomHtmlRequest
 {
     public required string Subject { get; init; }
@@ -193,21 +201,22 @@ public readonly record struct EmailIntentDedupeKey
             $"{messageType}:{operationId:N}");
     }
 
-    public static EmailIntentDedupeKey SignupVerification(string firebaseUid, string signupVersion)
+    public static EmailIntentDedupeKey SignupVerification(string normalizedEmail, string signupVersion)
     {
         return new EmailIntentDedupeKey(
             EmailIntentDedupeFamily.SignupVerification,
-            $"verify:{NormalizeSegment(firebaseUid, nameof(firebaseUid))}:{NormalizeSegment(signupVersion, nameof(signupVersion))}");
+            $"verify:{NormalizeSegment(normalizedEmail, nameof(normalizedEmail))}:{NormalizeSegment(signupVersion, nameof(signupVersion))}");
     }
 
-    public static EmailIntentDedupeKey VerificationResend(string firebaseUid, DateTime cooldownWindowUtc)
+    public static EmailIntentDedupeKey VerificationResend(string normalizedEmail, DateTime cooldownWindowUtc)
     {
         var window = RequireUtc(cooldownWindowUtc, nameof(cooldownWindowUtc));
         return new EmailIntentDedupeKey(
             EmailIntentDedupeFamily.VerificationResend,
-            $"verify-resend:{NormalizeSegment(firebaseUid, nameof(firebaseUid))}:{FormatUtc(window)}",
+            $"verify-resend:{NormalizeSegment(normalizedEmail, nameof(normalizedEmail))}:{FormatUtc(window)}",
             window);
     }
+
 
     public static EmailIntentDedupeKey PasswordReset(string normalizedEmailHmac, DateTime cooldownWindowUtc)
     {

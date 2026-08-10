@@ -60,18 +60,6 @@ public sealed class SendUserEmailConfirmationEndpoint(
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(dbUser.FirebaseUid))
-        {
-            await Send.ResponseAsync(new SendUserEmailConfirmationResponse
-            {
-                Error = new("A conta ainda não possui identidade Firebase vinculada.")
-                {
-                    Code = "FIREBASE_IDENTITY_REQUIRED"
-                }
-            }, 409, ct);
-            return;
-        }
-
         await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
         var emailHandle = await emailIntentWriter.Add(new EmailIntentAddRequest
         {
@@ -89,7 +77,6 @@ public sealed class SendUserEmailConfirmationEndpoint(
             AuthAction = new EmailIntentAuthActionRequest
             {
                 ActionType = EmailAuthActionType.VerifyEmail,
-                FirebaseUid = dbUser.FirebaseUid,
                 ContinueUrl = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=signin"
             }
         }, ct);

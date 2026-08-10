@@ -11,8 +11,7 @@ public static class EmailIntentRelayServiceCollectionExtensions
     {
         services.TryAddSingleton<TimeProvider>(TimeProvider.System);
         services.TryAddSingleton<IEmailTemplateRenderer, EmailTemplateRenderer>();
-        services.AddScoped<IEmailMessageTemplateCatalog, EmailMessageTemplateCatalog>();
-        services.AddSingleton<IFirebaseAuthActionLinkGenerator, FirebaseAuthActionLinkGenerator>();
+        services.AddSingleton<IPlatformAuthActionLinkGenerator, PlatformAuthActionLinkGenerator>();
         services.AddScoped<EmailIntentRelayProcessor>();
         services.AddSingleton<EmailIntentRelayHostedService>();
         services.AddSingleton<IEmailIntentRelaySignal>(provider =>
