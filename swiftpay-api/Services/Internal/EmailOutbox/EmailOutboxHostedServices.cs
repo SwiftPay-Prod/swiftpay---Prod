@@ -46,6 +46,21 @@ public sealed class EmailOutboxWorkerService(
 
     private async Task ProcessAsync(Guid intentId)
     {
+        try
+        {
+            await ProcessCoreAsync(intentId);
+        }
+        catch (Exception exception)
+        {
+            // Never let an unexpected exception escape: it would abort the
+            // queue loop and wedge every subsequent intent. The claim lease
+            // expires on its own and the recovery service re-enqueues it.
+            logger.LogError(exception, "Email intent {IntentId} processing crashed; lease will expire and recovery will retry", intentId);
+        }
+    }
+
+    private async Task ProcessCoreAsync(Guid intentId)
+    {
         var now = timeProvider.GetUtcNow().UtcDateTime;
         var claim = await store.TryClaimAsync(intentId, _settings.WorkerId, now, CancellationToken.None);
         if (claim.Outcome != EmailOutboxClaimOutcome.Claimed || claim.Message?.LeaseToken is not { } leaseToken)
