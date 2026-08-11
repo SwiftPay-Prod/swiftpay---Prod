@@ -187,6 +187,9 @@ services:
       RabbitMQSettings__Password: ${RABBITMQ_PASSWORD?err}
       RabbitMQSettings__VirtualHost: swiftpay
       JWTSettings__Secret: ${PAYMENT_JWT_SECRET?err}
+      JWTSettings__Issuer: swiftpay-payment-api
+      JWTSettings__Audience: swiftpay-merchants
+      JWTSettings__TokenExpire: "3600"
       PlatformSettings__ApiVersion: v1
       PlatformSettings__BaseUrl: https://swiftpayment.info
       PlatformSettings__InternalApiKey: ${INTERNAL_API_KEY?err}

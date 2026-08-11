@@ -146,16 +146,10 @@ services:
       dockerfile: swiftpay-api-payment/Dockerfile
     image: swiftpayapipayment:latest
     # Porta publicada no docker-compose.production.yaml (127.0.0.1:5166)
+    # JWT configurado apenas no docker-compose.production.yaml
+    # (evita placeholder do base sobrescrever o valor real no merge)
     environment:
       - ASPNETCORE_ENVIRONMENT=YOUR_ENVIRONMENT
-      - DatabaseSettings__ConnectionString=YOUR_DATABASE_CONNECTION_STRING
-      - LogsDatabaseSettings__ConnectionString=YOUR_LOGS_DATABASE_CONNECTION_STRING
-      - JWTSettings__Secret=YOUR_JWT_SECRET
-      - JWTSettings__Issuer=YOUR_JWT_ISSUER
-      - JWTSettings__Audience=YOUR_JWT_AUDIENCE
-      - JWTSettings__TokenExpire=YOUR_TOKEN_EXPIRE
-      - PlatformSettings__BaseUrl=YOUR_PLATFORM_BASE_URL
-      - PlatformSettings__ApiVersion=YOUR_API_VERSION
     depends_on:
       swiftpaydb:
         condition: service_healthy
