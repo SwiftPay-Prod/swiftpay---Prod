@@ -339,13 +339,15 @@ function MethodFeeSection({
 	platformFeeFixed,
 	platformFeePercentage,
 }: MethodFeeSectionProps) {
+	const normalizedAcquirerFeeFixed =
+		typeof acquirerFeeFixed === 'number' ? acquirerFeeFixed : (formattedCurrencyToCents(acquirerFeeFixed) ?? 0);
 	return (
-		<MethodFeeSection
+		<FeeProfitIndicator
 			merchantFeeMode={merchantFeeMode}
 			merchantFeeFixed={merchantFeeFixed}
 			merchantFeePercentage={merchantFeePercentage}
 			acquirerFeeMode={acquirerFeeMode}
-			acquirerFeeFixed={acquirerFeeFixed}
+			acquirerFeeFixed={normalizedAcquirerFeeFixed}
 			acquirerFeePercentage={acquirerFeePercentage}
 			platformFeeMode={platformFeeMode}
 			platformFeeFixed={platformFeeFixed}
