@@ -277,3 +277,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
 - `NOTE` Deploy via GitHub Actions segue bloqueado até o clone da VPS ser ressincronizado: histórico divergiu (`git pull --ff-only` falharia; worktree com 75 M + 10 D + 53 ??, em grande parte já sincronizado com o GitHub). Próxima ação recomendada (exige decisão do proprietário): `git reset --hard origin/main` na VPS após este push.
 - `DONE` Commit + push neste workstream: remoção dos 2 `*.tar.gz`, `.gitignore` (novas regras `*.tar.gz`, `*.bak`, `/swiftpay-web/`), registro deste diagnóstico. `package.json` (script dev p/ preview Freebuff) permanece como alteração local não commitada, fora deste escopo.
 - Próxima ação única: proprietário decidir sobre a ressincronização da VPS e sobre limpeza do lixo local (cópia aninhada `swiftpay-web/` de 1,2 GB, `swiftpay-sync.tar.gz`, `docker-compose.production.yaml.bak`).
+
+## Ressincronização da VPS — 2026-08-10
+
+- `DONE` Após autorização explícita do proprietário, ressincronizar o clone de produção `/root/swiftpay` com o GitHub: `git fetch origin && git reset --hard origin/main` (HEAD `b9889ea` → `02091b7`). Pre-flight confirmou que o conteúdo do commit local `b9889ea` já estava no GitHub (diff vazio vs `27d5ef1`) — **nada de valor foi perdido**; único descarte: `SignUpEndpoint` pré-fix (regressão) e 2 arquivos de teste com drift, ambos superados pelas versões do GitHub.
+- `DONE` Pós-reset: `git status` 100% limpo (tracked e staged); lixo local (`swiftpay-web/` 1,2 GB, `swiftpay-sync.tar.gz`, `.bak`) agora ignorado pelo `.gitignore` do `02091b7` (permanece em disco, invisível ao git). Checagem exata do deploy workflow (`git diff --quiet && git diff --cached --quiet`) = **OK → deploys desbloqueados**; `git pull --ff-only` agora é fast-forward.
+- `NOTE` Containers de produção NÃO foram reiniciados (9/9 `healthy`). O fix do signup (confirmação de email no cadastro) e a plataforma de email completa chegam à produção no **próximo deploy**.
+- Próxima ação: decidir/executar o deploy (workflow GitHub Actions ou rebuild manual na VPS) e a limpeza do disco (87%).
