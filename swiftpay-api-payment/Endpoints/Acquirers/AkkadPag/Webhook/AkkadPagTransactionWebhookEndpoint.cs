@@ -68,7 +68,7 @@ public sealed class AkkadPagTransactionWebhookEndpoint(
             Status = status,
             EndToEndId = transaction.Pix?.EndToEnd,
             PayerName = transaction.Payer?.Name,
-            PayerDocument = transaction.Payer?.Document,
+            PayerDocument = transaction.Payer?.Document?.Number,
             ErrorMessage = status switch
             {
                 PaymentStatus.Failed => "Pagamento recusado pela AkkadPag.",

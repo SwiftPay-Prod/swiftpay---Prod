@@ -143,7 +143,7 @@ public class AkkadPagTransactionWebhookPayer
     public string? Number { get; set; }
 
     [JsonPropertyName("document")]
-    public string? Document { get; set; }
+    public AkkadPagTransactionWebhookDocument? Document { get; set; }
 
     [JsonPropertyName("account_type")]
     public string? AccountType { get; set; }
@@ -215,7 +215,7 @@ public class AkkadPagWithdrawalWebhookReceiver
     public string? Number { get; set; }
 
     [JsonPropertyName("document")]
-    public string? Document { get; set; }
+    public AkkadPagTransactionWebhookDocument? Document { get; set; }
 
     [JsonPropertyName("account_type")]
     public string? AccountType { get; set; }
