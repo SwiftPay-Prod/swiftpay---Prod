@@ -71,16 +71,10 @@ public class AkkadPagTransactionWebhookCustomer
     public string? Phone { get; set; }
 
     [JsonPropertyName("document")]
-    public AkkadPagTransactionWebhookDocument? Document { get; set; }
-}
+    public string? Document { get; set; }
 
-public class AkkadPagTransactionWebhookDocument
-{
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
-
-    [JsonPropertyName("number")]
-    public string? Number { get; set; }
+    [JsonPropertyName("document_type")]
+    public string? DocumentType { get; set; }
 }
 
 public class AkkadPagTransactionWebhookItem
@@ -143,7 +137,7 @@ public class AkkadPagTransactionWebhookPayer
     public string? Number { get; set; }
 
     [JsonPropertyName("document")]
-    public AkkadPagTransactionWebhookDocument? Document { get; set; }
+    public string? Document { get; set; }
 
     [JsonPropertyName("account_type")]
     public string? AccountType { get; set; }
@@ -215,7 +209,7 @@ public class AkkadPagWithdrawalWebhookReceiver
     public string? Number { get; set; }
 
     [JsonPropertyName("document")]
-    public AkkadPagTransactionWebhookDocument? Document { get; set; }
+    public string? Document { get; set; }
 
     [JsonPropertyName("account_type")]
     public string? AccountType { get; set; }
