@@ -29,13 +29,20 @@ import {
 	shouldShowDeviceRevokedModal,
 	getDeviceRevokedModalData,
 	clearDeviceRevokedModal,
+	setAuthCookies,
 } from '@/auth/session';
 import { BaseCookie } from '@/constants/base';
 
 export async function signIn(req: SignInRequest): Promise<ApiResponse<SignInData>> {
 	try {
 		const response = await client.post<ApiResponse<SignInData>>('/v1/auth/signin', req);
-		return response?.data;
+		const data = response?.data;
+		if (data?.data?.auth?.tokens) {
+			// Sessão só é criada quando o backend retorna tokens válidos
+			// (login com email verificado e sem verificação de dispositivo).
+			await setAuthCookies(data.data.auth.tokens);
+		}
+		return data;
 	} catch (err) {
 		const error = err as AxiosError<ApiResponse<SignInData>>;
 		if (error.response?.data) {
