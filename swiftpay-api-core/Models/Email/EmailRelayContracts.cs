@@ -5,6 +5,7 @@ public sealed record EmailAuthActionLinkRequest
     public required EmailAuthActionType ActionType { get; init; }
     public required string RecipientAddress { get; init; }
     public required string ContinueUrl { get; init; }
+    public string? RawToken { get; init; }
 }
 
 public sealed record EmailMessageTemplateDefinition

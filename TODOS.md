@@ -284,3 +284,14 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
 - `DONE` Pós-reset: `git status` 100% limpo (tracked e staged); lixo local (`swiftpay-web/` 1,2 GB, `swiftpay-sync.tar.gz`, `.bak`) agora ignorado pelo `.gitignore` do `02091b7` (permanece em disco, invisível ao git). Checagem exata do deploy workflow (`git diff --quiet && git diff --cached --quiet`) = **OK → deploys desbloqueados**; `git pull --ff-only` agora é fast-forward.
 - `NOTE` Containers de produção NÃO foram reiniciados (9/9 `healthy`). O fix do signup (confirmação de email no cadastro) e a plataforma de email completa chegam à produção no **próximo deploy**.
 - Próxima ação: decidir/executar o deploy (workflow GitHub Actions ou rebuild manual na VPS) e a limpeza do disco (87%).
+
+## Correção build SwiftPay API + deploy manual — 2026-08-11
+
+- `DONE` Validar instruções obrigatórias: AGENTS.md, CLAUDE.md, .github/copilot-instructions.md, TODOS.md, docs/agent-context-governance.md, instruções de módulo (`swiftpay-api/.github/instructions/swiftpay-api/*`).
+- `DONE` Sincronizar VPS com GitHub: `git fetch origin && git reset --hard origin/main` (HEAD `fa6f6f3`, worktree limpo, fix `EmailConfirmation` presente no worktree).
+- `DONE` Deletar `deploy.sh` (solicitado pelo proprietário: inútil, sempre buga, sem acompanhamento de logs). Nenhum workflow referencia o arquivo (`.github/workflows/deploy.yml` não depende dele). Deploy passa a ser manual via SSH.
+- `FOUND` Build Docker na VPS falhou: `SignUpEndpoint.cs` referencia tipos de email (`EmailMessageType`, `EmailIntentOwner`, `EmailIntentOwnerType`, `EmailIntentAddRequest`, `EmailIntentDedupeKey`) sem `using swiftpay_api_core.Models.Email;` → CS0103/CS0246. **O commit `27d5ef1` nunca compilou.**
+- `FOUND` `IEmailIntentRelaySignal` NÃO expõe `SignalAsync` (método procurado não encontrado na interface) — verificar contrato real antes de corrigir chamada.
+- `FOUND` Instrução `foundations-auth-merchant.instructions.md` desatualizada: descreve Firebase como fonte de identidade (removido em `f0be060`) e fluxo `firebase-signin`/`firebase-signup` inexistente; `SignUpEndpoint` atual define `EmailVerified = true` no cadastro (anula o propósito da confirmação de email).
+- Arquivados: `deploy.sh` removido; `SignUpEndpoint.cs` com `using swiftpay_api_core.Models.Email;` adicionado (pendente validação de compilação com SDK .NET 10.0.302 local).
+- Próxima ação única: validar compilação `swiftpay-api` com SDK .NET 10 local, corrigir chamada de email conforme contrato real de `IEmailIntentRelaySignal`, então rebuild manual na VPS + smoke test signup/email.

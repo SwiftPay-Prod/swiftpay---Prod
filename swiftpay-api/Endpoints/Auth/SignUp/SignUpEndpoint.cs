@@ -1,11 +1,14 @@
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using swiftpay_api_core.Database;
 using swiftpay_api.Endpoints.Auth.Shared.Models;
+using swiftpay_api_core.Models.Settings;
 using swiftpay_api_core.Utils;
 using swiftpay_api.EndpointsGroups;
 using swiftpay_api.Interfaces;
 using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Email;
 using swiftpay_api_core.Models.Inputs;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api.Mappers;
@@ -19,7 +22,10 @@ public sealed class SignUpEndpoint(
     ISecurityLogService securityLog,
     INotificationService notificationService,
     IReferralCommissionCompilationService referralCommissionCompilationService,
-    IGeoLocationService geoLocationService
+    IGeoLocationService geoLocationService,
+    IEmailIntentWriter emailIntentWriter,
+    IEmailIntentRelaySignal emailIntentRelaySignal,
+    IOptions<PlatformSettingsOptions> platformSettings
 ) : Endpoint<SignUpRequest, SignUpResponse>
 {
     public override void Configure()
@@ -84,24 +90,34 @@ public sealed class SignUpEndpoint(
             Password = passwordHash,
             PasswordChangedAt = DateTime.UtcNow,
             LastLoginAt = DateTime.UtcNow,
-            EmailVerified = true,
+            EmailVerified = false,
             ReferralCode = await GenerateUniqueReferralCodeAsync(ct),
             ReferredByUserId = referrerUser?.Id,
             ReferredAt = referrerUser != null ? DateTime.UtcNow : null
         };
 
         dbContext.Users.Add(user);
-        await emailIntentRelaySignal.SignalAsync(new EmailIntentAddRequest
+        await dbContext.SaveChangesAsync(ct);
+
+        await emailIntentWriter.Add(new EmailIntentAddRequest
         {
-            Dedupe = EmailIntentDedupeKey.EmailConfirmation(user.Id),
+            Dedupe = EmailIntentDedupeKey.SignupVerification(emailLower, "1"),
             MessageType = EmailMessageType.EmailConfirmation,
             RecipientAddress = user.Email,
             Owner = new EmailIntentOwner(EmailIntentOwnerType.User, user.Id),
+            CorrelationId = HttpContext.TraceIdentifier,
             Inputs = new Dictionary<string, string>
             {
                 ["NAME"] = user.Name
+            },
+            AuthAction = new EmailIntentAuthActionRequest
+            {
+                ActionType = EmailAuthActionType.VerifyEmail,
+                ContinueUrl = $"{platformSettings.Value.BaseUrl.TrimEnd('/')}/?auth=signin"
             }
         }, ct);
+        await dbContext.SaveChangesAsync(ct);
+        emailIntentRelaySignal.Signal();
         if (referrerUser != null)
         {
             await referralCommissionCompilationService.EnsureReferralLinkStructuresAsync(

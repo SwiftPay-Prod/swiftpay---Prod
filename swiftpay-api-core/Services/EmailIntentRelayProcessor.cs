@@ -7,6 +7,7 @@ using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Models.Email;
 using swiftpay_api_core.Models.Settings;
+using swiftpay_api_core.Utils;
 
 namespace swiftpay_api_core.Services;
 
@@ -107,14 +108,37 @@ public sealed class EmailIntentRelayProcessor(
                 if (!intent.AuthActionType.HasValue || string.IsNullOrWhiteSpace(intent.ContinueUrl))
                     throw new EmailIntentValidationException("The persisted auth action request is incomplete.");
 
-                authLink = await authLinkGenerator.GenerateAsync(
-                    new EmailAuthActionLinkRequest
+                if (intent.AuthActionType.Value == EmailAuthActionType.VerifyEmail)
+                {
+                    var rawToken = Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32));
+                    dbContext.EmailConfirmationTokens.Add(new EmailConfirmationToken
                     {
-                        ActionType = intent.AuthActionType.Value,
-                        RecipientAddress = intent.RecipientAddress,
-                        ContinueUrl = intent.ContinueUrl
-                    },
-                    cancellationToken);
+                        UserId = intent.OwnerId,
+                        TokenHash = CryptoUtils.ComputeSha256Hash(rawToken),
+                        Status = EmailConfirmationTokenStatus.Pending,
+                        ExpiresAt = now.AddHours(24)
+                    });
+                    authLink = await authLinkGenerator.GenerateAsync(
+                        new EmailAuthActionLinkRequest
+                        {
+                            ActionType = intent.AuthActionType.Value,
+                            RecipientAddress = intent.RecipientAddress,
+                            ContinueUrl = intent.ContinueUrl,
+                            RawToken = rawToken
+                        },
+                        cancellationToken);
+                }
+                else
+                {
+                    authLink = await authLinkGenerator.GenerateAsync(
+                        new EmailAuthActionLinkRequest
+                        {
+                            ActionType = intent.AuthActionType.Value,
+                            RecipientAddress = intent.RecipientAddress,
+                            ContinueUrl = intent.ContinueUrl
+                        },
+                        cancellationToken);
+                }
             }
 
             var definition = await templateCatalog.GetDefinitionAsync(intent.MessageType, cancellationToken);

@@ -31,6 +31,8 @@ public sealed class PlatformAuthActionLinkGenerator : IPlatformAuthActionLinkGen
         var baseUrl = _platformSettings.BaseUrl.TrimEnd('/');
         var link = request.ActionType switch
         {
+            EmailAuthActionType.VerifyEmail when !string.IsNullOrWhiteSpace(request.RawToken) =>
+                $"{baseUrl}/confirm-email?email={Uri.EscapeDataString(request.RecipientAddress)}&token={Uri.EscapeDataString(request.RawToken)}",
             EmailAuthActionType.VerifyEmail => $"{baseUrl}/verify-email?email={Uri.EscapeDataString(request.RecipientAddress)}",
             EmailAuthActionType.PasswordReset => $"{baseUrl}/?auth=forgot-password&email={Uri.EscapeDataString(request.RecipientAddress)}",
             EmailAuthActionType.EmailSignIn => $"{baseUrl}/?auth=signin&email={Uri.EscapeDataString(request.RecipientAddress)}",
