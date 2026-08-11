@@ -295,3 +295,18 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
 - `FOUND` Instrução `foundations-auth-merchant.instructions.md` desatualizada: descreve Firebase como fonte de identidade (removido em `f0be060`) e fluxo `firebase-signin`/`firebase-signup` inexistente; `SignUpEndpoint` atual define `EmailVerified = true` no cadastro (anula o propósito da confirmação de email).
 - Arquivados: `deploy.sh` removido; `SignUpEndpoint.cs` com `using swiftpay_api_core.Models.Email;` adicionado (pendente validação de compilação com SDK .NET 10.0.302 local).
 - Próxima ação única: validar compilação `swiftpay-api` com SDK .NET 10 local, corrigir chamada de email conforme contrato real de `IEmailIntentRelaySignal`, então rebuild manual na VPS + smoke test signup/email.
+
+## Deploy 2026-08-11 — bind duplicado corrigido + smoke ponta-a-ponta VERDE
+
+- `DONE` Causa raiz do "containers sem rede / address already in use": o merge de `docker-compose.yaml` (base) + `docker-compose.production.yaml` **concatena** a lista `ports`; os 6 serviços com porta nos dois arquivos (db, logsdb, valkey, api, payment, web) recebiam bind duplicado da MESMA porta → o 2º bind falhava sempre → containers sem endpoint de rede → crash loops (api `139` sem valkey). Não era o daemon nem o compose v5.3.1.
+- `DONE` Correção: portas publicadas apenas no production override (bind `127.0.0.1`); grafana movido de `3001` para `3002` (conflito com swiftpayweb). Commit `8abcff6`, push; VPS pull + `daemon.json` experimental removido (`userland-proxy` não era a causa) + `docker compose down/up -d` **sem nenhum erro de bind**.
+- `DONE` Docker Compose downgraded v5.3.1 → v2.27.1 na VPS (plugin `docker-compose-v5.bak`); v2.27.1 em uso.
+- `DONE` 11/11 containers Up, todos com endpoint na rede `swiftpay-api_default`, `swiftpayapi`/`swiftpayapipayment`/`swiftpayweb` **healthy** (api conectou no valkey — fim do crash loop `139`).
+- `DONE` Smoke ponta-a-ponta em produção (contas `smoke-*@teste.com`, removidas após o teste):
+  1. Signup → `emailVerified: false`; intent `EmailConfirmation` → `Published` (Resend aceitou, sem erro).
+  2. Link real gerado: `https://swiftpayment.info/confirm-email?email=…&token=A4B528…`; POST confirm-email → 200 → `EmailVerified = t` no banco.
+  3. Login com email NÃO verificado → **401 `EMAIL_NOT_VERIFIED`** (bloqueio backend ativo); login com verificado → 200.
+  4. Forgot-password → intent `PasswordReset` → `Published`; **`PasswordResetCode` criado (`Pending`, válido)** — bug "nunca era criado" corrigido; código extraído do envelope (`949170`), POST reset-password → código `Used`, login com a NOVA senha → 200.
+  5. Site `https://swiftpayment.info/` → 200; `/docs` → 200.
+- `NOTE` Smoke local de integração (`EmailIntentRelayTests`, Testcontainers) segue falhando no sandbox local (ResourceReaper) — não bloqueia: prova definitiva feita em produção.
+- Próxima ação: retomar fase 2 (aposentadoria do Firestore no pipeline de email — migration com colunas de entrega + `PostgresEmailOutboxStore`) e smoke de pagamento sandbox quando houver credenciais.
