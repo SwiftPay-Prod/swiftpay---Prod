@@ -24,6 +24,8 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [deviceId, setDeviceId] = useState<string>('');
+	const [requiresEmailVerification, setRequiresEmailVerification] = useState(false);
+	const [createdEmail, setCreatedEmail] = useState<string>('');
 
 	useEffect(() => {
 		setDeviceId(getOrCreateDeviceId());
@@ -38,7 +40,19 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 			const result = await signIn({ email, password, deviceId });
 
 			if (!result?.data) {
+				if (result?.error?.code === 'EMAIL_NOT_VERIFIED') {
+					setCreatedEmail(email);
+					setRequiresEmailVerification(true);
+					return;
+				}
 				setError(result?.error?.message || 'Erro ao fazer login');
+				return;
+			}
+
+			const user = result.data.auth?.user;
+			if (user && user.emailVerified === false) {
+				setCreatedEmail(email);
+				setRequiresEmailVerification(true);
 				return;
 			}
 
@@ -49,6 +63,28 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 		} finally {
 			setIsLoading(false);
 		}
+	}
+
+	if (requiresEmailVerification) {
+		return (
+			<div className="flex flex-col gap-4 text-center">
+				<h1 className="text-2xl font-bold">Verifique seu e-mail</h1>
+				<p className="text-default-500">
+					Seu e-mail <span className="font-semibold text-foreground">{createdEmail}</span> ainda não foi confirmado.
+				</p>
+				<p className="text-sm text-muted-foreground">
+					Enviamos um link de verificação na criação da conta. Confirme para acessar o painel.
+				</p>
+				<div className="flex flex-col gap-2">
+					<Button variant="primary" onPress={() => router.push(Routes.verifyEmail)}>
+						Ir para página de verificação
+					</Button>
+					<Button variant="tertiary" onPress={() => setRequiresEmailVerification(false)}>
+						Voltar para o login
+					</Button>
+				</div>
+			</div>
+		);
 	}
 
 	return (

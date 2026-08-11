@@ -103,6 +103,7 @@ public sealed class EmailIntentRelayProcessor(
         {
             var payload = ParsePayload(intent.RequestPayloadJson);
             string? authLink = null;
+            IReadOnlyDictionary<string, string>? inputs = payload.Inputs;
             if (intent.IntentKind == EmailIntentKind.PlatformAuthAction)
             {
                 if (!intent.AuthActionType.HasValue || string.IsNullOrWhiteSpace(intent.ContinueUrl))
@@ -128,6 +129,29 @@ public sealed class EmailIntentRelayProcessor(
                         },
                         cancellationToken);
                 }
+                else if (intent.AuthActionType.Value == EmailAuthActionType.PasswordReset)
+                {
+                    var resetCode = GenerateNumericResetCode();
+                    dbContext.PasswordResetCodes.Add(new PasswordResetCode
+                    {
+                        UserId = intent.OwnerId,
+                        CodeHash = CryptoUtils.ComputeSha256Hash(resetCode),
+                        Status = PasswordResetCodeStatus.Pending,
+                        ExpiresAt = now.AddHours(1)
+                    });
+                    inputs = new Dictionary<string, string>(payload.Inputs ?? new Dictionary<string, string>())
+                    {
+                        ["CODE"] = resetCode
+                    };
+                    authLink = await authLinkGenerator.GenerateAsync(
+                        new EmailAuthActionLinkRequest
+                        {
+                            ActionType = intent.AuthActionType.Value,
+                            RecipientAddress = intent.RecipientAddress,
+                            ContinueUrl = intent.ContinueUrl
+                        },
+                        cancellationToken);
+                }
                 else
                 {
                     authLink = await authLinkGenerator.GenerateAsync(
@@ -148,7 +172,7 @@ public sealed class EmailIntentRelayProcessor(
                 definition,
                 new EmailMessageTemplateValues
                 {
-                    Inputs = payload.Inputs,
+                    Inputs = inputs,
                     AuthActionLink = authLink,
                     CustomSubject = payload.CustomSubject,
                     CustomBody = payload.CustomHtml is null
@@ -424,6 +448,14 @@ public sealed class EmailIntentRelayProcessor(
         }
 
         return new FrozenIntentPayload(inputs, subject, html, text);
+    }
+
+    private static string GenerateNumericResetCode()
+    {
+        Span<byte> buffer = stackalloc byte[4];
+        System.Security.Cryptography.RandomNumberGenerator.Fill(buffer);
+        var value = BitConverter.ToUInt32(buffer) % 1_000_000u;
+        return value.ToString("D6", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     private static void SetError(EmailIntent intent, string errorClass, string errorCode, DateTime now)

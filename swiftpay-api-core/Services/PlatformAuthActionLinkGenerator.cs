@@ -34,7 +34,7 @@ public sealed class PlatformAuthActionLinkGenerator : IPlatformAuthActionLinkGen
             EmailAuthActionType.VerifyEmail when !string.IsNullOrWhiteSpace(request.RawToken) =>
                 $"{baseUrl}/confirm-email?email={Uri.EscapeDataString(request.RecipientAddress)}&token={Uri.EscapeDataString(request.RawToken)}",
             EmailAuthActionType.VerifyEmail => $"{baseUrl}/verify-email?email={Uri.EscapeDataString(request.RecipientAddress)}",
-            EmailAuthActionType.PasswordReset => $"{baseUrl}/?auth=forgot-password&email={Uri.EscapeDataString(request.RecipientAddress)}",
+            EmailAuthActionType.PasswordReset => $"{baseUrl}/?auth=reset-password&email={Uri.EscapeDataString(request.RecipientAddress)}",
             EmailAuthActionType.EmailSignIn => $"{baseUrl}/?auth=signin&email={Uri.EscapeDataString(request.RecipientAddress)}",
             _ => throw new EmailIntentValidationException("The auth action type is not supported.")
         };

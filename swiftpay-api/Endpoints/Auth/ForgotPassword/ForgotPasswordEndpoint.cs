@@ -80,7 +80,7 @@ public sealed class ForgotPasswordEndpoint(
 
         await Send.ResponseAsync(new ForgotPasswordResponse
         {
-            Message = "Se o e-mail estiver cadastrado, você receberá um link de recuperação."
+            Message = "Se o e-mail estiver cadastrado, você receberá um link de recuperação. Para evitar spam, aguarde 15 minutos entre novas solicitações."
         }, 202, ct);
     }
 

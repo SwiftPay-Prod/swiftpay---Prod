@@ -45,6 +45,9 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
 				<p className="text-default-500">
 					Enviamos um link para <span className="font-semibold text-foreground">{email}</span>. Se não encontrar, verifique o spam.
 				</p>
+				<p className="text-sm text-muted-foreground">
+					Para evitar spam, aguarde 15 minutos entre novas solicitações.
+				</p>
 				<Button variant="primary" onPress={onSwitchToSignIn} className="w-full">
 					Voltar para o Login
 				</Button>

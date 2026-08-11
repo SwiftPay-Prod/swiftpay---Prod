@@ -123,6 +123,12 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 				return;
 			}
 
+			if (result.data.user && result.data.user.emailVerified === false) {
+				setCreatedEmail(email);
+				setRequiresEmailVerification(true);
+				return;
+			}
+
 			toast.success('Conta criada com sucesso!');
 			router.push(Routes.panel.dashboard);
 		} catch (err) {

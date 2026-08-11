@@ -5,10 +5,11 @@ import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { SignInForm } from '@/components/auth/forms/signin-form';
 import { SignUpForm } from '@/components/auth/forms/signup-form';
 import { ForgotPasswordForm } from '@/components/auth/forms/forgot-password-form';
+import { ResetPasswordForm } from '@/components/auth/forms/reset-password-form';
 import { Icon } from '@/components/ui/icon';
 import { CancelCircleIcon } from '@hugeicons/core-free-icons';
 
-export type AuthModalMode = 'signin' | 'signup' | 'forgot-password' | null;
+export type AuthModalMode = 'signin' | 'signup' | 'forgot-password' | 'reset-password' | null;
 
 interface AuthModalProps {
 	isOpen: boolean;
@@ -47,6 +48,7 @@ export function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthModalProp
 						{mode === 'signin' && 'Acesse seu painel para gerenciar pagamentos e saques'}
 						{mode === 'signup' && 'Crie sua conta em menos de 2 minutos e comece a vender'}
 						{mode === 'forgot-password' && 'Digite seu e-mail para recuperar a senha'}
+					{mode === 'reset-password' && 'Digite o código e defina uma nova senha'}
 					</p>
 				</div>
 
@@ -67,6 +69,12 @@ export function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthModalProp
 
 					{mode === 'forgot-password' && (
 						<ForgotPasswordForm
+							onSwitchToSignIn={() => onSwitchMode('signin')}
+						/>
+					)}
+
+					{mode === 'reset-password' && (
+						<ResetPasswordForm
 							onSwitchToSignIn={() => onSwitchMode('signin')}
 						/>
 					)}

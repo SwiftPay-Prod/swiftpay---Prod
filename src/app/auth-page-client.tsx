@@ -16,6 +16,8 @@ function AuthPageContent() {
 		initialMode = 'signup';
 	} else if (authParam === 'forgot-password') {
 		initialMode = 'forgot-password';
+	} else if (authParam === 'reset-password') {
+		initialMode = 'reset-password';
 	}
 
 	return <LandingPage initialAuthMode={initialMode} />;

@@ -152,6 +152,20 @@ public sealed class SignInEndpoint(
             return;
         }
 
+        if (!user.EmailVerified)
+        {
+            await securityLog.LogAsync(new SecurityLogInput { Action = SecurityLogAction.SignIn, Status = SecurityLogStatus.Failed, UserId = user.Id, Details = "Email not verified" });
+
+            await Send.ResponseAsync(new SignInResponse
+            {
+                Error = new("Verifique seu e-mail antes de entrar. Enviamos um link de confirmação na criação da conta.")
+                {
+                    Code = "EMAIL_NOT_VERIFIED"
+                }
+            }, 401, ct);
+            return;
+        }
+
         // Password is valid, now check device trust
         var deviceId = req.DeviceId ?? Guid.NewGuid().ToString("N");
         var deviceInfo = ExtractDeviceInfo(userAgent);

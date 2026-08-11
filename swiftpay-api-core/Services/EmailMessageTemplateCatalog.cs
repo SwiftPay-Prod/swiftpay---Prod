@@ -58,8 +58,6 @@ public sealed class EmailMessageTemplateCatalog(IEmailTemplateProvider templateP
         else
         {
             var html = await templateProvider.GetTemplateContentAsync(descriptor.LegacyTemplate!.Value);
-            if (messageType == EmailMessageType.PasswordReset)
-                html = AdaptPasswordResetToActionLink(html);
 
             var normalized = NormalizePlaceholders(html);
             var text = messageType == EmailMessageType.PasswordReset
@@ -227,18 +225,6 @@ public sealed class EmailMessageTemplateCatalog(IEmailTemplateProvider templateP
         });
 
         return new NormalizedTemplate(normalized, aliases, counts);
-    }
-
-    private static string AdaptPasswordResetToActionLink(string html)
-    {
-        var occurrence = 0;
-        return Regex.Replace(
-            html,
-            @"\[\[CODE\]\]",
-            _ => ++occurrence == 1
-                ? "<a href=\"[[RESET_PASSWORD_URL]]\" style=\"background-color: #2563eb; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block; letter-spacing: normal;\">Redefinir senha</a>"
-                : "Use o link seguro de redefinição enviado pela SwiftPay",
-            RegexOptions.CultureInvariant);
     }
 
     private static string CreateTextFallback(string html)
