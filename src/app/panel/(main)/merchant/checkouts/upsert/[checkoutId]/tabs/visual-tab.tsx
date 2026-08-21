@@ -151,12 +151,18 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 		updateColorMode(value as CheckoutColorMode);
 	}
 
-	function handlePrimaryColorChange(color: ReturnType<typeof parseColor>) {
-		onFormChange({ primaryColor: color.toString('hex').toUpperCase() });
+	function handlePrimaryColorChange(color: unknown) {
+		if (!color) return;
+		const raw = typeof color === 'string' ? color : (color as { toString?: (f?: string) => string }).toString?.('hex') ?? String(color);
+		const hex = raw.startsWith('#') ? raw : `#${raw}`;
+		onFormChange({ primaryColor: hex.toUpperCase() });
 	}
 
-	function handleSecondaryColorChange(color: ReturnType<typeof parseColor>) {
-		onFormChange({ secondaryColor: color.toString('hex').toUpperCase() });
+	function handleSecondaryColorChange(color: unknown) {
+		if (!color) return;
+		const raw = typeof color === 'string' ? color : (color as { toString?: (f?: string) => string }).toString?.('hex') ?? String(color);
+		const hex = raw.startsWith('#') ? raw : `#${raw}`;
+		onFormChange({ secondaryColor: hex.toUpperCase() });
 	}
 
 	return (

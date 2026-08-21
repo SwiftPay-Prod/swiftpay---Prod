@@ -443,14 +443,16 @@ function validateStepValues(stepKey: CheckoutStepSaveKey, values: CheckoutOnboar
 			return null;
 		}
 		case 'visual': {
-			const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
-
-			if (!hexRegex.test(values.primaryColor.trim())) {
-				return 'A cor principal deve estar em formato hexadecimal válido.';
+			const normalizedPrimary = normalizeHexColor(values.primaryColor);
+			if (!normalizedPrimary) {
+				return 'A cor principal deve estar em formato hexadecimal válido (ex: #EF4444).';
 			}
 
-			if (values.colorMode === CheckoutColorMode.Gradient && values.secondaryColor.trim() && !hexRegex.test(values.secondaryColor.trim())) {
-				return 'A cor secundária deve estar em formato hexadecimal válido.';
+			if (values.colorMode === CheckoutColorMode.Gradient && values.secondaryColor) {
+				const normalizedSecondary = normalizeHexColor(values.secondaryColor);
+				if (!normalizedSecondary) {
+					return 'A cor secundária deve estar em formato hexadecimal válido (ex: #1D4ED8).';
+				}
 			}
 
 			return null;
@@ -938,7 +940,7 @@ export function useCheckoutOnboarding({
 				};
 			}
 
-			const validationMessage = validateStepValues(stepKey, formValues);
+			const validationMessage = validateStepValues(stepKey, currentForm);
 			if (validationMessage) {
 				toast('Não foi possível salvar', {
 					description: validationMessage,

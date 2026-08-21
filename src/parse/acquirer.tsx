@@ -75,6 +75,30 @@ export const acquirerTypeParse: Record<AcquirerType, TParse> = {
 		description: 'Instituição de Pagamento Accithus',
 		icon: <Icon icon={BankIcon} size={18} />,
 	},
+	MagicPay: {
+		label: 'MagicPay',
+		color: 'accent',
+		description: 'Adquirente MagicPay',
+		icon: <Icon icon={ServerStack01Icon} size={18} />,
+	},
+	AkkadPag: {
+		label: 'AkkadPag',
+		color: 'accent',
+		description: 'Adquirente AkkadPag',
+		icon: <Icon icon={ServerStack01Icon} size={18} />,
+	},
+	FlevoPay: {
+		label: 'FlevoPay',
+		color: 'secondary',
+		description: 'Adquirente FlevoPay',
+		icon: <Icon icon={ServerStack01Icon} size={18} />,
+	},
+	PixHub: {
+		label: 'PixHub',
+		color: 'success',
+		description: 'Adquirente PixHub (PIX Dinâmico)',
+		icon: <Icon icon={ServerStack01Icon} size={18} />,
+	},
 };
 
 export const webhookAuthModeParse: Record<WebhookAuthMode, TParse> = {
@@ -219,6 +243,10 @@ export const acquirerTypeProviderCategoryMap: Record<AcquirerType, ProviderCateg
 	HunterPay: ProviderCategory.Acquirer,
 	HeartPay: ProviderCategory.Acquirer,
 	Accithus: ProviderCategory.PaymentInstitution,
+	MagicPay: ProviderCategory.Acquirer,
+	AkkadPag: ProviderCategory.Acquirer,
+	FlevoPay: ProviderCategory.Acquirer,
+	PixHub: ProviderCategory.Acquirer,
 };
 
 export const providerCategoryOptions = Object.entries(providerCategoryParse).map(([key, value]) => ({
