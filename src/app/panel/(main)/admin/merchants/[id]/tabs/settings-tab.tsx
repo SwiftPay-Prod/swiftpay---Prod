@@ -1105,6 +1105,7 @@ function SettingsTabForm({
 									>
 										<Label>Volume do Ciclo (X)</Label>
 										<Input
+											variant="secondary"
 											type="number"
 											min={1}
 											max={100000}
@@ -1131,6 +1132,7 @@ function SettingsTabForm({
 									>
 										<Label>Taxa de Amostragem (%) (Y)</Label>
 										<Input
+											variant="secondary"
 											type="number"
 											min={0}
 											max={100}

@@ -1,6 +1,15 @@
 "use server";
 
 import client from "@/clients/client";
+import {
+  createProductRequestSchema,
+  updateProductRequestSchema,
+  createCategoryRequestSchema,
+  updateCategoryRequestSchema,
+  createVariantRequestSchema,
+  updateVariantRequestSchema,
+  stockAdjustmentRequestSchema,
+} from "@/schemas/product-form-schema";
 import type {
   ProductData,
   MinimalProductData,
@@ -49,7 +58,8 @@ export async function createMerchantProduct(
   merchantId: string,
   data: CreateProductRequest
 ): Promise<ApiResponse<ProductData>> {
-  const { environment: _environment, ...payload } = data;
+  const validated = createProductRequestSchema.parse(data) as CreateProductRequest;
+  const { environment: _environment, ...payload } = validated;
   const response = await client.post<ApiResponse<ProductData>>(
     `/v1/merchant/${merchantId}/products`,
     payload
@@ -62,9 +72,10 @@ export async function updateMerchantProduct(
   productId: string,
   data: UpdateProductRequest
 ): Promise<ApiResponse<ProductData>> {
+  const validated = updateProductRequestSchema.parse(data) as UpdateProductRequest;
   const response = await client.patch<ApiResponse<ProductData>>(
     `/v1/merchant/${merchantId}/products/${productId}`,
-    data
+    validated
   );
   return response?.data;
 }
@@ -107,7 +118,8 @@ export async function createMerchantCategory(
   merchantId: string,
   data: CreateCategoryRequest
 ): Promise<ApiResponse<CategoryData>> {
-  const { environment: _environment, ...payload } = data;
+  const validated = createCategoryRequestSchema.parse(data) as CreateCategoryRequest;
+  const { environment: _environment, ...payload } = validated;
   const response = await client.post<ApiResponse<CategoryData>>(
     `/v1/merchant/${merchantId}/categories`,
     payload
@@ -120,12 +132,14 @@ export async function updateMerchantCategory(
   categoryId: string,
   data: UpdateCategoryRequest
 ): Promise<ApiResponse<CategoryData>> {
+  const validated = updateCategoryRequestSchema.parse(data) as UpdateCategoryRequest;
   const response = await client.patch<ApiResponse<CategoryData>>(
     `/v1/merchant/${merchantId}/categories/${categoryId}`,
-    data
+    validated
   );
   return response?.data;
 }
+
 
 export async function deleteMerchantCategory(
   merchantId: string,
@@ -165,9 +179,10 @@ export async function createProductVariant(
   productId: string,
   data: CreateVariantRequest
 ): Promise<ApiResponse<VariantData>> {
+  const validated = createVariantRequestSchema.parse(data) as CreateVariantRequest;
   const response = await client.post<ApiResponse<VariantData>>(
     `/v1/merchant/${merchantId}/products/${productId}/variants`,
-    data
+    validated
   );
   return response?.data;
 }
@@ -178,9 +193,10 @@ export async function updateProductVariant(
   variantId: string,
   data: UpdateVariantRequest
 ): Promise<ApiResponse<VariantData>> {
+  const validated = updateVariantRequestSchema.parse(data) as UpdateVariantRequest;
   const response = await client.patch<ApiResponse<VariantData>>(
     `/v1/merchant/${merchantId}/products/${productId}/variants/${variantId}`,
-    data
+    validated
   );
   return response?.data;
 }
@@ -201,9 +217,10 @@ export async function adjustProductStock(
   productId: string,
   data: StockAdjustmentRequest
 ): Promise<ApiResponse<StockAdjustmentData>> {
+  const validated = stockAdjustmentRequestSchema.parse(data) as StockAdjustmentRequest;
   const response = await client.post<ApiResponse<StockAdjustmentData>>(
     `/v1/merchant/${merchantId}/products/${productId}/stock/adjust`,
-    data
+    validated
   );
   return response?.data;
 }

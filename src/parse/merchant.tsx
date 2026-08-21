@@ -393,3 +393,21 @@ export const merchantSettingsChangeCategoryParse: Record<MerchantSettingsChangeC
 	},
 };
 
+export const adjustmentScopeParse: Record<'Platform' | 'Acquirer' | 'Merchant', TParse> = {
+	Platform: {
+		label: 'Plataforma',
+		color: 'default',
+		description: 'Ajuste no saldo da plataforma',
+	},
+	Acquirer: {
+		label: 'Adquirente',
+		color: 'warning',
+		description: 'Ajuste vinculado à adquirente',
+	},
+	Merchant: {
+		label: 'Organização',
+		color: 'success',
+		description: 'Ajuste no saldo da organização',
+	},
+};
+

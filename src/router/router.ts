@@ -566,6 +566,9 @@ const SUPPORT_ROUTES: RouteConfig[] = [
 		menuOrder: 2,
 		showInMenu: false,
 	},
+	// NOTA DE ARQUITETURA: A seção "Suporte" (Informativos e Central de Ajuda) está temporariamente
+	// desativada no menu lateral para os usuários (showInMenu: false). O código e as páginas
+	// permanecem intactos para lançamento em roadmap futuro da plataforma SwiftPay.
 	{
 		path: Routes.panel.bulletins,
 		title: 'Informativos',
@@ -573,7 +576,7 @@ const SUPPORT_ROUTES: RouteConfig[] = [
 		iconName: 'News01Icon',
 		menuSection: 'Suporte',
 		menuOrder: 1,
-		showInMenu: true,
+		showInMenu: false,
 	},
 	{
 		path: Routes.panel.docs,
@@ -592,7 +595,7 @@ const SUPPORT_ROUTES: RouteConfig[] = [
 		iconName: 'QuestionCircle',
 		menuSection: 'Suporte',
 		menuOrder: 4,
-		showInMenu: true,
+		showInMenu: false,
 	},
 ];
 

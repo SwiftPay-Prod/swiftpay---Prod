@@ -8,6 +8,7 @@ import { Icon } from '@/components/ui/icon';
 import { adminListPlatformBalanceAdjustments } from '@/app/actions/admin/dashboard';
 import { formatCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/datetime';
+import { adjustmentScopeParse, mapParseColorToChipColor } from '@/parse';
 import type {
 	AdminPlatformBalanceAdjustmentHistoryData,
 	AdjustmentScope,
@@ -24,17 +25,6 @@ interface AdjustmentHistoryModalProps {
 	initialDataPromise: DataPromise | null;
 }
 
-const SCOPE_CHIP_COLOR: Record<AdjustmentScope, 'default' | 'warning' | 'success'> = {
-	Platform: 'default',
-	Acquirer: 'warning',
-	Merchant: 'success',
-};
-
-const SCOPE_LABEL: Record<AdjustmentScope, string> = {
-	Platform: 'Plataforma',
-	Acquirer: 'Adquirente',
-	Merchant: 'Organização',
-};
 
 function AdjustmentCard({ item, mode }: { item: AdminPlatformBalanceAdjustmentHistoryData; mode: 'platform' | 'merchant' }) {
 	return (
@@ -42,8 +32,8 @@ function AdjustmentCard({ item, mode }: { item: AdminPlatformBalanceAdjustmentHi
 			<div className="flex flex-1 flex-col gap-1.5 min-w-0">
 				<div className="flex flex-wrap items-center gap-2">
 					{mode === 'platform' ? (
-						<Chip size="sm" variant="soft" color={SCOPE_CHIP_COLOR[item.scope]}>
-							<Chip.Label>{SCOPE_LABEL[item.scope]}</Chip.Label>
+						<Chip size="sm" variant="soft" color={mapParseColorToChipColor(adjustmentScopeParse[item.scope].color)}>
+							<Chip.Label>{adjustmentScopeParse[item.scope].label}</Chip.Label>
 						</Chip>
 					) : (
 						item.environment && (

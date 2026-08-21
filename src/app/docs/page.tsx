@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Input } from '@heroui/react';
 import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 
 export default function PublicDocsPage() {
@@ -60,13 +61,14 @@ export default function PublicDocsPage() {
         </div>
         <div className="px-4 py-3 border-b border-slate-800">
           <div className="relative">
-            <SearchIcon className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
+            <Input
+              variant="secondary"
+              size="sm"
               placeholder="Buscar endpoints..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-900 border border-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-100 placeholder-slate-500"
+              className="w-full"
+              startContent={<SearchIcon className="w-4 h-4 text-slate-400" />}
             />
           </div>
         </div>

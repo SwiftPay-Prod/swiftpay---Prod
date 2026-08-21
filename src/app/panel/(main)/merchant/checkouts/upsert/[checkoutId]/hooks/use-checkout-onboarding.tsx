@@ -337,9 +337,11 @@ function isValidAbsoluteUrl(value: string): boolean {
 
 function normalizeHexColor(color: string | null | undefined): string | undefined {
 	if (!color) return undefined;
-	const trimmed = color.trim();
-	if (!trimmed.startsWith('#')) return undefined;
-	if (trimmed.length === 4) {
+	let trimmed = color.trim();
+	if (!trimmed.startsWith('#')) {
+		trimmed = `#${trimmed}`;
+	}
+	if (trimmed.length === 4 && /^#[0-9A-Fa-f]{3}$/.test(trimmed)) {
 		const r = trimmed[1];
 		const g = trimmed[2];
 		const b = trimmed[3];
@@ -347,6 +349,9 @@ function normalizeHexColor(color: string | null | undefined): string | undefined
 	}
 	if (trimmed.length === 7 && /^#[0-9A-Fa-f]{6}$/.test(trimmed)) {
 		return trimmed.toUpperCase();
+	}
+	if (trimmed.length === 9 && /^#[0-9A-Fa-f]{8}$/.test(trimmed)) {
+		return trimmed.slice(0, 7).toUpperCase();
 	}
 	return undefined;
 }
@@ -778,19 +783,38 @@ export function useCheckoutOnboarding({
 
 		setSavingStepKey(stepKey);
 		try {
+			const currentForm = {
+				...onboardingForm.getValues(),
+				...(visualDraft ? {
+					primaryColor: visualDraft.primaryColor,
+					secondaryColor: visualDraft.secondaryColor,
+					colorMode: visualDraft.colorMode,
+					logoUrl: visualDraft.logoUrl,
+					backgroundImageUrl: visualDraft.backgroundImageUrl,
+					faviconUrl: visualDraft.faviconUrl,
+				} : {})
+			};
 			let payload: UpdateCheckoutRequest = {};
 
 			switch (stepKey) {
-				case 'visual':
+				case 'visual': {
+					const targetPrimary = currentForm.primaryColor ?? formValues.primaryColor;
+					const targetSecondary = currentForm.secondaryColor ?? formValues.secondaryColor;
+					const targetColorMode = currentForm.colorMode ?? formValues.colorMode;
+					const targetLogo = currentForm.logoUrl ?? formValues.logoUrl;
+					const targetBackground = currentForm.backgroundImageUrl ?? formValues.backgroundImageUrl;
+					const targetFavicon = currentForm.faviconUrl ?? formValues.faviconUrl;
+
 					payload = {
-						primaryColor: normalizeHexColor(formValues.primaryColor) || CHECKOUT_PRIMARY_COLOR_DEFAULT,
-						secondaryColor: formValues.colorMode === CheckoutColorMode.Gradient ? normalizeHexColor(formValues.secondaryColor) : undefined,
-						colorMode: formValues.colorMode,
-						logoUrl: formValues.logoUrl || undefined,
-						backgroundImageUrl: formValues.backgroundImageUrl || undefined,
-						faviconUrl: formValues.faviconUrl || undefined,
+						primaryColor: normalizeHexColor(targetPrimary) || targetPrimary || CHECKOUT_PRIMARY_COLOR_DEFAULT,
+						secondaryColor: targetColorMode === CheckoutColorMode.Gradient ? (normalizeHexColor(targetSecondary) || targetSecondary) : undefined,
+						colorMode: targetColorMode,
+						logoUrl: targetLogo ?? undefined,
+						backgroundImageUrl: targetBackground ?? undefined,
+						faviconUrl: targetFavicon ?? undefined,
 					};
 					break;
+				}
 				case 'payments':
 					payload = {
 						pixEnabled: formValues.pixEnabled,

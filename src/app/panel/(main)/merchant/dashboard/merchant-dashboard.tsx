@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { Select, ListBox } from '@heroui/react';
 import { PERIOD_OPTIONS, useMerchantDashboard } from '@/hooks/use-merchant-dashboard';
 import { useBalanceVisibility } from '@/hooks/use-balance-visibility';
 import type { ReadMerchantDashboardData, DashboardPeriod } from '@/types/merchant/dashboard';
@@ -97,15 +98,27 @@ function DashboardContent({
 					<p className="text-xs text-muted-foreground mt-0.5">Métricas de faturamento, caixa e desempenho operacional</p>
 				</div>
 				<div className="flex items-center gap-2">
-					<select
+					<Select
+						variant="secondary"
+						size="sm"
+						aria-label="Período"
+						className="min-w-36"
 						value={selectedPeriod}
-						onChange={(e) => onPeriodChange(e.target.value as DashboardPeriod)}
-						className="mockup-period-select text-xs h-8 px-2.5 rounded-md border-border/80 bg-card"
+						onChange={(key) => key && onPeriodChange(key as DashboardPeriod)}
 					>
-						{PERIOD_OPTIONS.map((opt) => (
-							<option key={opt.key} value={opt.key}>{opt.label}</option>
-						))}
-					</select>
+						<Select.Trigger>
+							<Select.Value />
+						</Select.Trigger>
+						<Select.Popover>
+							<ListBox>
+								{PERIOD_OPTIONS.map((opt) => (
+									<ListBox.Item key={opt.key} id={opt.key}>
+										{opt.label}
+									</ListBox.Item>
+								))}
+							</ListBox>
+						</Select.Popover>
+					</Select>
 				</div>
 			</div>
 
