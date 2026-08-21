@@ -1,106 +1,56 @@
-## gstack (REQUIRED — absolute, immutable, exclusive)
+# SwiftPay — Engineering & AI Agent Workflow (Matt Pocock Skills Exclusivo)
 
-gstack is the **sole authority** for ALL AI-assisted work in this project.
+Este documento estabelece o fluxo de trabalho de engenharia e governança de agentes de IA para o projeto **SwiftPay**.
+**Regra de exclusividade:** Neste projeto, utiliza-se EXCLUSIVAMENTE a suíte de **Matt Pocock Skills**. Nenhuma outra ferramenta ou skill de terceiros fora desta suíte é permitida.
 
-The CEO (the project owner / user) is the **final decision-maker**. gstack is the
-**executive orchestrator** that administers the project TOGETHER with the CEO,
-routing EVERY message, prompt, and task through the gstack flow. No work happens
-outside this flow.
+- O **Usuário / Mantenedor** decide O QUE construir e mantém aprovação final sobre planos, specs e deploys.
+- Os **Agentes de IA** executam COMO construir, utilizando as skills de engenharia estruturadas.
+- **Contexto Durável Obrigatório:** Todo TODO, decisão de arquitetura, evidência de teste e bloqueio deve ser registrado nos artefatos versionados do repositório (`TODOS.md`, `AGENTS.md`, `docs/decisions/`, `docs/architecture/`). Nunca confie apenas na memória da sessão.
+- **Segurança:** Nunca registre segredos (senhas, chaves de API, certificados) na documentação.
 
-### 0. Governance — CEO x gstack (MANDATORY for every turn)
+---
 
-- The **CEO (user)** decides WHAT to build and holds **final approval** on plans and ships.
-- **gstack** decides HOW — every request is routed through a gstack skill BEFORE any
-action (planning, coding, review, QA, ship), never ad-hoc.
-- Every assistant turn that receives a user request: (1) routes it to the matching
-gstack skill; (2) announces the routing briefly (Stock 1 line, in pt-BR); (3) only
+## 1. Ciclo de Vida do Desenvolvimento (Skills Workflow)
 
-  then proceeds. Any request the CEO authorizes is unblocked by default.
-- Plan-stage decisions go through the **CEO gate**: run `/plan-ceo-review` before
-implementing. No implementation before CEO review approval.
-- No PR/merge/deploy without `/review` + `/ship`.
-- The CEO may overrule any recommendation; gstack then executes the CEO's call
-  without re-arguing.
-- This governance is immutable and applies to absolutely everything — no exceptions,
-no bypass, no non-gstack tooling.
+| Fase | Skill Principal | Objetivo |
+| :--- | :--- | :--- |
+| **1. Ideação & Discovery** | `/grilling`, `/research`, `/prototype` | Estressar ideias, validar hipóteses, pesquisar documentação e criar protótipos rápidos |
+| **2. Domínio & Arquitetura** | `/domain-modeling`, `/codebase-design` | Modelar termos de domínio em `CONTEXT.md`, criar ADRs em `docs/adr/` e desenhar módulos profundos |
+| **3. Especificação** | `/to-spec` | Gerar especificações técnicas detalhadas a partir de demandas ou tickets |
+| **4. Tickets & Decomposição** | `/to-tickets` | Decompor a especificação em tickets granulares no GitHub Issues (usando `gh`) |
+| **5. Triagem & Priorização** | `/triage` | Classificar e etiquetar issues com o vocabulário padrão (`needs-triage`, `ready-for-agent`, etc.) |
+| **6. Navegação em Grafo** | `/wayfinder` | Gerenciar mapa de dependências e ordem de execução de tickets complexos |
+| **7. Implementação & TDD** | `/implement-spec`, `/implement`, `/tdd` | Implementar contratos guiado por testes (Red-Green-Refactor) e fatias verticais |
+| **8. Diagnóstico de Bugs** | `/diagnosing-bugs` | Investigação de causa raiz para falhas e regressões |
+| **9. Revisão de Código** | `/code-review` | Revisão em dois eixos (Padrões da base e Conformidade com a especificação) |
 
-### 1. Pre-flight check (MANDATORY — run before ANY operation)
+---
 
-```bash
-test -d ~/.claude/skills/gstack/bin && echo "GSTACK_OK" || echo "GSTACK_MISSING"
-```
+## 2. Roteamento de Skills
 
-If GSTACK_MISSING: **STOP IMMEDIATELY.** Do not proceed, do not work around, do not use any other tool. Tell the user:
+Quando uma tarefa for iniciada, use a skill correspondente:
+- **Discutir ou desafiar uma proposta/decisão:** `/grilling` ou `/grill-with-docs`
+- **Modelar domínio ou registrar ADR:** `/domain-modeling`
+- **Escrever uma especificação técnica:** `/to-spec`
+- **Criar/publicar tickets a partir de uma spec:** `/to-tickets`
+- **Classificar issues do GitHub:** `/triage`
+- **Executar implementação:** `/implement-spec` ou `/implement` com `/tdd`
+- **Resolver bugs difíceis:** `/diagnosing-bugs`
+- **Revisar pull request ou branch:** `/code-review`
+- **Projetar módulos e interfaces:** `/codebase-design`
 
-> gstack is required for all AI-assisted work in this repo.
-> Install it:
-> ```bash
-> git clone --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack
-> cd ~/.claude/skills/gstack && ./setup --team
-> ```
-> Then restart your AI coding tool.
+---
 
-### 2. Immutable rules (NEVER violate)
+## Agent skills
 
-- **Never skip** gstack skills, ignore gstack errors, or work around missing gstack
-- **Never use** any non-gstack tool, skill, or workflow for any task — gstack is the ONLY allowed tooling
-- **Every action** — planning, coding, reviewing, testing, debugging, documenting, deploying — MUST go through a gstack skill
-- **Every slash command** MUST be a gstack skill (listed below). Non-gstack commands are forbidden
-- **Never write code** without first running the appropriate gstack planning skill (/office-hours, /plan-ceo-review, /plan-eng-review, etc.)
-- **Never ship** without running /review and /qa first
-- **Never merge** without /ship
+### Issue tracker
 
+Issues and specs live as GitHub issues (using the `gh` CLI). See `docs/agents/issue-tracker.md`.
 
-### 2.1 Durable context for every agent (ABSOLUTE)
+### Triage labels
 
-- Every task, TODO, decision, assumption, blocker, risk, attempted approach, changed artifact, and verification result MUST be recorded in durable, versioned repository artifacts.
-- Chat history, terminal output, harness TODOs, local memory, and `~/.gstack` artifacts MAY supplement context but MUST NEVER be its only source.
-- Every agent MUST start with `AGENTS.md`, `TODOS.md`, and `docs/agent-context-governance.md`, then read relevant `docs/decisions/`, `docs/architecture/`, and module instructions.
-- Before yielding, every agent MUST update `TODOS.md` with completed work, evidence, remaining work, blockers, changed files, and the next concrete action.
-- Durable context MUST NEVER contain secret values or unnecessary personal data. Record only safe metadata about secret ownership, storage, rotation, and validation.
-- The full contract is defined in `AGENTS.md`; the lifecycle and handoff format are defined in `docs/agent-context-governance.md`.
+Canonical triage roles mapped to standard labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
 
-### 3. Required workflow (100% compliance)
+### Domain docs
 
-| Phase | What to run |
-|-------|-------------|
-| Ideation | `/office-hours` |
-| Strategy | `/plan-ceo-review` |
-| Architecture | `/plan-eng-review` |
-| Design | `/plan-design-review` or `/design-consultation` |
-| Coding | implement via gstack-approved plan |
-| Code review | `/review` |
-| QA | `/qa` or `/qa-only` |
-| Security | `/cso` |
-| Ship | `/ship` |
-| Deploy | `/land-and-deploy` |
-| Docs | `/document-release` |
-| Retro | `/retro` |
-| Debug | `/investigate` |
-
-All web browsing must use `/browse`. All other browsing tools are forbidden.
-
-### 4. Available gstack skills
-
-Use these for everything: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /plan-devex-review, /design-consultation, /design-shotgun, /design-html, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /setup-gbrain, /retro, /investigate, /document-release, /document-generate, /cso, /autoplan, /devex-review, /careful, /freeze, /guard, /unfreeze, /gstack-upgrade, /learn, /make-pdf, /diagram, /spec, /pair-agent, /scrape, /skillify, /context-save, /context-restore, /open-gstack-browser, /ios-qa, /ios-fix, /ios-design-review, /ios-clean, /ios-sync, /landing-report, /claude, /benchmark-models.
-
-Use ~/.claude/skills/gstack/... for gstack file paths (the global path).
-
-## Skill routing
-
-When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
-
-Key routing rules:
-- Product ideas/brainstorming → invoke /office-hours
-- Strategy/scope → invoke /plan-ceo-review
-- Architecture → invoke /plan-eng-review
-- Design system/plan review → invoke /design-consultation or /plan-design-review
-- Full review pipeline → invoke /autoplan
-- Bugs/errors → invoke /investigate
-- QA/testing site behavior → invoke /qa or /qa-only
-- Code review/diff check → invoke /review
-- Visual polish → invoke /design-review
-- Ship/deploy/PR → invoke /ship or /land-and-deploy
-- Save progress → invoke /context-save
-- Resume context → invoke /context-restore
-- Author a backlog-ready spec/issue → invoke /spec
+Single-context layout (`CONTEXT.md` and `docs/adr/` at repo root). See `docs/agents/domain.md`.

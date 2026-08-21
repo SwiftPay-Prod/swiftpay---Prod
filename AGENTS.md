@@ -13,11 +13,11 @@ This rule is permanent and applies to all agents and all scopes. It MUST NOT be 
 Before acting, every agent MUST:
 
 1. Read this `AGENTS.md` file.
-2. Read `CLAUDE.md` for immutable gstack governance and routing.
+2. Read `CLAUDE.md` for engineering skills workflow and routing.
 3. Read `.github/copilot-instructions.md` and every instruction file applicable to the files being touched.
 4. Read `TODOS.md` for current work, blockers, dropped approaches, and handoff state.
 5. Read `docs/agent-context-governance.md` for the required documentation lifecycle.
-6. Read relevant architecture and decision records under `docs/architecture/` and `docs/decisions/`.
+6. Read `CONTEXT.md`, relevant architecture records under `docs/architecture/`, and ADRs under `docs/adr/`.
 7. Treat unexpected repository changes as user-owned work and preserve them.
 
 An agent that cannot complete this sequence MUST stop and document the exact blocker in `TODOS.md`.
@@ -26,7 +26,7 @@ An agent that cannot complete this sequence MUST stop and document the exact blo
 
 - Before work: record every requested item as a separate task in `TODOS.md` and in the active task tracker.
 - During work: keep task status, decisions, risks, failed attempts, and blockers current as facts change.
-- After a decision: create or update a versioned record under `docs/decisions/`; do not leave the rationale only in chat.
+- After a decision: create or update a versioned ADR under `docs/adr/`; do not leave the rationale only in chat.
 - After verification: record the exact command or scenario, date, and observed result. Never claim broader coverage than was exercised.
 - Before handoff or stopping: update `TODOS.md` with completed work, remaining work, changed files, verification evidence, blockers, and the single next concrete action.
 - After implementation: update affected architecture, operational, API, and user documentation in the same workstream.
@@ -36,15 +36,16 @@ An agent that cannot complete this sequence MUST stop and document the exact blo
 | Artifact | Purpose |
 |---|---|
 | `AGENTS.md` | Universal rules for every agent |
-| `CLAUDE.md` | Required gstack governance and routing |
+| `CLAUDE.md` | Required engineering workflow and skills routing |
 | `.github/copilot-instructions.md` | Copilot discovery and instruction index |
 | `TODOS.md` | Canonical task ledger and current handoff state |
 | `docs/agent-context-governance.md` | Full context capture and handoff procedure |
-| `docs/decisions/` | Durable architectural and product decisions with rationale |
+| `CONTEXT.md` | Ubiquitous Language glossary and domain boundaries |
+| `docs/adr/` | Architectural Decision Records (ADRs) |
 | `docs/architecture/` | Current system design and runtime behavior |
 | Tests and command output references | Verification evidence for behavior claims |
 
-Local gstack artifacts and long-term memory MAY supplement these files, but MUST NOT replace committed project records.
+Local agent artifacts and long-term memory MAY supplement these files, but MUST NOT replace committed project records.
 
 ## Security boundary
 
@@ -63,3 +64,17 @@ No agent may declare work complete or hand off while actionable work remains und
 - every file that another agent must read first.
 
 See `docs/agent-context-governance.md` for templates and examples.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live as GitHub issues (using the `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Canonical triage roles mapped to standard labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout (`CONTEXT.md` and `docs/adr/` at repo root). See `docs/agents/domain.md`.

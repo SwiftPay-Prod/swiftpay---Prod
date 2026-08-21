@@ -8,7 +8,7 @@ O conteúdo detalhado foi dividido em arquivos menores por contexto para facilit
 Antes de qualquer ação, todo agente deve ler:
 
 1. [`../AGENTS.md`](../AGENTS.md), contrato universal;
-2. [`../CLAUDE.md`](../CLAUDE.md), governança gstack obrigatória;
+2. [`../CLAUDE.md`](../CLAUDE.md), governança e fluxo de skills de engenharia;
 3. [`../TODOS.md`](../TODOS.md), ledger canônico e handoff atual;
 4. [`../docs/agent-context-governance.md`](../docs/agent-context-governance.md), ciclo de documentação;
 5. decisões e arquitetura relacionadas em `docs/decisions/` e `docs/architecture/`;
