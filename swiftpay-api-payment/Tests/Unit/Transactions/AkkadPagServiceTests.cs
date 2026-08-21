@@ -38,7 +38,8 @@ public sealed class AkkadPagServiceTests
         {
             Amount = 500,
             CustomerName = "Cliente Teste",
-            CustomerEmail = "cliente@example.com"
+            CustomerEmail = "cliente@example.com",
+            CustomerDocument = "529.982.247-25"
         });
         var status = await service.GetPixStatusAsync(config, generation.TxId!);
 
@@ -48,6 +49,40 @@ public sealed class AkkadPagServiceTests
         client.QueriedPaymentId.Should().Be(providerPaymentId);
         status.Success.Should().BeTrue();
         status.Status.Should().Be(PaymentStatus.Pending);
+    }
+
+    [Fact]
+    public async Task GeneratedPix_WithInvalidDocument_ShouldFailValidation()
+    {
+        const string providerPaymentId = "81158e9a-6433-430b-8895-d8bc00c3dfd5";
+        var client = new StubAkkadPagClient(providerPaymentId);
+        var service = new AkkadPagService(
+            client,
+            NullLogger<AkkadPagService>.Instance,
+            null!,
+            null!);
+        var config = new AcquirerConfig
+        {
+            AcquirerId = Guid.NewGuid(),
+            AcquirerType = AcquirerType.AkkadPag,
+            ApiBaseUrl = "https://api.akkadpag.com/v1",
+            PlatformBaseUrl = "https://swiftpayment.info",
+            Credentials = new Dictionary<string, string>
+            {
+                ["publicKey"] = "test-pub",
+                ["secretKey"] = "test-sec"
+            }
+        };
+
+        var generation = await service.GeneratePixAsync(config, new PixGenerationRequest
+        {
+            Amount = 500,
+            CustomerName = "Cliente Teste",
+            CustomerEmail = "cliente@example.com",
+            CustomerDocument = "00000000000" // Invalid CPF
+        });
+        generation.Success.Should().BeFalse();
+        generation.ErrorMessage.Should().Contain("inválido");
     }
 
     private sealed class StubAkkadPagClient(string providerPaymentId) : IAkkadPagClient

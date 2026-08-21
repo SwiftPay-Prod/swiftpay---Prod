@@ -1,3 +1,4 @@
+using swiftpay_api_core.Models.Domain;
 using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics;
 using swiftpay_api_core.Interfaces;
@@ -42,8 +43,17 @@ public sealed class AkkadPagService(
         var customerName = string.IsNullOrWhiteSpace(request.CustomerName) ? "Cliente" : request.CustomerName.Trim();
         var customerEmail = string.IsNullOrWhiteSpace(request.CustomerEmail) ? "cliente@example.com" : request.CustomerEmail.Trim();
         var customerPhone = string.IsNullOrWhiteSpace(request.CustomerPhone) ? "00000000000" : new string(request.CustomerPhone.Where(char.IsDigit).ToArray());
-        var customerDocument = string.IsNullOrWhiteSpace(request.CustomerDocument) ? "00000000000" : new string(request.CustomerDocument.Where(char.IsDigit).ToArray());
-        var customerDocumentType = customerDocument.Length == 11 ? "CPF" : "CNPJ";
+        if (!TaxId.TryParse(request.CustomerDocument, out var taxId))
+        {
+            return new PixGenerationResult
+            {
+                Success = false,
+                ErrorMessage = "Documento (CPF/CNPJ) do cliente inválido ou ausente para processamento PIX."
+            };
+        }
+
+        var customerDocument = taxId.Digits;
+        var customerDocumentType = taxId.Type == TaxIdType.Cpf ? "CPF" : "CNPJ";
 
         var pixRequest = new AkkadPagPaymentRequest
         {

@@ -277,7 +277,8 @@ public enum AcquirerType
     Accithus,
     MagicPay,
     AkkadPag,
-    FlevoPay
+    FlevoPay,
+    PixHub
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]

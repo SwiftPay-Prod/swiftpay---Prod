@@ -1,3 +1,4 @@
+using swiftpay_api_payment.Clients.PixHub;
 using swiftpay_api_payment.Clients.Accithus;
 using swiftpay_api_payment.Clients.ActivePayments;
 using swiftpay_api_payment.Clients.Bankizi;
@@ -112,6 +113,12 @@ public static class ServiceCollectionExtensions
             client.Timeout = TimeSpan.FromSeconds(30);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         });
+        services.AddHttpClient<IPixHubClient, PixHubClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri("https://api.usepixhub.com");
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        });
 
         services.AddScoped<IAcquirerService, ActivePaymentsService>();
         services.AddScoped<IAcquirerService, BankiziService>();
@@ -125,6 +132,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAcquirerService, MagicPayService>();
         services.AddScoped<IAcquirerService, AkkadPagService>();
         services.AddScoped<IAcquirerService, FlevoPayService>();
+        services.AddScoped<IAcquirerService, PixHubService>();
         services.AddScoped<IAcquirerServiceFactory, AcquirerServiceFactory>();
 
         return services;
