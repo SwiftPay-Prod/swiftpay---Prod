@@ -17,9 +17,7 @@ public sealed class EmailPlatformReadinessHealthCheck(
         var platform = platformOptions.Value;
         if (!platform.Enabled)
         {
-            return Task.FromResult(environment.IsProduction()
-                ? HealthCheckResult.Degraded("Email outbox worker is disabled")
-                : HealthCheckResult.Healthy("Email outbox worker is disabled"));
+            return Task.FromResult(HealthCheckResult.Healthy("Direct email provider (Resend) is active"));
         }
 
         var missing = EmailOutboxWorkerExtensions.FindMissingConfiguration(

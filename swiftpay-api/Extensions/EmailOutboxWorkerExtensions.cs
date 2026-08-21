@@ -30,25 +30,8 @@ public static class EmailOutboxWorkerExtensions
             tags: ["ready", "email"]);
         services.AddScoped<IEmailTerminalSummaryStore, EmailTerminalSummaryStore>();
 
-        if (!platform.Enabled)
-        {
-            services.AddSingleton<IEmailOutboxPublisher, DisabledEmailOutboxPublisher>();
-            return services;
-        }
-
-        services.AddSingleton(_ => BuildFirestore(platform));
-        services.AddSingleton<FirestoreEmailOutboxStore>();
-        services.AddSingleton<IEmailOutboxPublisher>(provider => provider.GetRequiredService<FirestoreEmailOutboxStore>());
-        services.AddSingleton<IEmailOutboxStore>(provider => provider.GetRequiredService<FirestoreEmailOutboxStore>());
-        services.AddSingleton<IEmailOutboxStatusReader>(provider => provider.GetRequiredService<FirestoreEmailOutboxStore>());
-        services.AddSingleton<IEmailOutboxWorkQueue, EmailOutboxWorkQueue>();
-        services.AddSingleton<IEmailRetryBackoff, DeterministicEmailRetryBackoff>();
         services.AddSingleton<IEmailProviderTransport, ResendEmailProviderTransport>();
-        services.AddSingleton(TimeProvider.System);
-        services.AddSingleton<EmailOutboxCleanupProcessor>();
-        services.AddHostedService<EmailOutboxWorkerService>();
-        services.AddHostedService<EmailOutboxRecoveryService>();
-        services.AddHostedService<EmailOutboxCleanupHostedService>();
+        services.AddSingleton<IEmailOutboxPublisher, DirectResendEmailOutboxPublisher>();
         return services;
     }
 
@@ -63,33 +46,6 @@ public static class EmailOutboxWorkerExtensions
         if (string.IsNullOrWhiteSpace(email?.FromEmail)) missing.Add("EmailSettings:FromEmail");
         if (string.IsNullOrWhiteSpace(email?.FromName)) missing.Add("EmailSettings:FromName");
 
-        if (requireCredentialFile && string.IsNullOrWhiteSpace(platform.FirestoreEmulatorHost))
-        {
-            var credentialPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
-            if (string.IsNullOrWhiteSpace(credentialPath)) missing.Add("GOOGLE_APPLICATION_CREDENTIALS");
-            else if (!File.Exists(credentialPath)) missing.Add("GOOGLE_APPLICATION_CREDENTIALS file");
-        }
         return missing;
-    }
-
-    private static FirestoreDb BuildFirestore(EmailPlatformSettings settings)
-    {
-        if (!string.IsNullOrWhiteSpace(settings.FirestoreEmulatorHost))
-        {
-            Environment.SetEnvironmentVariable("FIRESTORE_EMULATOR_HOST", settings.FirestoreEmulatorHost);
-        }
-        return new FirestoreDbBuilder
-        {
-            ProjectId = settings.FirebaseProjectId,
-            EmulatorDetection = string.IsNullOrWhiteSpace(settings.FirestoreEmulatorHost)
-                ? EmulatorDetection.EmulatorOrProduction
-                : EmulatorDetection.EmulatorOnly
-        }.Build();
-    }
-
-    private sealed class DisabledEmailOutboxPublisher : IEmailOutboxPublisher
-    {
-        public Task<EmailOutboxPublishResult> PublishAsync(EmailOutboxPublishRequest request, CancellationToken cancellationToken = default) =>
-            throw new InvalidOperationException("Email outbox worker is disabled.");
     }
 }
