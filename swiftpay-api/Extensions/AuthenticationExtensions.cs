@@ -10,12 +10,18 @@ public static class AuthenticationExtensions
         {
             events.OnMessageReceived = context =>
             {
-                var accessToken = context.Request.Query["access_token"];
+                var accessToken = context.Request.Query["access_token"].ToString();
                 var path = context.HttpContext.Request.Path;
                 if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
                 {
                     context.Token = accessToken;
                 }
+                return Task.CompletedTask;
+            };
+            events.OnAuthenticationFailed = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetService<ILogger<JwtBearerEvents>>();
+                logger?.LogWarning(context.Exception, "SignalR / JWT authentication failed on {Path}", context.HttpContext.Request.Path);
                 return Task.CompletedTask;
             };
         });

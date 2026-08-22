@@ -31,10 +31,10 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Evidência do review (Spec: #96): revisão em dois eixos (Standards e Spec) aprovou as correções de fail-closed, hooks e caminhos observados.
   - Status: pronto para commit e deploy.
 - `IN_PROGRESS` Spec: #100 / Issue: #101 — restaurar SignalR.
-  - Reprodução: conexão `wss://swiftpayment.info/api/hubs/notifications` retornava HTTP 401; `TokenService` assina com HS512 via `JWT.Builder`, mas `Microsoft.IdentityModel` rejeitava chaves menores que 512 bits.
-  - Implementado via TDD: `SignalRQueryStringAuthenticationMiddleware` para promoção de query token e `SignatureValidator` em tempo constante compatível com chaves arbitrárias no `AuthenticationExtensions.cs`.
+  - Reprodução (Spec: #100): conexão `wss://swiftpayment.info/api/hubs/notifications` retornava HTTP 401; `TokenService` assina com HS512 via `JWT.Builder`, mas `Microsoft.IdentityModel` rejeitava chaves menores que 512 bits.
+  - Implementado via TDD (Spec: #100): `SignalRQueryStringAuthenticationMiddleware` para promoção de query token, `SignatureValidator` em tempo constante no `AuthenticationExtensions.cs` e log de diagnóstico estruturado em `OnAuthenticationFailed`.
   - Evidência do review (Spec: #100): pipeline FastEndpoints, testes unitários e diagramas de arquitetura atualizados (`deployment-map.md`).
-  - Status: pronto para deploy e validação em browser.
+  - Status: em validação de telemetria no servidor (Spec: #100).
 - Bloqueio financeiro: pagamento real e PIX OUT exigem aprovação explícita do usuário para valor e chave de destino.
 - Próxima ação: deploy dos serviços na VPS (autenticação SSH/Contabo) e verificação end-to-end nas superfícies web e APIs.
 
