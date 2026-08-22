@@ -1,4 +1,4 @@
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 using JWT.Algorithms;
 using JWT.Builder;
 using JWT.Exceptions;
@@ -45,7 +45,7 @@ public static class AuthenticationExtensions
                             .MustVerifySignature()
                             .Decode<Dictionary<string, object>>(token);
 
-                        return new JwtSecurityToken(token);
+                        return new JsonWebToken(token);
                     }
                     catch (TokenExpiredException ex)
                     {
