@@ -81,12 +81,6 @@ export const acquirerTypeParse: Record<AcquirerType, TParse> = {
 		description: 'Adquirente MagicPay',
 		icon: <Icon icon={ServerStack01Icon} size={18} />,
 	},
-	AkkadPag: {
-		label: 'AkkadPag',
-		color: 'accent',
-		description: 'Adquirente AkkadPag',
-		icon: <Icon icon={ServerStack01Icon} size={18} />,
-	},
 	FlevoPay: {
 		label: 'FlevoPay',
 		color: 'secondary',
@@ -244,7 +238,6 @@ export const acquirerTypeProviderCategoryMap: Record<AcquirerType, ProviderCateg
 	HeartPay: ProviderCategory.Acquirer,
 	Accithus: ProviderCategory.PaymentInstitution,
 	MagicPay: ProviderCategory.Acquirer,
-	AkkadPag: ProviderCategory.Acquirer,
 	FlevoPay: ProviderCategory.Acquirer,
 	PixHub: ProviderCategory.Acquirer,
 };

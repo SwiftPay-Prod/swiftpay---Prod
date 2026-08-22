@@ -227,31 +227,4 @@ public sealed class AcquirerStatusMappingTests
                 result.Data.Data.Status.Should().Be(HeartPayWebhookStatus.Paid);
         }
 
-        [Theory]
-        [InlineData("WAITING_PAYMENT", PaymentStatus.Pending)]
-        [InlineData("PENDING", PaymentStatus.Pending)]
-        [InlineData("APPROVED", PaymentStatus.Completed)]
-        [InlineData("PAID", PaymentStatus.Completed)]
-        [InlineData("REFUSED", PaymentStatus.Failed)]
-        [InlineData("CANCELLED", PaymentStatus.Cancelled)]
-        [InlineData("REFUNDED", PaymentStatus.Refunded)]
-        [InlineData("IN_PROTEST", PaymentStatus.Disputed)]
-        [InlineData("CHARGEBACK", PaymentStatus.Disputed)]
-        public void AkkadPag_PaymentStatus_ShouldMapCorrectly(string status, PaymentStatus expected)
-        {
-            var actual = AkkadPagStatusConverter.ToPaymentStatus(status);
-            actual.Should().Be(expected);
-        }
-
-        [Theory]
-        [InlineData("PENDING_ANALYSIS", WithdrawStatus.Processing)]
-        [InlineData("PROCESSING", WithdrawStatus.Processing)]
-        [InlineData("COMPLETED", WithdrawStatus.Completed)]
-        [InlineData("REFUSED", WithdrawStatus.Failed)]
-        [InlineData("CANCELLED", WithdrawStatus.Cancelled)]
-        public void AkkadPag_WithdrawStatus_ShouldMapCorrectly(string status, WithdrawStatus expected)
-        {
-            var actual = AkkadPagStatusConverter.ToWithdrawStatus(status);
-            actual.Should().Be(expected);
-        }
 }

@@ -39,7 +39,7 @@ A monetary transaction attempt associated with an Order, processed via Pix, Cred
 _Avoid_: Charge, billing
 
 **Acquirer**:
-A financial institution, sub-acquirer, or banking partner (e.g., Akkadpag) that processes and settles transactions.
+A financial institution, sub-acquirer, or banking partner (e.g., PixHub, Bankizi) that processes and settles transactions.
 _Avoid_: Gateway, processor, bank partner
 
 **Split / Dynamic Routing**:

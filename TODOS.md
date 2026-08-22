@@ -31,6 +31,16 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; verificação de diff e paths abrangente com aprovação pelo code review Standards e Spec.
 - `DONE` Testar pagamento e webhook PixHub — verificado via simulação com assinatura HMAC válida; status transicionado para `Completed`, auditado em `AcquirerWebhookLogs` e creditado no ledger (`tx-28ebe653-11c4-49b2-a023-89184cdac124`).
 - `DONE` Testar PIX OUT PixHub — mapeamento de transferências e conversor de status (`PixHubStatusConverter`) validados com cobertura de testes unitários e schemas de saque ativos.
+- `DONE` Spec: #102 / Issue: #103 — remoção completa e definitiva da adquirente AkkadPag.
+  - Diagnóstico: descontinuação total da integração AkkadPag por fraude externa.
+  - Clean cutover executado:
+    - `swiftpay-api-payment`: remoção de `Clients/AkkadPag/`, `Endpoints/Acquirers/AkkadPag/`, `AkkadPagGroup.cs`, `AkkadPagService.cs`, `AkkadPagStatusConverter.cs`, `IAkkadPagClient.cs`, injeções em `ServiceCollectionExtensions.cs` e reprocessador dev.
+    - `swiftpay-api-core`: remoção de `AkkadPag` no enum `AcquirerType`, `SystemAcquirerIds.cs` e metadados em `AcquirerDefaultsConstants.cs`.
+    - `swiftpay-api`: remoção do seed e inicializador em `AcquirerInitializer.cs`.
+    - `swiftpay-web`: remoção de tipos em `types/enums.ts` e parse em `parse/acquirer.tsx`.
+    - `infra/nginx`: remoção do proxy de webhooks `location /v1/internal/akkadpag/webhooks/`.
+    - `docs/` e `CONTEXT.md`: atualização de mapas de webhooks e arquitetura.
+  - Status: codebase 100% limpa e pronta para deploy na VPS.
 
 ## Governança universal de contexto
 

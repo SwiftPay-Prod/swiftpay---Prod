@@ -95,11 +95,6 @@ public static class SystemAcquirerIds
     public static readonly Guid MagicPay = Guid.Parse("00000000-0000-0000-0000-000000000210");
 
     /// <summary>
-    /// AkkadPag - Gateway de pagamentos PIX
-    /// </summary>
-    public static readonly Guid AkkadPag = Guid.Parse("00000000-0000-0000-0000-000000000211");
-
-    /// <summary>
     /// FlevoPay - Gateway de pagamentos PIX
     /// </summary>
     public static readonly Guid FlevoPay = Guid.Parse("00000000-0000-0000-0000-000000000212");

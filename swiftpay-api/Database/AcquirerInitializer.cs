@@ -407,55 +407,6 @@ public static class AcquirerInitializer
             context.Acquirers.Add(magicPay);
         }
 
-        if (!context.Acquirers.Any(a => a.Id == SystemAcquirerIds.AkkadPag))
-        {
-            var metadata = AcquirerDefaultsConstants.GetMetadata(AcquirerType.AkkadPag);
-
-            var akkadPagSchema = CredentialUtils.BuildSchema(
-                ("publicKey", "Public Key", CredentialFieldType.Text, true, "Ex: pk_...", "Chave publica fornecida pela AkkadPag"),
-                ("secretKey", "Secret Key", CredentialFieldType.Password, true, "Ex: sk_...", "Chave secreta fornecida pela AkkadPag"),
-                ("withdrawalKey", "Withdrawal Key", CredentialFieldType.Password, false, "Ex: wdl_...", "Chave de saque fornecida pela AkkadPag")
-            );
-
-            var akkadPag = new Acquirer
-            {
-                Id = SystemAcquirerIds.AkkadPag,
-                Name = "AkkadPag",
-                Code = "akkadpag",
-                Description = metadata.Description,
-                Type = AcquirerType.AkkadPag,
-                IsActive = true,
-                ApiBaseUrl = metadata.ApiBaseUrlProduction,
-                ApiBaseUrlProduction = metadata.ApiBaseUrlProduction,
-                ApiBaseUrlSandbox = metadata.ApiBaseUrlSandbox,
-                AuthType = "basic_auth",
-                CredentialSchema = akkadPagSchema,
-                DefaultCredentials = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
-                {
-                    { "publicKey", "" },
-                    { "secretKey", "" },
-                    { "withdrawalKey", "" }
-                }),
-                DefaultCredentialsSandbox = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
-                {
-                    { "publicKey", "" },
-                    { "secretKey", "" },
-                    { "withdrawalKey", "" }
-                }),
-                SupportsPix = true,
-                SupportsBoleto = false,
-                SupportsCreditCard = false,
-                SupportsWithdrawal = true,
-                SupportsRefund = false,
-                WebhookAuthMode = metadata.WebhookAuthMode,
-                WebhookToken = null,
-                WebhookAllowedIps = null,
-                DocumentationUrl = metadata.DocumentationUrl,
-                WebhookDocumentationUrl = metadata.WebhookDocumentationUrl
-            };
-
-            context.Acquirers.Add(akkadPag);
-        }
 
         if (!context.Acquirers.Any(a => a.Id == SystemAcquirerIds.FlevoPay))
         {

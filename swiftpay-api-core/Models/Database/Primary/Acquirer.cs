@@ -276,7 +276,6 @@ public enum AcquirerType
     HeartPay,
     Accithus,
     MagicPay,
-    AkkadPag,
     FlevoPay,
     PixHub
 }

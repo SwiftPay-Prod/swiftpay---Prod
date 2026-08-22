@@ -22,7 +22,6 @@ export enum AcquirerType {
   HeartPay = "HeartPay",
   Accithus = "Accithus",
   MagicPay = "MagicPay",
-  AkkadPag = "AkkadPag",
   FlevoPay = "FlevoPay",
   PixHub = "PixHub",
 }
