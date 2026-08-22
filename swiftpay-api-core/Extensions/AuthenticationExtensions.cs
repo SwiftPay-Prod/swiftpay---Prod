@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography;
-using System.Text;
+using JWT.Algorithms;
+using JWT.Builder;
+using JWT.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,25 +38,28 @@ public static class AuthenticationExtensions
                 ClockSkew = TimeSpan.Zero,
                 SignatureValidator = (token, _) =>
                 {
-                    var parts = token.Split('.');
-                    if (parts.Length != 3)
+                    try
                     {
-                        throw new SecurityTokenMalformedException("JWT deve conter 3 partes separadas por ponto.");
+                        JwtBuilder.Create()
+                            .WithAlgorithm(new HMACSHA512Algorithm())
+                            .WithSecret(jwtSettings.Secret)
+                            .MustVerifySignature()
+                            .Decode<Dictionary<string, object>>(token);
+
+                        return new JwtSecurityToken(token);
                     }
-
-                    var dataToSign = Encoding.UTF8.GetBytes($"{parts[0]}.{parts[1]}");
-                    var secretBytes = Encoding.UTF8.GetBytes(jwtSettings.Secret);
-                    using var hmac = new HMACSHA512(secretBytes);
-                    var computedSignature = Base64UrlEncoder.Encode(hmac.ComputeHash(dataToSign));
-
-                    if (!CryptographicOperations.FixedTimeEquals(
-                        Encoding.UTF8.GetBytes(computedSignature),
-                        Encoding.UTF8.GetBytes(parts[2])))
+                    catch (SignatureVerificationException ex)
                     {
-                        throw new SecurityTokenInvalidSignatureException("Assinatura do JWT inválida.");
+                        throw new SecurityTokenInvalidSignatureException("Assinatura do JWT inválida.", ex);
                     }
-
-                    return new JwtSecurityToken(token);
+                    catch (TokenExpiredException ex)
+                    {
+                        throw new SecurityTokenExpiredException("Token expirado.", ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new SecurityTokenException("Falha na validação do token.", ex);
+                    }
                 }
             };
 

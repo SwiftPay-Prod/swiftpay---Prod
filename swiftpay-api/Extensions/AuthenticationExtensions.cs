@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using swiftpay_api_core.Extensions;
-
 namespace swiftpay_api.Extensions;
 
 public static class AuthenticationExtensions
