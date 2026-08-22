@@ -13,7 +13,6 @@ import {
 	Notification03Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { SelectFilter } from '@/components/ui/select-filter';
 import type { AdminMinimalReconciliation, AdminListReconciliationsRequest } from '@/types/admin/reconciliation';
@@ -148,20 +147,22 @@ function getColumns(
 
 export function ReconciliationsTableSkeleton({ pageSize = 20 }: { pageSize?: number }) {
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Audit01Icon} className="icon-md text-accent-foreground" />}
-				title="Reconciliações"
-				description="Visão consolidada de todas as reconciliações de organizações"
-			/>
-			<div className="flex items-center gap-2">
-				<Skeleton className="h-9 w-40 rounded-lg" />
-				<Skeleton className="h-9 w-36 rounded-lg" />
-				<Skeleton className="h-9 w-44 rounded-lg" />
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
+				<Skeleton className="h-8 w-8 rounded-lg bg-white/10" />
+				<div className="flex flex-col gap-1">
+					<Skeleton className="h-6 w-48 rounded bg-white/10" />
+					<Skeleton className="h-4 w-64 rounded bg-white/5" />
+				</div>
 			</div>
-			<div className="flex flex-col gap-2">
+			<div className="flex items-center gap-2">
+				<Skeleton className="h-9 w-40 rounded-xl bg-white/5" />
+				<Skeleton className="h-9 w-36 rounded-xl bg-white/5" />
+				<Skeleton className="h-9 w-44 rounded-xl bg-white/5" />
+			</div>
+			<div className="flex flex-col gap-3 rounded-[24px] border border-white/12 bg-[#16181a] p-5">
 				{Array.from({ length: pageSize > 10 ? 10 : pageSize }).map((_, i) => (
-					<Skeleton key={i} className="h-14 w-full rounded-lg" />
+					<Skeleton key={i} className="h-14 w-full rounded-xl bg-white/5" />
 				))}
 			</div>
 		</div>
@@ -255,68 +256,151 @@ export function ReconciliationsTable({ fetchPromise, filters }: ReconciliationsT
 	const columns = getColumns(handleViewDetails, handleGoToMerchant);
 
 	const onlyWithProblems = searchParams.get('onlyWithProblems') === 'true';
+	const itemsList = items.items;
+	const problemCount = itemsList.filter((r) => r.hasDiscrepancies).length;
+	const healthyCount = itemsList.filter((r) => !r.hasDiscrepancies).length;
 
 	return (
 		<>
-			<div className="flex flex-col gap-4">
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
-				<DataTable
-					className="rounded-[24px] border border-white/12 bg-[#16181a]"
-					columns={columns}
-					data={items.items}
-					keyExtractor={(item) => item.id}
-					isLoading={isPending}
-					filters={{
-						children: () => (
-							<>
-								<SelectFilter
-									label="Status"
-									options={statusOptions}
-									value={filters.status ?? 'all'}
-									onChange={(key) => navigate({ status: key === 'all' ? null : key })}
-								/>
-								<SelectFilter
-									label="Ambiente"
-									options={environmentOptions}
-									value={filters.environment ?? 'all'}
-									onChange={(key) => navigate({ environment: key === 'all' ? null : key })}
-								/>
-								<SelectFilter
-									label="Divergências"
-									options={[
-										{ value: 'all', label: 'Todas' },
-										{ value: 'true', label: 'Com divergências' },
-										{ value: 'false', label: 'Sem divergências' },
-									]}
-									value={searchParams.get('onlyWithProblems') ?? 'all'}
-									onChange={(key) => navigate({ onlyWithProblems: key === 'all' ? null : key, page: 1 })}
-								/>
-							</>
-						),
-						hasFilters: !!filters.status || !!filters.environment || !!searchParams.get('onlyWithProblems'),
-						onClear: () => navigate({ status: null, environment: null, onlyWithProblems: null, page: 1 }),
-						onRefresh: handleRefresh,
-						isRefreshing: isPending,
-					}}
-					pagination={{
-						page: items.page,
-						pageSize: items.pageSize,
-						totalItems: items.totalItems,
-						totalPages: items.totalPages,
-						onPageChange: (page) => navigate({ page }),
-						sortBy: filters.sortBy,
-						sortOrder: filters.sortOrder,
-						onSortChange: (sortBy, sortOrder) => navigate({ sortBy, sortOrder, page: 1 }),
-						isNavigating: isPending,
-					}}
-					emptyMessage={
-						onlyWithProblems
-							? 'Nenhuma reconciliação com problemas encontrada'
-							: 'Nenhuma reconciliação encontrada'
-					}
-				/>
-			</div>
+			<div className="flex flex-col gap-6 text-white">
+				{/* Executive Header */}
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+					<div>
+						<div className="flex items-center gap-2">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+								<Icon icon={Audit01Icon} className="icon-sm text-[#4f55f1]" />
+							</div>
+							<h1 className="text-xl font-bold tracking-tight text-white">Conciliações Bancárias</h1>
+						</div>
+						<p className="text-xs text-white/50 mt-1">
+							Auditoria de consistência e batimento automatizado entre ledger e adquirentes PIX
+						</p>
+					</div>
 
+					<div className="flex items-center gap-2">
+						<button
+							type="button"
+							onClick={() => setIsReconcileAllOpen(true)}
+							className="button-outline-dark cursor-pointer text-xs"
+						>
+							<Icon icon={RepeatIcon} className="icon-xs" />
+							<span>Reconciliar Todas</span>
+						</button>
+					</div>
+				</div>
+
+				{/* 3-Tile High Contrast KPI Grid */}
+				<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+						<div className="flex items-center justify-between">
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+								Total de Reconciliações
+							</span>
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+								<Icon icon={Audit01Icon} className="icon-xs" />
+							</div>
+						</div>
+						<div>
+							<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+								{items.totalItems}
+							</span>
+							<p className="text-xs text-white/40 font-mono mt-0.5">Auditorias executadas</p>
+						</div>
+					</div>
+
+					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+						<div className="flex items-center justify-between">
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+								Com Divergências
+							</span>
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30">
+								<Icon icon={Alert01Icon} className="icon-xs text-[#ec7e00]" />
+							</div>
+						</div>
+						<div>
+							<span className="text-2xl font-extrabold font-mono text-[#ec7e00] tracking-tight tabular-nums block">
+								{problemCount}
+							</span>
+							<p className="text-xs text-[#ec7e00]/80 font-mono mt-0.5">Exigem ajuste ou verificação</p>
+						</div>
+					</div>
+
+					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+						<div className="flex items-center justify-between">
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+								Sem Divergências
+							</span>
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+								<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+							</div>
+						</div>
+						<div>
+							<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+								{healthyCount}
+							</span>
+							<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Saldos 100% conciliados</p>
+						</div>
+					</div>
+				</div>
+
+				{/* Main Data Table */}
+				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+					<DataTable
+						className="rounded-[24px] border border-white/12 bg-[#16181a]"
+						columns={columns}
+						data={items.items}
+						keyExtractor={(item) => item.id}
+						isLoading={isPending}
+						filters={{
+							children: () => (
+								<>
+									<SelectFilter
+										label="Status"
+										options={statusOptions}
+										value={filters.status ?? 'all'}
+										onChange={(key) => navigate({ status: key === 'all' ? null : key })}
+									/>
+									<SelectFilter
+										label="Ambiente"
+										options={environmentOptions}
+										value={filters.environment ?? 'all'}
+										onChange={(key) => navigate({ environment: key === 'all' ? null : key })}
+									/>
+									<SelectFilter
+										label="Divergências"
+										options={[
+											{ value: 'all', label: 'Todas' },
+											{ value: 'true', label: 'Com divergências' },
+											{ value: 'false', label: 'Sem divergências' },
+										]}
+										value={searchParams.get('onlyWithProblems') ?? 'all'}
+										onChange={(key) => navigate({ onlyWithProblems: key === 'all' ? null : key, page: 1 })}
+									/>
+								</>
+							),
+							hasFilters: !!filters.status || !!filters.environment || !!searchParams.get('onlyWithProblems'),
+							onClear: () => navigate({ status: null, environment: null, onlyWithProblems: null, page: 1 }),
+							onRefresh: handleRefresh,
+							isRefreshing: isPending,
+						}}
+						pagination={{
+							page: items.page,
+							pageSize: items.pageSize,
+							totalItems: items.totalItems,
+							totalPages: items.totalPages,
+							onPageChange: (page) => navigate({ page }),
+							sortBy: filters.sortBy,
+							sortOrder: filters.sortOrder,
+							onSortChange: (sortBy, sortOrder) => navigate({ sortBy, sortOrder, page: 1 }),
+							isNavigating: isPending,
+						}}
+						emptyMessage={
+							onlyWithProblems
+								? 'Nenhuma reconciliação com problemas encontrada'
+								: 'Nenhuma reconciliação encontrada'
+						}
+					/>
+				</div>
 			</div>
 			<ReconciliationDetailsModal
 				isOpen={detailsOpen}

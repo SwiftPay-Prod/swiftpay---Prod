@@ -266,20 +266,32 @@ export function NotificationsContent({
 	);
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Notification01Icon} className="icon-md" />}
-				title="Notificações"
-				description="Gerencie suas notificações pessoais e da organização em um só lugar."
-				actions={
-					unreadCount > 0 && (
-						<Button variant="tertiary" onPress={handleMarkAllAsRead} isDisabled={isPending}>
-							<Icon icon={CheckmarkCircle02Icon} className="icon-sm" />
-							Marcar todas como lidas
-						</Button>
-					)
-				}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={Notification01Icon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Notificações</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gerencie suas notificações pessoais e da organização em um só lugar
+					</p>
+				</div>
+
+				{unreadCount > 0 && (
+					<button
+						type="button"
+						onClick={handleMarkAllAsRead}
+						disabled={isPending}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={CheckmarkCircle02Icon} className="icon-xs" />
+						<span>Marcar todas como lidas</span>
+					</button>
+				)}
+			</div>
 
 			{/* Tabs de escopo */}
 			<Card className="p-4">

@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { Card } from '@heroui/react';
 import { UserGroupIcon, Link01Icon, Analytics01Icon, InformationCircleIcon, Wallet01Icon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
 import { Icon } from '@/components/ui/icon';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import { AnimatedCurrency } from '@/components/ui/animated-currency';
@@ -90,47 +89,111 @@ export function ReferralsContent({
 	);
 
 	return (
-		<div className="flex flex-col gap-6">
-			<PageHeader
-				icon={<Icon icon={UserGroupIcon} size={24} />}
-				title={title}
-				description={description}
-			/>
-
-			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				{stats.map((item) => (
-					<Card key={item.label} className="border border-border/80 bg-card">
-						<Card.Content className="flex items-center gap-3 p-3">
-							{item.icon}
-							<div className="flex flex-col">
-								<span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{item.label}</span>
-								<span className={`text-sm font-semibold tabular-nums ${item.accent ?? 'text-foreground'}`}>{item.value}</span>
-							</div>
-						</Card.Content>
-					</Card>
-				))}
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={UserGroupIcon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">{title}</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">{description}</p>
+				</div>
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-				<Card>
-					<Card.Header>
-						<div className="flex items-center gap-3">
-							<div className="flex size-10 items-center justify-center rounded-lg bg-accent-soft">
-								<Icon icon={Link01Icon} className="icon-md text-accent" />
-							</div>
-							<div className="flex flex-col gap-1">
-								<Card.Title>Seu link de indicação</Card.Title>
-								<Card.Description>Use este link para convidar novos usuários.</Card.Description>
-							</div>
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Saldo Disponível
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={Wallet01Icon} className="icon-xs" />
 						</div>
-					</Card.Header>
-					<Card.Content className="flex flex-col gap-4">
-						<div className="rounded-lg border border-border/80 bg-surface p-3">
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={data.availableCommissionBalance ?? 0}
+							className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block"
+						/>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liberado para saque PIX</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Comissão Estimada
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Analytics01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={data.estimatedCommissionTotal ?? 0}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Projeção de ganhos</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Comissão Já Paga
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={data.paidCommissionTotal ?? 0}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Total já transferido</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Usuários Indicados
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={UserGroupIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={data.referredUsers?.length ?? 0} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Cadastrados com seu link</p>
+					</div>
+				</div>
+			</div>
+			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
+					<div className="flex items-center gap-3 border-b border-white/8 pb-4">
+						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Link01Icon} className="icon-md" />
+						</div>
+						<div>
+							<h3 className="text-sm font-bold text-white">Seu Link de Indicação</h3>
+							<p className="text-xs text-white/50">Use este link para convidar novas organizações.</p>
+						</div>
+					</div>
+					<div className="flex flex-col gap-4">
+						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
 							<div className="flex flex-col gap-3">
 								<div className="flex items-center justify-between gap-2">
 									<div className="min-w-0 flex-1">
-										<span className="text-xs text-muted">Código de indicação</span>
-										<p className="mt-1 font-mono text-sm font-semibold text-foreground">{referralCode || 'Não gerado'}</p>
+										<span className="text-xs text-white/50">Código de indicação</span>
+										<p className="mt-1 font-mono text-sm font-bold text-[#4f55f1]">{referralCode || 'Não gerado'}</p>
 									</div>
 									<CopyReferralLinkButton
 										value={referralCode}
@@ -138,11 +201,11 @@ export function ReferralsContent({
 										ariaLabel="Copiar código"
 									/>
 								</div>
-								<div className="h-px w-full bg-border/80" />
+								<div className="h-px w-full bg-white/8" />
 								<div className="flex items-center justify-between gap-2">
 									<div className="min-w-0 flex-1">
-										<span className="text-xs text-muted">Link de indicação</span>
-										<p className="mt-1 break-all text-sm text-muted-foreground">{referralLink}</p>
+										<span className="text-xs text-white/50">Link de indicação</span>
+										<p className="mt-1 break-all font-mono text-xs text-white/70">{referralLink}</p>
 									</div>
 									<CopyReferralLinkButton
 										value={referralCode ? referralLink : ''}
@@ -154,23 +217,23 @@ export function ReferralsContent({
 						</div>
 
 						<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-							<div className="rounded-lg border border-border/80 bg-surface p-3">
-								<span className="text-xs text-muted">Chave PIX de recebimento</span>
-								<p className="mt-1 text-sm font-medium text-foreground">{payoutPixKeyType ? 'Configurada' : 'Não configurada'}</p>
+							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5">
+								<span className="text-xs text-white/50">Chave PIX de recebimento</span>
+								<p className="mt-1 text-sm font-bold text-white">{payoutPixKeyType ? 'Configurada' : 'Não configurada'}</p>
 								{payoutPixKeyType && payoutPixKey && (
-									<p className="mt-1 break-all font-mono text-xs text-muted">{payoutPixKey}</p>
+									<p className="mt-1 break-all font-mono text-xs text-white/60">{payoutPixKey}</p>
 								)}
 							</div>
-							<div className="rounded-lg border border-border/80 bg-surface p-3">
-								<span className="text-xs text-muted">Próxima janela de saque</span>
-								<p className="mt-1 text-sm font-medium text-foreground">{nextAllowedAtLabel}</p>
+							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5">
+								<span className="text-xs text-white/50">Próxima janela de saque</span>
+								<p className="mt-1 text-sm font-bold text-white">{nextAllowedAtLabel}</p>
 							</div>
 						</div>
 
 						{!referralCode && showHeaderActions && (
-							<div className="rounded-lg border border-border/80 bg-surface p-3">
+							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
 								<div className="flex flex-col gap-3">
-									<span className="text-sm text-muted">
+									<span className="text-xs text-white/70">
 										Você ainda não possui um link permanente. Gere agora para começar a indicar.
 									</span>
 									<div>
@@ -180,7 +243,7 @@ export function ReferralsContent({
 							</div>
 						)}
 						{showHeaderActions && (
-							<div className="flex flex-wrap items-center gap-2">
+							<div className="flex flex-wrap items-center gap-2 pt-2">
 								<ReferralPixKeyManager
 									initialPixKeyType={payoutPixKeyType}
 									initialPixKey={payoutPixKey}
@@ -204,75 +267,68 @@ export function ReferralsContent({
 								/>
 							</div>
 						)}
-					</Card.Content>
-				</Card>
+					</div>
+				</div>
 
-				<Card>
-					<Card.Header>
-						<div className="flex items-center gap-3">
-							<div className="flex size-10 items-center justify-center rounded-lg bg-accent-soft">
-								<Icon icon={Analytics01Icon} className="icon-md text-accent" />
+				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
+					<div className="flex items-center gap-3 border-b border-white/8 pb-4">
+						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Analytics01Icon} className="icon-md" />
+						</div>
+						<div>
+							<h3 className="text-sm font-bold text-white">Regras do Programa de Indicação</h3>
+							<p className="text-xs text-white/50">Condições operacionais da sua comissão.</p>
+						</div>
+					</div>
+					<div className="flex flex-col gap-4">
+						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] divide-y divide-white/8 overflow-hidden">
+							<div className="flex items-center justify-between gap-3 px-4 py-3">
+								<span className="text-xs text-white/50">Duração da indicação</span>
+								<span className="font-mono text-sm font-bold text-white">{data.referralDurationMonths ?? 0} meses</span>
 							</div>
-							<div className="flex flex-col gap-1">
-								<Card.Title>Regras da sua indicação</Card.Title>
-								<Card.Description>Esses valores definem como sua indicação funciona hoje.</Card.Description>
+							<div className="flex items-center justify-between gap-3 px-4 py-3">
+								<span className="text-xs text-white/50">Comissão sobre lucro</span>
+								<span className="font-mono text-sm font-bold text-[#00a87e]">{basisPointsToPercentage(data.referralCommissionPercentage ?? 0)}%</span>
+							</div>
+							<div className="flex items-center justify-between gap-3 px-4 py-3">
+								<span className="text-xs text-white/50">Intervalo para novo saque</span>
+								<span className="font-mono text-sm font-bold text-white">{withdrawalIntervalLabel}</span>
+							</div>
+							<div className="flex items-center justify-between gap-3 px-4 py-3">
+								<span className="text-xs text-white/50">Saque mínimo da comissão</span>
+								<span className="font-mono text-sm font-bold text-white">{formatCurrency(data.referralCommissionMinWithdrawalAmount ?? 0)}</span>
+							</div>
+							<div className="flex items-center justify-between gap-3 px-4 py-3">
+								<span className="text-xs text-white/50">Taxa fixa de saque da comissão</span>
+								<span className="font-mono text-sm font-bold text-white">{formatCurrency(data.referralCommissionWithdrawalFeeFixed ?? 0)}</span>
 							</div>
 						</div>
-					</Card.Header>
-					<Card.Content className="flex flex-col gap-4">
-						<dl className="divide-y divide-border/80 overflow-hidden rounded-lg border border-border/80">
-							<div className="flex items-center justify-between gap-3 px-3 py-2.5">
-								<dt className="text-xs text-muted">Duração da indicação</dt>
-								<dd className="font-mono text-sm font-medium text-foreground">{data.referralDurationMonths ?? 0} meses</dd>
-							</div>
-							<div className="flex items-center justify-between gap-3 px-3 py-2.5">
-								<dt className="text-xs text-muted">Comissão sobre lucro</dt>
-								<dd className="font-mono text-sm font-medium text-success">{basisPointsToPercentage(data.referralCommissionPercentage ?? 0)}%</dd>
-							</div>
-							<div className="flex items-center justify-between gap-3 px-3 py-2.5">
-								<dt className="text-xs text-muted">Intervalo para novo saque</dt>
-								<dd className="font-mono text-sm font-medium text-foreground">{withdrawalIntervalLabel}</dd>
-							</div>
-							<div className="flex items-center justify-between gap-3 px-3 py-2.5">
-								<dt className="text-xs text-muted">Saque mínimo da comissão</dt>
-								<dd className="font-mono text-sm font-medium text-foreground">{formatCurrency(data.referralCommissionMinWithdrawalAmount ?? 0)}</dd>
-							</div>
-							<div className="flex items-center justify-between gap-3 px-3 py-2.5">
-								<dt className="text-xs text-muted">Taxa fixa de saque da comissão</dt>
-								<dd className="font-mono text-sm font-medium text-foreground">{formatCurrency(data.referralCommissionWithdrawalFeeFixed ?? 0)}</dd>
-							</div>
-						</dl>
 
-						<div className="flex items-start gap-2 rounded-lg border border-warning-soft bg-warning-soft p-3 text-xs text-warning">
+						<div className="flex items-start gap-2.5 rounded-xl border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-3.5 text-xs text-[#ec7e00]">
 							<Icon icon={InformationCircleIcon} className="icon-sm mt-0.5 shrink-0" />
 							<span>
-								Se a conta indicada ficar Inativa ou Suspensa, o ganho sobre as transações dela fica congelado até
-								reativação.
+								Se a conta indicada ficar Inativa ou Suspensa, o ganho sobre as transações dela fica congelado até reativação.
 							</span>
 						</div>
-					</Card.Content>
-				</Card>
+					</div>
+				</div>
 			</div>
 
-			<Card>
-				<Card.Header>
-					<div className="flex flex-col gap-1">
-						<Card.Title>Indicados e comissões</Card.Title>
-						<Card.Description>Acompanhe usuários indicados, pagamentos de comissão e solicitações de saque.</Card.Description>
-					</div>
-				</Card.Header>
-				<Card.Content>
-					<ReferralsDataTabs
-						referredUsers={data.referredUsers ?? []}
-						referralDurationMonths={data.referralDurationMonths ?? 0}
-						paymentHistory={data.paymentHistory ?? []}
-						withdrawalRequests={data.withdrawalRequests ?? []}
-						payoutPixKeyType={payoutPixKeyType}
-						payoutPixKey={payoutPixKey}
-						onFetchReferredUserMovements={onFetchReferredUserMovements}
-					/>
-				</Card.Content>
-			</Card>
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6">
+				<div className="flex flex-col gap-1 border-b border-white/8 pb-4 mb-4">
+					<h3 className="text-sm font-bold text-white">Indicados e Comissões</h3>
+					<p className="text-xs text-white/50">Acompanhe usuários indicados, histórico de repasses e solicitações de saque.</p>
+				</div>
+				<ReferralsDataTabs
+					referredUsers={data.referredUsers ?? []}
+					referralDurationMonths={data.referralDurationMonths ?? 0}
+					paymentHistory={data.paymentHistory ?? []}
+					withdrawalRequests={data.withdrawalRequests ?? []}
+					payoutPixKeyType={payoutPixKeyType}
+					payoutPixKey={payoutPixKey}
+					onFetchReferredUserMovements={onFetchReferredUserMovements}
+				/>
+			</div>
 		</div>
 	);
 }

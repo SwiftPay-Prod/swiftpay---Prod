@@ -257,11 +257,13 @@ export function OrdersTable({ merchantId, initialFilters }: OrdersTableProps) {
 				<div>
 					<div className="flex items-center gap-2">
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={ShoppingCartCheck01Icon} className="icon-sm" />
+							<Icon icon={ShoppingCartCheck01Icon} className="icon-sm text-[#4f55f1]" />
 						</div>
-						<h1 className="text-xl font-bold tracking-tight text-white">Pedidos</h1>
+						<h1 className="text-xl font-bold tracking-tight text-white">Gestão de Pedidos</h1>
 					</div>
-					<p className="text-xs text-white/50 mt-1">Gerencie os pedidos da sua organização</p>
+					<p className="text-xs text-white/50 mt-1">
+						Controle de vendas, checkout PIX e status de entrega da sua organização
+					</p>
 				</div>
 
 				<button
@@ -270,62 +272,83 @@ export function OrdersTable({ merchantId, initialFilters }: OrdersTableProps) {
 					className="button-primary cursor-pointer text-xs"
 				>
 					<Icon icon={AddCircleIcon} className="icon-xs" />
-					<span>Novo Pedido</span>
+					<span>+ Novo Pedido PIX</span>
 				</button>
 			</div>
 
-			{/* 4-Tile KPI Grid */}
-			<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{/* Total */}
 				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
-						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Total</span>
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total de Pedidos
+						</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
 							<Icon icon={ShoppingCartCheck01Icon} className="icon-xs" />
 						</div>
 					</div>
-					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
-						<AnimatedNumber value={orders.length} />
-					</span>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={orders.length} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Pedidos registrados</p>
+					</div>
 				</div>
 
 				{/* Concluídos */}
 				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
-						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Concluídos</span>
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Pedidos Concluídos
+						</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
 							<Icon icon={CheckmarkCircle02Icon} className="icon-xs" />
 						</div>
 					</div>
-					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
-						<AnimatedNumber value={completed} />
-					</span>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={completed} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liquidados via PIX</p>
+					</div>
 				</div>
 
 				{/* Itens */}
 				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
-						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Itens</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Itens Vendidos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
 							<Icon icon={PackageIcon} className="icon-xs" />
 						</div>
 					</div>
-					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
-						<AnimatedNumber value={totalItems} />
-					</span>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalItems} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Unidades totais</p>
+					</div>
 				</div>
 
 				{/* Valor Total */}
 				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
-						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Valor Total</span>
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Faturamento Total
+						</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
 							<Icon icon={Wallet01Icon} className="icon-xs" />
 						</div>
 					</div>
-					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
-						<AnimatedCurrency value={totalValue} />
-					</span>
+					<div>
+						<AnimatedCurrency
+							value={totalValue}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Volume bruto dos pedidos</p>
+					</div>
 				</div>
 			</div>
 

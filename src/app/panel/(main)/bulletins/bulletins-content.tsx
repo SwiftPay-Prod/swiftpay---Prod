@@ -11,7 +11,6 @@ import {
 } from '@hugeicons/core-free-icons';
 import { formatRelativeTime } from '@/utils/datetime';
 import { getBulletinContent } from '@/app/actions/user';
-import { PageHeader } from '@/components/ui/page-header';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Icon } from '@/components/ui/icon';
 import { RichTextPreview } from '@/components/ui/rich-text-preview';
@@ -119,19 +118,31 @@ export function BulletinsContent({ bulletinsPromise }: BulletinsContentProps) {
 	}
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={News01Icon} />}
-				title="Informativos"
-				description="Veja os informativos e novidades da plataforma."
-				actions={
-					<Button variant="secondary" onPress={handleRefresh} isDisabled={isPending}>
-						<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${isPending ? 'animate-spin' : ''}`} />
-						Atualizar
-					</Button>
-				}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={News01Icon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Informativos</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Veja os comunicados e novidades operacionais da plataforma
+					</p>
+				</div>
 
+				<button
+					type="button"
+					onClick={handleRefresh}
+					disabled={isPending}
+					className="button-outline-dark cursor-pointer text-xs"
+				>
+					<Icon icon={ArrowReloadHorizontalIcon} className={`icon-xs ${isPending ? 'animate-spin' : ''}`} />
+					<span>Atualizar</span>
+				</button>
+			</div>
 			<ExpandableList
 				items={bulletins}
 				getKey={(b) => b.id}

@@ -1,8 +1,7 @@
 'use client';
 
 import { use, useMemo, useState, useTransition } from 'react';
-import { Link02Icon, Radar01Icon, RoboticIcon, AccountSetting01Icon, DashboardBrowsingIcon } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
+import { Link02Icon, Radar01Icon, RoboticIcon, AccountSetting01Icon, DashboardBrowsingIcon, ArrowReloadHorizontalIcon } from '@hugeicons/core-free-icons';
 import { InternalTagTabs } from '@/components/ui/internal-tag-tabs';
 import { Icon } from '@/components/ui/icon';
 import { getMerchantIntegrations, updateMerchantIntegration } from '@/app/actions/merchant/integrations';
@@ -276,13 +275,19 @@ export function IntegrationsContent({ merchantId, fetchPromise }: IntegrationsCo
 
 	if (integrations.length === 0) {
 		return (
-			<div className="flex flex-col gap-4 bg-[#000000] text-white">
-				<PageHeader
-					icon={<Icon icon={Link02Icon} className="icon-md text-[#4f55f1]" />}
-					title="Integrações"
-					description="Conecte plataformas externas para sincronizar dados da sua operação."
-				/>
-				<div className="rounded-xl border border-white/12 bg-[#16181a] p-6 text-sm text-white/50">
+			<div className="flex flex-col gap-6 bg-[#000000] text-white">
+				<div className="flex items-center gap-3 border-b border-white/10 pb-5">
+					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={Link02Icon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Integrações</h1>
+						<p className="text-xs text-white/50 mt-0.5">
+							Conecte plataformas externas para sincronizar dados da sua operação
+						</p>
+					</div>
+				</div>
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 text-sm text-white/50">
 					Nenhuma integração disponível para a sua organização no momento.
 				</div>
 			</div>
@@ -295,18 +300,31 @@ export function IntegrationsContent({ merchantId, fetchPromise }: IntegrationsCo
 
 	return (
 		<>
-			<div className="flex flex-col gap-4 bg-[#000000] text-white">
-				<PageHeader
-					icon={<Icon icon={Link02Icon} className="icon-md text-[#4f55f1]" />}
-					title="Integrações"
-					description="Gerencie conectores externos para rastreamento de vendas e campanhas."
-					secondaryAction={{
-						label: 'Atualizar',
-						onPress: handleRefresh,
-						isPending,
-					}}
-				/>
+			<div className="flex flex-col gap-6 bg-[#000000] text-white">
+				{/* Executive Header */}
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+					<div>
+						<div className="flex items-center gap-2">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+								<Icon icon={Link02Icon} className="icon-sm text-[#4f55f1]" />
+							</div>
+							<h1 className="text-xl font-bold tracking-tight text-white">Integrações</h1>
+						</div>
+						<p className="text-xs text-white/50 mt-1">
+							Gerencie conectores externos para rastreamento de vendas, webhooks e automações
+						</p>
+					</div>
 
+					<button
+						type="button"
+						onClick={handleRefresh}
+						disabled={isPending}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={ArrowReloadHorizontalIcon} className={`icon-xs ${isPending ? 'animate-spin' : ''}`} />
+						<span>Atualizar</span>
+					</button>
+				</div>
 				<InternalTagTabs
 					ariaLabel="Tipos de integração"
 					selectedKey={selectedType}

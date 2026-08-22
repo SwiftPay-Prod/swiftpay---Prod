@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Button, Chip, Tooltip, Avatar, toast } from '@heroui/react';
+import { Button, Tooltip, Avatar, toast } from '@heroui/react';
 import {
 	ViewIcon,
 	Building02Icon,
@@ -9,9 +9,10 @@ import {
 	Key01Icon,
 	CheckmarkCircle02Icon,
 	PlayIcon,
+	Wallet01Icon,
+	ArrowReloadHorizontalIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import type { AdminMinimalCashout } from '@/types/admin/cashouts';
 import { PayoutStatus } from '@/types/enums';
 import {
@@ -24,6 +25,9 @@ import {
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import { AnimatedCurrency } from '@/components/ui/animated-currency';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 import { SearchFilter } from '@/components/ui/search-filter';
 import { SelectFilter } from '@/components/ui/select-filter';
 import { AsyncCombobox } from '@/components/ui/async-combobox';
@@ -126,24 +130,11 @@ function getColumns(
 			},
 		},
 		{
-			key: 'netAmount',
-			header: 'Valor Pago',
-			render: (cashout) => (
-				<span className="font-medium text-danger">{formatCurrency(cashout.netAmount)}</span>
-			),
-		},
-		{
 			key: 'status',
 			header: 'Status',
-			render: (cashout) => {
-				const statusParsed = payoutStatusParse[cashout.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
+			render: (cashout) => (
+				<RevolutStatusBadge status={cashout.status} label={payoutStatusParse[cashout.status]?.label} />
+			),
 		},
 		{
 			key: 'payoutAccount',
@@ -409,47 +400,148 @@ export function CashoutsTable({ canReprocess }: CashoutsTableProps) {
 		</>
 	);
 
+	const itemsList = data.items.items;
+	const totalVolume = itemsList.reduce((sum, c) => sum + c.amount, 0);
+	const completedCount = itemsList.filter((c) => c.status === 'Completed').length;
+	const totalProfit = itemsList.reduce((sum, c) => sum + c.swiftpayProfitAmount, 0);
+
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={WalletRemove01Icon} className="icon-md text-accent-foreground" />}
-				title="Saques"
-				description="Gerencie todas as solicitações de saque da plataforma"
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={WalletRemove01Icon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Saques das Organizações</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Auditoria, liberação e liquidação PIX dos saques solicitados pelos merchants
+					</p>
+				</div>
 
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(cashout) => cashout.id}
-				isLoading={data.isLoading}
-				skeletonRows={data.pageSizeValue}
-				emptyMessage="Nenhum saque encontrado"
-				minWidth="min-w-300"
-				renderMobileCard={renderMobileCashoutCard}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.handleClearFilters,
-					onRefresh: filters.handleRefresh,
-					isRefreshing: data.isRefreshing,
-				}}
-				pagination={{
-					page: filters.values.page,
-					pageSize: data.pageSizeValue,
-					totalItems: data.items.totalItems,
-					totalPages: data.items.totalPages,
-					onPageChange: filters.handlePageChange,
-					sortBy: filters.values.sortBy,
-					sortOrder: filters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => {
-						filters.updateFilter('sortBy', sortBy);
-						filters.updateFilter('sortOrder', sortOrder);
-						filters.updateFilter('page', 1);
-					},
-					isNavigating: data.isLoading,
-				}}
-			/>
+				<div className="flex items-center gap-2">
+					<button
+						type="button"
+						onClick={filters.handleRefresh}
+						disabled={data.isRefreshing}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={ArrowReloadHorizontalIcon} className={`icon-xs ${data.isRefreshing ? 'animate-spin' : ''}`} />
+						<span>Atualizar</span>
+					</button>
+				</div>
+			</div>
 
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total na Página
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={WalletRemove01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={data.items.totalItems} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Pedidos de saque</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Saques Concluídos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={completedCount} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liquidados via PIX</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Volume Solicitado
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Wallet01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={totalVolume}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Soma dos saques exibidos</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Lucro SwiftPay
+						</span>
+						<div className={`flex h-7 w-7 items-center justify-center rounded-lg ${totalProfit >= 0 ? 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30' : 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30'}`}>
+							<Icon icon={Wallet01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={totalProfit}
+							className={`text-2xl font-extrabold font-mono tracking-tight tabular-nums block ${totalProfit >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Taxas líquidas de saque</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(cashout) => cashout.id}
+					isLoading={data.isLoading}
+					skeletonRows={data.pageSizeValue}
+					emptyMessage="Nenhum saque encontrado"
+					minWidth="min-w-300"
+					renderMobileCard={renderMobileCashoutCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.handleClearFilters,
+						onRefresh: filters.handleRefresh,
+						isRefreshing: data.isRefreshing,
+					}}
+					pagination={{
+						page: filters.values.page,
+						pageSize: data.pageSizeValue,
+						totalItems: data.items.totalItems,
+						totalPages: data.items.totalPages,
+						onPageChange: filters.handlePageChange,
+						sortBy: filters.values.sortBy,
+						sortOrder: filters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => {
+							filters.updateFilter('sortBy', sortBy);
+							filters.updateFilter('sortOrder', sortOrder);
+							filters.updateFilter('page', 1);
+						},
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 			<AdminCashoutDetailsModal
 				isOpen={modals.details.isOpen}
 				onOpenChange={modals.details.close}

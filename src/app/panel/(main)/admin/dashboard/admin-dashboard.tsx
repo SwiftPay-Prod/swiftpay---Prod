@@ -15,7 +15,6 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { InternalTabs, type InternalTabItem } from '@/components/ui/internal-tabs';
-import { PageHeader } from '@/components/ui/page-header';
 import { DashboardRefreshControls } from './dashboard-refresh-controls';
 import { useAdminDashboard } from './use-admin-dashboard';
 import { OverviewTab } from './tabs/overview-tab';

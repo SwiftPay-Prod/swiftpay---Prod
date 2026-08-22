@@ -2,12 +2,11 @@
 
 import { use } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Chip, Tooltip } from '@heroui/react';
+import { Button, Tooltip } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import { Mail02Icon, PencilEdit01Icon, Settings02Icon } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
+import { Mail02Icon, PencilEdit01Icon } from '@hugeicons/core-free-icons';
 import { DataTable } from '@/components/ui/data-table';
-import { Routes } from '@/router/routes';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { merchantEmailTemplateTypeParse } from '@/parse';
 import { MerchantEmailTemplateType } from '@/types/enums';
 import type { DataTableColumn } from '@/components/ui/data-table';
@@ -128,26 +127,24 @@ export function EmailTemplatesContent({ templatesPromise }: EmailTemplatesConten
 			},
 		},
 		{
-			key: 'updatedAt',
-			header: 'Atualizado em',
-			width: '180px',
-			render: (row) => (
-				<span className="text-muted">{row.updatedAt ? formatDateTime(row.updatedAt) : 'Nunca'}</span>
-			),
-		},
-		{
 			key: 'status',
 			header: 'Status',
-			width: '140px',
-			align: 'center',
+			render: (row) => {
+				if (row.comingSoon) {
+					return (
+						<span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/50">
+							Em breve
+						</span>
+					);
+				}
+				return <RevolutStatusBadge status={row.enabled ? 'Active' : 'Inactive'} />;
+			},
+		},
+		{
+			key: 'updatedAt',
+			header: 'Última alteração',
 			render: (row) => (
-				<Chip
-					variant="soft"
-					color={row.comingSoon ? 'warning' : row.enabled ? 'success' : 'danger'}
-					size="sm"
-				>
-					{row.comingSoon ? 'Em breve' : row.enabled ? 'Ativo' : 'Inativo'}
-				</Chip>
+				<span className="text-xs font-mono text-white/50">{row.updatedAt ? formatDateTime(row.updatedAt) : '—'}</span>
 			),
 		},
 		{
@@ -176,27 +173,30 @@ export function EmailTemplatesContent({ templatesPromise }: EmailTemplatesConten
 	];
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Mail02Icon} className="icon-md text-accent-foreground" />}
-				title="Templates de Email"
-				description="Gerencie os templates de email enviados para seus clientes"
-				action={{
-					label: 'Configurações',
-					icon: <Icon icon={Settings02Icon} className="icon-sm" />,
-					onPress: () => {},
-					tooltip: 'Em breve',
-					isDisabled: true,
-				}}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+					<Icon icon={Mail02Icon} className="icon-sm text-[#4f55f1]" />
+				</div>
+				<div>
+					<h1 className="text-xl font-bold tracking-tight text-white">Templates de Email</h1>
+					<p className="text-xs text-white/50 mt-0.5">
+						Personalize as mensagens e notificações transacionais de compra e entrega enviadas aos seus clientes
+					</p>
+				</div>
+			</div>
 
-			<DataTable
-				columns={columns}
-				data={rows}
-				keyExtractor={(row) => row.type}
-				renderMobileCard={renderMobileEmailTemplateCard}
-				emptyMessage="Nenhum template disponível"
-			/>
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={rows}
+					keyExtractor={(row) => row.type}
+					renderMobileCard={renderMobileEmailTemplateCard}
+					emptyMessage="Nenhum template disponível"
+				/>
+			</div>
 		</div>
 	);
 }

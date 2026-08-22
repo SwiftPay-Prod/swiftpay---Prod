@@ -62,13 +62,16 @@ export function NotificationsSkeleton({ filters }: NotificationsSkeletonProps) {
 	const scopeTabKey = filters.scope ?? 'all';
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Notification01Icon} className="icon-md" />}
-				title="Notificações"
-				description="Gerencie suas notificações pessoais e da organização em um só lugar."
-			/>
-
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+					<Icon icon={Notification01Icon} className="icon-sm text-[#4f55f1]" />
+				</div>
+				<div>
+					<h1 className="text-xl font-bold tracking-tight text-white">Notificações</h1>
+					<p className="text-xs text-white/50 mt-0.5">Gerencie suas notificações pessoais e da organização</p>
+				</div>
+			</div>
 			{/* Tabs reais (desabilitados) */}
 			<Card className="p-4">
 				<Tabs selectedKey={scopeTabKey} className="w-fit">

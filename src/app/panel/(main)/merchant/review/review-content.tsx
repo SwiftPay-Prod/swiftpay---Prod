@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { Icon } from '@/components/ui/icon';
 import { AsyncButton } from '@/components/ui/async-button';
-import { PageHeader } from '@/components/ui/page-header';
 import {
 	MerchantAddressAccordion,
 	MerchantBusinessAccordion,
@@ -88,12 +87,14 @@ export function ReviewContent({ merchant }: ReviewContentProps) {
 				</Alert>
 			)}
 
-			<PageHeader
-				icon={<Icon icon={Building02Icon} className="icon-md text-accent-foreground" />}
-				title={currentMerchant.name || 'Organização'}
-				description={
-					<div className="flex flex-col gap-1">
-						<div className="w-fit">
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div className="flex items-center gap-3">
+					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={Building02Icon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<div>
+						<h1 className="text-xl font-bold tracking-tight text-white">{currentMerchant.name || 'Organização'}</h1>
+						<div className="flex items-center gap-2 mt-1">
 							{isSuspendedOrInactive ? (
 								<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="sm">
 									<span className="flex min-w-0 items-center gap-2">
@@ -105,22 +106,20 @@ export function ReviewContent({ merchant }: ReviewContentProps) {
 								<KycStatusChip status={kycStatus} />
 							)}
 						</div>
-						{isComplement && hasPendingItems && (
-							<span>
-								Nossa equipe solicitou informações complementares para dar continuidade à análise. Por favor, responda
-								os complementos solicitados.
-							</span>
-						)}
 					</div>
-				}
-				actions={
-					<AsyncButton variant="primary" onPress={handleRefresh} isPending={isPending}>
-						<Icon icon={ArrowReloadHorizontalIcon} className="icon-sm" />
-						Atualizar status
-					</AsyncButton>
-				}
-			/>
-
+				</div>
+				<div>
+					<button
+						type="button"
+						onClick={handleRefresh}
+						disabled={isPending}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={ArrowReloadHorizontalIcon} className={`icon-xs ${isPending ? 'animate-spin' : ''}`} />
+						<span>Atualizar status</span>
+					</button>
+				</div>
+			</div>
 			{!isSuspendedOrInactive && (
 				<KycStatusAlert
 					status={kycStatus}

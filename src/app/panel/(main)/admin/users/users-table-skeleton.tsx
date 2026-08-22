@@ -1,27 +1,39 @@
 'use client';
 
-import { Card, Skeleton } from '@heroui/react';
+import { Skeleton } from '@heroui/react';
 import { UserGroupIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 
 export function UsersTableSkeleton({ pageSize = 10 }: { pageSize?: number }) {
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={UserGroupIcon} size={24} />}
-				title="Usuários"
-				description="Gerencie os usuários da plataforma."
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex items-center justify-between border-b border-white/10 pb-5">
+				<div className="flex items-center gap-2">
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={UserGroupIcon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<h1 className="text-xl font-bold tracking-tight text-white">Usuários</h1>
+				</div>
+			</div>
 
-			<Card>
-				<Card.Header className="flex flex-row flex-wrap items-center gap-3">
-					<Skeleton className="h-10 w-48 rounded-lg" />
-					<Skeleton className="h-10 w-40 rounded-lg" />
-					<Skeleton className="h-10 w-40 rounded-lg" />
-					<Skeleton className="h-10 w-28 rounded-lg" />
-				</Card.Header>
-				<Card.Content className="p-0">
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{[...Array(4)].map((_, i) => (
+					<div key={i} className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+						<Skeleton className="h-4 w-28 rounded bg-white/10" />
+						<Skeleton className="h-8 w-36 rounded bg-white/10" />
+						<Skeleton className="h-3 w-20 rounded bg-white/5" />
+					</div>
+				))}
+			</div>
+
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<div className="flex flex-row flex-wrap items-center gap-3 pb-4 border-b border-white/8">
+					<Skeleton className="h-10 w-48 rounded-lg bg-white/5" />
+					<Skeleton className="h-10 w-40 rounded-lg bg-white/5" />
+					<Skeleton className="h-10 w-40 rounded-lg bg-white/5" />
+					<Skeleton className="h-10 w-28 rounded-lg bg-white/5" />
+				</div>
+				<div className="p-0">
 					<div className="overflow-x-auto">
 						<table className="w-full min-w-250">
 							<thead>
@@ -93,16 +105,16 @@ export function UsersTableSkeleton({ pageSize = 10 }: { pageSize?: number }) {
 							</tbody>
 						</table>
 					</div>
-				</Card.Content>
-				<Card.Footer className="flex items-center justify-between">
-					<Skeleton className="h-4 w-32 rounded" />
+				</div>
+				<div className="flex items-center justify-between pt-4 border-t border-white/8">
+					<Skeleton className="h-4 w-32 rounded bg-white/5" />
 					<div className="flex gap-2">
-						<Skeleton className="size-8 rounded-lg" />
-						<Skeleton className="size-8 rounded-lg" />
-						<Skeleton className="size-8 rounded-lg" />
+						<Skeleton className="size-8 rounded-lg bg-white/5" />
+						<Skeleton className="size-8 rounded-lg bg-white/5" />
+						<Skeleton className="size-8 rounded-lg bg-white/5" />
 					</div>
-				</Card.Footer>
-			</Card>
+				</div>
+			</div>
 		</div>
 	);
 }

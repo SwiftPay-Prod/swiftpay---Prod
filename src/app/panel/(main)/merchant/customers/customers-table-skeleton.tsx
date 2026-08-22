@@ -1,7 +1,8 @@
 'use client';
 
-import { Card, Skeleton } from '@heroui/react';
-import { PageHeader } from '@/components/ui/page-header';
+import { Skeleton } from '@heroui/react';
+import { UserGroupIcon } from '@hugeicons/core-free-icons';
+import { Icon } from '@/components/ui/icon';
 
 interface CustomersTableSkeletonProps {
 	pageSize?: number;
@@ -9,15 +10,27 @@ interface CustomersTableSkeletonProps {
 
 export function CustomersTableSkeleton({ pageSize = 10 }: CustomersTableSkeletonProps) {
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Skeleton className="w-6 h-6 rounded" />}
-				title="Clientes"
-				description="Gerencie os clientes cadastrados da sua organização"
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex items-center justify-between border-b border-white/10 pb-5">
+				<div className="flex items-center gap-2">
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={UserGroupIcon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<h1 className="text-xl font-bold tracking-tight text-white">Clientes</h1>
+				</div>
+			</div>
 
-			<Card className="p-4">
-				<div className="flex flex-col gap-4">
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{[...Array(4)].map((_, i) => (
+					<div key={i} className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+						<Skeleton className="h-4 w-28 rounded bg-white/10" />
+						<Skeleton className="h-8 w-36 rounded bg-white/10" />
+						<Skeleton className="h-3 w-20 rounded bg-white/5" />
+					</div>
+				))}
+			</div>
+
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 					<div className="flex flex-wrap items-center gap-3">
 						<Skeleton className="h-10 w-64 rounded-lg" />
 						<Skeleton className="h-10 w-40 rounded-lg" />
@@ -59,8 +72,7 @@ export function CustomersTableSkeleton({ pageSize = 10 }: CustomersTableSkeleton
 							<Skeleton className="h-8 w-8 rounded" />
 						</div>
 					</div>
-				</div>
-			</Card>
+			</div>
 		</div>
 	);
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Chip, Tooltip } from '@heroui/react';
+import { Button, Tooltip } from '@heroui/react';
 import {
 	PencilEdit01Icon,
 	Delete02Icon,
@@ -9,19 +9,21 @@ import {
 	BankIcon,
 	StarIcon,
 	ViewIcon,
+	CheckmarkCircle02Icon,
+	ArrowReloadHorizontalIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import type { AdminPlatformPayoutAccountData } from '@/types/admin/platform-payouts';
 import type { PixKeyType } from '@/types/enums';
 import { pixKeyTypeParse, mapParseColorToChipColor, pageSizeFilterOptions } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { SelectFilter } from '@/components/ui/select-filter';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 import { AdminUpsertPlatformPayoutAccountModal } from './modals/admin-upsert-platform-payout-account-modal';
 import { AdminDeletePlatformPayoutAccountModal } from './modals/admin-delete-platform-payout-account-modal';
 import { usePlatformPayoutAccountsTable } from './use-platform-payout-accounts-table';
-
 function maskValue(value: string | null): string {
 	if (!value) return '—';
 	const trimmed = value.trim();
@@ -286,49 +288,106 @@ export function PlatformPayoutAccountsTable() {
 		isRevealed,
 		handleToggleReveal
 	);
+	const itemsList = data.items.items;
+	const defaultAccount = itemsList.find((a) => a.isActive) ?? null;
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={BankIcon} className="icon-md text-accent-foreground" />}
-				title="Contas de Saque da Plataforma"
-				description="Gerencie as contas PIX utilizadas para saques da plataforma."
-				actions={
-					<Button variant="primary" onPress={actions.openCreateModal}>
-						<Icon icon={Add01Icon} className="icon-sm" />
-						Nova Conta
-					</Button>
-				}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={BankIcon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Contas de Saque da Plataforma</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gerenciamento seguro de contas PIX e chaves bancárias de liquidação
+					</p>
+				</div>
 
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(item) => item.id}
-				isLoading={data.isLoading}
-				emptyMessage="Nenhuma conta de saque cadastrada."
-				renderMobileCard={renderMobilePayoutAccountCard}
-				filters={{
-					children: (
-						<SelectFilter
-							label="Por página"
-							options={pageSizeFilterOptions}
-							value={String(filters.values.pageSize)}
-							onChange={(value) => filters.updateFilter('pageSize', Number(value))}
-						/>
-					),
-					onRefresh: actions.refresh,
-				}}
-				pagination={{
-					page: data.items.page,
-					pageSize: data.items.pageSize,
-					totalItems: data.items.totalItems,
-					totalPages: data.items.totalPages,
-					onPageChange: (page) => filters.updateFilter('page', page),
-					isNavigating: data.isLoading,
-				}}
-			/>
+				<div className="flex items-center gap-2">
+					<button
+						type="button"
+						onClick={actions.openCreateModal}
+						className="button-primary cursor-pointer text-xs"
+					>
+						<Icon icon={Add01Icon} className="icon-xs" />
+						<span>+ Nova Conta PIX</span>
+					</button>
+				</div>
+			</div>
 
+			{/* 2-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total de Contas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={BankIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={data.items.totalItems} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Contas de liquidação registradas</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Conta Padrão Ativa
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block truncate">
+							{defaultAccount ? (defaultAccount.bankName || defaultAccount.holderName || maskValue(defaultAccount.pixKey)) : 'Nenhuma'}
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">
+							{defaultAccount ? `Chave: ${maskValue(defaultAccount.pixKey)}` : 'Defina uma conta padrão'}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(item) => item.id}
+					isLoading={data.isLoading}
+					emptyMessage="Nenhuma conta de saque cadastrada."
+					renderMobileCard={renderMobilePayoutAccountCard}
+					filters={{
+						children: (
+							<SelectFilter
+								label="Por página"
+								options={pageSizeFilterOptions}
+								value={String(filters.values.pageSize)}
+								onChange={(value) => filters.updateFilter('pageSize', Number(value))}
+							/>
+						),
+						onRefresh: actions.refresh,
+					}}
+					pagination={{
+						page: data.items.page,
+						pageSize: data.items.pageSize,
+						totalItems: data.items.totalItems,
+						totalPages: data.items.totalPages,
+						onPageChange: (page) => filters.updateFilter('page', page),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 			<AdminUpsertPlatformPayoutAccountModal
 				isOpen={modals.upsert.isOpen}
 				account={modals.upsert.account}

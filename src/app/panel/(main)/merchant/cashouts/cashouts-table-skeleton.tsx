@@ -1,7 +1,8 @@
 'use client';
 
-import { Card, Skeleton } from '@heroui/react';
-import { PageHeader } from '@/components/ui/page-header';
+import { Skeleton } from '@heroui/react';
+import { WalletRemove01Icon } from '@hugeicons/core-free-icons';
+import { Icon } from '@/components/ui/icon';
 
 interface CashoutsTableSkeletonProps {
 	pageSize?: number;
@@ -9,15 +10,17 @@ interface CashoutsTableSkeletonProps {
 
 export function CashoutsTableSkeleton({ pageSize = 10 }: CashoutsTableSkeletonProps) {
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Skeleton className="w-6 h-6 rounded" />}
-				title="Saques"
-				description="Gerencie os saques do saldo disponível da sua organização"
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex items-center justify-between border-b border-white/10 pb-5">
+				<div className="flex items-center gap-2">
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={WalletRemove01Icon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<h1 className="text-xl font-bold tracking-tight text-white">Saques</h1>
+				</div>
+			</div>
 
-			<Card className="p-4">
-				<div className="flex flex-col gap-4">
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 					<div className="flex flex-wrap items-center gap-3">
 						<Skeleton className="h-10 w-48 rounded-lg" />
 						<Skeleton className="h-10 w-28 rounded-lg" />
@@ -58,8 +61,7 @@ export function CashoutsTableSkeleton({ pageSize = 10 }: CashoutsTableSkeletonPr
 							<Skeleton className="h-8 w-8 rounded" />
 						</div>
 					</div>
-				</div>
-			</Card>
+			</div>
 		</div>
 	);
 }

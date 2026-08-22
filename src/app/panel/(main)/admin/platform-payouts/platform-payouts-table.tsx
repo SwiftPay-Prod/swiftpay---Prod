@@ -1,16 +1,19 @@
 'use client';
 
-import { Button, Chip, Tooltip } from '@heroui/react';
+import { Tooltip } from '@heroui/react';
 import {
 	ViewIcon,
 	Wallet01Icon,
 	Add01Icon,
 	ServerStack01Icon,
 	Settings02Icon,
+	CheckmarkCircle02Icon,
+	ArrowReloadHorizontalIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import { AnimatedCurrency } from '@/components/ui/animated-currency';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 import type { AdminPlatformPayoutData } from '@/types/admin/platform-payouts';
 import {
 	platformPayoutStatusParse,
@@ -195,65 +198,130 @@ export function PlatformPayoutsTable() {
 		</>
 	);
 
-	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Wallet01Icon} className="icon-md text-accent-foreground" />}
-				title="Saques da Plataforma"
-				description={
-					<div className="flex flex-col items-start gap-2">
-						<span className="text-white/70">Gerencie os saques do saldo da plataforma para a conta de destino</span>
-						{!automaticCashout.isLoading && (
-							<div className="flex flex-col items-start gap-1">
-								<RevolutStatusBadge status={automaticCashout.isEnabled ? 'Active' : 'Default'} label={automaticCashout.isEnabled ? 'Saque automatizado Ativo' : 'Saque automatizado Inativo'} />
-								{automaticCashout.isEnabled && automaticCashout.nextAttemptAt && (
-									<span className="text-xs text-white/50">
-										Próxima tentativa: {formatDate(automaticCashout.nextAttemptAt)}
-									</span>
-								)}
-							</div>
-						)}
-					</div>
-				}
-				actions={
-					<div className="flex flex-wrap items-center gap-2">
-						<Button variant="secondary" size="sm" onPress={actions.openAutomaticConfig} className="button-outline-dark">
-							<Icon icon={Settings02Icon} className="icon-sm" />
-							Configurar saque automatizado
-						</Button>
-						<Button variant="primary" onPress={actions.openNewPayout} className="button-primary">
-							<Icon icon={Add01Icon} className="icon-sm" />
-							Novo Saque
-						</Button>
-					</div>
-				}
-			/>
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(payout) => payout.id}
-				isLoading={data.isLoading}
-				skeletonRows={data.pageSizeValue}
-				emptyMessage="Nenhum saque encontrado"
-				minWidth="min-w-250"
-				renderMobileCard={renderMobilePlatformPayoutCard}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.handleClearFilters,
-					onRefresh: filters.handleRefresh,
-					isRefreshing: data.isRefreshing,
-				}}
-				pagination={{
-					page: filters.values.page,
-					pageSize: data.pageSizeValue,
-					totalItems: data.items.totalItems,
-					totalPages: data.items.totalPages,
-					onPageChange: filters.handlePageChange,
-					isNavigating: data.isLoading,
-				}}
-			/>
+	const itemsList = data.items.items;
+	const totalItemsCount = data.items.totalItems;
+	const completedCount = itemsList.filter((p) => p.status === 'Completed').length;
+	const totalNetAmountSum = itemsList.reduce((sum, p) => sum + p.totalNetAmount, 0);
 
+	return (
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={Wallet01Icon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Saques da Plataforma</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gestão de transferências e liquidação do saldo operacional para a conta bancária da SwiftPay
+					</p>
+				</div>
+
+				<div className="flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={actions.openAutomaticConfig}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={Settings02Icon} className="icon-xs" />
+						<span>Saque Automatizado</span>
+					</button>
+					<button
+						type="button"
+						onClick={actions.openNewPayout}
+						className="button-primary cursor-pointer text-xs"
+					>
+						<Icon icon={Add01Icon} className="icon-xs" />
+						<span>+ Novo Saque</span>
+					</button>
+				</div>
+			</div>
+
+			{/* 3-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total de Saques
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Wallet01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalItemsCount} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Operações registradas</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Saques Concluídos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={completedCount} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liquidados na conta bancária</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Volume Líquido na Página
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Wallet01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={totalNetAmountSum}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Líquido após taxas bancárias</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(payout) => payout.id}
+					isLoading={data.isLoading}
+					skeletonRows={data.pageSizeValue}
+					emptyMessage="Nenhum saque encontrado"
+					minWidth="min-w-250"
+					renderMobileCard={renderMobilePlatformPayoutCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.handleClearFilters,
+						onRefresh: filters.handleRefresh,
+						isRefreshing: data.isRefreshing,
+					}}
+					pagination={{
+						page: filters.values.page,
+						pageSize: data.pageSizeValue,
+						totalItems: data.items.totalItems,
+						totalPages: data.items.totalPages,
+						onPageChange: filters.handlePageChange,
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 			<AdminPlatformPayoutDetailsModal
 				isOpen={modals.details.isOpen}
 				onOpenChange={modals.details.close}

@@ -1,7 +1,6 @@
 'use client';
 
 import { Skeleton, Avatar } from '@heroui/react';
-import { PageHeader } from '@/components/ui/page-header';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { ServerStack01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
@@ -9,8 +8,6 @@ import { Icon } from '@/components/ui/icon';
 interface AcquirersTableSkeletonProps {
 	pageSize?: number;
 }
-
-interface SkeletonRow {
 	id: number;
 }
 
@@ -95,39 +92,54 @@ export function AcquirersTableSkeleton({ pageSize = 10 }: AcquirersTableSkeleton
 	const columns = getSkeletonColumns();
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={ServerStack01Icon} size={24} />}
-				title="Processadoras"
-				description="Gerencie as processadoras de pagamento."
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex items-center justify-between border-b border-white/10 pb-5">
+				<div className="flex items-center gap-2">
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<h1 className="text-xl font-bold tracking-tight text-white">Processadoras PIX</h1>
+				</div>
+			</div>
 
-			<DataTable
-				columns={columns}
-				data={skeletonData}
-				keyExtractor={(row) => String(row.id)}
-				isLoading={false}
-				minWidth="min-w-250"
-				filters={{
-					children: (
-						<>
-							<Skeleton className="h-10 w-full rounded-lg" />
-							<Skeleton className="h-10 w-full rounded-lg" />
-							<Skeleton className="h-10 w-full rounded-lg" />
-						</>
-					),
-					hasFilters: false,
-					onClear: () => {},
-				}}
-				pagination={{
-					page: 1,
-					pageSize,
-					totalItems: pageSize,
-					totalPages: 1,
-					onPageChange: () => {},
-					isNavigating: false,
-				}}
-			/>
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				{[...Array(3)].map((_, i) => (
+					<div key={i} className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+						<Skeleton className="h-4 w-28 rounded bg-white/10" />
+						<Skeleton className="h-8 w-36 rounded bg-white/10" />
+						<Skeleton className="h-3 w-20 rounded bg-white/5" />
+					</div>
+				))}
+			</div>
+
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={skeletonData}
+					keyExtractor={(row) => String(row.id)}
+					isLoading={false}
+					minWidth="min-w-250"
+					filters={{
+						children: (
+							<>
+								<Skeleton className="h-10 w-full rounded-lg" />
+								<Skeleton className="h-10 w-full rounded-lg" />
+								<Skeleton className="h-10 w-full rounded-lg" />
+							</>
+						),
+						hasFilters: false,
+						onClear: () => {},
+					}}
+					pagination={{
+						page: 1,
+						pageSize,
+						totalItems: pageSize,
+						totalPages: 1,
+						onPageChange: () => {},
+						isNavigating: false,
+					}}
+				/>
+			</div>
 		</div>
 	);
 }

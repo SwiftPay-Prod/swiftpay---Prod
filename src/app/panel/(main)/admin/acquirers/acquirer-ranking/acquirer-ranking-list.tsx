@@ -6,7 +6,6 @@ import { Avatar, Button, Card, Chip, Modal, Tooltip, toast } from '@heroui/react
 import { Award05Icon, HelpCircleIcon, Loading03Icon, RefreshIcon, SearchVisualIcon, ServerStack01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { MultiSelectChips } from '@/components/ui/multi-select-chips';
-import { PageHeader } from '@/components/ui/page-header';
 import { adminGetAcquirerRanking, adminTriggerRankingReprocess } from '@/app/actions/admin/ranking';
 import { acquirerOperationTypeParse, mapParseColorToChipColor } from '@/parse';
 import { formatRelativeTime } from '@/utils/datetime';
@@ -266,260 +265,298 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 	const failureBreakdownLevel = scoreBreakdown ? getWeightedComponentGaugeLevel(scoreBreakdown.inverseFailureComponent, SCORE_FAILURE_WEIGHT) : null;
 	const finalScoreBreakdownLevel = scoreBreakdown ? getScoreGaugeLevel(scoreBreakdown.calculatedScore) : null;
 
+	const top1 = items[0] ?? null;
+	const avgApprovalRate = items.length > 0
+		? items.reduce((sum, item) => sum + item.approvalRate, 0) / items.length
+		: 0;
+	const totalAnalyzedTransactions = items.reduce((sum, item) => sum + item.analyzedTransactions, 0);
+
 	return (
 		<>
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Award05Icon} className="icon-md text-accent-foreground" />}
-				title="Ranking de processadoras"
-				description={`Classificação pela taxa de aprovação com base nas últimas ${sampleSize} transações mais recentes por processadora.`}
-			/>
-			<Card>
-				<Card.Header>
-					<div className="flex w-full flex-col gap-2">
-						<div className="flex items-center justify-between gap-2">
-							<div className="flex items-center gap-2">
-								<Icon icon={Award05Icon} className="icon-sm text-accent" />
-								<span className="text-base font-bold">Aprovação por processadora</span>
-							</div>
-							<div className="flex items-center gap-1.5">
-								{calculatedAt && (
-									<Tooltip>
-										<Tooltip.Trigger>
-											<span className="text-xs text-muted">Atualizado {formatRelativeTime(calculatedAt)}</span>
-										</Tooltip.Trigger>
-										<Tooltip.Content>
-											<Tooltip.Arrow />
-											A classificação é recalculada conforme os filtros selecionados.
-										</Tooltip.Content>
-									</Tooltip>
-								)}
-								{isRankingProcessing && (
-									<Chip size="sm" variant="primary" color="warning">
-										<div className="flex items-center gap-1.5">
-											<Icon icon={Loading03Icon} className="icon-xs animate-spin" />
-											<span>Processando ranking</span>
-										</div>
-									</Chip>
-								)}
-								<Button
-									variant="secondary"
-									size="sm"
-									onPress={handleRefresh}
-									isPending={isRefreshPending}
-									aria-label="Atualizar ranking"
-									className="min-w-30"
-								>
-									<div className="flex items-center gap-1.5">
-										<Icon icon={RefreshIcon} className="icon-xs" />
-										<span>{isRefreshPending ? 'Atualizando...' : 'Atualizar'}</span>
-									</div>
-								</Button>
-							</div>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={Award05Icon} className="icon-sm text-[#4f55f1]" />
 						</div>
-
-						<div className="flex flex-wrap items-end gap-2">
-							<div className="flex min-w-64 flex-col gap-1">
-								<MultiSelectChips
-									label="Tipo de operação"
-									placeholder="Selecione os tipos"
-									options={OPERATION_FILTER_OPTIONS}
-									value={selectedOperationTypes}
-									onChange={(keys) => handleOperationTypesChange(keys.map((key) => String(key)))}
-									selectedText="{count} tipo(s) selecionado(s)"
-								/>
-							</div>
-						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Ranking de Processadoras</h1>
 					</div>
-				</Card.Header>
+					<p className="text-xs text-white/50 mt-1">
+						Classificação por score e taxa de conversão PIX com base nas últimas {sampleSize} transações por adquirente
+					</p>
+				</div>
 
-				<Card.Content className="px-3 pb-3">
-					{items.length === 0 ? (
-						<div className="flex flex-col items-center justify-center gap-2 py-12 text-muted">
-							<Icon icon={SearchVisualIcon} size={32} />
-							<p className="text-sm">Nenhuma processadora encontrada para os filtros selecionados.</p>
-						</div>
-					) : (
-						<div className="flex flex-col gap-1">
-							{items.map((entry) => {
-								const approvalGaugeLevel = getApprovalGaugeLevel(entry.approvalRate);
-								const scoreGaugeLevel = getScoreGaugeLevel(entry.score);
-
-								return (
-								<div
-									key={entry.acquirerId}
-									className="flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-content1 p-2"
-								>
-									<div className="w-8 shrink-0 text-center text-sm font-bold text-accent">
-										#{entry.position}
-									</div>
-									{entry.logoUrl ? (
-										<Avatar size="sm">
-											<Avatar.Image src={entry.logoUrl} alt={entry.displayName ?? entry.name} />
-											<Avatar.Fallback>
-												<Icon icon={ServerStack01Icon} className="icon-sm text-accent" />
-											</Avatar.Fallback>
-										</Avatar>
-									) : (
-										<div className="flex size-8 items-center justify-center rounded-lg bg-accent/10">
-											<Icon icon={ServerStack01Icon} className="icon-sm text-accent" />
-										</div>
-									)}
-									<div className="min-w-52 flex-1">
-										<p className="text-sm font-semibold text-foreground">{entry.displayName ?? entry.name}</p>
-										<div className="flex flex-wrap gap-1 pt-1">
-											{entry.operationTypes.map((operationTypeItem) => {
-												const parsed = acquirerOperationTypeParse[operationTypeItem];
-												return (
-													<Chip key={`${entry.acquirerId}-${operationTypeItem}`} size="sm" variant="primary" className={parsed.className}>
-														{parsed.icon}
-														{parsed.label}
-													</Chip>
-												);
-											})}
-										</div>
-									</div>
-									<div className="w-full sm:w-auto sm:ml-auto flex flex-col items-start sm:items-end gap-0.5 text-left sm:text-right">
-										<div className="flex items-center gap-1">
-											<Button
-												isIconOnly
-												size="sm"
-												variant="ghost"
-												onPress={() => handleOpenScoreDetails(entry)}
-												aria-label={`Ver detalhes do cálculo de score da processadora ${entry.displayName ?? entry.name}`}
-											>
-												<Icon icon={HelpCircleIcon} className="icon-xs text-muted" />
-											</Button>
-											<Chip
-												color={mapParseColorToChipColor(scoreGaugeLevel.chipColor)}
-												variant="soft"
-												size="sm"
-												className={`max-w-full ${scoreGaugeLevel.chipClassName ?? ''}`.trim()}
-											>
-												Score {entry.score}/1000
-											</Chip>
-										</div>
-										<Chip
-											color={mapParseColorToChipColor(approvalGaugeLevel.chipColor)}
-											variant="soft"
-											size="sm"
-											className={`max-w-full ${approvalGaugeLevel.chipClassName ?? ''}`.trim()}
-										>
-											Taxa de aprovação: {formatApprovalRate(entry.approvalRate)} • {approvalGaugeLevel.label}
-										</Chip>
-										<span className="text-xs text-muted">{entry.analyzedTransactions} analisadas</span>
-										<span className="text-xs text-muted">{entry.approvedTransactions} aprovadas</span>
-									</div>
-								</div>
-								);
-							})}
+				<div className="flex items-center gap-2">
+					{calculatedAt && (
+						<span className="text-xs font-mono text-white/40">
+							Atualizado {formatRelativeTime(calculatedAt)}
+						</span>
+					)}
+					{isRankingProcessing && (
+						<div className="flex items-center gap-1.5 rounded-full border border-[#ec7e00]/30 bg-[#ec7e00]/10 px-3 py-1 text-xs font-mono text-[#ec7e00]">
+							<Icon icon={Loading03Icon} className="icon-xs animate-spin" />
+							<span>Processando</span>
 						</div>
 					)}
-				</Card.Content>
-			</Card>
+					<button
+						type="button"
+						onClick={handleRefresh}
+						disabled={isRefreshPending}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={RefreshIcon} className={`icon-xs ${isRefreshPending ? 'animate-spin' : ''}`} />
+						<span>{isRefreshPending ? 'Atualizando...' : 'Atualizar Ranking'}</span>
+					</button>
+				</div>
+			</div>
+
+			{/* 3-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Líder de Conversão
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={Award05Icon} className="icon-xs text-[#00a87e]" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block truncate">
+							{top1 ? (top1.displayName ?? top1.name) : '—'}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">
+							{top1 ? `Score ${top1.score}/1000 • ${formatApprovalRate(top1.approvalRate)} aprovação` : 'Sem dados'}
+						</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Taxa Média de Aprovação
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Award05Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							{formatApprovalRate(avgApprovalRate)}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Média ponderada da plataforma</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Transações Auditadas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={ServerStack01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							{totalAnalyzedTransactions}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Amostragem em tempo real</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Ranking List */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Award05Icon} className="icon-xs" />
+						</div>
+						<span className="text-sm font-bold text-white">Classificação das Processadoras</span>
+						<span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-xs font-mono text-white/60">
+							{items.length} ativas
+						</span>
+					</div>
+					<div className="flex min-w-64 flex-col gap-1">
+						<MultiSelectChips
+							label="Tipo de operação"
+							placeholder="Selecione os tipos"
+							options={OPERATION_FILTER_OPTIONS}
+							value={selectedOperationTypes}
+							onChange={(keys) => handleOperationTypesChange(keys.map((key) => String(key)))}
+							selectedText="{count} tipo(s) selecionado(s)"
+						/>
+					</div>
+				</div>
+
+				{items.length === 0 ? (
+					<div className="flex flex-col items-center justify-center gap-2 py-12 text-white/40">
+						<Icon icon={SearchVisualIcon} size={32} />
+						<p className="text-xs">Nenhuma processadora encontrada para os filtros selecionados.</p>
+					</div>
+				) : (
+					<div className="flex flex-col gap-2.5">
+						{items.map((entry) => {
+							const approvalGaugeLevel = getApprovalGaugeLevel(entry.approvalRate);
+
+							return (
+								<div
+									key={entry.acquirerId}
+									className="flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-white/8 bg-[#0a0a0a] p-4 hover:border-white/15 transition-colors"
+								>
+									<div className="flex items-center gap-3">
+										<div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl font-mono text-xs font-extrabold ${entry.position === 1 ? 'bg-[#00a87e]/20 text-[#00a87e] border border-[#00a87e]/40' : entry.position === 2 ? 'bg-[#494fdf]/20 text-[#4f55f1] border border-[#494fdf]/40' : 'bg-white/5 text-white/60 border border-white/10'}`}>
+											#{entry.position}
+										</div>
+										{entry.logoUrl ? (
+											<Avatar size="sm" className="bg-white/5 border border-white/10">
+												<Avatar.Image src={entry.logoUrl} alt={entry.displayName ?? entry.name} />
+												<Avatar.Fallback>
+													<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+												</Avatar.Fallback>
+											</Avatar>
+										) : (
+											<div className="flex size-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+												<Icon icon={ServerStack01Icon} className="icon-sm" />
+											</div>
+										)}
+										<div>
+											<p className="text-sm font-bold text-white">{entry.displayName ?? entry.name}</p>
+											<div className="flex flex-wrap gap-1 pt-1">
+												{entry.operationTypes.map((operationTypeItem) => {
+													const parsed = acquirerOperationTypeParse[operationTypeItem];
+													return (
+														<span
+															key={`${entry.acquirerId}-${operationTypeItem}`}
+															className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-mono text-white/80"
+														>
+															{parsed.icon}
+															{parsed.label}
+														</span>
+													);
+												})}
+											</div>
+										</div>
+									</div>
+
+									<div className="flex items-center gap-4 sm:ml-auto">
+										<div className="text-right">
+											<p className="text-[11px] font-medium text-white/40 uppercase tracking-wider">Aprovação</p>
+											<span className="font-mono text-sm font-bold text-[#00a87e] tabular-nums">
+												{formatApprovalRate(entry.approvalRate)}
+											</span>
+										</div>
+										<div className="text-right">
+											<p className="text-[11px] font-medium text-white/40 uppercase tracking-wider">Score</p>
+											<span className="font-mono text-sm font-bold text-white tabular-nums">
+												{entry.score}<span className="text-white/40 text-xs">/1000</span>
+											</span>
+										</div>
+										<button
+											type="button"
+											onClick={() => handleOpenScoreDetails(entry)}
+											aria-label={`Ver detalhes do cálculo de score da processadora ${entry.displayName ?? entry.name}`}
+											className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+										>
+											<Icon icon={HelpCircleIcon} className="icon-xs" />
+										</button>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				)}
+			</div>
 		</div>
 
 		<Modal.Backdrop isOpen={scoreDetailsEntry !== null} onOpenChange={handleCloseScoreDetails}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-2xl">
-					<Modal.CloseTrigger />
-					<Modal.Header>
-						<Modal.Icon className="bg-accent text-accent-foreground">
-							<Icon icon={HelpCircleIcon} className="icon-md" />
-						</Modal.Icon>
-						<Modal.Heading>Cálculo do score da processadora</Modal.Heading>
-						<p className="text-sm text-muted">
-							{scoreDetailsEntry ? (scoreDetailsEntry.displayName ?? scoreDetailsEntry.name) : ''}
-						</p>
+				<Modal.Dialog className="max-w-2xl rounded-[28px] border border-white/12 bg-[#16181a] p-6 text-white">
+					<Modal.CloseTrigger className="text-white/40 hover:text-white" />
+					<Modal.Header className="pb-4 border-b border-white/8">
+						<div className="flex items-center gap-3">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+								<Icon icon={HelpCircleIcon} className="icon-md" />
+							</div>
+							<div>
+								<Modal.Heading className="text-base font-bold text-white">Cálculo do Score de Conversão</Modal.Heading>
+								<p className="text-xs text-white/50">
+									{scoreDetailsEntry ? (scoreDetailsEntry.displayName ?? scoreDetailsEntry.name) : ''}
+								</p>
+							</div>
+						</div>
 					</Modal.Header>
 
-					<Modal.Body>
+					<Modal.Body className="py-4">
 						{scoreDetailsEntry && scoreBreakdown && (
-							<div className="flex flex-col gap-3 text-sm">
-								<div className="rounded-lg border border-divider bg-content2 p-3">
-									<p className="font-semibold text-foreground">Fórmula</p>
-									<div className="mt-2 flex flex-col gap-1.5 text-muted">
+							<div className="flex flex-col gap-4 text-sm">
+								<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+									<p className="font-bold text-xs text-white/70 uppercase tracking-wider">Fórmula de Ponderação</p>
+									<div className="mt-2 flex flex-col gap-1 text-xs text-white/60">
 										<p>1. Taxa de aprovação entra com peso 10.</p>
 										<p>2. Volume analisado entra com peso 5.</p>
 										<p>3. Eficiência contra falhas (1 - taxa de falha) entra com peso 5.</p>
 										<p>4. A soma ponderada é normalizada e convertida para escala de 0 a 1000.</p>
 									</div>
-									<div className="mt-2 rounded-md border border-divider bg-content1 p-2">
-										<p className="text-xs text-muted">Aplicação desta processadora</p>
-										<p className="font-medium text-foreground">
+									<div className="mt-3 rounded-lg border border-white/8 bg-white/5 p-3">
+										<p className="text-[11px] font-mono text-white/40">Aplicação desta processadora</p>
+										<p className="font-mono text-xs font-semibold text-[#00a87e] mt-1">
 											(({formatApprovalRate(scoreBreakdown.approvalRate)}/100 × 10) + ({scoreDetailsEntry.analyzedTransactions}/{sampleSize} × 5) + ((1 - {formatApprovalRate(scoreBreakdown.failureRate)}/100) × 5)) ÷ 20 × 1000
 										</p>
 									</div>
 								</div>
 
-								<div className="rounded-lg border border-divider bg-content2 p-3">
-									<p className="font-semibold text-foreground">Como ficou para esta processadora</p>
-									<div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-										<div className="rounded-md border border-divider bg-content1 p-2">
+								<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+									<p className="font-bold text-xs text-white/70 uppercase tracking-wider mb-3">Métricas Auditadas</p>
+									<div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+										<div className="rounded-lg border border-white/8 bg-white/5 p-3">
 											<div className="flex items-center justify-between gap-2">
-												<p className="text-xs text-muted">Taxa de aprovação</p>
-												<Chip
-													color={mapParseColorToChipColor(approvalBreakdownLevel?.chipColor ?? 'default')}
-													variant="soft"
-													size="sm"
-													className={approvalBreakdownLevel?.chipClassName}
-												>
+												<p className="text-xs text-white/50">Taxa de aprovação</p>
+												<span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
 													Peso {SCORE_APPROVAL_WEIGHT}
-												</Chip>
+												</span>
 											</div>
-											<p className="font-medium text-foreground">
+											<p className="font-mono text-sm font-bold text-white mt-1">
 												{formatApprovalRate(scoreBreakdown.approvalRate)} → {scoreBreakdown.approvalComponent.toFixed(2)}/10
 											</p>
 										</div>
 
-										<div className="rounded-md border border-divider bg-content1 p-2">
+										<div className="rounded-lg border border-white/8 bg-white/5 p-3">
 											<div className="flex items-center justify-between gap-2">
-												<p className="text-xs text-muted">Volume analisado</p>
-												<Chip
-													color={mapParseColorToChipColor(analyzedBreakdownLevel?.chipColor ?? 'default')}
-													variant="soft"
-													size="sm"
-													className={analyzedBreakdownLevel?.chipClassName}
-												>
+												<p className="text-xs text-white/50">Volume analisado</p>
+												<span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono text-white/70">
 													Peso {SCORE_ANALYZED_WEIGHT}
-												</Chip>
+												</span>
 											</div>
-											<p className="font-medium text-foreground">
+											<p className="font-mono text-sm font-bold text-white mt-1">
 												{scoreDetailsEntry.analyzedTransactions}/{sampleSize} → {scoreBreakdown.analyzedComponent.toFixed(2)}/5
 											</p>
 										</div>
 
-										<div className="rounded-md border border-divider bg-content1 p-2">
+										<div className="rounded-lg border border-white/8 bg-white/5 p-3">
 											<div className="flex items-center justify-between gap-2">
-												<p className="text-xs text-muted">Taxa de falha</p>
-												<Chip
-													color={mapParseColorToChipColor(failureBreakdownLevel?.chipColor ?? 'default')}
-													variant="soft"
-													size="sm"
-													className={failureBreakdownLevel?.chipClassName}
-												>
+												<p className="text-xs text-white/50">Taxa de falha</p>
+												<span className="rounded-full border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-[10px] font-mono text-red-400">
 													Peso {SCORE_FAILURE_WEIGHT}
-												</Chip>
+												</span>
 											</div>
-											<p className="font-medium text-foreground">
+											<p className="font-mono text-sm font-bold text-white mt-1">
 												{formatApprovalRate(scoreBreakdown.failureRate)} → {scoreBreakdown.inverseFailureComponent.toFixed(2)}/5
 											</p>
 										</div>
 
-										<div className="rounded-md border border-divider bg-content1 p-2">
+										<div className="rounded-lg border border-white/12 bg-[#494fdf]/10 p-3">
 											<div className="flex items-center justify-between gap-2">
-												<p className="text-xs text-muted">Score final</p>
-												<Chip
-													color={mapParseColorToChipColor(finalScoreBreakdownLevel?.chipColor ?? 'default')}
-													variant="soft"
-													size="sm"
-													className={finalScoreBreakdownLevel?.chipClassName}
-												>
+												<p className="text-xs text-[#4f55f1] font-bold">Score Final</p>
+												<span className="rounded-full border border-[#494fdf]/30 bg-[#494fdf]/20 px-2 py-0.5 text-[10px] font-mono text-[#4f55f1]">
 													0 a 1000
-												</Chip>
+												</span>
 											</div>
-											<p className="font-medium text-foreground">
-												{scoreBreakdown.totalComponent.toFixed(2)}/20 → {scoreBreakdown.calculatedScore}/1000
+											<p className="font-mono text-base font-extrabold text-white mt-1">
+												{scoreBreakdown.totalComponent.toFixed(2)}/20 → <span className="text-[#00a87e]">{scoreBreakdown.calculatedScore}</span>/1000
 											</p>
 										</div>
 									</div>
@@ -528,10 +565,14 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 						)}
 					</Modal.Body>
 
-					<Modal.Footer>
-						<Button variant="secondary" onPress={handleCloseScoreDetails}>
+					<Modal.Footer className="pt-4 border-t border-white/8 flex items-center justify-end">
+						<button
+							type="button"
+							onClick={handleCloseScoreDetails}
+							className="button-outline-dark cursor-pointer text-xs"
+						>
 							Fechar
-						</Button>
+						</button>
 					</Modal.Footer>
 				</Modal.Dialog>
 			</Modal.Container>

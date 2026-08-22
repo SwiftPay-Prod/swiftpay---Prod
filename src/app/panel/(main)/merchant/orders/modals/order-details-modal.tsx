@@ -10,11 +10,13 @@ import {
 	PackageIcon,
 	UserIcon,
 	ShoppingCartCheck01Icon,
-	CreditCardIcon,
+	QrCodeIcon,
 	Location01Icon,
 	Clock01Icon,
 	Invoice02Icon,
+	Wallet01Icon,
 } from '@hugeicons/core-free-icons';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	orderStatusParse,
 	orderFulfillmentStatusParse,
@@ -58,25 +60,25 @@ function DetailsContentSkeleton() {
 
 function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; onViewTransaction?: (paymentId: string) => void }) {
 	return (
-		<div className="flex flex-col gap-6">
-			<div className="rounded-lg bg-surface-secondary p-4">
-				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-sm" />} title="Valores" />
-				<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-					<DetailRow label="Subtotal" value={formatCurrency(order.subtotalAmount)} />
-					<DetailRow label="Desconto" value={formatCurrency(order.discountAmount)} />
-					<DetailRow label="Frete" value={formatCurrency(order.shippingAmount)} />
+		<div className="flex flex-col gap-4 text-white">
+			<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-sm text-[#00a87e]" />} title="Valores" />
+				<div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+					<DetailRow label="Subtotal" value={<span className="font-mono text-white tabular-nums">{formatCurrency(order.subtotalAmount)}</span>} />
+					<DetailRow label="Desconto" value={<span className="font-mono text-white/70 tabular-nums">{formatCurrency(order.discountAmount)}</span>} />
+					<DetailRow label="Frete" value={<span className="font-mono text-white/70 tabular-nums">{formatCurrency(order.shippingAmount)}</span>} />
 					<DetailRow
-						label="Total"
-						value={<span className="text-accent font-medium">{formatCurrency(order.totalAmount)}</span>}
+						label="Total PIX"
+						value={<span className="text-[#00a87e] font-bold font-mono text-base tabular-nums">{formatCurrency(order.totalAmount)}</span>}
 					/>
 				</div>
 			</div>
 
-			<div className="rounded-lg bg-surface-secondary p-4">
-				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm" />} title="Informações Gerais" />
-				<div className="grid grid-cols-2 gap-4">
-					<DetailRow label="ID" value={<CopyableValue value={order.id} label="ID" />} mono />
-					<DetailRow label="Criado em" value={formatDate(order.createdAt)} />
+			<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm text-[#4f55f1]" />} title="Informações Gerais" />
+				<div className="grid grid-cols-2 gap-4 mt-2">
+					<DetailRow label="ID do Pedido" value={<CopyableValue value={order.id} label="ID" />} mono />
+					<DetailRow label="Criado em" value={<span className="font-mono text-white/70">{formatDate(order.createdAt)}</span>} />
 					{order.couponCode && <DetailRow label="Cupom usado" value={order.couponCode} mono />}
 					{order.notes && (
 						<div className="col-span-2">
@@ -87,10 +89,10 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			</div>
 
 			{order.customer && (
-				<div className="rounded-lg bg-surface-secondary p-4">
-					<SectionTitle icon={<Icon icon={UserIcon} className="icon-sm" />} title="Cliente" />
-					<div className="grid grid-cols-2 gap-4">
-						<DetailRow label="Nome" value={order.customer.name ?? '-'} />
+				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+					<SectionTitle icon={<Icon icon={UserIcon} className="icon-sm text-[#4f55f1]" />} title="Cliente" />
+					<div className="grid grid-cols-2 gap-4 mt-2">
+						<DetailRow label="Nome" value={<span className="font-bold text-white">{order.customer.name ?? '-'}</span>} />
 						<DetailRow label="Email" value={<EmailLink email={order.customer.email} />} />
 						<DetailRow label="Telefone" value={<PhoneLink phone={order.customer.phone} />} />
 						<DetailRow label="Documento" value={<DocumentDisplay document={order.customer.document} />} />
@@ -99,9 +101,9 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			)}
 
 			{order.shippingAddress && (
-				<div className="rounded-lg bg-surface-secondary p-4">
-					<SectionTitle icon={<Icon icon={Location01Icon} className="icon-sm" />} title="Endereço de Entrega" />
-					<div className="grid grid-cols-2 gap-4">
+				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+					<SectionTitle icon={<Icon icon={Location01Icon} className="icon-sm text-[#4f55f1]" />} title="Endereço de Entrega" />
+					<div className="grid grid-cols-2 gap-4 mt-2">
 						<DetailRow label="Rua" value={`${order.shippingAddress.street}, ${order.shippingAddress.number}`} />
 						{order.shippingAddress.complement && (
 							<DetailRow label="Complemento" value={order.shippingAddress.complement} />
@@ -115,37 +117,25 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			)}
 
 			{order.items && order.items.length > 0 && (
-				<div className="rounded-lg bg-surface-secondary p-4">
-					<SectionTitle icon={<Icon icon={PackageIcon} className="icon-sm" />} title={`Itens (${order.items.length})`} />
-					<div className="flex flex-col gap-3">
+				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+					<SectionTitle icon={<Icon icon={PackageIcon} className="icon-sm text-[#4f55f1]" />} title={`Itens (${order.items.length})`} />
+					<div className="flex flex-col gap-3 mt-2">
 						{order.items.map((item, index) => (
-							<div key={item.id ?? index} className="flex items-center gap-4 p-3 bg-background rounded-lg">
+							<div key={item.id ?? index} className="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/8">
 								{item.imageUrl && (
-									<Image
-										src={item.imageUrl}
-										alt={item.productName ?? 'Produto'}
-										width={48}
-										height={48}
-										className="w-12 h-12 rounded-lg object-cover bg-surface"
-									/>
+									<div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
+										<Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+									</div>
 								)}
 								<div className="flex-1 min-w-0">
-									<span className="text-sm font-medium text-foreground block truncate">
-										{item.productName ?? 'Produto'}
-									</span>
-									{item.variantName && (
-										<span className="text-xs text-muted block truncate">Variante: {item.variantName}</span>
-									)}
-									{item.sku && (
-										<span className="text-xs text-muted block font-mono">SKU: {item.sku}</span>
-									)}
-									<span className="text-xs text-muted block">
+									<p className="font-bold text-sm text-white truncate">{item.name}</p>
+									<p className="text-xs font-mono text-white/50">
 										{item.quantity}x {formatCurrency(item.unitPrice)}
-									</span>
+									</p>
 								</div>
-								<div className="text-right shrink-0">
-									<span className="text-sm font-medium text-foreground">{formatCurrency(item.totalPrice)}</span>
-								</div>
+								<span className="font-mono font-bold text-sm text-white tabular-nums">
+									{formatCurrency(item.totalPrice)}
+								</span>
 							</div>
 						))}
 					</div>
@@ -153,48 +143,41 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			)}
 
 			{order.payment && (
-				<div className="rounded-lg bg-surface-secondary p-4">
-					<SectionTitle icon={<Icon icon={CreditCardIcon} className="icon-sm" />} title="Pagamento" />
-					<div className="grid grid-cols-2 gap-4">
-						<DetailRow label="ID" value={<CopyableValue value={order.payment.id} label="ID" />} mono />
+				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+					<SectionTitle icon={<Icon icon={QrCodeIcon} className="icon-sm text-[#00a87e]" />} title="Pagamento PIX" />
+					<div className="grid grid-cols-2 gap-4 mt-2">
+						<DetailRow label="ID da Transação" value={<CopyableValue value={order.payment.id} label="ID" />} mono />
 						<DetailRow
 							label="Status"
-							value={(() => {
-								const paymentStatusParsed = paymentStatusParse[order.payment.status];
-								return (
-									<Chip variant="soft" color={mapParseColorToChipColor(paymentStatusParsed.color)} size="sm" className="gap-1">
-										{paymentStatusParsed.icon}
-										{paymentStatusParsed.label}
-									</Chip>
-								);
-							})()}
+							value={<RevolutStatusBadge status={order.payment.status} />}
 						/>
 						<DetailRow
 							label="Método"
-							value={(() => {
-								const methodParsed = paymentMethodParse[order.payment.method];
-								return (
-									<Chip variant="soft" color={mapParseColorToChipColor(methodParsed.color)} size="sm" className="gap-1">
-										{methodParsed.icon}
-										{methodParsed.label}
-									</Chip>
-								);
-							})()}
+							value={
+								<span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-xs font-mono text-emerald-400">
+									<Icon icon={QrCodeIcon} className="icon-xs" />
+									PIX Instantâneo
+								</span>
+							}
 						/>
-						<DetailRow label="Valor" value={formatCurrency(order.payment.amount)} />
-						<DetailRow label="Taxa" value={typeof order.payment.fee === 'number' ? formatCurrency(order.payment.fee) : '-'} />
+						<DetailRow label="Valor Bruto" value={<span className="font-mono font-bold text-white">{formatCurrency(order.payment.amount)}</span>} />
+						<DetailRow label="Taxa Gateway" value={<span className="font-mono text-[#e23b4a]">{typeof order.payment.fee === 'number' ? formatCurrency(order.payment.fee) : '-'}</span>} />
 						<DetailRow
-							label="Líquido"
-							value={typeof order.payment.netAmount === 'number' ? <span className="text-success font-medium">{formatCurrency(order.payment.netAmount)}</span> : '-'}
+							label="Valor Líquido"
+							value={typeof order.payment.netAmount === 'number' ? <span className="text-[#00a87e] font-mono font-bold">{formatCurrency(order.payment.netAmount)}</span> : '-'}
 						/>
 					</div>
 					{onViewTransaction && (
-					<div className="mt-3 pt-3 border-t border-divider">
-						<Button variant="secondary" size="sm" className="w-full" onPress={() => onViewTransaction(order.payment!.id)}>
-							<Icon icon={CreditCardIcon} className="icon-sm" />
-							Ver detalhes da transação
-						</Button>
-					</div>
+						<div className="mt-4 pt-3 border-t border-white/8">
+							<button
+								type="button"
+								className="button-outline-dark cursor-pointer text-xs w-full py-2"
+								onClick={() => onViewTransaction(order.payment!.id)}
+							>
+								<Icon icon={Wallet01Icon} className="icon-xs" />
+								<span>Ver detalhes da transação</span>
+							</button>
+						</div>
 					)}
 				</div>
 			)}
@@ -212,16 +195,16 @@ interface TimelineEvent {
 
 const timelineTypeIcons: Record<TimelineEvent['type'], React.ReactNode> = {
 	created: <Icon icon={ShoppingCartCheck01Icon} className="icon-sm" />,
-	payment: <Icon icon={CreditCardIcon} className="icon-sm" />,
+	payment: <Icon icon={QrCodeIcon} className="icon-sm" />,
 	fulfillment: <Icon icon={PackageIcon} className="icon-sm" />,
 	status: <Icon icon={InformationCircleIcon} className="icon-sm" />,
 };
 
 const timelineTypeColors: Record<TimelineEvent['type'], string> = {
-	created: 'bg-accent text-accent-foreground',
-	payment: 'bg-success text-success-foreground',
-	fulfillment: 'bg-warning text-warning-foreground',
-	status: 'bg-secondary text-secondary-foreground',
+	created: 'bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30',
+	payment: 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30',
+	fulfillment: 'bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30',
+	status: 'bg-white/5 text-white/70 border border-white/10',
 };
 
 function OrderTimelineTab({ order }: { order: OrderDetails }) {
@@ -230,7 +213,7 @@ function OrderTimelineTab({ order }: { order: OrderDetails }) {
 	events.push({
 		id: 'created',
 		title: 'Pedido criado',
-		description: `Pedido ${order.orderNumber} foi criado`,
+		description: `Pedido ${order.orderNumber} foi registrado`,
 		date: order.createdAt,
 		type: 'created',
 	});
@@ -239,8 +222,8 @@ function OrderTimelineTab({ order }: { order: OrderDetails }) {
 		if (order.payment.completedAt) {
 			events.push({
 				id: 'payment-completed',
-				title: 'Pagamento confirmado',
-				description: `Pagamento via ${paymentMethodParse[order.payment.method].label} confirmado`,
+				title: 'Pagamento PIX confirmado',
+				description: 'Liquidação instantânea confirmada pelo Banco Central / SPI',
 				date: order.payment.completedAt,
 				type: 'payment',
 			});
@@ -250,50 +233,49 @@ function OrderTimelineTab({ order }: { order: OrderDetails }) {
 			events.push({
 				id: 'payment-refunded',
 				title: 'Pagamento estornado',
-				description: 'O pagamento foi estornado',
+				description: 'O pagamento PIX foi estornado',
 				date: order.payment.refundedAt,
-				type: 'payment',
+				type: 'status',
 			});
 		}
 	}
 
-	if (order.updatedAt && order.updatedAt !== order.createdAt) {
-		events.push({
-			id: 'updated',
-			title: 'Pedido atualizado',
-			description: `Status: ${orderStatusParse[order.status].label}, Entrega: ${orderFulfillmentStatusParse[order.fulfillmentStatus].label}`,
-			date: order.updatedAt,
-			type: 'status',
+	if (order.fulfillmentHistory) {
+		order.fulfillmentHistory.forEach((item, index) => {
+			const statusParse = orderFulfillmentStatusParse[item.status];
+			events.push({
+				id: `fulfillment-${index}`,
+				title: `Status de entrega: ${statusParse?.label ?? item.status}`,
+				description: item.notes ?? undefined,
+				date: item.createdAt,
+				type: 'fulfillment',
+			});
 		});
 	}
 
-	events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col text-white">
 			{events.length === 0 ? (
-				<div className="flex flex-col items-center justify-center py-12 text-center">
-					<Icon icon={Clock01Icon} className="icon-lg text-muted mb-2" />
-					<p className="text-foreground/70">Nenhum evento registrado</p>
+				<div className="flex flex-col items-center justify-center py-12 text-white/40">
+					<Icon icon={Clock01Icon} className="icon-lg mb-2" />
+					<p className="text-xs">Nenhum evento registrado</p>
 				</div>
 			) : (
 				<div className="relative pl-8">
-					<div className="absolute left-3 top-3 bottom-3 w-0.5 bg-border" />
+					<div className="absolute left-3 top-2 bottom-2 w-px bg-white/10" />
 					<div className="flex flex-col gap-6">
-						{events.map((event, _index) => (
-							<div key={event.id} className="relative flex gap-4">
-								<div className={`absolute -left-8 top-0 w-6 h-6 rounded-full flex items-center justify-center ${timelineTypeColors[event.type]}`}>
+						{events.map((event) => (
+							<div key={event.id} className="relative flex flex-col gap-1">
+								<div
+									className={`absolute -left-8 top-0 flex size-6 items-center justify-center rounded-full ${timelineTypeColors[event.type]}`}
+								>
 									{timelineTypeIcons[event.type]}
 								</div>
-								<div className="flex-1 bg-surface-secondary rounded-lg p-3">
-									<div className="flex items-start justify-between gap-2">
-										<p className="text-sm font-medium text-foreground">{event.title}</p>
-										<span className="text-xs text-muted shrink-0">{formatDate(event.date, true)}</span>
-									</div>
-									{event.description && (
-										<p className="text-xs text-muted mt-1">{event.description}</p>
-									)}
+								<div className="flex items-center justify-between">
+									<span className="font-bold text-sm text-white">{event.title}</span>
+									<span className="text-xs font-mono text-white/40">{formatDate(event.date)}</span>
 								</div>
+								{event.description && <p className="text-xs text-white/60">{event.description}</p>}
 							</div>
 						))}
 					</div>
@@ -333,32 +315,26 @@ function DetailsContent({ orderPromise, onViewTransaction }: DetailsContentProps
 	];
 
 	return (
-		<div className="flex flex-col gap-4">
-			<div className="flex flex-col gap-4 pb-4 border-b border-divider">
+		<div className="flex flex-col gap-4 text-white">
+			<div className="flex flex-col gap-4 pb-4 border-b border-white/8">
 				<div className="flex items-center justify-between">
-					<div className="flex flex-col gap-1">
-						<span className="text-lg font-mono font-medium text-accent">{order.orderNumber}</span>
-						<span className="text-sm text-foreground/70">Número do pedido</span>
+					<div className="flex flex-col gap-0.5">
+						<span className="text-base font-mono font-bold text-[#4f55f1]">{order.orderNumber}</span>
+						<span className="text-xs text-white/50">Número do pedido</span>
 					</div>
-					<div className="flex flex-col gap-1">
-						<span className="text-2xl sm:text-3xl font-bold text-foreground">{formatCurrency(order.totalAmount)}</span>
-						<span className="text-sm text-foreground/70 text-right">Total</span>
+					<div className="flex flex-col gap-0.5 items-end">
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tabular-nums">{formatCurrency(order.totalAmount)}</span>
+						<span className="text-xs text-white/50">Total PIX</span>
 					</div>
 				</div>
 				<div className="flex flex-wrap items-center gap-3">
-					<div className="flex flex-col gap-1">
-						<span className="text-xs text-foreground/60">Status</span>
-						<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="md" className="gap-1">
-							{statusParse.icon}
-							{statusParse.label}
-						</Chip>
+					<div className="flex items-center gap-2">
+						<span className="text-xs text-white/50">Status:</span>
+						<RevolutStatusBadge status={order.status} label={statusParse.label} />
 					</div>
-					<div className="flex flex-col gap-1">
-						<span className="text-xs text-foreground/60">Entrega</span>
-						<Chip variant="soft" color={mapParseColorToChipColor(fulfillmentParse.color)} size="md" className="gap-1">
-							{fulfillmentParse.icon}
-							{fulfillmentParse.label}
-						</Chip>
+					<div className="flex items-center gap-2">
+						<span className="text-xs text-white/50">Entrega:</span>
+						<RevolutStatusBadge status={order.fulfillmentStatus} label={fulfillmentParse.label} />
 					</div>
 				</div>
 			</div>
@@ -389,16 +365,20 @@ export function OrderDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-3xl">
-					<Modal.CloseTrigger />
-					<Modal.Header>
-						<Modal.Icon className="bg-accent text-accent-foreground">
-							<Icon icon={ShoppingCartCheck01Icon} className="icon-md" />
-						</Modal.Icon>
-						<Modal.Heading>Detalhes do Pedido</Modal.Heading>
-						<p className="text-sm text-muted">Informações completas do pedido</p>
+				<Modal.Dialog className="max-w-3xl rounded-[28px] border border-white/12 bg-[#16181a] p-6 text-white">
+					<Modal.CloseTrigger className="text-white/40 hover:text-white" />
+					<Modal.Header className="pb-4 border-b border-white/8">
+						<div className="flex items-center gap-3">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+								<Icon icon={ShoppingCartCheck01Icon} className="icon-md" />
+							</div>
+							<div>
+								<Modal.Heading className="text-base font-bold text-white">Detalhes do Pedido</Modal.Heading>
+								<p className="text-xs text-white/50">Auditoria completa do checkout e entrega</p>
+							</div>
+						</div>
 					</Modal.Header>
-					<Modal.Body>
+					<Modal.Body className="py-4">
 						{orderPromise && (
 							<Suspense fallback={<DetailsContentSkeleton />}>
 								<DetailsContent orderPromise={orderPromise} onViewTransaction={onViewTransaction} />
@@ -410,4 +390,3 @@ export function OrderDetailsModal({
 		</Modal.Backdrop>
 	);
 }
-

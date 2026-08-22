@@ -5,7 +5,7 @@ import { Button, Chip, Avatar, Tooltip, Modal, ComboBox, Switch, Label, TextFiel
 import { ServerStack01Icon, PencilEdit01Icon, QrCodeIcon, BarCodeIcon, CreditCardIcon, Building02Icon, Wallet01Icon, Add01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { useRouter } from 'next/navigation';
-import { PageHeader } from '@/components/ui/page-header';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { AcquirerMerchantsModal } from './acquirer-merchants-modal';
 import type { AdminAcquirerData } from '@/types/admin/acquirers';
 import { adminCreateAcquirer } from '@/app/actions/admin/acquirers';
@@ -20,7 +20,6 @@ import {
 	mapParseColorToChipColor,
 	pageSizeFilterOptions,
 	acquirerStatusOptions,
-	acquirerStatusParse,
 } from '@/parse';
 import { formatCurrency, basisPointsToPercentage } from '@/utils/currency';
 import { FormattedDate } from '@/components/ui/formatted-date';
@@ -34,7 +33,6 @@ import { Routes } from '@/router/routes';
 import { getAcquirerDisplayTitle, getAcquirerDisplaySubtitle } from '@/utils/acquirer-display';
 import { ProviderCategory } from '@/types/enums';
 import { ProviderCategoryChip } from '@/components/admin/provider-category-chip';
-
 interface AcquirersTableProps {
 	initialFilters: AcquirersTableFilters;
 	currentUserRole: UserRole;
@@ -175,32 +173,28 @@ function getColumns(
 		{
 			key: 'status',
 			header: 'Status',
-			render: (acquirer) => {
-				const statusKey = acquirer.isActive ? 'true' : 'false';
-				const parsed = acquirerStatusParse[statusKey];
-				return (
-									<span className="font-mono text-xs text-white/70">{parsed.label}</span>
-				);
-			},
+			render: (acquirer) => (
+				<RevolutStatusBadge status={acquirer.isActive ? 'Active' : 'Inactive'} />
+			),
 		},
 		{
 			key: 'features',
-			header: 'Funcionalidades',
+			header: 'Operações PIX',
 			render: (acquirer) => {
-				const features = [
-					{ key: 'pix', label: 'PIX', icon: QrCodeIcon, supported: acquirer.supportsPix },
-					{ key: 'boleto', label: 'Boleto', icon: BarCodeIcon, supported: acquirer.supportsBoleto },
-					{ key: 'card', label: 'Cartão', icon: CreditCardIcon, supported: acquirer.supportsCreditCard },
-					{ key: 'withdrawal', label: 'Saque', icon: Wallet01Icon, supported: acquirer.supportsWithdrawal },
-				];
-
 				return (
-					<div className="flex flex-wrap gap-1">
-											{features.map((feature) => (
-						<span key={feature.key} className="font-mono text-xs text-white/70">
-							{feature.supported ? feature.label : `– ${feature.label}`}
-						</span>
-					))}
+					<div className="flex flex-wrap items-center gap-1.5">
+						{acquirer.supportsPix && (
+							<span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-mono text-emerald-400">
+								<Icon icon={QrCodeIcon} className="icon-xs" />
+								PIX In
+							</span>
+						)}
+						{acquirer.supportsWithdrawal && (
+							<span className="inline-flex items-center gap-1 rounded-full border border-[#494fdf]/20 bg-[#494fdf]/10 px-2 py-0.5 text-[11px] font-mono text-[#4f55f1]">
+								<Icon icon={Wallet01Icon} className="icon-xs" />
+								PIX Out
+							</span>
+						)}
 					</div>
 				);
 			},
@@ -219,24 +213,6 @@ function getColumns(
 						feePercentage={acquirer.pixInFeePercentage}
 						minAmount={acquirer.minPixAmount}
 						maxAmount={acquirer.maxPixAmount}
-					/>
-				);
-			},
-		},
-		{
-			key: 'boletoFees',
-			header: 'Boleto',
-			render: (acquirer) => {
-				if (!acquirer.supportsBoleto) {
-					return <span className="text-sm text-muted">—</span>;
-				}
-				return (
-					<FeeAndLimitDisplay
-						feeMode={acquirer.boletoInFeeMode}
-						feeFixed={acquirer.boletoInFeeFixed}
-						feePercentage={acquirer.boletoInFeePercentage}
-						minAmount={acquirer.minBoletoAmount}
-						maxAmount={acquirer.maxBoletoAmount}
 					/>
 				);
 			},
@@ -426,8 +402,6 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 		acquirerType: null as AcquirerType | null,
 		displayName: '',
 		pixEnabled: true,
-		boletoEnabled: true,
-		creditCardEnabled: true,
 	});
 	const [createState, createAction, isCreating] = useActionState(
 		async (_prev: { error: string | null }) => {
@@ -436,9 +410,9 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 			const response = await adminCreateAcquirer({
 				acquirerType: createFormData.acquirerType,
 				displayName: createFormData.displayName.trim(),
-				pixEnabled: createFormData.pixEnabled,
-				boletoEnabled: createFormData.boletoEnabled,
-				creditCardEnabled: createFormData.creditCardEnabled,
+				pixEnabled: true,
+				boletoEnabled: false,
+				creditCardEnabled: false,
 			});
 			if (response?.error) return { error: response.error.message };
 			toast('Processadora criada', { description: response?.message ?? 'A processadora foi criada com sucesso.', variant: 'success' });
@@ -458,8 +432,6 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 			acquirerType: null,
 			displayName: '',
 			pixEnabled: true,
-			boletoEnabled: true,
-			creditCardEnabled: true,
 		});
 		setAcquirerTypeSearch('');
 		setCreateTypeCategoryFilter('all');
@@ -533,23 +505,98 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 		</>
 	);
 
-	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={ServerStack01Icon} size={24} />}
-				title="Processadoras"
-				description="Gerencie as processadoras de pagamento."
-				actions={
-					currentUserRole === UserRole.God && (
-						<Button variant="primary" onPress={openCreateModal}>
-							<Icon icon={Add01Icon} className="icon-sm" />
-							Nova Processadora
-						</Button>
-					)
-				}
-			/>
+	const items = data.acquirers.items;
+	const totalAcquirers = data.acquirers.totalItems;
+	const activeAcquirers = items.filter((a) => a.isActive).length;
+	const totalMerchantsLinked = items.reduce((sum, a) => sum + (a.totalMerchants ?? 0), 0);
 
-		<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+	return (
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Processadoras PIX</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gestão de gateways de liquidação, PixHub, roteamento e chaves de integração
+					</p>
+				</div>
+
+				{currentUserRole === UserRole.God && (
+					<button
+						type="button"
+						onClick={openCreateModal}
+						className="button-primary cursor-pointer text-xs self-start sm:self-auto"
+					>
+						<Icon icon={Add01Icon} className="icon-xs" />
+						<span>+ Nova Processadora</span>
+					</button>
+				)}
+			</div>
+
+			{/* 3-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				{/* Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total Cadastradas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={ServerStack01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							{totalAcquirers}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Gateways e adquirentes</p>
+					</div>
+				</div>
+
+				{/* Ativas */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Operando PIX SPI
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={QrCodeIcon} className="icon-xs text-[#00a87e]" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							{activeAcquirers}
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Captura ativa em produção</p>
+					</div>
+				</div>
+
+				{/* Organizações */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Organizações Vinculadas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Building02Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							{totalMerchantsLinked}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Sellers com roteamento ativo</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 			<DataTable
 				className="rounded-[24px] border border-white/12 bg-[#16181a]"
 				columns={columns}
@@ -593,20 +640,24 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 
 			<Modal.Backdrop isOpen={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
 				<Modal.Container size="lg" placement="center" scroll="outside">
-					<Modal.Dialog className="max-w-md">
-						<Modal.CloseTrigger />
-						<Modal.Header>
-							<Modal.Icon className="bg-accent text-accent-foreground">
-								<Icon icon={Add01Icon} className="icon-md" />
-							</Modal.Icon>
-							<Modal.Heading>Nova Processadora</Modal.Heading>
-							<p className="text-sm text-muted">Cria uma nova instância de processadora.</p>
+					<Modal.Dialog className="max-w-md rounded-[28px] border border-white/12 bg-[#16181a] p-6 text-white">
+						<Modal.CloseTrigger className="text-white/40 hover:text-white" />
+						<Modal.Header className="pb-4 border-b border-white/8">
+							<div className="flex items-center gap-3">
+								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+									<Icon icon={Add01Icon} className="icon-md" />
+								</div>
+								<div>
+									<Modal.Heading className="text-base font-bold text-white">Nova Processadora PIX</Modal.Heading>
+									<p className="text-xs text-white/50">Cria uma nova instância de roteamento PIX.</p>
+								</div>
+							</div>
 						</Modal.Header>
 						<form action={createAction}>
-							<Modal.Body>
+							<Modal.Body className="py-4">
 								<div className="flex flex-col gap-4">
 									<div className="flex flex-col gap-2">
-										<Label>Categoria do Tipo</Label>
+										<Label className="text-xs font-semibold text-white/70">Categoria do Tipo</Label>
 										<InternalTagTabs
 											ariaLabel="Categoria do tipo de processadora"
 											selectedKey={createTypeCategoryFilter}
@@ -632,25 +683,25 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 										isDisabled={isCreating}
 										menuTrigger="focus"
 									>
-										<Label>Tipo de Processadora</Label>
-										<ComboBox.InputGroup>
-											<Input variant="secondary" placeholder="Buscar tipo de processadora..." />
-											<ComboBox.Trigger />
+										<Label className="text-xs font-semibold text-white/70">Tipo de Processadora</Label>
+										<ComboBox.InputGroup className="rounded-xl border border-white/10 bg-[#0a0a0a]">
+											<Input variant="secondary" className="text-xs text-white" placeholder="Buscar tipo de processadora..." />
+											<ComboBox.Trigger className="text-white/40" />
 										</ComboBox.InputGroup>
-										<ComboBox.Popover>
+										<ComboBox.Popover className="rounded-xl border border-white/12 bg-[#16181a]">
 											<ListBox
 												items={acquirerTypeItems}
 												renderEmptyState={() => (
-													<p className="p-4 text-center text-sm text-muted">Nenhum tipo encontrado</p>
+													<p className="p-4 text-center text-xs text-white/40">Nenhum tipo encontrado</p>
 												)}
 											>
 												{(item) => (
-													<ListBox.Item key={item.id} textValue={acquirerTypeParse[item.id]?.label ?? item.id}>
+													<ListBox.Item key={item.id} textValue={acquirerTypeParse[item.id]?.label ?? item.id} className="text-xs text-white hover:bg-white/5">
 														<Chip
 															variant="soft"
 															color={mapParseColorToChipColor(acquirerTypeParse[item.id]?.color ?? 'default')}
 															size="sm"
-															className="gap-1"
+															className="gap-1 font-mono"
 														>
 															{acquirerTypeParse[item.id]?.icon}
 															{acquirerTypeParse[item.id]?.label ?? item.id}
@@ -662,66 +713,46 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 										</ComboBox.Popover>
 									</ComboBox>
 									<TextField variant="secondary">
-										<Label>Nome de Exibição</Label>
+										<Label className="text-xs font-semibold text-white/70">Nome de Exibição</Label>
 										<Input
 											variant="secondary"
-											placeholder="Ex: ActivePayments Black"
+											className="rounded-xl border border-white/10 bg-[#0a0a0a] text-xs text-white"
+											placeholder="Ex: PixHub Primary SPI"
 											value={createFormData.displayName}
 											onChange={(e) => setCreateFormData((prev) => ({ ...prev, displayName: e.target.value }))}
 											disabled={isCreating}
 										/>
 									</TextField>
-									<div className="flex flex-col gap-2">
-										<Label className="text-sm font-medium">Métodos Habilitados</Label>
-										<div className="flex flex-col gap-2">
-											<Switch
-												isSelected={createFormData.pixEnabled}
-												onChange={(isSelected) => setCreateFormData((prev) => ({ ...prev, pixEnabled: isSelected }))}
-												isDisabled={isCreating}
-											>
-												<Switch.Control>
-													<Switch.Thumb />
-												</Switch.Control>
-												<Label className="text-sm">PIX</Label>
-											</Switch>
-											<Switch
-												isSelected={createFormData.boletoEnabled}
-												onChange={(isSelected) => setCreateFormData((prev) => ({ ...prev, boletoEnabled: isSelected }))}
-												isDisabled={isCreating}
-											>
-												<Switch.Control>
-													<Switch.Thumb />
-												</Switch.Control>
-												<Label className="text-sm">Boleto</Label>
-											</Switch>
-											<Switch
-												isSelected={createFormData.creditCardEnabled}
-												onChange={(isSelected) => setCreateFormData((prev) => ({ ...prev, creditCardEnabled: isSelected }))}
-												isDisabled={isCreating}
-											>
-												<Switch.Control>
-													<Switch.Thumb />
-												</Switch.Control>
-												<Label className="text-sm">Cartão de Crédito</Label>
-											</Switch>
+									<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+										<div className="flex items-center gap-2">
+											<Icon icon={QrCodeIcon} className="icon-xs text-[#00a87e]" />
+											<span className="text-xs font-bold text-white">Captura PIX Instantânea</span>
 										</div>
+										<span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+											Habilitado
+										</span>
 									</div>
 									{createState.error && (
-										<p className="text-sm text-danger">{createState.error}</p>
+										<p className="text-xs font-mono text-[#e23b4a]">{createState.error}</p>
 									)}
 								</div>
 							</Modal.Body>
-							<Modal.Footer>
-								<Button
-									variant="tertiary"
-									onPress={() => setIsCreateModalOpen(false)}
-									isDisabled={isCreating}
+							<Modal.Footer className="pt-4 border-t border-white/8 flex items-center justify-end gap-2">
+								<button
+									type="button"
+									onClick={() => setIsCreateModalOpen(false)}
+									disabled={isCreating}
+									className="button-outline-dark cursor-pointer text-xs"
 								>
 									Cancelar
-								</Button>
-								<AsyncButton type="submit" variant="primary" isPending={isCreating}>
-									Criar
-								</AsyncButton>
+								</button>
+								<button
+									type="submit"
+									disabled={isCreating}
+									className="button-primary cursor-pointer text-xs"
+								>
+									{isCreating ? 'Criando...' : 'Criar Processadora'}
+								</button>
 							</Modal.Footer>
 						</form>
 					</Modal.Dialog>

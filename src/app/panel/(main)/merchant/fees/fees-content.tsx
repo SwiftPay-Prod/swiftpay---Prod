@@ -8,8 +8,6 @@ import {
   CheckmarkCircle01Icon,
   CancelCircleIcon,
   QrCodeIcon,
-  BarCodeIcon,
-  CreditCardIcon,
   PercentSquareIcon,
   ArrowRight01Icon,
   MoneyReceiveSquareIcon,
@@ -17,7 +15,6 @@ import {
   Link02Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import { SystemAccordion } from '@/components/ui/system-accordion';
 import { formatFeeRate, formatCurrency } from '@/utils/currency';
 import type { ReadFeesData } from '@/types/merchant/settings';
@@ -185,13 +182,19 @@ export function FeesContent({ fees }: FeesContentProps) {
   ].join(' | ');
 
   return (
-    <div className="flex flex-col gap-4 bg-[#000000] text-white">
-      <PageHeader
-        icon={<Icon icon={PercentSquareIcon} className="icon-md text-[#4f55f1]" />}
-        title="Taxas e Limites PIX"
-        description="Visualize as taxas, limites e configurações de processamento PIX da sua organização."
-      />
-
+    <div className="flex flex-col gap-6 bg-[#000000] text-white">
+      {/* Executive Header */}
+      <div className="flex items-center gap-3 border-b border-white/10 pb-5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+          <Icon icon={PercentSquareIcon} className="icon-sm text-[#4f55f1]" />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold tracking-tight text-white">Taxas e Limites PIX</h1>
+          <p className="text-xs text-white/50 mt-0.5">
+            Visualize as taxas, limites e configurações de processamento PIX da sua organização
+          </p>
+        </div>
+      </div>
       <SystemAccordion
         id="payment-methods"
         icon={CheckmarkCircle01Icon}

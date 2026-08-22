@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Chip, Tooltip, Avatar } from '@heroui/react';
+import { Button, Tooltip, Avatar } from '@heroui/react';
 import {
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
@@ -8,9 +8,9 @@ import {
 	Image01Icon,
 	PaintBoardIcon,
 	ViewIcon,
+	Add01Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import type { AdminMinimalTemplate } from '@/types/admin/templates';
 import {
 	checkoutTemplateTypeParse,
@@ -27,6 +27,8 @@ import { FormattedDate } from '@/components/ui/formatted-date';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { SearchFilter } from '@/components/ui/search-filter';
 import { SelectFilter } from '@/components/ui/select-filter';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 import { TemplateModal } from './modals/template-modal';
 import { useTemplatesTable, type TemplatesTableFilters } from './use-templates-table';
 
@@ -79,24 +81,9 @@ function getColumns(
 		{
 			key: 'status',
 			header: 'Status',
-			render: (template) => {
-				const statusParsed = templateActiveStatusParse[template.isActive ? 'active' : 'inactive'];
-				return (
-					<div className="flex items-center gap-2">
-						{template.isActive ? (
-							<>
-								<Icon icon={CheckmarkCircle02Icon} size={16} className="text-success" />
-								<span className="text-sm text-success">{statusParsed.label}</span>
-							</>
-						) : (
-							<>
-								<Icon icon={CancelCircleIcon} size={16} className="text-muted" />
-								<span className="text-sm text-muted">{statusParsed.label}</span>
-							</>
-						)}
-					</div>
-				);
-			},
+			render: (template) => (
+				<RevolutStatusBadge status={template.isActive ? 'Active' : 'Inactive'} />
+			),
 		},
 		{
 			key: 'pricing',
@@ -105,17 +92,10 @@ function getColumns(
 				const isFree = template.feeMode === null;
 				const freeParsed = templateFreeParse[isFree ? 'free' : 'paid'];
 				return (
-					<div className="flex flex-col gap-0.5">
-						<Chip variant="soft" color={mapParseColorToChipColor(freeParsed.color)} size="sm" className="gap-1">
-							{freeParsed.icon}
-							{freeParsed.label}
-						</Chip>
-						{!isFree && (
-							<span className="text-xs text-muted ml-1">
-								{template.feeFixed > 0 && formatCurrency(template.feeFixed)}
-								{template.feeFixed > 0 && template.feePercentage > 0 && ' + '}
-								{template.feePercentage > 0 && `${(template.feePercentage / 100).toFixed(2)}%`}
-							</span>
+					<div className="flex flex-col">
+						<span className="font-mono text-sm font-bold text-white">{freeParsed.label}</span>
+						{template.feePercentage != null && (
+							<span className="font-mono text-xs text-white/50">{basisPointsToPercentage(template.feePercentage)}%</span>
 						)}
 					</div>
 				);
@@ -123,7 +103,6 @@ function getColumns(
 		},
 		{
 			key: 'features',
-			header: 'Recursos',
 			render: (template) => {
 				const features = [];
 				if (template.supportsCoupons) features.push('Cupons');
@@ -339,42 +318,119 @@ export function TemplatesTable({ initialFilters }: TemplatesTableProps) {
 		</>
 	);
 
-	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={PaintBoardIcon} size={24} />}
-				title="Templates de Checkout"
-				description="Gerencie os templates disponíveis para checkouts."
-				action={{
-					label: 'Novo Template',
-					icon: <Icon icon={Image01Icon} className="icon-sm" />,
-					onPress: actions.goToNew,
-				}}
-			/>
+	const itemsList = data.templates.items;
+	const totalTemplates = data.templates.totalItems;
+	const activeTemplates = itemsList.filter((t) => t.isActive).length;
+	const freeTemplates = itemsList.filter((t) => t.isFree).length;
 
-			<DataTable
-				columns={columns}
-				data={data.templates.items}
-				keyExtractor={(template) => template.id}
-				isLoading={data.isLoading}
-				skeletonRows={filters.values.pageSize ?? 10}
-				emptyMessage="Nenhum template encontrado"
-				minWidth="min-w-250"			renderMobileCard={renderMobileTemplateCard}				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.clear,
-					onRefresh: filters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.templates.page,
-					pageSize: data.templates.pageSize,
-					totalItems: data.templates.totalItems,
-					totalPages: data.templates.totalPages,
-					onPageChange: (page) => filters.update({ page }),
-					isNavigating: data.isLoading,
-				}}
-			/>
+	return (
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={PaintBoardIcon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Templates de Checkout</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gerenciamento de temas visuais, layouts de alta conversão e preços de templates
+					</p>
+				</div>
+
+				<button
+					type="button"
+					onClick={actions.goToNew}
+					className="button-primary cursor-pointer text-xs"
+				>
+					<Icon icon={Add01Icon} className="icon-xs" />
+					<span>+ Novo Template</span>
+				</button>
+			</div>
+
+			{/* 3-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total de Templates
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={PaintBoardIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalTemplates} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Layouts no catálogo</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Templates Ativos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={activeTemplates} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Disponíveis para merchants</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Gratuitos / Padrão
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={PaintBoardIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={freeTemplates} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Sem cobrança adicional</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.templates.items}
+					keyExtractor={(template) => template.id}
+					isLoading={data.isLoading}
+					skeletonRows={filters.values.pageSize ?? 10}
+					emptyMessage="Nenhum template encontrado"
+					minWidth="min-w-250"
+					renderMobileCard={renderMobileTemplateCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.clear,
+						onRefresh: filters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.templates.page,
+						pageSize: data.templates.pageSize,
+						totalItems: data.templates.totalItems,
+						totalPages: data.templates.totalPages,
+						onPageChange: (page) => filters.update({ page }),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			<TemplateModal
 				isOpen={modals.details.isOpen}

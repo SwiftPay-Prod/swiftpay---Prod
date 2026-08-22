@@ -273,10 +273,14 @@ export function AcquirerDetails({ acquirer, currentUserRole }: AcquirerDetailsPr
 				backLabel="Voltar para processadoras"
 				actions={
 					currentUserRole === UserRole.God && (
-						<Button variant="danger" onPress={() => setIsDeleteModalOpen(true)}>
-							<Icon icon={Delete02Icon} className="icon-sm" />
-							Deletar
-						</Button>
+						<button
+							type="button"
+							onClick={() => setIsDeleteModalOpen(true)}
+							className="button-outline-dark cursor-pointer text-xs border-[#e23b4a]/40 text-[#e23b4a] hover:bg-[#e23b4a]/10"
+						>
+							<Icon icon={Delete02Icon} className="icon-xs" />
+							<span>Deletar Processadora</span>
+						</button>
 					)
 				}
 			/>

@@ -61,6 +61,77 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Verificação:
     - Impeccable scanner: 0 erros e 0 alertas de anti-pattern ou contraste (`[]`).
     - Next.js build: 68 rotas compiladas com sucesso em 2.1min sem erros.
+
+- `DONE` Spec: #106 / Issue: #107 — reconstrução arquitetural global no padrão Revolut 10 / Ultra (Lotes 1, 2 e 3).
+  - Diagnóstico: Telas críticas do Admin (Saldos da Plataforma, Processadoras PIX & PixHub, Saques de Comissões de Indicações, Pedidos do Merchant, Contas de Saque, Transações Globais, Payouts, Conciliações, Logs e Indique & Ganhe) mantinham cards genéricos ou resquícios de classes antigas sem a densidade de cartões elevados em grafite `#16181a`, insets aninhados `#0a0a0a`, 1px hairlines `border-white/12`, botões em pílula e tipografia monospace tabular.
+  - Implementado:
+    - **Lote 1**:
+      - `platform-balances.tsx` & `platform-balances-mobile.tsx`: Executive Header com squircle `BankIcon`, 4-Tile KPI Grid (Disponível, Taxas de Saque, Líquido, Total Sacado), seções de resumo em insets `#0a0a0a` dentro de `#16181a`, validação de consistência e lista de adquirentes com status semântico.
+      - `acquirers-table.tsx`: Executive Header com squircle `ServerStack01Icon`, 3-Tile KPI Grid (Total Cadastradas, Operando PIX SPI, Organizações), conformidade estrita com R11 (PIX-Only: remoção de boletos/cartões), `RevolutStatusBadge` e modal de criação em recibo elevado.
+      - `acquirer-ranking-list.tsx`: Executive Header, 3-Tile KPI Grid (Líder de Conversão, Taxa Média, Transações Auditadas), cards em `#0a0a0a` e modal de cálculo de score estilizado.
+      - `acquirer-access-accounts-tab.tsx`: Executive Header, 2-Tile KPI Grid, envoltório `#16181a` para a tabela de credenciais.
+      - `referral-withdrawal-requests-table.tsx` & `referrals-table.tsx`: Executive Header `Wallet01Icon`, 3-Tile KPI Grid (Total Pedidos, Aguardando Liberação, Volume Total), tabela elevada e `RevolutStatusBadge`.
+      - `orders-table.tsx` & `order-details-modal.tsx`: Modal elevado em recibo `#16181a` com insets `#0a0a0a`, remoção de referências legadas de cartão (R11 PIX-Only) e formatação tabular mono.
+    - **Lote 2**:
+      - `transactions-table.tsx`: Executive Header `QrCodeIcon`, 4-Tile KPI Grid (Volume na Página, Transações Concluídas, Taxa de Conversão, Lucro da Plataforma), tabela elevada e `RevolutStatusBadge`.
+      - `platform-payouts-table.tsx` & `cashouts-table.tsx`: Executive Header, grids de KPIs de alto contraste, tabela de repasses e `RevolutStatusBadge`.
+      - `platform-payout-accounts-table.tsx`: Executive Header, 2-Tile KPI Grid, mascaramento seguro e tabela elevada.
+      - `reconciliations-table.tsx`: Executive Header `Audit01Icon`, 3-Tile KPI Grid (Total, Com Divergências, Sem Divergências) e container elevado `#16181a`.
+      - `logs-table.tsx`: Executive Header `File01Icon`, container elevado `#16181a` e modais detalhados de auditoria.
+    - **Lote 3**:
+      - `referrals-content.tsx`: Executive Header `UserGroupIcon`, 4-Tile KPI Grid (Disponível, Estimada, Já Paga, Indicados), cards com insets `#0a0a0a` e painéis de regras operacionais.
+  - Verificação:
+    - Next.js Turbopack build: 68 rotas estáticas e dinâmicas compiladas com sucesso sem qualquer erro.
+  - Arquivos alterados (49 arquivos — 100% das telas principais, secundárias e skeletons):
+    - `src/app/panel/(main)/admin/balances/platform-balances.tsx`
+    - `src/app/panel/(main)/admin/balances/platform-balances-mobile.tsx`
+    - `src/app/panel/(main)/admin/acquirers/acquirers-table.tsx`
+    - `src/app/panel/(main)/admin/acquirers/acquirer-ranking/acquirer-ranking-list.tsx`
+    - `src/app/panel/(main)/admin/acquirers/access-accounts/acquirer-access-accounts-tab.tsx`
+    - `src/app/panel/(main)/admin/acquirers/[id]/acquirer-details.tsx`
+    - `src/app/panel/(main)/admin/acquirers/acquirers-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/referrals/referrals-table.tsx`
+    - `src/app/panel/(main)/admin/referrals/referral-withdrawal-requests-table.tsx`
+    - `src/app/panel/(main)/merchant/orders/orders-table.tsx`
+    - `src/app/panel/(main)/merchant/orders/orders-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/orders/modals/order-details-modal.tsx`
+    - `src/app/panel/(main)/admin/transactions/transactions-table.tsx`
+    - `src/app/panel/(main)/admin/transactions/transactions-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/platform-payouts/platform-payouts-table.tsx`
+    - `src/app/panel/(main)/admin/payouts/cashouts-table.tsx`
+    - `src/app/panel/(main)/admin/payouts/payouts-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/platform-payout-accounts/platform-payout-accounts-table.tsx`
+    - `src/app/panel/(main)/admin/reconciliations/reconciliations-table.tsx`
+    - `src/app/panel/(main)/admin/logs/logs-table.tsx`
+    - `src/app/panel/(main)/admin/logs/logs-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/dashboard/admin-dashboard.tsx`
+    - `src/app/panel/(main)/admin/templates/templates-table.tsx`
+    - `src/app/panel/(main)/admin/templates/templates-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/merchants/[id]/merchant-details.tsx`
+    - `src/app/panel/(main)/admin/merchants/merchants-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/users/users-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/fees/fees-content.tsx`
+    - `src/app/panel/(main)/merchant/integrations/integrations-content.tsx`
+    - `src/app/panel/(main)/merchant/email-templates/email-templates-content.tsx`
+    - `src/app/panel/(main)/merchant/checkouts/checkouts-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/customers/customers-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/coupons/coupons-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/cashouts/cashouts-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/balance-history/balance-history-table-skeleton.tsx`
+    - `src/app/panel/(main)/merchant/review/review-content.tsx`
+    - `src/app/panel/(main)/merchant/settings/settings-content.tsx`
+    - `src/app/panel/(main)/merchant/transactions/transactions-table-skeleton.tsx`
+    - `src/app/panel/(main)/notifications/notifications-content.tsx`
+    - `src/app/panel/(main)/notifications/notifications-skeleton.tsx`
+    - `src/app/panel/(main)/profile/profile-skeleton.tsx`
+    - `src/app/panel/(main)/profile/profile-wrapper.tsx`
+    - `src/app/panel/(main)/bulletins/bulletins-content.tsx`
+    - `src/app/panel/(main)/bulletins/bulletins-skeleton.tsx`
+    - `src/app/panel/(main)/achievements/achievements-page-skeleton.tsx`
+    - `src/app/panel/(main)/help/page.tsx`
+    - `src/app/panel/(main)/referrals/referrals-content.tsx`
+    - `src/app/panel/(main)/user-settings/page.tsx`
+    - `TODOS.md`
 ## Governança universal de contexto
 
 - `DONE` Criar `AGENTS.md` como entrada obrigatória para todos os agentes.

@@ -12,7 +12,7 @@ import {
 	ArrowReloadHorizontalIcon,
 	RepeatIcon,
 	DashboardCircleIcon,
-	CreditCardIcon,
+	QrCodeIcon,
 	UserGroupIcon,
 	Wallet03Icon,
 	UserIcon,
@@ -203,10 +203,14 @@ export function MerchantDetails({
 
 	const actionsContent = (
 		<div className="flex items-center gap-2">
-			<Button variant="secondary" size="sm" onPress={handleViewOwnerUser}>
-				<Icon icon={UserIcon} className="icon-sm" />
-				Ver usuário dono
-			</Button>
+			<button
+				type="button"
+				onClick={handleViewOwnerUser}
+				className="button-outline-dark cursor-pointer text-xs"
+			>
+				<Icon icon={UserIcon} className="icon-xs" />
+				<span>Ver usuário dono</span>
+			</button>
 			<MerchantActionsDropdown
 				merchant={{
 					id: merchant.id,
@@ -233,11 +237,10 @@ export function MerchantDetails({
 		{ id: 'balances', label: 'Saldos', icon: <Icon icon={Money02Icon} className="icon-sm" /> },
 		{ id: 'reconciliation', label: 'Reconciliação', icon: <Icon icon={RepeatIcon} className="icon-sm" /> },
 		{ id: 'dashboard', label: 'Dashboard', icon: <Icon icon={DashboardCircleIcon} className="icon-sm" /> },
-		{ id: 'transactions', label: 'Transações', icon: <Icon icon={CreditCardIcon} className="icon-sm" /> },
+		{ id: 'transactions', label: 'Transações', icon: <Icon icon={QrCodeIcon} className="icon-sm" /> },
 		{ id: 'customers', label: 'Clientes', icon: <Icon icon={UserGroupIcon} className="icon-sm" /> },
 		{ id: 'cashouts', label: 'Saques', icon: <Icon icon={Wallet03Icon} className="icon-sm" /> },
 	];
-
 	return (
 		<div className="flex flex-col gap-6">
 			<FormPageHeader

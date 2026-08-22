@@ -4,7 +4,6 @@ import { Suspense, use, useState, type ReactNode } from 'react';
 import { Button, Chip, Modal, Tooltip } from '@heroui/react';
 import { Clock01Icon, File01Icon, Mail01Icon, TextFontIcon, UserCircle02Icon, ViewIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import { DataTable } from '@/components/ui/data-table';
 import type { DataTableColumn, DataTableFiltersProps } from '@/components/ui/data-table';
 import { SearchFilter } from '@/components/ui/search-filter';
@@ -1289,13 +1288,19 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 
 	if (logType === 'Profiler') {
 		return (
-			<div className="flex flex-col gap-4">
-				<PageHeader
-					icon={<Icon icon={File01Icon} size={24} />}
-					title="Logs"
-					description="Auditoria de erros e eventos da plataforma."
-				/>
-				<div className="rounded-lg border border-content2 bg-surface">
+			<div className="flex flex-col gap-6 text-white">
+				<div className="flex items-center gap-3 border-b border-white/10 pb-5">
+					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={File01Icon} className="icon-sm text-[#4f55f1]" />
+					</div>
+					<div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Logs do Sistema</h1>
+						<p className="text-xs text-white/50 mt-0.5">
+							Auditoria técnica de requisições de API, segurança, notificações e profiler
+						</p>
+					</div>
+				</div>
+				<div className="rounded-[24px] border border-white/12 bg-[#16181a] overflow-hidden">
 					<div className="border-b border-content2 px-4 pt-4 pb-0">
 						<InternalTabs
 							ariaLabel="Tipos de logs"
@@ -1467,35 +1472,47 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 	};
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={File01Icon} size={24} />}
-				title="Logs"
-				description="Auditoria de erros e eventos da plataforma."
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={File01Icon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Logs do Sistema</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Auditoria técnica de requisições de API, segurança, notificações e webhooks de adquirentes
+					</p>
+				</div>
+			</div>
 
-			<Suspense
-				fallback={
-					<LogsTableFallback
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<Suspense
+					fallback={
+						<LogsTableFallback
+							columns={columns}
+							minWidth={minWidth}
+							pageSize={Number(filterState.values.pageSize)}
+							filters={dataTableFilters}
+						/>
+					}
+				>
+					<LogsTableContent
+						fetchPromise={fetchPromise!}
 						columns={columns}
 						minWidth={minWidth}
-						pageSize={Number(filterState.values.pageSize)}
+						changePage={actions.changePage}
+						onSortChange={actions.handleSortChange}
+						sortBy={filterState.values.sortBy}
+						sortOrder={filterState.values.sortOrder}
+						isPending={isPending}
 						filters={dataTableFilters}
 					/>
-				}
-			>
-				<LogsTableContent
-					fetchPromise={fetchPromise!}
-					columns={columns}
-					minWidth={minWidth}
-					changePage={actions.changePage}
-					onSortChange={actions.handleSortChange}
-					sortBy={filterState.values.sortBy}
-					sortOrder={filterState.values.sortOrder}
-					isPending={isPending}
-					filters={dataTableFilters}
-				/>
-			</Suspense>
+				</Suspense>
+			</div>
 
 			{logType === 'Security' && (
 				<SecurityLogDetailsModal log={selectedLog} isOpen={isDetailsOpen} onOpenChange={setDetailsOpen} />
