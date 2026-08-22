@@ -150,12 +150,12 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 					Depois de confirmar, entre com E-mail para acessar o painel.
 				</p>
 				<div className="flex flex-col gap-2">
-					<Button variant="primary" onPress={() => router.push(Routes.verifyEmail)}>
+					<button type="button" onClick={() => router.push(Routes.verifyEmail)} className="button-primary w-full py-3">
 						Ir para página de verificação
-					</Button>
-					<Button variant="tertiary" onPress={onSwitchToSignIn}>
+					</button>
+					<button type="button" onClick={onSwitchToSignIn} className="button-outline-dark w-full py-3">
 						Já verifiquei, quero entrar
-					</Button>
+					</button>
 				</div>
 			</div>
 		);
@@ -241,10 +241,22 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 					</InputGroup>
 				</TextField>
 
-				<AsyncButton type="submit" variant="primary" isPending={isLoading} isDisabled={Boolean(refCode && (isReferralLoading || referralError || !isReferralValid))} className="w-full">
+				<Button
+					type="submit"
+					isPending={isLoading}
+					isDisabled={Boolean(refCode && (isReferralLoading || referralError || !isReferralValid))}
+					className="button-primary w-full py-3 text-sm font-bold cursor-pointer"
+				>
 					Criar Conta com E-mail
-				</AsyncButton>
+				</Button>
 			</form>
+
+			<div className="text-center text-sm">
+				<span className="text-white/40">Já tem uma conta? </span>
+				<button type="button" onClick={onSwitchToSignIn} className="text-white hover:text-white/80 underline-offset-4 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm font-bold">
+					Entrar no Painel
+				</button>
+			</div>
 		</div>
 	);
 }

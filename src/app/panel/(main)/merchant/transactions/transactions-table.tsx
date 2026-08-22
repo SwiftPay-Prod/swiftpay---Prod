@@ -243,17 +243,14 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 
 					{canResendWebhook(payment) && (
 						<Dropdown>
-							<Tooltip>
-								<button
-									type="button"
-									disabled={resendingWebhookId === payment.id}
-									aria-label="Mais ações"
-									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
-								>
-									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-								</button>
-								<Tooltip.Content>Mais ações</Tooltip.Content>
-							</Tooltip>
+							<Button
+								isIconOnly
+								isDisabled={resendingWebhookId === payment.id}
+								aria-label="Mais ações"
+								className="h-8 w-8 min-w-8 rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
+								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
+							</Button>
 							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 								<Dropdown.Menu aria-label="Ações da transação">
 									<Dropdown.Item id="resend-webhook" textValue="Reenviar webhook" className="text-white hover:bg-white/10" onPress={() => onResendWebhook(payment)}>

@@ -201,36 +201,35 @@ body {
 		--input: #e5e5e5;
 
 		/* ── Brand ── */
-		--brand: #4a8a00;
-		--brand-soft: color-mix(in srgb, #4a8a00 10%, transparent);
-		--accent: #5aab00;
+		--brand: #494fdf;
+		--brand-soft: rgba(73, 79, 223, 0.1);
+		--accent: #494fdf;
 		--accent-foreground: #ffffff;
 
 		/* ── Primary ── */
-		--primary: #4a8a00;
+		--primary: #494fdf;
 		--primary-foreground: #ffffff;
 
 		/* ── Secondary ── */
 		--secondary: #f0f0f0;
 		--secondary-foreground: #111111;
-		--secondary-soft: color-mix(in srgb, #4a8a00 8%, transparent);
-		--secondary-soft-hover: color-mix(in srgb, #4a8a00 14%, transparent);
+		--secondary-soft: rgba(73, 79, 223, 0.08);
+		--secondary-soft-hover: rgba(73, 79, 223, 0.14);
 
 		/* ── Semantic ── */
-		--success: #4a8a00;
+		--success: #00a87e;
 		--success-foreground: #ffffff;
-		--danger: #d93636;
+		--danger: #e23b4a;
 		--danger-foreground: #ffffff;
-		--warning: #d97706;
+		--warning: #ec7e00;
 		--warning-foreground: #ffffff;
-		--destructive: #d93636;
+		--destructive: #e23b4a;
 		--destructive-foreground: #ffffff;
 
 		/* ── Focus ── */
-		--focus: #4a8a00;
-		--ring: #4a8a00;
-		--link: #4a8a00;
-
+		--focus: #494fdf;
+		--ring: rgba(73, 79, 223, 0.3);
+		--link: #494fdf;
 		/* ── Fields ── */
 		--field-background: #ffffff;
 		--field-foreground: #111111;
@@ -270,20 +269,19 @@ body {
 		/* ── Sidebar ── */
 		--sidebar: #f5f5f5;
 		--sidebar-foreground: #111111;
-		--sidebar-primary: #4a8a00;
+		--sidebar-primary: #494fdf;
 		--sidebar-primary-foreground: #ffffff;
 		--sidebar-accent: #eeeeee;
-		--sidebar-accent-foreground: #4a8a00;
+		--sidebar-accent-foreground: #494fdf;
 		--sidebar-border: #e5e5e5;
-		--sidebar-ring: #4a8a00;
+		--sidebar-ring: rgba(73, 79, 223, 0.3);
 
 		/* ── Charts ── */
-		--chart-1: #5aab00;
-		--chart-2: #4a8a00;
-		--chart-3: #3a6e00;
-		--chart-4: #2a5200;
-		--chart-5: #1a3500;
-
+		--chart-1: #494fdf;
+		--chart-2: #00a87e;
+		--chart-3: #4f55f1;
+		--chart-4: #ec7e00;
+		--chart-5: #e23b4a;
 		--radius: 0.375rem;
 		--field-radius: 0.375rem;
 
@@ -293,61 +291,59 @@ body {
 	.dark,
 	[data-theme='dark'] {
 		color-scheme: dark;
-		/* ── Surface scale (4 steps, no gradients) ── */
-		--background: #0d0d0d;          /* Base — ink black */
-		--surface: #111111;             /* Sidebar / elevated base */
-		--card: #161616;                /* Card — 1 step above base */
-		--popover: #1c1c1c;             /* Popover / dropdown */
-		--overlay: #1c1c1c;
+		/* ── Surface scale (Revolut 10 / Ultra: True black + elevated graphite) ── */
+		--background: #000000;          /* Base — true black */
+		--surface: #16181a;             /* Elevated base / cards */
+		--card: #16181a;                /* Elevated card */
+		--popover: #1c1c1e;             /* Popover / dropdown */
+		--overlay: #1c1c1e;
 
 		/* ── Foreground scale ── */
-		--foreground: #ededed;          /* Primary text — near white */
-		--card-foreground: #ededed;
-		--popover-foreground: #ededed;
-		--overlay-foreground: #ededed;
-		--surface-foreground: #ededed;
+		--foreground: #ffffff;          /* Primary text — crisp white */
+		--card-foreground: #ffffff;
+		--popover-foreground: #ffffff;
+		--overlay-foreground: #ffffff;
+		--surface-foreground: #ffffff;
 
 		/* ── Muted / secondary text ── */
-		--muted: #1a1a1a;
-		--muted-foreground: #888888;    /* Stripe-style secondary — readable, not loud */
+		--muted: #111111;
+		--muted-foreground: rgba(255, 255, 255, 0.6);    /* Revolut secondary text */
 
-		/* ── Borders — 3 levels of depth ── */
-		--border: #222222;              /* Default border */
-		--separator: #1e1e1e;
-		--input: #1e1e1e;
+		/* ── Borders — 1px hairline depth ── */
+		--border: rgba(255, 255, 255, 0.12);              /* Default 1px hairline border */
+		--separator: rgba(255, 255, 255, 0.08);
+		--input: rgba(255, 255, 255, 0.12);
 
-		/* ── Brand / accent — SwiftPay Lime ── */
-		--brand: #9eff00;               /* Punchy lime — used sparingly */
-		--brand-soft: color-mix(in srgb, #9eff00 10%, transparent);
-		--accent: #9eff00;
-		--accent-foreground: #0d0d0d;
+		/* ── Brand / accent — Revolut Cobalt & Ultra Palette ── */
+		--brand: #494fdf;               /* Cobalt-violet brand */
+		--brand-soft: rgba(73, 79, 223, 0.15);
+		--accent: #494fdf;
+		--accent-foreground: #ffffff;
 
-		/* ── Primary action ── */
-		--primary: #9eff00;
-		--primary-foreground: #0d0d0d;
+		/* ── Primary action (Crisp white pill) ── */
+		--primary: #ffffff;
+		--primary-foreground: #000000;
 
 		/* ── Secondary surface ── */
-		--secondary: #1e1e1e;
-		--secondary-foreground: #ededed;
-		--secondary-soft: color-mix(in srgb, #9eff00 8%, transparent);
-		--secondary-soft-hover: color-mix(in srgb, #9eff00 14%, transparent);
+		--secondary: #16181a;
+		--secondary-foreground: #ffffff;
+		--secondary-soft: rgba(255, 255, 255, 0.08);
+		--secondary-soft-hover: rgba(255, 255, 255, 0.14);
 
 		/* ── Semantic ── */
-		--success: #9eff00;
-		--success-foreground: #0d0d0d;
-		--danger: #f04444;
+		--success: #00a87e;             /* Revolut emerald green for SPI / Inflow */
+		--success-foreground: #ffffff;
+		--danger: #e23b4a;              /* Revolut accent danger */
 		--danger-foreground: #ffffff;
-		--warning: #f5a623;
-		--warning-foreground: #0d0d0d;
-		--destructive: #f04444;
+		--warning: #ec7e00;             /* Revolut warning */
+		--warning-foreground: #ffffff;
+		--destructive: #e23b4a;
 		--destructive-foreground: #ffffff;
 
 		/* ── Focus / ring ── */
-		--focus: #9eff00;
-		--ring: #9eff00;
-		--link: #9eff00;
-
-		/* ── Fields ── */
+		--focus: #494fdf;
+		--ring: rgba(255, 255, 255, 0.2);
+		--link: #4f55f1;
 		--field-background: #161616;
 		--field-foreground: #ededed;
 		--field-placeholder: #555555;
@@ -386,35 +382,33 @@ body {
 		--default-900: #f5f5f5;
 
 		/* ── HeroUI Content ── */
-		--content1: #161616;
-		--content1-foreground: #ededed;
-		--content2: #1a1a1a;
-		--content2-foreground: #ededed;
-		--content3: #222222;
-		--content3-foreground: #ededed;
-		--content4: #2a2a2a;
-		--content4-foreground: #ededed;
+		--content1: #16181a;
+		--content1-foreground: #ffffff;
+		--content2: #0a0a0a;
+		--content2-foreground: #ffffff;
+		--content3: #1a1a1c;
+		--content3-foreground: #ffffff;
+		--content4: #222226;
+		--content4-foreground: #ffffff;
 
 		/* ── Sidebar tokens ── */
-		--sidebar: #0d0d0d;
-		--sidebar-foreground: #ededed;
-		--sidebar-primary: #9eff00;
-		--sidebar-primary-foreground: #0d0d0d;
-		--sidebar-accent: #161616;
-		--sidebar-accent-foreground: #9eff00;
-		--sidebar-border: #1e1e1e;
-		--sidebar-ring: #9eff00;
+		--sidebar: #000000;
+		--sidebar-foreground: #ffffff;
+		--sidebar-primary: #ffffff;
+		--sidebar-primary-foreground: #000000;
+		--sidebar-accent: #16181a;
+		--sidebar-accent-foreground: #ffffff;
+		--sidebar-border: rgba(255, 255, 255, 0.12);
+		--sidebar-ring: rgba(255, 255, 255, 0.2);
 
 		/* ── Charts ── */
-		--chart-1: #9eff00;
-		--chart-2: #6bc800;
-		--chart-3: #4a9100;
-		--chart-4: #2f5e00;
-		--chart-5: #1a3500;
-
-		--radius: 0.375rem;
+		--chart-1: #494fdf;
+		--chart-2: #00a87e;
+		--chart-3: #4f55f1;
+		--chart-4: #ec7e00;
+		--chart-5: #e23b4a;
+		--radius: 0.5rem;
 	}
-
 	* {
 		scrollbar-width: thin;
 		scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
@@ -1119,66 +1113,66 @@ body {
 	--card-foreground: #111111;
 	--popover: #ffffff;
 	--popover-foreground: #111111;
-	--primary: #4a8a00;
+	--primary: #494fdf;
 	--primary-foreground: #ffffff;
 	--secondary: #f0f0f0;
 	--secondary-foreground: #111111;
 	--muted: #f3f3f3;
 	--muted-foreground: #666666;
-	--accent: #5aab00;
+	--accent: #494fdf;
 	--accent-foreground: #ffffff;
-	--destructive: #d93636;
+	--destructive: #e23b4a;
 	--border: #e5e5e5;
 	--input: #e5e5e5;
-	--ring: #4a8a00;
-	--chart-1: #5aab00;
-	--chart-2: #4a8a00;
-	--chart-3: #3a6e00;
-	--chart-4: #2a5200;
-	--chart-5: #1a3500;
+	--ring: rgba(73, 79, 223, 0.3);
+	--chart-1: #494fdf;
+	--chart-2: #00a87e;
+	--chart-3: #4f55f1;
+	--chart-4: #ec7e00;
+	--chart-5: #e23b4a;
 	--radius: 0.375rem;
 	--sidebar: #f5f5f5;
 	--sidebar-foreground: #111111;
-	--sidebar-primary: #4a8a00;
+	--sidebar-primary: #494fdf;
 	--sidebar-primary-foreground: #ffffff;
 	--sidebar-accent: #eeeeee;
-	--sidebar-accent-foreground: #4a8a00;
+	--sidebar-accent-foreground: #494fdf;
 	--sidebar-border: #e5e5e5;
-	--sidebar-ring: #4a8a00;
+	--sidebar-ring: rgba(73, 79, 223, 0.3);
 }
 
 .dark {
-	--background: #0d0d0d;
-	--foreground: #ededed;
-	--card: #161616;
-	--card-foreground: #ededed;
-	--popover: #1c1c1c;
-	--popover-foreground: #ededed;
-	--primary: #9eff00;
-	--primary-foreground: #0d0d0d;
-	--secondary: #1e1e1e;
-	--secondary-foreground: #ededed;
-	--muted: #1a1a1a;
-	--muted-foreground: #888888;
-	--accent: #9eff00;
-	--accent-foreground: #0d0d0d;
-	--destructive: #f04444;
-	--border: #222222;
-	--input: #1e1e1e;
-	--ring: #9eff00;
-	--chart-1: #9eff00;
-	--chart-2: #6bc800;
-	--chart-3: #4a9100;
-	--chart-4: #2f5e00;
-	--chart-5: #1a3500;
-	--sidebar: #0d0d0d;
-	--sidebar-foreground: #ededed;
-	--sidebar-primary: #9eff00;
-	--sidebar-primary-foreground: #0d0d0d;
-	--sidebar-accent: #161616;
-	--sidebar-accent-foreground: #9eff00;
-	--sidebar-border: #1e1e1e;
-	--sidebar-ring: #9eff00;
+	--background: #000000;
+	--foreground: #ffffff;
+	--card: #16181a;
+	--card-foreground: #ffffff;
+	--popover: #1c1c1e;
+	--popover-foreground: #ffffff;
+	--primary: #ffffff;
+	--primary-foreground: #000000;
+	--secondary: #16181a;
+	--secondary-foreground: #ffffff;
+	--muted: #111111;
+	--muted-foreground: rgba(255, 255, 255, 0.6);
+	--accent: #494fdf;
+	--accent-foreground: #ffffff;
+	--destructive: #e23b4a;
+	--border: rgba(255, 255, 255, 0.12);
+	--input: rgba(255, 255, 255, 0.12);
+	--ring: rgba(255, 255, 255, 0.2);
+	--chart-1: #494fdf;
+	--chart-2: #00a87e;
+	--chart-3: #4f55f1;
+	--chart-4: #ec7e00;
+	--chart-5: #e23b4a;
+	--sidebar: #000000;
+	--sidebar-foreground: #ffffff;
+	--sidebar-primary: #ffffff;
+	--sidebar-primary-foreground: #000000;
+	--sidebar-accent: #16181a;
+	--sidebar-accent-foreground: #ffffff;
+	--sidebar-border: rgba(255, 255, 255, 0.12);
+	--sidebar-ring: rgba(255, 255, 255, 0.2);
 }
 
 .text-muted {

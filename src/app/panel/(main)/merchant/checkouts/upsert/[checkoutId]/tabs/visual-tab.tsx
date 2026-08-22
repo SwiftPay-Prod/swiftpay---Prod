@@ -48,19 +48,18 @@ interface VisualTabProps {
 }
 
 const PRESET_COLORS = [
+	{ name: 'Cobalto', hex: '#494fdf', dark: '#3a40c4' },
+	{ name: 'Esmeralda', hex: '#00a87e', dark: '#008a67' },
 	{ name: 'Azul', hex: '#3B82F6', dark: '#1D4ED8' },
 	{ name: 'Roxo', hex: '#8B5CF6', dark: '#6D28D9' },
 	{ name: 'Rosa', hex: '#EC4899', dark: '#BE185D' },
-	{ name: 'Verde', hex: '#10B981', dark: '#047857' },
 	{ name: 'Laranja', hex: '#F59E0B', dark: '#D97706' },
 	{ name: 'Vermelho', hex: '#EF4444', dark: '#B91C1C' },
-	{ name: 'Ciano', hex: '#06B6D4', dark: '#0E7490' },
 	{ name: 'Índigo', hex: '#6366F1', dark: '#4338CA' },
 ];
 
-const PRIMARY_DEFAULT = '#059669';
-const SECONDARY_DEFAULT = '#525252';
-
+const PRIMARY_DEFAULT = '#494fdf';
+const SECONDARY_DEFAULT = '#16181a';
 function GradientPreviewLarge({
 	primaryColor,
 	secondaryColor,

@@ -79,45 +79,45 @@ func main() {
 	};
 
 	return (
-		<section id="developer" className="relative py-16 sm:py-24 bg-[#0B0E14] border-t border-border/40">
+		<section id="developer" className="relative py-16 sm:py-24 bg-[#000000] border-t border-white/10 text-white">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 					
 					{/* Text Column */}
 					<div className="lg:col-span-5 space-y-6">
-						<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border/80 bg-surface-secondary text-xs font-semibold text-[#A3E635]">
+						<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-semibold text-[#4f55f1]">
 							<Icon icon={CodeIcon} className="w-3.5 h-3.5" />
-							<span>DEVELOPER EXPERIENCE</span>
+							<span className="font-mono">DEVELOPER EXPERIENCE</span>
 						</div>
 
-						<h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+						<h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
 							Integre o PIX em Poucas Linhas de Código.
 						</h2>
 
-						<p className="text-base text-muted-foreground leading-relaxed">
+						<p className="text-base text-white/60 leading-relaxed">
 							API RESTful padronizada com especificação OpenAPI 3.0, SDKs para as principais linguagens e documentação interativa em tema dark.
 						</p>
 
 						<div className="space-y-3 pt-2">
 							<div className="flex items-center gap-3">
-								<div className="h-2 w-2 rounded-full bg-[#A3E635]" />
-								<span className="text-sm font-semibold text-foreground">Ambiente Sandbox gratuito para testes</span>
+								<div className="h-2 w-2 rounded-full bg-[#00a87e]" />
+								<span className="text-sm font-semibold text-white">Ambiente Sandbox gratuito para testes</span>
 							</div>
 							<div className="flex items-center gap-3">
-								<div className="h-2 w-2 rounded-full bg-[#A3E635]" />
-								<span className="text-sm font-semibold text-foreground">Webhooks assinados por HMAC SHA-256</span>
+								<div className="h-2 w-2 rounded-full bg-[#00a87e]" />
+								<span className="text-sm font-semibold text-white">Webhooks assinados por HMAC SHA-256</span>
 							</div>
 							<div className="flex items-center gap-3">
-								<div className="h-2 w-2 rounded-full bg-[#A3E635]" />
-								<span className="text-sm font-semibold text-foreground">Especificação pública OpenAPI / Scalar UI</span>
+								<div className="h-2 w-2 rounded-full bg-[#00a87e]" />
+								<span className="text-sm font-semibold text-white">Especificação pública OpenAPI / Scalar UI</span>
 							</div>
 						</div>
 
 						<div className="pt-4">
 							<Link
 								href="/docs"
-								className="inline-flex items-center gap-2 rounded-xl bg-surface-secondary border border-border px-5 py-3 text-sm font-semibold text-foreground hover:border-[#A3E635] hover:text-[#A3E635] transition-all"
+								className="inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/12 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 hover:border-white/20 transition-all"
 							>
 								<span>Explorar Documentação Completa</span>
 								<Icon icon={ArrowUpRight01Icon} className="w-4 h-4" />
@@ -127,18 +127,18 @@ func main() {
 
 					{/* Terminal / Code Editor Column */}
 					<div className="lg:col-span-7">
-						<div className="rounded-2xl border border-[#1E2638] bg-[#090C10] shadow-2xl overflow-hidden">
+						<div className="rounded-2xl border border-white/12 bg-[#0a0a0a] shadow-2xl overflow-hidden">
 							
 							{/* Code Header Bar */}
-							<div className="flex items-center justify-between border-b border-[#1E2638] bg-[#121721] px-4 py-3">
+							<div className="flex items-center justify-between border-b border-white/10 bg-[#16181a] px-4 py-3">
 								<div className="flex items-center space-x-2">
 									<button
 										type="button"
 										onClick={() => setActiveLang('curl')}
 										className={`px-3 py-1 text-xs font-mono font-bold rounded-md transition-colors ${
 											activeLang === 'curl'
-												? 'bg-[#A3E635] text-[#0B0E14]'
-												: 'text-muted-foreground hover:text-foreground'
+												? 'bg-white text-black'
+												: 'text-white/60 hover:text-white'
 										}`}
 									>
 										cURL
@@ -148,8 +148,8 @@ func main() {
 										onClick={() => setActiveLang('node')}
 										className={`px-3 py-1 text-xs font-mono font-bold rounded-md transition-colors ${
 											activeLang === 'node'
-												? 'bg-[#A3E635] text-[#0B0E14]'
-												: 'text-muted-foreground hover:text-foreground'
+												? 'bg-white text-black'
+												: 'text-white/60 hover:text-white'
 										}`}
 									>
 										Node.js / TS
@@ -159,8 +159,8 @@ func main() {
 										onClick={() => setActiveLang('python')}
 										className={`px-3 py-1 text-xs font-mono font-bold rounded-md transition-colors ${
 											activeLang === 'python'
-												? 'bg-[#A3E635] text-[#0B0E14]'
-												: 'text-muted-foreground hover:text-foreground'
+												? 'bg-white text-black'
+												: 'text-white/60 hover:text-white'
 										}`}
 									>
 										Python
@@ -170,8 +170,8 @@ func main() {
 										onClick={() => setActiveLang('go')}
 										className={`px-3 py-1 text-xs font-mono font-bold rounded-md transition-colors ${
 											activeLang === 'go'
-												? 'bg-[#A3E635] text-[#0B0E14]'
-												: 'text-muted-foreground hover:text-foreground'
+												? 'bg-white text-black'
+												: 'text-white/60 hover:text-white'
 										}`}
 									>
 										Go
@@ -181,9 +181,9 @@ func main() {
 								<button
 									type="button"
 									onClick={handleCopy}
-									className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+									className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors cursor-pointer"
 								>
-									<Icon icon={copied ? CheckmarkCircle02Icon : Copy01Icon} className="w-3.5 h-3.5 text-[#A3E635]" />
+									<Icon icon={copied ? CheckmarkCircle02Icon : Copy01Icon} className="w-3.5 h-3.5 text-[#4f55f1]" />
 									<span>{copied ? 'Copiado!' : 'Copiar'}</span>
 								</button>
 							</div>
@@ -196,12 +196,12 @@ func main() {
 							</div>
 
 							{/* Terminal Footer Benchmark Status */}
-							<div className="border-t border-[#1E2638] bg-[#121721] px-4 py-2.5 flex items-center justify-between text-xs font-mono text-muted-foreground">
+							<div className="border-t border-white/10 bg-[#16181a] px-4 py-2.5 flex items-center justify-between text-xs font-mono text-white/60">
 								<div className="flex items-center gap-2">
-									<Icon icon={ZapIcon} className="w-3.5 h-3.5 text-[#A3E635]" />
-									<span>Tempo médio de execução: <strong className="text-foreground">38ms</strong></span>
+									<Icon icon={ZapIcon} className="w-3.5 h-3.5 text-[#00a87e]" />
+									<span>Tempo médio de execução: <strong className="text-white">38ms</strong></span>
 								</div>
-								<span className="text-emerald-400 font-bold">200 OK</span>
+								<span className="text-[#00a87e] font-bold">200 OK</span>
 							</div>
 
 						</div>

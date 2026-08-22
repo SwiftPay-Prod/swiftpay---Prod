@@ -871,21 +871,9 @@ export function SettingsContent({
                         <div className="flex flex-wrap gap-1.5">
                           <MethodChip
                             enabled={selectedNominal.supportsPix}
-                            label="PIX"
+                            label="PIX SPI"
                             icon={QrCodeIcon}
                             colorClass="bg-[#00a87e]/15 text-[#00a87e] border-white/20"
-                          />
-                          <MethodChip
-                            enabled={selectedNominal.supportsBoleto}
-                            label="Boleto"
-                            icon={BarCodeIcon}
-                            colorClass="bg-[#ec7e00]/10 text-[#ec7e00] border-white/20"
-                          />
-                          <MethodChip
-                            enabled={selectedNominal.supportsCreditCard}
-                            label="Cartao"
-                            icon={CreditCardIcon}
-                            colorClass="bg-[#494fdf]/15 text-[#4f55f1] border-white/20"
                           />
                         </div>
                       </div>

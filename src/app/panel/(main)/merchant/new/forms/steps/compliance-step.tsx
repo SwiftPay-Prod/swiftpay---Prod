@@ -374,19 +374,6 @@ export function ComplianceStep({
         <CorrectionHint corrections={paymentMethodsCorrections} />
       </div>
 
-      {showCreditCardWarning && (
-        <Alert status="warning">
-          <Alert.Indicator>
-            <Icon icon={CreditCardIcon} className="icon-sm" />
-          </Alert.Indicator>
-          <Alert.Content>
-            <Alert.Title>Cartão de crédito exige verificação adicional</Alert.Title>
-            <Alert.Description>
-              A habilitação de cartão passa por uma segunda verificação e possui processo de compliance mais rigoroso.
-            </Alert.Description>
-          </Alert.Content>
-        </Alert>
-      )}
     </div>
   );
 }

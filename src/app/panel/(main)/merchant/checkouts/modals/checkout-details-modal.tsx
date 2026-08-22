@@ -89,7 +89,7 @@ function DetailsContent({ checkoutPromise }: { checkoutPromise: CheckoutPromise 
 	const config = checkout.config;
 	const statusParse = checkoutStatusParse[checkout.status];
 	const templateName = checkout.template?.name ?? 'Sem template';
-	const enabledMethods = [config?.pixEnabled, config?.creditCardEnabled, config?.boletoEnabled].filter(Boolean).length;
+	const enabledMethods = [config?.pixEnabled ?? true].filter(Boolean).length;
 	const kpis = checkout.kpis;
 
 	function getApprovalRateLevel(rate: number): ApprovalRateLevel {

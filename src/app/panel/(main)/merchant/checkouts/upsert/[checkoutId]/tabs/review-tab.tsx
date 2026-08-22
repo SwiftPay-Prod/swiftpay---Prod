@@ -107,9 +107,7 @@ export function ReviewTab({ merchantId, checkout, onRefresh, reviewDraft }: Revi
   ].some(Boolean);
 
   const paymentMethods = [
-    (effectivePayments?.pixEnabled ?? config?.pixEnabled) ? 'PIX' : null,
-    (effectivePayments?.creditCardEnabled ?? config?.creditCardEnabled) ? 'Cartao' : null,
-    (effectivePayments?.boletoEnabled ?? config?.boletoEnabled) ? 'Boleto' : null,
+    (effectivePayments?.pixEnabled ?? config?.pixEnabled ?? true) ? 'PIX' : null,
   ].filter((item): item is string => !!item);
 
   const checklist: ReviewChecklistItem[] = [

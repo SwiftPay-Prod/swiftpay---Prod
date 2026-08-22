@@ -1783,19 +1783,6 @@ function Step4Review({
 									{pixExpirationMinutes ? `${pixExpirationMinutes} minutos` : 'Padrão da plataforma'}
 								</ReviewRow>
 							)}
-							{enabledMethods.includes(PaymentMethod.Boleto) && (
-								<>
-									<ReviewRow label="Vencimento boleto">
-										{boletoDueDate
-											? new Date(`${boletoDueDate}T00:00:00`).toLocaleDateString('pt-BR')
-											: 'Não informado'}
-									</ReviewRow>
-									{boletoInstructions && <ReviewRow label="Instruções boleto">{boletoInstructions}</ReviewRow>}
-								</>
-							)}
-							{enabledMethods.includes(PaymentMethod.CreditCard) && (
-								<ReviewRow label="Cartão de crédito">Parcelamento em até 12x</ReviewRow>
-							)}
 						</div>
 					</div>
 

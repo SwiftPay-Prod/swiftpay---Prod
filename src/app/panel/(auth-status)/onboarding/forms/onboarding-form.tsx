@@ -50,14 +50,14 @@ function OnboardingStepOptions({ controller }: OnboardingFormProps) {
 							size="lg"
 							className={`h-18 w-full flex-col items-center justify-center gap-1 border text-center transition-colors ${
 								isSelected
-									? 'border-accent bg-accent/5 text-foreground'
-									: 'border-divider bg-transparent text-foreground hover:bg-transparent'
+									? 'border-[#494fdf] bg-[#494fdf]/15 text-white'
+									: 'border-white/12 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
 							}`}
 							onPress={() => handleOptionToggle(activeStep.id, option.id)}
 							isDisabled={isFinishing}
 						>
-							<Icon icon={option.icon} className={`h-6 w-6 ${isSelected ? 'text-accent' : 'text-foreground'}`} />
-							<span className={`text-sm ${isSelected ? 'text-accent' : 'text-foreground'}`}>{option.label}</span>
+							<Icon icon={option.icon} className={`h-6 w-6 ${isSelected ? 'text-[#4f55f1]' : 'text-white/60'}`} />
+							<span className={`text-sm font-medium ${isSelected ? 'text-white font-bold' : 'text-white/80'}`}>{option.label}</span>
 						</Button>
 					);
 				})}
@@ -129,7 +129,7 @@ export function OnboardingForm({ controller }: OnboardingFormProps) {
 			<Card>
 				<Card.Content className="flex flex-col gap-4">
 					<div className="flex items-center gap-3">
-						<div className="flex size-10 items-center justify-center rounded-lg bg-accent-soft text-accent">
+						<div className="flex size-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
 							<Icon icon={activeStep.icon} className="icon-md" />
 						</div>
 						<div className="flex flex-col">
@@ -161,23 +161,23 @@ export function OnboardingForm({ controller }: OnboardingFormProps) {
 
 					{activeStepError && <p className="text-sm text-danger">{activeStepError}</p>}
 
-					<div className="flex items-center justify-between gap-2">
+					<div className="flex items-center justify-between gap-2 pt-2">
 						{!isFirstStep ? (
-							<Button variant="secondary" onPress={handleBack} isDisabled={isFinishing}>
+							<button type="button" onClick={handleBack} disabled={isFinishing} className="button-outline-dark">
 								<Icon icon={ArrowLeft01Icon} className="icon-md" />
 								Voltar
-							</Button>
+							</button>
 						) : (
 							<div />
 						)}
 
 						{!isLastStep ? (
-							<Button variant="primary" onPress={() => handleContinue(activeStep.id)} isDisabled={isFinishing}>
-								Continuar
+							<button type="button" onClick={() => handleContinue(activeStep.id)} disabled={isFinishing} className="button-primary cursor-pointer">
+								<span>Continuar</span>
 								<Icon icon={ArrowRight01Icon} className="icon-md" />
-							</Button>
+							</button>
 						) : (
-							<AsyncButton variant="primary" onPress={handleFinish} isPending={isFinishing}>
+							<AsyncButton variant="primary" onPress={handleFinish} isPending={isFinishing} className="button-primary cursor-pointer">
 								Finalizar
 							</AsyncButton>
 						)}

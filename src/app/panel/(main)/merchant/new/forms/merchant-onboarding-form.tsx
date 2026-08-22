@@ -382,28 +382,33 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 
 				<div className="mt-4 border-t border-divider pt-4">
 					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
-						<Button
-							variant="secondary"
-							onPress={handleBack}
-							isDisabled={activeStepIndex === 0 || isBusy}
-							className="sm:mr-auto"
+						<button
+							type="button"
+							onClick={handleBack}
+							disabled={activeStepIndex === 0 || isBusy}
+							className="button-outline-dark sm:mr-auto cursor-pointer"
 						>
 							<Icon icon={ArrowLeft01Icon} className="icon-sm" />
-							Voltar
-						</Button>
+							<span>Voltar</span>
+						</button>
 
 						{!isLastStep ? (
-							<Button variant="primary" onPress={handleContinueClick} isDisabled={isBusy} className="w-full sm:w-auto">
-								Próximo
+							<button
+								type="button"
+								onClick={handleContinueClick}
+								disabled={isBusy}
+								className="button-primary w-full sm:w-auto cursor-pointer"
+							>
+								<span>Próximo</span>
 								<Icon icon={ArrowRight01Icon} className="icon-sm" />
-							</Button>
+							</button>
 						) : (
 							<AsyncButton
 								variant="primary"
 								onPress={handleSubmit}
 								isPending={isSubmitting}
 								isDisabled={!answers.declarationAccepted || isBusy}
-								className="w-full sm:w-auto"
+								className="button-primary w-full sm:w-auto cursor-pointer"
 							>
 								{isComplementMode ? 'Responder complementos e reenviar para análise' : 'Finalizar e enviar cadastro'}
 							</AsyncButton>

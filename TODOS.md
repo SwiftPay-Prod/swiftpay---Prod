@@ -48,6 +48,16 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - Remoção de componentes legados (`SecondaryKpiSection.tsx`, `VolumeChart.tsx`, `WeeklyVolumeChart.tsx`, `DashboardCards.tsx`).
   - Verificação (Issue: #103): typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 
+- `DONE` Spec: #104 / Issue: #105 — rollout global do Revolut 10 / Ultra Design System e conformidade R11 PIX-only em 100% do frontend.
+  - Diagnóstico: Remanescentes da paleta verde-limão legada (`#9eff00`, `#4a8a00`, `#5aab00`, `#A3E635`), quebra de cliques nos menus de 3 pontos das tabelas de dados (`<Dropdown><Tooltip><button>`), e menções a Boleto e Cartão de Crédito em formulários e páginas de taxas.
+  - Implementado:
+    - `src/app/globals.css`: tokens globais atualizados para paleta Revolut Ultra (canvas `#000000`, cards `#16181a`, insets `#0a0a0a`, hairlines `rgba(255, 255, 255, 0.12)`, botões primários em pílula sólida branca `button-primary`, acentos Cobalto `#494fdf` e Emerald `#00a87e`).
+    - Correção do gatilho de Dropdown em todas as tabelas: `checkouts-table.tsx`, `payment-links-table.tsx`, `products-table.tsx`, `orders-table.tsx`, `coupons-table.tsx`, `customers-table.tsx`, `cashouts-table.tsx`, `cashout-accounts-table.tsx`, `transactions-table.tsx`.
+    - Landing Page completa: 10 componentes em `src/components/landing/` migrados para Revolut Ultra com zero verde-limão.
+    - Autenticação e Onboarding: `auth-modal.tsx`, `signin-form.tsx`, `signup-form.tsx`, `forgot-password-form.tsx`, `reset-password-form.tsx`, `/panel/onboarding` e `/panel/merchant/new`.
+    - R11 (PIX-Only): Removidas menções e seções de Cartão e Boleto de `fees-content.tsx`, `checkout-details-modal.tsx`, `review-tab.tsx`, `settings-content.tsx` e `merchant-onboarding.constants.ts`. Rota de cartão redirecionada.
+    - Shell do Painel: Header (`panel-header.tsx`, `merchant-balance-card.tsx`, `admin-revenue-card.tsx`) e Sidebar (`sidebar-merchant-selector.tsx`, `sidebar-mobile-navbar.tsx`).
+  - Verificação: Impeccable detector com 0 erros/alertas em 38 arquivos; `bun run build` compilando com sucesso 68 rotas da aplicação.
 ## Governança universal de contexto
 
 - `DONE` Criar `AGENTS.md` como entrada obrigatória para todos os agentes.

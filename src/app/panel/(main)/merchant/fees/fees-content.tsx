@@ -164,12 +164,6 @@ function CompensationCard({
 
 export function FeesContent({ fees }: FeesContentProps) {
   const withdrawalModeParse = withdrawalApprovalModeParse[fees.withdrawalApprovalMode];
-  const enabledMethodsCount = [fees.pixEnabled, fees.boletoEnabled, fees.creditCardEnabled].filter(Boolean).length;
-  const paymentMethodsSummary = [
-    `PIX: ${fees.pixEnabled ? 'Ativo' : 'Inativo'}`,
-    `Boleto: ${fees.boletoEnabled ? 'Ativo' : 'Inativo'}`,
-    `Cartão: ${fees.creditCardEnabled ? 'Ativo' : 'Inativo'}`,
-  ].join(' | ');
   const pixSummary = [
     `API: ${formatFeeRate(fees.pixApiFeeMode, fees.pixApiFeeFixed, fees.pixApiFeePercentage)}`,
     `Checkout: ${formatFeeRate(fees.pixCheckoutFeeMode, fees.pixCheckoutFeeFixed, fees.pixCheckoutFeePercentage)}`,
@@ -178,22 +172,6 @@ export function FeesContent({ fees }: FeesContentProps) {
     `Max: ${formatCurrency(fees.pixMaxTransactionAmount)}`,
     `Comp.: D+${fees.pixCompensationDays}`,
     `Reserva: ${formatReservePercentage(fees.pixReservePercentage)}`,
-  ].join(' | ');
-  const boletoSummary = [
-    `API: ${formatFeeRate(fees.boletoApiFeeMode, fees.boletoApiFeeFixed, fees.boletoApiFeePercentage)}`,
-    `Checkout: ${formatFeeRate(fees.boletoCheckoutFeeMode, fees.boletoCheckoutFeeFixed, fees.boletoCheckoutFeePercentage)}`,
-    `Link: ${formatFeeRate(fees.boletoPaymentLinkFeeMode, fees.boletoPaymentLinkFeeFixed, fees.boletoPaymentLinkFeePercentage)}`,
-    `Min: ${formatCurrency(fees.boletoMinTransactionAmount)}`,
-    `Max: ${formatCurrency(fees.boletoMaxTransactionAmount)}`,
-    `Comp.: D+${fees.boletoCompensationDays}`,
-    `Reserva: ${formatReservePercentage(fees.boletoReservePercentage)}`,
-  ].join(' | ');
-  const creditCardSummary = [
-    `API: ${formatFeeRate(fees.creditCardApiFeeMode, fees.creditCardApiFeeFixed, fees.creditCardApiFeePercentage)}`,
-    `Checkout: ${formatFeeRate(fees.creditCardCheckoutFeeMode, fees.creditCardCheckoutFeeFixed, fees.creditCardCheckoutFeePercentage)}`,
-    `Link: ${formatFeeRate(fees.creditCardPaymentLinkFeeMode, fees.creditCardPaymentLinkFeeFixed, fees.creditCardPaymentLinkFeePercentage)}`,
-    `Comp.: D+${fees.creditCardCompensationDays}`,
-    `Reserva: ${formatReservePercentage(fees.creditCardReservePercentage)}`,
   ].join(' | ');
   const withdrawalSummary = [
     `Taxa: ${formatFeeRate(fees.withdrawalFeeMode, fees.withdrawalFeeFixed, fees.withdrawalFeePercentage)}`,
@@ -210,25 +188,22 @@ export function FeesContent({ fees }: FeesContentProps) {
     <div className="flex flex-col gap-4 bg-[#000000] text-white">
       <PageHeader
         icon={<Icon icon={PercentSquareIcon} className="icon-md text-[#4f55f1]" />}
-        title="Taxas e Limites"
-        description="Visualize as taxas, limites e configurações aplicadas à sua organização."
+        title="Taxas e Limites PIX"
+        description="Visualize as taxas, limites e configurações de processamento PIX da sua organização."
       />
 
       <SystemAccordion
         id="payment-methods"
         icon={CheckmarkCircle01Icon}
-        title="Métodos de Pagamento Habilitados"
-        color="sky"
+        title="Método de Pagamento Ativo"
+        color="emerald"
         defaultExpanded
-        summary={`${enabledMethodsCount} de 3 métodos ativos | ${paymentMethodsSummary}`}
+        summary="PIX Nativo • Liquidação Instantânea Sub-50ms D+0 SPI"
       >
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-          <MethodStatusBadge enabled={fees.pixEnabled} label="PIX" />
-          <MethodStatusBadge enabled={fees.boletoEnabled} label="Boleto" />
-          <MethodStatusBadge enabled={fees.creditCardEnabled} label="Cartão de Crédito" />
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-1">
+          <MethodStatusBadge enabled={fees.pixEnabled} label="PIX Instantâneo (SPI / Banco Central)" />
         </div>
       </SystemAccordion>
-
       {fees.pixEnabled && (
         <SystemAccordion
           id="pix-fees"
@@ -281,113 +256,6 @@ export function FeesContent({ fees }: FeesContentProps) {
         </SystemAccordion>
       )}
 
-      {fees.boletoEnabled && (
-        <SystemAccordion
-          id="boleto-fees"
-          icon={BarCodeIcon}
-          title="Taxas Boleto"
-          color="amber"
-          defaultExpanded
-          summary={boletoSummary}
-        >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <ChannelFeeCard
-              icon={<Icon icon={MoneyReceiveSquareIcon} className="icon-sm" />}
-              iconClassName="text-[#ec7e00]"
-              title="Via API"
-              feeValue={formatFeeRate(fees.boletoApiFeeMode, fees.boletoApiFeeFixed, fees.boletoApiFeePercentage)}
-              feeColorClass="text-[#ec7e00]"
-            />
-            <ChannelFeeCard
-              icon={<Icon icon={ShoppingCartCheckIn01Icon} className="icon-sm" />}
-              iconClassName="text-[#ec7e00]"
-              title="Via Checkout"
-              feeValue={formatFeeRate(fees.boletoCheckoutFeeMode, fees.boletoCheckoutFeeFixed, fees.boletoCheckoutFeePercentage)}
-              feeColorClass="text-[#ec7e00]"
-            />
-            <ChannelFeeCard
-              icon={<Icon icon={Link02Icon} className="icon-sm" />}
-              iconClassName="text-[#ec7e00]"
-              title="Via Link de Pagamento"
-              feeValue={formatFeeRate(
-                fees.boletoPaymentLinkFeeMode,
-                fees.boletoPaymentLinkFeeFixed,
-                fees.boletoPaymentLinkFeePercentage
-              )}
-              feeColorClass="text-[#ec7e00]"
-            />
-          </div>
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <MethodGlobalLimitsCard
-              methodLabel="Boleto"
-              minAmount={formatCurrency(fees.boletoMinTransactionAmount)}
-              maxAmount={formatCurrency(fees.boletoMaxTransactionAmount)}
-            />
-            <CompensationCard
-              methodLabel="Boleto"
-              days={fees.boletoCompensationDays}
-              reservePercentageBasisPoints={fees.boletoReservePercentage}
-              tone="warning"
-            />
-          </div>
-        </SystemAccordion>
-      )}
-
-      {fees.creditCardEnabled && (
-        <SystemAccordion
-          id="credit-card-fees"
-          icon={CreditCardIcon}
-          title="Taxas Cartão de Crédito"
-          color="sky"
-          defaultExpanded
-          summary={creditCardSummary}
-        >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <ChannelFeeCard
-              icon={<Icon icon={MoneyReceiveSquareIcon} className="icon-sm" />}
-              iconClassName="text-[#4f55f1]"
-              title="Via API"
-              feeValue={formatFeeRate(
-                fees.creditCardApiFeeMode,
-                fees.creditCardApiFeeFixed,
-                fees.creditCardApiFeePercentage
-              )}
-              feeColorClass="text-[#4f55f1]"
-            />
-            <ChannelFeeCard
-              icon={<Icon icon={ShoppingCartCheckIn01Icon} className="icon-sm" />}
-              iconClassName="text-[#4f55f1]"
-              title="Via Checkout"
-              feeValue={formatFeeRate(
-                fees.creditCardCheckoutFeeMode,
-                fees.creditCardCheckoutFeeFixed,
-                fees.creditCardCheckoutFeePercentage
-              )}
-              feeColorClass="text-[#4f55f1]"
-            />
-            <ChannelFeeCard
-              icon={<Icon icon={Link02Icon} className="icon-sm" />}
-              iconClassName="text-[#4f55f1]"
-              title="Via Link de Pagamento"
-              feeValue={formatFeeRate(
-                fees.creditCardPaymentLinkFeeMode,
-                fees.creditCardPaymentLinkFeeFixed,
-                fees.creditCardPaymentLinkFeePercentage
-              )}
-              feeColorClass="text-[#4f55f1]"
-            />
-          </div>
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FeeBlock
-              icon={<Icon icon={PercentSquareIcon} className="icon-sm text-[#4f55f1]" />}
-              title="Reserva financeira"
-              value={formatReservePercentage(fees.creditCardReservePercentage)}
-              iconBg="bg-[#494fdf]/15"
-            />
-            <CompensationCard methodLabel="Cartão" days={fees.creditCardCompensationDays} tone="accent" />
-          </div>
-        </SystemAccordion>
-      )}
 
       <SystemAccordion
         id="withdrawal-fees"

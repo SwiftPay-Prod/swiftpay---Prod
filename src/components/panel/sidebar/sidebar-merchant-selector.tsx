@@ -358,16 +358,15 @@ export function SidebarMerchantSelector({ forceFull = false }: SidebarMerchantSe
 
 	const footerActions = (
 		<div className="flex items-center gap-2 border-t border-default bg-surface px-3 py-3">
-			<Button
-				className="flex-1"
-				size="sm"
-				variant="primary"
-				onPress={handleCreateMerchant}
-				isDisabled={isChangingOrganization}
+			<button
+				type="button"
+				className="button-primary flex-1 py-2 text-xs font-semibold cursor-pointer"
+				onClick={handleCreateMerchant}
+				disabled={isChangingOrganization}
 			>
 				<Icon icon={AddCircleIcon} className="icon-sm" />
 				Criar organização
-			</Button>
+			</button>
 			<Tooltip>
 				<Tooltip.Trigger>
 					<AsyncButton
@@ -387,10 +386,14 @@ export function SidebarMerchantSelector({ forceFull = false }: SidebarMerchantSe
 
 	if (!hasMerchants) {
 		return (
-			<Button className="w-full" isIconOnly={!showFull} onPress={handleCreateMerchant} variant="primary">
+			<button
+				type="button"
+				className="button-primary w-full py-2.5 text-sm font-semibold cursor-pointer justify-center"
+				onClick={handleCreateMerchant}
+			>
 				<Icon icon={AddCircleIcon} className="icon-md" />
-				{showFull && <>Criar organização</>}
-			</Button>
+				{showFull && <span>Criar organização</span>}
+			</button>
 		);
 	}
 

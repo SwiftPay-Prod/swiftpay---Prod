@@ -75,7 +75,7 @@ export function SidebarMobileNavbar({ user }: SidebarMobileNavbarProps) {
 						return (
 							<div key={item.path} className="relative flex flex-1 flex-col items-center">
 								{active && (
-									<span className="absolute -top-1 left-1/2 h-1 w-5 -translate-x-1/2 rounded-full bg-[#A3E635]" />
+									<span className="absolute -top-1 left-1/2 h-1 w-5 -translate-x-1/2 rounded-full bg-[#4f55f1]" />
 								)}
 								<Button
 									variant="ghost"
@@ -85,7 +85,7 @@ export function SidebarMobileNavbar({ user }: SidebarMobileNavbarProps) {
 									onPress={() => navigate(item)}
 									className={[
 										'transition-all duration-160 ease-out',
-										active ? 'text-success' : 'text-muted-foreground',
+										active ? 'text-white' : 'text-white/50',
 									].join(' ')}
 								>
 									<div className="flex flex-col items-center">

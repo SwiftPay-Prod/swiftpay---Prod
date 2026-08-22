@@ -138,16 +138,13 @@ function getColumns(
 							<Tooltip.Content>Ver detalhes</Tooltip.Content>
 						</Tooltip>
 						<Dropdown>
-							<Tooltip>
-								<button
-									type="button"
-									aria-label="Mais ações"
-									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
-								>
-									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-								</button>
-								<Tooltip.Content>Mais ações</Tooltip.Content>
-							</Tooltip>
+							<Button
+								isIconOnly
+								aria-label="Mais ações"
+								className="h-8 w-8 min-w-8 rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
+								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
+							</Button>
 							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 								<Dropdown.Menu
 									aria-label="Ações do link de pagamento"

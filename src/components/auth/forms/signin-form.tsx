@@ -76,12 +76,12 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 					Enviamos um link de verificação na criação da conta. Confirme para acessar o painel.
 				</p>
 				<div className="flex flex-col gap-2">
-					<Button variant="primary" onPress={() => router.push(Routes.verifyEmail)}>
+					<button type="button" onClick={() => router.push(Routes.verifyEmail)} className="button-primary w-full py-3">
 						Ir para página de verificação
-					</Button>
-					<Button variant="tertiary" onPress={() => setRequiresEmailVerification(false)}>
+					</button>
+					<button type="button" onClick={() => setRequiresEmailVerification(false)} className="button-outline-dark w-full py-3">
 						Voltar para o login
-					</Button>
+					</button>
 				</div>
 			</div>
 		);
@@ -118,19 +118,19 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 				</TextField>
 
 				<div className="flex justify-end">
-					<Link onPress={onSwitchToForgotPassword} className="text-sm cursor-pointer">
+					<button type="button" onClick={onSwitchToForgotPassword} className="text-xs text-white/50 hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0">
 						Esqueceu a senha?
-					</Link>
+					</button>
 				</div>
 
-				<Button type="submit" isPending={isLoading} variant="primary" className="w-full">
+				<Button type="submit" isPending={isLoading} className="button-primary w-full py-3 text-sm font-bold cursor-pointer">
 					Entrar com E-mail
 				</Button>
 			</form>
 
 			<div className="text-center text-sm">
-				<span className="text-default-500">Ainda não tem conta? </span>
-				<button type="button" onClick={onSwitchToSignUp} className="text-primary underline-offset-4 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm font-medium">
+				<span className="text-white/40">Ainda não tem conta? </span>
+				<button type="button" onClick={onSwitchToSignUp} className="text-white hover:text-white/80 underline-offset-4 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm font-bold">
 					Criar Conta
 				</button>
 			</div>

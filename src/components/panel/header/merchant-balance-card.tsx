@@ -45,21 +45,20 @@ export function MerchantBalanceCard({
 	return (
 		<Popover isOpen={isOpen} onOpenChange={setIsOpen}>
 			<Popover.Trigger>
-				<div className="group relative flex items-center gap-1 md:gap-2 rounded-lg border h-8 md:h-9 min-w-24 md:min-w-28 px-2.5 md:px-3 py-1 md:py-1.5 overflow-hidden cursor-pointer hover:bg-success/5 transition-colors shrink-0 bg-linear-to-r from-emerald-500/10 via-green-400/10 to-emerald-500/10 border-emerald-400/30">
-					<div className="absolute inset-0 -translate-x-full animate-shine-pulse bg-linear-to-r from-transparent via-white/20 to-transparent" />
-					<Icon icon={Wallet01Icon} className="icon-xs hidden sm:block relative text-emerald-500" />
+				<div className="group relative flex items-center gap-1 md:gap-2 rounded-full border h-8 md:h-9 min-w-24 md:min-w-28 px-2.5 md:px-3 py-1 md:py-1.5 overflow-hidden cursor-pointer hover:bg-[#00a87e]/15 transition-colors shrink-0 bg-[#00a87e]/10 border-[#00a87e]/30 text-[#00a87e]">
+					<Icon icon={Wallet01Icon} className="icon-xs hidden sm:block relative text-[#00a87e]" />
 					<AnimatedCurrency
 						value={balanceAvailable}
-						className={`text-xs md:text-sm font-bold relative text-emerald-600 dark:text-emerald-400 ${isBalanceVisible ? '' : 'visual-blur'}`}
+						className={`text-xs md:text-sm font-bold font-mono tabular-nums relative text-[#00a87e] ${isBalanceVisible ? '' : 'visual-blur'}`}
 					/>
 					<Icon
 						icon={ArrowDown01Icon}
-						className={`icon-xs relative transition-transform ${isOpen ? 'rotate-180' : ''} text-emerald-600 dark:text-emerald-400`}
+						className={`icon-xs relative transition-transform ${isOpen ? 'rotate-180' : ''} text-[#00a87e]`}
 					/>
 				</div>
 			</Popover.Trigger>
-			<Popover.Content className="p-0 w-72 sm:w-80" placement="bottom">
-				<div className="p-3">
+			<Popover.Content className="p-0 w-72 sm:w-80 bg-[#16181a] border border-white/12 rounded-2xl text-white shadow-2xl" placement="bottom">
+				<div className="p-4">
 					<div className="flex items-center justify-between mb-3">
 						<div>
 							<span className="text-sm font-semibold text-foreground">Saldo da Organização</span>

@@ -32,7 +32,7 @@ export default async function Image() {
             left: 0,
             right: 0,
             height: 4,
-            background: "linear-gradient(90deg, #059669, #a3e635, #059669)",
+            background: "linear-gradient(90deg, #494fdf, #00a87e, #494fdf)",
           }}
         />
 
@@ -59,11 +59,11 @@ export default async function Image() {
                 width: 72,
                 height: 72,
                 borderRadius: 18,
-                background: "linear-gradient(135deg, #059669, #16a34a)",
+                background: "#00a87e",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 0 30px rgba(5, 150, 105, 0.3)",
+                boxShadow: "0 0 30px rgba(0, 168, 126, 0.3)",
               }}
             >
               <svg
@@ -98,7 +98,7 @@ export default async function Image() {
           <span
             style={{
               fontSize: 28,
-              color: "#94a3b8",
+              color: "rgba(255, 255, 255, 0.6)",
               textAlign: "center",
               maxWidth: 700,
             }}
@@ -120,12 +120,12 @@ export default async function Image() {
                 alignItems: "center",
                 gap: 8,
                 padding: "10px 20px",
-                background: "rgba(5, 150, 105, 0.15)",
+                background: "rgba(0, 168, 126, 0.15)",
                 borderRadius: 10,
-                border: "1px solid rgba(5, 150, 105, 0.3)",
+                border: "1px solid rgba(0, 168, 126, 0.3)",
               }}
             >
-              <span style={{ color: "#a3e635", fontSize: 16, fontWeight: 500 }}>
+              <span style={{ color: "#00a87e", fontSize: 16, fontWeight: 500 }}>
                 API Simples
               </span>
             </div>
@@ -135,12 +135,12 @@ export default async function Image() {
                 alignItems: "center",
                 gap: 8,
                 padding: "10px 20px",
-                background: "rgba(5, 150, 105, 0.15)",
+                background: "rgba(0, 168, 126, 0.15)",
                 borderRadius: 10,
-                border: "1px solid rgba(5, 150, 105, 0.3)",
+                border: "1px solid rgba(0, 168, 126, 0.3)",
               }}
             >
-              <span style={{ color: "#a3e635", fontSize: 16, fontWeight: 500 }}>
+              <span style={{ color: "#00a87e", fontSize: 16, fontWeight: 500 }}>
                 100% Seguro
               </span>
             </div>
@@ -150,12 +150,12 @@ export default async function Image() {
                 alignItems: "center",
                 gap: 8,
                 padding: "10px 20px",
-                background: "rgba(5, 150, 105, 0.15)",
+                background: "rgba(0, 168, 126, 0.15)",
                 borderRadius: 10,
-                border: "1px solid rgba(5, 150, 105, 0.3)",
+                border: "1px solid rgba(0, 168, 126, 0.3)",
               }}
             >
-              <span style={{ color: "#a3e635", fontSize: 16, fontWeight: 500 }}>
+              <span style={{ color: "#00a87e", fontSize: 16, fontWeight: 500 }}>
                 PIX Only
               </span>
             </div>
@@ -170,7 +170,7 @@ export default async function Image() {
             display: "flex",
             alignItems: "center",
             gap: 8,
-            color: "#525252",
+            color: "rgba(255, 255, 255, 0.4)",
             fontSize: 14,
           }}
         >

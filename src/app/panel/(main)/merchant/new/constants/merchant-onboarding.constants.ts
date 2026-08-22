@@ -37,13 +37,7 @@ export const MERCHANT_ONBOARDING_STEPS: MerchantOnboardingStepDefinition[] = [
 ];
 
 export const PAYMENT_METHOD_OPTIONS: Array<{ value: PaymentMethod; label: string; description: string }> = [
-	{ value: PaymentMethod.Pix, label: 'PIX', description: 'Recebimentos instantâneos.' },
-	{ value: PaymentMethod.Boleto, label: 'Boleto', description: 'Pagamentos com vencimento.' },
-	{
-		value: PaymentMethod.CreditCard,
-		label: 'Cartão de crédito',
-		description: 'Aprovação sujeita a segunda verificação de compliance.',
-	},
+	{ value: PaymentMethod.Pix, label: 'PIX Instantâneo', description: 'Recebimentos em sub-50ms via SPI Banco Central.' },
 ];
 
 export const DOCUMENT_TYPE_OPTIONS: Array<{ value: MerchantKycDocumentType; label: string }> = [

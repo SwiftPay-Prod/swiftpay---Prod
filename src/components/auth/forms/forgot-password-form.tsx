@@ -48,9 +48,9 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
 				<p className="text-sm text-muted-foreground">
 					Para evitar spam, aguarde 15 minutos entre novas solicitações.
 				</p>
-				<Button variant="primary" onPress={onSwitchToSignIn} className="w-full">
+				<button type="button" onClick={onSwitchToSignIn} className="button-primary w-full py-3">
 					Voltar para o Login
-				</Button>
+				</button>
 			</div>
 		);
 	}
@@ -72,15 +72,15 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
 					</InputGroup>
 				</TextField>
 
-				<AsyncButton type="submit" variant="primary" isPending={isLoading} className="w-full">
+				<Button type="submit" isPending={isLoading} className="button-primary w-full py-3 text-sm font-bold cursor-pointer">
 					Enviar link de redefinição
-				</AsyncButton>
+				</Button>
 			</form>
 
 			<div className="text-center text-sm">
-				<span className="text-default-500">Lembrou a senha? </span>
-				<button type="button" onClick={onSwitchToSignIn} className="text-primary underline-offset-4 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm font-medium">
-					Entrar
+				<span className="text-white/40">Lembrou a senha? </span>
+				<button type="button" onClick={onSwitchToSignIn} className="text-white hover:text-white/80 underline-offset-4 hover:underline cursor-pointer bg-transparent border-0 p-0 text-sm font-bold">
+					Entrar no Painel
 				</button>
 			</div>
 		</div>

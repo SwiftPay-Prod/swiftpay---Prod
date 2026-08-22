@@ -50,21 +50,20 @@ export function AdminRevenueCard({
 	return (
 		<Popover isOpen={isOpen} onOpenChange={setIsOpen}>
 			<Popover.Trigger>
-				<div className="group relative flex items-center gap-1 md:gap-2 rounded-lg border h-8 md:h-9 min-w-24 md:min-w-28 px-2.5 md:px-3 py-1 md:py-1.5 overflow-hidden cursor-pointer hover:bg-accent/5 transition-colors shrink-0 bg-linear-to-r from-accent/10 via-accent/5 to-accent/10 border-accent/30">
-					<div className="absolute inset-0 -translate-x-full animate-shine-pulse bg-linear-to-r from-transparent via-white/20 to-transparent" />
-					<Icon icon={ShieldEnergyIcon} className="icon-xs hidden sm:block relative text-accent" />
+				<div className="group relative flex items-center gap-1 md:gap-2 rounded-full border h-8 md:h-9 min-w-24 md:min-w-28 px-2.5 md:px-3 py-1 md:py-1.5 overflow-hidden cursor-pointer hover:bg-[#494fdf]/20 transition-colors shrink-0 bg-[#494fdf]/10 border-[#494fdf]/30 text-[#4f55f1]">
+					<Icon icon={ShieldEnergyIcon} className="icon-xs hidden sm:block relative text-[#4f55f1]" />
 					<AnimatedCurrency
 						value={totalAvailableForWithdrawal}
-						className={`text-xs md:text-sm font-bold relative text-accent ${isBalanceVisible ? '' : 'visual-blur'}`}
+						className={`text-xs md:text-sm font-bold font-mono tabular-nums relative text-[#4f55f1] ${isBalanceVisible ? '' : 'visual-blur'}`}
 					/>
 					<Icon
 						icon={ArrowDown01Icon}
-						className={`icon-xs relative transition-transform ${isOpen ? 'rotate-180' : ''} text-accent`}
+						className={`icon-xs relative transition-transform ${isOpen ? 'rotate-180' : ''} text-[#4f55f1]`}
 					/>
 				</div>
 			</Popover.Trigger>
-			<Popover.Content className="p-0 w-80 sm:w-96" placement="bottom">
-				<div className="p-3">
+			<Popover.Content className="p-0 w-80 sm:w-96 bg-[#16181a] border border-white/12 rounded-2xl text-white shadow-2xl" placement="bottom">
+				<div className="p-4">
 					<div className="flex items-center justify-between mb-3">
 						<span className="text-sm font-semibold text-foreground">Resumo da Plataforma</span>
 						<Button
@@ -79,13 +78,13 @@ export function AdminRevenueCard({
 					</div>
 
 					<div className="space-y-2">
-						<div className="flex items-center justify-between p-2 rounded-lg bg-emerald-500/10 border border-emerald-400/30">
+						<div className="flex items-center justify-between p-2 rounded-lg bg-[#00a87e]/10 border border-[#00a87e]/30">
 							<div className="flex items-center gap-2">
-								<Icon icon={AnalyticsUpIcon} className="icon-xs text-emerald-500" />
-								<span className="text-xs text-muted">Disponível para Saque</span>
+								<Icon icon={AnalyticsUpIcon} className="icon-xs text-[#00a87e]" />
+								<span className="text-xs text-white/50">Disponível para Saque</span>
 							<Tooltip>
 								<Tooltip.Trigger>
-									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-muted" />
+									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/40" />
 								</Tooltip.Trigger>
 								<Tooltip.Content className="max-w-56">
 									<Tooltip.Arrow />
@@ -93,7 +92,7 @@ export function AdminRevenueCard({
 								</Tooltip.Content>
 							</Tooltip>
 						</div>
-						<span className={`text-sm font-bold text-emerald-600 dark:text-emerald-400 ${isBalanceVisible ? '' : 'visual-blur'}`}>
+						<span className={`text-sm font-bold font-mono tabular-nums text-[#00a87e] ${isBalanceVisible ? '' : 'visual-blur'}`}>
 							{formatCurrencyCompact(totalAvailableForWithdrawal)}
 						</span>
 						</div>

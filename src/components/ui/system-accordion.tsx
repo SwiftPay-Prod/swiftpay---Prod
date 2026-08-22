@@ -8,14 +8,14 @@ import { Icon } from '@/components/ui/icon';
 type IconName = ComponentProps<typeof Icon>['icon'];
 
 const ACCORDION_COLOR_MAP: Record<string, string> = {
-	accent: '#a3e635',
+	accent: '#4f55f1',
 	blue: '#60a5fa',
 	sky: '#38bdf8',
 	cyan: '#22d3ee',
-	success: '#4ade80',
-	emerald: '#34d399',
-	teal: '#2dd4bf',
-	green: '#4ade80',
+	success: '#00a87e',
+	emerald: '#00a87e',
+	teal: '#00a87e',
+	green: '#00a87e',
 	warning: '#fbbf24',
 	amber: '#f59e0b',
 	orange: '#fb923c',

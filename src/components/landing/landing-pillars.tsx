@@ -47,18 +47,18 @@ export function LandingPillars() {
 	];
 
 	return (
-		<section id="features" className="relative py-16 sm:py-24 bg-[#0B0E14] border-t border-border/40">
+		<section id="features" className="relative py-16 sm:py-24 bg-[#000000] border-t border-white/10 text-white">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				
 				{/* Section Header */}
 				<div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-					<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border/80 bg-surface-secondary text-xs font-semibold text-[#A3E635]">
-						<span>ARQUITETURA & RECURSOS</span>
+					<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-semibold text-[#4f55f1]">
+						<span className="font-mono">ARQUITETURA & RECURSOS</span>
 					</div>
-					<h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
+					<h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
 						Construído para Altíssima Disponibilidade e Performance.
 					</h2>
-					<p className="text-base sm:text-lg text-muted-foreground">
+					<p className="text-base sm:text-lg text-white/60">
 						Cada detalhe do SwiftPay foi projetado para garantir a máxima conversão das suas vendas e a estabilidade da sua operação financeira.
 					</p>
 				</div>
@@ -68,34 +68,34 @@ export function LandingPillars() {
 					{pillars.map((pillar) => (
 						<div
 							key={pillar.title}
-							className="group relative rounded-2xl border border-[#1E2638] bg-[#121721] p-6 sm:p-8 transition-all hover:border-[#A3E635]/40 hover:shadow-[0_4px_24px_rgba(163,230,53,0.08)] flex flex-col justify-between"
+							className="group relative rounded-2xl border border-white/12 bg-[#16181a] p-6 sm:p-8 transition-all hover:border-white/25 hover:shadow-[0_4px_24px_rgba(73,79,223,0.12)] flex flex-col justify-between"
 						>
 							<div className="space-y-4">
 								<div className="flex items-center justify-between">
-									<span className="text-xs font-mono font-bold text-muted-foreground tracking-wider">
+									<span className="text-xs font-mono font-bold text-white/50 tracking-wider">
 										{pillar.code}
 									</span>
-									<span className="rounded-md bg-[#1B2230] border border-[#1E2638] px-2.5 py-1 text-xs font-mono font-semibold text-[#A3E635]">
+									<span className="rounded-md bg-white/5 border border-white/10 px-2.5 py-1 text-xs font-mono font-semibold text-[#00a87e]">
 										{pillar.tag}
 									</span>
 								</div>
 
 								<div className="space-y-2">
-									<h3 className="text-xl font-bold text-foreground group-hover:text-[#A3E635] transition-colors">
+									<h3 className="text-xl font-bold text-white group-hover:text-white transition-colors">
 										{pillar.title}
 									</h3>
-									<p className="text-sm text-muted-foreground leading-relaxed">
+									<p className="text-sm text-white/60 leading-relaxed">
 										{pillar.description}
 									</p>
 								</div>
 							</div>
 
-							<div className="pt-6 mt-6 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-foreground">
+							<div className="pt-6 mt-6 border-t border-white/8 flex items-center justify-between text-xs font-semibold text-white/80">
 								<span className="flex items-center gap-2">
-									<Icon icon={pillar.icon} className="w-4 h-4 text-[#A3E635]" />
+									<Icon icon={pillar.icon} className="w-4 h-4 text-[#4f55f1]" />
 									<span>Tecnologia Nativa</span>
 								</span>
-								<Icon icon={ArrowUpRight01Icon} className="w-4 h-4 text-muted-foreground group-hover:text-[#A3E635] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+								<Icon icon={ArrowUpRight01Icon} className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
 							</div>
 						</div>
 					))}

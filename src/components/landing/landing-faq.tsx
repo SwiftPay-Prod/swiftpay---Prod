@@ -35,20 +35,20 @@ export function LandingFaq() {
 	};
 
 	return (
-		<section id="faq" className="relative py-16 sm:py-24 bg-[#0B0E14] border-t border-border/40">
+		<section id="faq" className="relative py-16 sm:py-24 bg-[#000000] border-t border-white/10 text-white">
 			<div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
 				
 				{/* Header */}
 				<div className="text-center space-y-4 mb-16">
-					<div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border/80 bg-surface-secondary text-xs font-semibold text-[#A3E635]">
+					<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-semibold text-[#4f55f1]">
 						<Icon icon={HelpCircleIcon} className="w-3.5 h-3.5" />
-						<span>PERGUNTAS FREQUENTES</span>
+						<span className="font-mono">PERGUNTAS FREQUENTES</span>
 					</div>
-					<h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+					<h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
 						Dúvidas Frequentes sobre o SwiftPay.
 					</h2>
-					<p className="text-base text-muted-foreground">
-						Tudo o que você precisa saber para começar a processar com a fintech mais rápida do mercado.
+					<p className="text-base text-white/60">
+						Tudo o que você precisa saber para começar a processar com a infraestrutura mais rápida do mercado.
 					</p>
 				</div>
 
@@ -59,26 +59,26 @@ export function LandingFaq() {
 						return (
 							<div
 								key={faq.q}
-								className="rounded-2xl border border-[#1E2638] bg-[#121721] overflow-hidden transition-colors hover:border-border"
+								className="rounded-2xl border border-white/12 bg-[#16181a] overflow-hidden transition-colors hover:border-white/25"
 							>
 								<button
 									type="button"
 									onClick={() => toggleFaq(index)}
-									className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none"
+									className="w-full p-6 text-left flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
 								>
-									<span className="text-base font-bold text-foreground">
+									<span className="text-base font-bold text-white">
 										{faq.q}
 									</span>
 									<Icon
 										icon={ArrowDown01Icon}
-										className={`w-5 h-5 text-[#A3E635] shrink-0 transition-transform duration-200 ${
-											isOpen ? 'rotate-180' : ''
+										className={`w-5 h-5 text-white/70 shrink-0 transition-transform duration-200 ${
+											isOpen ? 'rotate-180 text-[#4f55f1]' : ''
 										}`}
 									/>
 								</button>
 
 								{isOpen && (
-									<div className="px-6 pb-6 pt-0 text-sm text-muted-foreground leading-relaxed animate-in fade-in duration-150 border-t border-border/40">
+									<div className="px-6 pb-6 pt-0 text-sm text-white/60 leading-relaxed animate-in fade-in duration-150 border-t border-white/8">
 										<p className="pt-4">{faq.a}</p>
 									</div>
 								)}
