@@ -71,10 +71,12 @@ export async function updateMerchantCheckout(
     };
   }
 
+  console.log('[updateMerchantCheckout] Calling API for checkout', checkoutId, 'data:', JSON.stringify(data));
   const response = await client.patch<ApiResponse<CheckoutData>>(
     `/v1/merchant/${merchantId}/checkouts/${checkoutId}`,
     data
   );
+  console.log('[updateMerchantCheckout] API response status:', response.status, 'data:', JSON.stringify(response.data));
 
   revalidatePath("/panel/merchant/checkouts");
   revalidatePath(`/panel/merchant/checkouts/upsert/${checkoutId}`);

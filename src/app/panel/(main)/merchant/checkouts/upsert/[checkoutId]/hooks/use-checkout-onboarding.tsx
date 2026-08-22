@@ -776,8 +776,7 @@ export function useCheckoutOnboarding({
 			switch (stepKey) {
 				case 'visual': {
 					const primaryColor = normalizeCheckoutHexColor(currentForm.primaryColor);
-					const secondaryColor = normalizeCheckoutHexColor(currentForm.secondaryColor);
-
+					console.log('[saveStepConfig:visual] currentForm.primaryColor:', currentForm.primaryColor, 'normalized:', primaryColor);
 					payload = {
 						primaryColor: primaryColor ?? CHECKOUT_PRIMARY_COLOR_DEFAULT,
 						secondaryColor:
@@ -789,6 +788,7 @@ export function useCheckoutOnboarding({
 						backgroundImageUrl: currentForm.backgroundImageUrl,
 						faviconUrl: currentForm.faviconUrl,
 					};
+					console.log('[saveStepConfig:visual] Final payload:', JSON.stringify(payload));
 					break;
 				}
 				case 'payments':
