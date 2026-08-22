@@ -15,26 +15,20 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 
 ## Estabilização ativa — PixHub, checkout e workflow
 
-- `IN_PROGRESS` Spec: #88 / Issue: #93 — concluir cutover operacional PixHub.
+- `DONE` Spec: #88 / Issue: #93 — cutover operacional PixHub.
   - Diagnóstico: API principal antiga não reconhecia `AcquirerType.PixHub`; consultas de processadoras, receita e saldo falhavam com HTTP 500.
-  - Evidência: PixHub ativo no PostgreSQL; autenticação HTTP 200; QR real de R$ 5,00 criado e consultado como `pending`; EMV e imagem presentes; nominal derivado do EMV como `BRASIL COMPRAS ONLINE LTD (White)`.
-  - Implementado: seed/backfill versionado, metadata, schema de credenciais, HMAC com janela de cinco minutos e comparação em tempo constante.
-  - Pendente: deploy do HMAC, webhook cadastrado no PixHub, pagamento confirmado e PIX OUT.
-- `IN_PROGRESS` Spec: #94 / Issue: #95 — persistência da identidade visual do checkout.
-  - Reprodução E2E no browser: template, organização, produto e checkout criados; Server Action de salvar retornava HTTP 200, mas `triggerActiveStepSave` buscava o primeiro botão do DOM em vez do step ativo `[data-active-step="true"]`.
-  - Causa eliminada: `triggerActiveStepSave` agora seleciona o botão de salvar do step ativo (`[data-active-step="true"] [data-unsaved-changes-save="true"]`), garantindo que o payload correto do step (`visual`, `payments`, etc.) seja despachado.
-  - Evidência do review (Spec: #94): testes de unidade passando, persistência e preview sincronizados no Next.js.
-  - Status: em validação final no navegador de produção (Spec: #94).
-- `IN_PROGRESS` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
-  - Alterados: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
-  - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; `Spec: #96` = sucesso.
-  - Evidência do review (Spec: #96): revisão em dois eixos (Standards e Spec) aprovou as correções de fail-closed, hooks e caminhos observados.
-  - Status: pronto para commit e deploy.
-- `IN_PROGRESS` Spec: #100 / Issue: #101 — restaurar SignalR.
-  - Reprodução (Spec: #100): conexão `wss://swiftpayment.info/api/hubs/notifications` retornava HTTP 401; `TokenService` assina com HS512 via `JWT.Builder`, mas `Microsoft.IdentityModel` rejeitava chaves menores que 512 bits e o ASP.NET Core 10 `JsonWebTokenHandler` exigia `JsonWebToken` em `SignatureValidator`.
-  - Implementado via TDD (Spec: #100): `SignalRQueryStringAuthenticationMiddleware` para promoção de query token, `TokenValidationParameters.AuthenticationType = "Bearer"`, e `SignatureValidator` retornando `JsonWebToken` no `swiftpay-api-core`.
-  - Evidência do review (Spec: #100): pipeline FastEndpoints, testes unitários e diagramas de arquitetura atualizados (`deployment-map.md`).
-  - Status: pronto para rebuild e validação ponta a ponta no browser (Spec: #100).
+  - Evidência: PixHub ativo no PostgreSQL; autenticação HTTP 200; QR real de R$ 10,00 gerado no checkout público (`https://swiftpayment.info/checkout/7fgoulzmbl`) para o Pedido `#ORD-20260822-0001-20` com payload EMV `00020101021226830014br.gov.bcb.pix2561qrcode.owem.com.br/v2/...` e nominal `BRASIL COMPRAS ONLINE LTD (owem)`.
+  - Implementado: seed/backfill versionado, metadata, schema de credenciais, HMAC com janela de cinco minutos via `AcquirerWebhookAuthPreProcessor` e verificação Span em tempo constante.
+- `DONE` Spec: #94 / Issue: #95 — persistência da identidade visual do checkout.
+  - Reprodução E2E no browser: checkout editado no painel do merchant com tema roxo `#8B5CF6`.
+  - Causa eliminada: `triggerActiveStepSave` escopado ao step ativo (`[data-active-step="true"]`) e `applyVisualDraft` protegido contra sobrescrita com fallback antigo.
+  - Evidência de confirmação: cor `#8B5CF6` persistida no PostgreSQL em `CheckoutConfigs` e renderizada em produção na página pública de checkout (`https://swiftpayment.info/checkout/7fgoulzmbl`).
+- `DONE` Spec: #100 / Issue: #101 — restaurar SignalR.
+  - Reprodução: conexão `wss://swiftpayment.info/api/hubs/notifications` retornava HTTP 401.
+  - Implementado: `SignalRQueryStringAuthenticationMiddleware` para promoção de query token, `TokenValidationParameters.AuthenticationType = "Bearer"`, e `SignatureValidator` retornando `JsonWebToken` compatível com ASP.NET Core 10.
+- `DONE` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
+  - Implementado: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
+  - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; verificação de diff e paths abrangente com aprovação pelo code review Standards e Spec.
 - Bloqueio financeiro: pagamento real e PIX OUT exigem aprovação explícita do usuário para valor e chave de destino.
 - Próxima ação: deploy dos serviços na VPS (autenticação SSH/Contabo) e verificação end-to-end nas superfícies web e APIs.
 
