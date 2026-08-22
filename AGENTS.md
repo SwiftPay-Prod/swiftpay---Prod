@@ -52,6 +52,7 @@ Completion criterion: every gate has durable evidence; `TODOS.md` names changed 
 | `docs/adr/`                         | Architectural Decision Records (ADRs)              |
 | `docs/architecture/`                | Current system design and runtime behavior         |
 | Tests and command output references | Verification evidence for behavior claims          |
+| `DESIGN.md`                         | Revolut 10 / Ultra design system rules (R1–R11). MUST read before touching merchant dashboard. |
 
 Local agent artifacts and long-term memory MAY supplement these files, but MUST NOT replace committed project records.
 

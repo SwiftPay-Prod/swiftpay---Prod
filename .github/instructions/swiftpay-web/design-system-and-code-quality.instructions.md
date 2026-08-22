@@ -228,3 +228,32 @@ function formatCurrency(value: number) { ... }
 | `validations.ts` | Validações de formulários |
 
 ---
+
+## Revolut 10 / Ultra Design System (Merchant Dashboard)
+
+O **Dashboard do Merchant** (`src/app/panel/(main)/merchant/dashboard/`) segue o design system **Revolut 10 / Retail & Ultra** documentado em `DESIGN.md` na raiz do repositório.
+
+### Regras Absolutas (DESIGN.md)
+
+Antes de criar ou modificar qualquer componente do dashboard do merchant, leia `DESIGN.md` e siga todas as regras `R1` a `R11`. As mais críticas para todo agente:
+
+| Regra | Resumo |
+|-------|--------|
+| **R8-ZERO-MOCKS-IN-PRODUCTION** | Todo número, percentual, valor monetário e métrica exibida DEVE vir de uma resposta real da API ou ser computada exclusivamente a partir de campos reais. Valores hardcoded, estimativas sintéticas e badges estáticos são PROIBIDOS. |
+| **R9-REAL-DATA-TRACEABILITY** | Toda métrica visual DEVE ser rastreável a um campo nomeado da API (ex: `kpis.approvalRate`, `balance.available`). Qualquer valor sem fonte rastreável é um mock e viola R8. |
+| **R10-REVOLUT-SCOPE** | O design system Revolut aplica-se exclusivamente ao Dashboard do Merchant. Outras telas seguem HeroUI v3 + Tailwind v4 padrão. |
+| **R11-PIX-ONLY-GATEWAY** | SwiftPay é gateway 100% PIX. Nenhuma referência a cartão de crédito, boleto ou outro método é permitida em superfícies do merchant. |
+
+### Tokens Visuais (referência rápida)
+
+- Canvas: `#000000` (preto verdadeiro)
+- Cards elevados: `#16181a`
+- Insets: `#0a0a0a`
+- Bordas: `rgba(255, 255, 255, 0.12)` (1px)
+- Primário: `#494fdf` (Cobalt Violet)
+- Verde semântico: `#00a87e`
+- Vermelho semântico: `#e23b4a`
+- Botão primário: `bg-white text-black rounded-full`
+- Tipografia financeira: `font-mono tabular-nums tracking-tight`
+
+---

@@ -39,4 +39,12 @@ rules:
     rule: "Charts must feature smooth Cobalt Violet gradients (#494fdf to transparent) with 2.5px curves, zero heavy Cartesian gridlines, and floating dark glass HUD tooltips."
   - id: R7-SEMANTIC-COLOR-DISCIPLINE
     rule: "Alert colors (red, amber, green) activate strictly on real events (> 0). Zero values are rendered in neutral clean white."
+  - id: R8-ZERO-MOCKS-IN-PRODUCTION
+    rule: "Every number, percentage, currency value, count, rate, and metric displayed in the UI MUST come from a real API response or be computed exclusively from real API fields (e.g. totalVolume / completedTransactions). Hardcoded values, synthetic estimations (e.g. volume * 0.98), static placeholder text posing as live data (e.g. 'Instantâneo (< 3s)'), and artificial badges (e.g. 'PIX D+0 Ativo', '100% Volume') are strictly PROHIBITED. If the backend does not provide a metric, the UI must either omit the field or display a neutral empty state — never fabricate data."
+  - id: R9-REAL-DATA-TRACEABILITY
+    rule: "Every visual metric MUST be traceable to a named API field or a deterministic computation of named API fields. When creating or modifying a dashboard component, the developer MUST be able to name the exact API property (e.g. kpis.approvalRate, balance.available, item.transactionCount) for every displayed value. Any value without a traceable API source is a mock and violates R8."
+  - id: R10-REVOLUT-SCOPE
+    rule: "The Revolut 10 / Ultra design system applies exclusively to the Merchant Dashboard surface (src/app/panel/(main)/merchant/dashboard/). Other panels and pages follow the standard HeroUI v3 + Tailwind v4 design system documented in .github/instructions/swiftpay-web/design-system-and-code-quality.instructions.md."
+  - id: R11-PIX-ONLY-GATEWAY
+    rule: "SwiftPay operates as a 100% PIX-only payment gateway. The dashboard, checkout, and all merchant-facing surfaces MUST NOT reference credit cards, boletos, or any payment method other than PIX. All payment method UI, terminology, and metrics assume exclusive PIX infrastructure (QR Code, Copia e Cola, SPI/Banco Central settlement)."
 ---
