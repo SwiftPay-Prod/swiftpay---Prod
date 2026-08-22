@@ -48,16 +48,19 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - Remoção de componentes legados (`SecondaryKpiSection.tsx`, `VolumeChart.tsx`, `WeeklyVolumeChart.tsx`, `DashboardCards.tsx`).
   - Verificação (Issue: #103): typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 
-- `DONE` Spec: #104 / Issue: #105 — rollout global do Revolut 10 / Ultra Design System e conformidade R11 PIX-only em 100% do frontend.
-  - Diagnóstico: Remanescentes da paleta verde-limão legada (`#9eff00`, `#4a8a00`, `#5aab00`, `#A3E635`), quebra de cliques nos menus de 3 pontos das tabelas de dados (`<Dropdown><Tooltip><button>`), e menções a Boleto e Cartão de Crédito em formulários e páginas de taxas.
+- `DONE` Spec: #104 / Issue: #105 — elevação arquitetural e estrutural de 100% das telas no padrão Master Revolut 10 / Ultra.
+  - Diagnóstico: Telas secundárias (Produtos Digitais, Produtos Físicos, Serviços, Credenciais de API) mantinham layouts legados baseados em `PageHeader` genérico sem a densidade visual, cartões elevados e grids de KPIs do Master Dashboard (Padrão Ouro).
   - Implementado:
-    - `src/app/globals.css`: tokens globais atualizados para paleta Revolut Ultra (canvas `#000000`, cards `#16181a`, insets `#0a0a0a`, hairlines `rgba(255, 255, 255, 0.12)`, botões primários em pílula sólida branca `button-primary`, acentos Cobalto `#494fdf` e Emerald `#00a87e`).
-    - Correção do gatilho de Dropdown em todas as tabelas: `checkouts-table.tsx`, `payment-links-table.tsx`, `products-table.tsx`, `orders-table.tsx`, `coupons-table.tsx`, `customers-table.tsx`, `cashouts-table.tsx`, `cashout-accounts-table.tsx`, `transactions-table.tsx`.
-    - Landing Page completa: 10 componentes em `src/components/landing/` migrados para Revolut Ultra com zero verde-limão.
-    - Autenticação e Onboarding: `auth-modal.tsx`, `signin-form.tsx`, `signup-form.tsx`, `forgot-password-form.tsx`, `reset-password-form.tsx`, `/panel/onboarding` e `/panel/merchant/new`.
-    - R11 (PIX-Only): Removidas menções e seções de Cartão e Boleto de `fees-content.tsx`, `checkout-details-modal.tsx`, `review-tab.tsx`, `settings-content.tsx` e `merchant-onboarding.constants.ts`. Rota de cartão redirecionada.
-    - Shell do Painel: Header (`panel-header.tsx`, `merchant-balance-card.tsx`, `admin-revenue-card.tsx`) e Sidebar (`sidebar-merchant-selector.tsx`, `sidebar-mobile-navbar.tsx`).
-  - Verificação: Impeccable detector com 0 erros/alertas em 38 arquivos; `bun run build` compilando com sucesso 68 rotas da aplicação.
+    - Reconstrução estrutural das tabelas (`digital-products-table.tsx`, `physical-products-table.tsx`, `services-table.tsx`, `api-credentials-table.tsx`):
+      - Executive Header unificado com squircle badge vetorial, tipografia em alta precisão e botões em pílula sólida branca (`button-primary`) e dark outline (`button-outline-dark`).
+      - 4-Tile High-Contrast KPI Grid no topo de cada módulo (Total no Catálogo, Ativos, Preço Médio PIX, Categorias Ativas) com fundo `#16181a`, bordas `rgba(255, 255, 255, 0.12)`, tipografia tabular `font-mono` e acentos semânticos (`#00a87e`, `#494fdf`, `#ec7e00`).
+      - Envelopamento do `DataTable` em container elevado `#16181a` com raio `rounded-[24px]` e borda `border-white/12`.
+      - Adopção integral de `RevolutStatusBadge` e formatação monetária tabular mono.
+      - Mobile Cards redesenhados com insets `#0a0a0a` e hairlines de 1px.
+    - Eliminação completa de classes legadas (`PageHeader`) em favor da casca executiva Revolut.
+  - Verificação:
+    - Impeccable scanner: 0 erros e 0 alertas de anti-pattern ou contraste (`[]`).
+    - Next.js build: 68 rotas compiladas com sucesso em 2.1min sem erros.
 ## Governança universal de contexto
 
 - `DONE` Criar `AGENTS.md` como entrada obrigatória para todos os agentes.

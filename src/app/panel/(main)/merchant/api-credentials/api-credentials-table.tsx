@@ -288,44 +288,104 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 		</>
 	);
 
+	const items = data.items.items;
+	const totalCredentials = data.items.totalItems;
+	const activeCredentials = items.filter((c) => c.status === MerchantApiCredentialStatus.Active).length;
+	const productionCredentials = items.filter((c) => c.environment === 'Production').length;
+
 	return (
-		<div className="flex flex-col gap-4 bg-[#000000] text-white">
-			<PageHeader
-				icon={<Icon icon={ShieldKeyIcon} className="icon-md text-[#4f55f1]" />}
-				title="Credenciais de API"
-				description="Gerencie suas chaves de acesso para integração"
-				actions={
-					<>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={ShieldKeyIcon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Credenciais de API</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gerenciamento seguro de Client IDs, Secret Keys e Webhooks
+					</p>
+				</div>
+
+				<div className="flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={() => window.open(docsUrl, '_blank', 'noopener,noreferrer')}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={ArrowUpRight01Icon} className="icon-sm" />
+						<span>Documentação</span>
+					</button>
+					{integrationUrl && (
 						<button
 							type="button"
-							onClick={() => window.open(docsUrl, '_blank', 'noopener,noreferrer')}
+							onClick={() => window.open(integrationUrl, '_blank', 'noopener,noreferrer')}
 							className="button-outline-dark cursor-pointer text-xs"
 						>
 							<Icon icon={ArrowUpRight01Icon} className="icon-sm" />
-							Acessar docs
+							<span>Testar API</span>
 						</button>
-						{integrationUrl && (
-							<button
-								type="button"
-								onClick={() => window.open(integrationUrl, '_blank', 'noopener,noreferrer')}
-								className="button-outline-dark cursor-pointer text-xs"
-							>
-								<Icon icon={ArrowUpRight01Icon} className="icon-sm" />
-								Testar API
-							</button>
-						)}
-						<button
-							type="button"
-							onClick={modals.create.open}
-							className="button-primary cursor-pointer text-xs"
-						>
-							<Icon icon={AddSquareIcon} className="icon-sm" />
-							Nova Credencial
-						</button>
-					</>
-				}
-			/>
+					)}
+					<button
+						type="button"
+						onClick={modals.create.open}
+						className="button-primary cursor-pointer text-xs"
+					>
+						<Icon icon={AddSquareIcon} className="icon-sm" />
+						<span>+ Nova Credencial</span>
+					</button>
+				</div>
+			</div>
 
+			{/* 3-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				{/* Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total Criadas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Key01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+						{totalCredentials}
+					</span>
+				</div>
+
+				{/* Ativas */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Chaves Ativas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={ShieldKeyIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						{activeCredentials}
+					</span>
+				</div>
+
+				{/* Produção */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Produção SPI
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={ArrowReloadHorizontalIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+						{productionCredentials}
+					</span>
+				</div>
+			</div>
 		<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 			<DataTable
 				columns={columns}

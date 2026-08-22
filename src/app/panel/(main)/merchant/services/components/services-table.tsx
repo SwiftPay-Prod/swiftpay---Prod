@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Chip, Avatar, Tooltip, Dropdown } from '@heroui/react';
+import { Button, Avatar, Tooltip, Dropdown } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddCircleIcon,
@@ -16,11 +16,8 @@ import {
 	MoreHorizontalCircle01Icon,
 	CheckmarkCircle02Icon,
 } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
 import {
 	productStatusParse,
-	serviceLocationTypeParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
@@ -38,6 +35,14 @@ import type { MinimalProductData } from '@/types/merchant/products';
 import type { DataTableColumn } from '@/components/ui/data-table';
 import { ProductStatus } from '@/types/enums';
 import { useServicesTable, type ServicesTableFilters } from './use-services-table';
+import { AnimatedCurrency } from '@/components/ui/animated-currency';
+import { AnimatedNumber } from '@/components/ui/animated-number';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutPlusIcon,
+	RevolutCheckIcon,
+	RevolutWalletIcon,
+} from '@/components/ui/revolut-icons';
 
 interface ServicesTableProps {
 	merchantId: string;
@@ -64,16 +69,13 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 
 	return [
 		{
-			key: 'image',
-			header: '',
-			width: 'w-16',
 			render: (product) => (
-				<Avatar size="md">
+				<Avatar size="sm" className="bg-white/5 border border-white/10 text-white">
 					{product.imageUrls?.[0] || product.imageUrl ? (
 						<Avatar.Image src={product.imageUrls?.[0] ?? product.imageUrl ?? ''} alt={product.name} />
 					) : (
 						<Avatar.Fallback>
-							<Icon icon={ServiceIcon} className="icon-sm" />
+							<Icon icon={ServiceIcon} className="icon-sm text-white/50" />
 						</Avatar.Fallback>
 					)}
 				</Avatar>
@@ -84,28 +86,25 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 			header: 'Serviço',
 			render: (product) => (
 				<div className="flex flex-col">
-					<span className="font-medium truncate max-w-60">{product.name}</span>
-					{product.externalId && <span className="text-xs text-muted truncate max-w-60">ID: {product.externalId}</span>}
+					<span className="font-bold text-sm text-white truncate max-w-60">{product.name}</span>
+					{product.externalId && <span className="text-xs font-mono text-white/40 truncate max-w-60">ID: {product.externalId}</span>}
 				</div>
 			),
 		},
 		{
 			key: 'price',
-			header: 'Preço',
-			render: (product) => <span className="font-medium">{product.price ? formatCurrency(product.price) : '-'}</span>,
+			header: 'Preço PIX',
+			render: (product) => <span className="font-bold font-mono text-white text-sm tabular-nums">{product.price ? formatCurrency(product.price) : '-'}</span>,
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (product) => {
-				const statusParsed = productStatusParse[product.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
+			render: (product) => (
+				<RevolutStatusBadge
+					status={product.status}
+					label={productStatusParse[product.status]?.label}
+				/>
+			),
 		},
 		{
 			key: 'duration',
@@ -247,66 +246,26 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 }
 
 function renderMobileServiceCard(product: MinimalProductData, _index: number, openActions?: () => void) {
-	const statusParsed = productStatusParse[product.status];
-	const locationTypeParsed = product.locationType ? serviceLocationTypeParse[product.locationType] : null;
-	const imageUrl = product.imageUrls?.[0] ?? product.imageUrl;
-	const hours = product.durationMinutes ? Math.floor(product.durationMinutes / 60) : 0;
-	const mins = product.durationMinutes ? product.durationMinutes % 60 : 0;
-	const durationText = product.durationMinutes
-		? hours > 0 && mins > 0
-			? `${hours}h ${mins}min`
-			: hours > 0
-				? `${hours}h`
-				: `${mins}min`
-		: null;
-
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
-			onKeyDown={
-				openActions
-					? (event) => {
-							if (event.key === 'Enter' || event.key === ' ') {
-								event.preventDefault();
-								openActions();
-							}
-						}
-					: undefined
-			}
 		>
-			<div className="flex items-start gap-3">
-				<Avatar className="rounded-lg shrink-0" size="sm">
-					{imageUrl ? (
-						<Avatar.Image src={imageUrl} alt={product.name} />
-					) : (
-						<Avatar.Fallback>
-							<Icon icon={ServiceIcon} className="icon-sm" />
-						</Avatar.Fallback>
-					)}
-				</Avatar>
+			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
-					<span className="font-semibold text-sm truncate block">{product.name}</span>
-					{product.externalId && <p className="mt-0.5 text-xs text-muted truncate">ID: {product.externalId}</p>}
+					<span className="font-bold text-sm text-white truncate block">{product.name}</span>
+					<p className="mt-0.5 text-xs text-white/50 font-mono truncate">
+						{product.durationMinutes ? `${product.durationMinutes} min` : 'Duração flexível'}
+					</p>
 				</div>
+				<RevolutStatusBadge status={product.status} label={productStatusParse[product.status]?.label} />
 			</div>
-			<div className="mt-2 flex items-center justify-between gap-3">
-				<div className="flex items-center gap-1.5 flex-wrap">
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm">
-						{statusParsed.label}
-					</Chip>
-					{locationTypeParsed && (
-						<Chip variant="soft" color={mapParseColorToChipColor(locationTypeParsed.color)} size="sm">
-							{locationTypeParsed.label}
-						</Chip>
-					)}
-				</div>
-				<span className="text-sm font-semibold shrink-0">{formatCurrency(product.price ?? 0)}</span>
+			<div className="mt-3 flex items-center justify-between border-t border-white/8 pt-3 text-xs font-mono">
+				<span className="text-white/50">Valor PIX</span>
+				<span className="font-bold text-white text-sm">{formatCurrency(product.price ?? 0)}</span>
 			</div>
-			{durationText && <p className="mt-1.5 text-xs text-muted">{durationText}</p>}
-			<p className="mt-2 text-xs text-muted">{formatDate(product.createdAt)}</p>
 		</div>
 	);
 }
@@ -361,84 +320,186 @@ export function ServicesTable({ merchantId, initialFilters }: ServicesTableProps
 		</>
 	);
 
+	const items = data.services.items;
+	const totalServices = data.services.totalItems;
+	const activeServices = items.filter((s) => s.status === ProductStatus.Active).length;
+	const avgPrice = items.length > 0 ? Math.round(items.reduce((acc, s) => acc + (s.price ?? 0), 0) / items.length) : 0;
+	const totalCategories = data.categories.length;
+
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={ServiceIcon} className="icon-md text-accent-foreground" />}
-				title="Serviços"
-				description="Gerencie os serviços da sua organização"
-				action={{
-					label: 'Novo Serviço',
-					icon: <Icon icon={AddCircleIcon} className="icon-sm" />,
-					onPress: actions.goToNew,
-				}}
-				secondaryAction={{
-					label: 'Categorias',
-					icon: <Icon icon={Tag01Icon} className="icon-sm" />,
-					onPress: modals.categories.open,
-				}}
-				tertiaryAction={{
-					label: 'Templates de Email',
-					icon: <Icon icon={Mail01Icon} className="icon-sm" />,
-					onPress: actions.goToEmailTemplates,
-					tooltip: 'Configurar templates de email',
-				}}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={ServiceIcon} className="icon-sm text-[#4f55f1]" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Serviços</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gestão de serviços prestados, agendamentos e cobranças PIX
+					</p>
+				</div>
 
-			<DataTable
-				columns={columns}
-				data={data.services.items}
-				keyExtractor={(product) => product.id}
-				isLoading={data.isLoading}
-				skeletonRows={filters.values.pageSize}
-				emptyMessage="Nenhum serviço encontrado"
-				minWidth="min-w-200"
-				renderMobileCard={renderMobileServiceCard}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.clear,
-					onRefresh: filters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.services.page,
-					pageSize: data.services.pageSize,
-					totalItems: data.services.totalItems,
-					totalPages: data.services.totalPages,
-					onPageChange: (page) => filters.update({ page }),
-					sortBy: filters.values.sortBy,
-					sortOrder: filters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => filters.update({ sortBy, sortOrder, page: 1 }),
-					isNavigating: data.isLoading,
-				}}
-			/>
+				<div className="flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={actions.goToEmailTemplates}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={Mail01Icon} className="icon-sm" />
+						<span>Templates de Email</span>
+					</button>
+					<button
+						type="button"
+						onClick={modals.categories.open}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={Tag01Icon} className="icon-sm" />
+						<span>Categorias</span>
+					</button>
+					<button
+						type="button"
+						onClick={actions.goToNew}
+						className="button-primary cursor-pointer text-xs"
+					>
+						<RevolutPlusIcon size={16} />
+						<span>+ Novo Serviço</span>
+					</button>
+				</div>
+			</div>
 
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{/* Total no Catálogo */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total no Catálogo
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={ServiceIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalServices} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Serviços cadastrados</p>
+					</div>
+				</div>
+
+				{/* Serviços Ativos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Serviços Ativos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<RevolutCheckIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={activeServices} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Disponíveis para contratação</p>
+					</div>
+				</div>
+
+				{/* Preço Médio */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Preço Médio PIX
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<RevolutWalletIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={avgPrice}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Média de valor dos serviços</p>
+					</div>
+				</div>
+
+				{/* Categorias */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Categorias
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Tag01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalCategories} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Grupos organizacionais</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.services.items}
+					keyExtractor={(service) => service.id}
+					isLoading={data.isLoading}
+					skeletonRows={filters.values.pageSize}
+					emptyMessage="Nenhum serviço encontrado"
+					minWidth="min-w-250"
+					renderMobileCard={renderMobileServiceCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.clear,
+						onRefresh: filters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.services.page,
+						pageSize: data.services.pageSize,
+						totalItems: data.services.totalItems,
+						totalPages: data.services.totalPages,
+						onPageChange: (page) => filters.update({ page }),
+						sortBy: filters.values.sortBy,
+						sortOrder: filters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => filters.update({ sortBy, sortOrder, page: 1 }),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 			<CategoriesModal
 				isOpen={modals.categories.isOpen}
 				onOpenChange={(open) => !open && modals.categories.close()}
-				merchantId={context.merchantId}
+				merchantId={merchantId}
 				environment={context.environment}
 				initialCategories={data.categories}
 				onCategoriesChange={filters.refresh}
 			/>
-
 			<ConfirmationModal
 				isOpen={modals.delete.isOpen}
 				onOpenChange={(open) => !open && modals.delete.close()}
 				title="Excluir Serviço"
-				description={`Tem certeza que deseja excluir o serviço "${modals.delete.productName}"? Esta ação não pode ser desfeita.`}
+				description={`Tem certeza que deseja excluir o serviço "${modals.delete.serviceName}"? Esta ação não pode ser desfeita.`}
 				confirmLabel="Excluir"
 				status="danger"
 				onConfirm={modals.delete.confirm}
 				isPending={modals.delete.isDeleting}
 			/>
-
 			<ProductDetailsModal
 				isOpen={modals.details.isOpen}
 				onOpenChange={(open) => !open && modals.details.close()}
 				productPromise={modals.details.productPromise}
-				merchantId={context.merchantId}
+				merchantId={merchantId}
 			/>
 		</div>
 	);
