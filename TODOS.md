@@ -358,4 +358,5 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - Métricas da tela mantidas como cálculos determinísticos sobre `rows` da API (`totalVolume`, `approved.length`, `conversionRate`), sem mocks; colunas de Valor Bruto/Líquido e badges já usam `font-mono tabular-nums` e `RevolutStatusBadge`.
 - `EVIDÊNCIA` `npx tsc --noEmit` executado neste workstream; saída limpa em `artifact://8` (9.14s, sem erros).
 - `Issue: #102` Sanitizados placeholders dos templates de metadata no `use-create-transaction-form.tsx` para evitar falsos positivos em secret scanning (`ck_abc123` → `EXAMPLE_CK`, `ck_otimizey_123` → `EXAMPLE_CK_OTIMIZEY`).
-- `PRÓXIMA AÇÃO` Validar deploy/build em produção e, se necessário, revisar telas 2-8 da Fase 1/Fase 2 seguindo o mesmo checklist R1-R11.
+- `Issue: #102` Deploy em andamento via GitHub Actions; validar produção e, se necessário, revisar telas 2-8 da Fase 1/Fase 2 seguindo o mesmo checklist R1-R11.
+- `PRÓXIMA AÇÃO` Deploy em andamento via GitHub Actions; validar produção e, se necessário, revisar telas 2-8 da Fase 1/Fase 2 seguindo o mesmo checklist R1-R11.
