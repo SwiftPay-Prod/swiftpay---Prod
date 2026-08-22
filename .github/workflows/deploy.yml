@@ -18,6 +18,8 @@ on:
           - api payment
           - web checkout
           - api payment web checkout
+
+jobs:
   validate:
     runs-on: ubuntu-latest
     outputs:

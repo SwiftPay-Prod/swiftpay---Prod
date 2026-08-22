@@ -43,7 +43,8 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/merchant/dashboard/components/SecondaryKpiSection.tsx`: tiles compactos para Ticket Médio, Recusadas, Estornos e Chargebacks com cores semânticas.
     - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx`: skeleton perfeitamente proporcional à nova hierarquia Revolut.
     - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx`: orquestração completa com reatividade, atalhos de teclado e fallback mobile intactos.
-  - Verificação: typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
+    - `.github/workflows/deploy.yml` (Issue: #103): correção da chave `jobs:` para parsing e execução do deploy automático na VPS.
+  - Verificação (Issue: #103): typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 
 ## Governança universal de contexto
 
