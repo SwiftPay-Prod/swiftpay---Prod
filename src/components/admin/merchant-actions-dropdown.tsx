@@ -155,57 +155,57 @@ export function MerchantActionButtons({
 	}
 
 	return (
-		<>
+		<div className="flex flex-col gap-2">
 			{onEvaluate && (
 				<Button
-					variant="secondary"
-					className="w-full justify-start"
+					variant="outline"
+					className="w-full justify-start rounded-xl border-white/12 bg-white/5 text-white hover:bg-white/10"
 					isDisabled={!canEvaluate || !canModify || evaluateReason !== null || isPending}
 					onPress={onEvaluate}
 				>
-					<Icon icon={CheckListIcon} className="icon-sm text-accent" />
-					Avaliar
+					<Icon icon={CheckListIcon} className="icon-sm text-[#4f55f1]" />
+					<span>Avaliar</span>
 				</Button>
 			)}
 			{onSetAcquirer && (
 				<Button
-					variant="secondary"
-					className="w-full justify-start"
+					variant="outline"
+					className="w-full justify-start rounded-xl border-white/12 bg-white/5 text-white hover:bg-white/10"
 					isDisabled={!canModify || setAcquirerReason !== null || isPending}
 					onPress={onSetAcquirer}
 				>
-					<Icon icon={ServerStack01Icon} className="icon-sm text-secondary" />
-					Definir Processadora
+					<Icon icon={ServerStack01Icon} className="icon-sm text-[#8b5cf6]" />
+					<span>Definir Processadora</span>
 				</Button>
 			)}
 			<Button
-				variant="secondary"
-				className="w-full justify-start"
+				variant="outline"
+				className="w-full justify-start rounded-xl border-white/12 bg-white/5 text-white hover:bg-white/10"
 				isDisabled={!canModify || activateReason !== null || isPending}
 				onPress={onActivate}
 			>
-				<Icon icon={PlayCircleIcon} className="icon-sm text-success" />
-				Ativar
+				<Icon icon={PlayCircleIcon} className="icon-sm text-[#00a87e]" />
+				<span>Ativar</span>
 			</Button>
 			<Button
-				variant="secondary"
-				className="w-full justify-start"
+				variant="outline"
+				className="w-full justify-start rounded-xl border-white/12 bg-white/5 text-white hover:bg-white/10"
 				isDisabled={!canModify || inactivateReason !== null || isPending}
 				onPress={onInactivate}
 			>
-				<Icon icon={CancelCircleIcon} className="icon-sm text-danger" />
-				Inativar
+				<Icon icon={CancelCircleIcon} className="icon-sm text-[#e23b4a]" />
+				<span>Inativar</span>
 			</Button>
 			<Button
-				variant="secondary"
-				className="w-full justify-start"
+				variant="outline"
+				className="w-full justify-start rounded-xl border-white/12 bg-white/5 text-white hover:bg-white/10"
 				isDisabled={!canModify || suspendReason !== null || isPending}
 				onPress={onSuspend}
 			>
-				<Icon icon={PauseCircleIcon} className="icon-sm text-warning" />
-				Suspender
+				<Icon icon={PauseCircleIcon} className="icon-sm text-[#f5a623]" />
+				<span>Suspender</span>
 			</Button>
-		</>
+		</div>
 	);
 }
 
@@ -235,12 +235,19 @@ export function MerchantActionsDropdown({
 
 	return (
 		<Dropdown>
-			<Button variant="tertiary" size="sm" isIconOnly={onlyIcon} isDisabled={isPending}>
-				<Icon icon={MenuTwoLineIcon} className="icon-md" />
-				{!onlyIcon && <span>Ações</span>}
+			<Button
+				variant="outline"
+				size="sm"
+				isIconOnly={onlyIcon}
+				isDisabled={isPending}
+				className="rounded-xl border border-white/12 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 transition-colors"
+			>
+				<Icon icon={MenuTwoLineIcon} className="icon-sm text-white/80" />
+				{!onlyIcon && <span className="font-semibold text-xs text-white">Ações</span>}
 			</Button>
-			<Dropdown.Popover>
+			<Dropdown.Popover className="min-w-60 rounded-2xl border border-white/12 bg-[#16181a] p-1.5 shadow-2xl backdrop-blur-xl text-white">
 				<Dropdown.Menu
+					aria-label="Ações da organização"
 					onAction={(key) => {
 						if (key === 'activate') {
 							openWithDelay(onActivate, DEFAULT_MODAL_DELAY);
@@ -261,15 +268,20 @@ export function MerchantActionsDropdown({
 							id="evaluate"
 							textValue="Avaliar"
 							isDisabled={!canEvaluate || !canModify || evaluateReason !== null}
+							className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
 						>
-							<Icon icon={CheckListIcon} className="icon-sm text-accent" />
-							<div className="flex flex-col">
-								<Label className="text-accent">Avaliar</Label>
-								{(!canEvaluate || !canModify || evaluateReason !== null) && (
-									<span className="text-xs text-muted">
-										{!canEvaluate ? 'Avaliação não disponível' : !canModify ? 'Sem permissão' : evaluateReason}
-									</span>
-								)}
+							<div className="flex items-center gap-2.5">
+								<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+									<Icon icon={CheckListIcon} className="icon-xs text-[#4f55f1]" />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Label className="text-xs font-semibold text-white cursor-pointer">Avaliar</Label>
+									{(!canEvaluate || !canModify || evaluateReason !== null) && (
+										<span className="text-[11px] font-mono text-white/50">
+											{!canEvaluate ? 'Avaliação não disponível' : !canModify ? 'Sem permissão' : evaluateReason}
+										</span>
+									)}
+								</div>
 							</div>
 						</Dropdown.Item>
 					)}
@@ -280,13 +292,18 @@ export function MerchantActionsDropdown({
 							id="setAcquirer"
 							textValue="Definir Processadora"
 							isDisabled={!canModify || setAcquirerReason !== null}
+							className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
 						>
-							<Icon icon={ServerStack01Icon} className="icon-sm text-secondary" />
-							<div className="flex flex-col">
-								<Label className="text-secondary">Definir Processadora</Label>
-								{(!canModify || setAcquirerReason !== null) && (
-									<span className="text-xs text-muted">{!canModify ? 'Sem permissão' : setAcquirerReason}</span>
-								)}
+							<div className="flex items-center gap-2.5">
+								<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#8b5cf6]/15 text-[#8b5cf6] border border-[#8b5cf6]/25">
+									<Icon icon={ServerStack01Icon} className="icon-xs text-[#8b5cf6]" />
+								</div>
+								<div className="flex flex-col gap-0.5">
+									<Label className="text-xs font-semibold text-white cursor-pointer">Definir Processadora</Label>
+									{(!canModify || setAcquirerReason !== null) && (
+										<span className="text-[11px] font-mono text-white/50">{!canModify ? 'Sem permissão' : setAcquirerReason}</span>
+									)}
+								</div>
 							</div>
 						</Dropdown.Item>
 					)}
@@ -296,13 +313,18 @@ export function MerchantActionsDropdown({
 						id="activate"
 						textValue="Ativar"
 						isDisabled={!canModify || activateReason !== null}
+						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
 					>
-						<Icon icon={PlayCircleIcon} className="icon-sm text-success" />
-						<div className="flex flex-col">
-							<Label className="text-success">Ativar</Label>
-							{(!canModify || activateReason !== null) && (
-								<span className="text-xs text-muted">{!canModify ? 'Sem permissão' : activateReason}</span>
-							)}
+						<div className="flex items-center gap-2.5">
+							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/25">
+								<Icon icon={PlayCircleIcon} className="icon-xs text-[#00a87e]" />
+							</div>
+							<div className="flex flex-col gap-0.5">
+								<Label className="text-xs font-semibold text-white cursor-pointer">Ativar</Label>
+								{(!canModify || activateReason !== null) && (
+									<span className="text-[11px] font-mono text-white/50">{!canModify ? 'Sem permissão' : activateReason}</span>
+								)}
+							</div>
 						</div>
 					</Dropdown.Item>
 
@@ -311,13 +333,18 @@ export function MerchantActionsDropdown({
 						id="inactivate"
 						textValue="Inativar"
 						isDisabled={!canModify || inactivateReason !== null}
+						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
 					>
-						<Icon icon={CancelCircleIcon} className="icon-sm text-danger" />
-						<div className="flex flex-col">
-							<Label className="text-danger">Inativar</Label>
-							{(!canModify || inactivateReason !== null) && (
-								<span className="text-xs text-muted">{!canModify ? 'Sem permissão' : inactivateReason}</span>
-							)}
+						<div className="flex items-center gap-2.5">
+							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/25">
+								<Icon icon={CancelCircleIcon} className="icon-xs text-[#e23b4a]" />
+							</div>
+							<div className="flex flex-col gap-0.5">
+								<Label className="text-xs font-semibold text-white cursor-pointer">Inativar</Label>
+								{(!canModify || inactivateReason !== null) && (
+									<span className="text-[11px] font-mono text-white/50">{!canModify ? 'Sem permissão' : inactivateReason}</span>
+								)}
+							</div>
 						</div>
 					</Dropdown.Item>
 
@@ -326,13 +353,18 @@ export function MerchantActionsDropdown({
 						id="suspend"
 						textValue="Suspender"
 						isDisabled={!canModify || suspendReason !== null}
+						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
 					>
-						<Icon icon={PauseCircleIcon} className="icon-sm text-warning" />
-						<div className="flex flex-col">
-							<Label className="text-warning">Suspender</Label>
-							{(!canModify || suspendReason !== null) && (
-								<span className="text-xs text-muted">{!canModify ? 'Sem permissão' : suspendReason}</span>
-							)}
+						<div className="flex items-center gap-2.5">
+							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#f5a623]/15 text-[#f5a623] border border-[#f5a623]/25">
+								<Icon icon={PauseCircleIcon} className="icon-xs text-[#f5a623]" />
+							</div>
+							<div className="flex flex-col gap-0.5">
+								<Label className="text-xs font-semibold text-white cursor-pointer">Suspender</Label>
+								{(!canModify || suspendReason !== null) && (
+									<span className="text-[11px] font-mono text-white/50">{!canModify ? 'Sem permissão' : suspendReason}</span>
+								)}
+							</div>
 						</div>
 					</Dropdown.Item>
 				</Dropdown.Menu>

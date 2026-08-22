@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import Image from 'next/image';
-import { Button, Tooltip, Avatar, toast } from '@heroui/react';
+import { Button, Tooltip, Avatar, toast, Chip } from '@heroui/react';
 import { ViewIcon, Building02Icon, QrCodeIcon, PlayIcon, SourceCodeSquareIcon, Link02Icon, ShoppingCartCheck01Icon, Copy01Icon, CheckmarkCircle02Icon, CancelCircleIcon, Wallet01Icon, ArrowReloadHorizontalIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Avatar, Tooltip, Dropdown } from '@heroui/react';
+import { Button, Avatar, Tooltip, Dropdown, Chip } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddCircleIcon,
@@ -18,6 +18,8 @@ import {
 } from '@hugeicons/core-free-icons';
 import {
 	productStatusParse,
+	serviceLocationTypeParse,
+	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
@@ -69,6 +71,9 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 
 	return [
 		{
+			key: 'avatar',
+			header: '',
+			width: '48px',
 			render: (product) => (
 				<Avatar size="sm" className="bg-white/5 border border-white/10 text-white">
 					{product.imageUrls?.[0] || product.imageUrl ? (
@@ -489,7 +494,7 @@ export function ServicesTable({ merchantId, initialFilters }: ServicesTableProps
 				isOpen={modals.delete.isOpen}
 				onOpenChange={(open) => !open && modals.delete.close()}
 				title="Excluir Serviço"
-				description={`Tem certeza que deseja excluir o serviço "${modals.delete.serviceName}"? Esta ação não pode ser desfeita.`}
+				description={`Tem certeza que deseja excluir o serviço "${modals.delete.productName}"? Esta ação não pode ser desfeita.`}
 				confirmLabel="Excluir"
 				status="danger"
 				onConfirm={modals.delete.confirm}

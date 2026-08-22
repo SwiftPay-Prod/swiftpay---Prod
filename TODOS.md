@@ -428,21 +428,52 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   4. Forgot-password → intent `PasswordReset` → `Published`; **`PasswordResetCode` criado (`Pending`, válido)** — bug "nunca era criado" corrigido; código extraído do envelope (`949170`), POST reset-password → código `Used`, login com a NOVA senha → 200.
   5. Site `https://swiftpayment.info/` → 200; `/docs` → 200.
 - `NOTE` Smoke local de integração (`EmailIntentRelayTests`, Testcontainers) segue falhando no sandbox local (ResourceReaper) — não bloqueia: prova definitiva feita em produção.
-## Rollout Revolut 10 / Ultra — Fase 0 + Tela 1 (Transações) — 2026-08-22
+## Rollout Revolut 10 / Ultra — Resolução de Inconsistências & Elevação Master (Imagens #1 a #8) — 2026-08-23
 
-## Rollout Revolut 10 / Ultra — Fase 0 + Tela 1 (Transações) — 2026-08-22
-
-- `Spec: DESIGN.md / Issue: #102` Fase 0 — Fundação global do painel:
-  - `src/app/globals.css`: removido uso de `var(--brand-soft)` / `var(--accent)` no estado ativo da sidebar; substituído por tokens fixos Revolut `rgba(73, 79, 223, 0.18)` e `rgba(79, 85, 241, 1)` para garantir fidelidade R1/R10 sem variar por tema.
-  - `src/components/panel/sidebar/sidebar-menu.tsx`: estados ativos/compactos da sidebar padronizados para os tokens Revolut (`#494fdf` / `#4f55f1`), com hover neutro `white/10` e texto `white`/`white/60`.
-  - `src/components/panel/panel-layout.tsx`, `src/components/panel/panel-header.tsx`, `src/components/panel/sidebar/sidebar.tsx`: shell já estava em `#000000`; mantido e reconhecido como base R1.
-- `Spec: DESIGN.md / Issue: #102` Tela 1 — Extrato de Vendas PIX (`src/app/panel/(main)/merchant/transactions/`):
-  - Removido filtro de “Método de Pagamento” da listagem e do hook (`use-transactions-table.ts`); eliminadas importações/estados/validações de `PaymentMethod` e chamadas `method` na API.
-  - `CreateTransactionModal` e `use-create-transaction-form.tsx`: eliminados campos e fluxos de cartão/boleto; criação restrita a PIX com preview/metadata/URL de notificação.
-  - Métricas da tela mantidas como cálculos determinísticos sobre `rows` da API (`totalVolume`, `approved.length`, `conversionRate`), sem mocks; colunas de Valor Bruto/Líquido e badges já usam `font-mono tabular-nums` e `RevolutStatusBadge`.
-- `EVIDÊNCIA` `npx tsc --noEmit` executado neste workstream; saída limpa em `artifact://8` (9.14s, sem erros).
-- `Issue: #102` Sanitizados placeholders dos templates de metadata no `use-create-transaction-form.tsx` para evitar falsos positivos em secret scanning (`ck_abc123` → `EXAMPLE_CK`, `ck_otimizey_123` → `EXAMPLE_CK_OTIMIZEY`).
-- `DONE` Deploy concluído com sucesso via GitHub Actions (`Deploy SwiftPay` #32591964604). Tela validada em produção: fundo `#000000`, cards `#16181a`, hairlines `rgba(255,255,255,0.12)`, tipografia tabular, métricas PIX reais renderizadas sem mocks.
-- `Issue: #102` Ajuste nos botões de refresh do `DataTable` para remover variante `secondary` e alinhar ao padrão neutro da dashboard.
-- `EVIDÊNCIA` Inspeção no DOM da produção (`swiftpayment.info/panel/merchant/cashouts`) confirmou botões `Atualizar` com fundo neutro `bg-white/5`/`bg-[#0a0a0a]`, borda `border-white/12`/`border-white/10` e texto `text-white/70`; sem cor verde.
-- `PRÓXIMA AÇÃO` Revisar telas 2-8 da Fase 1/Fase 2 seguindo o mesmo checklist R1-R11.
+- `DONE` Spec: #108 / Issue: #109 — correção de crash em `/panel/admin/templates`, elevação de accordions, dropdowns e R11 PIX-Only.
+  - **1. Correção do Crash em Templates de Checkout (Imagens #1 e #6)**:
+    - `templates-table.tsx`: Implementado optional chaining estrito e fallback seguro (`data.templates?.items ?? []`, `data.templates?.totalItems ?? 0`, cálculo de `freeTemplates` com base no `feeMode === null`).
+    - `use-templates-table.ts`: Adicionado tratamento de erro no hook com fallback garantido para `emptyPaginated` (`items: []`, `totalItems: 0`).
+  - **2. Correção de Contraste e Design em `MerchantActionsDropdown` (Imagem #5)**:
+    - `merchant-actions-dropdown.tsx`: Reestilizado o popover com `min-w-60 rounded-2xl border border-white/12 bg-[#16181a] p-1.5 shadow-2xl backdrop-blur-xl text-white`, trigger em botão outline dark `border-white/12 bg-white/5 text-white hover:bg-white/10`, itens com ícones geométricos semânticos em badges e legendas desabilitadas em `text-[11px] font-mono text-white/50`.
+  - **3. Elevação de `SystemAccordion` & Remoção de Boleto/Cartão em `platform-settings` (Imagem #2)**:
+    - `src/components/ui/system-accordion.tsx`: Casca global elevada para `rounded-[20px] border border-white/12 bg-[#16181a] overflow-hidden`, cabeçalhos com títulos nítidos em `text-sm font-bold text-white tracking-tight`, subtítulos em `text-xs font-mono text-white/50`, ícones em badges squircle e painel interno com divisor fino `border-t border-white/8 p-4 sm:p-6 bg-[#0a0a0a]/40`.
+    - `platform-settings-form.tsx`: Eliminados os blocos e importações de `BoletoAccordion` e `CreditCardAccordion` em conformidade estrita com R11 (PIX-Only).
+    - `feature-flags-accordion.tsx`: Reduzidas opções para infraestrutura PIX (PIX Instantâneo, Saque PIX Out, Troca de nominal).
+    - `payment-link-domains-accordion.tsx`: Restrito exclusivamente ao domínio de visualização PIX.
+  - **4. Elevação da Ficha da Organização e Ajustes (Imagens #3 e #4)**:
+    - `merchant-controls-accordion.tsx`: Removidos toggles de Boleto e Cartão de Crédito, mantendo apenas funcionalidades PIX e Saque.
+    - `compliance-operation-accordion.tsx` & `documents-accordion.tsx` & `merchant-organization-accordions.tsx`: Sanitizadas referências a métodos legados e padronizados documentos de CNPJ.
+  - **5. Padronização da Logo Oficial da SwiftPay**:
+    - `swiftpay-brand-logo.tsx` & `sidebar-logo.tsx`: Garantida utilização universal da logo oficial da marca SwiftPay em alta fidelidade.
+  - **6. Verificação de Integridade**:
+    - `tsc --noEmit`: 0 erros de tipagem TypeScript em todo o projeto.
+    - `./scripts/verify-matt-workflow.sh`: validado com código 0 (sem violações).
+    - `bun run build`: 68 de 68 rotas compiladas com sucesso em Next.js 16.1.1 (Turbopack).
+  - Arquivos alterados:
+    - `src/app/panel/(main)/admin/templates/templates-table.tsx`
+    - `src/app/panel/(main)/admin/templates/use-templates-table.ts`
+    - `src/app/panel/(main)/admin/templates/templates-table-skeleton.tsx`
+    - `src/components/admin/merchant-actions-dropdown.tsx`
+    - `src/components/ui/system-accordion.tsx`
+    - `src/app/panel/(main)/admin/platform-settings/platform-settings-form.tsx`
+    - `src/app/panel/(main)/admin/platform-settings/components/feature-flags-accordion.tsx`
+    - `src/app/panel/(main)/admin/platform-settings/components/payment-link-domains-accordion.tsx`
+    - `src/app/panel/(main)/admin/merchants/[id]/tabs/components/settings-tab/merchant-controls-accordion.tsx`
+    - `src/app/panel/(main)/admin/merchants/[id]/evaluate/components/accordions/compliance-operation-accordion.tsx`
+    - `src/app/panel/(main)/admin/merchants/[id]/evaluate/components/accordions/documents-accordion.tsx`
+    - `src/components/merchant/merchant-organization-accordions.tsx`
+    - `src/components/panel/sidebar/sidebar-logo.tsx`
+    - `src/components/ui/data-table.tsx`
+    - `src/app/panel/(main)/admin/acquirers/acquirers-table.tsx`
+    - `src/app/panel/(main)/admin/acquirers/acquirers-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/merchants/merchants-table-skeleton.tsx`
+    - `src/app/panel/(main)/admin/payouts/cashouts-table.tsx`
+    - `src/app/panel/(main)/admin/platform-payout-accounts/platform-payout-accounts-table.tsx`
+    - `src/app/panel/(main)/admin/platform-payouts/platform-payouts-table.tsx`
+    - `src/app/panel/(main)/admin/transactions/transactions-table.tsx`
+    - `src/app/panel/(main)/merchant/email-templates/email-templates-content.tsx`
+    - `src/app/panel/(main)/merchant/orders/modals/order-details-modal.tsx`
+    - `src/app/panel/(main)/merchant/physical-products/components/physical-products-table.tsx`
+    - `src/app/panel/(main)/merchant/services/components/services-table.tsx`
+    - `TODOS.md`

@@ -352,7 +352,7 @@ export function DataTable<T>({
 								{filtersApplyAction && (
 									<button
 										type="button"
-										onPress={filters.onRefresh}
+										onClick={filters.onRefresh}
 										disabled={filters.isRefreshing}
 										className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
 									>
@@ -386,7 +386,7 @@ export function DataTable<T>({
 											{filtersApplyAction && (
 												<button
 													type="button"
-													onPress={filters.onRefresh}
+													onClick={filters.onRefresh}
 													disabled={filters.isRefreshing}
 													className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
 												>

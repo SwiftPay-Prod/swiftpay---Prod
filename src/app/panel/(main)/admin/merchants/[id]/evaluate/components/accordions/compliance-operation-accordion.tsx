@@ -42,24 +42,11 @@ export function ComplianceOperationAccordion({ merchant }: AccordionSharedProps)
           )}
         </InfoField>
         <div className="md:col-span-2">
-          <InfoField label="Métodos de pagamento utilizados">
+          <InfoField label="Método de pagamento">
             <div className="flex flex-wrap gap-1">
-              {merchant.kyc?.usesPix && (
-                <Chip variant="soft" size="sm" color="accent">
-                  PIX
-                </Chip>
-              )}
-              {merchant.kyc?.usesBoleto && (
-                <Chip variant="soft" size="sm" color="accent">
-                  Boleto
-                </Chip>
-              )}
-              {merchant.kyc?.usesCreditCard && (
-                <Chip variant="soft" size="sm" color="accent">
-                  Cartão de crédito
-                </Chip>
-              )}
-              {!merchant.kyc?.usesPix && !merchant.kyc?.usesBoleto && !merchant.kyc?.usesCreditCard && '-'}
+              <Chip variant="soft" size="sm" color="success">
+                PIX Instantâneo
+              </Chip>
             </div>
           </InfoField>
         </div>

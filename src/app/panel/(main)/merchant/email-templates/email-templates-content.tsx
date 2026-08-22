@@ -2,7 +2,7 @@
 
 import { use } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Tooltip } from '@heroui/react';
+import { Button, Tooltip, Chip } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { Mail02Icon, PencilEdit01Icon } from '@hugeicons/core-free-icons';
 import { DataTable } from '@/components/ui/data-table';
@@ -13,7 +13,7 @@ import type { DataTableColumn } from '@/components/ui/data-table';
 import type { ApiResponse, Paginated } from '@/types/common';
 import type { MinimalEmailTemplateData } from '@/types/merchant/email-templates';
 import { formatDateTime } from '@/utils/datetime';
-
+import { Routes } from '@/router/routes';
 interface EmailTemplatesContentProps {
 	templatesPromise: Promise<ApiResponse<Paginated<MinimalEmailTemplateData>>>;
 }

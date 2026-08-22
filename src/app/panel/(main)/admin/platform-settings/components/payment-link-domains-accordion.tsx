@@ -23,7 +23,7 @@ interface PaymentLinkDomainsAccordionProps {
 	onCancelDomainRemoval: () => void;
 }
 
-const METHODS: PaymentMethod[] = [PaymentMethod.Pix, PaymentMethod.Boleto, PaymentMethod.CreditCard];
+const METHODS: PaymentMethod[] = [PaymentMethod.Pix];
 
 export function PaymentLinkDomainsAccordion({
 	paymentLinkDomainOptions,
@@ -37,9 +37,7 @@ export function PaymentLinkDomainsAccordion({
 }: PaymentLinkDomainsAccordionProps) {
 	const summary = (
 		<>
-			PIX: {resolveDefaultDomainOptionName(PaymentMethod.Pix, paymentLinkDomainOptions)} | Boleto:{' '}
-			{resolveDefaultDomainOptionName(PaymentMethod.Boleto, paymentLinkDomainOptions)} | Cartão:{' '}
-			{resolveDefaultDomainOptionName(PaymentMethod.CreditCard, paymentLinkDomainOptions)}
+			Domínio Padrão PIX: {resolveDefaultDomainOptionName(PaymentMethod.Pix, paymentLinkDomainOptions)}
 		</>
 	);
 

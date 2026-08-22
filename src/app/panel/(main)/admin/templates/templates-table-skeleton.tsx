@@ -8,9 +8,10 @@ import { Icon } from '@/components/ui/icon';
 interface TemplatesTableSkeletonProps {
 	pageSize?: number;
 }
+
+interface SkeletonRow {
 	id: number;
 }
-
 function getSkeletonColumns(): DataTableColumn<SkeletonRow>[] {
 	return [
 		{

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Tooltip, Avatar } from '@heroui/react';
+import { Button, Tooltip, Avatar, Chip } from '@heroui/react';
 import {
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
@@ -103,6 +103,7 @@ function getColumns(
 		},
 		{
 			key: 'features',
+			header: 'Recursos',
 			render: (template) => {
 				const features = [];
 				if (template.supportsCoupons) features.push('Cupons');
@@ -318,10 +319,10 @@ export function TemplatesTable({ initialFilters }: TemplatesTableProps) {
 		</>
 	);
 
-	const itemsList = data.templates.items;
-	const totalTemplates = data.templates.totalItems;
-	const activeTemplates = itemsList.filter((t) => t.isActive).length;
-	const freeTemplates = itemsList.filter((t) => t.isFree).length;
+	const itemsList = data.templates?.items ?? [];
+	const totalTemplates = data.templates?.totalItems ?? 0;
+	const activeTemplates = itemsList.filter((t) => t?.isActive).length;
+	const freeTemplates = itemsList.filter((t) => t?.feeMode === null || (t?.feeFixed === 0 && t?.feePercentage === 0)).length;
 
 	return (
 		<div className="flex flex-col gap-6 text-white">
@@ -407,7 +408,7 @@ export function TemplatesTable({ initialFilters }: TemplatesTableProps) {
 			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
-					data={data.templates.items}
+					data={itemsList}
 					keyExtractor={(template) => template.id}
 					isLoading={data.isLoading}
 					skeletonRows={filters.values.pageSize ?? 10}
@@ -422,10 +423,10 @@ export function TemplatesTable({ initialFilters }: TemplatesTableProps) {
 						isRefreshing: data.isLoading,
 					}}
 					pagination={{
-						page: data.templates.page,
-						pageSize: data.templates.pageSize,
-						totalItems: data.templates.totalItems,
-						totalPages: data.templates.totalPages,
+						page: data.templates?.page ?? 1,
+						pageSize: data.templates?.pageSize ?? (filters.values.pageSize ?? 10),
+						totalItems: data.templates?.totalItems ?? 0,
+						totalPages: data.templates?.totalPages ?? 0,
 						onPageChange: (page) => filters.update({ page }),
 						isNavigating: data.isLoading,
 					}}

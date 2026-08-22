@@ -72,7 +72,7 @@ export function DocumentsAccordion({ merchant }: AccordionSharedProps) {
             onlyView
           />
         )}
-        {merchant.kyc?.documentType === 'CNPJ' && merchant.kyc?.usesCreditCard && (
+        {merchant.kyc?.documentType === 'CNPJ' && (
           <ImageUploader
             isAdmin
             folder={UploadFolder.Kyc}

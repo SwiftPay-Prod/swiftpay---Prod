@@ -124,11 +124,11 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 							<div key={item.id ?? index} className="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/8">
 								{item.imageUrl && (
 									<div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/5">
-										<Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+										<Image src={item.imageUrl} alt={item.productName} fill className="object-cover" />
 									</div>
 								)}
 								<div className="flex-1 min-w-0">
-									<p className="font-bold text-sm text-white truncate">{item.name}</p>
+									<p className="font-bold text-sm text-white truncate">{item.productName}</p>
 									<p className="text-xs font-mono text-white/50">
 										{item.quantity}x {formatCurrency(item.unitPrice)}
 									</p>
@@ -240,18 +240,6 @@ function OrderTimelineTab({ order }: { order: OrderDetails }) {
 		}
 	}
 
-	if (order.fulfillmentHistory) {
-		order.fulfillmentHistory.forEach((item, index) => {
-			const statusParse = orderFulfillmentStatusParse[item.status];
-			events.push({
-				id: `fulfillment-${index}`,
-				title: `Status de entrega: ${statusParse?.label ?? item.status}`,
-				description: item.notes ?? undefined,
-				date: item.createdAt,
-				type: 'fulfillment',
-			});
-		});
-	}
 
 	return (
 		<div className="flex flex-col text-white">

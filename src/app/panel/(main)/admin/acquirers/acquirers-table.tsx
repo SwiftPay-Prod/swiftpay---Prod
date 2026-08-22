@@ -20,6 +20,7 @@ import {
 	mapParseColorToChipColor,
 	pageSizeFilterOptions,
 	acquirerStatusOptions,
+	acquirerStatusParse,
 } from '@/parse';
 import { formatCurrency, basisPointsToPercentage } from '@/utils/currency';
 import { FormattedDate } from '@/components/ui/formatted-date';

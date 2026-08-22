@@ -33,29 +33,15 @@ export function MerchantControlsAccordion({
 }: MerchantControlsAccordionProps) {
 	const items = [
 		{
-			name: 'PIX',
+			name: 'PIX Instantâneo',
 			description: 'Habilita cobranças PIX para esta organização',
 			field: 'pixEnabled',
 			defaultValue: platformSettings.pixEnabled ? 'Habilitado' : 'Desabilitado',
 			ariaLabel: 'Configuração PIX',
 		},
 		{
-			name: 'Boleto',
-			description: 'Habilita cobranças por boleto para esta organização',
-			field: 'boletoEnabled',
-			defaultValue: platformSettings.boletoEnabled ? 'Habilitado' : 'Desabilitado',
-			ariaLabel: 'Configuração Boleto',
-		},
-		{
-			name: 'Cartão de crédito',
-			description: 'Habilita pagamentos com cartão para esta organização',
-			field: 'creditCardEnabled',
-			defaultValue: platformSettings.creditCardEnabled ? 'Habilitado' : 'Desabilitado',
-			ariaLabel: 'Configuração Cartão de crédito',
-		},
-		{
 			name: 'Saque (PIX Out)',
-			description: 'Habilita saques para esta organização',
+			description: 'Habilita transferências e saques PIX para esta organização',
 			field: 'withdrawalEnabled',
 			defaultValue: platformSettings.withdrawalEnabled ? 'Habilitado' : 'Desabilitado',
 			ariaLabel: 'Configuração Saque',

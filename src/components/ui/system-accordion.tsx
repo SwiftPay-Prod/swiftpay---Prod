@@ -91,7 +91,7 @@ function SectionAccordionBase(props: SectionAccordionProps) {
 			return <Accordion {...accordionProps}>{children}</Accordion>;
 		}
 
-		return <div className={props.className ?? 'flex flex-col gap-3'}>{props.children}</div>;
+		return <div className={props.className ?? 'flex flex-col gap-4'}>{props.children}</div>;
 	}
 
 	const {
@@ -106,31 +106,24 @@ function SectionAccordionBase(props: SectionAccordionProps) {
 		defaultExpanded = true,
 		children,
 		accordionClassName = 'px-0',
-		itemClassName = 'rounded-xl border border-divider bg-surface',
-		triggerClassName = 'flex w-full items-center justify-between px-4 py-3',
-		iconContainerClassName = 'flex size-10 items-center justify-center rounded-lg',
-		iconClassName = 'icon-md',
-		summaryClassName = 'text-xs',
-		bodyClassName = 'flex flex-col gap-4 p-4',
+		itemClassName = 'rounded-[20px] border border-white/12 bg-[#16181a] overflow-hidden transition-all duration-200 shadow-sm',
+		triggerClassName = 'flex w-full items-center justify-between p-4 sm:p-5 hover:bg-white/[0.02] transition-colors cursor-pointer group text-left',
+		iconContainerClassName = 'flex size-8 shrink-0 items-center justify-center rounded-lg border',
+		iconClassName = 'icon-sm',
+		summaryClassName = 'text-xs font-mono text-white/50 mt-0.5',
+		bodyClassName = 'flex flex-col gap-4 p-4 sm:p-6 border-t border-white/8 bg-[#0a0a0a]/40',
 		indicatorIcon = ArrowDown01Icon,
-		indicatorClassName = 'icon-sm transition-transform duration-200',
+		indicatorClassName = 'icon-sm text-white/40 group-hover:text-white transition-transform duration-200',
 	} = props;
 
-	const resolvedColor = resolveAccordionColor(color);
-	const iconContainerStyle: CSSProperties | undefined = resolvedColor
-		? {
-			backgroundColor: buildColorMix(resolvedColor, 14),
-			border: `1px solid ${buildColorMix(resolvedColor, 24)}`,
-		}
-		: undefined;
-	const coloredTextStyle: CSSProperties | undefined = resolvedColor ? { color: resolvedColor } : undefined;
-	const indicatorStyle: CSSProperties | undefined = resolvedColor ? { color: resolvedColor, opacity: 0.72 } : undefined;
-	const finalIconContainerClassName = resolvedColor
-		? iconContainerClassName
-		: `${iconContainerClassName} bg-accent/10`;
-	const finalIconClassName = resolvedColor ? iconClassName : `${iconClassName} text-accent`;
-	const finalSummaryClassName = `${summaryClassName} text-muted-foreground font-normal`;
-	const finalIndicatorClassName = resolvedColor ? indicatorClassName : `${indicatorClassName} text-muted`;
+	const resolvedColor = resolveAccordionColor(color) ?? '#4f55f1';
+	const iconContainerStyle: CSSProperties = {
+		backgroundColor: buildColorMix(resolvedColor, 15),
+		borderColor: buildColorMix(resolvedColor, 28),
+	};
+	const iconStyle: CSSProperties = {
+		color: resolvedColor,
+	};
 
 	return (
 		<Accordion
@@ -141,31 +134,31 @@ function SectionAccordionBase(props: SectionAccordionProps) {
 			<Accordion.Item id={id} className={itemClassName}>
 				<Accordion.Heading>
 					{endContent ? (
-						<div className="flex items-center gap-2">
+						<div className="flex items-center justify-between gap-2">
 							<Accordion.Trigger className={`${triggerClassName} min-w-0 flex-1`}>
-								<div className="flex items-center gap-3">
+								<div className="flex items-center gap-3 min-w-0">
 									{!hideIcon && (
-										<div className={finalIconContainerClassName} style={iconContainerStyle}>
-											{iconNode ?? (icon ? <Icon icon={icon} className={finalIconClassName} style={coloredTextStyle} /> : null)}
+										<div className={iconContainerClassName} style={iconContainerStyle}>
+											{iconNode ?? (icon ? <Icon icon={icon} className={iconClassName} style={iconStyle} /> : null)}
 										</div>
 									)}
-									<div className="flex flex-col items-start">
-										<span className="font-medium" style={coloredTextStyle}>
+									<div className="flex flex-col items-start min-w-0 text-left">
+										<span className="text-sm font-bold text-white tracking-tight">
 											{title}
 										</span>
 										{summary && (
-											<span className={finalSummaryClassName}>
+											<span className={summaryClassName}>
 												{summary}
 											</span>
 										)}
 									</div>
 								</div>
 								<Accordion.Indicator>
-									<Icon icon={indicatorIcon} className={finalIndicatorClassName} style={indicatorStyle} />
+									<Icon icon={indicatorIcon} className={indicatorClassName} />
 								</Accordion.Indicator>
 							</Accordion.Trigger>
 							<div
-								className="pr-4"
+								className="pr-4 shrink-0"
 								onClick={(event) => event.stopPropagation()}
 								onMouseDown={(event) => event.stopPropagation()}
 							>
@@ -174,25 +167,25 @@ function SectionAccordionBase(props: SectionAccordionProps) {
 						</div>
 					) : (
 						<Accordion.Trigger className={triggerClassName}>
-							<div className="flex items-center gap-3">
+							<div className="flex items-center gap-3 min-w-0">
 								{!hideIcon && (
-									<div className={finalIconContainerClassName} style={iconContainerStyle}>
-										{iconNode ?? (icon ? <Icon icon={icon} className={finalIconClassName} style={coloredTextStyle} /> : null)}
+									<div className={iconContainerClassName} style={iconContainerStyle}>
+										{iconNode ?? (icon ? <Icon icon={icon} className={iconClassName} style={iconStyle} /> : null)}
 									</div>
 								)}
-								<div className="flex flex-col items-start">
-									<span className="font-medium" style={coloredTextStyle}>
+								<div className="flex flex-col items-start min-w-0 text-left">
+									<span className="text-sm font-bold text-white tracking-tight">
 										{title}
 									</span>
 									{summary && (
-										<span className={finalSummaryClassName}>
+										<span className={summaryClassName}>
 											{summary}
 										</span>
 									)}
 								</div>
 							</div>
 							<Accordion.Indicator>
-								<Icon icon={indicatorIcon} className={finalIndicatorClassName} style={indicatorStyle} />
+								<Icon icon={indicatorIcon} className={indicatorClassName} />
 							</Accordion.Indicator>
 						</Accordion.Trigger>
 					)}

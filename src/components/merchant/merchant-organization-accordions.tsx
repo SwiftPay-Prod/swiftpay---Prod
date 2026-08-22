@@ -72,14 +72,8 @@ function resolveAccordionId(prefix: string, section: string) {
 	return `${prefix}-${section}`;
 }
 
-function resolvePaymentMethods(merchant: MerchantOrganizationAccordionData) {
-	const methods: string[] = [];
-
-	if (merchant.kyc?.usesPix) methods.push('PIX');
-	if (merchant.kyc?.usesBoleto) methods.push('Boleto');
-	if (merchant.kyc?.usesCreditCard) methods.push('Cartão de crédito');
-
-	return methods;
+function resolvePaymentMethods(_merchant: MerchantOrganizationAccordionData) {
+	return ['PIX Instantâneo'];
 }
 
 export function MerchantOrganizationInfoAccordion({ merchant, accordionIdPrefix }: MerchantOrganizationAccordionProps) {
@@ -296,13 +290,12 @@ export function MerchantDocumentsAccordion({ merchant, accordionIdPrefix, viewer
 						sensitivePreview
 					/>
 				)}
-				{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && merchant.kyc?.usesCreditCard && (
+				{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
 					<ImageUploader
 						{...imageUploaderProps}
 						folder={UploadFolder.Kyc}
 						label="Contrato social"
-						description="Obrigatório para CNPJ com cartão de crédito habilitado"
-						maxFiles={1}
+						description="Contrato social consolidado da organização"
 						value={[]}
 						onChange={() => {}}
 						fileValue={merchant.kyc?.companyContract ? [merchant.kyc.companyContract] : []}

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Avatar, Tooltip, Dropdown } from '@heroui/react';
+import { Button, Avatar, Tooltip, Dropdown, Chip } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddCircleIcon,
@@ -106,6 +106,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 				/>
 			),
 		},
+		{
 			key: 'stock',
 			header: 'Estoque',
 			render: (product) => {

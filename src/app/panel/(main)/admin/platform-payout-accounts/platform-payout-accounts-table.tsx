@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Tooltip } from '@heroui/react';
+import { Button, Tooltip, Chip } from '@heroui/react';
 import {
 	PencilEdit01Icon,
 	Delete02Icon,

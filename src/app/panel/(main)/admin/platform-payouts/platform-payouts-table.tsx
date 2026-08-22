@@ -1,6 +1,6 @@
 'use client';
 
-import { Tooltip } from '@heroui/react';
+import { Button, Tooltip } from '@heroui/react';
 import {
 	ViewIcon,
 	Wallet01Icon,

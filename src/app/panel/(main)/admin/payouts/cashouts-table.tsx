@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Button, Tooltip, Avatar, toast } from '@heroui/react';
+import { Button, Tooltip, Avatar, toast, Chip } from '@heroui/react';
 import {
 	ViewIcon,
 	Building02Icon,

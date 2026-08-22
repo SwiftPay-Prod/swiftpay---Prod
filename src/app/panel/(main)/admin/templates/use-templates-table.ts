@@ -64,12 +64,19 @@ export function useTemplatesTable({ initialFilters }: UseTemplatesTableProps) {
 			isFree: filters.isFree ?? undefined,
 			page: filters.page,
 			pageSize: filters.pageSize,
-		}).then((response) => {
-			if (response?.data) {
-				setTemplates(response.data);
-			}
-			setFetchedFiltersKey(key);
-		});
+		})
+			.then((response) => {
+				if (response?.data?.items) {
+					setTemplates(response.data);
+				} else {
+					setTemplates(emptyPaginated);
+				}
+				setFetchedFiltersKey(key);
+			})
+			.catch(() => {
+				setTemplates(emptyPaginated);
+				setFetchedFiltersKey(key);
+			});
 	}, [currentFiltersKey, filters]);
 
 	const updateFilters = useCallback((updates: Partial<TemplatesTableFilters>) => {

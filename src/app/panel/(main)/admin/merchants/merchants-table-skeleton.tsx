@@ -145,8 +145,9 @@ export function MerchantsTableSkeleton({ pageSize = 10 }: MerchantsTableSkeleton
 					onPageChange: () => {},
 					isNavigating: false,
 				}}
-			/>
+				/>
 			</div>
 		</div>
+	);
 }
 
