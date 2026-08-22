@@ -21,10 +21,10 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Implementado: seed/backfill versionado, metadata, schema de credenciais, HMAC com janela de cinco minutos e comparação em tempo constante.
   - Pendente: deploy do HMAC, webhook cadastrado no PixHub, pagamento confirmado e PIX OUT.
 - `IN_PROGRESS` Spec: #94 / Issue: #95 — persistência da identidade visual do checkout.
-  - Reprodução E2E no browser: template, organização, produto e checkout criados; Server Action de salvar retornava HTTP 200, mas `applyVisualDraft(null)` sobrescrevia os valores do formulário com o fallback antigo após o salvamento.
-  - Causa eliminada: `applyVisualDraft` não sobrescreve o formulário quando o draft é nulo; `normalizeCheckoutHexColor` unifica a normalização em todo o pipeline e tracing de Server Action adicionado.
+  - Reprodução E2E no browser: template, organização, produto e checkout criados; Server Action de salvar retornava HTTP 200, mas `triggerActiveStepSave` buscava o primeiro botão do DOM em vez do step ativo `[data-active-step="true"]`.
+  - Causa eliminada: `triggerActiveStepSave` agora seleciona o botão de salvar do step ativo (`[data-active-step="true"] [data-unsaved-changes-save="true"]`), garantindo que o payload correto do step (`visual`, `payments`, etc.) seja despachado.
   - Evidência do review (Spec: #94): testes de unidade passando, persistência e preview sincronizados no Next.js.
-  - Status: em validação final com telemetria ativa no navegador de produção (Spec: #94).
+  - Status: em validação final no navegador de produção (Spec: #94).
 - `IN_PROGRESS` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
   - Alterados: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
   - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; `Spec: #96` = sucesso.

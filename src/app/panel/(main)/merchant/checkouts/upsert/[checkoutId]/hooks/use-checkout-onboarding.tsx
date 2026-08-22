@@ -1129,10 +1129,14 @@ export function useCheckoutOnboarding({
 		const container = contentContainerRef.current;
 		if (!container) return;
 
-		const firstSaveButton = container.querySelector<HTMLButtonElement>(
-			'[data-unsaved-changes-save="true"]'
-		);
-		firstSaveButton?.click();
+		const activeSaveButton =
+			container.querySelector<HTMLButtonElement>(
+				'[data-active-step="true"] [data-unsaved-changes-save="true"]'
+			) ??
+			container.querySelector<HTMLButtonElement>(
+				'[data-unsaved-changes-save="true"]'
+			);
+		activeSaveButton?.click();
 	}
 
 	// ── Navigation ──
