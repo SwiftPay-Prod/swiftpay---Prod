@@ -350,10 +350,15 @@ export function DataTable<T>({
 							{renderFiltersChildren()}
 							<div className="flex items-end justify-end gap-2 col-span-full sm:col-span-1 sm:col-start-2 lg:col-start-3 xl:col-start-4">
 								{filtersApplyAction && (
-									<AsyncButton variant="secondary" onPress={filters.onRefresh} isPending={filters.isRefreshing}>
-										<Icon icon={ArrowReloadHorizontalIcon} className="icon-sm" />
+									<button
+										type="button"
+										onPress={filters.onRefresh}
+										disabled={filters.isRefreshing}
+										className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+									>
+										<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${filters.isRefreshing ? 'animate-spin text-[#4f55f1]' : 'text-white/60'}`} />
 										Atualizar
-									</AsyncButton>
+									</button>
 								)}
 								{filters.onClear && filters.hasFilters && (
 									<Button variant="ghost" onPress={filters.onClear}>
@@ -379,10 +384,15 @@ export function DataTable<T>({
 										<div className="grid grid-cols-1 gap-3">{renderFiltersChildren()}</div>
 										<div className="flex items-center justify-end gap-2">
 											{filtersApplyAction && (
-												<AsyncButton variant="secondary" onPress={filters.onRefresh} isPending={filters.isRefreshing}>
-													<Icon icon={ArrowReloadHorizontalIcon} className="icon-sm" />
+												<button
+													type="button"
+													onPress={filters.onRefresh}
+													disabled={filters.isRefreshing}
+													className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+												>
+													<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${filters.isRefreshing ? 'animate-spin text-[#4f55f1]' : 'text-white/60'}`} />
 													Atualizar
-												</AsyncButton>
+												</button>
 											)}
 											{filters.onClear && filters.hasFilters && (
 												<Button variant="ghost" onPress={filters.onClear}>

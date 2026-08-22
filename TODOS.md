@@ -359,4 +359,5 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
 - `EVIDÊNCIA` `npx tsc --noEmit` executado neste workstream; saída limpa em `artifact://8` (9.14s, sem erros).
 - `Issue: #102` Sanitizados placeholders dos templates de metadata no `use-create-transaction-form.tsx` para evitar falsos positivos em secret scanning (`ck_abc123` → `EXAMPLE_CK`, `ck_otimizey_123` → `EXAMPLE_CK_OTIMIZEY`).
 - `DONE` Deploy concluído com sucesso via GitHub Actions (`Deploy SwiftPay` #32591964604). Tela validada em produção: fundo `#000000`, cards `#16181a`, hairlines `rgba(255,255,255,0.12)`, tipografia tabular, métricas PIX reais renderizadas sem mocks.
+- `Issue: #102` Ajuste nos botões de refresh do `DataTable` para remover variante `secondary` e alinhar ao padrão neutro da dashboard.
 - `PRÓXIMA AÇÃO` Revisar telas 2-8 da Fase 1/Fase 2 seguindo o mesmo checklist R1-R11.
