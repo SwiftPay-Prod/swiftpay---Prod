@@ -59,32 +59,7 @@ interface OrganizationOption {
 	merchant?: MinimalMerchant;
 }
 
-const FALLBACK_ORGANIZATIONS: OrganizationOption[] = [
-	{
-		id: 'org_1',
-		nome: 'SwiftPay Matriz',
-		statusLabel: 'Aprovado',
-		statusColor: 'success',
-		documento: '12.345.678/0001-90',
-		saldo: 128450,
-	},
-	{
-		id: 'org_2',
-		nome: 'SwiftPay Labs',
-		statusLabel: 'Rascunho',
-		statusColor: 'warning',
-		documento: '98.765.432/0001-10',
-		saldo: 0,
-	},
-	{
-		id: 'org_3',
-		nome: 'SwiftPay West',
-		statusLabel: 'Rejeitado',
-		statusColor: 'danger',
-		documento: '123.456.789-10',
-		saldo: 4500,
-	},
-];
+const FALLBACK_ORGANIZATIONS: OrganizationOption[] = [];
 
 interface MerchantTriggerContentProps {
 	isCreatingNewMerchant: boolean;
@@ -246,7 +221,7 @@ export function SidebarMerchantSelector({ forceFull = false }: SidebarMerchantSe
 						merchant,
 					};
 				})
-			: FALLBACK_ORGANIZATIONS;
+			: [];
 
 	const selectedOrganization =
 		(selectedMerchant && organizations.find((organization) => organization.id === selectedMerchant.id)) ||

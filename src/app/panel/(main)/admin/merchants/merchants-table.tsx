@@ -1,16 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { Button, Chip, Avatar, Tooltip } from '@heroui/react';
 import Image from 'next/image';
-import { Building02Icon, ServerStack01Icon, ViewIcon } from '@hugeicons/core-free-icons';
+import { Building02Icon, ServerStack01Icon, ViewIcon, Tag01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import type { AdminMinimalMerchant } from '@/types/admin/merchants';
 import { UserRole } from '@/types/enums';
 import {
 	merchantStatusParse,
 	merchantKycStatusParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
@@ -28,6 +27,14 @@ import { ProviderCategoryChip } from '@/components/admin/provider-category-chip'
 import { SetAcquirerModal } from '@/components/admin/set-acquirer-modal';
 import { useMerchantsTable } from './use-merchants-table';
 import type { Filters } from './page';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutWalletIcon,
+	RevolutPlusIcon,
+	RevolutCheckIcon,
+	RevolutTrendingUpIcon,
+} from '@/components/ui/revolut-icons';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 
 interface MerchantsTableProps {
 	initialFilters: Filters;
@@ -49,13 +56,24 @@ interface ColumnsConfig {
 }
 
 function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant>[] {
+	const {
+		currentUserRole,
+		isActionPending,
+		onView,
+		onEvaluate,
+		onActivate,
+		onSuspend,
+		onInactivate,
+		onSetAcquirer,
+	} = config;
+
 	return [
 		{
 			key: 'organization',
 			header: 'Organização',
 			render: (merchant) => (
 				<div className="flex items-center gap-3">
-					<Avatar size="sm">
+					<Avatar size="sm" className="bg-white/5 border border-white/10 text-white">
 						<Avatar.Fallback>
 							{merchant.name
 								? merchant.name
@@ -71,12 +89,12 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 						<AdminMerchantLink
 							merchantId={merchant.id}
 							name={merchant.name}
-							className="font-medium text-accent hover:underline"
+							className="font-bold text-sm text-white truncate"
 						/>
 						{merchant.document ? (
-							<DocumentDisplay document={merchant.document} className="text-sm" />
+							<DocumentDisplay document={merchant.document} className="text-xs text-white/50" />
 						) : (
-							<EmailLink email={merchant.email} className="text-sm" fallback="-" />
+							<EmailLink email={merchant.email} className="text-xs text-white/50" fallback="-" />
 						)}
 					</div>
 				</div>
@@ -88,36 +106,30 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			sortable: false,
 			render: (merchant) => (
 				<div className="flex flex-col">
-					<span className="font-medium text-foreground">{merchant.userName || '-'}</span>
-					<EmailLink email={merchant.userEmail} className="text-sm" />
+					<span className="text-sm font-medium text-white">{merchant.userName || '-'}</span>
+					<EmailLink email={merchant.userEmail} className="text-xs text-white/50" />
 				</div>
 			),
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (merchant) => {
-				const statusParsed = merchantStatusParse[merchant.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
+			render: (merchant) => (
+				<RevolutStatusBadge
+					status={merchant.status}
+					label={merchantStatusParse[merchant.status]?.label}
+				/>
+			),
 		},
 		{
 			key: 'kyc',
 			header: 'KYC',
-			render: (merchant) => {
-				const kycStatusParsed = merchantKycStatusParse[merchant.kycStatus];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(kycStatusParsed.color)} size="sm" className="gap-1">
-						{kycStatusParsed.icon}
-						{kycStatusParsed.label}
-					</Chip>
-				);
-			},
+			render: (merchant) => (
+				<RevolutStatusBadge
+					status={merchant.kycStatus}
+					label={merchantKycStatusParse[merchant.kycStatus]?.label}
+				/>
+			),
 		},
 		{
 			key: 'acquirer',
@@ -135,17 +147,17 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 								className="rounded object-contain"
 							/>
 						) : (
-							<Icon icon={ServerStack01Icon} className="icon-sm text-muted" />
+							<Icon icon={ServerStack01Icon} className="icon-sm text-white/50" />
 						)}
 						<div className="flex min-w-0 flex-col">
 							<Tooltip>
-								<span className="truncate font-medium text-foreground">{merchant.acquirerName}</span>
+								<span className="truncate font-medium text-white">{merchant.acquirerName}</span>
 								<Tooltip.Content>{merchant.acquirerName}</Tooltip.Content>
 							</Tooltip>
 							<ProviderCategoryChip category={merchant.acquirerProviderCategory} size="sm" />
 							{merchant.acquirerNominal && (
 								<Tooltip>
-									<span className="truncate font-mono text-xs text-muted">{merchant.acquirerNominal}</span>
+									<span className="truncate font-mono text-xs text-white/50">{merchant.acquirerNominal}</span>
 									<Tooltip.Content>{merchant.acquirerNominal}</Tooltip.Content>
 								</Tooltip>
 							)}
@@ -163,7 +175,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 					</div>
 				) : (
 					<div className="flex flex-col gap-1">
-						<span className="text-sm text-muted">-</span>
+						<span className="text-sm text-white/50">-</span>
 						{merchant.isNominalAbTestActive && (
 							<Chip
 								size="sm"
@@ -182,8 +194,8 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			header: 'Faturamento / Taxas',
 			render: (merchant) => (
 				<div className="flex flex-col">
-					<span className="text-sm font-medium">{formatCurrency(merchant.lifetimeVolume)}</span>
-					<span className="text-xs text-warning">{formatCurrency(merchant.totalFeesPaid)} em taxas</span>
+					<span className="text-sm font-bold font-mono text-white tabular-nums">{formatCurrency(merchant.lifetimeVolume)}</span>
+					<span className="text-xs text-[#ec7e00] font-mono">{formatCurrency(merchant.totalFeesPaid)} em taxas</span>
 				</div>
 			),
 		},
@@ -194,7 +206,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 				const balance = merchant.availableBalance;
 				const isNegative = balance < 0;
 				return (
-					<span className={`font-medium ${isNegative ? 'text-danger' : 'text-success'}`}>
+					<span className={`text-sm font-bold font-mono tabular-nums ${isNegative ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`}>
 						{isNegative ? '-' : ''}{formatCurrency(Math.abs(balance))}
 					</span>
 				);
@@ -204,16 +216,14 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			key: 'feeRate',
 			header: 'Taxa PIX',
 			render: (merchant) => (
-				<span className="text-sm">
-					{formatFeeRate(merchant.pixApiFeeMode, merchant.pixApiFeeFixed, merchant.pixApiFeePercentage)}
-				</span>
+				<span className="text-sm font-mono text-white tabular-nums">{formatFeeRate(merchant.pixApiFeeMode, merchant.pixApiFeeFixed, merchant.pixApiFeePercentage)}</span>
 			),
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
 			render: (merchant) => (
-				<div className="flex items-center gap-2 text-sm text-muted">{formatDate(merchant.createdAt)}</div>
+				<div className="flex items-center gap-2 text-xs font-mono text-white/50">{formatDate(merchant.createdAt)}</div>
 			),
 		},
 		{
@@ -222,23 +232,27 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			align: 'center',
 			sortable: false,
 			render: (merchant) => (
-				<div className="flex flex-row gap-x-2 justify-center">
+				<div className="flex items-center justify-center gap-1">
 					<Tooltip>
-						<Button isIconOnly variant="tertiary" onClick={() => config.onView(merchant.id)}>
+						<button
+							type="button"
+							onClick={() => onView(merchant.id)}
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+						>
 							<Icon icon={ViewIcon} className="icon-sm" />
-							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
+						</button>
+						<Tooltip.Content>Ver detalhes</Tooltip.Content>
 					</Tooltip>
 					<MerchantActionsDropdown
 						merchant={merchant}
-						currentUserRole={config.currentUserRole}
-						isPending={config.isActionPending}
+						currentUserRole={currentUserRole}
+						isPending={isActionPending}
 						onlyIcon={true}
-						onActivate={() => config.onActivate(merchant)}
-						onSuspend={() => config.onSuspend(merchant)}
-						onInactivate={() => config.onInactivate(merchant)}
-						onEvaluate={() => config.onEvaluate(merchant.id)}
-						onSetAcquirer={() => config.onSetAcquirer(merchant)}
+						onActivate={() => onActivate(merchant)}
+						onSuspend={() => onSuspend(merchant)}
+						onInactivate={() => onInactivate(merchant)}
+						onEvaluate={() => onEvaluate(merchant.id)}
+						onSetAcquirer={() => onSetAcquirer(merchant)}
 					/>
 				</div>
 			),
@@ -253,7 +267,7 @@ function renderMobileMerchantCard(merchant: AdminMinimalMerchant, _index: number
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-white/12 bg-[#16181a] p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -270,24 +284,18 @@ function renderMobileMerchantCard(merchant: AdminMinimalMerchant, _index: number
 		>
 			<div className="flex flex-col gap-2">
 				<div className="flex items-start justify-between gap-2">
-					<span className="font-medium">{merchant.name || 'Sem nome'}</span>
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
+					<span className="font-medium text-white">{merchant.name || 'Sem nome'}</span>
+					<RevolutStatusBadge status={merchant.status} label={statusParsed?.label} />
 				</div>
 
 				{merchant.document ? (
-					<DocumentDisplay document={merchant.document} className="text-sm" />
+					<DocumentDisplay document={merchant.document} className="text-sm text-white/70" />
 				) : (
-					<span className="text-sm text-muted">{merchant.email || '-'}</span>
+					<span className="text-sm text-white/50">{merchant.email || '-'}</span>
 				)}
 
 				<div className="flex items-center gap-2">
-					<Chip variant="soft" color={mapParseColorToChipColor(kycStatusParsed.color)} size="sm" className="gap-1">
-						{kycStatusParsed.icon}
-						{kycStatusParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={merchant.kycStatus} label={kycStatusParsed?.label} />
 					{merchant.isNominalAbTestActive && (
 						<Chip variant="soft" color="warning" size="sm" className="gap-1 min-w-18 w-fit shrink-0 justify-center text-center whitespace-nowrap">
 							A/B ativo
@@ -297,18 +305,18 @@ function renderMobileMerchantCard(merchant: AdminMinimalMerchant, _index: number
 
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex flex-col">
-						<span className="text-xs text-muted">Volume</span>
-						<span className="text-sm font-medium">{formatCurrency(merchant.lifetimeVolume)}</span>
+						<span className="text-xs text-white/50">Volume</span>
+						<span className="text-sm font-bold font-mono text-white tabular-nums">{formatCurrency(merchant.lifetimeVolume)}</span>
 					</div>
 					<div className="flex flex-col items-end">
-						<span className="text-xs text-muted">Saldo</span>
-						<span className={`text-sm font-medium ${isNegativeBalance ? 'text-danger' : 'text-success'}`}>
+						<span className="text-xs text-white/50">Saldo</span>
+						<span className={`text-sm font-bold font-mono tabular-nums ${isNegativeBalance ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`}>
 							{isNegativeBalance ? '-' : ''}{formatCurrency(Math.abs(merchant.availableBalance))}
 						</span>
 					</div>
 				</div>
 
-				<span className="text-xs text-muted">{formatDate(merchant.createdAt)}</span>
+				<span className="text-xs text-white/50">{formatDate(merchant.createdAt)}</span>
 			</div>
 		</div>
 	);
@@ -327,6 +335,12 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 		onInactivate: modals.inactivate.open,
 		onSetAcquirer: modals.setAcquirer.open,
 	});
+
+	const merchants = data.items.items;
+	const totalMerchants = data.items.totalItems;
+	const activeMerchants = merchants.filter((m) => merchantStatusParse[m.status]?.label === 'Ativo').length;
+	const totalVolume = merchants.reduce((acc, m) => acc + (m.lifetimeVolume ?? 0), 0);
+	const kycPendingCount = merchants.filter((m) => m.kycStatus === 'Pending' || m.kycStatus === 'UnderReview').length;
 
 	const renderFiltersContent = () => (
 		<>
@@ -377,63 +391,145 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 	);
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Building02Icon} size={24} />}
-				title="Organizações"
-				description="Gerencie as organizações da plataforma."
-			/>
-
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(merchant) => merchant.id}
-				isLoading={data.isLoading}
-				skeletonRows={tableFilters.values.pageSize ?? 10}
-				emptyMessage="Nenhuma organização encontrada"
-				minWidth="min-w-250"
-				renderMobileCard={renderMobileMerchantCard}
-				mobileActions={{
-					title: (merchant) => merchant.name || 'Organização',
-					subtitle: (merchant) => merchant.email || undefined,
-					renderActions: (merchant, close) => (
-						<div className="flex flex-col gap-2">
-							<Button variant="secondary" className="w-full justify-start" onPress={() => { actions.viewMerchant(merchant.id); close(); }}>
-								<Icon icon={ViewIcon} className="icon-sm" />
-								Ver detalhes
-							</Button>
-							<MerchantActionButtons
-								merchant={merchant}
-								currentUserRole={currentUserRole}
-								isPending={context.isActionPending}
-								onActivate={() => { modals.activate.open(merchant); close(); }}
-								onSuspend={() => { modals.suspend.open(merchant); close(); }}
-								onInactivate={() => { modals.inactivate.open(merchant); close(); }}
-								onEvaluate={() => { actions.evaluateMerchant(merchant.id); close(); }}
-								onSetAcquirer={() => { modals.setAcquirer.open(merchant); close(); }}
-							/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={Building02Icon} className="icon-sm text-[#4f55f1]" />
 						</div>
-					),
-				}}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: tableFilters.hasFilters,
-					onClear: tableFilters.clear,
-					onRefresh: tableFilters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.items.page,
-					pageSize: data.items.pageSize,
-					totalItems: data.items.totalItems,
-					totalPages: data.items.totalPages,
-					onPageChange: (page) => tableFilters.update({ page }),
-					sortBy: tableFilters.values.sortBy ?? undefined,
-					sortOrder: tableFilters.values.sortOrder ?? undefined,
-					onSortChange: (sortBy, sortOrder) => tableFilters.update({ sortBy, sortOrder, page: 1 }),
-					isNavigating: data.isLoading,
-				}}
-			/>
+						<h1 className="text-xl font-bold tracking-tight text-white">Organizações</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">Gerencie as organizações da plataforma.</p>
+				</div>
+
+			</div>
+
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Organizações
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Building02Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalMerchants} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Cadastradas</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Ativas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<RevolutCheckIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={activeMerchants} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Operando</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Volume
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<RevolutWalletIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							{formatCurrency(totalVolume)}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Faturamento listado</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							KYC Pendente
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Tag01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#ec7e00] tracking-tight tabular-nums block">
+							<AnimatedNumber value={kycPendingCount} />
+						</span>
+						<p className="text-xs text-[#ec7e00]/80 font-mono mt-0.5">Aguardando análise</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(merchant) => merchant.id}
+					isLoading={data.isLoading}
+					skeletonRows={tableFilters.values.pageSize ?? 10}
+					emptyMessage="Nenhuma organização encontrada"
+					minWidth="min-w-250"
+					renderMobileCard={renderMobileMerchantCard}
+					mobileActions={{
+						title: (merchant) => merchant.name || 'Organização',
+						subtitle: (merchant) => merchant.email || undefined,
+						renderActions: (merchant, close) => (
+							<div className="flex flex-col gap-2">
+								<Button variant="secondary" className="w-full justify-start" onPress={() => { actions.viewMerchant(merchant.id); close(); }}>
+									<Icon icon={ViewIcon} className="icon-sm" />
+									Ver detalhes
+								</Button>
+								<MerchantActionButtons
+									merchant={merchant}
+									currentUserRole={currentUserRole}
+									isPending={context.isActionPending}
+									onActivate={() => { modals.activate.open(merchant); close(); }}
+									onSuspend={() => { modals.suspend.open(merchant); close(); }}
+									onInactivate={() => { modals.inactivate.open(merchant); close(); }}
+									onEvaluate={() => { actions.evaluateMerchant(merchant.id); close(); }}
+									onSetAcquirer={() => { modals.setAcquirer.open(merchant); close(); }}
+								/>
+							</div>
+						),
+					}}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: tableFilters.hasFilters,
+						onClear: tableFilters.clear,
+						onRefresh: tableFilters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.items.page,
+						pageSize: data.items.pageSize,
+						totalItems: data.items.totalItems,
+						totalPages: data.items.totalPages,
+						onPageChange: (page) => tableFilters.update({ page }),
+						sortBy: tableFilters.values.sortBy ?? undefined,
+						sortOrder: tableFilters.values.sortOrder ?? undefined,
+						onSortChange: (sortBy, sortOrder) => tableFilters.update({ sortBy, sortOrder, page: 1 }),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			<ConfirmationModal
 				isOpen={modals.activate.isOpen}
@@ -491,9 +587,6 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 					onSuccess={tableFilters.refresh}
 				/>
 			)}
-
-
 		</div>
 	);
 }
-

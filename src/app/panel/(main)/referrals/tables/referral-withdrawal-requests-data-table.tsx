@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Chip, Tooltip } from '@heroui/react';
+import { Tooltip } from '@heroui/react';
 import { DataTable } from '@/components/ui/data-table';
 import type { DataTableColumn } from '@/components/ui/data-table';
 import type { UserReferralCommissionWithdrawalRequest } from '@/types/user/referrals';
@@ -11,6 +11,7 @@ import { formatCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/datetime';
 import { ViewIcon, CancelCircleIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { ReferralWithdrawalRequestDetailModal } from '../modals/referral-withdrawal-request-detail-modal';
 import { cancelMyReferralCommissionWithdrawalRequest } from '@/app/actions/user';
 import { toast } from '@heroui/react';
@@ -35,9 +36,9 @@ function getStatusMeta(status: ReferralCommissionWithdrawalRequestStatus) {
 }
 
 function getColumns(
-onViewDetails: (item: UserReferralCommissionWithdrawalRequest) => void,
-onCancelRequest: (item: UserReferralCommissionWithdrawalRequest) => void,
-cancellingRequestId: string | null
+	onViewDetails: (item: UserReferralCommissionWithdrawalRequest) => void,
+	onCancelRequest: (item: UserReferralCommissionWithdrawalRequest) => void,
+	cancellingRequestId: string | null
 ): DataTableColumn<UserReferralCommissionWithdrawalRequest>[] {
 	return [
 		{
@@ -48,18 +49,16 @@ cancellingRequestId: string | null
 		{
 			key: 'amount',
 			header: 'Valor',
-			render: (item) => <span className="font-medium">{formatCurrency(item.amount)}</span>,
+			render: (item) => (
+				<span className="font-mono tabular-nums text-white">{formatCurrency(item.amount)}</span>
+			),
 		},
 		{
 			key: 'status',
 			header: 'Status',
 			render: (item) => {
 				const meta = getStatusMeta(item.status);
-				return (
-					<Chip variant="soft" color={meta.color} size="sm">
-						{meta.label}
-					</Chip>
-				);
+				return <RevolutStatusBadge status={item.status} label={meta.label} />;
 			},
 		},
 		{
@@ -75,23 +74,32 @@ cancellingRequestId: string | null
 				<div className="flex items-center justify-center">
 					<div className="flex items-center gap-1">
 						<Tooltip>
-							<Button isIconOnly variant="tertiary" onPress={() => onViewDetails(item)}>
-								<Icon icon={ViewIcon} className="icon-sm" />
-								<Tooltip.Content>Ver detalhes</Tooltip.Content>
-							</Button>
+							<button
+								type="button"
+								onClick={() => onViewDetails(item)}
+								className="button-outline-dark inline-flex items-center justify-center rounded-full border border-white/8 bg-white/5 p-2 text-white transition-colors hover:bg-white/10"
+							>
+								<Icon icon={ViewIcon} className="icon-xs" />
+								<span className="sr-only">Ver detalhes</span>
+							</button>
+							<Tooltip.Content className="bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+								Ver detalhes
+							</Tooltip.Content>
 						</Tooltip>
 						{item.status === ReferralCommissionWithdrawalRequestStatus.Requested && (
 							<Tooltip>
-								<Button
-									isIconOnly
-									variant="tertiary"
-									className="text-danger"
-									isPending={cancellingRequestId === item.id}
-									onPress={() => onCancelRequest(item)}
+								<button
+									type="button"
+									onClick={() => onCancelRequest(item)}
+									disabled={cancellingRequestId === item.id}
+									className="button-outline-dark inline-flex items-center justify-center rounded-full border border-white/8 bg-white/5 p-2 text-danger transition-colors hover:bg-white/10 disabled:opacity-60"
 								>
-									<Icon icon={CancelCircleIcon} className="icon-sm" />
-									<Tooltip.Content>Cancelar solicitação</Tooltip.Content>
-								</Button>
+									<Icon icon={CancelCircleIcon} className="icon-xs" />
+									<span className="sr-only">Cancelar solicitação</span>
+								</button>
+								<Tooltip.Content className="bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+									Cancelar solicitação
+								</Tooltip.Content>
 							</Tooltip>
 						)}
 					</div>
@@ -105,17 +113,15 @@ function renderMobileWithdrawalRequestCard(item: UserReferralCommissionWithdrawa
 	const meta = getStatusMeta(item.status);
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
 			onKeyDown={openActions ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openActions(); } } : undefined}
 		>
 			<div className="flex items-start justify-between gap-2 mb-2">
-				<span className="font-medium">{formatCurrency(item.amount)}</span>
-				<Chip variant="soft" color={meta.color} size="sm">
-					{meta.label}
-				</Chip>
+				<span className="font-mono tabular-nums text-white">{formatCurrency(item.amount)}</span>
+				<RevolutStatusBadge status={item.status} label={meta.label} />
 			</div>
 			<div className="flex flex-col gap-1">
 				<div className="flex justify-between text-xs">
@@ -147,7 +153,7 @@ export function ReferralWithdrawalRequestsDataTable({ items, payoutPixKeyType, p
 			toast('Erro ao cancelar solicitação', {
 				description: response.error.message,
 				variant: 'danger',
-				indicator: <Icon icon={CancelCircleIcon} className="icon-sm" />,
+				indicator: <Icon icon={CancelCircleIcon} className="icon-xs" />,
 			});
 			return;
 		}

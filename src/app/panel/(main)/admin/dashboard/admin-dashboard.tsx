@@ -189,16 +189,16 @@ export function AdminDashboard() {
 	);
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-6">
 			{/* Unified Executive Toolbar */}
-			<div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b border-border/60 pb-3">
+			<div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b border-white/12 pb-4">
 				<div className="flex items-center gap-3">
-					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
 						<Icon icon={Analytics02Icon} className="icon-md text-accent" />
 					</div>
 					<div>
-						<h1 className="text-base font-semibold text-foreground tracking-tight">Admin</h1>
-						<p className="text-xs text-muted-foreground mt-0.5">Financeiro, operacional e crescimento</p>
+						<h1 className="text-base font-semibold text-white tracking-tight">Admin</h1>
+						<p className="text-xs text-white/50 mt-0.5">Financeiro, operacional e crescimento</p>
 					</div>
 				</div>
 
@@ -206,53 +206,53 @@ export function AdminDashboard() {
 			</div>
 
 			{/* Consolidated Financial Hero */}
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-				<Card className="border border-border/80 bg-card hover:border-border transition-colors">
-					<Card.Content className="flex flex-col gap-1.5 p-3">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
-							<span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">TPV</span>
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">TPV</span>
 							<Tooltip>
 								<Tooltip.Trigger>
-									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-muted-foreground/60 hover:text-muted-foreground transition-colors" />
+									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72">
-									<Tooltip.Arrow />
+								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">TPV, Total Payment Volume</span>
 									<br />
 									<span className="text-xs">Soma de todos os pagamentos aprovados e processados com sucesso na plataforma.</span>
 								</Tooltip.Content>
 							</Tooltip>
 						</div>
-						<AnimatedCurrency value={data.financial.totalVolume} className="text-lg font-bold font-mono tracking-tight text-foreground" />
+						<AnimatedCurrency value={data.financial.totalVolume} className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums" />
 						<div className="flex items-center justify-between mt-1 text-xs">
 							<GrowthIndicator growth={data.growth.volumeGrowth} comparisonLabel={data.growth.growthComparisonLabel} />
-							<span className="font-mono text-muted-foreground">
+							<span className="font-mono text-white/40">
 								{data.financial.completedTransactions.toLocaleString('pt-BR')} transações
 							</span>
 						</div>
-					</Card.Content>
-				</Card>
+					</div>
+				</div>
 
-				<Card className="border border-border/80 bg-card hover:border-border transition-colors">
-					<Card.Content className="flex flex-col gap-1.5 p-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
-							<span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Receita Bruta</span>
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Receita Bruta</span>
 							<Tooltip>
 								<Tooltip.Trigger>
-									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-muted-foreground/60 hover:text-muted-foreground transition-colors" />
+									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72">
-									<Tooltip.Arrow />
+								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">Receita Bruta (Taxas Cobradas)</span>
 									<br />
 									<span className="text-xs">Total de taxas cobradas das organizações (pagamentos + saques).</span>
 								</Tooltip.Content>
 							</Tooltip>
 						</div>
-						<AnimatedCurrency value={data.financial.totalFees} className="text-lg font-bold font-mono tracking-tight text-foreground" />
+						<AnimatedCurrency value={data.financial.totalFees} className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums" />
 						<div className="flex items-center justify-between mt-1 text-xs">
 							<GrowthIndicator growth={data.growth.totalFeesGrowth} comparisonLabel={data.growth.growthComparisonLabel} />
-							<span className="font-mono text-muted-foreground">
+							<span className="font-mono text-white/40">
 								<AnimatedNumber
 									value={data.financial.totalVolume > 0 ? (data.financial.totalFees / data.financial.totalVolume) * 100 : 0}
 									maximumFractionDigits={2}
@@ -261,29 +261,29 @@ export function AdminDashboard() {
 								/>
 							</span>
 						</div>
-					</Card.Content>
-				</Card>
+					</div>
+				</div>
 
-				<Card className="border border-border/80 bg-card hover:border-border transition-colors">
-					<Card.Content className="flex flex-col gap-1.5 p-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
-							<span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Custo Adquirentes</span>
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Custo Adquirentes</span>
 							<Tooltip>
 								<Tooltip.Trigger>
-									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-muted-foreground/60 hover:text-muted-foreground transition-colors" />
+									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72">
-									<Tooltip.Arrow />
+								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">Custo das Adquirentes</span>
 									<br />
 									<span className="text-xs">Total de taxas pagas às adquirentes para processar pagamentos e saques.</span>
 								</Tooltip.Content>
 							</Tooltip>
 						</div>
-						<AnimatedCurrency value={data.financial.totalAcquirerFees} className="text-lg font-bold font-mono tracking-tight text-foreground" />
+						<AnimatedCurrency value={data.financial.totalAcquirerFees} className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums" />
 						<div className="flex items-center justify-between mt-1 text-xs">
 							<GrowthIndicator growth={data.growth.totalAcquirerFeesGrowth} comparisonLabel={data.growth.growthComparisonLabel} invertColors />
-							<span className="font-mono text-muted-foreground">
+							<span className="font-mono text-white/40">
 								<AnimatedNumber
 									value={data.financial.totalVolume > 0 ? (data.financial.totalAcquirerFees / data.financial.totalVolume) * 100 : 0}
 									maximumFractionDigits={2}
@@ -292,29 +292,29 @@ export function AdminDashboard() {
 								/>
 							</span>
 						</div>
-					</Card.Content>
-				</Card>
+					</div>
+				</div>
 
-				<Card className="border border-border/80 bg-card hover:border-border transition-colors">
-					<Card.Content className="flex flex-col gap-1.5 p-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
-							<span className="text-xs font-medium tracking-wide uppercase text-muted-foreground">Receita Líquida</span>
+							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Receita Líquida</span>
 							<Tooltip>
 								<Tooltip.Trigger>
-									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-muted-foreground/60 hover:text-muted-foreground transition-colors" />
+									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72">
-									<Tooltip.Arrow />
+								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">Receita Líquida</span>
 									<br />
 									<span className="text-xs">Receita bruta menos custo das adquirentes.</span>
 								</Tooltip.Content>
 							</Tooltip>
 						</div>
-						<AnimatedCurrency value={data.financial.totalNetRevenue} className="text-lg font-bold font-mono tracking-tight text-foreground" />
+						<AnimatedCurrency value={data.financial.totalNetRevenue} className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums" />
 						<div className="flex items-center justify-between mt-1 text-xs">
 							<GrowthIndicator growth={data.growth.netRevenueGrowth} comparisonLabel={data.growth.growthComparisonLabel} />
-							<span className="font-mono text-muted-foreground">
+							<span className="font-mono text-white/40">
 								<AnimatedNumber
 									value={data.financial.totalVolume > 0 ? (data.financial.totalNetRevenue / data.financial.totalVolume) * 100 : 0}
 									maximumFractionDigits={2}
@@ -323,8 +323,8 @@ export function AdminDashboard() {
 								/>
 							</span>
 						</div>
-					</Card.Content>
-				</Card>
+					</div>
+				</div>
 			</div>
 
 			<InternalTabs
@@ -340,27 +340,27 @@ export function AdminDashboard() {
 				onSelectionChange={setActiveSection}
 			>
 				<Tabs.Panel id="overview">
-					<div className="flex flex-col gap-4 pt-1">
+					<div className="flex flex-col gap-6 pt-1">
 						<OverviewTab financial={data.financial} growth={data.growth} selectedPeriod={data.periodInfo.period} users={data.users} merchants={data.merchants} />
 					</div>
 				</Tabs.Panel>
 				<Tabs.Panel id="financial">
-					<div className="flex flex-col gap-4 pt-1">
+					<div className="flex flex-col gap-6 pt-1">
 						<FinancialTab financial={data.financial} volumeChart={data.volumeChart} growth={data.growth} periodLabel={data.periodInfo.label} />
 					</div>
 				</Tabs.Panel>
 				<Tabs.Panel id="transactions">
-					<div className="flex flex-col gap-4 pt-1">
+					<div className="flex flex-col gap-6 pt-1">
 						<TransactionsTab financial={data.financial} volumeChart={data.volumeChart} growth={data.growth} periodLabel={data.periodInfo.label} />
 					</div>
 				</Tabs.Panel>
 				<Tabs.Panel id="users-orgs">
-					<div className="flex flex-col gap-4 pt-1">
+					<div className="flex flex-col gap-6 pt-1">
 						<UsersOrgsTab users={data.users} merchants={data.merchants} growth={data.growth} periodLabel={data.periodInfo.label} />
 					</div>
 				</Tabs.Panel>
 				<Tabs.Panel id="growth">
-					<div className="flex flex-col gap-4 pt-1">
+					<div className="flex flex-col gap-6 pt-1">
 						<GrowthTab registrationChart={data.registrationChart} growth={data.growth} users={data.users} merchants={data.merchants} periodLabel={data.periodInfo.label} />
 					</div>
 				</Tabs.Panel>

@@ -37,9 +37,9 @@ export function PanelLayout({ children }: PanelLayoutProps) {
 
 function PanelLayoutInner({ user, title, children }: { user: UserInfo; title?: string; children: ReactNode }) {
 	return (
-		<div className="flex h-dvh overflow-hidden">
+		<div className="flex h-dvh overflow-hidden bg-[#000000] text-white">
 			<PanelSidebar user={user} />
-			<div className="flex min-w-0 w-full grow flex-col bg-background min-h-0">
+			<div className="flex min-w-0 w-full grow flex-col bg-[#000000] min-h-0">
 				<PanelHeader title={title} user={user} />
 				<div className="flex-1 overflow-y-auto overflow-x-hidden pb-20 md:pb-0">
 					<PanelContent>{children}</PanelContent>

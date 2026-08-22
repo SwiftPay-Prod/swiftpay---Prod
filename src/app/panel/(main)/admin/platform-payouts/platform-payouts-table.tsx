@@ -10,6 +10,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { PageHeader } from '@/components/ui/page-header';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import type { AdminPlatformPayoutData } from '@/types/admin/platform-payouts';
 import {
 	platformPayoutStatusParse,
@@ -43,21 +44,21 @@ function getColumns(
 			key: 'totalAmount',
 			header: 'Valor Total',
 			render: (payout) => (
-				<span className="font-medium">{formatCurrency(payout.totalAmount)}</span>
+				<span className="font-mono tabular-nums text-white">{formatCurrency(payout.totalAmount)}</span>
 			),
 		},
 		{
 			key: 'totalFee',
 			header: 'Taxa',
 			render: (payout) => (
-				<span className="text-sm text-danger">{formatCurrency(payout.totalFee)}</span>
+				<span className="font-mono tabular-nums text-sm text-danger">{formatCurrency(payout.totalFee)}</span>
 			),
 		},
 		{
 			key: 'totalNetAmount',
 			header: 'Valor Líquido',
 			render: (payout) => (
-				<span className="font-medium text-success">{formatCurrency(payout.totalNetAmount)}</span>
+				<span className="font-mono tabular-nums font-medium text-success">{formatCurrency(payout.totalNetAmount)}</span>
 			),
 		},
 		{
@@ -68,19 +69,11 @@ function getColumns(
 				const isSimulated = payout.notes?.startsWith('Saque simulado') ?? false;
 				return (
 					<div className="flex items-center gap-2">
-						<Chip
-							variant="soft"
-							color={mapParseColorToChipColor(statusParsed.color)}
-							size="sm"
-							className="gap-1"
-						>
-							{statusParsed.icon}
-							{statusParsed.label}
-						</Chip>
+						<RevolutStatusBadge status={payout.status} label={statusParsed.label} />
 						{isSimulated && (
-							<Chip variant="soft" color="warning" size="sm">
+							<span className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-2.5 py-0.5 font-mono font-medium text-xs text-white/70">
 								Simulado
-							</Chip>
+							</span>
 						)}
 					</div>
 				);
@@ -133,7 +126,7 @@ function getColumns(
 function renderMobilePlatformPayoutCard(payout: AdminPlatformPayoutData, _index: number, openActions?: () => void) {
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -148,36 +141,30 @@ function renderMobilePlatformPayoutCard(payout: AdminPlatformPayoutData, _index:
 					: undefined
 			}
 		>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-3">
 				<div className="flex items-start justify-between gap-2">
-					<div className="flex flex-col gap-0.5">
-						<span className="font-medium">{formatCurrency(payout.totalAmount)}</span>
+					<div className="flex flex-col gap-1">
+						<span className="font-mono tabular-nums text-white">{formatCurrency(payout.totalAmount)}</span>
 						<span className="text-xs text-danger">Taxa: {formatCurrency(payout.totalFee)}</span>
-						<span className="text-xs text-success">Líquido: {formatCurrency(payout.totalNetAmount)}</span>
+						<span className="font-mono tabular-nums text-xs text-success">{formatCurrency(payout.totalNetAmount)}</span>
 					</div>
 					<div className="flex flex-col items-end gap-1">
-						<Chip
-							variant="soft"
-							color={mapParseColorToChipColor(platformPayoutStatusParse[payout.status].color)}
-							className="shrink-0 text-xs"
-						>
-							{platformPayoutStatusParse[payout.status].label}
-						</Chip>
+						<RevolutStatusBadge status={payout.status} label={platformPayoutStatusParse[payout.status].label} />
 						{payout.notes?.startsWith('Saque simulado') && (
-							<Chip variant="soft" color="warning" className="shrink-0 text-xs">
+							<span className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-2.5 py-0.5 font-mono font-medium text-xs text-white/70">
 								Simulado
-							</Chip>
+							</span>
 						)}
 					</div>
 				</div>
 				<div className="flex items-center gap-1.5">
-					<Icon icon={ServerStack01Icon} className="icon-xs text-muted shrink-0" />
-					<span className="text-xs text-muted">{payout.items.length} adquirente(s)</span>
+					<Icon icon={ServerStack01Icon} className="icon-xs text-white/50 shrink-0" />
+					<span className="text-xs text-white/50">{payout.items.length} adquirente(s)</span>
 				</div>
 				{payout.requestedByUserName && (
-					<span className="text-xs text-muted">{payout.requestedByUserName}</span>
+					<span className="text-xs text-white/50">{payout.requestedByUserName}</span>
 				)}
-				<span className="text-xs text-muted">{formatDate(payout.requestedAt)}</span>
+				<span className="text-xs text-white/50">{formatDate(payout.requestedAt)}</span>
 			</div>
 		</div>
 	);
@@ -215,14 +202,12 @@ export function PlatformPayoutsTable() {
 				title="Saques da Plataforma"
 				description={
 					<div className="flex flex-col items-start gap-2">
-						<span>Gerencie os saques do saldo da plataforma para a conta de destino</span>
+						<span className="text-white/70">Gerencie os saques do saldo da plataforma para a conta de destino</span>
 						{!automaticCashout.isLoading && (
 							<div className="flex flex-col items-start gap-1">
-								<Chip variant="soft" color={automaticCashout.isEnabled ? 'success' : 'default'} size="sm">
-									{automaticCashout.isEnabled ? 'Saque automatizado Ativo' : 'Saque automatizado Inativo'}
-								</Chip>
+								<RevolutStatusBadge status={automaticCashout.isEnabled ? 'Active' : 'Default'} label={automaticCashout.isEnabled ? 'Saque automatizado Ativo' : 'Saque automatizado Inativo'} />
 								{automaticCashout.isEnabled && automaticCashout.nextAttemptAt && (
-									<span className="text-xs text-muted">
+									<span className="text-xs text-white/50">
 										Próxima tentativa: {formatDate(automaticCashout.nextAttemptAt)}
 									</span>
 								)}
@@ -232,11 +217,11 @@ export function PlatformPayoutsTable() {
 				}
 				actions={
 					<div className="flex flex-wrap items-center gap-2">
-						<Button variant="secondary" size="sm" onPress={actions.openAutomaticConfig}>
+						<Button variant="secondary" size="sm" onPress={actions.openAutomaticConfig} className="button-outline-dark">
 							<Icon icon={Settings02Icon} className="icon-sm" />
 							Configurar saque automatizado
 						</Button>
-						<Button variant="primary" onPress={actions.openNewPayout}>
+						<Button variant="primary" onPress={actions.openNewPayout} className="button-primary">
 							<Icon icon={Add01Icon} className="icon-sm" />
 							Novo Saque
 						</Button>
@@ -294,4 +279,3 @@ export function PlatformPayoutsTable() {
 		</div>
 	);
 }
-

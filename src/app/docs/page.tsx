@@ -60,15 +60,14 @@ export default function PublicDocsPage() {
           </div>
         </div>
         <div className="px-4 py-3 border-b border-slate-800">
-          <div className="relative">
+          <div className="relative flex items-center">
+            <SearchIcon className="absolute left-3 w-4 h-4 text-slate-400 pointer-events-none" />
             <Input
               variant="secondary"
-              size="sm"
               placeholder="Buscar endpoints..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full"
-              startContent={<SearchIcon className="w-4 h-4 text-slate-400" />}
+              className="w-full pl-9"
             />
           </div>
         </div>

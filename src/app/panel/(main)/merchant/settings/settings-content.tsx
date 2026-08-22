@@ -4,7 +4,6 @@ import { useMemo, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import {
-  Card,
   Button,
   Description,
   Label,
@@ -111,18 +110,18 @@ function getConversionColor(percentage: number): ChipColor {
 
 function getConversionTextClassName(percentage: number): string {
   const color = getConversionColor(percentage);
-  if (color === 'danger') return 'text-danger';
-  if (color === 'accent') return 'text-accent';
-  if (color === 'warning') return 'text-warning';
-  return 'text-success';
+  if (color === 'danger') return 'text-[#e23b4a]';
+  if (color === 'accent') return 'text-[#4f55f1]';
+  if (color === 'warning') return 'text-[#ec7e00]';
+  return 'text-[#00a87e]';
 }
 
 function getApprovalRateEvolutionTextClassName(percentage: number): string {
-  if (percentage <= 15) return 'text-danger';
-  if (percentage <= 25) return 'text-warning';
+  if (percentage <= 15) return 'text-[#e23b4a]';
+  if (percentage <= 25) return 'text-[#ec7e00]';
   if (percentage <= 35) return 'text-amber-500';
-  if (percentage <= 50) return 'text-accent';
-  return 'text-success';
+  if (percentage <= 50) return 'text-[#4f55f1]';
+  return 'text-[#00a87e]';
 }
 
 function getEffectiveConversion(last7Days: number | null, yesterday: number | null): number | null {
@@ -241,7 +240,7 @@ function HelpHint({ text }: { text: string }) {
   return (
     <Tooltip>
       <Tooltip.Trigger className="inline-flex items-center align-middle">
-        <Icon icon={HelpCircleIcon} className="icon-xs shrink-0 cursor-help text-muted" />
+        <Icon icon={HelpCircleIcon} className="icon-xs shrink-0 cursor-help text-white/50" />
       </Tooltip.Trigger>
       <Tooltip.Content className="max-w-72">
         <Tooltip.Arrow />
@@ -274,11 +273,11 @@ function NominalOptionListItem({ item }: NominalOptionListItemProps) {
         <div className="flex flex-wrap items-center gap-1">
           {item.acquirerDisplayName ? (
             <>
-              <span className="text-xs text-foreground">{item.acquirerDisplayName}</span>
-              <span className="text-xs font-light italic text-muted">({item.nominal})</span>
+              <span className="text-xs text-white">{item.acquirerDisplayName}</span>
+              <span className="text-xs font-light italic text-white/50">({item.nominal})</span>
             </>
           ) : (
-            <span className="text-xs font-light italic text-muted">{item.nominal}</span>
+            <span className="text-xs font-light italic text-white/50">{item.nominal}</span>
           )}
           {item.isCurrent && (
             <Chip size="sm" variant="soft" color="success" className="h-5 text-xs">
@@ -296,14 +295,14 @@ function NominalOptionListItem({ item }: NominalOptionListItemProps) {
             </Chip>
           ) : (
             <>
-              <span className="text-xs text-muted">
+              <span className="text-xs text-white/50">
                 {globalLabel === '7d' ? 'Taxa global (7d):' : 'Taxa global (Ontem):'}
               </span>
               <span className={`text-xs font-medium ${getConversionTextClassName(globalEffective ?? 0)}`}>
                 {globalEffective == null ? 'Sem dados' : formatConversion(globalEffective)}
               </span>
-              <span className="text-xs text-muted">|</span>
-              <span className="text-xs text-muted">
+              <span className="text-xs text-white/50">|</span>
+              <span className="text-xs text-white/50">
                 {merchantLabel === '7d' ? 'Taxa da sua org. (7d):' : 'Taxa da sua org. (Ontem):'}
               </span>
               <span className={`text-xs font-medium ${getConversionTextClassName(merchantEffective ?? 0)}`}>
@@ -649,7 +648,7 @@ export function SettingsContent({
 
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 bg-[#000000] text-white">
         <PageHeader
           icon={<Icon icon={Settings02Icon} size={24} />}
           title="Configurações"
@@ -662,23 +661,23 @@ export function SettingsContent({
           defaultSelectedKey="nominals"
         >
           <Tabs.Panel id="nominals" className="flex flex-col gap-4 p-0 pt-4">
-            <Card>
-              <Card.Header>
+            <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+              <div>
                 <div className="flex flex-col gap-1">
-                  <Card.Title>
+                  <div>
                     <span className="inline-flex items-center gap-1">
                       <span>Nominal de processamento</span>
                       <Chip size="sm" variant="soft" color="warning" className="h-5 text-xs">
                         Experimental
                       </Chip>
                     </span>
-                  </Card.Title>
+                  </div>
                   <Description>
                     Escolha entre todas as nominais disponíveis para seu tipo de conta e aplique quando desejar.
                   </Description>
                 </div>
-              </Card.Header>
-              <Card.Content className="flex flex-col gap-3">
+              </div>
+              <div className="flex flex-col gap-3">
                 <Alert status="accent">
                   <Alert.Indicator />
                   <Alert.Content>
@@ -749,7 +748,7 @@ export function SettingsContent({
                       <ComboBox.Popover>
                         <ListBox
                           className="max-h-72 overflow-y-auto"
-                          renderEmptyState={() => <div className="px-3 py-2 text-sm text-muted">Nenhuma nominal encontrada</div>}
+                          renderEmptyState={() => <div className="px-3 py-2 text-sm text-white/50">Nenhuma nominal encontrada</div>}
                         >
                           {filteredNominals.map((item) => {
                             const isNew = isNewNominal(item);
@@ -771,11 +770,11 @@ export function SettingsContent({
                                   <div className="flex flex-wrap items-center gap-1">
                                     {item.acquirerDisplayName ? (
                                       <>
-                                        <span className="text-xs text-foreground">{item.acquirerDisplayName}</span>
-                                        <span className="text-xs font-light italic text-muted">({item.nominal})</span>
+                                        <span className="text-xs text-white">{item.acquirerDisplayName}</span>
+                                        <span className="text-xs font-light italic text-white/50">({item.nominal})</span>
                                       </>
                                     ) : (
-                                      <span className="text-xs font-light italic text-muted">{item.nominal}</span>
+                                      <span className="text-xs font-light italic text-white/50">{item.nominal}</span>
                                     )}
                                     {item.isCurrent && (
                                       <Chip size="sm" variant="soft" color="success" className="h-5 text-xs">
@@ -793,14 +792,14 @@ export function SettingsContent({
                                       </Chip>
                                     ) : (
                                       <>
-                                        <span className="text-xs text-muted">
+                                        <span className="text-xs text-white/50">
                                           {globalLabel === '7d' ? 'Taxa global (7d):' : 'Taxa global (Ontem):'}
                                         </span>
                                         <span className={`text-xs font-medium ${getConversionTextClassName(globalEffective ?? 0)}`}>
                                           {globalEffective == null ? 'Sem dados' : formatConversion(globalEffective)}
                                         </span>
-                                        <span className="text-xs text-muted">|</span>
-                                        <span className="text-xs text-muted">
+                                        <span className="text-xs text-white/50">|</span>
+                                        <span className="text-xs text-white/50">
                                           {merchantLabel === '7d' ? 'Taxa da sua org. (7d):' : 'Taxa da sua org. (Ontem):'}
                                         </span>
                                         <span className={`text-xs font-medium ${getConversionTextClassName(merchantEffective ?? 0)}`}>
@@ -819,16 +818,16 @@ export function SettingsContent({
                     </ComboBox>
 
                     {selectedNominal && (
-                      <div className="flex flex-col gap-2 rounded-lg border border-divider p-3">
+                      <div className="flex flex-col gap-2 rounded-lg border border-white/12 p-3">
                         <div className="flex items-center gap-2">
                           <Label className="text-sm font-semibold">
                             {selectedNominal.acquirerDisplayName ? (
                               <>
                                 <span>{selectedNominal.acquirerDisplayName}</span>{' '}
-                                <span className="font-light italic text-muted">({selectedNominal.nominal})</span>
+                                <span className="font-light italic text-white/50">({selectedNominal.nominal})</span>
                               </>
                             ) : (
-                              <span className="font-light italic text-muted">{selectedNominal.nominal}</span>
+                              <span className="font-light italic text-white/50">{selectedNominal.nominal}</span>
                             )}
                           </Label>
                           {isNewNominal(selectedNominal) ? (
@@ -874,19 +873,19 @@ export function SettingsContent({
                             enabled={selectedNominal.supportsPix}
                             label="PIX"
                             icon={QrCodeIcon}
-                            colorClass="bg-success/10 text-success border-success-soft-hover"
+                            colorClass="bg-[#00a87e]/15 text-[#00a87e] border-white/20"
                           />
                           <MethodChip
                             enabled={selectedNominal.supportsBoleto}
                             label="Boleto"
                             icon={BarCodeIcon}
-                            colorClass="bg-warning/10 text-warning border-warning-soft-hover"
+                            colorClass="bg-[#ec7e00]/10 text-[#ec7e00] border-white/20"
                           />
                           <MethodChip
                             enabled={selectedNominal.supportsCreditCard}
                             label="Cartao"
                             icon={CreditCardIcon}
-                            colorClass="bg-accent/10 text-accent border-accent-soft-hover"
+                            colorClass="bg-[#494fdf]/15 text-[#4f55f1] border-white/20"
                           />
                         </div>
                       </div>
@@ -906,8 +905,8 @@ export function SettingsContent({
                     </div>
                   </div>
                 )}
-              </Card.Content>
-            </Card>
+              </div>
+            </div>
 
             <SectionAccordion
               id="nominals-history"
@@ -931,13 +930,13 @@ export function SettingsContent({
                     const display = splitDisplayLabel(item.displayLabel);
 
                     return (
-                      <div key={item.acquirerId} className="flex flex-col gap-1.5 rounded-lg border border-divider px-2.5 py-2">
+                      <div key={item.acquirerId} className="flex flex-col gap-1.5 rounded-lg border border-white/12 px-2.5 py-2">
                         <div className="flex items-center justify-between gap-2">
-                          <Label className="truncate text-sm font-semibold text-foreground">
+                          <Label className="truncate text-sm font-semibold text-white">
                             {display.merchantName ? <span>{display.merchantName}</span> : null}
                             {display.merchantName && display.nominal ? ' ' : null}
                             {display.nominal && (
-                              <span className="font-light italic text-muted">
+                              <span className="font-light italic text-white/50">
                                 {display.merchantName ? `(${display.nominal})` : display.nominal}
                               </span>
                             )}
@@ -950,23 +949,23 @@ export function SettingsContent({
                         </div>
 
                         <div className="flex flex-wrap items-center gap-1 text-xs">
-                          <span className="rounded-md border border-divider px-1.5 py-0.5 text-foreground">
+                          <span className="rounded-md border border-white/12 px-1.5 py-0.5 text-white">
                             Transações: <strong>{item.totalTransactions.toLocaleString('pt-BR')}</strong>
                           </span>
-                          <span className="rounded-md border border-accent-soft-hover bg-accent-soft px-1.5 py-0.5 text-accent">
+                          <span className="rounded-md border border-white/20 bg-[#494fdf]/10 px-1.5 py-0.5 text-[#4f55f1]">
                             Seleções: <strong>{item.timesSelected.toLocaleString('pt-BR')}</strong>
                           </span>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-white/50">
                           <span>
-                            Primeira tx: <strong className="text-foreground">{formatRelativeTime(item.firstTransactionAt)}</strong>
+                            Primeira tx: <strong className="text-white">{formatRelativeTime(item.firstTransactionAt)}</strong>
                           </span>
                           <span>
-                            Última tx: <strong className="text-foreground">{formatRelativeTime(item.lastTransactionAt)}</strong>
+                            Última tx: <strong className="text-white">{formatRelativeTime(item.lastTransactionAt)}</strong>
                           </span>
                           <span>
-                            Última seleção: <strong className="text-foreground">{formatRelativeTime(item.lastSelectedAt)}</strong>
+                            Última seleção: <strong className="text-white">{formatRelativeTime(item.lastSelectedAt)}</strong>
                           </span>
                         </div>
                       </div>
@@ -1027,30 +1026,30 @@ export function SettingsContent({
                     </div>
 
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                      <div className="flex flex-col gap-1 rounded-lg border border-accent-soft-hover bg-accent-soft p-2">
+                      <div className="flex flex-col gap-1 rounded-lg border border-white/20 bg-[#494fdf]/10 p-2">
                         <div className="flex items-center justify-between gap-2">
-                          <Label className="text-xs font-semibold text-accent">Variante A</Label>
+                          <Label className="text-xs font-semibold text-[#4f55f1]">Variante A</Label>
                           <Chip size="sm" variant="soft" color="accent" className="h-5 text-xs">
                             {formatSplitPercent(activeAbTest.variantAWeightPercent)}%
                           </Chip>
                         </div>
-                        <span className="text-xs text-foreground">{abVariantA ? getNominalDisplayLabel(abVariantA) : 'Nominal A'}</span>
+                        <span className="text-xs text-white">{abVariantA ? getNominalDisplayLabel(abVariantA) : 'Nominal A'}</span>
                       </div>
 
-                      <div className="flex flex-col gap-1 rounded-lg border border-warning-soft-hover bg-warning-soft p-2">
+                      <div className="flex flex-col gap-1 rounded-lg border border-white/20 bg-[#ec7e00]/10 p-2">
                         <div className="flex items-center justify-between gap-2">
-                          <Label className="text-xs font-semibold text-warning">Variante B</Label>
+                          <Label className="text-xs font-semibold text-[#ec7e00]">Variante B</Label>
                           <Chip size="sm" variant="soft" color="warning" className="h-5 text-xs">
                             {formatSplitPercent(activeAbTest.variantBWeightPercent)}%
                           </Chip>
                         </div>
-                        <span className="text-xs text-foreground">{abVariantB ? getNominalDisplayLabel(abVariantB) : 'Nominal B'}</span>
+                        <span className="text-xs text-white">{abVariantB ? getNominalDisplayLabel(abVariantB) : 'Nominal B'}</span>
                       </div>
                     </div>
 
-                    <div className="rounded-lg border border-divider p-2">
-                      <div className="text-xs text-muted">
-                        <span className="font-medium text-foreground">Roteamento ativo:</span>{' '}
+                    <div className="rounded-lg border border-white/12 p-2">
+                      <div className="text-xs text-white/50">
+                        <span className="font-medium text-white">Roteamento ativo:</span>{' '}
                         novas transações estão sendo divididas entre as variantes A e B conforme o split configurado.
                         {' '}
                         <HelpHint text="No teste ativo, o roteamento de novas transações acontece conforme o split configurado entre as variantes A e B." />
@@ -1114,11 +1113,11 @@ export function SettingsContent({
                                     <div className="flex flex-wrap items-center gap-1">
                                       {item.acquirerDisplayName ? (
                                         <>
-                                          <span className="text-xs text-foreground">{item.acquirerDisplayName}</span>
-                                          <span className="text-xs font-light italic text-muted">({item.nominal})</span>
+                                          <span className="text-xs text-white">{item.acquirerDisplayName}</span>
+                                          <span className="text-xs font-light italic text-white/50">({item.nominal})</span>
                                         </>
                                       ) : (
-                                        <span className="text-xs font-light italic text-muted">{item.nominal}</span>
+                                        <span className="text-xs font-light italic text-white/50">{item.nominal}</span>
                                       )}
                                       {item.isCurrent && (
                                         <Chip size="sm" variant="soft" color="success" className="h-5 text-xs">
@@ -1136,14 +1135,14 @@ export function SettingsContent({
                                         </Chip>
                                       ) : (
                                         <>
-                                          <span className="text-xs text-muted">
+                                          <span className="text-xs text-white/50">
                                             {globalLabel === '7d' ? 'Taxa global (7d):' : 'Taxa global (Ontem):'}
                                           </span>
                                           <span className={`text-xs font-medium ${getConversionTextClassName(globalEffective ?? 0)}`}>
                                             {globalEffective == null ? 'Sem dados' : formatConversion(globalEffective)}
                                           </span>
-                                          <span className="text-xs text-muted">|</span>
-                                          <span className="text-xs text-muted">
+                                          <span className="text-xs text-white/50">|</span>
+                                          <span className="text-xs text-white/50">
                                             {merchantLabel === '7d' ? 'Taxa da sua org. (7d):' : 'Taxa da sua org. (Ontem):'}
                                           </span>
                                           <span className={`text-xs font-medium ${getConversionTextClassName(merchantEffective ?? 0)}`}>
@@ -1343,7 +1342,7 @@ export function SettingsContent({
                       )}
                     </div>
 
-                    <div className="text-xs text-muted">
+                    <div className="text-xs text-white/50">
                       {selectedAbVariantA && selectedAbVariantB
                         ? `A: ${getNominalDisplayLabel(selectedAbVariantA)} | B: ${getNominalDisplayLabel(selectedAbVariantB)}`
                         : 'Selecione as duas nominais para iniciar o teste A/B.'}
@@ -1391,7 +1390,7 @@ export function SettingsContent({
                     const isExpanded = expandedAbHistoryKeys.has(item.id);
 
                     return (
-                      <SectionAccordion.Item key={item.id} id={item.id} className="rounded-xl border border-divider/70 bg-surface">
+                      <SectionAccordion.Item key={item.id} id={item.id} className="rounded-xl border border-white/8 bg-[#16181a]">
                         <SectionAccordion.Heading>
                           <SectionAccordion.Trigger className="flex w-full items-center justify-between px-3 py-2.5">
                             <div className="flex w-full flex-col items-start gap-2 text-left">
@@ -1423,15 +1422,15 @@ export function SettingsContent({
                                   </Chip>
                                 )}
                               </div>
-                              <div className="grid grid-cols-1 gap-1 text-xs text-muted sm:grid-cols-2">
-                                <span>Inicio: <strong className="text-foreground">{formatDateTime(item.startedAt)}</strong></span>
-                                <span>Fim: <strong className="text-foreground">{formatDateTime(item.endedAt)}</strong></span>
+                              <div className="grid grid-cols-1 gap-1 text-xs text-white/50 sm:grid-cols-2">
+                                <span>Inicio: <strong className="text-white">{formatDateTime(item.startedAt)}</strong></span>
+                                <span>Fim: <strong className="text-white">{formatDateTime(item.endedAt)}</strong></span>
                                 <span>{getAbWinnerLabel(item)}</span>
-                                <span>ID: <strong className="text-foreground">{item.id.slice(0, 8)}</strong></span>
+                                <span>ID: <strong className="text-white">{item.id.slice(0, 8)}</strong></span>
                               </div>
                             </div>
                             <SectionAccordion.Indicator>
-                              <Icon icon={ArrowDown01Icon} className="icon-sm text-muted transition-transform duration-200" />
+                              <Icon icon={ArrowDown01Icon} className="icon-sm text-white/50 transition-transform duration-200" />
                             </SectionAccordion.Indicator>
                           </SectionAccordion.Trigger>
                         </SectionAccordion.Heading>
@@ -1441,7 +1440,7 @@ export function SettingsContent({
                             {isExpanded ? (
                               <div className="flex flex-col gap-3">
                                 <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                                  <div className="rounded-lg border border-divider p-2">
+                                  <div className="rounded-lg border border-white/12 p-2">
                                     <div className="mb-2 flex flex-wrap items-center gap-1">
                                       <Chip size="sm" variant="soft" color="accent" className="h-5 text-xs">Variante A</Chip>
                                       {item.winnerMerchantAcquirerId === item.variantA.merchantAcquirerId && (
@@ -1455,7 +1454,7 @@ export function SettingsContent({
                                           </Tooltip.Content>
                                         </Tooltip>
                                       )}
-                                      <span className="text-xs text-foreground">{item.variantA.displayLabel}</span>
+                                      <span className="text-xs text-white">{item.variantA.displayLabel}</span>
                                     </div>
                                     <div className="flex flex-wrap gap-1">
                                       <Chip size="sm" variant="soft" color="default" className="h-5 text-xs">
@@ -1475,7 +1474,7 @@ export function SettingsContent({
                                     </div>
                                   </div>
 
-                                  <div className="rounded-lg border border-divider p-2">
+                                  <div className="rounded-lg border border-white/12 p-2">
                                     <div className="mb-2 flex flex-wrap items-center gap-1">
                                       <Chip size="sm" variant="soft" color="warning" className="h-5 text-xs">Variante B</Chip>
                                       {item.winnerMerchantAcquirerId === item.variantB.merchantAcquirerId && (
@@ -1489,7 +1488,7 @@ export function SettingsContent({
                                           </Tooltip.Content>
                                         </Tooltip>
                                       )}
-                                      <span className="text-xs text-foreground">{item.variantB.displayLabel}</span>
+                                      <span className="text-xs text-white">{item.variantB.displayLabel}</span>
                                     </div>
                                     <div className="flex flex-wrap gap-1">
                                       <Chip size="sm" variant="soft" color="default" className="h-5 text-xs">
@@ -1511,7 +1510,7 @@ export function SettingsContent({
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-2 xl:grid-cols-2">
-                                  <div className="rounded-lg border border-divider p-2">
+                                  <div className="rounded-lg border border-white/12 p-2">
                                     <Label className="mb-2 text-xs font-semibold">Taxa de aprovação por hora</Label>
                                     <ChartContainer config={approvalRateChartConfig} className="h-44 w-full">
                                       <LineChart accessibilityLayer data={item.chart}>
@@ -1541,7 +1540,7 @@ export function SettingsContent({
                                     </ChartContainer>
                                   </div>
 
-                                  <div className="rounded-lg border border-divider p-2">
+                                  <div className="rounded-lg border border-white/12 p-2">
                                     <Label className="mb-2 text-xs font-semibold">Volume por hora</Label>
                                     <ChartContainer config={volumeChartConfig} className="h-44 w-full">
                                       <BarChart accessibilityLayer data={item.chart}>
@@ -1568,14 +1567,14 @@ export function SettingsContent({
           </Tabs.Panel>
 
           <Tabs.Panel id="danger" className="p-0 pt-4">
-            <Card>
-              <Card.Header>
+            <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+              <div>
                 <div className="flex flex-col gap-1">
-                  <Card.Title className="text-danger">Zona de Perigo</Card.Title>
+                  <div className="text-[#e23b4a]">Zona de Perigo</div>
                   <Description>Ações irreversíveis para sua organização</Description>
                 </div>
-              </Card.Header>
-              <Card.Content className="flex flex-col gap-4">
+              </div>
+              <div className="flex flex-col gap-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex flex-col gap-1">
                     <Label className="text-sm font-medium">Excluir Organização</Label>
@@ -1588,8 +1587,8 @@ export function SettingsContent({
                     Excluir
                   </Button>
                 </div>
-              </Card.Content>
-            </Card>
+              </div>
+            </div>
           </Tabs.Panel>
         </InternalTabs>
       </div>
@@ -1607,11 +1606,11 @@ export function SettingsContent({
             <Modal.CloseTrigger />
 
             <Modal.Header>
-              <Modal.Icon className="bg-danger-soft text-danger">
+              <Modal.Icon className="bg-danger-soft text-[#e23b4a]">
                 <Icon icon={Alert02Icon} className="icon-md" />
               </Modal.Icon>
               <Modal.Heading>Encerrar teste A/B</Modal.Heading>
-              <p className="text-sm text-muted">
+              <p className="text-sm text-white/50">
                 Escolha a nominal vencedora para manter o roteamento após o encerramento.
               </p>
             </Modal.Header>
@@ -1632,17 +1631,17 @@ export function SettingsContent({
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {winnerSelectionOptions.map((item) => {
                     const isSelected = abWinnerMerchantAcquirerId === item.merchantAcquirerId;
-                    const selectedBorderClass = item.color === 'warning' ? 'border-warning' : 'border-accent';
+                    const selectedBorderClass = item.color === 'warning' ? 'border-[#ec7e00]' : 'border-[#4f55f1]';
                     const display = splitDisplayLabel(item.displayLabel);
 
                     return (
                       <label
                         key={item.merchantAcquirerId}
                         className={[
-                          'flex h-full w-full cursor-pointer flex-col gap-2 rounded-lg border bg-surface px-3 py-3 transition-colors',
+                          'flex h-full w-full cursor-pointer flex-col gap-2 rounded-lg border bg-[#16181a] px-3 py-3 transition-colors',
                           isSelected
                             ? selectedBorderClass
-                            : 'border-divider bg-surface hover:border-accent-soft-hover',
+                            : 'border-white/12 bg-[#16181a] hover:border-white/20',
                         ].join(' ')}
                         aria-disabled={isAbTestPending}
                       >
@@ -1668,19 +1667,19 @@ export function SettingsContent({
                               {item.variantLabel}
                             </Chip>
                           </div>
-                          {isSelected && <Icon icon={CheckmarkCircle02Icon} className="icon-sm text-accent" />}
+                          {isSelected && <Icon icon={CheckmarkCircle02Icon} className="icon-sm text-[#4f55f1]" />}
                         </div>
 
-                        <span className="text-sm text-foreground">
+                        <span className="text-sm text-white">
                           {display.merchantName ? <span>{display.merchantName}</span> : null}
                           {display.merchantName && display.nominal ? ' ' : null}
                           {display.nominal && (
-                            <span className="font-light italic text-muted">
+                            <span className="font-light italic text-white/50">
                               {display.merchantName ? `(${display.nominal})` : display.nominal}
                             </span>
                           )}
                         </span>
-                        <span className="text-xs text-muted">
+                        <span className="text-xs text-white/50">
                           {item.approvalRate == null
                             ? 'Aprovação no periodo do teste: sem dados ainda'
                             : (

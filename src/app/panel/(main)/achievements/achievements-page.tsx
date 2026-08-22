@@ -12,7 +12,6 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { toast } from '@heroui/react';
-import { PageHeader } from '@/components/ui/page-header';
 import { AchievementCard } from './components/achievement-card';
 import { AchievementModal } from './components/achievement-modal';
 import { BorderCard } from './components/border-card';
@@ -49,7 +48,7 @@ interface AchievementsPageProps {
 	userProfileImageUrl?: string | null;
 }
 
-export function AchievementsPage({ fetchPromise, userName, userProfileImageUrl }: AchievementsPageProps) {
+export function AchievementsPage({ fetchPromise, merchantId, userName, userProfileImageUrl }: AchievementsPageProps) {
 	const response = use(fetchPromise);
 	const data = response?.data;
 
@@ -69,17 +68,21 @@ export function AchievementsPage({ fetchPromise, userName, userProfileImageUrl }
 
 	if (!data || response?.error) {
 		return (
-			<div className="flex flex-col gap-4">
-				<PageHeader
-					icon={<Icon icon={StarAward02Icon} size={24} />}
-					title="Conquistas"
-					description="Seus emblemas, dinastias e progresso de nível."
-				/>
-				<Card>
-					<Card.Content className="flex items-center justify-center p-8 text-muted text-sm">
-						{response?.error?.message ?? 'Não foi possível carregar as conquistas.'}
-					</Card.Content>
-				</Card>
+			<div className="flex flex-col gap-6 text-white">
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+					<div>
+						<div className="flex items-center gap-2">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+								<Icon icon={StarAward02Icon} className="icon-sm" />
+							</div>
+							<h1 className="text-xl font-bold tracking-tight text-white">Conquistas</h1>
+						</div>
+						<p className="text-xs text-white/50 mt-1">Seus emblemas, dinastias e progresso de nível.</p>
+					</div>
+				</div>
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-8 text-center">
+					<p className="text-sm text-white/50">{response?.error?.message ?? 'Não foi possível carregar as conquistas.'}</p>
+				</div>
 			</div>
 		);
 	}
@@ -147,71 +150,84 @@ export function AchievementsPage({ fetchPromise, userName, userProfileImageUrl }
 	const earnedCount = achievements.filter((a) => a.isEarned).length;
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={StarAward02Icon} size={24} />}
-				title="Conquistas"
-				description="Seus emblemas, dinastias e progresso de nível."
-			/>
-
-			<Card>
-				<Card.Content className="p-0">
-					<UserProfileProgressCard
-						name={userName}
-						profileImageUrl={userProfileImageUrl}
-						borderImageUrl={
-							selectedBorderLevel
-								? (levelBorders.find((b) => b.level === selectedBorderLevel)?.borderImageUrl ?? null)
-								: null
-						}
-						level={levelInfo.current as MerchantLevel}
-						nextLevel={levelInfo.nextLevel as MerchantLevel | null}
-						nextLevelLabel={levelInfo.nextLevelDisplayName}
-						totalVolume={levelInfo.totalVolume}
-						maxThreshold={levelInfo.maxThreshold}
-						progress={levelInfo.progress}
-						earnedCount={earnedCount}
-						totalAchievements={achievements.length}
-					/>
-				</Card.Content>
-			</Card>
-
-			<Separator />
-
-			<InternalTabs ariaLabel="Seções de conquistas" items={ACHIEVEMENT_TAB_ITEMS} defaultSelectedKey="achievements">
-				<Tabs.Panel id="achievements" className="p-0 pt-4">
-					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-						{achievements.map((achievement) => (
-							<AchievementCard
-								key={achievement.id}
-								achievement={achievement}
-								isSelectedEmblem={selectedEmblemIds.includes(achievement.id)}
-								onSelect={handleOpenAchievement}
-							/>
-						))}
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={StarAward02Icon} className="icon-sm" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Conquistas</h1>
 					</div>
-				</Tabs.Panel>
+					<p className="text-xs text-white/50 mt-1">Seus emblemas, dinastias e progresso de nível.</p>
+				</div>
+				<div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+					<span className="text-xs font-mono text-white/70">{earnedCount} / {achievements.length}</span>
+				</div>
+			</div>
 
-				<Tabs.Panel id="borders" className="p-0 pt-4">
-					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-						{levelBorders.map((border) => {
-							const borderIndex = LEVELS_ORDER.indexOf(border.level as MerchantLevel);
-							const isUnlocked = borderIndex <= currentLevelIndex;
-							return (
-								<BorderCard
-									key={border.level}
-									level={border.level as MerchantLevel}
-									borderImageUrl={border.borderImageUrl ?? ''}
-									isUnlocked={isUnlocked}
-									isSelected={selectedBorderLevel === border.level}
-									onSelect={() => handleOpenBorderModal(border.level as MerchantLevel, border.borderImageUrl ?? null)}
+			{/* User Progress Card */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<UserProfileProgressCard
+					name={userName}
+					profileImageUrl={userProfileImageUrl}
+					borderImageUrl={
+						selectedBorderLevel
+							? (levelBorders.find((b) => b.level === selectedBorderLevel)?.borderImageUrl ?? null)
+							: null
+					}
+					level={levelInfo.current as MerchantLevel}
+					nextLevel={levelInfo.nextLevel as MerchantLevel | null}
+					nextLevelLabel={levelInfo.nextLevelDisplayName}
+					totalVolume={levelInfo.totalVolume}
+					maxThreshold={levelInfo.maxThreshold}
+					progress={levelInfo.progress}
+					earnedCount={earnedCount}
+					totalAchievements={achievements.length}
+				/>
+			</div>
+
+			<Separator className="bg-white/10" />
+
+			{/* Tabs */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<InternalTabs ariaLabel="Seções de conquistas" items={ACHIEVEMENT_TAB_ITEMS} defaultSelectedKey="achievements">
+					<Tabs.Panel id="achievements" className="pt-4">
+						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+							{achievements.map((achievement) => (
+								<AchievementCard
+									key={achievement.id}
+									achievement={achievement}
+									isSelectedEmblem={selectedEmblemIds.includes(achievement.id)}
+									onSelect={handleOpenAchievement}
 								/>
-							);
-						})}
-					</div>
-				</Tabs.Panel>
-			</InternalTabs>
+							))}
+						</div>
+					</Tabs.Panel>
 
+					<Tabs.Panel id="borders" className="pt-4">
+						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+							{levelBorders.map((border) => {
+								const borderIndex = LEVELS_ORDER.indexOf(border.level as MerchantLevel);
+								const isUnlocked = borderIndex <= currentLevelIndex;
+								return (
+									<BorderCard
+										key={border.level}
+										level={border.level as MerchantLevel}
+										borderImageUrl={border.borderImageUrl ?? ''}
+										isUnlocked={isUnlocked}
+										isSelected={selectedBorderLevel === border.level}
+										onSelect={() => handleOpenBorderModal(border.level as MerchantLevel, border.borderImageUrl ?? null)}
+									/>
+								);
+							})}
+						</div>
+					</Tabs.Panel>
+				</InternalTabs>
+			</div>
+
+			{/* Modals */}
 			<AchievementModal
 				achievement={selectedAchievement}
 				isOpen={isModalOpen}

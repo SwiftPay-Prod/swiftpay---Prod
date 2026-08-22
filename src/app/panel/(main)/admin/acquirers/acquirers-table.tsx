@@ -67,7 +67,7 @@ function FeeDisplay({
 		return <span className="text-sm text-muted">—</span>;
 	}
 
-	return <span className="text-sm text-foreground">{parts.join(' + ')}</span>;
+	return <span className="text-sm font-mono text-white tabular-nums">{parts.join(' + ')}</span>;
 }
 
 function FeeAndLimitDisplay({
@@ -100,7 +100,7 @@ function FeeAndLimitDisplay({
 				/>
 			)}
 			{hasLimits && (
-				<span className="text-xs text-muted">
+				<span className="text-xs font-mono text-white/50">
 					Limite: {formatCurrency(minAmount)} - {formatCurrency(maxAmount)}
 				</span>
 			)}
@@ -143,8 +143,8 @@ function getColumns(
 					)}
 					<div className="flex flex-col gap-0.5">
 						<span className="font-mono text-xs text-muted">{acquirer.code}</span>
-						<span className="text-sm font-medium text-foreground">{title}</span>
-						<span className="text-xs text-muted">{subtitle}</span>
+						<span className="text-sm text-white">{title}</span>
+						<span className="text-xs text-white/50">{subtitle}</span>
 					</div>
 				</div>
 					);
@@ -155,14 +155,13 @@ function getColumns(
 			key: 'type',
 			header: 'Tipo',
 			render: (acquirer) => (
-				<div className="flex flex-wrap gap-1">
+								<div className="flex flex-wrap gap-1">
 					{acquirer.operationTypes.map((type) => {
 						const parsed = acquirerOperationTypeParse[type];
 						return (
-							<Chip key={type} variant="soft" size="sm" className={`gap-0.5 ${parsed?.className ?? ''}`}>
-								{parsed?.icon}
+							<span key={type} className="font-mono text-xs text-white/70">
 								{parsed?.label ?? type}
-							</Chip>
+							</span>
 						);
 					})}
 				</div>
@@ -180,10 +179,7 @@ function getColumns(
 				const statusKey = acquirer.isActive ? 'true' : 'false';
 				const parsed = acquirerStatusParse[statusKey];
 				return (
-					<Chip variant="soft" size="sm" color={mapParseColorToChipColor(parsed.color)} className="gap-0.5">
-						{parsed.icon}
-						{parsed.label}
-					</Chip>
+									<span className="font-mono text-xs text-white/70">{parsed.label}</span>
 				);
 			},
 		},
@@ -200,25 +196,18 @@ function getColumns(
 
 				return (
 					<div className="flex flex-wrap gap-1">
-						{features.map((feature) => (
-							<Chip
-								key={feature.key}
-								variant={feature.supported ? 'primary' : 'soft'}
-								color={feature.supported ? 'success' : 'default'}
-								size="sm"
-								className={`gap-0.5 ${!feature.supported ? 'opacity-50' : ''}`}
-							>
-								<Icon icon={feature.icon} size={14} />
-								{feature.label}
-							</Chip>
-						))}
+											{features.map((feature) => (
+						<span key={feature.key} className="font-mono text-xs text-white/70">
+							{feature.supported ? feature.label : `– ${feature.label}`}
+						</span>
+					))}
 					</div>
 				);
 			},
 		},
 		{
 			key: 'pixFees',
-			header: 'PIX (Taxa/Limite)',
+			header: 'PIX',
 			render: (acquirer) => {
 				if (!acquirer.supportsPix) {
 					return <span className="text-sm text-muted">—</span>;
@@ -236,7 +225,7 @@ function getColumns(
 		},
 		{
 			key: 'boletoFees',
-			header: 'Boleto (Taxa/Limite)',
+			header: 'Boleto',
 			render: (acquirer) => {
 				if (!acquirer.supportsBoleto) {
 					return <span className="text-sm text-muted">—</span>;
@@ -276,10 +265,7 @@ function getColumns(
 			render: (acquirer) => {
 				const webhookAuthParsed = webhookAuthModeParse[acquirer.webhookAuthMode];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(webhookAuthParsed.color)} size="sm" className="gap-1">
-						{webhookAuthParsed.icon}
-						{webhookAuthParsed.label}
-					</Chip>
+					<span className="font-mono text-xs text-white/70">{webhookAuthParsed.label}</span>
 				);
 			},
 		},
@@ -372,49 +358,30 @@ function renderMobileAcquirerCard(acquirer: AdminAcquirerData, _index: number, o
 					{acquirer.operationTypes.map((type) => {
 						const parsed = acquirerOperationTypeParse[type];
 						return (
-							<Chip
-								key={type}
-								variant="soft"
-								color={mapParseColorToChipColor(parsed.color)}
-								className="text-xs"
-							>
+							<span key={type} className="font-mono text-xs text-white/70">
 								{parsed.label}
-							</Chip>
+							</span>
 						);
 					})}
 				</div>
-				<Chip
-					variant="soft"
-					color={mapParseColorToChipColor(
-						acquirerStatusParse[String(acquirer.isActive) as 'true' | 'false'].color
-					)}
-					className="text-xs w-fit"
-				>
+				<span className="font-mono text-xs text-white/70">
 					{acquirerStatusParse[String(acquirer.isActive) as 'true' | 'false'].label}
-				</Chip>
+				</span>
 				<div className="flex flex-col gap-1">
 					<span className="text-xs text-muted">Funcionalidades:</span>
 					<div className="flex flex-wrap gap-1">
-						{acquirer.supportsPix && (
-							<Chip variant="soft" color="default" className="text-xs">
-								PIX
-							</Chip>
-						)}
-						{acquirer.supportsBoleto && (
-							<Chip variant="soft" color="default" className="text-xs">
-								Boleto
-							</Chip>
-						)}
-						{acquirer.supportsCreditCard && (
-							<Chip variant="soft" color="default" className="text-xs">
-								Cartão
-							</Chip>
-						)}
-						{acquirer.supportsWithdrawal && (
-							<Chip variant="soft" color="default" className="text-xs">
-								Saque
-							</Chip>
-						)}
+											{acquirer.supportsPix && (
+						<span className="font-mono text-xs text-white/70">PIX</span>
+					)}
+					{acquirer.supportsBoleto && (
+						<span className="font-mono text-xs text-white/70">Boleto</span>
+					)}
+					{acquirer.supportsCreditCard && (
+						<span className="font-mono text-xs text-white/70">Cartão</span>
+					)}
+					{acquirer.supportsWithdrawal && (
+						<span className="font-mono text-xs text-white/70">Saque</span>
+					)}
 					</div>
 				</div>
 				{acquirer.pixInFeeMode && (
@@ -582,14 +549,18 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 				}
 			/>
 
+		<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 			<DataTable
+				className="rounded-[24px] border border-white/12 bg-[#16181a]"
 				columns={columns}
 				data={data.acquirers.items}
 				keyExtractor={(acquirer) => acquirer.id}
 				isLoading={data.isLoading}
 				skeletonRows={filters.values.pageSize ?? 10}
 				emptyMessage="Nenhuma processadora encontrada"
-				minWidth="min-w-250"			renderMobileCard={renderMobileAcquirerCard}				filters={{
+				minWidth="min-w-250"
+				renderMobileCard={renderMobileAcquirerCard}
+				filters={{
 					children: renderFiltersContent,
 					hasFilters: filters.hasFilters,
 					onClear: filters.clear,
@@ -608,6 +579,7 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 					isNavigating: data.isLoading,
 				}}
 			/>
+		</div>
 
 			{selectedAcquirer && (
 				<AcquirerMerchantsModal

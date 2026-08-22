@@ -19,7 +19,7 @@ export const METADATA_TEMPLATES = {
 		value: JSON.stringify(
 			{
 				src: 'facebook',
-				sck: 'ck_abc123',
+				sck: 'EXAMPLE_CK',
 				utm_source: 'facebook',
 				utm_campaign: 'campanha_checkout',
 				utm_medium: 'cpc',
@@ -35,7 +35,7 @@ export const METADATA_TEMPLATES = {
 		value: JSON.stringify(
 			{
 				src: 'google',
-				sck: 'ck_otimizey_123',
+				sck: 'EXAMPLE_CK_OTIMIZEY',
 				utmSource: 'google',
 				utmCampaign: 'campanha_otimizey',
 				utmMedium: 'cpc',

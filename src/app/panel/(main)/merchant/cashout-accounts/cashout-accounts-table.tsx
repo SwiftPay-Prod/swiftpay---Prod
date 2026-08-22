@@ -1,8 +1,7 @@
 'use client';
 
-import { Button, Chip, Tooltip, Dropdown } from '@heroui/react';
+import { Button, Tooltip, Dropdown } from '@heroui/react';
 import {
-	AddSquareIcon,
 	BankIcon,
 	CheckmarkCircle02Icon,
 	Copy01Icon,
@@ -13,7 +12,6 @@ import {
 	ViewIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import type {
 	CashoutAccountListData,
 	ListCashoutAccountsData,
@@ -24,7 +22,6 @@ import { PayoutAccountActionType, PayoutAccountStatus } from '@/types/enums';
 import {
 	pixKeyTypeParse,
 	payoutAccountStatusParse,
-	mapParseColorToChipColor,
 	payoutAccountStatusOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
@@ -34,6 +31,12 @@ import { CreateAccountModal } from './modals/create-account-modal';
 import { ConfirmCodeModal } from './modals/confirm-code-modal';
 import { ViewAccountModal } from './modals/view-account-modal';
 import { useCashoutAccountsTable } from './use-cashout-accounts-table';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutPixIcon,
+	RevolutPlusIcon,
+	RevolutLockIcon,
+} from '@/components/ui/revolut-icons';
 
 type AccountsPromise = Promise<ApiResponse<ListCashoutAccountsData>>;
 
@@ -79,28 +82,32 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutAccountListDa
 			render: (account) => {
 				const keyTypeParse = pixKeyTypeParse[account.pixKeyType];
 				return (
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-1.5">
 						<div className="flex items-center gap-2">
-							<Chip variant="soft" color="default" size="sm" className="gap-1">
-								{keyTypeParse.icon}
-								{keyTypeParse.label}
-							</Chip>
+							<span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/80">
+								{keyTypeParse?.icon}
+								{keyTypeParse?.label}
+							</span>
 							{account.isDefault && (
-								<Chip variant="soft" color="accent" size="sm" className="gap-1">
+								<span className="inline-flex items-center gap-1 rounded-full border border-[#494fdf]/30 bg-[#494fdf]/15 px-2 py-0.5 text-xs font-mono font-semibold text-[#4f55f1]">
 									<Icon icon={StarIcon} className="icon-xs" />
 									Padrão
-								</Chip>
+								</span>
 							)}
 						</div>
 						<div className="flex items-center gap-2">
-							<code className="rounded bg-default/20 px-2 py-1 text-xs font-mono text-foreground">
+							<code className="rounded-lg bg-[#0a0a0a] border border-white/8 px-2.5 py-1 text-xs font-mono text-white font-medium">
 								{account.pixKey}
 							</code>
 							<Tooltip>
-								<Button isIconOnly size="sm" variant="ghost" onPress={() => config.onCopyPixKey(account.pixKey)}>
+								<button
+									type="button"
+									onClick={() => config.onCopyPixKey(account.pixKey)}
+									className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+								>
 									<Icon icon={Copy01Icon} className="icon-sm" />
-									<Tooltip.Content>Copiar chave PIX</Tooltip.Content>
-								</Button>
+								</button>
+								<Tooltip.Content>Copiar chave PIX</Tooltip.Content>
 							</Tooltip>
 						</div>
 					</div>
@@ -109,74 +116,79 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutAccountListDa
 		},
 		{
 			key: 'holderName',
-			header: 'Titular',
-			render: (account) => <span className="text-sm text-foreground">{account.holderName || '-'}</span>,
+			header: 'Titular da Conta',
+			render: (account) => <span className="text-sm font-semibold text-white truncate max-w-44 block">{account.holderName || '-'}</span>,
 		},
 		{
 			key: 'bankName',
-			header: 'Banco',
-			render: (account) => <span className="text-sm text-foreground">{account.bankName || '-'}</span>,
+			header: 'Instituição Bancária',
+			render: (account) => <span className="text-sm text-white/80 truncate max-w-44 block">{account.bankName || '-'}</span>,
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (account) => {
-				const statusParse = payoutAccountStatusParse[account.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="sm" className="gap-1">
-						{statusParse.icon}
-						{statusParse.label}
-					</Chip>
-				);
-			},
+			render: (account) => (
+				<RevolutStatusBadge
+					status={account.status}
+					label={payoutAccountStatusParse[account.status]?.label}
+				/>
+			),
 		},
 		{
 			key: 'createdAt',
-			header: 'Criado em',
-			render: (account) => <span className="text-sm text-muted">{formatDate(account.createdAt)}</span>,
+			header: 'Cadastrada em',
+			render: (account) => <span className="text-xs font-mono text-white/50">{formatDate(account.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
 			header: 'Ações',
+			align: 'center',
 			render: (account) => {
 				const isPending = account.status === PayoutAccountStatus.Pending;
 				const isReadOnly = config.readOnly;
 				return (
-					<div className="flex items-center gap-1">
+					<div className="flex items-center justify-center gap-1">
 						<Tooltip>
-							<Button isIconOnly size="sm" variant="tertiary" onPress={() => config.onView(account)}>
+							<button
+								type="button"
+								onClick={() => config.onView(account)}
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
 								<Icon icon={ViewIcon} className="icon-sm" />
-								<Tooltip.Content>Visualizar dados</Tooltip.Content>
-							</Button>
+							</button>
+							<Tooltip.Content>Visualizar dados</Tooltip.Content>
 						</Tooltip>
 						{!isReadOnly && (isPending || !account.isDefault) && (
 							<Dropdown>
 								<Tooltip>
-									<Button isIconOnly size="sm" variant="tertiary" aria-label="Mais ações" isPending={config.isActionPending}>
+									<button
+										type="button"
+										disabled={config.isActionPending}
+										aria-label="Mais ações"
+										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+									>
 										<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-										<Tooltip.Content>Mais ações</Tooltip.Content>
-									</Button>
+									</button>
+									<Tooltip.Content>Mais ações</Tooltip.Content>
 								</Tooltip>
-								<Dropdown.Popover className="min-w-52">
+								<Dropdown.Popover className="min-w-52 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 									<Dropdown.Menu aria-label="Ações da conta de saque">
 										{isPending && (
-											<Dropdown.Item id="verify" textValue="Verificar conta" className="text-success" onPress={() => config.onVerify(account)}>
-												<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-success" />
+											<Dropdown.Item id="verify" textValue="Verificar conta" className="text-[#00a87e] hover:bg-white/10" onPress={() => config.onVerify(account)}>
+												<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
 												Verificar conta
 											</Dropdown.Item>
 										)}
 										{!isPending && !account.isDefault && (
-											<Dropdown.Item id="set-default" textValue="Definir como padrão" className="text-accent" onPress={() => config.onSetDefault(account)}>
-												<Icon icon={StarIcon} className="icon-xs text-accent" />
+											<Dropdown.Item id="set-default" textValue="Definir como padrão" className="text-[#4f55f1] hover:bg-white/10" onPress={() => config.onSetDefault(account)}>
+												<Icon icon={StarIcon} className="icon-xs text-[#4f55f1]" />
 												Definir como padrão
 											</Dropdown.Item>
 										)}
-										{!account.isDefault && (
-											<Dropdown.Item id="delete" textValue="Remover conta" className="text-danger" onPress={() => config.onDelete(account)}>
-												<Icon icon={Delete02Icon} className="icon-xs text-danger" />
-												Remover conta
-											</Dropdown.Item>
-										)}
+										<Dropdown.Item id="delete" textValue="Excluir conta" className="text-[#e23b4a] hover:bg-white/10" onPress={() => config.onDelete(account)}>
+											<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
+											Excluir conta
+										</Dropdown.Item>
 									</Dropdown.Menu>
 								</Dropdown.Popover>
 							</Dropdown>
@@ -190,15 +202,14 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutAccountListDa
 
 function renderMobileCashoutAccountCard(
 	account: CashoutAccountListData,
-	_index: number,
+	index: number,
 	openActions?: () => void,
 ) {
 	const keyTypeParsed = pixKeyTypeParse[account.pixKeyType];
-	const statusParsed = payoutAccountStatusParse[account.status];
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -215,23 +226,21 @@ function renderMobileCashoutAccountCard(
 		>
 			<div className="flex items-start justify-between gap-3">
 				<div className="flex items-center gap-1.5 flex-wrap">
-					<Chip variant="soft" color={mapParseColorToChipColor(keyTypeParsed.color)} size="sm">
-						{keyTypeParsed.label}
-					</Chip>
+					<span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/80">
+						{keyTypeParsed?.label}
+					</span>
 					{account.isDefault && (
-						<Chip variant="soft" color="accent" size="sm">
+						<span className="inline-flex items-center gap-1 rounded-full border border-[#494fdf]/30 bg-[#494fdf]/15 px-2 py-0.5 text-xs font-mono font-semibold text-[#4f55f1]">
 							Padrão
-						</Chip>
+						</span>
 					)}
 				</div>
-				<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="shrink-0">
-					{statusParsed.label}
-				</Chip>
+				<RevolutStatusBadge status={account.status} label={payoutAccountStatusParse[account.status]?.label} />
 			</div>
-			<p className="mt-2 text-sm font-mono truncate">{account.pixKey}</p>
-			<p className="mt-1 text-sm truncate">{account.holderName}</p>
-			{account.bankName && <p className="mt-0.5 text-xs text-muted truncate">{account.bankName}</p>}
-			<p className="mt-2 text-xs text-muted">{formatDate(account.createdAt)}</p>
+			<p className="mt-3 text-sm font-mono text-white font-medium truncate">{account.pixKey}</p>
+			<p className="mt-1 text-sm text-white font-semibold truncate">{account.holderName}</p>
+			{account.bankName && <p className="mt-0.5 text-xs text-white/50 truncate">{account.bankName}</p>}
+			<p className="mt-2 text-xs font-mono text-white/40">{formatDate(account.createdAt)}</p>
 		</div>
 	);
 }
@@ -269,48 +278,61 @@ export function CashoutAccountsTable({ fetchPromise, merchantId, filters, readOn
 	const modalContent = modals.confirmCode.getContent();
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={BankIcon} className="icon-md text-accent-foreground" />}
-				title="Contas de Saque"
-				description="Gerencie suas contas PIX para receber saques"
-				action={
-					readOnly
-						? undefined
-						: {
-								label: 'Nova Conta',
-								icon: <Icon icon={AddSquareIcon} className="icon-sm" />,
-								onPress: modals.create.open,
-						  }
-				}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<RevolutPixIcon size={16} />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Contas Bancárias PIX</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Gerenciamento de chaves PIX e contas de destino para saques
+					</p>
+				</div>
 
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(account) => account.id}
-				isLoading={data.isLoading}
-				skeletonRows={5}
-				emptyMessage="Nenhuma conta de saque cadastrada"
-				minWidth="min-w-150"
-				renderMobileCard={renderMobileCashoutAccountCard}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: tableFilters.hasFilters,
-					onClear: tableFilters.clear,
-					onRefresh: tableFilters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-			/>
+				{!readOnly && (
+					<button
+						type="button"
+						onClick={modals.create.open}
+						className="button-primary cursor-pointer self-start sm:self-auto"
+					>
+						<RevolutPlusIcon size={16} />
+						<span>+ Nova Chave PIX</span>
+					</button>
+				)}
+			</div>
+
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(account) => account.id}
+					isLoading={data.isLoading}
+					skeletonRows={5}
+					emptyMessage="Nenhuma conta de saque cadastrada."
+					minWidth="min-w-150"
+					renderMobileCard={renderMobileCashoutAccountCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: tableFilters.hasFilters,
+						onClear: tableFilters.clear,
+						onRefresh: tableFilters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+				/>
+			</div>
 
 			{!readOnly && (
-				<div className="flex items-start gap-2 rounded-xl bg-warning/10 p-4">
-					<Icon icon={InformationCircleIcon} className="icon-md shrink-0 text-warning" />
+				<div className="flex items-start gap-3 rounded-[20px] border border-white/12 bg-[#16181a] p-5 text-white">
+					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30">
+						<Icon icon={InformationCircleIcon} className="icon-sm" />
+					</div>
 					<div className="flex flex-col gap-1">
-						<p className="text-sm font-medium text-foreground">Importante</p>
-						<p className="text-sm text-muted">
-							Para adicionar, remover ou alterar contas de saque, você precisará confirmar a operação com um código
-							enviado para seu e-mail. Isso garante a segurança das suas transações.
+						<p className="text-sm font-bold text-white">Segurança Operacional D+0</p>
+						<p className="text-xs text-white/60 leading-relaxed">
+							Para adicionar, remover ou alterar chaves PIX de saque, você precisará confirmar a operação através do código de segurança 2FA enviado para seu e-mail cadastrado.
 						</p>
 					</div>
 				</div>
@@ -346,4 +368,3 @@ export function CashoutAccountsTable({ fetchPromise, merchantId, filters, readOn
 		</div>
 	);
 }
-

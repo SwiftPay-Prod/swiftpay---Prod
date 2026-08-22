@@ -1,15 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, Card, Chip, Tooltip, Dropdown } from '@heroui/react';
-import { AddCircleIcon, CancelCircleIcon, Settings02Icon, ViewIcon, Wallet03Icon, MoreHorizontalCircle01Icon } from '@hugeicons/core-free-icons';
+import { Button, Tooltip, Dropdown } from '@heroui/react';
+import {
+	CancelCircleIcon,
+	Settings02Icon,
+	ViewIcon,
+	MoreHorizontalCircle01Icon,
+} from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import {
 	payoutStatusParse,
 	pixKeyTypeParse,
-	mapParseColorToChipColor,
-	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
@@ -35,6 +37,14 @@ import type { ApiResponse } from '@/types/common';
 import { useEnvironment } from '@/contexts/environment-context';
 import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { AnimatedNumber } from '@/components/ui/animated-number';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutPixIcon,
+	RevolutPlusIcon,
+	RevolutWalletIcon,
+	RevolutCheckIcon,
+	RevolutArrowUpRightIcon,
+} from '@/components/ui/revolut-icons';
 
 type SettingsPromise = Promise<ApiResponse<ReadSettingsData>>;
 type PayoutAccountsPromise = Promise<ApiResponse<ListCashoutAccountsData>>;
@@ -74,8 +84,6 @@ interface CashoutsTableProps {
 	readOnly?: boolean;
 }
 
-const statusOptions = parseToFilterOptions(payoutStatusParse, 'Todos os status');
-
 interface ColumnsConfig {
 	onView: (id: string) => void;
 	onCancel: (cashout: CashoutListItem) => void;
@@ -88,19 +96,30 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
 	return [
 		{
 			key: 'id',
-			header: 'ID',
-			width: '140px',
-			render: (cashout) => (
-				<span className="font-mono text-xs text-muted">{cashout.id.slice(0, 8)}...</span>
-			),
+			header: 'ID / Chave PIX',
+			render: (cashout) => {
+				const payoutAccount = cashout.payoutAccount;
+				const keyTypeParse = payoutAccount ? pixKeyTypeParse[payoutAccount.pixKeyType] : null;
+
+				return (
+					<div className="flex flex-col">
+						<span className="font-mono text-xs text-white font-medium">{cashout.id.slice(0, 12)}...</span>
+						{payoutAccount && (
+							<span className="text-[11px] font-mono text-white/50 truncate max-w-44">
+								{keyTypeParse?.label}: {payoutAccount.pixKey}
+							</span>
+						)}
+					</div>
+				);
+			},
 		},
 		{
 			key: 'totalDebited',
 			header: 'Total Debitado',
 			render: (cashout) => (
 				<div className="flex flex-col font-mono">
-					<span className="font-medium">{formatCurrency(cashout.amount)}</span>
-					<span className="text-xs text-danger">Taxa: {formatCurrency(cashout.feeAmount)}</span>
+					<span className="font-bold text-white tabular-nums">{formatCurrency(cashout.amount)}</span>
+					<span className="text-[11px] text-white/40">Taxa: {formatCurrency(cashout.feeAmount)}</span>
 				</div>
 			),
 		},
@@ -108,38 +127,33 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
 			key: 'netAmount',
 			header: 'Valor Recebido',
 			render: (cashout) => (
-				<span className="font-medium font-mono text-success">{formatCurrency(cashout.netAmount)}</span>
+				<span className="font-bold font-mono text-[#00a87e] tabular-nums">{formatCurrency(cashout.netAmount)}</span>
 			),
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (cashout) => {
-				const statusParsed = payoutStatusParse[cashout.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
+			render: (cashout) => (
+				<RevolutStatusBadge
+					status={cashout.status}
+					label={payoutStatusParse[cashout.status]?.label}
+				/>
+			),
 		},
 		{
-			key: 'payoutAccount',
-			header: 'Conta',
+			key: 'bank',
+			header: 'Chave PIX',
+			sortable: false,
 			render: (cashout) => {
 				const payoutAccount = cashout.payoutAccount;
 				if (!payoutAccount) {
-					return <span className="text-sm text-muted">Conta não informada</span>;
+					return <span className="text-xs text-white/40">-</span>;
 				}
-
 				const keyTypeParse = pixKeyTypeParse[payoutAccount.pixKeyType];
 				return (
 					<div className="flex flex-col">
-						<span className="text-sm">{keyTypeParse.label}</span>
-						<span className="text-xs text-muted font-mono truncate max-w-32">
-							{payoutAccount.pixKey}
-						</span>
+						<span className="text-xs font-semibold text-white truncate max-w-40">{keyTypeParse?.label}</span>
+						<span className="text-[11px] font-mono text-white/50 truncate max-w-40">{payoutAccount.pixKey}</span>
 					</div>
 				);
 			},
@@ -148,33 +162,43 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
 			key: 'requestedAt',
 			header: 'Solicitado em',
 			render: (cashout) => (
-				<span className="text-sm text-muted">{formatDate(cashout.requestedAt)}</span>
+				<span className="text-xs font-mono text-white/50">{formatDate(cashout.requestedAt)}</span>
 			),
 		},
 		{
 			key: 'actions',
 			header: 'Ações',
 			align: 'center',
+			sortable: false,
 			render: (cashout) => (
 				<div className="flex items-center justify-center gap-1">
 					<Tooltip>
-						<Button isIconOnly variant="tertiary" onPress={() => onView(cashout.id)}>
-								<Icon icon={ViewIcon} className="icon-sm" />
-							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
+						<button
+							type="button"
+							onClick={() => onView(cashout.id)}
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+						>
+							<Icon icon={ViewIcon} className="icon-sm" />
+						</button>
+						<Tooltip.Content>Ver detalhes</Tooltip.Content>
 					</Tooltip>
+
 					{canCancel(cashout) && (
 						<Dropdown>
 							<Tooltip>
-								<Button isIconOnly variant="tertiary" aria-label="Mais ações">
+								<button
+									type="button"
+									aria-label="Mais ações"
+									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+								>
 									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-									<Tooltip.Content>Mais ações</Tooltip.Content>
-								</Button>
+								</button>
+								<Tooltip.Content>Mais ações</Tooltip.Content>
 							</Tooltip>
-							<Dropdown.Popover className="min-w-48">
+							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 								<Dropdown.Menu aria-label="Ações do saque">
-									<Dropdown.Item id="cancel" textValue="Cancelar saque" className="text-danger" onPress={() => onCancel(cashout)}>
-										<Icon icon={CancelCircleIcon} className="icon-xs text-danger" />
+									<Dropdown.Item id="cancel" textValue="Cancelar saque" className="text-[#e23b4a] hover:bg-white/10" onPress={() => onCancel(cashout)}>
+										<Icon icon={CancelCircleIcon} className="icon-xs text-[#e23b4a]" />
 										Cancelar saque
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -192,13 +216,12 @@ function renderMobileCashoutCard(
 	index: number,
 	openActions?: () => void,
 ) {
-	const statusParsed = payoutStatusParse[cashout.status];
 	const payoutAccount = cashout.payoutAccount;
 	const keyTypeParse = payoutAccount ? pixKeyTypeParse[payoutAccount.pixKeyType] : null;
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -215,40 +238,36 @@ function renderMobileCashoutCard(
 		>
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
-					<span className="font-semibold text-sm truncate block">Saque</span>
-					<p className="mt-0.5 text-xs text-muted truncate">
-						{cashout.id.slice(0, 12)} • {formatDate(cashout.requestedAt)}
+					<span className="font-bold text-sm text-white truncate block">
+						Saque PIX • {cashout.id.slice(0, 8)}...
+					</span>
+					<p className="mt-0.5 text-xs text-white/50 font-mono truncate">
+						{formatDate(cashout.requestedAt)}
 					</p>
 				</div>
-				<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1 shrink-0">
-					{statusParsed.label}
-				</Chip>
+				<RevolutStatusBadge status={cashout.status} label={payoutStatusParse[cashout.status]?.label} />
 			</div>
 
-			<div className="">
-				<div className="grid grid-cols-2 gap-3">
-					<div className="min-w-0">
-						<p className="text-xs text-muted">Debitado</p>
-						<p className="mt-1 text-sm font-semibold truncate">{formatCurrency(cashout.amount)}</p>
-					<p className="text-xs text-danger">Taxa: {formatCurrency(cashout.feeAmount)}</p>
+			<div className="mt-3 grid grid-cols-2 gap-3 border-t border-white/8 pt-3">
+				<div className="min-w-0">
+					<p className="text-[11px] uppercase tracking-wider text-white/40">Total Debitado</p>
+					<p className="mt-0.5 text-sm font-bold font-mono text-white truncate">{formatCurrency(cashout.amount)}</p>
+					<p className="text-[11px] font-mono text-white/40">Taxa: {formatCurrency(cashout.feeAmount)}</p>
 				</div>
 				<div className="min-w-0">
-					<p className="text-xs text-muted">Recebido</p>
-					<p className="mt-1 text-sm font-semibold text-success truncate">{formatCurrency(cashout.netAmount)}</p>
+					<p className="text-[11px] uppercase tracking-wider text-white/40">Valor Recebido</p>
+					<p className="mt-0.5 text-sm font-bold font-mono text-[#00a87e] truncate">{formatCurrency(cashout.netAmount)}</p>
 				</div>
 			</div>
-			<div className="mt-2 border-t border-divider pt-2">
-				<p className="text-xs text-muted">Conta</p>
-				{payoutAccount && keyTypeParse ? (
-					<>
-						<p className="mt-1 text-sm">{keyTypeParse.label}</p>
-						<p className="text-xs text-muted font-mono truncate">{payoutAccount.pixKey}</p>
-					</>
-				) : (
-					<p className="mt-1 text-sm text-muted">Conta não informada</p>
-				)}
+
+			{payoutAccount && (
+				<div className="mt-2 border-t border-white/8 pt-2">
+					<p className="text-[11px] text-white/40 uppercase tracking-wider">Conta PIX de Destino</p>
+					<p className="mt-0.5 text-xs text-white/80 font-mono font-medium truncate">
+						{keyTypeParse?.label}: {payoutAccount.pixKey}
+					</p>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }
@@ -258,7 +277,6 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 	const { environment } = useEnvironment();
 
 	const [isAutoCashoutEnabled, setIsAutoCashoutEnabled] = useState<boolean | null>(null);
-	const [nextAutoCashoutAttemptAt, setNextAutoCashoutAttemptAt] = useState<string | null>(null);
 	const [configModalOpen, setConfigModalOpen] = useState(false);
 	const [settingsPromise, setSettingsPromise] = useState<SettingsPromise | null>(null);
 	const [payoutAccountsPromise, setPayoutAccountsPromise] = useState<PayoutAccountsPromise | null>(null);
@@ -271,7 +289,6 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 		loader.then((res) => {
 			if (!cancelled) {
 				setIsAutoCashoutEnabled(res?.data?.isAutomaticCashoutEnabled ?? false);
-				setNextAutoCashoutAttemptAt(res?.data?.nextAutomaticCashoutAttemptAt ?? null);
 			}
 		});
 		return () => { cancelled = true; };
@@ -291,7 +308,6 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 	function handleConfigSuccess() {
 		getMerchantSettings(merchantId).then((res) => {
 			setIsAutoCashoutEnabled(res?.data?.isAutomaticCashoutEnabled ?? false);
-			setNextAutoCashoutAttemptAt(res?.data?.nextAutomaticCashoutAttemptAt ?? null);
 		});
 	}
 
@@ -305,7 +321,7 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 		<>
 			<SearchFilter
 				label="Buscar"
-				placeholder="ID, chave PIX, endToEnd ou titular"
+				placeholder="ID, chave PIX, endToEnd ou titular..."
 				value={filters.values.search}
 				onChange={(value) => filters.updateFilter('search', value)}
 			/>
@@ -316,33 +332,19 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 				searchPlaceholder="Buscar conta"
 				searchValue={filters.values.payoutAccountSearch}
 				selectedValue={payoutAccounts.selected?.pixKey}
+				value={filters.values.payoutAccountId || null}
 				isLoading={payoutAccounts.isLoading}
 				options={payoutAccounts.items.map((account) => {
 					const descriptionParts = [account.holderName, account.bankName].filter(Boolean);
 					return {
 						key: account.id,
 						label: account.pixKey,
-						description: descriptionParts.length > 0 ? descriptionParts.join(' • ') : null,
+						description: descriptionParts.length > 0 ? descriptionParts.join(' • ') : undefined,
 					};
 				})}
-				value={filters.values.payoutAccountId}
-				onSearchChange={(value) => filters.updateFilter('payoutAccountSearch', value)}
-				onChange={(key) => {
-					filters.updateFilter('payoutAccountId', key);
-					if (!key) {
-						filters.updateFilter('payoutAccountSearch', '');
-					}
-				}}
+				onSearchChange={(value: string) => filters.updateFilter('payoutAccountSearch', value)}
+				onChange={(key: string | null) => filters.updateFilter('payoutAccountId', key || '')}
 			/>
-
-			<SelectFilter
-				label="Status"
-				value={filters.values.status}
-				options={statusOptions}
-				onChange={(value) => filters.updateFilter('status', (value || 'all') as PayoutStatus | 'all')}
-				allLabel="Todos os status"
-			/>
-
 			<SelectFilter
 				label="Por página"
 				value={filters.values.pageSize}
@@ -360,125 +362,170 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 	const totalRequests = data.items.totalItems;
 
 	return (
-		<div className="flex flex-col gap-3">
-			<PageHeader
-				icon={<Icon icon={Wallet03Icon} className="icon-md text-accent-foreground" />}
-				title="Saques"
-				description={
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
 					<div className="flex items-center gap-2">
-						<span>Gerencie os saques do saldo disponível da sua organização</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<RevolutWalletIcon size={16} />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Saques PIX</h1>
 						{isAutoCashoutEnabled !== null && (
-							<Chip variant="soft" color={isAutoCashoutEnabled ? 'success' : 'default'} size="sm">
-								{isAutoCashoutEnabled ? 'Saque automatizado Ativo' : 'Saque automatizado Inativo'}
-							</Chip>
+							<span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-mono font-semibold ${
+								isAutoCashoutEnabled
+									? 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30'
+									: 'bg-white/5 text-white/50 border border-white/10'
+							}`}>
+								<span className={`h-1.5 w-1.5 rounded-full ${isAutoCashoutEnabled ? 'bg-[#00a87e]' : 'bg-white/40'}`} />
+								{isAutoCashoutEnabled ? 'Automático Ativo' : 'Manual'}
+							</span>
 						)}
 					</div>
-				}
-				actions={
-					<div className="flex items-center gap-2">
-						<Button variant="secondary" size="sm" onPress={handleOpenConfig}>
-							<Icon icon={Settings02Icon} className="icon-sm" />
-							Configurar saque automatizado
-						</Button>
-						{!context.readOnly && (
-							<Button variant="primary" size="sm" onPress={modals.create.open}>
-								<Icon icon={AddCircleIcon} className="icon-sm" />
-								Novo Saque
-							</Button>
-						)}
-					</div>
-				}
-			/>
+					<p className="text-xs text-white/50 mt-1">
+						Transferência instantânea de liquidez para contas bancárias cadastradas
+					</p>
+				</div>
 
-			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Total Debitado</span>
-						<AnimatedCurrency value={totalDebited} className="mt-1 text-lg font-bold font-mono tracking-tight text-foreground" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Valor Recebido</span>
-						<AnimatedCurrency value={completedNet} className="mt-1 text-lg font-bold font-mono tracking-tight text-success" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Taxas de Saque</span>
-						<AnimatedCurrency value={totalFees} className="mt-1 text-lg font-bold font-mono tracking-tight text-foreground" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Solicitações</span>
-						<span className="mt-1 block text-lg font-bold font-mono tracking-tight text-foreground">
+				<div className="flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={handleOpenConfig}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={Settings02Icon} className="icon-sm" />
+						<span>Configurar Saque Automático</span>
+					</button>
+
+					{!context.readOnly && (
+						<button
+							type="button"
+							onClick={modals.create.open}
+							className="button-primary cursor-pointer text-xs"
+						>
+							<RevolutPlusIcon size={16} />
+							<span>+ Novo Saque PIX</span>
+						</button>
+					)}
+				</div>
+			</div>
+
+			{/* High-Contrast 4-Tile KPI Summary */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{/* Total Debitado */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total Debitado
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<RevolutArrowUpRightIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={totalDebited}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Saldo deduzido em saques</p>
+					</div>
+				</div>
+
+				{/* Valor Recebido */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Valor Recebido
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<RevolutCheckIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={completedNet}
+							className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liquidado na conta bancária</p>
+					</div>
+				</div>
+
+				{/* Taxas de Saque */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Taxas Operacionais
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<RevolutPixIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={totalFees}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Custos de transferência PIX</p>
+					</div>
+				</div>
+
+				{/* Solicitações */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Solicitações
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<RevolutWalletIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
 							<AnimatedNumber value={totalRequests} />
 						</span>
-					</Card.Content>
-				</Card>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Total de ordens no histórico</p>
+					</div>
+				</div>
 			</div>
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(cashout) => cashout.id}
-				renderMobileCard={(cashout, index, openActions) =>
-					renderMobileCashoutCard(cashout, index, openActions)
-				}
-				mobileActions={{
-					title: (cashout) => `Saque ${cashout.id.slice(0, 8)}...`,
-					subtitle: (cashout) => formatCurrency(cashout.amount),
-					renderActions: (cashout, close) => (
-						<div className="flex flex-col gap-2">
-							<Button
-								variant="secondary"
-								className="w-full justify-start"
-								onPress={() => { modals.details.open(cashout.id); close(); }}
-							>
-								<Icon icon={ViewIcon} className="icon-sm" />
-								Ver detalhes
-							</Button>
-							{actions.canCancel(cashout) && (
-								<Button
-									variant="secondary"
-									className="w-full justify-start text-danger"
-									onPress={() => { modals.cancel.open(cashout); close(); }}
-								>
-									<Icon icon={CancelCircleIcon} className="icon-sm text-danger" />
-									Cancelar saque
-								</Button>
-							)}
-						</div>
-					),
-				}}
-				isLoading={data.isLoading}
-				skeletonRows={data.pageSizeValue}
-				emptyMessage="Nenhum saque encontrado"
-				minWidth="min-w-200"
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.clear,
-					onRefresh: actions.refresh,
-					isRefreshing: data.isRefreshing,
-				}}
-				pagination={{
-					page: filters.values.page,
-					pageSize: data.pageSizeValue,
-					totalItems: data.items.totalItems,
-					totalPages: data.items.totalPages,
-					onPageChange: (nextPage) => filters.updateFilter('page', nextPage),
-					sortBy: filters.values.sortBy,
-					sortOrder: filters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => {
-						filters.updateFilter('sortBy', sortBy);
-						filters.updateFilter('sortOrder', sortOrder);
-						filters.updateFilter('page', 1);
-					},
-					isNavigating: data.isLoading,
-				}}
-			/>
 
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(cashout) => cashout.id}
+					renderMobileCard={(cashout, index, openActions) =>
+						renderMobileCashoutCard(cashout, index, openActions)
+					}
+					isLoading={data.isLoading}
+					skeletonRows={data.pageSizeValue}
+					emptyMessage="Nenhum saque PIX encontrado no período selecionado."
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.clear,
+						onRefresh: actions.refresh,
+						isRefreshing: data.isRefreshing,
+					}}
+					pagination={{
+						page: filters.values.page,
+						pageSize: data.pageSizeValue,
+						totalItems: data.items.totalItems,
+						totalPages: data.items.totalPages,
+						onPageChange: (nextPage) => filters.updateFilter('page', nextPage),
+						sortBy: filters.values.sortBy,
+						sortOrder: filters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => {
+							filters.updateFilter('sortBy', sortBy);
+							filters.updateFilter('sortOrder', sortOrder);
+							filters.updateFilter('page', 1);
+						},
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
+
+			{/* Modals */}
 			<CashoutDetailsModal
 				isOpen={modals.details.isOpen}
 				onOpenChange={modals.details.close}
@@ -513,4 +560,3 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 		</div>
 	);
 }
-

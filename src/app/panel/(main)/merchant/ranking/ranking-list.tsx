@@ -2,9 +2,10 @@
 
 import { use, useEffect, useState, useTransition } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { InternalTagTabs } from '@/components/ui/internal-tag-tabs';
+import { AnimatedCurrency } from '@/components/ui/animated-currency';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { Award05Icon, RefreshIcon } from '@hugeicons/core-free-icons';
 import { getRanking } from '@/app/actions/user';
 import { formatCurrency } from '@/utils/currency';
@@ -49,33 +50,19 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 	const isReferralRanking = type === 'Referral';
 
 	useEffect(() => {
-		if (!isRankingProcessing) {
-			return;
-		}
+		if (isRankingProcessing || !data) return;
 
-		let cancelled = false;
-
-		const intervalId = setInterval(() => {
-			getRanking({ type, period, page: 1, pageSize: 20 }).then((rankingResponse) => {
-				if (!cancelled && rankingResponse?.data) {
-					setLiveData(rankingResponse.data);
-				}
+		const timer = setInterval(() => {
+			getRanking({ type, period, page: 1, pageSize: 20 }).then((res) => {
+				if (res?.data) setLiveData(res.data);
 			});
-		}, 2000);
+		}, 15000);
 
-		return () => {
-			cancelled = true;
-			clearInterval(intervalId);
-		};
-	}, [isRankingProcessing, period, type]);
+		return () => clearInterval(timer);
+	}, [isRankingProcessing, period, type, data]);
 
 	function handleTypeChange(key: string) {
-		if (key === type) return;
-
-		setExtraItems([]);
-		setNextPage(2);
-		setHasMorePages(true);
-
+		if (isChangingPeriod) return;
 		startPeriodTransition(() => {
 			const nextType = key as RankingType;
 			const nextPeriod = nextType === 'Referral' ? 'Annual' : 'Weekly';
@@ -129,7 +116,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 					(e.volume / 100).toFixed(2),
 					e.totalReferrals,
 					(e.totalCommission / 100).toFixed(2),
-				].join(',')
+				].join(','),
 			),
 		];
 		const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -157,23 +144,24 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 	const gapToLeader = currentUserEntry ? Math.max(0, leaderVolume - currentUserEntry.volume) : 0;
 
 	return (
-		<div className="flex flex-col gap-4">
-			{/* Page Header */}
-			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-3.5">
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
-					<h1 className="text-base font-semibold text-foreground tracking-tight flex items-center gap-2">
-						Leaderboard de Faturamento
-					</h1>
-					<p className="text-xs text-muted-foreground mt-0.5">
-						Desempenho comparativo de vendas e posições no período selecionado
-					</p>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={Award05Icon} className="icon-sm" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Leaderboard de Faturamento</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">Desempenho comparativo de vendas e posições no período selecionado</p>
 				</div>
 
 				<div className="flex items-center gap-2 shrink-0">
 					<button
 						type="button"
 						onClick={handleExportCSV}
-						className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs font-medium text-muted-foreground border border-border/80 hover:text-foreground hover:bg-surface rounded-md transition-colors"
+						className="button-outline-dark cursor-pointer text-xs"
 					>
 						<span>Exportar CSV</span>
 					</button>
@@ -181,7 +169,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 						type="button"
 						onClick={handleRefresh}
 						disabled={isRefreshPending}
-						className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs font-medium text-muted-foreground border border-border/80 hover:text-foreground hover:bg-surface rounded-md transition-colors disabled:opacity-50"
+						className="button-outline-dark cursor-pointer text-xs disabled:opacity-50"
 					>
 						<Icon icon={RefreshIcon} className="w-3 h-3 shrink-0" />
 						<span>{isRefreshPending ? 'Atualizando...' : 'Atualizar'}</span>
@@ -189,33 +177,45 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 				</div>
 			</div>
 
+			{/* Top-3 Podium */}
+			{podiumEntries.length > 0 && (
+				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+					<TopThreePodium entries={podiumEntries} currentUserId={currentUserId} type={type} />
+				</div>
+			)}
+
 			{/* Leader Metric Bar */}
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-				<div className="p-3.5 rounded-lg bg-card border border-border/80 flex flex-col justify-between gap-1">
-					<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Líder do Período (#1)</span>
-					<div className="flex items-baseline justify-between">
-						<span className="text-sm font-semibold text-foreground truncate">{firstEntry?.userName || 'Gabriel Santos'}</span>
-						<span className="text-sm font-mono font-bold text-amber-400">
+			<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+				{/* Líder */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Líder do Período (#1)</span>
+					<div className="flex items-baseline justify-between gap-2">
+						<span className="text-sm font-bold text-white truncate">{firstEntry?.userName || '—'}</span>
+						<span className="text-sm font-extrabold font-mono text-[#ec7e00] tabular-nums">
 							{formatCurrency(leaderVolume)}
 						</span>
 					</div>
 				</div>
 
-				<div className="p-3.5 rounded-lg bg-card border border-border/80 flex flex-col justify-between gap-1">
-					<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Sua Posição</span>
-					<div className="flex items-baseline justify-between">
-						<span className="text-sm font-mono font-bold text-accent">#{currentUserEntry?.position ?? 5}</span>
-						<span className="text-sm font-mono font-bold text-foreground">
+				{/* Minha Posição */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Sua Posição</span>
+					<div className="flex items-baseline justify-between gap-2">
+						<span className="text-lg font-extrabold font-mono text-[#494fdf] tabular-nums">
+							#{currentUserEntry?.position ?? 5}
+						</span>
+						<span className="text-sm font-extrabold font-mono text-white tabular-nums">
 							{formatCurrency(currentUserEntry?.volume ?? 0)}
 						</span>
 					</div>
 				</div>
 
-				<div className="p-3.5 rounded-lg bg-card border border-border/80 flex flex-col justify-between gap-1">
-					<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Diferença para o #1</span>
-					<div className="flex items-baseline justify-between">
-						<span className="text-xs text-muted-foreground">Faltam para a liderança:</span>
-						<span className="text-sm font-mono font-bold text-rose-400">
+				{/* Diferença */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Diferença para o #1</span>
+					<div className="flex items-baseline justify-between gap-2">
+						<span className="text-xs text-white/40">Faltam para a liderança:</span>
+						<span className="text-sm font-extrabold font-mono text-[#e23b4a] tabular-nums">
 							- {formatCurrency(gapToLeader)}
 						</span>
 					</div>
@@ -223,104 +223,91 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 			</div>
 
 			{/* Filter Toolbar */}
-			<div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-card border border-border/80 p-2.5 rounded-lg">
-				<div className="flex flex-wrap items-center gap-2">
-					<InternalTagTabs
-						ariaLabel="Selecionar tipo de ranking"
-						selectedKey={type}
-						onSelectionChange={(key) => {
-							if (!isChangingPeriod) {
-								handleTypeChange(key);
-							}
-						}}
-						items={RANKING_TYPE_OPTIONS.map((option) => ({
-							id: option.key,
-							label: option.label,
-						}))}
-					/>
-
-					<div className="relative flex-1 sm:w-64 min-w-48">
-						<input
-							type="text"
-							placeholder="Buscar vendedor ou organização..."
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							className="w-full h-8 pl-3 pr-3 text-xs bg-surface border border-border/80 rounded-md text-foreground placeholder:text-muted-foreground outline-none focus:border-accent transition-colors"
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-3 overflow-hidden">
+				<div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+					<div className="flex flex-wrap items-center gap-2">
+						<InternalTagTabs
+							ariaLabel="Selecionar tipo de ranking"
+							selectedKey={type}
+							onSelectionChange={(key) => {
+								if (!isChangingPeriod) {
+									handleTypeChange(key);
+								}
+							}}
+							items={RANKING_TYPE_OPTIONS.map((option) => ({
+								id: option.key,
+								label: option.label,
+							}))}
 						/>
-					</div>
-				</div>
 
-				{!isReferralRanking && (
-					<div className="flex items-center gap-1 shrink-0">
-						{PERIOD_OPTIONS.map((opt) => (
-							<button
-								key={opt.key}
-								type="button"
-								onClick={() => handlePeriodChange(opt.key)}
-								className={`h-7 px-3 text-xs font-medium rounded-md transition-colors ${
-									period === opt.key
-										? 'bg-accent text-accent-foreground font-semibold shadow-2xs'
-										: 'text-muted-foreground hover:text-foreground hover:bg-surface'
-								}`}
-							>
-								{opt.label}
-							</button>
-						))}
-					</div>
-				)}
-			</div>
-
-			{/* Leaderboard Body */}
-			{isChangingPeriod ? (
-				<RankingContentSkeleton />
-			) : allItems.length === 0 ? (
-				<div className="flex flex-col items-center justify-center gap-2 py-12 rounded-lg bg-card border border-border/80 text-muted-foreground">
-					<Icon icon={Award05Icon} className="w-8 h-8 opacity-60" />
-					<p className="text-xs font-medium">
-						{isReferralRanking ? 'Nenhum usuário com indicações no ranking ainda.' : 'Nenhum usuário no ranking ainda.'}
-					</p>
-				</div>
-			) : (
-				<div className="flex flex-col gap-3">
-					{/* Top 3 Podium */}
-					{podiumEntries.length > 0 && (
-						<TopThreePodium entries={podiumEntries} currentUserId={currentUserId} type={type} />
-					)}
-
-					{/* Ranking Table — Primary Focus */}
-					<div className="rounded-lg border border-border/80 bg-card overflow-hidden">
-						<div className="flex items-center justify-between px-3.5 py-2 border-b border-border/80 bg-surface/50 text-xs font-mono font-medium tracking-wider uppercase text-muted-foreground">
-							<div className="flex items-center gap-3 min-w-0 flex-1">
-								<span className="w-6 text-center shrink-0">#</span>
-								<span className="w-12 text-center shrink-0">Tend.</span>
-								<span className="truncate">Vendedor / Organização</span>
-							</div>
-							<div className="flex items-center gap-3 shrink-0">
-								<span className="hidden sm:inline-block w-28 text-center text-xs">% do Líder</span>
-								<span className="hidden lg:inline-block w-24 text-right">Ticket M.</span>
-								<span className="w-32 text-right">{isReferralRanking ? 'Indicações' : 'Faturamento'}</span>
-							</div>
+						<div className="relative flex-1 sm:w-64 min-w-48">
+							<input
+								type="text"
+								placeholder="Buscar vendedor ou organização..."
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+								className="w-full h-8 pl-3 pr-3 text-xs bg-[#0a0a0a] border border-white/12 rounded-lg text-white placeholder:text-white/40 outline-none focus:border-[#4f55f1] transition-colors"
+							/>
 						</div>
+					</div>
 
-						<div className="flex flex-col divide-y divide-border/40">
-							{allItems.map((entry) => (
-								<RankingRow
-									key={entry.userId}
-									entry={entry}
-									type={type}
-									leaderVolume={leaderVolume}
-									isCurrentUser={currentUserId !== null && entry.userId === currentUserId}
-								/>
+					{!isReferralRanking && (
+						<div className="flex items-center gap-2">
+							{PERIOD_OPTIONS.map((option) => (
+								<button
+									key={option.key}
+									type="button"
+									onClick={() => handlePeriodChange(option.key)}
+									className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+										period === option.key
+											? 'bg-[#494fdf] border-[#4f55f1] text-white'
+											: 'border-white/10 text-white/60 hover:border-white/20 hover:text-white'
+									}`}
+								>
+									{option.label}
+								</button>
 							))}
 						</div>
-					</div>
+					)}
+				</div>
+			</div>
+
+			{/* Ranked List */}
+			<div className="flex flex-col gap-2">
+				{allItems.map((entry) => (
+					<RankingRow
+						key={entry.userId}
+						entry={entry}
+						type={type}
+						isCurrentUser={entry.userId === currentUserId}
+						leaderVolume={leaderVolume}
+					/>
+				))}
+			</div>
+
+			{hasMorePages && (
+				<div className="flex justify-center pt-2">
+					<button
+						type="button"
+						onClick={handleLoadMore}
+						disabled={isLoadingMore}
+						className="button-outline-dark cursor-pointer text-xs disabled:opacity-50"
+					>
+						{isLoadingMore ? 'Carregando...' : 'Carregar mais'}
+					</button>
 				</div>
 			)}
-			{hasMorePages && items.length >= 20 && (
-				<div className="flex justify-center pt-2">
-					<Button variant="tertiary" size="sm" isDisabled={isLoadingMore} onPress={handleLoadMore}>
-						{isLoadingMore ? 'Carregando...' : 'Carregar mais'}
-					</Button>
+
+			{calculatedAt && (
+				<p className="text-xs text-white/40 font-mono text-center">
+					Atualizado em {new Date(calculatedAt).toLocaleString('pt-BR')}
+				</p>
+			)}
+
+			{rankingStatus === 'Processing' && (
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-8 text-center">
+					<RevolutStatusBadge status="Processing" label="Processando ranking..." />
+					<p className="text-xs text-white/50 mt-2">Os dados estão sendo atualizados. Isso pode levar alguns minutos.</p>
 				</div>
 			)}
 		</div>

@@ -30,6 +30,7 @@ import { formatCurrency } from '@/utils/currency';
 import { adminGetReconciliation, adminListReconciliations, adminStartAllReconciliations } from '@/app/actions/admin/reconciliation';
 import { ReconciliationDetailsModal } from '../merchants/[id]/tabs/modals/reconciliation-details-modal';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { AdminMerchantLink } from '@/components/admin/admin-merchant-link';
 import { Routes } from '@/router/routes';
 
@@ -62,24 +63,16 @@ function getColumns(
 			render: (item) => {
 				const parse = paymentEnvironmentParse[item.environment];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm">
-						{parse.label}
-					</Chip>
+					<span className="font-mono text-xs text-white/70">{parse.label}</span>
 				);
 			},
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (item) => {
-				const parse = bankReconciliationStatusParse[item.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm">
-						{parse.icon}
-						{parse.label}
-					</Chip>
-				);
-			},
+			render: (item) => (
+				<RevolutStatusBadge status={item.status} />
+			),
 		},
 		{
 			key: 'discrepancies',
@@ -266,71 +259,63 @@ export function ReconciliationsTable({ fetchPromise, filters }: ReconciliationsT
 	return (
 		<>
 			<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Audit01Icon} className="icon-md text-accent-foreground" />}
-				title="Reconciliações"
-				description="Visão consolidada de todas as reconciliações de organizações"
-				actions={
-					<Button variant="secondary" onPress={() => setIsReconcileAllOpen(true)}>
-						<Icon icon={RepeatIcon} className="icon-sm" />
-						Reconciliar Todas
-					</Button>
-				}
-			/>
-			<DataTable
-				columns={columns}
-				data={items.items}
-				keyExtractor={(item) => item.id}
-				isLoading={isPending}
-				filters={{
-					children: () => (
-						<>
-							<SelectFilter
-								label="Status"
-								options={statusOptions}
-								value={filters.status ?? 'all'}
-								onChange={(key) => navigate({ status: key === 'all' ? null : key })}
-							/>
-							<SelectFilter
-								label="Ambiente"
-								options={environmentOptions}
-								value={filters.environment ?? 'all'}
-								onChange={(key) => navigate({ environment: key === 'all' ? null : key })}
-							/>
-							<SelectFilter
-								label="Divergências"
-								options={[
-									{ value: 'all', label: 'Todas' },
-									{ value: 'true', label: 'Com divergências' },
-									{ value: 'false', label: 'Sem divergências' },
-								]}
-							value={searchParams.get('onlyWithProblems') ?? 'all'}
-								onChange={(key) => navigate({ onlyWithProblems: key === 'all' ? null : key, page: 1 })}
-							/>
-						</>
-					),
-					hasFilters: !!filters.status || !!filters.environment || !!searchParams.get('onlyWithProblems'),
-					onClear: () => navigate({ status: null, environment: null, onlyWithProblems: null, page: 1 }),
-					onRefresh: handleRefresh,
-					isRefreshing: isPending,
-				}}
-				pagination={{
-					page: items.page,
-					pageSize: items.pageSize,
-					totalItems: items.totalItems,
-					totalPages: items.totalPages,
-					onPageChange: (page) => navigate({ page }),
-					sortBy: filters.sortBy,
-					sortOrder: filters.sortOrder,
-					onSortChange: (sortBy, sortOrder) => navigate({ sortBy, sortOrder, page: 1 }),
-					isNavigating: isPending,
-				}}
-				emptyMessage={
-					onlyWithProblems
-						? 'Nenhuma reconciliação com problemas encontrada'
-						: 'Nenhuma reconciliação encontrada'
-				}
-			/>
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					className="rounded-[24px] border border-white/12 bg-[#16181a]"
+					columns={columns}
+					data={items.items}
+					keyExtractor={(item) => item.id}
+					isLoading={isPending}
+					filters={{
+						children: () => (
+							<>
+								<SelectFilter
+									label="Status"
+									options={statusOptions}
+									value={filters.status ?? 'all'}
+									onChange={(key) => navigate({ status: key === 'all' ? null : key })}
+								/>
+								<SelectFilter
+									label="Ambiente"
+									options={environmentOptions}
+									value={filters.environment ?? 'all'}
+									onChange={(key) => navigate({ environment: key === 'all' ? null : key })}
+								/>
+								<SelectFilter
+									label="Divergências"
+									options={[
+										{ value: 'all', label: 'Todas' },
+										{ value: 'true', label: 'Com divergências' },
+										{ value: 'false', label: 'Sem divergências' },
+									]}
+									value={searchParams.get('onlyWithProblems') ?? 'all'}
+									onChange={(key) => navigate({ onlyWithProblems: key === 'all' ? null : key, page: 1 })}
+								/>
+							</>
+						),
+						hasFilters: !!filters.status || !!filters.environment || !!searchParams.get('onlyWithProblems'),
+						onClear: () => navigate({ status: null, environment: null, onlyWithProblems: null, page: 1 }),
+						onRefresh: handleRefresh,
+						isRefreshing: isPending,
+					}}
+					pagination={{
+						page: items.page,
+						pageSize: items.pageSize,
+						totalItems: items.totalItems,
+						totalPages: items.totalPages,
+						onPageChange: (page) => navigate({ page }),
+						sortBy: filters.sortBy,
+						sortOrder: filters.sortOrder,
+						onSortChange: (sortBy, sortOrder) => navigate({ sortBy, sortOrder, page: 1 }),
+						isNavigating: isPending,
+					}}
+					emptyMessage={
+						onlyWithProblems
+							? 'Nenhuma reconciliação com problemas encontrada'
+							: 'Nenhuma reconciliação encontrada'
+					}
+				/>
+			</div>
 
 			</div>
 			<ReconciliationDetailsModal

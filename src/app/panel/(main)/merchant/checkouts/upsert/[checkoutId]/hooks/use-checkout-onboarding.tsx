@@ -350,7 +350,7 @@ function sanitizeUrl(url: string | null | undefined): string | undefined {
 	}
 }
 
-function validateStepValues(stepKey: CheckoutStepSaveKey, values: CheckoutOnboardingFormData): string | null {
+function validateStepValues(stepKey: CheckoutStepSaveKey, values: any): string | null {
 	switch (stepKey) {
 		case 'payments': {
 			const hasPaymentMethod = values.pixEnabled || values.creditCardEnabled || values.boletoEnabled;
@@ -358,11 +358,11 @@ function validateStepValues(stepKey: CheckoutStepSaveKey, values: CheckoutOnboar
 				return 'Ative ao menos um método de pagamento.';
 			}
 
-			if (values.pixExpirationMinutes < 1 || values.pixExpirationMinutes > 60) {
+			if (values.pixExpirationMinutes != null && (values.pixExpirationMinutes < 1 || values.pixExpirationMinutes > 60)) {
 				return 'Expiração do PIX deve estar entre 1 e 60 minutos.';
 			}
 
-			if (values.reservationExpirationMinutes < 1 || values.reservationExpirationMinutes > 60) {
+			if (values.reservationExpirationMinutes != null && (values.reservationExpirationMinutes < 1 || values.reservationExpirationMinutes > 60)) {
 				return 'Tempo de reserva deve estar entre 1 e 60 minutos.';
 			}
 
@@ -406,9 +406,9 @@ function validateStepValues(stepKey: CheckoutStepSaveKey, values: CheckoutOnboar
 					return 'Adicione ao menos uma notificação de prova social.';
 				}
 
-				const hasInvalidNotification = values.socialProofNotifications.some(
-					(notification) =>
-						!notification.name.trim() || !notification.location.trim() || !notification.action.trim()
+				const hasInvalidNotification = (values.socialProofNotifications as Array<{ name?: string; location?: string; action?: string }>).some(
+					(notification: { name?: string; location?: string; action?: string }) =>
+						!notification.name?.trim() || !notification.location?.trim() || !notification.action?.trim()
 				);
 
 				if (hasInvalidNotification) {
@@ -776,6 +776,7 @@ export function useCheckoutOnboarding({
 			switch (stepKey) {
 				case 'visual': {
 					const primaryColor = normalizeCheckoutHexColor(currentForm.primaryColor);
+					const secondaryColor = normalizeCheckoutHexColor(currentForm.secondaryColor);
 					console.log('[saveStepConfig:visual] currentForm.primaryColor:', currentForm.primaryColor, 'normalized:', primaryColor);
 					payload = {
 						primaryColor: primaryColor ?? CHECKOUT_PRIMARY_COLOR_DEFAULT,

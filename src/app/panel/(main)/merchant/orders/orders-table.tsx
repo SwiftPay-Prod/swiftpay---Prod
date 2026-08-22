@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Button, Card, Chip, Tooltip, Dropdown } from '@heroui/react';
+import { Tooltip, Dropdown } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	ShoppingCartCheck01Icon,
@@ -12,30 +12,27 @@ import {
 	PackageIcon,
 	Wallet01Icon,
 } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
-import { AnimatedNumber } from '@/components/ui/animated-number';
-import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import {
 	orderStatusParse,
 	orderFulfillmentStatusParse,
 	orderFulfillmentStatusOptions,
-	mapParseColorToChipColor,
-	mapParseColorToTextClass,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
-import { DataTable } from '@/components/ui/data-table';
+import { AnimatedNumber } from '@/components/ui/animated-number';
+import { AnimatedCurrency } from '@/components/ui/animated-currency';
+import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { SearchFilter } from '@/components/ui/search-filter';
 import { SelectFilter } from '@/components/ui/select-filter';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { OrderDetailsModal } from './modals/order-details-modal';
 import { MerchantTransactionDetailsModal } from '../transactions/modals/merchant-transaction-details-modal';
 import { getMerchantPayment } from '@/app/actions/merchant/payments';
 import { useOrdersTable, type OrdersTableFilters } from './use-orders-table';
-import type { MinimalOrder } from '@/types/merchant/orders';
-import type { DataTableColumn } from '@/components/ui/data-table';
 import { OrderStatus } from '@/types/enums';
+import type { MinimalOrder } from '@/types/merchant/orders';
 import type { OrderFulfillmentStatus } from '@/types/enums';
 
 interface OrdersTableProps {
@@ -58,107 +55,85 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalOrder>[] {
 		{
 			key: 'orderNumber',
 			header: 'Pedido',
-			render: (order) => <span className="text-sm font-mono font-medium text-accent">{order.orderNumber}</span>,
-		},
-		{
-			key: 'customerName',
-			header: 'Cliente',
-			render: (order) => <span className="text-sm truncate max-w-40">{order.customer?.name ?? '-'}</span>,
-		},
-		{
-			key: 'totalAmount',
-			header: 'Total',
 			render: (order) => (
 				<div className="flex flex-col">
-					<span className="font-medium">{formatCurrency(order.totalAmount)}</span>
-					{order.discountAmount > 0 && (
-						<span className="text-xs text-success">-{formatCurrency(order.discountAmount)} desconto</span>
-					)}
+					<span className="font-mono font-bold text-sm text-white">{order.orderNumber}</span>
+					<span className="text-xs text-white/50">{order.customer?.name ?? '—'}</span>
 				</div>
 			),
 		},
 		{
-			key: 'itemCount',
-			header: 'Items',
+			key: 'items',
+			header: 'Itens',
+			align: 'center',
+			render: (order) => <span className="text-sm font-mono text-white/70">{order.itemCount}</span>,
+		},
+		{
+			key: 'totalAmount',
+			header: 'Valor Total PIX',
 			render: (order) => (
-				<span className="text-sm">
-					{order.itemCount} {order.itemCount === 1 ? 'item' : 'itens'}
-				</span>
+				<span className="font-bold font-mono text-white text-sm tabular-nums">{formatCurrency(order.totalAmount)}</span>
 			),
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (order) => {
-				const statusParsed = orderStatusParse[order.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
+			render: (order) => (
+				<RevolutStatusBadge status={order.status} label={orderStatusParse[order.status]?.label} />
+			),
 		},
 		{
-			key: 'fulfillmentStatus',
+			key: 'fulfillment',
 			header: 'Entrega',
-			render: (order) => {
-				const fulfillmentParsed = orderFulfillmentStatusParse[order.fulfillmentStatus];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(fulfillmentParsed.color)} size="sm" className="gap-1">
-						{fulfillmentParsed.icon}
-						{fulfillmentParsed.label}
-					</Chip>
-				);
-			},
+			render: (order) => (
+				<RevolutStatusBadge status={order.fulfillmentStatus} label={orderFulfillmentStatusParse[order.fulfillmentStatus]?.label} />
+			),
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
-			render: (order) => <span className="text-sm text-muted">{formatDate(order.createdAt)}</span>,
+			render: (order) => <span className="text-sm font-mono text-white/50">{formatDate(order.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
 			header: 'Ações',
 			align: 'center',
 			render: (order) => {
-				const fulfillmentParsed = orderFulfillmentStatusParse[order.fulfillmentStatus];
-				const triggerColorClass = mapParseColorToTextClass(fulfillmentParsed.color);
 				return (
 					<div className="flex items-center justify-center gap-1">
 						<Tooltip>
-							<Button isIconOnly variant="tertiary" onPress={() => onView(order.id)}>
+							<button
+								type="button"
+								onClick={() => onView(order.id)}
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
 								<Icon icon={ViewIcon} className="icon-sm" />
-								<Tooltip.Content>Ver detalhes</Tooltip.Content>
-							</Button>
+							</button>
+							<Tooltip.Content>Ver detalhes</Tooltip.Content>
 						</Tooltip>
 						<Dropdown>
-							<Button isIconOnly variant="tertiary" aria-label="Alterar status de entrega" className={triggerColorClass}>
-								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-							</Button>
-							<Dropdown.Popover className="min-w-44">
-								<Dropdown.Menu
-									aria-label="Alterar status de entrega"
-									onAction={(key) => {
-										const validStatuses = Object.keys(orderFulfillmentStatusParse);
-										if (!validStatuses.includes(key as string)) return;
-										const selected = key as OrderFulfillmentStatus;
-										if (selected !== order.fulfillmentStatus) {
-											onChangeFulfillment(order.id, selected);
-										}
-									}}
+							<Tooltip>
+								<button
+									type="button"
+									aria-label="Mais ações"
+									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
 								>
+									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
+								</button>
+								<Tooltip.Content>Mais ações</Tooltip.Content>
+							</Tooltip>
+							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+								<Dropdown.Menu aria-label="Ações do pedido">
 									{orderFulfillmentStatusOptions.map((option) => (
 										<Dropdown.Item
 											key={option.value}
-											id={option.value}
+											id={`fulfillment-${option.value}`}
 											textValue={option.label}
-											isDisabled={order.fulfillmentStatus === option.value}
+											className="text-white hover:bg-white/10"
+											onPress={() => onChangeFulfillment(order.id, option.value as OrderFulfillmentStatus)}
 										>
-											<div className={`flex items-center gap-2 ${mapParseColorToTextClass(option.color)}`}>
-												{option.icon}
-												<span>{option.label}</span>
-											</div>
+											{option.icon}
+											{option.label}
 										</Dropdown.Item>
 									))}
 								</Dropdown.Menu>
@@ -172,56 +147,43 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalOrder>[] {
 }
 
 function renderMobileOrderCard(order: MinimalOrder, _index: number, openActions?: () => void) {
-	const statusParsed = orderStatusParse[order.status];
-	const fulfillmentParsed = orderFulfillmentStatusParse[order.fulfillmentStatus];
-
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
 			onKeyDown={
 				openActions
 					? (event) => {
-							if (event.key === 'Enter' || event.key === ' ') {
-								event.preventDefault();
-								openActions();
-							}
-					  }
+						if (event.key === 'Enter' || event.key === ' ') {
+							event.preventDefault();
+							openActions();
+						}
+					}
 					: undefined
 			}
 		>
-			<div className="flex flex-col gap-2">
-				<div className="flex items-start justify-between gap-2">
-					<span className="font-mono font-medium text-accent">{order.orderNumber}</span>
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
+			<div className="flex items-start justify-between gap-3">
+				<div className="min-w-0 flex-1">
+					<span className="font-mono font-bold text-sm text-white truncate block">{order.orderNumber}</span>
+					<span className="text-xs text-white/50 truncate">{order.customer?.name ?? 'Sem cliente'}</span>
 				</div>
-
-				{order.customer?.name && (
-					<span className="text-sm text-muted">{order.customer.name}</span>
-				)}
-
-				<div className="flex items-center gap-2">
-					<span className="font-medium">{formatCurrency(order.totalAmount)}</span>
-					{order.discountAmount > 0 && (
-						<span className="text-xs text-success">-{formatCurrency(order.discountAmount)}</span>
-					)}
+				<RevolutStatusBadge status={order.status} label={orderStatusParse[order.status]?.label} />
+			</div>
+			<div className="mt-2 grid grid-cols-2 gap-2">
+				<div>
+					<span className="text-[10px] uppercase tracking-wider text-white/40">Itens</span>
+					<p className="text-sm font-bold text-white font-mono">{order.itemCount}</p>
 				</div>
-
-				<div className="flex items-center justify-between gap-2">
-					<div className="flex items-center gap-2">
-						<Chip variant="soft" color={mapParseColorToChipColor(fulfillmentParsed.color)} size="sm" className="gap-1">
-							{fulfillmentParsed.icon}
-							{fulfillmentParsed.label}
-						</Chip>
-						<span className="text-xs text-muted">{order.itemCount} {order.itemCount === 1 ? 'item' : 'itens'}</span>
-					</div>
-					<span className="text-xs text-muted">{formatDate(order.createdAt)}</span>
+				<div>
+					<span className="text-[10px] uppercase tracking-wider text-white/40">Total</span>
+					<p className="text-sm font-bold text-white font-mono tabular-nums">{formatCurrency(order.totalAmount)}</p>
 				</div>
+			</div>
+			<div className="mt-2 flex items-center justify-between">
+				<span className="text-xs text-white/50 font-mono">{formatDate(order.createdAt)}</span>
+				<RevolutStatusBadge status={order.fulfillmentStatus} label={orderFulfillmentStatusParse[order.fulfillmentStatus]?.label} size="sm" />
 			</div>
 		</div>
 	);
@@ -286,128 +248,151 @@ export function OrdersTable({ merchantId, initialFilters }: OrdersTableProps) {
 		</>
 	);
 
+	const orders = data.orders.items;
+	const completed = orders.filter((item) => item.status === OrderStatus.Completed).length;
+	const totalItems = orders.reduce((sum, item) => sum + item.itemCount, 0);
+	const totalValue = orders.reduce((sum, item) => sum + item.totalAmount, 0);
+
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={ShoppingCartCheck01Icon} className="icon-md text-accent-foreground" />}
-				title="Pedidos"
-				description="Gerencie os pedidos da sua organização"
-				action={{
-					label: 'Novo Pedido',
-					icon: <Icon icon={AddCircleIcon} className="icon-sm" />,
-					onPress: actions.goToNew,
-				}}
-			/>
-
-			{(() => {
-				const orders = data.orders.items;
-				const completed = orders.filter((item) => item.status === OrderStatus.Completed).length;
-				const totalItems = orders.reduce((sum, item) => sum + item.itemCount, 0);
-				const totalValue = orders.reduce((sum, item) => sum + item.totalAmount, 0);
-
-				const stats = useMemo(
-					() =>
-						[
-							{
-								label: 'Total',
-								value: <AnimatedNumber value={orders.length} />,
-								icon: <Icon icon={ShoppingCartCheck01Icon} className="icon-sm text-muted" />,
-							},
-							{
-								label: 'Concluídos',
-								value: <AnimatedNumber value={completed} />,
-								icon: <Icon icon={CheckmarkCircle02Icon} className="icon-sm text-success" />,
-								accent: 'text-success',
-							},
-							{
-								label: 'Itens',
-								value: <AnimatedNumber value={totalItems} />,
-								icon: <Icon icon={PackageIcon} className="icon-sm text-muted" />,
-							},
-							{
-								label: 'Valor Total',
-								value: <AnimatedCurrency value={totalValue} />,
-								icon: <Icon icon={Wallet01Icon} className="icon-sm text-muted" />,
-							},
-						],
-					[orders, completed, totalItems, totalValue]
-				);
-
-				return (
-					<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-						{stats.map((item) => (
-							<Card key={item.label} className="border border-border/80 bg-card">
-								<Card.Content className="flex items-center gap-3 p-3">
-									{item.icon}
-									<div className="flex flex-col">
-										<span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{item.label}</span>
-										<span className={`text-sm font-semibold tabular-nums ${item.accent ?? 'text-foreground'}`}>{item.value}</span>
-									</div>
-								</Card.Content>
-							</Card>
-						))}
-					</div>
-				);
-			})()}
-
-			<DataTable
-				columns={columns}
-				data={data.orders.items}
-				keyExtractor={(order) => order.id}
-				isLoading={data.isLoading}
-				skeletonRows={filters.values.pageSize}
-				emptyMessage="Nenhum pedido encontrado"
-				minWidth="min-w-200"
-				renderMobileCard={renderMobileOrderCard}
-				mobileActions={{
-					title: (order) => order.orderNumber,
-					subtitle: (order) => order.customer?.name ?? undefined,
-					renderActions: (order, close) => (
-						<div className="flex flex-col gap-2">
-							<Button
-								variant="secondary"
-								className="w-full justify-start"
-								onPress={() => { modals.details.open(order.id); close(); }}
-							>
-								<Icon icon={ViewIcon} className="icon-sm" />
-								Ver detalhes
-							</Button>
-							<div className="h-px bg-divider my-1" />
-							<p className="text-xs text-muted px-1">Alterar status de entrega</p>
-							{orderFulfillmentStatusOptions.map((option) => (
-								<Button
-									key={option.value}
-									variant="secondary"
-									className="w-full justify-start"
-									isDisabled={order.fulfillmentStatus === option.value}
-									onPress={() => { actions.changeFulfillment(order.id, option.value); close(); }}
-								>
-									{option.icon}
-									{option.label}
-								</Button>
-							))}
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={ShoppingCartCheck01Icon} className="icon-sm" />
 						</div>
-					),
-				}}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.clear,
-					onRefresh: filters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.orders.page,
-					pageSize: data.orders.pageSize,
-					totalItems: data.orders.totalItems,
-					totalPages: data.orders.totalPages,
-					onPageChange: (page) => filters.update({ page }),
-					sortBy: filters.values.sortBy,
-					sortOrder: filters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => filters.update({ sortBy, sortOrder, page: 1 }),
-					isNavigating: data.isLoading,
-				}}
-			/>
+						<h1 className="text-xl font-bold tracking-tight text-white">Pedidos</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">Gerencie os pedidos da sua organização</p>
+				</div>
+
+				<button
+					type="button"
+					onClick={actions.goToNew}
+					className="button-primary cursor-pointer text-xs"
+				>
+					<Icon icon={AddCircleIcon} className="icon-xs" />
+					<span>Novo Pedido</span>
+				</button>
+			</div>
+
+			{/* 4-Tile KPI Grid */}
+			<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+				{/* Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Total</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={ShoppingCartCheck01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={orders.length} />
+					</span>
+				</div>
+
+				{/* Concluídos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Concluídos</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
+						<AnimatedNumber value={completed} />
+					</span>
+				</div>
+
+				{/* Itens */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Itens</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={PackageIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={totalItems} />
+					</span>
+				</div>
+
+				{/* Valor Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Valor Total</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Wallet01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedCurrency value={totalValue} />
+					</span>
+				</div>
+			</div>
+
+			{/* Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.orders.items}
+					keyExtractor={(order) => order.id}
+					isLoading={data.isLoading}
+					skeletonRows={filters.values.pageSize}
+					emptyMessage="Nenhum pedido encontrado"
+					minWidth="min-w-200"
+					renderMobileCard={renderMobileOrderCard}
+					mobileActions={{
+						title: (order) => order.orderNumber,
+						subtitle: (order) => order.customer?.name ?? undefined,
+						renderActions: (order, close) => (
+							<div className="flex flex-col gap-2">
+								<button
+									type="button"
+									className="w-full justify-start inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm font-medium text-white hover:bg-white/10"
+									onClick={() => { modals.details.open(order.id); close(); }}
+								>
+									<Icon icon={ViewIcon} className="icon-sm" />
+									Ver detalhes
+								</button>
+								<div className="h-px bg-white/10 my-1" />
+								<p className="text-xs text-white/50 px-1">Alterar status de entrega</p>
+								{orderFulfillmentStatusOptions.map((option) => (
+									<button
+										key={option.value}
+										type="button"
+										className="w-full justify-start inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/5 px-3 py-2 text-sm font-medium text-white hover:bg-white/10 disabled:opacity-50"
+										disabled={order.fulfillmentStatus === option.value}
+										onClick={() => { actions.changeFulfillment(order.id, option.value); close(); }}
+									>
+										{option.icon}
+										{option.label}
+									</button>
+								))}
+							</div>
+						),
+					}}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.clear,
+						onRefresh: filters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.orders.page,
+						pageSize: data.orders.pageSize,
+						totalItems: data.orders.totalItems,
+						totalPages: data.orders.totalPages,
+						onPageChange: (page) => filters.update({ page }),
+						sortBy: filters.values.sortBy,
+						sortOrder: filters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => filters.update({ sortBy, sortOrder, page: 1 }),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			<OrderDetailsModal
 				isOpen={modals.details.isOpen}
@@ -425,4 +410,3 @@ export function OrdersTable({ merchantId, initialFilters }: OrdersTableProps) {
 		</div>
 	);
 }
-

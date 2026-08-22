@@ -1,6 +1,13 @@
 'use client';
 
-import { Button, Chip, Tooltip } from '@heroui/react';
+import { Tooltip } from '@heroui/react';
+import {
+	merchantApiCredentialEnvironmentParse,
+	merchantApiCredentialStatusParse,
+	parseToFilterOptions,
+	pageSizeFilterOptions,
+} from '@/parse';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddSquareIcon,
@@ -21,13 +28,6 @@ import type { ApiCredentialListData } from '@/types/merchant/api-credentials';
 import type { Filters } from './page';
 import type { Paginated, ApiResponse } from '@/types/common';
 import { MerchantApiCredentialStatus } from '@/types/enums';
-import {
-	merchantApiCredentialEnvironmentParse,
-	merchantApiCredentialStatusParse,
-	mapParseColorToChipColor,
-	parseToFilterOptions,
-	pageSizeFilterOptions,
-} from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
@@ -62,8 +62,8 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 			header: 'Nome',
 			render: (credential) => (
 				<div className="flex items-center gap-2">
-					<Icon icon={Key01Icon} className="icon-sm text-muted" />
-					<span className="font-medium text-foreground">{credential.name || 'Sem nome'}</span>
+					<Icon icon={Key01Icon} className="icon-sm text-white/50" />
+					<span className="font-medium text-white">{credential.name || 'Sem nome'}</span>
 				</div>
 			),
 		},
@@ -72,14 +72,18 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 			header: 'Public Key',
 			render: (credential) => (
 				<div className="flex items-center gap-2">
-					<code className="rounded bg-default/20 px-2 py-1 text-xs font-mono text-foreground">
+					<code className="rounded bg-white/10 px-2 py-1 text-xs font-mono text-white">
 						{credential.clientId.slice(0, 16)}...
 					</code>
 					<Tooltip>
-						<Button isIconOnly size="sm" variant="ghost" onPress={() => config.onCopyClientId(credential.clientId)}>
+						<button
+							type="button"
+							onClick={() => config.onCopyClientId(credential.clientId)}
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+						>
 							<Icon icon={Copy01Icon} className="icon-sm" />
 							<Tooltip.Content>Copiar Public Key</Tooltip.Content>
-						</Button>
+						</button>
 					</Tooltip>
 				</div>
 			),
@@ -90,10 +94,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 			render: (credential) => {
 				const environmentParsed = merchantApiCredentialEnvironmentParse[credential.environment];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(environmentParsed.color)} size="sm" className="gap-1">
-						{environmentParsed.icon}
-						{environmentParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={credential.environment} label={environmentParsed.label} className="gap-1" />
 				);
 			},
 		},
@@ -103,10 +104,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 			render: (credential) => {
 				const statusParsed = merchantApiCredentialStatusParse[credential.status];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={credential.status} label={statusParsed.label} className="gap-1" />
 				);
 			},
 		},
@@ -115,17 +113,17 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 			header: 'IPs Permitidos',
 			render: (credential) =>
 				credential.allowedIpRange ? (
-					<code className="rounded bg-default/20 px-2 py-1 text-xs font-mono text-foreground">
+					<code className="rounded bg-white/10 px-2 py-1 text-xs font-mono text-white">
 						{credential.allowedIpRange}
 					</code>
 				) : (
-					<span className="text-sm text-muted">Todos</span>
+					<span className="text-sm text-white/50">Todos</span>
 				),
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
-			render: (credential) => <span className="text-sm text-muted">{formatDate(credential.createdAt)}</span>,
+			render: (credential) => <span className="text-sm text-white/50">{formatDate(credential.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
@@ -135,24 +133,36 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 				return (
 					<div className="flex items-center gap-1">
 						<Tooltip>
-							<Button isIconOnly size="sm" variant="tertiary" onPress={() => config.onView(credential)}>
+							<button
+								type="button"
+								onClick={() => config.onView(credential)}
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
 								<Icon icon={ViewIcon} className="icon-sm" />
 								<Tooltip.Content>Ver detalhes</Tooltip.Content>
-							</Button>
+							</button>
 						</Tooltip>
 						{!isRevoked && (
 							<>
 								<Tooltip>
-									<Button isIconOnly size="sm" variant="primary" onPress={() => config.onRegenerate(credential)}>
+									<button
+										type="button"
+										onClick={() => config.onRegenerate(credential)}
+										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#494fdf]/30 bg-[#494fdf]/15 text-[#4f55f1] hover:border-[#494fdf]/50 hover:bg-[#494fdf]/25 transition-colors"
+									>
 										<Icon icon={ArrowReloadHorizontalIcon} className="icon-sm" />
 										<Tooltip.Content>Regenerar chave</Tooltip.Content>
-									</Button>
+									</button>
 								</Tooltip>
 								<Tooltip>
-									<Button isIconOnly size="sm" variant="danger" onPress={() => config.onDelete(credential)}>
+									<button
+										type="button"
+										onClick={() => config.onDelete(credential)}
+										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#e23b4a]/30 bg-[#e23b4a]/15 text-[#e23b4a] hover:border-[#e23b4a]/50 hover:bg-[#e23b4a]/25 transition-colors"
+									>
 										<Icon icon={Delete02Icon} className="icon-sm" />
 										<Tooltip.Content>Revogar</Tooltip.Content>
-									</Button>
+									</button>
 								</Tooltip>
 							</>
 						)}
@@ -173,7 +183,7 @@ function renderMobileApiCredentialCard(
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-white/12 bg-[#16181a] p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -191,19 +201,15 @@ function renderMobileApiCredentialCard(
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
 					<span className="font-semibold text-sm truncate block">{credential.name || 'Sem nome'}</span>
-					<p className="mt-0.5 text-xs font-mono text-muted truncate">{credential.clientId.slice(0, 16)}...</p>
+					<p className="mt-0.5 text-xs font-mono text-white/50 truncate">{credential.clientId.slice(0, 16)}...</p>
 				</div>
-				<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="shrink-0">
-					{statusParsed.label}
-				</Chip>
+				<RevolutStatusBadge status={credential.status} label={statusParsed.label} className="shrink-0" />
 			</div>
 			<div className="mt-2 flex items-center gap-1.5 flex-wrap">
-				<Chip variant="soft" color={mapParseColorToChipColor(envParsed.color)} size="sm">
-					{envParsed.label}
-				</Chip>
-				<span className="text-xs text-muted truncate">IPs: {credential.allowedIpRange || 'Todos'}</span>
+				<RevolutStatusBadge status={credential.environment} label={envParsed.label} />
+				<span className="text-xs text-white/50 truncate">IPs: {credential.allowedIpRange || 'Todos'}</span>
 			</div>
-			<p className="mt-2 text-xs text-muted">{formatDate(credential.createdAt)}</p>
+			<p className="mt-2 text-xs text-white/50">{formatDate(credential.createdAt)}</p>
 		</div>
 	);
 }
@@ -264,7 +270,11 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 			/>
 
 			<Tooltip>
-				<Button variant="secondary" isIconOnly onPress={filterHandlers.onSortToggle} className="p-4">
+				<button
+					type="button"
+					onClick={filterHandlers.onSortToggle}
+					className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+				>
 					{filterHandlers.values.sortOrder === 'desc' ? (
 						<Icon icon={SortingDownIcon} className="icon-sm" />
 					) : (
@@ -273,37 +283,50 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 					<Tooltip.Content>
 						{filterHandlers.values.sortOrder === 'desc' ? 'Mais recentes primeiro' : 'Mais antigas primeiro'}
 					</Tooltip.Content>
-				</Button>
+				</button>
 			</Tooltip>
 		</>
 	);
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 bg-[#000000] text-white">
 			<PageHeader
-				icon={<Icon icon={ShieldKeyIcon} className="icon-md text-accent-foreground" />}
+				icon={<Icon icon={ShieldKeyIcon} className="icon-md text-[#4f55f1]" />}
 				title="Credenciais de API"
 				description="Gerencie suas chaves de acesso para integração"
 				actions={
 					<>
-						<Button variant="ghost" onClick={() => window.open(docsUrl, '_blank', 'noopener,noreferrer')}>
+						<button
+							type="button"
+							onClick={() => window.open(docsUrl, '_blank', 'noopener,noreferrer')}
+							className="button-outline-dark cursor-pointer text-xs"
+						>
 							<Icon icon={ArrowUpRight01Icon} className="icon-sm" />
 							Acessar docs
-						</Button>
+						</button>
 						{integrationUrl && (
-							<Button variant="ghost" onClick={() => window.open(integrationUrl, '_blank', 'noopener,noreferrer')}>
+							<button
+								type="button"
+								onClick={() => window.open(integrationUrl, '_blank', 'noopener,noreferrer')}
+								className="button-outline-dark cursor-pointer text-xs"
+							>
 								<Icon icon={ArrowUpRight01Icon} className="icon-sm" />
 								Testar API
-							</Button>
+							</button>
 						)}
-						<Button variant="primary" onPress={modals.create.open}>
+						<button
+							type="button"
+							onClick={modals.create.open}
+							className="button-primary cursor-pointer text-xs"
+						>
 							<Icon icon={AddSquareIcon} className="icon-sm" />
 							Nova Credencial
-						</Button>
+						</button>
 					</>
 				}
 			/>
 
+		<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 			<DataTable
 				columns={columns}
 				data={data.items.items}
@@ -329,12 +352,13 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 					isNavigating: data.isLoading,
 				}}
 			/>
+		</div>
 
-			<div className="flex items-start gap-2 rounded-xl bg-warning/10 p-4">
-				<Icon icon={InformationCircleIcon} className="icon-md shrink-0 text-warning" />
+			<div className="flex items-start gap-2 rounded-xl bg-[#ec7e00]/10 p-4">
+				<Icon icon={InformationCircleIcon} className="icon-md shrink-0 text-[#ec7e00]" />
 				<div className="flex flex-col gap-1">
-					<p className="text-sm font-medium text-foreground">Importante</p>
-					<p className="text-sm text-muted">
+					<p className="text-sm font-medium text-white">Importante</p>
+					<p className="text-sm text-white/50">
 						O Secret Key é exibido apenas uma vez no momento da criação ou regeneração. Guarde-o em local seguro. Se
 						você perder o Secret Key, será necessário regenerar a credencial.
 					</p>

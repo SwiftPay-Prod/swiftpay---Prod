@@ -1,19 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Chip, Modal, Skeleton } from '@heroui/react';
+import { Button, Modal, Skeleton, Tooltip } from '@heroui/react';
 import { Analytics01Icon } from '@hugeicons/core-free-icons';
 import { getMyReferredUserMovements } from '@/app/actions/user';
 import { DataTable } from '@/components/ui/data-table';
 import type { DataTableColumn } from '@/components/ui/data-table';
 import { EmailLink } from '@/components/ui/data-links';
 import type { ApiResponse } from '@/types/common';
-import { mapParseColorToChipColor, userStatusParse } from '@/parse';
+import { userStatusParse } from '@/parse';
 import { ReferralCommissionMovementSourceType } from '@/types/enums';
 import type { UserReferralReferredUser, UserReferralReferredUserMovementsData } from '@/types/user/referrals';
 import { basisPointsToPercentage, formatCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/datetime';
 import { Icon } from '@/components/ui/icon';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 
 interface ReferredUsersDataTableProps {
 	items: UserReferralReferredUser[];
@@ -65,40 +66,38 @@ function getMovementColumns(): DataTableColumn<UserReferralReferredUserMovements
 			key: 'sourceType',
 			header: 'Origem',
 			render: (item) => (
-				<Chip
-					variant="soft"
-							color={item.sourceType === ReferralCommissionMovementSourceType.Payment ? 'success' : 'accent'}
-					size="sm"
-				>
-					{getMovementTypeLabel(item.sourceType)}
-				</Chip>
+				<RevolutStatusBadge
+					status={item.sourceType === ReferralCommissionMovementSourceType.Payment ? 'completed' : 'pending'}
+					label={getMovementTypeLabel(item.sourceType)}
+				/>
 			),
 		},
 		{
 			key: 'percentage',
 			header: 'Comissão',
-			render: (item) => <span className="text-sm text-muted">{basisPointsToPercentage(item.referralCommissionPercentage)}%</span>,
+			render: (item) => (
+				<span className="text-sm text-muted">{basisPointsToPercentage(item.referralCommissionPercentage)}%</span>
+			),
 		},
 		{
 			key: 'commissionAmount',
 			header: 'Valor gerado',
-			render: (item) => <span className="font-medium text-success">{formatCurrency(item.commissionAmount)}</span>,
+			render: (item) => (
+				<span className="font-mono tabular-nums text-white">{formatCurrency(item.commissionAmount)}</span>
+			),
 		},
 	];
 }
 
 function renderMobileReferredUserMovementCard(item: UserReferralReferredUserMovementsData['movements'][number]) {
 	return (
-		<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden">
 			<div className="flex items-start justify-between gap-2 mb-2">
-				<span className="font-medium text-success">{formatCurrency(item.commissionAmount)}</span>
-				<Chip
-					variant="soft"
-					color={item.sourceType === ReferralCommissionMovementSourceType.Payment ? 'success' : 'accent'}
-					size="sm"
-				>
-					{getMovementTypeLabel(item.sourceType)}
-				</Chip>
+				<span className="font-mono tabular-nums text-white">{formatCurrency(item.commissionAmount)}</span>
+				<RevolutStatusBadge
+					status={item.sourceType === ReferralCommissionMovementSourceType.Payment ? 'completed' : 'pending'}
+					label={getMovementTypeLabel(item.sourceType)}
+				/>
 			</div>
 			<div className="flex flex-col gap-1">
 				<div className="flex justify-between text-xs">
@@ -134,13 +133,13 @@ function ReferredUserMovementsContent({
 	return (
 		<div className="flex flex-col gap-4 w-full">
 			<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-				<div className="rounded-xl border border-divider bg-surface p-3">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 					<span className="text-xs text-muted">Indicado</span>
 					<p className="text-sm font-medium text-foreground">{data.referredUserName || 'Sem nome'}</p>
 					<EmailLink email={data.referredUserEmail} className="text-xs" />
 				</div>
-				<div className="rounded-xl border border-success-soft bg-success-soft p-3">
-					<span className="text-xs text-success">Comissão total gerada</span>
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+					<span className="text-xs text-muted">Comissão total gerada</span>
 					<p className="text-sm font-semibold text-success">{formatCurrency(data.totalCommissionAmount)}</p>
 				</div>
 			</div>
@@ -190,17 +189,16 @@ function getColumns(
 			render: (item) => {
 				const statusParsed = userStatusParse[item.status];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={item.status} label={statusParsed.label} />
 				);
 			},
 		},
 		{
 			key: 'commissionTotal',
 			header: 'Comissão total',
-			render: (item) => <span className="font-medium text-success">{formatCurrency(item.estimatedCommissionTotal ?? 0)}</span>,
+			render: (item) => (
+				<span className="font-mono tabular-nums text-white">{formatCurrency(item.estimatedCommissionTotal ?? 0)}</span>
+			),
 		},
 		{
 			key: 'expiresAt',
@@ -222,14 +220,20 @@ function getColumns(
 			width: '120px',
 			render: (item) => (
 				<div className="flex items-center justify-center">
-					<Button
-						isIconOnly
-						variant="tertiary"
-						onPress={() => onOpenMovements(item.id)}
-						aria-label="Ver movimentações de comissão"
-					>
-						<Icon icon={Analytics01Icon} className="icon-sm" />
-					</Button>
+					<Tooltip>
+						<Button
+							isIconOnly
+							variant="tertiary"
+							className="button-outline-dark"
+							onPress={() => onOpenMovements(item.id)}
+							aria-label="Ver movimentações de comissão"
+						>
+							<Icon icon={Analytics01Icon} className="icon-xs" />
+							<Tooltip.Content className="bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+								Ver movimentações de comissão
+							</Tooltip.Content>
+						</Button>
+					</Tooltip>
 				</div>
 			),
 		},
@@ -344,7 +348,7 @@ export function ReferredUsersDataTable({
 		const expirationDate = getExpirationDate(item.referredAt, referralDurationMonths);
 		return (
 			<div
-				className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
+				className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
 				onClick={openActions}
 				role={openActions ? 'button' : undefined}
 				tabIndex={openActions ? 0 : undefined}
@@ -355,15 +359,12 @@ export function ReferredUsersDataTable({
 						<span className="font-medium text-foreground truncate">{item.name || 'Sem nome'}</span>
 						<EmailLink email={item.email} className="text-xs" />
 					</div>
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1 shrink-0">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={item.status} label={statusParsed.label} />
 				</div>
 				<div className="flex flex-col gap-1">
 					<div className="flex justify-between text-xs">
 						<span className="text-muted">Comissão total</span>
-						<span className="font-medium text-success">{formatCurrency(item.estimatedCommissionTotal ?? 0)}</span>
+						<span className="font-mono tabular-nums text-white">{formatCurrency(item.estimatedCommissionTotal ?? 0)}</span>
 					</div>
 					<div className="flex justify-between text-xs">
 						<span className="text-muted">Indicado em</span>
@@ -392,12 +393,12 @@ export function ReferredUsersDataTable({
 			/>
 
 			<Modal.Backdrop isOpen={isMovementsOpen} onOpenChange={handleMovementsModalChange}>
-							<Modal.Container size="lg" placement="center" scroll="outside">
+				<Modal.Container size="lg" placement="center" scroll="outside">
 					<Modal.Dialog className="max-w-4xl">
 						<Modal.CloseTrigger />
 						<Modal.Header>
 							<Modal.Icon className="bg-accent text-accent-foreground">
-								<Icon icon={Analytics01Icon} className="icon-md" />
+								<Icon icon={Analytics01Icon} className="icon-xs" />
 							</Modal.Icon>
 							<Modal.Heading>Movimentações do indicado</Modal.Heading>
 							<p className="text-sm text-muted">Histórico de comissões geradas por este usuário indicado</p>

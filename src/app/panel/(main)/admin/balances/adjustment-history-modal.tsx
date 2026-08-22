@@ -24,6 +24,10 @@ interface AdjustmentHistoryModalProps {
 	merchantName?: string;
 	initialDataPromise: DataPromise | null;
 }
+const SCOPE_LABEL: Record<'Platform' | 'Acquirer', string> = {
+	Platform: 'Plataforma',
+	Acquirer: 'Adquirente',
+};
 
 
 function AdjustmentCard({ item, mode }: { item: AdminPlatformBalanceAdjustmentHistoryData; mode: 'platform' | 'merchant' }) {

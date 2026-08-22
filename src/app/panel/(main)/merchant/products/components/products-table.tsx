@@ -1,15 +1,13 @@
 'use client';
 
-import { Button, Card, Chip, Avatar, Tooltip, Dropdown } from '@heroui/react';
+import { Avatar, Tooltip, Dropdown } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddCircleIcon,
 	Archive01Icon,
-	Calendar01Icon,
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
 	Delete02Icon,
-	FileCloudIcon,
 	Mail01Icon,
 	PackageIcon,
 	PencilEdit01Icon,
@@ -17,11 +15,9 @@ import {
 	ViewIcon,
 	MoreHorizontalCircle01Icon,
 } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
 import {
 	productStatusParse,
 	productTypeParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
@@ -41,6 +37,13 @@ import type { DataTableColumn } from '@/components/ui/data-table';
 import { PaymentEnvironment as PaymentEnv, ProductStatus } from '@/types/enums';
 import { ProductDetailsModal, CategoriesModal } from '@/components/merchant/products/modals';
 import { useProductsTable, type ProductsTableFilters } from './use-products-table';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutWalletIcon,
+	RevolutPlusIcon,
+	RevolutCheckIcon,
+	RevolutTrendingUpIcon,
+} from '@/components/ui/revolut-icons';
 
 type ProductsPromise = Promise<ApiResponse<Paginated<MinimalProductData>>>;
 type CategoriesPromise = Promise<ApiResponse<Paginated<MinimalCategoryData>>>;
@@ -76,14 +79,14 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 		{
 			key: 'image',
 			header: '',
-			width: 'w-16',
+			width: 'w-14',
 			render: (product) => (
-				<Avatar size="md">
+				<Avatar size="sm" className="bg-white/5 border border-white/10 text-white">
 					{product.imageUrls?.[0] || product.imageUrl ? (
 						<Avatar.Image src={product.imageUrls?.[0] ?? product.imageUrl ?? ''} alt={product.name} />
 					) : (
 						<Avatar.Fallback>
-							<Icon icon={PackageIcon} className="icon-sm" />
+							<Icon icon={PackageIcon} className="icon-sm text-white/50" />
 						</Avatar.Fallback>
 					)}
 				</Avatar>
@@ -94,8 +97,8 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 			header: 'Produto',
 			render: (product) => (
 				<div className="flex flex-col">
-					<span className="font-medium truncate max-w-60">{product.name}</span>
-					{product.externalId && <span className="text-xs text-muted truncate max-w-60">ID: {product.externalId}</span>}
+					<span className="font-bold text-sm text-white truncate max-w-60">{product.name}</span>
+					{product.externalId && <span className="text-xs font-mono text-white/40 truncate max-w-60">ID: {product.externalId}</span>}
 				</div>
 			),
 		},
@@ -105,133 +108,120 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 			render: (product) => {
 				const typeParsed = productTypeParse[product.type];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(typeParsed.color)} size="sm" className="gap-1">
-						{typeParsed.icon}
-						{typeParsed.label}
-					</Chip>
+					<span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/80">
+						{typeParsed?.label}
+					</span>
 				);
 			},
 		},
 		{
 			key: 'price',
-			header: 'Preço',
-			render: (product) => <span className="font-medium font-mono">{product.price ? formatCurrency(product.price) : '-'}</span>,
+			header: 'Preço PIX',
+			render: (product) => (
+				<span className="font-bold font-mono text-white text-sm tabular-nums">
+					{product.price ? formatCurrency(product.price) : '-'}
+				</span>
+			),
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (product) => {
-				const statusParsed = productStatusParse[product.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
-		},
-		{
-			key: 'categories',
-			header: 'Categorias',
 			render: (product) => (
-				<div className="flex items-center gap-1">
-					<span className="text-sm">{product.categoryCount}</span>
-				</div>
-			),
-		},
-		{
-			key: 'variants',
-			header: 'Variantes',
-			render: (product) => (
-				<div className="flex items-center gap-1">
-					<span className="text-sm">{product.variantCount}</span>
-				</div>
-			),
-		},
-		{
-			key: 'coupons',
-			header: 'Cupons',
-			render: (product) => (
-				<div className="flex items-center gap-1">
-					<span className="text-sm">{product.couponCount}</span>
-				</div>
+				<RevolutStatusBadge
+					status={product.status}
+					label={productStatusParse[product.status]?.label}
+				/>
 			),
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
-			render: (product) => <span className="text-sm text-muted">{formatDate(product.createdAt)}</span>,
+			render: (product) => <span className="text-xs font-mono text-white/50">{formatDate(product.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
 			header: 'Ações',
 			align: 'center',
 			render: (product) => {
-				const canActivate = product.status === ProductStatus.Inactive || product.status === ProductStatus.Archived;
-				const canInactivate = product.status === ProductStatus.Active;
-				const canArchive = product.status !== ProductStatus.Archived;
-				const isUpdating = statusUpdatingId === product.id;
+				const isArchived = product.status === ProductStatus.Archived;
+				const isPending = statusUpdatingId === product.id;
 
 				return (
-				<div className="flex items-center justify-center gap-1">
-					<Tooltip>
-						<Button isIconOnly variant="tertiary" onPress={() => handleAction(() => onView(product.id))}>
-							<Icon icon={ViewIcon} className="icon-sm" />
-							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
-					</Tooltip>
-					<Tooltip>
-						<Button isIconOnly variant="tertiary" onPress={() => handleAction(() => onEdit(product.id))}>
-							<Icon icon={PencilEdit01Icon} className="icon-sm" />
-							<Tooltip.Content>Editar</Tooltip.Content>
-						</Button>
-					</Tooltip>
-					<Dropdown>
+					<div className="flex items-center justify-center gap-1">
 						<Tooltip>
-							<Button isIconOnly variant="tertiary" aria-label="Mais ações" isDisabled={isUpdating}>
-								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-								<Tooltip.Content>Mais ações</Tooltip.Content>
-							</Button>
+							<button
+								type="button"
+								onClick={() => onView(product.id)}
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
+								<Icon icon={ViewIcon} className="icon-sm" />
+							</button>
+							<Tooltip.Content>Ver detalhes</Tooltip.Content>
 						</Tooltip>
-						<Dropdown.Popover className="min-w-44">
-							<Dropdown.Menu aria-label="Ações do produto">
-								<Dropdown.Item
-									id="activate"
-									textValue="Ativar produto"
-									className="text-success"
-									isDisabled={!canActivate || isUpdating}
-									onPress={() => onChangeStatus(product.id, ProductStatus.Active)}
+						<Dropdown>
+							<Tooltip>
+								<button
+									type="button"
+									disabled={isPending}
+									aria-label="Mais ações"
+									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
 								>
-									<Icon icon={CheckmarkCircle02Icon} className="icon-md text-success" />
-									Ativar
-								</Dropdown.Item>
-								<Dropdown.Item
-									id="inactivate"
-									textValue="Inativar produto"
-									className="text-warning"
-									isDisabled={!canInactivate || isUpdating}
-									onPress={() => onChangeStatus(product.id, ProductStatus.Inactive)}
-								>
-									<Icon icon={CancelCircleIcon} className="icon-md text-warning" />
-									Inativar
-								</Dropdown.Item>
-								<Dropdown.Item
-									id="archive"
-									textValue="Arquivar produto"
-									isDisabled={!canArchive || isUpdating}
-									onPress={() => onChangeStatus(product.id, ProductStatus.Archived)}
-								>
-									<Icon icon={Archive01Icon} className="icon-md" />
-									Arquivar
-								</Dropdown.Item>
-								<Dropdown.Item id="delete" textValue="Excluir produto" className="text-danger" onPress={() => handleAction(() => onDelete(product.id, product.name))}>
-									<Icon icon={Delete02Icon} className="icon-md text-danger" />
-									Excluir produto
-								</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown.Popover>
-					</Dropdown>
-				</div>
+									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
+								</button>
+								<Tooltip.Content>Mais ações</Tooltip.Content>
+							</Tooltip>
+							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+								<Dropdown.Menu aria-label="Ações do produto">
+									<Dropdown.Item id="edit" textValue="Editar produto" className="text-[#4f55f1] hover:bg-white/10" onPress={() => onEdit(product.id)}>
+										<Icon icon={PencilEdit01Icon} className="icon-xs text-[#4f55f1]" />
+										Editar produto
+									</Dropdown.Item>
+									{!isArchived && (
+										<Dropdown.Item
+											id="toggle-status"
+											textValue={product.status === ProductStatus.Active ? 'Desativar' : 'Ativar'}
+											className="text-white hover:bg-white/10"
+											onPress={() =>
+												onChangeStatus(
+													product.id,
+													product.status === ProductStatus.Active ? ProductStatus.Inactive : ProductStatus.Active
+												)
+											}
+										>
+											<Icon
+												icon={product.status === ProductStatus.Active ? CancelCircleIcon : CheckmarkCircle02Icon}
+												className="icon-xs text-white/70"
+											/>
+											{product.status === ProductStatus.Active ? 'Desativar' : 'Ativar'}
+										</Dropdown.Item>
+									)}
+									<Dropdown.Item
+										id="archive"
+										textValue={isArchived ? 'Desarquivar' : 'Arquivar'}
+										className="text-[#ec7e00] hover:bg-white/10"
+										onPress={() =>
+											onChangeStatus(
+												product.id,
+												isArchived ? ProductStatus.Inactive : ProductStatus.Archived
+											)
+										}
+									>
+										<Icon icon={Archive01Icon} className="icon-xs text-[#ec7e00]" />
+										{isArchived ? 'Desarquivar' : 'Arquivar'}
+									</Dropdown.Item>
+									<Dropdown.Item
+										id="delete"
+										textValue="Excluir produto"
+										className="text-[#e23b4a] hover:bg-white/10"
+										onPress={() => handleAction(() => onDelete(product.id, product.name))}
+									>
+										<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
+										Excluir produto
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
+					</div>
 				);
 			},
 		},
@@ -245,7 +235,13 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalProductData>[
 }
 
 export function ProductsTable({ productsPromise, categoriesPromise, merchantId, filters, productType }: ProductsTableProps) {
-	const { data, filters: tableFilters, modals, actions, context } = useProductsTable({
+	const {
+		data,
+		filters: tableFilters,
+		modals,
+		actions,
+		context,
+	} = useProductsTable({
 		productsPromise,
 		categoriesPromise,
 		merchantId,
@@ -253,33 +249,16 @@ export function ProductsTable({ productsPromise, categoriesPromise, merchantId, 
 		productType,
 	});
 
-	const pageConfig = {
-		Physical: {
-			title: 'Produtos Físicos',
-			description: 'Gerencie os produtos físicos da sua organização',
-			newLabel: 'Novo Produto Físico',
-			icon: PackageIcon,
-		},
-		Digital: {
-			title: 'Produtos Digitais',
-			description: 'Gerencie os produtos digitais da sua organização',
-			newLabel: 'Novo Produto Digital',
-			icon: FileCloudIcon,
-		},
-		Service: {
-			title: 'Serviços',
-			description: 'Gerencie os serviços da sua organização',
-			newLabel: 'Novo Serviço',
-			icon: Calendar01Icon,
-		},
-	} as const;
-
-	const currentConfig = context.productType ? pageConfig[context.productType] : null;
+	const productTypeConfig = productType ? {
+		Physical: { title: 'Produtos Físicos', description: 'Gerencie inventário e produtos com entrega', newLabel: 'Novo Produto Físico' },
+		Digital: { title: 'Produtos Digitais', description: 'Gerencie arquivos, chaves e downloads', newLabel: 'Novo Produto Digital' },
+		Service: { title: 'Serviços', description: 'Gerencie planos e serviços com pagamento PIX', newLabel: 'Novo Serviço' },
+	}[productType] : { title: 'Catálogo de Produtos', description: 'Gerenciamento completo de inventário e precificação PIX', newLabel: 'Novo Produto' };
 
 	const columns = getColumns({
-		onView: (id) => openWithDelay(() => modals.details.open(id), DEFAULT_MODAL_DELAY),
-		onEdit: (id) => openWithDelay(() => actions.goToEdit(id), DEFAULT_MODAL_DELAY),
-		onDelete: (id, name) => openWithDelay(() => modals.delete.open(id, name), DEFAULT_MODAL_DELAY),
+		onView: modals.details.open,
+		onEdit: actions.goToEdit,
+		onDelete: modals.delete.open,
 		onChangeStatus: actions.changeStatus,
 		statusUpdatingId: context.statusUpdatingId,
 		hideTypeColumn: !!context.productType,
@@ -288,9 +267,10 @@ export function ProductsTable({ productsPromise, categoriesPromise, merchantId, 
 	const filtersContent = (
 		<>
 			<SearchFilter
-				defaultValue={tableFilters.values.search ?? ''}
-				onChange={(value) => tableFilters.navigate({ search: value || null })}
-				placeholder="Buscar por nome..."
+				label="Buscar"
+				placeholder="Nome ou ID do produto..."
+				value={tableFilters.values.search ?? ''}
+				onChange={(value) => tableFilters.navigate({ search: value })}
 			/>
 
 			<SelectFilter
@@ -338,95 +318,148 @@ export function ProductsTable({ productsPromise, categoriesPromise, merchantId, 
 	const totalCategories = data.categories.length;
 
 	return (
-		<div className="flex flex-col gap-3">
-			<PageHeader
-				icon={
-					<Icon icon={currentConfig?.icon ?? PackageIcon} className="icon-md text-accent-foreground" />
-				}
-				title={currentConfig?.title ?? 'Produtos'}
-				description={currentConfig?.description ?? 'Gerencie os produtos da sua organização'}
-				action={currentConfig ? {
-					label: currentConfig.newLabel,
-					icon: <Icon icon={AddCircleIcon} className="icon-sm" />,
-					onPress: actions.goToNew,
-				} : undefined}
-				secondaryAction={{
-					label: 'Categorias',
-					icon: <Icon icon={Tag01Icon} className="icon-sm" />,
-					onPress: modals.categories.open,
-				}}
-				tertiaryAction={
-					!context.productType || context.productType === 'Digital' || context.productType === 'Physical' || context.productType === 'Service'
-						? {
-								label: 'Templates de Email',
-								icon: <Icon icon={Mail01Icon} className="icon-sm" />,
-								onPress: actions.goToEmailTemplates,
-								tooltip: 'Configurar templates de email',
-							}
-						: undefined
-				}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<Icon icon={PackageIcon} className="icon-sm text-[#4f55f1]" />
+						</div>
+					<h1 className="text-xl font-bold tracking-tight text-white">{productTypeConfig.title}</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+					{productTypeConfig.description}
+					</p>
+				</div>
 
-			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Total de Produtos</span>
-						<span className="mt-1 block text-lg font-bold font-mono tracking-tight text-foreground">
-							<AnimatedNumber value={totalProducts} />
-						</span>
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Ativos</span>
-						<span className="mt-1 block text-lg font-bold font-mono tracking-tight text-success">
-							<AnimatedNumber value={activeProducts} />
-						</span>
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Preço Médio</span>
-						<AnimatedCurrency value={avgPrice} className="mt-1 text-lg font-bold font-mono tracking-tight text-foreground" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Categorias</span>
-						<span className="mt-1 block text-lg font-bold font-mono tracking-tight text-foreground">
-							<AnimatedNumber value={totalCategories} />
-						</span>
-					</Card.Content>
-				</Card>
+				<div className="flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={modals.categories.open}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<Icon icon={Tag01Icon} className="icon-sm" />
+						<span>Categorias</span>
+					</button>
+
+				<button
+					type="button"
+					onClick={actions.goToNew}
+					className="button-primary cursor-pointer text-xs"
+				>
+					<RevolutPlusIcon size={16} />
+					<span>{productTypeConfig.newLabel}</span>
+				</button>
+				</div>
 			</div>
 
-			<DataTable
-				columns={columns}
-				data={data.products.items}
-				keyExtractor={(product) => product.id}
-				isLoading={data.isLoading}
-				skeletonRows={tableFilters.values.pageSize}
-				emptyMessage="Nenhum produto encontrado"
-				minWidth="min-w-250"
-				filters={{
-					children: filtersContent,
-					hasFilters: tableFilters.hasFilters,
-					onClear: tableFilters.clear,
-					onRefresh: tableFilters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.products.page,
-					pageSize: data.products.pageSize,
-					totalItems: data.products.totalItems,
-					totalPages: data.products.totalPages,
-					onPageChange: (page) => tableFilters.navigate({ page }),
-					sortBy: tableFilters.values.sortBy,
-					sortOrder: tableFilters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => tableFilters.navigate({ sortBy, sortOrder, page: 1 }),
-					isNavigating: data.isLoading,
-				}}
-			/>
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{/* Total de Produtos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Total no Catálogo
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={PackageIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalProducts} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Itens cadastrados</p>
+					</div>
+				</div>
+
+				{/* Produtos Ativos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Produtos Ativos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<RevolutCheckIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={activeProducts} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Disponíveis para venda</p>
+					</div>
+				</div>
+
+				{/* Preço Médio */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Ticket Médio Catálogo
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<RevolutWalletIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<AnimatedCurrency
+							value={avgPrice}
+							className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Média de precificação</p>
+					</div>
+				</div>
+
+				{/* Categorias */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Categorias
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={Tag01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalCategories} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Segmentos cadastrados</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.products.items}
+					keyExtractor={(product) => product.id}
+					isLoading={data.isLoading}
+					skeletonRows={tableFilters.values.pageSize}
+					emptyMessage="Nenhum produto encontrado no catálogo."
+					minWidth="min-w-250"
+					filters={{
+						children: filtersContent,
+						hasFilters: tableFilters.hasFilters,
+						onClear: tableFilters.clear,
+						onRefresh: tableFilters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.products.page,
+						pageSize: data.products.pageSize,
+						totalItems: data.products.totalItems,
+						totalPages: data.products.totalPages,
+						onPageChange: (page) => tableFilters.navigate({ page }),
+						sortBy: tableFilters.values.sortBy,
+						sortOrder: tableFilters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => tableFilters.navigate({ sortBy, sortOrder, page: 1 }),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			<ProductDetailsModal
 				isOpen={modals.details.isOpen}
@@ -457,4 +490,3 @@ export function ProductsTable({ productsPromise, categoriesPromise, merchantId, 
 		</div>
 	);
 }
-

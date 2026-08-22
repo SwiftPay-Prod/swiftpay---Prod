@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Button, Card, Chip, Tooltip, Dropdown } from '@heroui/react';
+import { Tooltip, Dropdown } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddCircleIcon,
@@ -13,41 +13,39 @@ import {
 	PackageIcon,
 	ShoppingCart01Icon,
 } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
-import { AnimatedNumber } from '@/components/ui/animated-number';
 import {
 	couponStatusParse,
 	couponDiscountTypeParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatDiscount } from '@/utils/currency';
-import { DataTable } from '@/components/ui/data-table';
+import { AnimatedNumber } from '@/components/ui/animated-number';
+import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { SelectFilter } from '@/components/ui/select-filter';
 import { SearchFilter } from '@/components/ui/search-filter';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { CouponDetailsModal } from './modals/coupon-details-modal';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
 import { openWithDelay, DEFAULT_MODAL_DELAY } from '@/utils/modal';
 import { useCouponsTable, type CouponsTableFilters } from './use-coupons-table';
-import type { MinimalCoupon } from '@/types/merchant/coupons';
-import type { DataTableColumn } from '@/components/ui/data-table';
 import { CouponStatus, CouponDiscountType } from '@/types/enums';
+import type { MinimalCoupon } from '@/types/merchant/coupons';
 
 interface CouponsTableProps {
 	merchantId: string;
 	initialFilters: CouponsTableFilters;
 }
 
-const statusOptions = parseToFilterOptions(couponStatusParse, 'Todos os status');
-const discountTypeOptions = parseToFilterOptions(couponDiscountTypeParse, 'Todos os tipos');
-
 interface ColumnConfig {
 	onView: (id: string) => void;
 	onEdit: (id: string) => void;
 	onDelete: (id: string, code: string) => void;
 }
+
+const statusOptions = parseToFilterOptions(couponStatusParse, 'Todos os status');
+const discountTypeOptions = parseToFilterOptions(couponDiscountTypeParse, 'Todos os tipos');
 
 function getColumns(config: ColumnConfig): DataTableColumn<MinimalCoupon>[] {
 	const { onView, onEdit, onDelete } = config;
@@ -62,8 +60,8 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCoupon>[] {
 			header: 'Código',
 			render: (coupon) => (
 				<div className="flex flex-col">
-					<span className="font-mono font-medium text-accent">{coupon.code}</span>
-					<span className="text-sm text-muted truncate max-w-40">{coupon.name}</span>
+					<span className="font-mono font-bold text-sm text-white">{coupon.code}</span>
+					<span className="text-xs text-white/50 truncate max-w-40">{coupon.name}</span>
 				</div>
 			),
 		},
@@ -73,23 +71,24 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCoupon>[] {
 			render: (coupon) => {
 				const typeParsed = couponDiscountTypeParse[coupon.discountType];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(typeParsed.color)} size="sm" className="gap-1">
-						{typeParsed.icon}
-						{typeParsed.label}
-					</Chip>
+					<span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/80">
+						{typeParsed?.label}
+					</span>
 				);
 			},
 		},
 		{
 			key: 'discount',
-			header: 'Desconto',
-			render: (coupon) => <span className="font-medium">{formatDiscount(coupon)}</span>,
+			header: 'Desconto PIX',
+			render: (coupon) => (
+				<span className="font-bold font-mono text-white text-sm tabular-nums">{formatDiscount(coupon)}</span>
+			),
 		},
 		{
 			key: 'usage',
 			header: 'Uso',
 			render: (coupon) => (
-				<span className="text-sm">
+				<span className="text-sm font-mono text-white/70">
 					{coupon.currentUses} / {coupon.maxUses ?? '∞'}
 				</span>
 			),
@@ -99,49 +98,36 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCoupon>[] {
 			header: 'Status',
 			render: (coupon) => {
 				const statusParsed = couponStatusParse[coupon.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
+				return <RevolutStatusBadge status={coupon.status} label={statusParsed?.label} />;
 			},
 		},
 		{
 			key: 'products',
 			header: 'Produtos',
 			render: (coupon) => (
-				<div className="flex items-center gap-1">
-					<Icon icon={PackageIcon} className="icon-sm text-muted" />
-					<span className="text-sm">{coupon.applyToAllProducts ? 'Todos' : coupon.productCount}</span>
-				</div>
+				<span className="text-sm text-white/70 font-mono">{coupon.applyToAllProducts ? 'Todos' : coupon.productCount}</span>
 			),
 		},
 		{
 			key: 'checkouts',
 			header: 'Checkouts',
 			render: (coupon) => (
-				<div className="flex items-center gap-1">
-					<Icon icon={ShoppingCart01Icon} className="icon-sm text-muted" />
-					<span className="text-sm">{coupon.applyToAllCheckouts ? 'Todos' : coupon.checkoutCount}</span>
-				</div>
+				<span className="text-sm text-white/70 font-mono">{coupon.applyToAllCheckouts ? 'Todos' : coupon.checkoutCount}</span>
 			),
 		},
 		{
 			key: 'expiresAt',
 			header: 'Expira em',
 			render: (coupon) => (
-				<span className="text-sm text-muted">
-					{coupon.validUntil ? formatDate(coupon.validUntil) : '-'}
+				<span className="text-sm text-white/50 font-mono">
+					{coupon.validUntil ? formatDate(coupon.validUntil) : '—'}
 				</span>
 			),
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
-			render: (coupon) => (
-				<span className="text-sm text-muted">{formatDate(coupon.createdAt)}</span>
-			),
+			render: (coupon) => <span className="text-sm font-mono text-white/50">{formatDate(coupon.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
@@ -150,26 +136,34 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCoupon>[] {
 			render: (coupon) => (
 				<div className="flex items-center justify-center gap-1">
 					<Tooltip>
-						<Button isIconOnly variant="tertiary" onPress={() => handleAction(() => onView(coupon.id))}>
+						<button
+							type="button"
+							onClick={() => handleAction(() => onView(coupon.id))}
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+						>
 							<Icon icon={ViewIcon} className="icon-sm" />
-							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
+						</button>
+						<Tooltip.Content>Ver detalhes</Tooltip.Content>
 					</Tooltip>
 					<Dropdown>
 						<Tooltip>
-							<Button isIconOnly variant="tertiary" aria-label="Mais ações">
+							<button
+								type="button"
+								aria-label="Mais ações"
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
 								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-								<Tooltip.Content>Mais ações</Tooltip.Content>
-							</Button>
+							</button>
+							<Tooltip.Content>Mais ações</Tooltip.Content>
 						</Tooltip>
-						<Dropdown.Popover className="min-w-44">
+						<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 							<Dropdown.Menu aria-label="Ações do cupom">
-								<Dropdown.Item id="edit" textValue="Editar cupom" className="text-accent" onPress={() => handleAction(() => onEdit(coupon.id))}>
-									<Icon icon={PencilEdit01Icon} className="icon-xs text-accent" />
+								<Dropdown.Item id="edit" textValue="Editar cupom" className="text-[#4f55f1] hover:bg-white/10" onPress={() => handleAction(() => onEdit(coupon.id))}>
+									<Icon icon={PencilEdit01Icon} className="icon-xs text-[#4f55f1]" />
 									Editar cupom
 								</Dropdown.Item>
-								<Dropdown.Item id="delete" textValue="Excluir cupom" className="text-danger" onPress={() => handleAction(() => onDelete(coupon.id, coupon.code))}>
-									<Icon icon={Delete02Icon} className="icon-xs text-danger" />
+								<Dropdown.Item id="delete" textValue="Excluir cupom" className="text-[#e23b4a] hover:bg-white/10" onPress={() => handleAction(() => onDelete(coupon.id, coupon.code))}>
+									<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
 									Excluir cupom
 								</Dropdown.Item>
 							</Dropdown.Menu>
@@ -191,7 +185,7 @@ function renderMobileCouponCard(
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -208,24 +202,22 @@ function renderMobileCouponCard(
 		>
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
-					<span className="font-mono font-semibold text-sm text-accent truncate block">{coupon.code}</span>
-					{coupon.name && <p className="mt-0.5 text-xs text-muted truncate">{coupon.name}</p>}
+					<span className="font-mono font-bold text-sm text-white truncate block">{coupon.code}</span>
+					{coupon.name && <p className="mt-0.5 text-xs text-white/50 truncate">{coupon.name}</p>}
 				</div>
-				<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="shrink-0">
-					{statusParsed.label}
-				</Chip>
+				<RevolutStatusBadge status={coupon.status} label={statusParsed?.label} />
 			</div>
 			<div className="mt-2 flex items-center gap-1.5 flex-wrap">
-				<Chip variant="soft" color={mapParseColorToChipColor(typeParsed.color)} size="sm">
-					{typeParsed.label}
-				</Chip>
-				<span className="text-sm font-semibold">{formatDiscount(coupon)}</span>
-				<span className="text-xs text-muted">{coupon.currentUses} / {coupon.maxUses ?? '∞'} usos</span>
+				<span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/80">
+					{typeParsed?.label}
+				</span>
+				<span className="text-sm font-bold font-mono text-white tabular-nums">{formatDiscount(coupon)}</span>
+				<span className="text-xs text-white/50 font-mono">{coupon.currentUses} / {coupon.maxUses ?? '∞'} usos</span>
 			</div>
 			{coupon.validUntil && (
-				<p className="mt-1.5 text-xs text-muted">Expira: {formatDate(coupon.validUntil)}</p>
+				<p className="mt-1.5 text-xs text-white/50 font-mono">Expira: {formatDate(coupon.validUntil)}</p>
 			)}
-			<p className="mt-2 text-xs text-muted">{formatDate(coupon.createdAt)}</p>
+			<p className="mt-2 text-xs text-white/50 font-mono">{formatDate(coupon.createdAt)}</p>
 		</div>
 	);
 }
@@ -276,104 +268,126 @@ export function CouponsTable({ merchantId, initialFilters }: CouponsTableProps) 
 		</>
 	);
 
+	const coupons = data.coupons.items;
+	const total = coupons.length;
+	const active = coupons.filter((item) => item.status === CouponStatus.Active).length;
+	const totalUsage = coupons.reduce((sum, item) => sum + item.currentUses, 0);
+	const categoriesByType: Record<string, boolean> = {};
+		for (const item of coupons) {
+			categoriesByType[item.discountType] = true;
+		}
+		const categories = Object.keys(categoriesByType).length;
+
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={Coupon01Icon} className="icon-md text-accent-foreground" />}
-				title="Cupons"
-				description="Gerencie os cupons de desconto da sua organização"
-				action={{
-					label: 'Novo Cupom',
-					icon: <Icon icon={AddCircleIcon} className="icon-sm" />,
-					onPress: actions.goToNew,
-				}}
-			/>
-
-			{(() => {
-				const coupons = data.coupons.items;
-				const total = coupons.length;
-				const active = coupons.filter((item) => item.status === CouponStatus.Active).length;
-				const totalUsage = coupons.reduce((sum, item) => sum + item.currentUses, 0);
-
-				const categoriesByType: Record<string, boolean> = {};
-				for (const item of coupons) {
-					categoriesByType[item.discountType] = true;
-				}
-				const categories = Object.keys(categoriesByType).length;
-
-				const stats = useMemo(
-					() =>
-						[
-							{
-								label: 'Total',
-								value: <AnimatedNumber value={total} />,
-								icon: <Icon icon={Coupon01Icon} className="icon-sm text-muted" />,
-							},
-							{
-								label: 'Ativos',
-								value: <AnimatedNumber value={active} />,
-								icon: <Icon icon={ViewIcon} className="icon-sm text-success" />,
-								accent: 'text-success',
-							},
-							{
-								label: 'Usos',
-								value: <AnimatedNumber value={totalUsage} />,
-								icon: <Icon icon={ShoppingCart01Icon} className="icon-sm text-muted" />,
-							},
-							{
-								label: 'Categorias',
-								value: <AnimatedNumber value={categories} />,
-								icon: <Icon icon={PackageIcon} className="icon-sm text-muted" />,
-							},
-						],
-					[coupons]
-				);
-
-				return (
-					<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-						{stats.map((item) => (
-							<Card key={item.label} className="border border-border/80 bg-card">
-								<Card.Content className="flex items-center gap-3 p-3">
-									{item.icon}
-									<div className="flex flex-col">
-										<span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{item.label}</span>
-										<span className={`text-sm font-semibold tabular-nums ${item.accent ?? 'text-foreground'}`}>{item.value}</span>
-									</div>
-								</Card.Content>
-							</Card>
-						))}
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={Coupon01Icon} className="icon-sm" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Cupons de Desconto</h1>
 					</div>
-				);
-			})()}
+					<p className="text-xs text-white/50 mt-1">Gerencie promoções, códigos e regras de desconto PIX</p>
+				</div>
 
-			<DataTable
-				columns={columns}
-				data={data.coupons.items}
-				keyExtractor={(coupon) => coupon.id}
-				isLoading={data.isLoading}
-				skeletonRows={filters.values.pageSize}
-				emptyMessage="Nenhum cupom encontrado"
-				minWidth="min-w-250"
-				renderMobileCard={renderMobileCouponCard}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.clear,
-					onRefresh: filters.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.coupons.page,
-					pageSize: data.coupons.pageSize,
-					totalItems: data.coupons.totalItems,
-					totalPages: data.coupons.totalPages,
-					onPageChange: (page) => filters.update({ page }),
-					sortBy: filters.values.sortBy,
-					sortOrder: filters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => filters.update({ sortBy, sortOrder, page: 1 }),
-					isNavigating: data.isLoading,
-				}}
-			/>
+				<button
+					type="button"
+					onClick={actions.goToNew}
+					className="button-primary cursor-pointer text-xs"
+				>
+					<Icon icon={AddCircleIcon} className="icon-xs" />
+					<span>Novo Cupom</span>
+				</button>
+			</div>
+
+			{/* 4-Tile KPI Grid */}
+			<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+				{/* Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Total</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Coupon01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={total} />
+					</span>
+				</div>
+
+				{/* Ativos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Ativos</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={ViewIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
+						<AnimatedNumber value={active} />
+					</span>
+				</div>
+
+				{/* Total de Usos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Usos</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={ShoppingCart01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={totalUsage} />
+					</span>
+				</div>
+
+				{/* Categorias */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Categorias</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={PackageIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={categories} />
+					</span>
+				</div>
+			</div>
+
+			{/* Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.coupons.items}
+					keyExtractor={(coupon) => coupon.id}
+					isLoading={data.isLoading}
+					skeletonRows={filters.values.pageSize}
+					emptyMessage="Nenhum cupom encontrado"
+					minWidth="min-w-250"
+					renderMobileCard={renderMobileCouponCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.clear,
+						onRefresh: filters.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.coupons.page,
+						pageSize: data.coupons.pageSize,
+						totalItems: data.coupons.totalItems,
+						totalPages: data.coupons.totalPages,
+						onPageChange: (page) => filters.update({ page }),
+						sortBy: filters.values.sortBy,
+						sortOrder: filters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => filters.update({ sortBy, sortOrder, page: 1 }),
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			{modals.details.isOpen && modals.details.couponPromise && (
 				<CouponDetailsModal
@@ -396,4 +410,3 @@ export function CouponsTable({ merchantId, initialFilters }: CouponsTableProps) 
 		</div>
 	);
 }
-

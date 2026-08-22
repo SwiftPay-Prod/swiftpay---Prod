@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Button, Card, Chip, Tooltip, Dropdown } from '@heroui/react';
+import { Tooltip, Dropdown } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	AddCircleIcon,
@@ -14,30 +14,27 @@ import {
 	Wallet01Icon,
 	UserRemove01Icon,
 } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
-import { AnimatedNumber } from '@/components/ui/animated-number';
-import type { MinimalCustomer, CustomerAddressData } from '@/types/merchant/customers';
-import { CustomerStatus } from '@/types/enums';
 import {
 	customerStatusParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { EmailLink, PhoneLink, DocumentDisplay } from '@/components/ui/data-links';
 import { SelectFilter } from '@/components/ui/select-filter';
 import { SearchFilter } from '@/components/ui/search-filter';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { CustomerDetailsModal } from './modals/customer-details-modal';
 import { DeleteCustomerModal } from './modals/delete-customer-modal';
 import { useCustomersTable } from './use-customers-table';
+import { CustomerStatus } from '@/types/enums';
+import type { MinimalCustomer, CustomerAddressData } from '@/types/merchant/customers';
 
 function formatAddressSummary(address: CustomerAddressData | null): string | null {
 	if (!address) return null;
-	const parts: string[] = [];
-	if (address.city) parts.push(address.city);
-	if (address.state) parts.push(address.state);
+	const parts = [address.street, address.number, address.neighborhood, address.city, address.state].filter(Boolean);
 	return parts.length > 0 ? parts.join(', ') : null;
 }
 
@@ -47,8 +44,8 @@ interface CustomersTableProps {
 }
 
 interface ColumnsConfig {
-	onView: (customerId: string) => void;
-	onEdit: (customerId: string) => void;
+	onView: (id: string) => void;
+	onEdit: (id: string) => void;
 	onDelete: (customer: MinimalCustomer) => void;
 	readOnly: boolean;
 }
@@ -64,20 +61,20 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalCustomer>[] {
 			header: 'Cliente',
 			render: (customer) => (
 				<div className="flex flex-col">
-					<span className="font-medium">{customer.name}</span>
-					<EmailLink email={customer.email} className="text-xs" />
+					<span className="font-bold text-sm text-white truncate">{customer.name}</span>
+					<EmailLink email={customer.email} className="text-xs text-white/50" />
 				</div>
 			),
 		},
 		{
 			key: 'document',
 			header: 'Documento',
-			render: (customer) => <DocumentDisplay document={customer.document} className="text-sm" />,
+			render: (customer) => <DocumentDisplay document={customer.document} className="text-sm text-white/70" />,
 		},
 		{
 			key: 'phone',
 			header: 'Telefone',
-			render: (customer) => <PhoneLink phone={customer.phone} className="text-sm" />,
+			render: (customer) => <PhoneLink phone={customer.phone} className="text-sm text-white/70" />,
 		},
 		{
 			key: 'address',
@@ -85,11 +82,11 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalCustomer>[] {
 			render: (customer) => {
 				const addressSummary = formatAddressSummary(customer.address);
 				if (!addressSummary) {
-					return <span className="text-muted">—</span>;
+					return <span className="text-white/40">—</span>;
 				}
 				return (
-					<div className="flex items-center gap-1.5 text-sm">
-						<Icon icon={MapPinIcon} className="icon-xs text-muted shrink-0" />
+					<div className="flex items-center gap-1.5 text-sm text-white/70">
+						<Icon icon={MapPinIcon} className="icon-xs text-white/40 shrink-0" />
 						<span>{addressSummary}</span>
 					</div>
 				);
@@ -100,61 +97,66 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalCustomer>[] {
 			header: 'Status',
 			render: (customer) => {
 				const statusParsed = customerStatusParse[customer.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
+				return <RevolutStatusBadge status={customer.status} label={statusParsed?.label} />;
 			},
 		},
 		{
 			key: 'paymentsCount',
 			header: 'Cobranças',
 			align: 'center',
-			render: (customer) => <span className="text-sm text-muted">{customer.paymentsCount}</span>,
+			render: (customer) => <span className="text-sm font-mono text-white/70">{customer.paymentsCount}</span>,
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
-			render: (customer) => <span className="text-sm text-muted">{formatDate(customer.createdAt)}</span>,
+			render: (customer) => <span className="text-sm font-mono text-white/50">{formatDate(customer.createdAt)}</span>,
 		},
 		{
 			key: 'actions',
 			header: 'Ações',
 			align: 'center',
-			render: (customer) => (
-				<div className="flex items-center justify-center gap-1">
-					<Tooltip>
-						<Button isIconOnly variant="tertiary" onPress={() => onView(customer.id)}>
-							<Icon icon={ViewIcon} className="icon-sm" />
+			render: (customer) => {
+				if (readOnly) return null;
+
+				return (
+					<div className="flex items-center justify-center gap-1">
+						<Tooltip>
+							<button
+								type="button"
+								onClick={() => onView(customer.id)}
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+							>
+								<Icon icon={ViewIcon} className="icon-sm" />
+							</button>
 							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
-					</Tooltip>
-					{!readOnly && (
+						</Tooltip>
 						<Dropdown>
 							<Tooltip>
-								<Button isIconOnly variant="tertiary" aria-label="Mais ações">
+								<button
+									type="button"
+									aria-label="Mais ações"
+									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+								>
 									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-									<Tooltip.Content>Mais ações</Tooltip.Content>
-								</Button>
+								</button>
+								<Tooltip.Content>Mais ações</Tooltip.Content>
 							</Tooltip>
-							<Dropdown.Popover className="min-w-44">
+							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 								<Dropdown.Menu aria-label="Ações do cliente">
-									<Dropdown.Item id="edit" textValue="Editar cliente" className="text-accent" onPress={() => onEdit(customer.id)}>
-										<Icon icon={PencilEdit01Icon} className="icon-xs text-accent" />
+									<Dropdown.Item id="edit" textValue="Editar cliente" className="text-[#4f55f1] hover:bg-white/10" onPress={() => onEdit(customer.id)}>
+										<Icon icon={PencilEdit01Icon} className="icon-xs text-[#4f55f1]" />
 										Editar cliente
 									</Dropdown.Item>
-									<Dropdown.Item id="delete" textValue="Excluir cliente" className="text-danger" onPress={() => onDelete(customer)}>
-										<Icon icon={Delete02Icon} className="icon-xs text-danger" />
+									<Dropdown.Item id="delete" textValue="Excluir cliente" className="text-[#e23b4a] hover:bg-white/10" onPress={() => onDelete(customer)}>
+										<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
 										Excluir cliente
 									</Dropdown.Item>
 								</Dropdown.Menu>
 							</Dropdown.Popover>
 						</Dropdown>
-					)}
-				</div>
-			),
+					</div>
+				);
+			},
 		},
 	];
 }
@@ -168,7 +170,7 @@ function renderMobileCustomerCard(
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -185,22 +187,20 @@ function renderMobileCustomerCard(
 		>
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
-					<span className="font-semibold text-sm truncate block">{customer.name ?? 'Sem nome'}</span>
-					{customer.email && <p className="mt-0.5 text-xs text-muted truncate">{customer.email}</p>}
+					<span className="font-bold text-sm text-white truncate block">{customer.name ?? 'Sem nome'}</span>
+					{customer.email && <p className="mt-0.5 text-xs text-white/50 truncate">{customer.email}</p>}
 				</div>
-				<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="shrink-0">
-					{statusParsed.label}
-				</Chip>
+				<RevolutStatusBadge status={customer.status} label={statusParsed?.label} />
 			</div>
 			{customer.document && (
 				<div className="mt-1.5">
-					<DocumentDisplay document={customer.document} className="text-sm text-muted" />
+					<DocumentDisplay document={customer.document} className="text-sm text-white/50" />
 				</div>
 			)}
-			{customer.phone && <p className="mt-0.5 text-xs text-muted">{customer.phone}</p>}
+			{customer.phone && <p className="mt-0.5 text-xs text-white/50">{customer.phone}</p>}
 			<div className="mt-2 flex items-center justify-between gap-3">
-				<span className="text-xs text-muted">{customer.paymentsCount} cobranças</span>
-				<span className="text-xs text-muted">{formatDate(customer.createdAt)}</span>
+				<span className="text-xs text-white/50 font-mono">{customer.paymentsCount} cobranças</span>
+				<span className="text-xs text-white/50 font-mono">{formatDate(customer.createdAt)}</span>
 			</div>
 		</div>
 	);
@@ -242,101 +242,126 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 		</>
 	);
 
+	const customers = data.customers.items;
+	const activeCount = customers.filter((item) => item.status === CustomerStatus.Active).length;
+	const totalCharges = customers.reduce((sum, item) => sum + item.paymentsCount, 0);
+
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={UserGroupIcon} className="icon-md text-accent-foreground" />}
-				title="Clientes"
-				description="Gerencie os clientes cadastrados da sua organização"
-				action={context.readOnly ? undefined : {
-					label: 'Novo Cliente',
-					icon: <Icon icon={AddCircleIcon} className="icon-sm" />,
-					onPress: actions.createCustomer,
-				}}
-			/>
-
-			{(() => {
-				const customers = data.customers.items;
-				const active = customers.filter((item) => item.status === CustomerStatus.Active).length;
-				const totalCharges = customers.reduce((sum, item) => sum + item.paymentsCount, 0);
-
-				const stats = useMemo(
-					() =>
-						[
-							{
-								label: 'Total',
-								value: <AnimatedNumber value={customers.length} />,
-								icon: <Icon icon={UserGroupIcon} className="icon-sm text-muted" />,
-							},
-							{
-								label: 'Ativos',
-								value: <AnimatedNumber value={active} />,
-								icon: <Icon icon={ViewIcon} className="icon-sm text-success" />,
-								accent: 'text-success',
-							},
-							{
-								label: 'Inativos',
-								value: <AnimatedNumber value={customers.length - active} />,
-								icon: <Icon icon={UserRemove01Icon} className="icon-sm text-muted" />,
-							},
-							{
-								label: 'Cobranças',
-								value: <AnimatedNumber value={totalCharges} />,
-								icon: <Icon icon={Wallet01Icon} className="icon-sm text-muted" />,
-							},
-						],
-					[customers, active, totalCharges]
-				);
-
-				return (
-					<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-						{stats.map((item) => (
-							<Card key={item.label} className="border border-border/80 bg-card">
-								<Card.Content className="flex items-center gap-3 p-3">
-									{item.icon}
-									<div className="flex flex-col">
-										<span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{item.label}</span>
-										<span className={`text-sm font-semibold tabular-nums ${item.accent ?? 'text-foreground'}`}>{item.value}</span>
-									</div>
-								</Card.Content>
-							</Card>
-						))}
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={UserGroupIcon} className="icon-sm" />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Clientes</h1>
 					</div>
-				);
-			})()}
+					<p className="text-xs text-white/50 mt-1">Gerencie os clientes cadastrados da sua organização</p>
+				</div>
 
-			<DataTable
-				columns={columns}
-				data={data.customers.items}
-				keyExtractor={(customer) => customer.id}
-				isLoading={data.isLoading}
-				skeletonRows={data.pageSizeValue}
-				emptyMessage="Nenhum cliente encontrado"
-				minWidth="min-w-200"
-				renderMobileCard={renderMobileCustomerCard}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filters.hasFilters,
-					onClear: filters.handleClearFilters,
-					onRefresh: filters.handleRefresh,
-					isRefreshing: data.isRefreshing,
-				}}
-				pagination={{
-					page: filters.values.page,
-					pageSize: data.pageSizeValue,
-					totalItems: data.customers.totalItems,
-					totalPages: data.customers.totalPages,
-					onPageChange: filters.handlePageChange,
-					sortBy: filters.values.sortBy,
-					sortOrder: filters.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => {
-						filters.updateFilter('sortBy', sortBy);
-						filters.updateFilter('sortOrder', sortOrder);
-						filters.updateFilter('page', 1);
-					},
-					isNavigating: data.isLoading,
-				}}
-			/>
+				{!readOnly && (
+					<button
+						type="button"
+						onClick={actions.createCustomer}
+						className="button-primary cursor-pointer text-xs"
+					>
+						<Icon icon={AddCircleIcon} className="icon-xs" />
+						<span>Novo Cliente</span>
+					</button>
+				)}
+			</div>
+
+			{/* 4-Tile KPI Grid */}
+			<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+				{/* Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Total</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={UserGroupIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={customers.length} />
+					</span>
+				</div>
+
+				{/* Ativos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Ativos</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<Icon icon={ViewIcon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
+						<AnimatedNumber value={activeCount} />
+					</span>
+				</div>
+
+				{/* Inativos */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Inativos</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={UserRemove01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={customers.length - activeCount} />
+					</span>
+				</div>
+
+				{/* Cobranças */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Cobranças</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={Wallet01Icon} className="icon-xs" />
+						</div>
+					</div>
+					<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+						<AnimatedNumber value={totalCharges} />
+					</span>
+				</div>
+			</div>
+
+			{/* Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.customers.items}
+					keyExtractor={(customer) => customer.id}
+					isLoading={data.isLoading}
+					skeletonRows={data.pageSizeValue}
+					emptyMessage="Nenhum cliente encontrado"
+					minWidth="min-w-200"
+					renderMobileCard={renderMobileCustomerCard}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filters.hasFilters,
+						onClear: filters.handleClearFilters,
+						onRefresh: filters.handleRefresh,
+						isRefreshing: data.isRefreshing,
+					}}
+					pagination={{
+						page: filters.values.page,
+						pageSize: data.pageSizeValue,
+						totalItems: data.customers.totalItems,
+						totalPages: data.customers.totalPages,
+						onPageChange: filters.handlePageChange,
+						sortBy: filters.values.sortBy,
+						sortOrder: filters.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => {
+							filters.updateFilter('sortBy', sortBy);
+							filters.updateFilter('sortOrder', sortOrder);
+							filters.updateFilter('page', 1);
+						},
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			<CustomerDetailsModal
 				isOpen={modals.details.isOpen}
@@ -358,4 +383,3 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 		</div>
 	);
 }
-

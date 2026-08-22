@@ -71,7 +71,7 @@ export const createProductRequestSchema = z.object({
 	isUnlimitedDigitalStock: z.boolean().optional(),
 	variants: z.array(z.any()).optional(),
 	digitalItems: z.array(z.any()).optional(),
-	metadata: z.record(z.any()).optional().nullable(),
+	metadata: z.record(z.string(), z.any()).optional().nullable(),
 }).passthrough();
 
 export const updateProductRequestSchema = z.object({
@@ -86,7 +86,7 @@ export const updateProductRequestSchema = z.object({
 	stockQuantity: z.number().optional().nullable(),
 	isUnlimitedStock: z.boolean().optional().nullable(),
 	isUnlimitedDigitalStock: z.boolean().optional().nullable(),
-	metadata: z.record(z.any()).optional().nullable(),
+	metadata: z.record(z.string(), z.any()).optional().nullable(),
 }).passthrough();
 
 export const createCategoryRequestSchema = z.object({

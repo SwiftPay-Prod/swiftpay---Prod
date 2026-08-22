@@ -276,13 +276,13 @@ export function IntegrationsContent({ merchantId, fetchPromise }: IntegrationsCo
 
 	if (integrations.length === 0) {
 		return (
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 bg-[#000000] text-white">
 				<PageHeader
-					icon={<Icon icon={Link02Icon} className="icon-md text-accent-foreground" />}
+					icon={<Icon icon={Link02Icon} className="icon-md text-[#4f55f1]" />}
 					title="Integrações"
 					description="Conecte plataformas externas para sincronizar dados da sua operação."
 				/>
-				<div className="rounded-xl border border-divider bg-surface p-6 text-sm text-muted">
+				<div className="rounded-xl border border-white/12 bg-[#16181a] p-6 text-sm text-white/50">
 					Nenhuma integração disponível para a sua organização no momento.
 				</div>
 			</div>
@@ -295,9 +295,9 @@ export function IntegrationsContent({ merchantId, fetchPromise }: IntegrationsCo
 
 	return (
 		<>
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 bg-[#000000] text-white">
 				<PageHeader
-					icon={<Icon icon={Link02Icon} className="icon-md text-accent-foreground" />}
+					icon={<Icon icon={Link02Icon} className="icon-md text-[#4f55f1]" />}
 					title="Integrações"
 					description="Gerencie conectores externos para rastreamento de vendas e campanhas."
 					secondaryAction={{

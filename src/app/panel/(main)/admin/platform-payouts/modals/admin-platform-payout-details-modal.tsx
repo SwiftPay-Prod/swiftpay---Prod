@@ -16,6 +16,7 @@ import {
 	AlertCircleIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import type { AdminPlatformPayoutData, AdminPlatformPayoutItemData } from '@/types/admin/platform-payouts';
 import type { ApiResponse } from '@/types/common';
 import { adminReprocessPlatformPayoutItemDev } from '@/app/actions/admin/platform-payouts';
@@ -60,7 +61,7 @@ function ContentSkeleton() {
 		<div className="flex flex-col gap-6">
 			<div className="grid grid-cols-2 gap-4">
 				{Array.from({ length: 8 }).map((_, i) => (
-					<Skeleton key={i} className="h-12 rounded-lg" />
+					<Skeleton key={i} className="h-12 rounded-[20px]" />
 				))}
 			</div>
 		</div>
@@ -79,7 +80,7 @@ function ItemsTable({
 	if (items.length === 0) return null;
 
 	return (
-		<div className="rounded-lg bg-surface-secondary p-4">
+		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 overflow-hidden">
 			<SectionTitle icon={<Icon icon={ServerStack01Icon} className="icon-sm" />} title="Itens por Adquirente" />
 			<div className="mt-3 flex flex-col gap-3">
 				{items.map((item) => {
@@ -92,8 +93,8 @@ function ItemsTable({
 						item.failureReason
 					);
 					return (
-						<div key={item.id} className="rounded-lg border border-foreground/10 bg-surface overflow-hidden">
-							<div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-foreground/5 bg-foreground/2">
+						<div key={item.id} className="rounded-[20px] border border-white/12 bg-[#0a0a0a] overflow-hidden">
+							<div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/12 bg-[#0a0a0a]">
 								<div className="flex items-center gap-2.5 min-w-0">
 									{item.acquirerLogoUrl ? (
 										<Image
@@ -104,18 +105,15 @@ function ItemsTable({
 											height={20}
 										/>
 									) : (
-										<Icon icon={ServerStack01Icon} className="icon-sm text-muted shrink-0" />
+										<Icon icon={ServerStack01Icon} className="icon-sm text-white/50 shrink-0" />
 									)}
 									<div className="flex items-baseline gap-2 min-w-0">
-										<span className="font-medium truncate">{item.acquirerName}</span>
-										<span className="text-xs text-muted font-mono shrink-0">{item.acquirerCode}</span>
+										<span className="font-medium truncate text-white">{item.acquirerName}</span>
+										<span className="text-xs text-white/50 font-mono shrink-0">{item.acquirerCode}</span>
 									</div>
 								</div>
 								<div className="flex items-center gap-2 shrink-0">
-									<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="sm" className="gap-1">
-										<ItemStatusIcon status={item.status} />
-										{statusParse.label}
-									</Chip>
+									<RevolutStatusBadge status={item.status} label={statusParse.label} />
 									{(item.status === 'Processing' || item.status === 'Failed') && (
 										<Button
 											variant="primary"
@@ -123,28 +121,29 @@ function ItemsTable({
 											isIconOnly
 											onPress={() => onReprocessItem(item)}
 											isDisabled={isPending}
+											className="button-primary"
 										>
 											<Icon icon={PlayIcon} className="icon-xs" />
 										</Button>
 									)}
 								</div>
 							</div>
-							<div className="grid grid-cols-3 divide-x divide-foreground/5 px-4 py-3">
+							<div className="grid grid-cols-3 divide-x divide-white/12 px-4 py-3">
 								<div className="flex flex-col gap-0.5 pr-4">
-									<span className="text-xs text-muted">Valor</span>
-									<span className="font-medium">{formatCurrency(item.amount)}</span>
+									<span className="text-xs text-white/50">Valor</span>
+									<span className="font-mono tabular-nums font-medium text-white">{formatCurrency(item.amount)}</span>
 								</div>
 								<div className="flex flex-col gap-0.5 px-4">
-									<span className="text-xs text-muted">Taxa</span>
-									<span className="text-danger">{formatCurrency(item.acquirerFee)}</span>
+									<span className="text-xs text-white/50">Taxa</span>
+									<span className="font-mono tabular-nums text-sm text-danger">{formatCurrency(item.acquirerFee)}</span>
 								</div>
 								<div className="flex flex-col gap-0.5 pl-4">
-									<span className="text-xs text-muted">Líquido</span>
-									<span className="text-success font-medium">{formatCurrency(item.netAmount)}</span>
+									<span className="text-xs text-white/50">Líquido</span>
+									<span className="font-mono tabular-nums text-sm text-success font-medium">{formatCurrency(item.netAmount)}</span>
 								</div>
 							</div>
 							{hasExtra && (
-								<div className="border-t border-foreground/5 px-4 py-3 grid grid-cols-2 gap-3">
+								<div className="border-t border-white/12 px-4 py-3 grid grid-cols-2 gap-3">
 									{item.acquirerTransactionId && (
 										<DetailRow
 											label="ID Adquirente"
@@ -175,22 +174,22 @@ function ItemsTable({
 					);
 				})}
 			</div>
-			<div className="mt-3 flex items-center justify-between rounded-lg bg-foreground/5 px-4 py-2.5">
-				<span className="text-sm font-medium text-muted">Total</span>
+			<div className="mt-3 flex items-center justify-between rounded-[20px] bg-[#0a0a0a] border border-white/12 px-4 py-2.5">
+				<span className="text-sm font-medium text-white/70">Total</span>
 				<div className="flex items-center gap-6">
 					<div className="flex flex-col items-end">
-						<span className="text-xs text-muted">Valor</span>
-						<span className="text-sm font-medium">{formatCurrency(items.reduce((sum, i) => sum + i.amount, 0))}</span>
+						<span className="text-xs text-white/50">Valor</span>
+						<span className="font-mono tabular-nums text-sm font-medium text-white">{formatCurrency(items.reduce((sum, i) => sum + i.amount, 0))}</span>
 					</div>
 					<div className="flex flex-col items-end">
-						<span className="text-xs text-muted">Taxa</span>
-						<span className="text-sm text-danger">
+						<span className="text-xs text-white/50">Taxa</span>
+						<span className="font-mono tabular-nums text-sm text-danger">
 							{formatCurrency(items.reduce((sum, i) => sum + i.acquirerFee, 0))}
 						</span>
 					</div>
 					<div className="flex flex-col items-end">
-						<span className="text-xs text-muted">Líquido</span>
-						<span className="text-sm text-success font-medium">
+						<span className="text-xs text-white/50">Líquido</span>
+						<span className="font-mono tabular-nums text-sm text-success font-medium text-white">
 							{formatCurrency(items.reduce((sum, i) => sum + i.netAmount, 0))}
 						</span>
 					</div>
@@ -213,26 +212,23 @@ function DetailsContent({
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex flex-col gap-4 pb-4 border-b border-divider">
+			<div className="flex flex-col gap-4 pb-4 border-b border-white/12">
 				<div className="flex flex-col gap-1">
-					<span className="text-2xl sm:text-3xl font-bold text-foreground">{formatCurrency(payout.totalAmount)}</span>
-					<span className="text-sm text-foreground/70">Valor total do saque</span>
+					<span className="text-2xl sm:text-3xl font-extrabold font-mono tabular-nums text-white">{formatCurrency(payout.totalAmount)}</span>
+					<span className="text-sm text-white/70">Valor total do saque</span>
 				</div>
 				<div className="flex flex-wrap items-center gap-3">
 					<div className="flex flex-col gap-1">
-						<span className="text-xs text-foreground/60">Status</span>
-						<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="md" className="gap-1">
-							{statusParse.icon}
-							{statusParse.label}
-						</Chip>
+						<span className="text-xs text-white/50">Status</span>
+						<RevolutStatusBadge status={payout.status} label={statusParse.label} size="md" />
 					</div>
 				</div>
 				{payout.status === 'PartiallyCompleted' && (
-					<div className="flex items-start gap-3 rounded-lg bg-warning/10 border border-warning-soft-hover p-3">
+					<div className="flex items-start gap-3 rounded-[20px] border border-warning/40 bg-warning/10 p-4">
 						<Icon icon={AlertCircleIcon} className="icon-sm text-warning shrink-0 mt-0.5" />
 						<div className="flex flex-col gap-1">
 							<span className="text-sm font-medium text-warning">Saque parcialmente concluído</span>
-							<span className="text-xs text-foreground/70">
+							<span className="text-xs text-white/70">
 								Parte das adquirentes processou o saque com sucesso. Os valores das adquirentes que falharam foram
 								devolvidos ao saldo disponível da plataforma e podem ser sacados novamente.
 							</span>
@@ -241,22 +237,22 @@ function DetailsContent({
 				)}
 			</div>
 
-			<div className="rounded-lg bg-surface-secondary p-4">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-sm" />} title="Valores" />
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-					<DetailRow label="Valor Total" value={formatCurrency(payout.totalAmount)} />
+					<DetailRow label="Valor Total" value={<span className="font-mono tabular-nums text-white">{formatCurrency(payout.totalAmount)}</span>} />
 					<DetailRow
 						label="Taxa Total"
-						value={<span className="text-danger">{formatCurrency(payout.totalFee)}</span>}
+						value={<span className="font-mono tabular-nums text-danger">{formatCurrency(payout.totalFee)}</span>}
 					/>
 					<DetailRow
 						label="Valor Líquido"
-						value={<span className="text-success">{formatCurrency(payout.totalNetAmount)}</span>}
+						value={<span className="font-mono tabular-nums text-success">{formatCurrency(payout.totalNetAmount)}</span>}
 					/>
 				</div>
 			</div>
 
-			<div className="rounded-lg bg-surface-secondary p-4">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm" />} title="Informações Gerais" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow label="ID" value={<CopyableValue value={payout.id} label="ID" />} mono />
@@ -272,7 +268,7 @@ function DetailsContent({
 			</div>
 
 			{payout.payoutAccount && (
-				<div className="rounded-lg bg-surface-secondary p-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 					<SectionTitle icon={<Icon icon={Key01Icon} className="icon-sm" />} title="Conta de Destino" />
 					<div className="grid grid-cols-2 gap-4">
 						<DetailRow
@@ -283,11 +279,7 @@ function DetailsContent({
 						<DetailRow
 							label="Tipo de Chave"
 							value={
-								<Chip variant="soft" size="sm" className="gap-1">
-									{pixKeyTypeParse[payout.payoutAccount.pixKeyType as keyof typeof pixKeyTypeParse]?.icon}
-									{pixKeyTypeParse[payout.payoutAccount.pixKeyType as keyof typeof pixKeyTypeParse]?.label ??
-										payout.payoutAccount.pixKeyType}
-								</Chip>
+								<RevolutStatusBadge status={payout.payoutAccount.pixKeyType} label={pixKeyTypeParse[payout.payoutAccount.pixKeyType as keyof typeof pixKeyTypeParse]?.label ?? payout.payoutAccount.pixKeyType} />
 							}
 						/>
 						<DetailRow label="Titular" value={payout.payoutAccount.holderName ?? '-'} />
@@ -296,7 +288,7 @@ function DetailsContent({
 				</div>
 			)}
 
-			<div className="rounded-lg bg-surface-secondary p-4">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 				<SectionTitle icon={<Icon icon={UserIcon} className="icon-sm" />} title="Solicitante" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow label="ID" value={<CopyableValue value={payout.requestedByUserId} label="ID do Usuário" />} mono />
@@ -423,7 +415,7 @@ function ModalContent({
 				<DetailsContent payout={payout} isPending={isBusy} onReprocessItem={handleOpenReprocessItem} />
 			</Modal.Body>
 			<Modal.Footer className="flex justify-end gap-2">
-				<Button variant="secondary" onPress={() => onOpenChange(false)} isDisabled={isBusy}>
+				<Button variant="secondary" onPress={() => onOpenChange(false)} isDisabled={isBusy} className="button-outline-dark">
 					Fechar
 				</Button>
 			</Modal.Footer>
@@ -440,7 +432,7 @@ export function AdminPlatformPayoutDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-4xl">
+				<Modal.Dialog className="max-w-4xl rounded-[24px] border border-white/12 bg-[#16181a]">
 					<Modal.CloseTrigger />
 					{payoutPromise && (
 						<Suspense

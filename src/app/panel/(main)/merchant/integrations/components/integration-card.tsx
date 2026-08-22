@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Chip } from '@heroui/react';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { InformationCircleIcon, Wrench01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { IntegrationPlatformInfo } from './integration-platform-info';
@@ -29,7 +29,7 @@ export function IntegrationCard({
 	onOpenConfigure,
 }: IntegrationCardProps) {
 	return (
-		<article className="flex h-full flex-col rounded-xl border border-divider bg-surface p-4">
+		<article className="flex h-full flex-col rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 			<div className="flex items-start justify-between gap-4">
 				<IntegrationPlatformInfo
 					name={name}
@@ -38,20 +38,31 @@ export function IntegrationCard({
 					isActive={isActive}
 					websiteUrl={websiteUrl}
 				/>
-				<Chip variant="soft" color={isActive ? 'success' : isComingSoon ? 'warning' : 'default'} size="sm">
-					{isComingSoon ? 'Em breve' : isActive ? 'Ativa' : 'Inativa'}
-				</Chip>
+				<RevolutStatusBadge
+					status={isActive ? 'active' : isComingSoon ? 'soon' : 'inactive'}
+					label={isComingSoon ? 'Em breve' : isActive ? 'Ativa' : 'Inativa'}
+					size="sm"
+				/>
 			</div>
-			<p className="mt-3 line-clamp-2 text-sm text-muted">{description}</p>
+			<p className="mt-3 line-clamp-2 text-sm text-white/50">{description}</p>
 			<div className="mt-auto grid grid-cols-2 gap-2 pt-4">
-				<Button className="w-full" variant="tertiary" onPress={onOpenDetails}>
+				<button
+					type="button"
+					onClick={onOpenDetails}
+					className="button-outline-dark w-full cursor-pointer text-xs"
+				>
 					<Icon icon={InformationCircleIcon} className="icon-sm" />
 					Ver mais detalhes
-				</Button>
-				<Button className="w-full" variant="primary" onPress={onOpenConfigure} isDisabled={isComingSoon}>
+				</button>
+				<button
+					type="button"
+					onClick={onOpenConfigure}
+					disabled={isComingSoon}
+					className="button-primary w-full cursor-pointer text-xs"
+				>
 					<Icon icon={Wrench01Icon} className="icon-sm" />
 					Configurar
-				</Button>
+				</button>
 			</div>
 		</article>
 	);

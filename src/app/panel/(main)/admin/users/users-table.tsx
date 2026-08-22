@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Button, Chip, Avatar, Tooltip } from '@heroui/react';
 import { Building02Icon, UserGroupIcon, ViewIcon, ChampionIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { PageHeader } from '@/components/ui/page-header';
 import type { AdminMinimalUser, AdminUserDetails } from '@/types/admin/users';
 import type { ApiResponse, Paginated } from '@/types/common';
 import type { Filters } from './page';
@@ -13,15 +12,13 @@ import {
 	userRoleParse,
 	userStatusParse,
 	emailVerifiedParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
-import { DataTable } from '@/components/ui/data-table';
-import type { DataTableColumn } from '@/components/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { EmailLink, PhoneLink } from '@/components/ui/data-links';
 import { adminGetUser } from '@/app/actions/admin/users';
 import { SearchFilter } from '@/components/ui/search-filter';
@@ -31,6 +28,14 @@ import { UserActionsDropdown, UserActionButtons } from '@/components/admin/user-
 import { UserAssignReferrerModal } from '@/components/admin/user-assign-referrer-modal';
 import { UserRankingSuspensionModal } from '@/components/admin/user-ranking-suspension-modal';
 import { useUsersTable } from './use-users-table';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutWalletIcon,
+	RevolutPlusIcon,
+	RevolutCheckIcon,
+	RevolutTrendingUpIcon,
+} from '@/components/ui/revolut-icons';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 
 type UsersPromise = Promise<ApiResponse<Paginated<AdminMinimalUser>>>;
 
@@ -68,13 +73,26 @@ function getColumns(config: {
 	currentUserId: string;
 	isActionPending: boolean;
 }): DataTableColumn<AdminMinimalUser>[] {
+	const {
+		onView,
+		onActivate,
+		onSuspend,
+		onInactivate,
+		onChangeRole,
+		onAssignReferrer,
+		onSuspendFromRanking,
+		currentUserRole,
+		currentUserId,
+		isActionPending,
+	} = config;
+
 	return [
 		{
 			key: 'user',
 			header: 'Usuário',
 			render: (user) => (
 				<div className="flex items-center gap-3">
-					<Avatar size="sm">
+					<Avatar size="sm" className="bg-white/5 border border-white/10 text-white">
 						<Avatar.Fallback>
 							{user.name
 								? user.name
@@ -87,9 +105,9 @@ function getColumns(config: {
 						</Avatar.Fallback>
 					</Avatar>
 					<div className="flex flex-col">
-						<span className="font-medium text-foreground">{user.name || '-'}</span>
-						<EmailLink email={user.email} className="text-sm mb-1" />
-						{user.whatsApp && <PhoneLink phone={user.whatsApp} className="text-xs" />}
+						<span className="font-bold text-sm text-white truncate">{user.name || '-'}</span>
+						<EmailLink email={user.email} className="text-xs text-white/50" />
+						{user.whatsApp && <PhoneLink phone={user.whatsApp} className="text-xs text-white/50" />}
 					</div>
 				</div>
 			),
@@ -100,10 +118,10 @@ function getColumns(config: {
 			render: (user) => {
 				const roleParse = userRoleParse[user.role];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(roleParse.color)} size="sm" className="gap-1">
-						{roleParse.icon}
-						{roleParse.label}
-					</Chip>
+					<RevolutStatusBadge
+						status={user.role}
+						label={roleParse?.label}
+					/>
 				);
 			},
 		},
@@ -115,15 +133,15 @@ function getColumns(config: {
 				const isRankingSuspended = !!(user.rankingSuspendedUntil && new Date(user.rankingSuspendedUntil) > new Date());
 				return (
 					<div className="flex flex-col gap-1">
-						<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-							{statusParsed.icon}
-							{statusParsed.label}
-						</Chip>
+						<RevolutStatusBadge
+							status={user.status}
+							label={statusParsed?.label}
+						/>
 						{isRankingSuspended && (
-							<Chip variant="soft" color="warning" size="sm" className="gap-1">
-								<Icon icon={ChampionIcon} className="icon-xs" />
-								Rank suspenso
-							</Chip>
+							<RevolutStatusBadge
+								status="ranking-suspended"
+								label="Rank suspenso"
+							/>
 						)}
 					</div>
 				);
@@ -135,10 +153,10 @@ function getColumns(config: {
 			render: (user) => {
 				const emailParse = emailVerifiedParse[user.emailVerified ? 'verified' : 'pending'];
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(emailParse.color)} size="sm" className="gap-1">
-						{emailParse.icon}
-						{emailParse.label}
-					</Chip>
+					<RevolutStatusBadge
+						status={user.emailVerified ? 'verified' : 'pending'}
+						label={emailParse?.label}
+					/>
 				);
 			},
 		},
@@ -146,9 +164,9 @@ function getColumns(config: {
 			key: 'merchantCount',
 			header: 'Organizações',
 			render: (user) => (
-				<div className="flex items-center gap-2 text-sm">
-					<Icon icon={Building02Icon} className="icon-sm text-muted" />
-					<span>{user.merchantCount}</span>
+				<div className="flex items-center gap-2 text-sm text-white">
+					<Icon icon={Building02Icon} className="icon-sm text-white/50" />
+					<span className="font-mono tabular-nums">{user.merchantCount}</span>
 				</div>
 			),
 		},
@@ -156,9 +174,9 @@ function getColumns(config: {
 			key: 'referredUsersCount',
 			header: 'Indicados',
 			render: (user) => (
-				<div className="flex items-center gap-2 text-sm">
-					<Icon icon={UserGroupIcon} className="icon-sm text-muted" />
-					<span>{user.referredUsersCount}</span>
+				<div className="flex items-center gap-2 text-sm text-white">
+					<Icon icon={UserGroupIcon} className="icon-sm text-white/50" />
+					<span className="font-mono tabular-nums">{user.referredUsersCount}</span>
 				</div>
 			),
 		},
@@ -166,62 +184,67 @@ function getColumns(config: {
 			key: 'wasReferred',
 			header: 'Foi indicado?',
 			render: (user) => (
-				<Chip variant="soft" color={user.wasReferred ? 'success' : 'default'} size="sm">
-					{user.wasReferred ? 'Sim' : 'Não'}
-				</Chip>
+				<RevolutStatusBadge
+					status={user.wasReferred ? 'yes' : 'no'}
+					label={user.wasReferred ? 'Sim' : 'Não'}
+				/>
 			),
 		},
 		{
 			key: 'referredAt',
 			header: 'Indicado em',
-			render: (user) => <span className="text-sm text-muted">{formatDate(user.referredAt)}</span>,
+			render: (user) => <span className="text-xs font-mono text-white/50">{formatDate(user.referredAt)}</span>,
 		},
 		{
 			key: 'generatedReferralCommission',
 			header: 'Comissão gerada',
-			render: (user) => <span className="text-sm font-medium text-success">{formatCurrency(user.generatedReferralCommission)}</span>,
+			render: (user) => <span className="text-sm font-bold font-mono text-[#00a87e] tabular-nums">{formatCurrency(user.generatedReferralCommission)}</span>,
 		},
 		{
 			key: 'availableCommissionBalance',
 			header: 'Saldo comissão',
-			render: (user) => <span className="text-sm font-medium text-accent">{formatCurrency(user.availableCommissionBalance)}</span>,
+			render: (user) => <span className="text-sm font-bold font-mono text-[#4f55f1] tabular-nums">{formatCurrency(user.availableCommissionBalance)}</span>,
 		},
 		{
 			key: 'createdAt',
 			header: 'Criado em',
 			render: (user) => (
-				<div className="flex items-center gap-2 text-sm text-muted">{formatDate(user.createdAt)}</div>
+				<div className="flex items-center gap-2 text-xs font-mono text-white/50">{formatDate(user.createdAt)}</div>
 			),
 		},
 		{
 			key: 'lastLoginAt',
 			header: 'Último login',
-			render: (user) => <span className="text-sm text-muted">{formatDate(user.lastLoginAt)}</span>,
+			render: (user) => <span className="text-xs font-mono text-white/50">{formatDate(user.lastLoginAt)}</span>,
 		},
 		{
 			key: 'actions',
 			header: 'Ações',
 			align: 'center',
 			render: (user) => (
-				<div className="flex flex-row gap-x-2 justify-center">
+				<div className="flex items-center justify-center gap-1">
 					<Tooltip>
-						<Button isIconOnly variant="tertiary" onClick={() => config.onView(user.id)}>
+						<button
+							type="button"
+							onClick={() => onView(user.id)}
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+						>
 							<Icon icon={ViewIcon} className="icon-sm" />
-							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
+						</button>
+						<Tooltip.Content>Ver detalhes</Tooltip.Content>
 					</Tooltip>
 					<UserActionsDropdown
 						user={user}
-						currentUserRole={config.currentUserRole}
-						currentUserId={config.currentUserId}
-						isPending={config.isActionPending}
+						currentUserRole={currentUserRole}
+						currentUserId={currentUserId}
+						isPending={isActionPending}
 						onlyIcon={true}
-						onActivate={() => config.onActivate(user)}
-						onSuspend={() => config.onSuspend(user)}
-						onInactivate={() => config.onInactivate(user)}
-						onChangeRole={() => config.onChangeRole(user)}
-						onAssignReferrer={() => config.onAssignReferrer(user)}
-						onSuspendFromRanking={() => config.onSuspendFromRanking(user)}
+						onActivate={() => onActivate(user)}
+						onSuspend={() => onSuspend(user)}
+						onInactivate={() => onInactivate(user)}
+						onChangeRole={() => onChangeRole(user)}
+						onAssignReferrer={() => onAssignReferrer(user)}
+						onSuspendFromRanking={() => onSuspendFromRanking(user)}
 					/>
 				</div>
 			),
@@ -236,7 +259,7 @@ function renderMobileUserCard(user: AdminMinimalUser, _index: number, openAction
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-white/12 bg-[#16181a] p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -254,38 +277,29 @@ function renderMobileUserCard(user: AdminMinimalUser, _index: number, openAction
 			<div className="flex flex-col gap-2">
 				<div className="flex items-start justify-between gap-2">
 					<div className="flex flex-col min-w-0 gap-2">
-						<span className="font-medium truncate">{user.name || '-'}</span>
-						<span className="text-sm text-muted truncate">{user.email}</span>
-						{user.whatsApp && <PhoneLink phone={user.whatsApp} className="text-xs truncate" />}
+						<span className="font-medium text-white truncate">{user.name || '-'}</span>
+						<span className="text-sm text-white/50 truncate">{user.email}</span>
+						{user.whatsApp && <PhoneLink phone={user.whatsApp} className="text-xs text-white/50 truncate" />}
 					</div>
-					<Chip variant="soft" color={mapParseColorToChipColor(roleParsed.color)} size="sm" className="gap-1 shrink-0">
-						{roleParsed.icon}
-						{roleParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={user.role} label={roleParsed?.label} />
 				</div>
 
 				<div className="flex items-center gap-2 flex-wrap">
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
+					<RevolutStatusBadge status={user.status} label={statusParsed?.label} />
 					{isRankingSuspended && (
-						<Chip variant="soft" color="warning" size="sm" className="gap-1">
-							<Icon icon={ChampionIcon} className="icon-xs" />
-							Rank suspenso
-						</Chip>
+						<RevolutStatusBadge status="ranking-suspended" label="Rank suspenso" />
 					)}
 				</div>
 
 				<div className="flex items-center justify-between gap-2">
-					<div className="flex items-center gap-1 text-sm">
-						<Icon icon={Building02Icon} className="icon-sm text-muted" />
-						<span>{user.merchantCount} {user.merchantCount === 1 ? 'org.' : 'orgs.'}</span>
+					<div className="flex items-center gap-1 text-sm text-white">
+						<Icon icon={Building02Icon} className="icon-sm text-white/50" />
+						<span className="font-mono tabular-nums">{user.merchantCount} {user.merchantCount === 1 ? 'org.' : 'orgs.'}</span>
 					</div>
-					<span className="text-sm font-medium text-success">{formatCurrency(user.generatedReferralCommission)}</span>
+					<span className="text-sm font-bold font-mono text-[#00a87e] tabular-nums">{formatCurrency(user.generatedReferralCommission)}</span>
 				</div>
 
-				<span className="text-xs text-muted">{formatDate(user.createdAt)}</span>
+				<span className="text-xs text-white/50">{formatDate(user.createdAt)}</span>
 			</div>
 		</div>
 	);
@@ -329,6 +343,12 @@ export function UsersTable({ fetchPromise, filters, currentUserRole, currentUser
 		currentUserId: context.currentUserId,
 		isActionPending: modals.isActionPending,
 	});
+
+	const users = data.items.items;
+	const totalUsers = data.items.totalItems;
+	const activeUsers = users.filter((u) => userStatusParse[u.status]?.label === 'Ativo').length;
+	const verifiedUsers = users.filter((u) => u.emailVerified).length;
+	const totalCommission = users.reduce((acc, u) => acc + (u.availableCommissionBalance ?? 0), 0);
 
 	const renderFiltersContent = () => (
 		<>
@@ -383,76 +403,168 @@ export function UsersTable({ fetchPromise, filters, currentUserRole, currentUser
 	);
 
 	return (
-		<div className="flex flex-col gap-4">
-			<PageHeader
-				icon={<Icon icon={UserGroupIcon} size={24} />}
-				title="Usuários"
-				description="Gerencie os usuários da plataforma."
-			/>
-
-			<DataTable
-				columns={columns}
-				data={data.items.items}
-				keyExtractor={(user) => user.id}
-				isLoading={data.isLoading}
-				skeletonRows={data.pageSizeValue}
-				emptyMessage="Nenhum usuário encontrado"
-				minWidth="min-w-250"
-				renderMobileCard={renderMobileUserCard}
-				mobileActions={{
-					title: (user) => user.name ?? user.email,
-					subtitle: (user) => (user.name ? user.email : undefined),
-					renderActions: (user, close) => (
-						<div className="flex flex-col gap-2">
-							<Button
-								variant="secondary"
-								className="w-full justify-start"
-								onPress={() => {
-									actions.viewUser(user.id);
-									close();
-								}}
-							>
-								<Icon icon={ViewIcon} className="icon-sm" />
-								Ver detalhes
-							</Button>
-							<UserActionButtons
-								user={user}
-								currentUserRole={context.currentUserRole}
-								currentUserId={context.currentUserId}
-								isPending={modals.isActionPending}
-								onActivate={() => { modals.activate.open(user); close(); }}
-								onSuspend={() => { modals.suspend.open(user); close(); }}
-								onInactivate={() => { modals.inactivate.open(user); close(); }}
-								onChangeRole={() => { modals.role.open(user); close(); }}
-								onAssignReferrer={() => { handleOpenAssignReferrerModal(user); close(); }}
-								onSuspendFromRanking={() => { modals.rankingSuspension.open(user); close(); }}
-							/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<Icon icon={UserGroupIcon} className="icon-sm text-[#4f55f1]" />
 						</div>
-					),
-				}}
-				filters={{
-					children: renderFiltersContent,
-					hasFilters: filterState.hasFilters,
-					onClear: filterState.clear,
-					onRefresh: actions.refresh,
-					isRefreshing: data.isLoading,
-				}}
-				pagination={{
-					page: data.items.page,
-					pageSize: data.items.pageSize,
-					totalItems: data.items.totalItems,
-					totalPages: data.items.totalPages,
-					onPageChange: filterState.handlePageChange,
-					sortBy: filterState.values.sortBy,
-					sortOrder: filterState.values.sortOrder,
-					onSortChange: (sortBy, sortOrder) => {
-						filterState.updateFilter('sortBy', sortBy as typeof filterState.values.sortBy);
-						filterState.updateFilter('sortOrder', sortOrder);
-						filterState.handlePageChange(1);
-					},
-					isNavigating: data.isLoading,
-				}}
-			/>
+						<h1 className="text-xl font-bold tracking-tight text-white">Usuários</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">Gerencie os usuários da plataforma.</p>
+				</div>
+
+				<div className="flex flex-wrap items-center gap-2">
+					<button
+						type="button"
+						onClick={actions.refresh}
+						className="button-outline-dark cursor-pointer text-xs"
+					>
+						<RevolutTrendingUpIcon size={16} />
+						<span>Atualizar</span>
+					</button>
+				</div>
+			</div>
+
+			{/* 4-Tile High Contrast KPI Grid */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Usuários
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<Icon icon={UserGroupIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={totalUsers} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Cadastrados</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Ativos
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<RevolutCheckIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+							<AnimatedNumber value={activeUsers} />
+						</span>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Habilitados</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Email verificado
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<RevolutWalletIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-white tracking-tight tabular-nums block">
+							<AnimatedNumber value={verifiedUsers} />
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Confirmados</p>
+					</div>
+				</div>
+
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Saldo comissão
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<Icon icon={ChampionIcon} className="icon-xs" />
+						</div>
+					</div>
+					<div>
+						<span className="text-2xl font-extrabold font-mono text-[#4f55f1] tracking-tight tabular-nums block">
+							{formatCurrency(totalCommission)}
+						</span>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Disponível em indicações</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<DataTable
+					columns={columns}
+					data={data.items.items}
+					keyExtractor={(user) => user.id}
+					isLoading={data.isLoading}
+					skeletonRows={data.pageSizeValue}
+					emptyMessage="Nenhum usuário encontrado"
+					minWidth="min-w-250"
+					renderMobileCard={renderMobileUserCard}
+					mobileActions={{
+						title: (user) => user.name ?? user.email,
+						subtitle: (user) => (user.name ? user.email : undefined),
+						renderActions: (user, close) => (
+							<div className="flex flex-col gap-2">
+								<Button
+									variant="secondary"
+									className="w-full justify-start"
+									onPress={() => {
+										actions.viewUser(user.id);
+										close();
+									}}
+								>
+									<Icon icon={ViewIcon} className="icon-sm" />
+									Ver detalhes
+								</Button>
+								<UserActionButtons
+									user={user}
+									currentUserRole={context.currentUserRole}
+									currentUserId={context.currentUserId}
+									isPending={modals.isActionPending}
+									onActivate={() => { modals.activate.open(user); close(); }}
+									onSuspend={() => { modals.suspend.open(user); close(); }}
+									onInactivate={() => { modals.inactivate.open(user); close(); }}
+									onChangeRole={() => { modals.role.open(user); close(); }}
+									onAssignReferrer={() => { handleOpenAssignReferrerModal(user); close(); }}
+									onSuspendFromRanking={() => { modals.rankingSuspension.open(user); close(); }}
+								/>
+							</div>
+						),
+					}}
+					filters={{
+						children: renderFiltersContent,
+						hasFilters: filterState.hasFilters,
+						onClear: filterState.clear,
+						onRefresh: actions.refresh,
+						isRefreshing: data.isLoading,
+					}}
+					pagination={{
+						page: data.items.page,
+						pageSize: data.items.pageSize,
+						totalItems: data.items.totalItems,
+						totalPages: data.items.totalPages,
+						onPageChange: filterState.handlePageChange,
+						sortBy: filterState.values.sortBy,
+						sortOrder: filterState.values.sortOrder,
+						onSortChange: (sortBy, sortOrder) => {
+							filterState.updateFilter('sortBy', sortBy as typeof filterState.values.sortBy);
+							filterState.updateFilter('sortOrder', sortOrder);
+							filterState.handlePageChange(1);
+						},
+						isNavigating: data.isLoading,
+					}}
+				/>
+			</div>
 
 			<ConfirmationModal
 				isOpen={modals.activate.isOpen}
@@ -525,4 +637,3 @@ export function UsersTable({ fetchPromise, filters, currentUserRole, currentUser
 		</div>
 	);
 }
-

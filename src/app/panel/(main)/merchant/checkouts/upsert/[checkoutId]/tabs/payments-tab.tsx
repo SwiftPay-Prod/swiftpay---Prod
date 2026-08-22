@@ -31,26 +31,22 @@ export function PaymentsTab({ checkout, onSave, isSaving, onFormChange, onDraftC
 
 	const pixEnabled = formValues.pixEnabled ?? (config?.pixEnabled ?? true);
 	const pixExpirationMinutes = formValues.pixExpirationMinutes ?? (config?.pixExpirationMinutes ?? 30);
-	const creditCardEnabled = formValues.creditCardEnabled ?? (config?.creditCardEnabled ?? false);
-	const boletoEnabled = formValues.boletoEnabled ?? (config?.boletoEnabled ?? false);
 	const reservationExpirationMinutes =
 		formValues.reservationExpirationMinutes ?? (config?.reservationExpirationMinutes ?? 15);
 
 	const hasChanges =
 		pixEnabled !== (config?.pixEnabled ?? true) ||
 		pixExpirationMinutes !== (config?.pixExpirationMinutes ?? 30) ||
-		creditCardEnabled !== (config?.creditCardEnabled ?? false) ||
-		boletoEnabled !== (config?.boletoEnabled ?? false) ||
 		reservationExpirationMinutes !== (config?.reservationExpirationMinutes ?? 15);
 
 	useEffect(() => {
 		onDraftChange?.({
 			pixEnabled,
-			creditCardEnabled,
-			boletoEnabled,
+			creditCardEnabled: false,
+			boletoEnabled: false,
 			hasPendingChanges: hasChanges,
 		});
-	}, [pixEnabled, creditCardEnabled, boletoEnabled, hasChanges, onDraftChange]);
+	}, [pixEnabled, hasChanges, onDraftChange]);
 
 	return (
 		<CheckoutTabSaveLayout hasChanges={hasChanges} onSave={onSave} isSaving={isSaving}>
@@ -89,53 +85,6 @@ export function PaymentsTab({ checkout, onSave, isSaving, onFormChange, onDraftC
 							</div>
 				</SectionAccordion>
 
-				<SectionAccordion
-					id="cartao"
-					defaultExpanded={false}
-					icon={CreditCardIcon}
-					title="Cartão de Crédito"
-					summary={creditCardEnabled ? 'Ativo • Parcelamento em até 12x' : 'Inativo • Parcelamento em até 12x'}
-					bodyClassName="p-4"
-				>
-					<div className="space-y-4">
-							<CheckoutSwitchSettingRow
-								title="Cartão de crédito habilitado"
-								isSelected={creditCardEnabled}
-								onChange={(isSelected) => onFormChange({ creditCardEnabled: isSelected })}
-								isDisabled
-							/>
-								<div className="rounded-lg bg-warning-soft p-3">
-									<p className="text-sm text-warning-soft-foreground">
-										<strong>Em breve:</strong> Pagamento por cartão de crédito estará disponível em breve.
-									</p>
-								</div>
-					</div>
-				</SectionAccordion>
-
-				<SectionAccordion
-					id="boleto"
-					defaultExpanded={false}
-					icon={Invoice02Icon}
-					title="Boleto Bancário"
-					summary={boletoEnabled ? 'Ativo • Pagamento com vencimento em até 3 dias' : 'Inativo • Pagamento com vencimento em até 3 dias'}
-					iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-secondary/10"
-					iconClassName="icon-md text-secondary"
-					bodyClassName="p-4"
-				>
-					<div className="space-y-4">
-							<CheckoutSwitchSettingRow
-								title="Boleto habilitado"
-								isSelected={boletoEnabled}
-								onChange={(isSelected) => onFormChange({ boletoEnabled: isSelected })}
-								isDisabled
-							/>
-								<div className="rounded-lg bg-warning-soft p-3">
-									<p className="text-sm text-warning-soft-foreground">
-										<strong>Em breve:</strong> Pagamento por boleto bancário estará disponível em breve.
-									</p>
-								</div>
-					</div>
-				</SectionAccordion>
 
 				<SectionAccordion
 					id="reserva"

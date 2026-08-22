@@ -301,7 +301,7 @@ export function LiveBalanceScreen({ onBack, totalRevenue, isRevenueReady = true,
   }, [settings.showNotifications]);
 
   return (
-    <div className="relative isolate min-h-dvh overflow-hidden bg-background">
+    <div className="relative isolate min-h-dvh overflow-hidden bg-[#000000] text-white">
       <LiveBalanceBackgroundRenderer key={`${activeTheme}-${settings.backgroundId}`} backgroundId={settings.backgroundId} />
 
       <LiveBalanceEffects
@@ -331,10 +331,9 @@ export function LiveBalanceScreen({ onBack, totalRevenue, isRevenueReady = true,
 
       <div className="relative flex min-h-dvh w-full flex-col px-3 pb-4 pt-3 sm:px-6 sm:py-4">
         <div className="flex w-full items-center justify-between gap-2 sm:gap-3">
-          <div className="inline-flex w-fit max-w-full shrink-0 items-center gap-2 rounded-full bg-background/55 px-3 py-1.5 text-foreground ring-1 ring-border/35 shadow-lg backdrop-blur-md dark:bg-black/35 dark:text-white dark:ring-white/10 sm:px-4 sm:py-2">
-            <Icon icon={LiveStreaming02Icon} className="icon-md" />
-            <span className="truncate text-sm font-semibold sm:text-base">Ao vivo</span>
-            <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-success" />
+          <div className="inline-flex w-fit max-w-full shrink-0 items-center gap-2 rounded-full bg-black/60 px-3.5 py-1.5 text-white ring-1 ring-white/12 shadow-2xl backdrop-blur-md">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-[#00a87e]" />
+            <span className="truncate text-xs sm:text-sm font-bold font-mono tracking-wider uppercase text-white/90">PIX Live SPI</span>
           </div>
 
           <div className="flex shrink-0 items-center gap-2 rounded-full bg-background/45 p-1 ring-1 ring-border/30 shadow-lg backdrop-blur-md dark:bg-black/25 dark:ring-white/10">
@@ -373,8 +372,7 @@ export function LiveBalanceScreen({ onBack, totalRevenue, isRevenueReady = true,
             value={resolvedTotalRevenue}
             durationMs={1650}
             className={cn(
-              'text-[clamp(2.35rem,12vw,4.5rem)] sm:text-[clamp(3.2rem,10.6vw,10.4rem)] font-black leading-none tracking-tight drop-shadow-[0_14px_40px_rgba(0,0,0,0.45)]',
-              isLight ? 'text-foreground' : 'text-white'
+              'text-[clamp(2.5rem,12vw,5rem)] sm:text-[clamp(3.5rem,11vw,11rem)] font-black leading-none font-mono tabular-nums tracking-tight drop-shadow-[0_14px_40px_rgba(0,0,0,0.65)] text-white'
             )}
           />
         </div>

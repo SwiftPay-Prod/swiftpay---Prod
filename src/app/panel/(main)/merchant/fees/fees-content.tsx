@@ -34,17 +34,17 @@ function formatReservePercentage(basisPoints: number): string {
 function FeeValue({ label, value, colorClass }: { label: string; value: string; colorClass?: string }) {
   return (
     <div className="flex items-center justify-between py-2">
-      <span className="text-sm font-medium text-muted-foreground">{label}</span>
-      <span className={`text-sm font-semibold text-foreground ${colorClass ?? ''}`}>{value}</span>
+      <span className="text-sm font-medium text-white/50">{label}</span>
+      <span className={`text-sm font-semibold font-mono tabular-nums text-white ${colorClass ?? ''}`}>{value}</span>
     </div>
   );
 }
 
 function MethodStatusBadge({ enabled, label }: { enabled: boolean; label: string }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3">
+    <div className="flex items-center justify-between rounded-xl border border-white/12 bg-[#16181a] px-4 py-3">
       <div className="flex flex-col gap-0.5">
-        <span className="text-sm font-medium text-foreground">{label}</span>
+        <span className="text-sm font-medium text-white">{label}</span>
       </div>
       <Chip variant="soft" color={enabled ? 'success' : 'default'} size="sm" className="gap-1">
         <Icon icon={enabled ? CheckmarkCircle01Icon : CancelCircleIcon} className="icon-xs" />
@@ -56,13 +56,13 @@ function MethodStatusBadge({ enabled, label }: { enabled: boolean; label: string
 
 function FeeBlock({ icon, title, value, iconBg }: { icon: ReactNode; title: string; value: string; iconBg?: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
-      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${iconBg ?? 'bg-surface-secondary'}`}>
+    <div className="flex items-center gap-3 rounded-xl border border-white/12 bg-[#16181a] p-3">
+      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${iconBg ?? 'bg-white/5'}`}>
         {icon}
       </div>
       <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="text-xs font-medium text-muted-foreground">{title}</span>
-        <span className="truncate text-sm font-semibold text-foreground">{value}</span>
+        <span className="text-xs font-medium text-white/50">{title}</span>
+        <span className="truncate text-sm font-semibold font-mono tabular-nums text-white">{value}</span>
       </div>
     </div>
   );
@@ -82,10 +82,10 @@ function ChannelFeeCard({
   feeColorClass?: string;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
+    <div className="rounded-xl border border-white/12 bg-[#16181a] p-4">
       <div className="mb-3 flex items-center gap-2">
         <span className={iconClassName}>{icon}</span>
-        <span className="text-sm font-semibold text-foreground">{title}</span>
+        <span className="text-sm font-semibold text-white">{title}</span>
       </div>
       <div className="flex flex-col">
         <FeeValue label="Taxa" value={feeValue} colorClass={feeColorClass} />
@@ -104,14 +104,14 @@ function MethodGlobalLimitsCard({
   maxAmount: string;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Limites Globais de {methodLabel}</p>
+    <div className="rounded-xl border border-white/12 bg-[#16181a] p-4">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/50">Limites Globais de {methodLabel}</p>
       <div className="flex flex-col">
         <FeeValue label="Valor mínimo" value={minAmount} />
         <Separator />
         <FeeValue label="Valor máximo" value={maxAmount} />
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">
+      <p className="mt-2 text-xs text-white/50">
         Esses limites valem para todos os canais ({methodLabel} via API, Checkout e Link de Pagamento).
       </p>
     </div>
@@ -129,33 +129,33 @@ function CompensationCard({
   reservePercentageBasisPoints?: number;
   tone: 'success' | 'warning' | 'accent';
 }) {
-  const compensationToneClass = tone === 'success' ? 'text-success' : tone === 'warning' ? 'text-warning' : 'text-accent';
+  const compensationToneClass = tone === 'success' ? 'text-[#00a87e]' : tone === 'warning' ? 'text-[#ec7e00]' : 'text-[#4f55f1]';
   const shouldShowReserve = (reservePercentageBasisPoints ?? 0) > 0;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Compensação da Reserva ({methodLabel})</p>
+    <div className="rounded-xl border border-white/12 bg-[#16181a] p-4">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/50">Compensação da Reserva ({methodLabel})</p>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-3 py-1">
           <Icon icon={StopWatchIcon} className={`icon-sm ${compensationToneClass}`} />
           <div className="flex min-w-0 flex-col">
-            <span className="text-xs font-medium text-muted-foreground">Prazo de liberação</span>
-            <span className={`text-sm font-semibold ${compensationToneClass}`}>{`D+${days}`}</span>
+            <span className="text-xs font-medium text-white/50">Prazo de liberação</span>
+            <span className={`text-sm font-semibold font-mono tabular-nums ${compensationToneClass}`}>{`D+${days}`}</span>
           </div>
         </div>
         {shouldShowReserve && (
           <div className="flex items-center gap-3 py-1">
             <Icon icon={PercentSquareIcon} className={`icon-sm ${compensationToneClass}`} />
             <div className="flex min-w-0 flex-col">
-              <span className="text-xs font-medium text-muted-foreground">Reserva financeira</span>
-              <span className={`text-sm font-semibold ${compensationToneClass}`}>
+              <span className="text-xs font-medium text-white/50">Reserva financeira</span>
+              <span className={`text-sm font-semibold font-mono tabular-nums ${compensationToneClass}`}>
                 {formatReservePercentage(reservePercentageBasisPoints ?? 0)}
               </span>
             </div>
           </div>
         )}
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">
+      <p className="mt-2 text-xs text-white/50">
         Esse prazo define quando o valor retido na reserva financeira desse método é liberado para o saldo disponível da organização.
       </p>
     </div>
@@ -207,9 +207,9 @@ export function FeesContent({ fees }: FeesContentProps) {
   ].join(' | ');
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-[#000000] text-white">
       <PageHeader
-        icon={<Icon icon={PercentSquareIcon} className="icon-md text-accent-foreground" />}
+        icon={<Icon icon={PercentSquareIcon} className="icon-md text-[#4f55f1]" />}
         title="Taxas e Limites"
         description="Visualize as taxas, limites e configurações aplicadas à sua organização."
       />
@@ -241,28 +241,28 @@ export function FeesContent({ fees }: FeesContentProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <ChannelFeeCard
               icon={<Icon icon={MoneyReceiveSquareIcon} className="icon-sm" />}
-              iconClassName="text-success"
+              iconClassName="text-[#00a87e]"
               title="Via API"
               feeValue={formatFeeRate(fees.pixApiFeeMode, fees.pixApiFeeFixed, fees.pixApiFeePercentage)}
-              feeColorClass="text-success"
+              feeColorClass="text-[#00a87e]"
             />
             <ChannelFeeCard
               icon={<Icon icon={ShoppingCartCheckIn01Icon} className="icon-sm" />}
-              iconClassName="text-success"
+              iconClassName="text-[#00a87e]"
               title="Via Checkout"
               feeValue={formatFeeRate(fees.pixCheckoutFeeMode, fees.pixCheckoutFeeFixed, fees.pixCheckoutFeePercentage)}
-              feeColorClass="text-success"
+              feeColorClass="text-[#00a87e]"
             />
             <ChannelFeeCard
               icon={<Icon icon={Link02Icon} className="icon-sm" />}
-              iconClassName="text-success"
+              iconClassName="text-[#00a87e]"
               title="Via Link de Pagamento"
               feeValue={formatFeeRate(
                 fees.pixPaymentLinkFeeMode,
                 fees.pixPaymentLinkFeeFixed,
                 fees.pixPaymentLinkFeePercentage
               )}
-              feeColorClass="text-success"
+              feeColorClass="text-[#00a87e]"
             />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -293,28 +293,28 @@ export function FeesContent({ fees }: FeesContentProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <ChannelFeeCard
               icon={<Icon icon={MoneyReceiveSquareIcon} className="icon-sm" />}
-              iconClassName="text-warning"
+              iconClassName="text-[#ec7e00]"
               title="Via API"
               feeValue={formatFeeRate(fees.boletoApiFeeMode, fees.boletoApiFeeFixed, fees.boletoApiFeePercentage)}
-              feeColorClass="text-warning"
+              feeColorClass="text-[#ec7e00]"
             />
             <ChannelFeeCard
               icon={<Icon icon={ShoppingCartCheckIn01Icon} className="icon-sm" />}
-              iconClassName="text-warning"
+              iconClassName="text-[#ec7e00]"
               title="Via Checkout"
               feeValue={formatFeeRate(fees.boletoCheckoutFeeMode, fees.boletoCheckoutFeeFixed, fees.boletoCheckoutFeePercentage)}
-              feeColorClass="text-warning"
+              feeColorClass="text-[#ec7e00]"
             />
             <ChannelFeeCard
               icon={<Icon icon={Link02Icon} className="icon-sm" />}
-              iconClassName="text-warning"
+              iconClassName="text-[#ec7e00]"
               title="Via Link de Pagamento"
               feeValue={formatFeeRate(
                 fees.boletoPaymentLinkFeeMode,
                 fees.boletoPaymentLinkFeeFixed,
                 fees.boletoPaymentLinkFeePercentage
               )}
-              feeColorClass="text-warning"
+              feeColorClass="text-[#ec7e00]"
             />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -345,44 +345,44 @@ export function FeesContent({ fees }: FeesContentProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <ChannelFeeCard
               icon={<Icon icon={MoneyReceiveSquareIcon} className="icon-sm" />}
-              iconClassName="text-accent"
+              iconClassName="text-[#4f55f1]"
               title="Via API"
               feeValue={formatFeeRate(
                 fees.creditCardApiFeeMode,
                 fees.creditCardApiFeeFixed,
                 fees.creditCardApiFeePercentage
               )}
-              feeColorClass="text-accent"
+              feeColorClass="text-[#4f55f1]"
             />
             <ChannelFeeCard
               icon={<Icon icon={ShoppingCartCheckIn01Icon} className="icon-sm" />}
-              iconClassName="text-accent"
+              iconClassName="text-[#4f55f1]"
               title="Via Checkout"
               feeValue={formatFeeRate(
                 fees.creditCardCheckoutFeeMode,
                 fees.creditCardCheckoutFeeFixed,
                 fees.creditCardCheckoutFeePercentage
               )}
-              feeColorClass="text-accent"
+              feeColorClass="text-[#4f55f1]"
             />
             <ChannelFeeCard
               icon={<Icon icon={Link02Icon} className="icon-sm" />}
-              iconClassName="text-accent"
+              iconClassName="text-[#4f55f1]"
               title="Via Link de Pagamento"
               feeValue={formatFeeRate(
                 fees.creditCardPaymentLinkFeeMode,
                 fees.creditCardPaymentLinkFeeFixed,
                 fees.creditCardPaymentLinkFeePercentage
               )}
-              feeColorClass="text-accent"
+              feeColorClass="text-[#4f55f1]"
             />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <FeeBlock
-              icon={<Icon icon={PercentSquareIcon} className="icon-sm text-accent" />}
+              icon={<Icon icon={PercentSquareIcon} className="icon-sm text-[#4f55f1]" />}
               title="Reserva financeira"
               value={formatReservePercentage(fees.creditCardReservePercentage)}
-              iconBg="bg-accent/10"
+              iconBg="bg-[#494fdf]/15"
             />
             <CompensationCard methodLabel="Cartão" days={fees.creditCardCompensationDays} tone="accent" />
           </div>
@@ -400,31 +400,31 @@ export function FeesContent({ fees }: FeesContentProps) {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FeeBlock
-              icon={<Icon icon={PercentSquareIcon} className="icon-sm text-accent" />}
+              icon={<Icon icon={PercentSquareIcon} className="icon-sm text-[#4f55f1]" />}
               title="Taxa de Saque"
               value={formatFeeRate(fees.withdrawalFeeMode, fees.withdrawalFeeFixed, fees.withdrawalFeePercentage)}
-              iconBg="bg-accent/10"
+              iconBg="bg-[#494fdf]/15"
             />
             <FeeBlock
-              icon={<Icon icon={ArrowRight01Icon} className="icon-sm text-accent" />}
+              icon={<Icon icon={ArrowRight01Icon} className="icon-sm text-[#4f55f1]" />}
               title="Saque Mínimo"
               value={formatCurrency(fees.minWithdrawalAmount)}
-              iconBg="bg-accent/10"
+              iconBg="bg-[#494fdf]/15"
             />
-            <div className="flex items-center gap-3 rounded-xl border border-divider bg-content1 p-3 transition-colors duration-200 hover:border-default/30 hover:bg-content2/40">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+            <div className="flex items-center gap-3 rounded-xl border border-white/12 bg-[#16181a] p-3 transition-colors duration-200 hover:border-white/20 hover:bg-[#0a0a0a]/50">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15">
                 {withdrawalModeParse.icon}
               </div>
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="text-xs text-muted">Aprovação</span>
+                <span className="text-xs text-white/50">Aprovação</span>
                 <Chip variant="soft" color={mapParseColorToChipColor(withdrawalModeParse.color)} size="sm" className="w-fit gap-1">
                   {withdrawalModeParse.label}
                 </Chip>
               </div>
             </div>
           </div>
-          <div className="rounded-xl bg-content1 p-3">
-            <p className="text-xs text-muted">
+          <div className="rounded-xl bg-[#16181a] p-3">
+            <p className="text-xs text-white/50">
               {fees.withdrawalApprovalMode === 'Automatic'
                 ? 'Seus saques são processados automaticamente assim que solicitados.'
                 : 'Seus saques passam por análise manual antes de serem aprovados (até 72h úteis).'}
@@ -442,8 +442,8 @@ export function FeesContent({ fees }: FeesContentProps) {
         summary={rateLimitsSummary}
       >
         <div className="flex flex-col gap-3">
-          <div className="rounded-xl bg-content1 p-3">
-            <p className="text-xs text-muted">
+          <div className="rounded-xl bg-[#16181a] p-3">
+            <p className="text-xs text-white/50">
               Estes limites são aplicados por organização e ambiente para proteger a API contra uso excessivo.
             </p>
           </div>
