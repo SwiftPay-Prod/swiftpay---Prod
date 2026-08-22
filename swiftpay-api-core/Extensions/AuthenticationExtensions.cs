@@ -29,6 +29,7 @@ public static class AuthenticationExtensions
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
+                AuthenticationType = "Bearer",
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = false,

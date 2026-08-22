@@ -31,8 +31,8 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Evidência do review (Spec: #96): revisão em dois eixos (Standards e Spec) aprovou as correções de fail-closed, hooks e caminhos observados.
   - Status: pronto para commit e deploy.
 - `IN_PROGRESS` Spec: #100 / Issue: #101 — restaurar SignalR.
-  - Reprodução (Spec: #100): conexão `wss://swiftpayment.info/api/hubs/notifications` retornava HTTP 401; `TokenService` assina com HS512 via `JWT.Builder`, mas `Microsoft.IdentityModel` rejeitava chaves menores que 512 bits.
-  - Implementado via TDD (Spec: #100): `SignalRQueryStringAuthenticationMiddleware` para promoção de query token, `SignatureValidator` baseado em `JwtBuilder` no `swiftpay-api-core` com delegação completa da integridade ao HMAC-SHA512.
+  - Reprodução (Spec: #100): conexão `wss://swiftpayment.info/api/hubs/notifications` retornava HTTP 401; `TokenService` assina com HS512 via `JWT.Builder`, mas `Microsoft.IdentityModel` rejeitava chaves menores que 512 bits e deixava `AuthenticationType` nulo.
+  - Implementado via TDD (Spec: #100): `SignalRQueryStringAuthenticationMiddleware` para promoção de query token, `TokenValidationParameters.AuthenticationType = "Bearer"` e `SignatureValidator` baseado em `JwtBuilder` no `swiftpay-api-core`.
   - Evidência do review (Spec: #100): pipeline FastEndpoints, testes unitários e diagramas de arquitetura atualizados (`deployment-map.md`).
   - Status: pronto para rebuild e validação ponta a ponta no browser (Spec: #100).
 - Bloqueio financeiro: pagamento real e PIX OUT exigem aprovação explícita do usuário para valor e chave de destino.
