@@ -24,7 +24,7 @@ export interface MerchantReserveConfig {
 }
 
 export interface RevolutHeroBalanceCardProps {
-	balance: ReadMerchantDashboardData['balance'];
+	balance?: ReadMerchantDashboardData['balance'] | null;
 	isBalanceVisible: boolean;
 	onToggleBalanceVisibility?: () => void;
 	hasReserveEnabled?: boolean;
@@ -42,6 +42,10 @@ export function RevolutHeroBalanceCard({
 }: RevolutHeroBalanceCardProps) {
 	const router = useRouter();
 	const blurClass = isBalanceVisible ? '' : 'visual-blur';
+
+	const available = typeof balance?.available === 'number' ? balance.available : 0;
+	const pending = typeof balance?.pending === 'number' ? balance.pending : 0;
+	const reserved = typeof balance?.reserved === 'number' ? balance.reserved : 0;
 
 	return (
 		<div
@@ -94,7 +98,7 @@ export function RevolutHeroBalanceCard({
 				{/* Primary Value: Hero Tabular Display */}
 				<div className="flex flex-col gap-2">
 					<div className={`font-mono text-3xl font-extrabold tracking-tight text-white sm:text-5xl ${blurClass}`}>
-						<AnimatedCurrency value={balance.available} />
+						<AnimatedCurrency value={available} />
 					</div>
 
 					{/* Secondary Balance Breakdown */}
@@ -102,18 +106,18 @@ export function RevolutHeroBalanceCard({
 						<span className="inline-flex items-center gap-1">
 							<span>Pendente:</span>
 							<span className={`font-medium text-white/80 ${blurClass}`}>
-								<AnimatedCurrency value={balance.pending} />
+								<AnimatedCurrency value={pending} />
 							</span>
 						</span>
 
-						{hasReserveEnabled && balance.reserved > 0 && reserveConfig && (
+						{hasReserveEnabled && reserved > 0 && reserveConfig && (
 							<>
 								<span className="text-white/20">·</span>
 								<span className="inline-flex items-center gap-1">
 									<RevolutLockIcon size={12} className="text-white/50" />
 									<span>Reserva:</span>
 									<span className={`font-medium text-white/80 ${blurClass}`}>
-										<AnimatedCurrency value={balance.reserved} />
+										<AnimatedCurrency value={reserved} />
 									</span>
 									<TooltipProvider>
 										<Tooltip>

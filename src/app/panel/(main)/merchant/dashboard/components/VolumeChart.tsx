@@ -17,32 +17,44 @@ const volumeChartConfig = {
 } satisfies ChartConfig;
 
 export interface VolumeChartProps {
-	data: MerchantDailyVolumeData[];
-	adaptiveData: MerchantWeeklyVolumeData[];
-	isHourlyGranularity: boolean;
+	data?: MerchantDailyVolumeData[] | null;
+	adaptiveData?: MerchantWeeklyVolumeData[] | null;
+	isHourlyGranularity?: boolean;
 	isProcessing?: boolean;
 	periodLabel?: string;
 	className?: string;
 }
 
+function formatChartDate(dateStr?: string): string {
+	if (!dateStr) return '';
+	const parsed = new Date(dateStr);
+	if (isNaN(parsed.getTime())) {
+		return dateStr;
+	}
+	return parsed.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' });
+}
+
 export function VolumeChart({
-	data,
-	adaptiveData,
-	isHourlyGranularity,
+	data = [],
+	adaptiveData = [],
+	isHourlyGranularity = false,
 	isProcessing = false,
 	periodLabel,
 	className = '',
 }: VolumeChartProps) {
+	const safeAdaptive = Array.isArray(adaptiveData) ? adaptiveData : [];
+	const safeData = Array.isArray(data) ? data : [];
+
 	const chartData = isHourlyGranularity
-		? adaptiveData.map((item) => ({
-				date: item.label,
-				volume: item.volume,
-				transactionCount: item.transactionCount,
+		? safeAdaptive.map((item) => ({
+				date: item?.label ?? '',
+				volume: typeof item?.volume === 'number' ? item.volume : 0,
+				transactionCount: typeof item?.transactionCount === 'number' ? item.transactionCount : 0,
 			}))
-		: data.map((item) => ({
-				date: new Date(item.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' }),
-				volume: item.volume,
-				transactionCount: item.transactionCount,
+		: safeData.map((item) => ({
+				date: formatChartDate(item?.date),
+				volume: typeof item?.volume === 'number' ? item.volume : 0,
+				transactionCount: typeof item?.transactionCount === 'number' ? item.transactionCount : 0,
 			}));
 
 	return (
@@ -88,7 +100,9 @@ export function VolumeChart({
 								className="border border-white/15 bg-[#0a0a0a]/95 backdrop-blur-md text-white shadow-2xl rounded-xl"
 								formatter={(value, name) =>
 									name === 'volume' ? (
-										<span className="font-mono font-semibold text-[#4f55f1]">{formatCurrency(value as number)}</span>
+										<span className="font-mono font-semibold text-[#4f55f1]">
+											{formatCurrency(typeof value === 'number' ? value : 0)}
+										</span>
 									) : (
 										`${value} transações`
 									)

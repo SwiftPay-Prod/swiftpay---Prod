@@ -5,16 +5,16 @@ import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import {
 	RevolutTrendingUpIcon,
-	RevolutTrendingDownIcon,
 	RevolutStatementIcon,
 	RevolutCheckIcon,
+	RevolutAlertIcon,
 	RevolutArrowUpRightIcon,
 	RevolutArrowDownRightIcon,
 } from '@/components/ui/revolut-icons';
 import type { MerchantKpiData } from '@/types/merchant/dashboard';
 
 export interface RevolutFinancialMetricsGridProps {
-	kpis: MerchantKpiData;
+	kpis?: MerchantKpiData | null;
 	isBalanceVisible: boolean;
 	className?: string;
 }
@@ -26,18 +26,22 @@ export function RevolutFinancialMetricsGrid({
 }: RevolutFinancialMetricsGridProps) {
 	const blurClass = isBalanceVisible ? '' : 'visual-blur';
 
-	const volumeGrowth = kpis.volumeGrowth;
+	const totalNetVolume = typeof kpis?.totalNetVolume === 'number' ? kpis.totalNetVolume : 0;
+	const totalVolume = typeof kpis?.totalVolume === 'number' ? kpis.totalVolume : 0;
+	const completedTransactions = typeof kpis?.completedTransactions === 'number' ? kpis.completedTransactions : 0;
+	const totalTransactions = typeof kpis?.totalTransactions === 'number' ? kpis.totalTransactions : 0;
+
+	const volumeGrowth = kpis?.volumeGrowth;
 	const hasVolumeGrowth = volumeGrowth != null && !isNaN(volumeGrowth);
 	const isVolumeGrowthPositive = hasVolumeGrowth && volumeGrowth > 0;
 	const isVolumeGrowthNegative = hasVolumeGrowth && volumeGrowth < 0;
 
-	const transactionsGrowth = kpis.transactionsGrowth;
+	const transactionsGrowth = kpis?.transactionsGrowth;
 	const hasTxGrowth = transactionsGrowth != null && !isNaN(transactionsGrowth);
 	const isTxGrowthPositive = hasTxGrowth && transactionsGrowth > 0;
 
-	const totalTransactions = kpis.totalTransactions ?? 0;
 	const hasTransactions = totalTransactions > 0;
-	const approvalRate = kpis.approvalRate ?? 0;
+	const approvalRate = typeof kpis?.approvalRate === 'number' ? kpis.approvalRate : 0;
 	const isHighApproval = hasTransactions && approvalRate >= 80;
 	const isMediumApproval = hasTransactions && approvalRate >= 60 && approvalRate < 80;
 
@@ -49,6 +53,7 @@ export function RevolutFinancialMetricsGrid({
 			: isMediumApproval
 				? 'bg-[#ec7e00]/15 text-[#ec7e00]'
 				: 'bg-[#e23b4a]/15 text-[#e23b4a]';
+
 	return (
 		<div className={`grid grid-cols-1 gap-3.5 sm:grid-cols-3 ${className}`}>
 			{/* Card 1: Faturamento Líquido */}
@@ -91,7 +96,7 @@ export function RevolutFinancialMetricsGrid({
 
 				<div className="flex flex-col gap-1">
 					<div className={`font-mono text-2xl font-extrabold tracking-tight text-white sm:text-3xl ${blurClass}`}>
-						<AnimatedCurrency value={kpis.totalNetVolume} />
+						<AnimatedCurrency value={totalNetVolume} />
 					</div>
 					<span className="text-xs text-white/50">Receita líquida no período selecionado</span>
 				</div>
@@ -114,7 +119,7 @@ export function RevolutFinancialMetricsGrid({
 
 				<div className="flex flex-col gap-1">
 					<div className={`font-mono text-2xl font-extrabold tracking-tight text-white sm:text-3xl ${blurClass}`}>
-						<AnimatedCurrency value={kpis.totalVolume} />
+						<AnimatedCurrency value={totalVolume} />
 					</div>
 					<span className="text-xs text-white/50">Total transacionado antes de taxas e estornos</span>
 				</div>
@@ -171,8 +176,8 @@ export function RevolutFinancialMetricsGrid({
 					</div>
 
 					<span className="text-xs text-white/50 font-mono">
-						<span className={`text-white/80 font-medium ${blurClass}`}>{kpis.completedTransactions}</span> de{' '}
-						<span className="text-white/80 font-medium">{kpis.totalTransactions}</span> transações aprovadas
+						<span className={`text-white/80 font-medium ${blurClass}`}>{completedTransactions}</span> de{' '}
+						<span className="text-white/80 font-medium">{totalTransactions}</span> transações aprovadas
 					</span>
 				</div>
 			</div>

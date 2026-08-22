@@ -17,22 +17,23 @@ const weeklyChartConfig = {
 } satisfies ChartConfig;
 
 export interface WeeklyVolumeChartProps {
-	data: MerchantWeeklyVolumeData[];
-	isHourlyGranularity: boolean;
+	data?: MerchantWeeklyVolumeData[] | null;
+	isHourlyGranularity?: boolean;
 	isProcessing?: boolean;
 	className?: string;
 }
 
 export function WeeklyVolumeChart({
-	data,
-	isHourlyGranularity,
+	data = [],
+	isHourlyGranularity = false,
 	isProcessing = false,
 	className = '',
 }: WeeklyVolumeChartProps) {
-	const chartData = data.map((item) => ({
-		week: item.label,
-		volume: item.volume,
-		transactionCount: item.transactionCount,
+	const safeData = Array.isArray(data) ? data : [];
+	const chartData = safeData.map((item) => ({
+		week: item?.label ?? '',
+		volume: typeof item?.volume === 'number' ? item.volume : 0,
+		transactionCount: typeof item?.transactionCount === 'number' ? item.transactionCount : 0,
 	}));
 
 	return (
@@ -89,7 +90,9 @@ export function WeeklyVolumeChart({
 								className="border border-white/15 bg-[#0a0a0a]/95 backdrop-blur-md text-white shadow-2xl rounded-xl"
 								formatter={(value, name) =>
 									name === 'volume' ? (
-										<span className="font-mono font-semibold text-[#4f55f1]">{formatCurrency(value as number)}</span>
+										<span className="font-mono font-semibold text-[#4f55f1]">
+											{formatCurrency(typeof value === 'number' ? value : 0)}
+										</span>
 									) : (
 										`${value}`
 									)

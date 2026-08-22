@@ -11,7 +11,7 @@ import {
 import type { MerchantKpiData, DashboardCacheInfo } from '@/types/merchant/dashboard';
 
 export interface SecondaryKpiSectionProps {
-	kpis: MerchantKpiData;
+	kpis?: MerchantKpiData | null;
 	cacheInfo?: DashboardCacheInfo;
 	isBalanceVisible: boolean;
 	className?: string;
@@ -23,11 +23,18 @@ export function SecondaryKpiSection({
 	className = '',
 }: SecondaryKpiSectionProps) {
 	const blurClass = isBalanceVisible ? '' : 'visual-blur';
-	const avgTicket = kpis.completedTransactions > 0 ? Math.round(kpis.totalVolume / kpis.completedTransactions) : 0;
 
-	const hasFailed = kpis.failedTransactions > 0;
-	const hasRefunded = kpis.refundedAmount > 0;
-	const hasChargebacks = kpis.chargebackCount > 0;
+	const completedTransactions = typeof kpis?.completedTransactions === 'number' ? kpis.completedTransactions : 0;
+	const totalVolume = typeof kpis?.totalVolume === 'number' ? kpis.totalVolume : 0;
+	const failedTransactions = typeof kpis?.failedTransactions === 'number' ? kpis.failedTransactions : 0;
+	const refundedAmount = typeof kpis?.refundedAmount === 'number' ? kpis.refundedAmount : 0;
+	const chargebackCount = typeof kpis?.chargebackCount === 'number' ? kpis.chargebackCount : 0;
+	const chargebackRate = typeof kpis?.chargebackRate === 'number' ? kpis.chargebackRate : 0;
+
+	const avgTicket = completedTransactions > 0 ? Math.round(totalVolume / completedTransactions) : 0;
+	const hasFailed = failedTransactions > 0;
+	const hasRefunded = refundedAmount > 0;
+	const hasChargebacks = chargebackCount > 0;
 
 	return (
 		<div className={`grid grid-cols-2 gap-2.5 ${className}`}>
@@ -60,7 +67,7 @@ export function SecondaryKpiSection({
 						hasFailed ? 'text-[#ec7e00]' : 'text-white'
 					} ${blurClass}`}
 				>
-					<AnimatedNumber value={kpis.failedTransactions} />
+					<AnimatedNumber value={failedTransactions} />
 				</div>
 			</div>
 
@@ -82,7 +89,7 @@ export function SecondaryKpiSection({
 						hasRefunded ? 'text-[#e23b4a]' : 'text-white'
 					} ${blurClass}`}
 				>
-					<AnimatedCurrency value={kpis.refundedAmount} />
+					<AnimatedCurrency value={refundedAmount} />
 				</div>
 			</div>
 
@@ -94,9 +101,9 @@ export function SecondaryKpiSection({
 						<span>Chargebacks</span>
 					</div>
 
-					{kpis.chargebackRate > 0 && (
+					{chargebackRate > 0 && (
 						<span className="rounded border border-[#e23b4a]/20 bg-[#e23b4a]/10 px-1 py-0.2 font-mono text-[10px] font-semibold text-[#e23b4a]">
-							<AnimatedNumber value={kpis.chargebackRate} suffix="%" maximumFractionDigits={1} />
+							<AnimatedNumber value={chargebackRate} suffix="%" maximumFractionDigits={1} />
 						</span>
 					)}
 				</div>
@@ -105,7 +112,7 @@ export function SecondaryKpiSection({
 						hasChargebacks ? 'text-[#e23b4a]' : 'text-white'
 					} ${blurClass}`}
 				>
-					<AnimatedNumber value={kpis.chargebackCount} />
+					<AnimatedNumber value={chargebackCount} />
 				</div>
 			</div>
 		</div>

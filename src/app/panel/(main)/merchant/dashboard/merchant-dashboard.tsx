@@ -232,12 +232,15 @@ function ApprovalHealthCard({
 	kpis,
 	isBalanceVisible,
 }: {
-	kpis: MerchantKpiData;
+	kpis?: MerchantKpiData | null;
 	isBalanceVisible: boolean;
 }) {
-	const total = kpis.totalTransactions ?? 0;
+	const total = typeof kpis?.totalTransactions === 'number' ? kpis.totalTransactions : 0;
+	const completed = typeof kpis?.completedTransactions === 'number' ? kpis.completedTransactions : 0;
+	const chargebackCount = typeof kpis?.chargebackCount === 'number' ? kpis.chargebackCount : 0;
+	const chargebackRate = typeof kpis?.chargebackRate === 'number' ? kpis.chargebackRate : 0;
+	const approvalRate = typeof kpis?.approvalRate === 'number' ? kpis.approvalRate : 0;
 	const hasTransactions = total > 0;
-	const approvalRate = kpis.approvalRate ?? 0;
 
 	const isHealthy = hasTransactions && approvalRate >= 80;
 	const isMedium = hasTransactions && approvalRate >= 60 && approvalRate < 80;
@@ -308,7 +311,7 @@ function ApprovalHealthCard({
 				<div className="flex flex-col gap-0.5">
 					<span className="text-[10px] uppercase text-white/40 font-semibold">Aprovadas</span>
 					<span className={`text-sm font-bold text-white ${blurClass}`}>
-						{kpis.completedTransactions}
+						{completed}
 						<span className="text-xs font-normal text-white/40"> / {total}</span>
 					</span>
 				</div>
@@ -317,12 +320,12 @@ function ApprovalHealthCard({
 					<span className="text-[10px] uppercase text-white/40 font-semibold">Chargebacks</span>
 					<span
 						className={`text-sm font-bold ${
-							kpis.chargebackCount > 0 ? 'text-[#e23b4a]' : 'text-white'
+							chargebackCount > 0 ? 'text-[#e23b4a]' : 'text-white'
 						}`}
 					>
-						{kpis.chargebackCount}
-						{kpis.chargebackRate > 0 && (
-							<span className="text-xs font-normal text-white/40"> ({kpis.chargebackRate.toFixed(1)}%)</span>
+						{chargebackCount}
+						{chargebackRate > 0 && (
+							<span className="text-xs font-normal text-white/40"> ({chargebackRate.toFixed(1)}%)</span>
 						)}
 					</span>
 				</div>
