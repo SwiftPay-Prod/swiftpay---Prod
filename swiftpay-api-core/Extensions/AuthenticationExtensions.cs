@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -29,11 +31,32 @@ public static class AuthenticationExtensions
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
+                ValidateIssuerSigningKey = false,
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                SignatureValidator = (token, _) =>
+                {
+                    var parts = token.Split('.');
+                    if (parts.Length != 3)
+                    {
+                        throw new SecurityTokenMalformedException("JWT deve conter 3 partes separadas por ponto.");
+                    }
+
+                    var dataToSign = Encoding.UTF8.GetBytes($"{parts[0]}.{parts[1]}");
+                    var secretBytes = Encoding.UTF8.GetBytes(jwtSettings.Secret);
+                    using var hmac = new HMACSHA512(secretBytes);
+                    var computedSignature = Base64UrlEncoder.Encode(hmac.ComputeHash(dataToSign));
+
+                    if (!CryptographicOperations.FixedTimeEquals(
+                        Encoding.UTF8.GetBytes(computedSignature),
+                        Encoding.UTF8.GetBytes(parts[2])))
+                    {
+                        throw new SecurityTokenInvalidSignatureException("Assinatura do JWT inválida.");
+                    }
+
+                    return new JwtSecurityToken(token);
+                }
             };
 
             if (configureEvents != null)
