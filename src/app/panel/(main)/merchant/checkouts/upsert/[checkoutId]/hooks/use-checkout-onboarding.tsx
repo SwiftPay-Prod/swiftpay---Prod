@@ -524,10 +524,12 @@ export function useCheckoutOnboarding({
 
 			return draft;
 		});
-		setValue('primaryColor', draft?.primaryColor ?? checkout?.config?.primaryColor ?? CHECKOUT_PRIMARY_COLOR_DEFAULT, { shouldValidate: true });
-		setValue('secondaryColor', draft?.secondaryColor ?? checkout?.config?.secondaryColor ?? '', { shouldValidate: true });
-		setValue('colorMode', draft?.colorMode ?? checkout?.config?.colorMode ?? CheckoutColorMode.Single, { shouldValidate: true });
-	}, [checkout?.config?.colorMode, checkout?.config?.primaryColor, checkout?.config?.secondaryColor, setValue]);
+		if (draft) {
+			setValue('primaryColor', draft.primaryColor, { shouldValidate: true });
+			setValue('secondaryColor', draft.secondaryColor, { shouldValidate: true });
+			setValue('colorMode', draft.colorMode, { shouldValidate: true });
+		}
+	}, [setValue]);
 
 	const applyPaymentsDraft = useCallback((draft: PaymentsDraftState | null) => {
 		setPaymentsDraft((prev) => {

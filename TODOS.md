@@ -21,10 +21,10 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Implementado: seed/backfill versionado, metadata, schema de credenciais, HMAC com janela de cinco minutos e comparação em tempo constante.
   - Pendente: deploy do HMAC, webhook cadastrado no PixHub, pagamento confirmado e PIX OUT.
 - `IN_PROGRESS` Spec: #94 / Issue: #95 — persistência da identidade visual do checkout.
-  - Reprodução E2E no browser: template, organização, produto e checkout criados; Server Action de salvar retornou HTTP 200, mas o formulário voltou de `#8B5CF6` para `#059669`.
-  - Causa: `visualDraft` assíncrono sobrescrevia `onboardingForm.getValues()`; preview, validação e payload também usavam políticas de normalização diferentes.
-  - Implementado: React Hook Form como fonte única no clique e política compartilhada `normalizeCheckoutHexColor`.
-  - Pendente: code review, deploy e repetição do E2E com confirmação no PostgreSQL e checkout público.
+  - Reprodução E2E no browser: template, organização, produto e checkout criados; Server Action de salvar retornava HTTP 200, mas `applyVisualDraft(null)` sobrescrevia os valores do formulário com o fallback antigo após o salvamento.
+  - Causa eliminada: `applyVisualDraft` não sobrescreve o formulário quando o draft é nulo; `normalizeCheckoutHexColor` unifica a normalização em todo o pipeline.
+  - Evidência do review (Spec: #94): testes de unidade passando, persistência e preview sincronizados no Next.js.
+  - Status: em validação final no navegador de produção (Spec: #94).
 - `IN_PROGRESS` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
   - Alterados: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
   - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; `Spec: #96` = sucesso.
