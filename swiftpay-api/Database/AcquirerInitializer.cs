@@ -505,6 +505,52 @@ public static class AcquirerInitializer
 
             context.Acquirers.Add(flevoPay);
         }
+
+        if (!context.Acquirers.Any(a => a.Id == SystemAcquirerIds.PixHub))
+        {
+            var metadata = AcquirerDefaultsConstants.GetMetadata(AcquirerType.PixHub);
+            var credentialSchema = CredentialUtils.BuildSchema(
+                ("apiKey", "Public Key / API Key", CredentialFieldType.Text, true, "Ex: cmt39...", "Chave pública fornecida pelo PixHub"),
+                ("apiSecret", "Secret Key / API Secret", CredentialFieldType.Password, true, "Ex: c7b9...", "Chave secreta fornecida pelo PixHub"),
+                ("accountId", "Account ID", CredentialFieldType.Text, true, "Ex: cmsy...", "Identificador da conta PixHub")
+            );
+            var emptyCredentials = CredentialUtils.SerializeCredentials(new Dictionary<string, string>
+            {
+                { "apiKey", "" },
+                { "apiSecret", "" },
+                { "accountId", "" }
+            });
+
+            context.Acquirers.Add(new Acquirer
+            {
+                Id = SystemAcquirerIds.PixHub,
+                Name = "PixHub",
+                Code = "pixhub",
+                Description = metadata.Description,
+                Type = AcquirerType.PixHub,
+                IsActive = false,
+                ApiBaseUrl = metadata.ApiBaseUrlProduction,
+                ApiBaseUrlProduction = metadata.ApiBaseUrlProduction,
+                ApiBaseUrlSandbox = metadata.ApiBaseUrlSandbox,
+                AuthType = "basic_auth_jwt",
+                CredentialSchema = credentialSchema,
+                DefaultCredentials = emptyCredentials,
+                DefaultCredentialsSandbox = emptyCredentials,
+                SupportsPix = true,
+                SupportsBoleto = false,
+                SupportsCreditCard = false,
+                SupportsWithdrawal = true,
+                SupportsRefund = true,
+                MinPixAmount = 100,
+                MaxPixAmount = 0,
+                MinPayoutAmount = 100,
+                MaxPayoutAmount = 0,
+                WebhookAuthMode = metadata.WebhookAuthMode,
+                DocumentationUrl = metadata.DocumentationUrl,
+                WebhookDocumentationUrl = metadata.WebhookDocumentationUrl,
+                ProviderCategory = ProviderCategory.Acquirer
+            });
+        }
     }
 
     public static void UpdateAcquirerCredentialSchemas(PrimaryDbContext context)
@@ -553,6 +599,11 @@ public static class AcquirerInitializer
                 ),
                 AcquirerType.MagicPay => CredentialUtils.BuildSchema(
                     ("apiKey", "API Key", CredentialFieldType.Password, true, "Ex: C28pm-...", "Chave de API fornecida pela MagicPay")
+                ),
+                AcquirerType.PixHub => CredentialUtils.BuildSchema(
+                    ("apiKey", "Public Key / API Key", CredentialFieldType.Text, true, "Ex: cmt39...", "Chave pública fornecida pelo PixHub"),
+                    ("apiSecret", "Secret Key / API Secret", CredentialFieldType.Password, true, "Ex: c7b9...", "Chave secreta fornecida pelo PixHub"),
+                    ("accountId", "Account ID", CredentialFieldType.Text, true, "Ex: cmsy...", "Identificador da conta PixHub")
                 ),
                 _ => null
             };

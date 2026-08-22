@@ -10,34 +10,26 @@ Este documento estabelece o fluxo de trabalho de engenharia e governança de age
 
 ---
 
-## 1. Ciclo de Vida do Desenvolvimento (Skills Workflow)
+## Workflow gate
 
-| Fase | Skill Principal | Objetivo |
-| :--- | :--- | :--- |
-| **1. Ideação & Discovery** | `/grilling`, `/research`, `/prototype` | Estressar ideias, validar hipóteses, pesquisar documentação e criar protótipos rápidos |
-| **2. Domínio & Arquitetura** | `/domain-modeling`, `/codebase-design` | Modelar termos de domínio em `CONTEXT.md`, criar ADRs em `docs/adr/` e desenhar módulos profundos |
-| **3. Especificação** | `/to-spec` | Gerar especificações técnicas detalhadas a partir de demandas ou tickets |
-| **4. Tickets & Decomposição** | `/to-tickets` | Decompor a especificação em tickets granulares no GitHub Issues (usando `gh`) |
-| **5. Triagem & Priorização** | `/triage` | Classificar e etiquetar issues com o vocabulário padrão (`needs-triage`, `ready-for-agent`, etc.) |
-| **6. Navegação em Grafo** | `/wayfinder` | Gerenciar mapa de dependências e ordem de execução de tickets complexos |
-| **7. Implementação & TDD** | `/implement-spec`, `/implement`, `/tdd` | Implementar contratos guiado por testes (Red-Green-Refactor) e fatias verticais |
-| **8. Diagnóstico de Bugs** | `/diagnosing-bugs` | Investigação de causa raiz para falhas e regressões |
-| **9. Revisão de Código** | `/code-review` | Revisão em dois eixos (Padrões da base e Conformidade com a especificação) |
+Before any repository or production mutation:
 
----
+1. Read and execute `AGENTS.md` → **Mandatory Matt Pocock workflow**.
+2. Initialize the active todo with every user-requested item.
+3. Confirm the current GitHub spec and ticket references are recorded in `TODOS.md`.
+4. Stop before mutation if any prior gate lacks durable evidence.
 
-## 2. Roteamento de Skills
+The workflow is sequential and fail-closed. A build, mock, healthcheck, or plausible implementation is evidence only for what it directly exercises. “Complete” requires the reviewed behavior in its real surface. Deploy occurs after review and verification, never as a substitute for them.
 
-Quando uma tarefa for iniciada, use a skill correspondente:
-- **Discutir ou desafiar uma proposta/decisão:** `/grilling` ou `/grill-with-docs`
-- **Modelar domínio ou registrar ADR:** `/domain-modeling`
-- **Escrever uma especificação técnica:** `/to-spec`
-- **Criar/publicar tickets a partir de uma spec:** `/to-tickets`
-- **Classificar issues do GitHub:** `/triage`
-- **Executar implementação:** `/implement-spec` ou `/implement` com `/tdd`
-- **Resolver bugs difíceis:** `/diagnosing-bugs`
-- **Revisar pull request ou branch:** `/code-review`
-- **Projetar módulos e interfaces:** `/codebase-design`
+## Skill routing
+
+- Reported failure or regression → `/diagnosing-bugs`
+- Domain term or irreversible tradeoff → `/domain-modeling`
+- Feature or agreed repair contract → `/to-spec`
+- Approved decomposition → `/to-tickets`
+- Implementation → `/implement-spec` with `/tdd`
+- Branch or completed change → `/code-review`
+- Module/interface seam → `/codebase-design`
 
 ---
 

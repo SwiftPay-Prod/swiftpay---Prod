@@ -103,4 +103,9 @@ public static class SystemAcquirerIds
     /// FlevoPay - Gateway de pagamentos PIX
     /// </summary>
     public static readonly Guid FlevoPay = Guid.Parse("00000000-0000-0000-0000-000000000212");
+
+    /// <summary>
+    /// PixHub - Gateway de pagamentos PIX IN e PIX OUT
+    /// </summary>
+    public static readonly Guid PixHub = Guid.Parse("00000000-0000-0000-0000-000000000213");
 }

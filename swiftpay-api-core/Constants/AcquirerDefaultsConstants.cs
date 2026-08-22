@@ -114,6 +114,15 @@ public static class AcquirerDefaultsConstants
                 DocumentationUrl = "https://app.flevopay.com.br",
                 WebhookDocumentationUrl = "https://app.flevopay.com.br",
                 WebhookAuthMode = WebhookAuthMode.Token
+            },
+            [AcquirerType.PixHub] = new()
+            {
+                Description = "PixHub - Gateway de pagamentos PIX IN, PIX OUT e split.",
+                ApiBaseUrlProduction = "https://api.usepixhub.com",
+                ApiBaseUrlSandbox = "https://api.usepixhub.com",
+                DocumentationUrl = "https://docs.usepixhub.com/",
+                WebhookDocumentationUrl = "https://docs.usepixhub.com/#webhooks",
+                WebhookAuthMode = WebhookAuthMode.HmacSha256
             }
         };
 

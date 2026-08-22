@@ -1,6 +1,6 @@
 # SwiftPay — ledger canônico de trabalho
 
-Atualizado em: 2026-08-08
+Atualizado em: 2026-08-22
 
 Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para todos os agentes. As regras completas estão em [`AGENTS.md`](AGENTS.md) e [`docs/agent-context-governance.md`](docs/agent-context-governance.md).
 
@@ -12,6 +12,29 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 - `DONE`: aceite observado e evidência registrada
 - `DROPPED`: removido deliberadamente, com justificativa
 - `SUPERSEDED`: substituído por decisão posterior
+
+## Estabilização ativa — PixHub, checkout e workflow
+
+- `IN_PROGRESS` Spec: #88 / Issue: #93 — concluir cutover operacional PixHub.
+  - Diagnóstico: API principal antiga não reconhecia `AcquirerType.PixHub`; consultas de processadoras, receita e saldo falhavam com HTTP 500.
+  - Evidência: PixHub ativo no PostgreSQL; autenticação HTTP 200; QR real de R$ 5,00 criado e consultado como `pending`; EMV e imagem presentes; nominal derivado do EMV como `BRASIL COMPRAS ONLINE LTD (White)`.
+  - Implementado: seed/backfill versionado, metadata, schema de credenciais, HMAC com janela de cinco minutos e comparação em tempo constante.
+  - Pendente: deploy do HMAC, webhook cadastrado no PixHub, pagamento confirmado e PIX OUT.
+- `IN_PROGRESS` Spec: #94 / Issue: #95 — persistência da identidade visual do checkout.
+  - Reprodução E2E no browser: template, organização, produto e checkout criados; Server Action de salvar retornou HTTP 200, mas o formulário voltou de `#8B5CF6` para `#059669`.
+  - Causa: `visualDraft` assíncrono sobrescrevia `onboardingForm.getValues()`; preview, validação e payload também usavam políticas de normalização diferentes.
+  - Implementado: React Hook Form como fonte única no clique e política compartilhada `normalizeCheckoutHexColor`.
+  - Pendente: code review, deploy e repetição do E2E com confirmação no PostgreSQL e checkout público.
+- `IN_PROGRESS` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
+  - Alterados: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
+  - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; `Spec: #96` = sucesso.
+  - Pendente: code review.
+- `IN_PROGRESS` Spec: #100 / Issue: #101 — restaurar SignalR.
+  - Reprodução: conexão `wss://swiftpayment.info/api/hubs/notifications` retorna HTTP 401; o mesmo JWT retorna HTTP 200 em REST.
+  - Implementado via TDD: promoção restrita de `access_token` para `Authorization` antes do JwtBearer; três testes passando.
+  - Pendente: code review, deploy e conexão `Connected` no browser.
+- Bloqueio financeiro: pagamento real e PIX OUT exigem aprovação explícita do usuário para valor e chave de destino.
+- Próxima ação: code review paralelo; depois deploy e provas de superfície.
 
 ## Governança universal de contexto
 
@@ -82,7 +105,6 @@ Resend será somente o transporte atrás da outbox. Endpoints SwiftPay não cham
 - Escopo preservado: nenhum banco, migration, Firebase/Firestore, worker, caller, deploy ou remoção do `EmailService` legado.
 - Próxima ação: agente principal executar a validação única da onda antes de integrar renderer ao materializador/callers.
 
-
 - `DONE` Criar Firestore Standard no Spark em `southamerica-east1`, free tier ativo e delete protection habilitada; regras cliente `deny-all` publicadas.
 - `DONE` Criar service account `swiftpay-email-worker` para a VPS com `roles/datastore.user` e custom role contendo apenas `firebaseauth.users.sendEmail`; chave fora do Git/repo, modo 0600.
 - `DONE` Criar chave Resend `sending_access` restrita a `swiftpayment.info`, validar aceite de envio e excluir a chave ampla anterior.
@@ -140,6 +162,7 @@ Resend será somente o transporte atrás da outbox. Endpoints SwiftPay não cham
 - `PENDING` Ambiguidade perto de expiry/exhaustion termina `DeliveryUnknown`, nunca `ContentExpired`.
 - `PENDING` Estado terminal PostgreSQL sem outbox retorna `Failed` autenticado e `202` genérico anônimo.
 - `PENDING` Notification disputa atomicamente só os 70 slots gerais e retorna sem espera.
+
 ### Bloqueios externos:
 
 - `DONE` Firestore database `(default)` em `southamerica-east1` confirmada existente via `firebase firestore:databases:list --project swiftpay-878c0`.
@@ -168,22 +191,22 @@ Branch atual: `fix/firebase-only-email-verification`
 
 ## Evidências observadas
 
-| Data | Verificação | Resultado observado |
-|---|---|---|
-| 2026-08-08 | `firebase --version` | Firebase CLI `15.26.0` instalada |
-| 2026-08-08 | `firebase login:list` | login confirmado como `app.swiftpay.com@gmail.com` |
-| 2026-08-08 | `firebase projects:list` | projeto `swiftpay-878c0` ativo e acessível |
-| 2026-08-08 | `firebase ext:list --project swiftpay-878c0` | nenhuma extensão instalada |
-| 2026-08-08 | `firebase firestore:databases:list` | Firestore API desativada/nunca usada |
-| 2026-08-08 | Cloud Billing API | `billingEnabled=false`, sem conta de billing |
-| 2026-08-08 | Documentação oficial Firestore | 50.000 reads/dia, 20.000 writes/dia, 1 GiB e um banco gratuito |
-| 2026-08-08 | Documentação oficial Resend | Free: 3.000/mês, 100/dia; idempotency key por 24 horas |
-| 2026-08-08 | Resend Domains API | `swiftpayment.info` verified; `sa-east-1`; sending enabled; receiving disabled; DKIM/SPF/MX verified; tracking off; TLS opportunistic |
-| 2026-08-08 | Resend Webhooks/API Keys API | nenhum webhook; chave atual lista recursos administrativos e não atende privilégio mínimo send-only |
-| 2026-08-08 | Resend `POST/GET /emails` QA | ID `ec365e18-c1f9-44fa-bdc7-a43e3ac4231f`; `last_event=delivered` para `app.swiftpay.com@gmail.com` |
-| 2026-08-08 | Replay com idempotency key | mesmo ID, HTTP 200 e `idempotent-replayed: true`; rate limit 10 requests/s |
-| 2026-08-08 | Revisão independente | Spark viável; corrigir `Accepted`, `sendBefore`, fencing token, pause de quota e fronteira PostgreSQL |
-| 2026-08-08 | `npm run lint` | bloqueado antes do código: `tsc: not found` |
+| Data       | Verificação                                  | Resultado observado                                                                                                                   |
+| ---------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-08 | `firebase --version`                         | Firebase CLI `15.26.0` instalada                                                                                                      |
+| 2026-08-08 | `firebase login:list`                        | login confirmado como `app.swiftpay.com@gmail.com`                                                                                    |
+| 2026-08-08 | `firebase projects:list`                     | projeto `swiftpay-878c0` ativo e acessível                                                                                            |
+| 2026-08-08 | `firebase ext:list --project swiftpay-878c0` | nenhuma extensão instalada                                                                                                            |
+| 2026-08-08 | `firebase firestore:databases:list`          | Firestore API desativada/nunca usada                                                                                                  |
+| 2026-08-08 | Cloud Billing API                            | `billingEnabled=false`, sem conta de billing                                                                                          |
+| 2026-08-08 | Documentação oficial Firestore               | 50.000 reads/dia, 20.000 writes/dia, 1 GiB e um banco gratuito                                                                        |
+| 2026-08-08 | Documentação oficial Resend                  | Free: 3.000/mês, 100/dia; idempotency key por 24 horas                                                                                |
+| 2026-08-08 | Resend Domains API                           | `swiftpayment.info` verified; `sa-east-1`; sending enabled; receiving disabled; DKIM/SPF/MX verified; tracking off; TLS opportunistic |
+| 2026-08-08 | Resend Webhooks/API Keys API                 | nenhum webhook; chave atual lista recursos administrativos e não atende privilégio mínimo send-only                                   |
+| 2026-08-08 | Resend `POST/GET /emails` QA                 | ID `ec365e18-c1f9-44fa-bdc7-a43e3ac4231f`; `last_event=delivered` para `app.swiftpay.com@gmail.com`                                   |
+| 2026-08-08 | Replay com idempotency key                   | mesmo ID, HTTP 200 e `idempotent-replayed: true`; rate limit 10 requests/s                                                            |
+| 2026-08-08 | Revisão independente                         | Spark viável; corrigir `Accepted`, `sendBefore`, fencing token, pause de quota e fronteira PostgreSQL                                 |
+| 2026-08-08 | `npm run lint`                               | bloqueado antes do código: `tsc: not found`                                                                                           |
 
 ## Expansões adiadas
 

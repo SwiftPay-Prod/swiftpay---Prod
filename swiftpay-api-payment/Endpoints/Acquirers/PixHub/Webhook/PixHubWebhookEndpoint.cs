@@ -1,7 +1,10 @@
+using System.Text.Json;
 using FastEndpoints;
+using Microsoft.EntityFrameworkCore;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
+using swiftpay_api_payment.Clients.PixHub;
 using swiftpay_api_payment.Clients.PixHub.Models;
 using swiftpay_api_payment.EndpointsGroups.Acquirers;
 using swiftpay_api_payment.Interfaces;
@@ -21,42 +24,80 @@ public sealed class PixHubWebhookEndpoint(
     PrimaryDbContext dbContext,
     IApiLogService apiLogService,
     ILogger<PixHubWebhookEndpoint> logger
-) : Endpoint<PixHubWebhookPayload, PixHubWebhookResponse>
+) : EndpointWithoutRequest<PixHubWebhookResponse>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     public override void Configure()
     {
         Post("webhooks");
         Group<PixHubGroup>();
     }
 
-    public override async Task HandleAsync(PixHubWebhookPayload req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
+        using var reader = new StreamReader(HttpContext.Request.Body);
+        var rawBody = await reader.ReadToEndAsync(ct);
+        var signature = HttpContext.Request.Headers["PixHub-Signature"].FirstOrDefault();
+        var webhookSecret = await dbContext.Acquirers
+            .AsNoTracking()
+            .Where(acquirer => acquirer.Type == AcquirerType.PixHub)
+            .Select(acquirer => acquirer.WebhookToken)
+            .SingleOrDefaultAsync(ct);
+
+        if (!PixHubWebhookSignatureVerifier.Verify(rawBody, signature, webhookSecret ?? string.Empty, DateTimeOffset.UtcNow))
+        {
+            logger.LogWarning("PixHub webhook rejected because signature validation failed");
+            await Send.UnauthorizedAsync(ct);
+            return;
+        }
+
+        PixHubWebhookPayload? payload;
         try
         {
-            if (req.Type == "transaction" && req.Transaction != null)
+            payload = JsonSerializer.Deserialize<PixHubWebhookPayload>(rawBody, JsonOptions);
+        }
+        catch (JsonException exception)
+        {
+            logger.LogWarning(exception, "PixHub webhook rejected because payload is invalid JSON");
+            await Send.ResponseAsync(new PixHubWebhookResponse { Success = false }, 400, cancellation: ct);
+            return;
+        }
+
+        if (payload is null)
+        {
+            await Send.ResponseAsync(new PixHubWebhookResponse { Success = false }, 400, cancellation: ct);
+            return;
+        }
+
+        try
+        {
+            if (payload.Type == "transaction" && payload.Transaction != null)
             {
-                await ProcessTransactionAsync(req.Transaction, req.Event, ct);
+                await ProcessTransactionAsync(payload.Transaction, ct);
             }
-            else if (req.Type == "transfer" && req.Transfer != null)
+            else if (payload.Type == "transfer" && payload.Transfer != null)
             {
-                await ProcessTransferAsync(req.Transfer, req.Event, ct);
+                await ProcessTransferAsync(payload.Transfer, ct);
             }
 
-            await SendOkAsync(ct);
+            await Send.OkAsync(new PixHubWebhookResponse(), ct);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            logger.LogError(ex, "Unexpected error processing PixHub webhook event {Event}", req.Event);
-            await SendOkAsync(ct);
+            logger.LogError(exception, "Unexpected error processing PixHub webhook event {Event}", payload.Event);
+            await Send.ResponseAsync(new PixHubWebhookResponse { Success = false }, 500, cancellation: ct);
         }
     }
 
-    private async Task ProcessTransactionAsync(PixHubWebhookTransaction transaction, string? eventType, CancellationToken ct)
+    private async Task ProcessTransactionAsync(PixHubWebhookTransaction transaction, CancellationToken ct)
     {
         if (string.IsNullOrEmpty(transaction.Id)) return;
 
         var status = PixHubStatusConverter.ConvertTransactionStatus(transaction.Status);
-
         var result = await paymentProcessingService.ProcessAcquirerWebhookAsync(new AcquirerWebhookData
         {
             AcquirerType = AcquirerType.PixHub,
@@ -82,12 +123,11 @@ public sealed class PixHubWebhookEndpoint(
             ct: ct);
     }
 
-    private async Task ProcessTransferAsync(PixHubWebhookTransfer transfer, string? eventType, CancellationToken ct)
+    private async Task ProcessTransferAsync(PixHubWebhookTransfer transfer, CancellationToken ct)
     {
         if (string.IsNullOrEmpty(transfer.Id)) return;
 
         var status = PixHubStatusConverter.ConvertTransferStatus(transfer.Status);
-
         var processed = await payoutWebhookService.TryProcessWebhookAsync(
             AcquirerType.PixHub,
             transfer.Id,
@@ -109,10 +149,5 @@ public sealed class PixHubWebhookEndpoint(
             transfer.Id,
             transfer.Id,
             ct: ct);
-    }
-
-    private Task SendOkAsync(CancellationToken ct)
-    {
-        return Send.ResponseAsync(new PixHubWebhookResponse(), 200, cancellation: ct);
     }
 }

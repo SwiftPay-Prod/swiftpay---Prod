@@ -25,6 +25,7 @@ import {
 	type CheckoutOnboardingFormData,
 	validateCheckoutOnboardingReview,
 } from '../schemas/checkout-upsert-form-schema';
+import { normalizeCheckoutHexColor } from '@/utils/checkout-visual';
 
 const CHECKOUT_PRIMARY_COLOR_DEFAULT = '#059669';
 
@@ -312,9 +313,11 @@ function buildLivePreviewUrl(
 	}
 ): string {
 	const url = new URL(checkoutUrl);
+	const primaryColor = normalizeCheckoutHexColor(preview.primaryColor);
+	const secondaryColor = normalizeCheckoutHexColor(preview.secondaryColor);
 	url.searchParams.set('previewMode', '1');
-	url.searchParams.set('previewPrimaryColor', preview.primaryColor || '');
-	url.searchParams.set('previewSecondaryColor', preview.secondaryColor || '');
+	url.searchParams.set('previewPrimaryColor', primaryColor ?? '');
+	url.searchParams.set('previewSecondaryColor', secondaryColor ?? '');
 	if (preview.colorMode) {
 		url.searchParams.set('previewColorMode', preview.colorMode);
 	}
@@ -335,26 +338,6 @@ function isValidAbsoluteUrl(value: string): boolean {
 	}
 }
 
-function normalizeHexColor(color: string | null | undefined): string | undefined {
-	if (!color) return undefined;
-	let trimmed = color.trim();
-	if (!trimmed.startsWith('#')) {
-		trimmed = `#${trimmed}`;
-	}
-	if (trimmed.length === 4 && /^#[0-9A-Fa-f]{3}$/.test(trimmed)) {
-		const r = trimmed[1];
-		const g = trimmed[2];
-		const b = trimmed[3];
-		return `#${r}${r}${g}${g}${b}${b}`.toUpperCase();
-	}
-	if (trimmed.length === 7 && /^#[0-9A-Fa-f]{6}$/.test(trimmed)) {
-		return trimmed.toUpperCase();
-	}
-	if (trimmed.length === 9 && /^#[0-9A-Fa-f]{8}$/.test(trimmed)) {
-		return trimmed.slice(0, 7).toUpperCase();
-	}
-	return undefined;
-}
 
 function sanitizeUrl(url: string | null | undefined): string | undefined {
 	if (!url || !url.trim()) return undefined;
@@ -443,13 +426,13 @@ function validateStepValues(stepKey: CheckoutStepSaveKey, values: CheckoutOnboar
 			return null;
 		}
 		case 'visual': {
-			const normalizedPrimary = normalizeHexColor(values.primaryColor);
+			const normalizedPrimary = normalizeCheckoutHexColor(values.primaryColor);
 			if (!normalizedPrimary) {
 				return 'A cor principal deve estar em formato hexadecimal válido (ex: #EF4444).';
 			}
 
 			if (values.colorMode === CheckoutColorMode.Gradient && values.secondaryColor) {
-				const normalizedSecondary = normalizeHexColor(values.secondaryColor);
+				const normalizedSecondary = normalizeCheckoutHexColor(values.secondaryColor);
 				if (!normalizedSecondary) {
 					return 'A cor secundária deve estar em formato hexadecimal válido (ex: #1D4ED8).';
 				}
@@ -785,16 +768,13 @@ export function useCheckoutOnboarding({
 
 		setSavingStepKey(stepKey);
 		try {
-			// React Hook Form is the single source of truth at the instant the user
-			// presses Save. Draft state is derived asynchronously for the preview
-			// and must never overwrite newer form values.
 			const currentForm = onboardingForm.getValues();
 			let payload: UpdateCheckoutRequest = {};
 
 			switch (stepKey) {
 				case 'visual': {
-					const primaryColor = normalizeHexColor(currentForm.primaryColor);
-					const secondaryColor = normalizeHexColor(currentForm.secondaryColor);
+					const primaryColor = normalizeCheckoutHexColor(currentForm.primaryColor);
+					const secondaryColor = normalizeCheckoutHexColor(currentForm.secondaryColor);
 
 					payload = {
 						primaryColor: primaryColor ?? CHECKOUT_PRIMARY_COLOR_DEFAULT,
@@ -803,8 +783,6 @@ export function useCheckoutOnboarding({
 								? secondaryColor
 								: undefined,
 						colorMode: currentForm.colorMode,
-						// Empty strings are intentional: the backend maps them to null,
-						// allowing a previously saved asset to be removed.
 						logoUrl: currentForm.logoUrl,
 						backgroundImageUrl: currentForm.backgroundImageUrl,
 						faviconUrl: currentForm.faviconUrl,
@@ -878,8 +856,8 @@ export function useCheckoutOnboarding({
 					break;
 				default:
 					payload = {
-						primaryColor: normalizeHexColor(formValues.primaryColor) || CHECKOUT_PRIMARY_COLOR_DEFAULT,
-						secondaryColor: formValues.colorMode === CheckoutColorMode.Gradient ? normalizeHexColor(formValues.secondaryColor) : undefined,
+						primaryColor: normalizeCheckoutHexColor(formValues.primaryColor) || CHECKOUT_PRIMARY_COLOR_DEFAULT,
+						secondaryColor: formValues.colorMode === CheckoutColorMode.Gradient ? normalizeCheckoutHexColor(formValues.secondaryColor) : undefined,
 						colorMode: formValues.colorMode,
 						logoUrl: formValues.logoUrl || undefined,
 						backgroundImageUrl: formValues.backgroundImageUrl || undefined,

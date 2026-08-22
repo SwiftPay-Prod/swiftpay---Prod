@@ -28,6 +28,7 @@ import { UploadFolder } from '@/types/enums';
 import type { CheckoutData } from '@/types/merchant/checkouts';
 import { CheckoutColorMode } from '@/types/enums';
 import type { CheckoutOnboardingFormData } from '../schemas/checkout-upsert-form-schema';
+import { normalizeCheckoutHexColor } from '@/utils/checkout-visual';
 
 interface VisualTabProps {
 	checkout: CheckoutData;
@@ -84,10 +85,7 @@ function GradientPreviewLarge({
 
 function validateColor(color: string): string | null {
 	if (!color.trim()) return null;
-	const hexRegex = /^#([0-9A-Fa-f]{3}){1,2}$/;
-	if (!hexRegex.test(color)) {
-		return 'Use formato hexadecimal (ex: #FF5733)';
-	}
+	if (!normalizeCheckoutHexColor(color)) return 'Use formato hexadecimal (ex: #FF5733)';
 	return null;
 }
 
@@ -151,18 +149,14 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 		updateColorMode(value as CheckoutColorMode);
 	}
 
-	function handlePrimaryColorChange(color: unknown) {
-		if (!color) return;
-		const raw = typeof color === 'string' ? color : (color as { toString?: (f?: string) => string }).toString?.('hex') ?? String(color);
-		const hex = raw.startsWith('#') ? raw : `#${raw}`;
-		onFormChange({ primaryColor: hex.toUpperCase() });
+	function handlePrimaryColorChange(color: ReturnType<typeof parseColor>) {
+		const normalized = normalizeCheckoutHexColor(color.toString('hex'));
+		if (normalized) onFormChange({ primaryColor: normalized });
 	}
 
-	function handleSecondaryColorChange(color: unknown) {
-		if (!color) return;
-		const raw = typeof color === 'string' ? color : (color as { toString?: (f?: string) => string }).toString?.('hex') ?? String(color);
-		const hex = raw.startsWith('#') ? raw : `#${raw}`;
-		onFormChange({ secondaryColor: hex.toUpperCase() });
+	function handleSecondaryColorChange(color: ReturnType<typeof parseColor>) {
+		const normalized = normalizeCheckoutHexColor(color.toString('hex'));
+		if (normalized) onFormChange({ secondaryColor: normalized });
 	}
 
 	return (

@@ -27,6 +27,8 @@ public static class WebApplicationExtensions
 
         app.UseCorrelationId();
 
+        app.UseMiddleware<SignalRQueryStringAuthenticationMiddleware>();
+
         app.UseAuthentication();
         app.UseSessionValidation();
         app.UseAuthorization();

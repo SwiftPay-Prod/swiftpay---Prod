@@ -22,28 +22,36 @@ Before acting, every agent MUST:
 
 An agent that cannot complete this sequence MUST stop and document the exact blocker in `TODOS.md`.
 
-## Mandatory work lifecycle
+## Mandatory Matt Pocock workflow
 
-- Before work: record every requested item as a separate task in `TODOS.md` and in the active task tracker.
-- During work: keep task status, decisions, risks, failed attempts, and blockers current as facts change.
-- After a decision: create or update a versioned ADR under `docs/adr/`; do not leave the rationale only in chat.
-- After verification: record the exact command or scenario, date, and observed result. Never claim broader coverage than was exercised.
-- Before handoff or stopping: update `TODOS.md` with completed work, remaining work, changed files, verification evidence, blockers, and the single next concrete action.
-- After implementation: update affected architecture, operational, API, and user documentation in the same workstream.
+Every request MUST pass these gates in order:
+
+1. **Route:** invoke the matching Matt Pocock skill and read `CONTEXT.md` plus relevant ADRs.
+2. **Track:** record every requested item in `TODOS.md` and the active task tracker.
+3. **Diagnose:** for a reported failure, use `diagnosing-bugs`; produce a red-capable reproduction before changing source.
+4. **Specify:** publish a `/to-spec` issue and confirm the observable test seam. Investigation may precede the spec; source or production mutation may not.
+5. **Decompose:** run `/to-tickets`; publish approved tracer-bullet tickets and blocking edges.
+6. **Implement:** execute the current ticket with `/implement-spec` and `/tdd`, one red-green slice at a time.
+7. **Review:** run `/code-review` against a fixed point. Resolve both Standards and Spec findings.
+8. **Verify:** run the affected behavior, not only compilation. Record exact commands, scenarios, dates, and observed results in `TODOS.md`.
+9. **Deploy:** deploy only the reviewed, verified revision. Production financial operations require explicit user approval for value and destination.
+10. **Close:** close tickets/spec only after production evidence satisfies every acceptance criterion.
+
+Completion criterion: every gate has durable evidence; `TODOS.md` names changed files, verification, blockers, and the next action.
 
 ## Canonical durable artifacts
 
-| Artifact | Purpose |
-|---|---|
-| `AGENTS.md` | Universal rules for every agent |
-| `CLAUDE.md` | Required engineering workflow and skills routing |
-| `.github/copilot-instructions.md` | Copilot discovery and instruction index |
-| `TODOS.md` | Canonical task ledger and current handoff state |
-| `docs/agent-context-governance.md` | Full context capture and handoff procedure |
-| `CONTEXT.md` | Ubiquitous Language glossary and domain boundaries |
-| `docs/adr/` | Architectural Decision Records (ADRs) |
-| `docs/architecture/` | Current system design and runtime behavior |
-| Tests and command output references | Verification evidence for behavior claims |
+| Artifact                            | Purpose                                            |
+| ----------------------------------- | -------------------------------------------------- |
+| `AGENTS.md`                         | Universal rules for every agent                    |
+| `CLAUDE.md`                         | Required engineering workflow and skills routing   |
+| `.github/copilot-instructions.md`   | Copilot discovery and instruction index            |
+| `TODOS.md`                          | Canonical task ledger and current handoff state    |
+| `docs/agent-context-governance.md`  | Full context capture and handoff procedure         |
+| `CONTEXT.md`                        | Ubiquitous Language glossary and domain boundaries |
+| `docs/adr/`                         | Architectural Decision Records (ADRs)              |
+| `docs/architecture/`                | Current system design and runtime behavior         |
+| Tests and command output references | Verification evidence for behavior claims          |
 
 Local agent artifacts and long-term memory MAY supplement these files, but MUST NOT replace committed project records.
 

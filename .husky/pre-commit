@@ -1,0 +1,2 @@
+npx lint-staged
+bash scripts/verify-matt-workflow.sh
