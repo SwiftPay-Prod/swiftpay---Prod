@@ -12,7 +12,7 @@ import {
 import { getMerchantFees } from '@/app/actions/merchant/settings';
 import { useEnvironment } from '@/contexts/environment-context';
 import { useDebounce } from '@/hooks/use-debounce';
-import { PaymentMethod, PaymentStatus } from '@/types/enums';
+import { PaymentStatus } from '@/types/enums';
 import type { MinimalPayment, PaymentDetails } from '@/types/merchant/payments';
 import type { Paginated, ApiResponse } from '@/types/common';
 import type { FeesPromise } from './modals/create-transaction-modal';
@@ -23,7 +23,6 @@ type PaymentPromise = Promise<ApiResponse<PaymentDetails>>;
 interface FiltersState {
 	search: string;
 	status: PaymentStatus | 'all';
-	method: PaymentMethod | 'all';
 	pageSize: string;
 	page: number;
 	sortBy: string;
@@ -47,7 +46,6 @@ interface ActionState {
 const initialFilters: FiltersState = {
 	search: '',
 	status: 'all',
-	method: 'all',
 	pageSize: '10',
 	page: 1,
 	sortBy: 'createdAt',
@@ -91,7 +89,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		merchantId,
 		environment,
 		status: filters.status,
-		method: filters.method,
 		page: filters.page,
 		pageSize: filters.pageSize,
 		sortBy: filters.sortBy,
@@ -113,23 +110,19 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 
 	const hasFilters =
 		filters.status !== 'all' ||
-		filters.method !== 'all' ||
 		filters.pageSize !== '10' ||
 		filters.search.trim() !== '';
 
-	// Data fetching effect
 	useEffect(() => {
 		if (fetchedParams === currentParams) return;
 
 		let cancelled = false;
 
 		const requestStatus = filters.status === 'all' ? undefined : filters.status;
-		const requestMethod = filters.method === 'all' ? undefined : filters.method;
 		const requestSearch = debouncedSearch.trim() === '' ? undefined : debouncedSearch.trim();
 
 		listMerchantPayments(merchantId, {
 			status: requestStatus,
-			method: requestMethod,
 			search: requestSearch,
 			environment,
 			page: filters.page,
@@ -149,9 +142,8 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		return () => {
 			cancelled = true;
 		};
-	}, [merchantId, environment, filters.status, filters.method, filters.page, filters.sortBy, filters.sortOrder, pageSizeValue, currentParams, fetchedParams, refreshKey, isRefreshing, debouncedSearch]);
+	}, [merchantId, environment, filters.status, filters.page, filters.sortBy, filters.sortOrder, pageSizeValue, currentParams, fetchedParams, refreshKey, isRefreshing, debouncedSearch]);
 
-	// Filter handlers
 	const updateFilter = useCallback(<K extends keyof FiltersState>(key: K, value: FiltersState[K]) => {
 		setFilters((prev) => ({
 			...prev,
@@ -167,11 +159,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 	const handleStatusChange = useCallback((key: string) => {
 		const nextStatus = (key || 'all') as PaymentStatus | 'all';
 		updateFilter('status', nextStatus);
-	}, [updateFilter]);
-
-	const handleMethodChange = useCallback((key: string) => {
-		const nextMethod = (key || 'all') as PaymentMethod | 'all';
-		updateFilter('method', nextMethod);
 	}, [updateFilter]);
 
 	const handlePageSizeChange = useCallback((key: string) => {
@@ -192,7 +179,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		setRefreshKey((v) => v + 1);
 	}, []);
 
-	// Details modal handlers
 	const openDetails = useCallback((paymentId: string) => {
 		setDetailsModal({
 			isOpen: true,
@@ -204,7 +190,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		setDetailsModal(open ? detailsModal : initialDetailsModal);
 	}, [detailsModal]);
 
-	// Create modal handlers
 	const openCreate = useCallback(() => {
 		setCreateModal({
 			isOpen: true,
@@ -242,7 +227,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		}
 	}, [merchantId, handleRefresh]);
 
-
 	const canResendWebhook = useCallback((payment: MinimalPayment) => {
 		return !readOnly && payment.status === PaymentStatus.Completed && payment.hasCallbackUrl;
 	}, [readOnly]);
@@ -260,7 +244,6 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 			updateFilter,
 			handleSearchChange,
 			handleStatusChange,
-			handleMethodChange,
 			handlePageSizeChange,
 			handlePageChange,
 			handleClearFilters,
@@ -292,4 +275,3 @@ export function useTransactionsTable({ merchantId, readOnly = false }: UseTransa
 		},
 	};
 }
-

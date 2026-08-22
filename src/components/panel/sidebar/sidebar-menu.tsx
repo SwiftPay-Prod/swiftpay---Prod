@@ -162,17 +162,17 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 	) : null;
 
 	const buttonClassName = [
-		showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
-		effectClassName,
-		active
-			? 'mockup-sidebar-item active'
-			: 'mockup-sidebar-item',
-		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
-		!showFull && active ? '!bg-brand-soft !text-accent rounded-md' : '',
-		!showFull && !active ? 'rounded-md text-muted-foreground hover:text-foreground hover:bg-default/50' : '',
-	]
-		.filter(Boolean)
-		.join(' ');
+	showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
+	effectClassName,
+	active
+		? 'mockup-sidebar-item active'
+		: 'mockup-sidebar-item',
+	item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
+	!showFull && active ? '!bg-[#494fdf]/15 !text-[#4f55f1] rounded-md' : '',
+	!showFull && !active ? 'rounded-md text-white/60 hover:text-white hover:bg-white/10' : '',
+]
+	.filter(Boolean)
+	.join(' ');
 
 	const menuButton = (
 		<button

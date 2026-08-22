@@ -825,22 +825,22 @@ body {
 	}
 
 	.mockup-sidebar-item.active {
-		background-color: var(--brand-soft);
-		color: var(--accent);
-		font-weight: 550;
-	}
+	background-color: rgba(73, 79, 223, 0.18);
+	color: rgba(79, 85, 241, 1);
+	font-weight: 550;
+}
 
-	.mockup-sidebar-item.active::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 20%;
-		bottom: 20%;
-		width: 3px;
-		background-color: var(--accent);
-		border-top-right-radius: 2px;
-		border-bottom-right-radius: 2px;
-	}
+.mockup-sidebar-item.active::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 20%;
+	bottom: 20%;
+	width: 3px;
+	background-color: rgba(79, 85, 241, 1);
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
 
 	.mockup-sidebar-badge {
 		font-size: 10px;

@@ -1,12 +1,21 @@
 'use client';
 
-import { Button, Card, Chip, Tooltip, Dropdown, toast } from '@heroui/react';
+import React from 'react';
+import { Button, Tooltip, Dropdown, toast } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import { AddCircleIcon, CreditCardIcon, ViewIcon, SentIcon, MoreHorizontalCircle01Icon, SourceCodeSquareIcon, Link02Icon, ShoppingCartCheck01Icon, Copy01Icon, CheckmarkCircle02Icon, CancelCircleIcon } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
+import {
+	ViewIcon,
+	SentIcon,
+	MoreHorizontalCircle01Icon,
+	SourceCodeSquareIcon,
+	Link02Icon,
+	ShoppingCartCheck01Icon,
+	Copy01Icon,
+	CheckmarkCircle02Icon,
+	CancelCircleIcon,
+} from '@hugeicons/core-free-icons';
 import {
 	paymentStatusParse,
-	paymentMethodParse,
 	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
@@ -24,7 +33,13 @@ import type { MinimalPayment } from '@/types/merchant/payments';
 import type { DataTableColumn } from '@/components/ui/data-table';
 import { useTransactionsTable } from './use-transactions-table';
 import { AnimatedCurrency } from '@/components/ui/animated-currency';
-import { AnimatedNumber } from '@/components/ui/animated-number';
+import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
+import {
+	RevolutPixIcon,
+	RevolutPlusIcon,
+	RevolutTrendingUpIcon,
+	RevolutCheckIcon,
+} from '@/components/ui/revolut-icons';
 
 interface TransactionsTableProps {
 	merchantId: string;
@@ -32,7 +47,13 @@ interface TransactionsTableProps {
 }
 
 const statusOptions = parseToFilterOptions(paymentStatusParse, 'Todos os status');
-const methodOptions = parseToFilterOptions(paymentMethodParse, 'Todos os métodos');
+
+const originFilterOptions = [
+	{ key: '', label: 'Todas as origens' },
+	{ key: 'checkout', label: 'Checkout' },
+	{ key: 'link', label: 'Link de Pagamento' },
+	{ key: 'api', label: 'API / Integração' },
+];
 
 interface ColumnConfig {
 	onView: (id: string) => void;
@@ -86,7 +107,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			key: 'customerName',
 			header: 'Cliente',
 			render: (payment) => (
-				<span className="text-sm truncate max-w-40">
+				<span className="text-sm font-medium text-white truncate max-w-40">
 					{payment.customer?.name ?? '-'}
 				</span>
 			),
@@ -102,30 +123,30 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 				if (hasPhone && hasEmail) {
 					return (
 						<div className="flex flex-col gap-0.5">
-							<EmailLink email={payment.customer!.email!} className="text-sm" />
-							<PhoneLink phone={payment.customer!.phone!} className="text-sm" />
+							<EmailLink email={payment.customer!.email!} className="text-xs text-white/70" />
+							<PhoneLink phone={payment.customer!.phone!} className="text-xs text-white/50" />
 						</div>
 					);
 				}
 
 				if (hasEmail) {
-					return <EmailLink email={payment.customer!.email!} className="text-sm" />;
+					return <EmailLink email={payment.customer!.email!} className="text-xs text-white/70" />;
 				}
 
 				if (hasPhone) {
-					return <PhoneLink phone={payment.customer!.phone!} className="text-sm" />;
+					return <PhoneLink phone={payment.customer!.phone!} className="text-xs text-white/50" />;
 				}
 
-				return <span className="text-sm text-muted-foreground">-</span>;
+				return <span className="text-sm text-white/40">-</span>;
 			},
 		},
 		{
 			key: 'amount',
-			header: 'Valor',
+			header: 'Valor Bruto',
 			render: (payment) => (
 				<div className="flex flex-col">
-					<span className="font-medium">{formatCurrency(payment.amount)}</span>
-					<span className="text-xs text-muted-foreground">Taxa: {formatCurrency(payment.fee)}</span>
+					<span className="text-sm font-bold font-mono text-white tabular-nums">{formatCurrency(payment.amount)}</span>
+					<span className="text-[11px] font-mono text-white/40">Taxa: {formatCurrency(payment.fee)}</span>
 				</div>
 			),
 		},
@@ -133,34 +154,18 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			key: 'netAmount',
 			header: 'Líquido',
 			render: (payment) => (
-				<span className="font-medium text-success">{formatCurrency(payment.netAmount)}</span>
+				<span className="text-sm font-bold font-mono text-[#00a87e] tabular-nums">{formatCurrency(payment.netAmount)}</span>
 			),
-		},
-		{
-			key: 'method',
-			header: 'Método',
-			render: (payment) => {
-				const methodParse = paymentMethodParse[payment.method];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(methodParse.color)} size="sm" className="gap-1">
-						{methodParse.icon}
-						{methodParse.label}
-					</Chip>
-				);
-			},
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: (payment) => {
-				const statusParsed = paymentStatusParse[payment.status];
-				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1">
-						{statusParsed.icon}
-						{statusParsed.label}
-					</Chip>
-				);
-			},
+			render: (payment) => (
+				<RevolutStatusBadge
+					status={payment.status}
+					label={paymentStatusParse[payment.status]?.label}
+				/>
+			),
 		},
 		{
 			key: 'origin',
@@ -171,28 +176,26 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 				const sourceBadge = getRequestSourceBadge(source);
 
 				return (
-					<div className="flex flex-col">
-						<Chip variant="soft" color={mapParseColorToChipColor(sourceBadge.color)} size="sm" className="gap-1 w-fit">
-							<Icon icon={sourceBadge.icon} className="icon-xs" />
-							{sourceBadge.label}
-						</Chip>
-					</div>
+					<span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs font-mono text-white/80">
+						<Icon icon={sourceBadge.icon} className="icon-xs text-white/60" />
+						{sourceBadge.label}
+					</span>
 				);
 			},
 		},
 		{
 			key: 'payer',
-			header: 'Pagador',
+			header: 'Pagador PIX',
 			sortable: false,
 			render: (payment) => {
 				if (!payment.pix?.payerName) {
-					return <span className="text-sm text-muted-foreground">-</span>;
+					return <span className="text-sm text-white/40">-</span>;
 				}
 				return (
 					<div className="flex flex-col">
-						<span className="text-sm truncate max-w-40">{payment.pix.payerName}</span>
+						<span className="text-sm text-white font-medium truncate max-w-40">{payment.pix.payerName}</span>
 						{payment.pix.payerBank && (
-							<span className="text-xs text-muted-foreground">{payment.pix.payerBank}</span>
+							<span className="text-[11px] text-white/40 truncate">{payment.pix.payerBank}</span>
 						)}
 					</div>
 				);
@@ -202,7 +205,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			key: 'createdAt',
 			header: 'Criado em',
 			render: (payment) => (
-				<span className="text-sm text-muted-foreground">{formatDate(payment.createdAt)}</span>
+				<span className="text-xs font-mono text-white/50">{formatDate(payment.createdAt)}</span>
 			),
 		},
 		{
@@ -213,37 +216,48 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			render: (payment) => (
 				<div className="flex items-center justify-center gap-1">
 					<Tooltip>
-						<Button isIconOnly variant="tertiary" onPress={() => onView(payment.id)}>
+						<button
+							type="button"
+							onClick={() => onView(payment.id)}
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+						>
 							<Icon icon={ViewIcon} className="icon-sm" />
-							<Tooltip.Content>Ver detalhes</Tooltip.Content>
-						</Button>
+						</button>
+						<Tooltip.Content>Ver detalhes</Tooltip.Content>
 					</Tooltip>
+
 					{payment.transactionVisualizationUrl && (
 						<Tooltip>
-							<Button
-								isIconOnly
-								variant="tertiary"
-								onPress={async () => {
+							<button
+								type="button"
+								onClick={async () => {
 									await onCopyVisualizationLink(payment.transactionVisualizationUrl!);
 								}}
+								className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors"
 							>
 								<Icon icon={Copy01Icon} className="icon-sm" />
-								<Tooltip.Content>Copiar link de visualização</Tooltip.Content>
-							</Button>
+							</button>
+							<Tooltip.Content>Copiar link de visualização</Tooltip.Content>
 						</Tooltip>
 					)}
+
 					{canResendWebhook(payment) && (
 						<Dropdown>
 							<Tooltip>
-								<Button isIconOnly variant="tertiary" aria-label="Mais ações" isPending={resendingWebhookId === payment.id}>
+								<button
+									type="button"
+									disabled={resendingWebhookId === payment.id}
+									aria-label="Mais ações"
+									className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/8 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
+								>
 									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
-									<Tooltip.Content>Mais ações</Tooltip.Content>
-								</Button>
+								</button>
+								<Tooltip.Content>Mais ações</Tooltip.Content>
 							</Tooltip>
-							<Dropdown.Popover className="min-w-48">
+							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
 								<Dropdown.Menu aria-label="Ações da transação">
-									<Dropdown.Item id="resend-webhook" textValue="Reenviar webhook" className="text-secondary" onPress={() => onResendWebhook(payment)}>
-										<Icon icon={SentIcon} className="icon-xs text-secondary" />
+									<Dropdown.Item id="resend-webhook" textValue="Reenviar webhook" className="text-white hover:bg-white/10" onPress={() => onResendWebhook(payment)}>
+										<Icon icon={SentIcon} className="icon-xs text-[#4f55f1]" />
 										Reenviar webhook
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -261,12 +275,9 @@ function renderMobileTransactionCard(
 	index: number,
 	openActions?: () => void,
 ) {
-	const statusParsed = paymentStatusParse[payment.status];
-	const methodParsed = paymentMethodParse[payment.method];
-
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -283,66 +294,39 @@ function renderMobileTransactionCard(
 		>
 			<div className="flex items-start justify-between gap-3">
 				<div className="min-w-0 flex-1">
-					<span className="font-semibold text-sm truncate block">{payment.customer?.name ?? 'Cliente não informado'}</span>
-					<p className="mt-0.5 text-xs text-muted-foreground truncate">
-						{methodParsed.label} • {formatDate(payment.createdAt)}
+					<span className="font-bold text-sm text-white truncate block">{payment.customer?.name ?? 'Cliente não informado'}</span>
+					<p className="mt-0.5 text-xs text-white/50 font-mono truncate">
+						PIX • {formatDate(payment.createdAt)}
 					</p>
 				</div>
-				<Chip variant="soft" color={mapParseColorToChipColor(statusParsed.color)} size="sm" className="gap-1 shrink-0">
-					{statusParsed.label}
-				</Chip>
+				<RevolutStatusBadge status={payment.status} label={paymentStatusParse[payment.status]?.label} />
 			</div>
 
 			{(payment.customer?.email || payment.customer?.phone) && (
 				<div className="mt-2 flex flex-col gap-0.5">
-					{payment.customer.email && <EmailLink email={payment.customer.email} className="text-xs" />}
-					{payment.customer.phone && <PhoneLink phone={payment.customer.phone} className="text-xs" />}
+					{payment.customer.email && <EmailLink email={payment.customer.email} className="text-xs text-white/60" />}
+					{payment.customer.phone && <PhoneLink phone={payment.customer.phone} className="text-xs text-white/50" />}
 				</div>
 			)}
 
-			<div className="mt-2">
-				<div className="grid grid-cols-2 gap-3">
-					<div className="min-w-0">
-						<p className="text-xs text-muted-foreground">Valor</p>
-						<p className="mt-1 text-sm font-semibold truncate">{formatCurrency(payment.amount)}</p>
-						<p className="text-xs text-muted-foreground">Taxa: {formatCurrency(payment.fee)}</p>
-					</div>
-					<div className="min-w-0">
-						<p className="text-xs text-muted-foreground">Líquido</p>
-						<p className="mt-1 text-sm font-semibold text-success truncate">{formatCurrency(payment.netAmount)}</p>
-					</div>
+			<div className="mt-3 grid grid-cols-2 gap-3 border-t border-white/8 pt-3">
+				<div className="min-w-0">
+					<p className="text-[11px] uppercase tracking-wider text-white/40">Valor Bruto</p>
+					<p className="mt-0.5 text-sm font-bold font-mono text-white truncate">{formatCurrency(payment.amount)}</p>
+					<p className="text-[11px] font-mono text-white/40">Taxa: {formatCurrency(payment.fee)}</p>
 				</div>
-				<div className="mt-2 border-t border-divider pt-2">
-					<p className="text-xs text-muted-foreground">Origem</p>
-					{(() => {
-						const source = getPaymentRequestSource(payment);
-						const sourceBadge = getRequestSourceBadge(source);
-
-						return (
-							<>
-								<div className="mt-1">
-									<Chip variant="soft" color={mapParseColorToChipColor(sourceBadge.color)} size="sm" className="gap-1">
-										<Icon icon={sourceBadge.icon} className="icon-xs" />
-										{sourceBadge.label}
-									</Chip>
-								</div>
-								{source === PaymentRequestSource.Checkout && (
-									<p className="text-xs text-muted-foreground truncate">{payment.checkoutName ?? 'Checkout não identificado'}</p>
-								)}
-							</>
-						);
-					})()}
+				<div className="min-w-0">
+					<p className="text-[11px] uppercase tracking-wider text-white/40">Líquido</p>
+					<p className="mt-0.5 text-sm font-bold font-mono text-[#00a87e] truncate">{formatCurrency(payment.netAmount)}</p>
 				</div>
-				{payment.pix?.payerName && (
-					<div className="mt-2 border-t border-divider pt-2">
-						<p className="text-xs text-muted-foreground">Pagador</p>
-						<p className="mt-1 text-sm truncate">{payment.pix.payerName}</p>
-						{payment.pix.payerBank && (
-							<p className="text-xs text-muted-foreground truncate">{payment.pix.payerBank}</p>
-						)}
-					</div>
-				)}
 			</div>
+
+			{payment.pix?.payerName && (
+				<div className="mt-2 border-t border-white/8 pt-2">
+					<p className="text-[11px] text-white/40 uppercase tracking-wider">Pagador PIX</p>
+					<p className="mt-0.5 text-xs text-white/80 font-medium truncate">{payment.pix.payerName}</p>
+				</div>
+			)}
 		</div>
 	);
 }
@@ -379,7 +363,7 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 		<>
 			<SearchFilter
 				label="Buscar"
-				placeholder="ID, cliente, txId, endToEnd ou descricao"
+				placeholder="EndToEndId, CPF/CNPJ, nome ou ID..."
 				value={filters.values.search}
 				onChange={filters.handleSearchChange}
 			/>
@@ -393,14 +377,6 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 			/>
 
 			<SelectFilter
-				label="Método"
-				value={filters.values.method}
-				options={methodOptions}
-				onChange={filters.handleMethodChange}
-				allLabel="Todos os métodos"
-			/>
-
-			<SelectFilter
 				label="Por página"
 				value={filters.values.pageSize}
 				options={pageSizeFilterOptions}
@@ -411,176 +387,148 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 	);
 
 	const rows = data.payments.items;
-	const approved = rows.filter((item) => item.status === PaymentStatus.Completed).reduce((acc, item) => acc + item.amount, 0);
-	const declined = rows.filter((item) => item.status === PaymentStatus.Failed).reduce((acc, item) => acc + item.amount, 0);
-	const chargebacks = rows.filter((item) => item.status === PaymentStatus.Disputed).length;
-	const volume = rows.reduce((acc, item) => acc + item.amount, 0);
+	const approved = rows.filter((item) => item.status === PaymentStatus.Completed);
+	const approvedVolume = approved.reduce((acc, item) => acc + item.amount, 0);
+	const totalVolume = rows.reduce((acc, item) => acc + item.amount, 0);
+	const conversionRate = rows.length > 0 ? (approved.length / rows.length) * 100 : 0;
 
 	return (
-		<div className="flex flex-col gap-3">
-			<PageHeader
-				icon={<Icon icon={CreditCardIcon} className="icon-md text-accent-foreground" />}
-				title="Transações"
-				description="Gerencie as transações da sua organização"
-				action={context.readOnly ? undefined : {
-					label: 'Nova Transação',
-					icon: <Icon icon={AddCircleIcon} className="icon-sm" />,
-					onPress: modals.create.open,
-				}}
-			/>
+		<div className="flex flex-col gap-6 text-white">
+			{/* Executive Header */}
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+				<div>
+					<div className="flex items-center gap-2">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<RevolutPixIcon size={16} />
+						</div>
+						<h1 className="text-xl font-bold tracking-tight text-white">Extrato de Vendas PIX</h1>
+					</div>
+					<p className="text-xs text-white/50 mt-1">
+						Auditoria em tempo real de liquidações PIX instantâneas D+0
+					</p>
+				</div>
 
-			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Volume total</span>
-						<AnimatedCurrency value={volume} className="mt-1 text-lg font-bold font-mono tracking-tight text-foreground" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Aprovado</span>
-						<AnimatedCurrency value={approved} className="mt-1 text-lg font-bold font-mono tracking-tight text-success" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Recusado</span>
-						<AnimatedCurrency value={declined} className="mt-1 text-lg font-bold font-mono tracking-tight text-foreground" />
-					</Card.Content>
-				</Card>
-				<Card className="border border-border/80 bg-card">
-					<Card.Content className="p-3">
-						<span className="text-xs font-mono uppercase text-muted-foreground">Chargebacks</span>
-						<span className="mt-1 block text-lg font-bold font-mono tracking-tight text-foreground">
-							<AnimatedNumber value={chargebacks} />
-						</span>
-					</Card.Content>
-				</Card>
+				{!context.readOnly && (
+					<button
+						type="button"
+						onClick={modals.create.open}
+						className="button-primary cursor-pointer self-start sm:self-auto"
+					>
+						<RevolutPlusIcon size={16} />
+						<span>+ Nova Cobrança PIX</span>
+					</button>
+				)}
 			</div>
 
-			<div className="flex flex-col gap-3">
-				<div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-					<div className="flex flex-col gap-2">
-						<SearchFilter
-							label="Buscar"
-							placeholder="ID, cliente, txId ou endToEnd"
-							value={filters.values.search}
-							onChange={filters.handleSearchChange}
-						/>
-						<div className="flex flex-wrap items-center gap-2">
-							<SelectFilter
-								label="Status"
-								value={filters.values.status}
-								options={statusOptions}
-								onChange={filters.handleStatusChange}
-								allLabel="Todos os status"
-							/>
-							<SelectFilter
-								label="Método"
-								value={filters.values.method}
-								options={methodOptions}
-								onChange={filters.handleMethodChange}
-								allLabel="Todos os métodos"
-							/>
+			{/* High-Contrast 3-Tile KPI Summary */}
+			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				{/* Volume Total */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Volume Filtrado
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
+							<RevolutPixIcon size={14} />
 						</div>
 					</div>
-					<div className="text-xs text-muted-foreground">
-						{data.payments.totalItems.toLocaleString('pt-BR')} resultados
+					<div>
+						<AnimatedCurrency
+							value={totalVolume}
+							className="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight tabular-nums"
+						/>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Total das transações listadas</p>
 					</div>
 				</div>
 
+				{/* Cobranças Liquidadas */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Cobranças Liquidadas
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+							<RevolutCheckIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<div className="flex items-baseline gap-2">
+							<span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
+								{approved.length}
+							</span>
+							<span className="text-xs font-mono text-white/40">
+								de {rows.length} ordens
+							</span>
+						</div>
+						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">
+							{formatCurrency(approvedVolume)} em caixa
+						</p>
+					</div>
+				</div>
+
+				{/* Taxa de Conversão PIX */}
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+					<div className="flex items-center justify-between">
+						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
+							Taxa de Conversão PIX
+						</span>
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<RevolutTrendingUpIcon size={14} />
+						</div>
+					</div>
+					<div>
+						<div className="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight tabular-nums">
+							{conversionRate.toFixed(1)}%
+						</div>
+						<p className="text-xs text-white/40 font-mono mt-0.5">Eficiência de liquidação no período</p>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Data Table */}
+			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.payments.items}
-					keyExtractor={(payment) => payment.id}
-					renderMobileCard={(payment, index, openActions) =>
-						renderMobileTransactionCard(payment, index, openActions)
-					}
-					mobileActions={{
-						title: (payment) => payment.customer?.name ?? 'Cliente não informado',
-						subtitle: (payment) => formatCurrency(payment.amount),
-						renderActions: (payment, close) => (
-							<div className="flex flex-col gap-2">
-								<Button
-									variant="secondary"
-									className="w-full justify-start"
-									onPress={() => { actions.openDetails(payment.id); close(); }}
-								>
-									<Icon icon={ViewIcon} className="icon-sm" />
-									Ver detalhes
-								</Button>
-								{payment.transactionVisualizationUrl && (
-									<Button
-										variant="secondary"
-										className="w-full justify-start"
-										onPress={async () => {
-											await handleCopyVisualizationLink(payment.transactionVisualizationUrl!);
-											close();
-										}}
-									>
-										<Icon icon={Copy01Icon} className="icon-sm" />
-										Copiar link de visualização
-									</Button>
-								)}
-								{actions.canResendWebhook(payment) && (
-									<Button
-										variant="secondary"
-										className="w-full justify-start"
-										isPending={actions.resendingWebhookId === payment.id}
-										onPress={() => { actions.handleResendWebhook(payment); close(); }}
-									>
-										<Icon icon={SentIcon} className="icon-sm" />
-										Reenviar webhook
-									</Button>
-								)}
-							</div>
-						),
-					}}
-					isLoading={data.isLoading}
-					skeletonRows={data.pageSizeValue}
-					emptyMessage="Nenhuma transação encontrada"
-					minWidth="min-w-250"
+					keyExtractor={(item) => item.id}
+					skeletonRows={Number(filters.values.pageSize)}
+					emptyMessage="Nenhuma transação PIX encontrada no período selecionado."
 					filters={{
 						children: renderFiltersContent,
 						hasFilters: filters.hasFilters,
 						onClear: filters.handleClearFilters,
 						onRefresh: filters.handleRefresh,
-						isRefreshing: data.isRefreshing,
+						isRefreshing: data.isLoading,
 					}}
 					pagination={{
-						page: filters.values.page,
-						pageSize: data.pageSizeValue,
+						page: data.payments.page,
+						pageSize: data.payments.pageSize,
 						totalItems: data.payments.totalItems,
 						totalPages: data.payments.totalPages,
 						onPageChange: filters.handlePageChange,
-						sortBy: filters.values.sortBy,
-						sortOrder: filters.values.sortOrder,
-						onSortChange: (sortBy, sortOrder) => {
-							filters.updateFilter('sortBy', sortBy);
-							filters.updateFilter('sortOrder', sortOrder);
-							filters.updateFilter('page', 1);
-						},
-						isNavigating: data.isLoading,
 					}}
+					renderMobileCard={renderMobileTransactionCard}
 				/>
 			</div>
 
+			{/* Modals */}
 			<MerchantTransactionDetailsModal
 				isOpen={modals.details.isOpen}
 				onOpenChange={modals.details.close}
 				paymentPromise={modals.details.paymentPromise}
-				merchantId={context.merchantId}
+				merchantId={merchantId}
 				onRefresh={filters.handleRefresh}
 			/>
 
-			<CreateTransactionModal
-				isOpen={modals.create.isOpen}
-				onOpenChange={modals.create.close}
-				merchantId={context.merchantId}
-				onSuccess={modals.create.onSuccess}
-				feesPromise={modals.create.feesPromise}
-			/>
+			{!context.readOnly && (
+				<CreateTransactionModal
+					isOpen={modals.create.isOpen}
+					onOpenChange={modals.create.close}
+					merchantId={merchantId}
+					onSuccess={modals.create.onSuccess}
+					feesPromise={modals.create.feesPromise}
+				/>
+			)}
 		</div>
 	);
 }
-

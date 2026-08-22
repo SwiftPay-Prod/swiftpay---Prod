@@ -8,13 +8,6 @@ import {
 	Input,
 	Skeleton,
 	Label,
-	Select,
-	ListBox,
-	Chip,
-	Alert,
-	DatePicker,
-	DateField,
-	Calendar,
 	Checkbox,
 } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
@@ -23,16 +16,12 @@ import { JsonEditorInput } from '@/components/ui/json-editor-input';
 import {
 	Alert01Icon,
 	CancelCircleIcon,
-	CreditCardIcon,
 	InformationCircleIcon,
 	Wallet01Icon,
 } from '@hugeicons/core-free-icons';
 import { formatCurrency } from '@/utils/currency';
 import { AsyncButton } from '@/components/ui/async-button';
 import { AsyncAutocomplete } from '@/components/ui/async-autocomplete';
-import { mapParseColorToChipColor, paymentMethodParse } from '@/parse';
-import { PaymentMethod } from '@/types/enums';
-import type { DateValue } from '@internationalized/date';
 import { maskDocument } from '@/utils/input-masks';
 import {
 	METADATA_TEMPLATES,
@@ -70,16 +59,15 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 		return (
 			<>
 				<Modal.Body>
-					<Alert status="warning">
-						<Alert.Indicator />
-						<Alert.Content>
-							<Alert.Title>Nenhum método de pagamento disponível</Alert.Title>
-							<Alert.Description>
-								Sua organização ainda não possui nenhum método de pagamento configurado. Entre em contato com o suporte
-								para habilitar PIX, Boleto ou outros métodos de pagamento.
-							</Alert.Description>
-						</Alert.Content>
-					</Alert>
+					<div className="flex flex-col items-center justify-center gap-3 py-8 text-center text-white">
+						<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-white/50">
+							<Icon icon={InformationCircleIcon} className="icon-md" />
+						</div>
+						<p className="text-sm font-semibold text-white">PIX indisponível</p>
+						<p className="text-xs text-white/50">
+							Esta organização ainda não possui o método PIX habilitado para emissão de cobranças.
+						</p>
+					</div>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onPress={onClose}>
@@ -89,8 +77,6 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 			</>
 		);
 	}
-
-	const actionIcon = paymentMethodParse[form.paymentMethod]?.icon ?? <Icon icon={CreditCardIcon} className="icon-sm" />;
 
 	const customerOptions = data.customerOptions.map((customer) => {
 		const maskedDocument = customer.document ? maskDocument(customer.document) : null;
@@ -107,397 +93,174 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 		<form action={state.formAction}>
 			<Modal.Body>
 				<div className="flex flex-col gap-6">
-					<div className="flex flex-col gap-5">
-						<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-							<div className="flex flex-col gap-1">
-								<Label>Método de pagamento</Label>
-								<Select
-									variant="secondary"
-									aria-label="Método de pagamento"
-									value={form.paymentMethod}
-									placeholder="Selecione o método"
-									onChange={(key) => {
-										if (key) handlers.setPaymentMethod(String(key) as PaymentMethod);
-									}}
-								>
-									<Select.Trigger>
-										<Select.Value />
-										<Select.Indicator />
-									</Select.Trigger>
-									<Select.Popover>
-										<ListBox>
-											{fees.methodOptions.map((method) => {
-												const methodParse = paymentMethodParse[method];
-												return (
-													<ListBox.Item key={method} id={method} textValue={methodParse.label}>
-														<Chip variant="soft" color={mapParseColorToChipColor(methodParse.color)} className="gap-1">
-															{methodParse.icon}
-															{methodParse.label}
-														</Chip>
-														<ListBox.ItemIndicator />
-													</ListBox.Item>
-												);
-											})}
-										</ListBox>
-									</Select.Popover>
-								</Select>
-							</div>
-							<div className="flex flex-col gap-1">
-								<TextField
-									variant="secondary"
-									aria-label="Valor da transação"
-									isRequired
-									isInvalid={validation.isAmountOutOfRange}
-								>
-									<Label>Valor da transação</Label>
-									<CurrencyCentsInput variant="secondary" onValueChange={(v) => handlers.handleAmountChange(v)} />
-								</TextField>
-								{validation.isAmountOutOfRange ? (
-									<p className="text-xs text-danger">
-										{validation.isBelowMin
-											? `Valor mínimo: ${formatCurrency(fees.minAmount)}`
-											: `Valor máximo: ${formatCurrency(fees.maxAmount)}`}
-									</p>
-								) : (
-									<p className="text-xs text-muted">
-										Mín: {formatCurrency(fees.minAmount)} • Máx:{' '}
-										{fees.hasMaxLimit ? formatCurrency(fees.maxAmount) : 'Sem limite'}
-									</p>
-								)}
-							</div>
-						</div>
-
-						<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-							<TextField variant="secondary" aria-label="Descrição" name="description">
-								<Label>Descrição</Label>
+					<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+						<div className="flex flex-col gap-1">
+							<Label>Valor da transação</Label>
+							<TextField
+								variant="secondary"
+								aria-label="Valor da transação"
+								isRequired
+								isInvalid={validation.isAmountOutOfRange}
+							>
 								<Input
 									variant="secondary"
-									placeholder="Descrição da transação..."
-									value={form.description}
-									onChange={(event) => handlers.setDescription(event.target.value)}
+									placeholder="R$ 0,00"
+									value={form.amountFormatted}
+									onChange={(event) => handlers.handleAmountChange(event.target.value)}
 								/>
 							</TextField>
-							<div className="flex flex-col gap-1.5">
-								<div className="flex items-end gap-2">
-									<AsyncAutocomplete
-										label="Cliente"
-										placeholder="Selecione um cliente"
-										searchPlaceholder="Digite para buscar clientes"
-										minSearchLength={0}
-										searchValue={form.customerSearch}
-										onSearchChange={handlers.setCustomerSearch}
-										isOpen={form.isCustomerAutocompleteOpen}
-										onOpenChange={handlers.setIsCustomerAutocompleteOpen}
-										isLoading={state.isSearchingCustomers}
-										optionVariant="card"
-										options={customerOptions}
-										value={form.selectedCustomer?.id ?? null}
-										emptyMessage="Nenhum cliente encontrado"
-										onChange={(key) => handlers.handleCustomerSelect(key)}
-										className="flex-1"
-										isRequired={validation.isBoleto}
-										isInvalid={validation.isMissingBoletoCustomer}
-									/>
-									{form.selectedCustomer && (
-										<Button variant="danger-soft" size="sm" onPress={handlers.handleRemoveCustomer}>
-											<Icon icon={CancelCircleIcon} size={18} />
-										</Button>
-									)}
-								</div>
-								{validation.isMissingBoletoCustomer && (
-									<p className="text-xs text-danger">Selecione um cliente para emitir boleto.</p>
-								)}
-							</div>
+							{validation.isAmountOutOfRange ? (
+								<p className="text-xs text-danger">
+									{validation.isBelowMin
+										? `Valor mínimo: ${formatCurrency(fees.minAmount)}`
+										: `Valor máximo: ${formatCurrency(fees.maxAmount)}`}
+								</p>
+							) : (
+								<p className="text-xs text-white/40">
+									Mín: {formatCurrency(fees.minAmount)} • Máx:{' '}
+									{fees.hasMaxLimit ? formatCurrency(fees.maxAmount) : 'Sem limite'}
+								</p>
+							)}
 						</div>
-
-						{validation.isBoleto && (
-							<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-								<div className="flex flex-col gap-1">
-									<DatePicker
-										className="w-full"
-										aria-label="Selecione a data de vencimento do boleto"
-										value={form.boletoDueDateValue}
-										minValue={form.minBoletoDateValue}
-										onChange={(value: DateValue | null) => {
-											if (!value) {
-												handlers.setBoletoDueDate('');
-												return;
-											}
-
-											const normalizedValue =
-												value.compare(form.minBoletoDateValue) < 0 ? form.minBoletoDateValue : value;
-											handlers.setBoletoDueDate(normalizedValue.toString());
-										}}
-									>
-										<Label isRequired>Vencimento do boleto</Label>
-										<DateField.Group
-											fullWidth
-											variant="secondary"
-											isInvalid={validation.isMissingBoletoDueDate || validation.isInvalidBoletoDueDate}
-										>
-											<DateField.Input>{(segment) => <DateField.Segment segment={segment} />}</DateField.Input>
-											<DateField.Suffix>
-												<DatePicker.Trigger>
-													<DatePicker.TriggerIndicator />
-												</DatePicker.Trigger>
-											</DateField.Suffix>
-										</DateField.Group>
-										<DatePicker.Popover>
-											<Calendar
-												aria-label="Data de vencimento do boleto"
-												minValue={form.minBoletoDateValue}
-												isDateUnavailable={(date) => date.compare(form.minBoletoDateValue) < 0}
-											>
-												<Calendar.Header>
-													<Calendar.YearPickerTrigger>
-														<Calendar.YearPickerTriggerHeading />
-														<Calendar.YearPickerTriggerIndicator />
-													</Calendar.YearPickerTrigger>
-													<Calendar.NavButton slot="previous" />
-													<Calendar.NavButton slot="next" />
-												</Calendar.Header>
-												<Calendar.Grid>
-													<Calendar.GridHeader>
-														{(day) => <Calendar.HeaderCell>{day}</Calendar.HeaderCell>}
-													</Calendar.GridHeader>
-													<Calendar.GridBody>{(date) => <Calendar.Cell date={date} />}</Calendar.GridBody>
-												</Calendar.Grid>
-												<Calendar.YearPickerGrid>
-													<Calendar.YearPickerGridBody>
-														{({ year }) => <Calendar.YearPickerCell year={year} />}
-													</Calendar.YearPickerGridBody>
-												</Calendar.YearPickerGrid>
-											</Calendar>
-										</DatePicker.Popover>
-									</DatePicker>
-									{validation.isMissingBoletoDueDate && (
-										<p className="text-xs text-danger">Selecione a data de vencimento do boleto.</p>
-									)}
-									{!validation.isMissingBoletoDueDate && validation.isInvalidBoletoDueDate && (
-										<p className="text-xs text-danger">A data de vencimento do boleto deve ser no minimo D+2.</p>
-									)}
-								</div>
-								<TextField variant="secondary" aria-label="Instruções do boleto">
-									<Label>Instruções do boleto</Label>
-									<Input
-										variant="secondary"
-										placeholder="Ex: Pagável até o vencimento"
-										value={form.boletoInstructions}
-										onChange={(event) => handlers.setBoletoInstructions(event.target.value)}
-									/>
-								</TextField>
-							</div>
-						)}
-
-						{validation.isCreditCard && (
-							<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-								<TextField variant="secondary" aria-label="Número do cartão" isRequired isInvalid={validation.isMissingCardNumber}>
-									<Label>Número do cartão</Label>
-									<Input
-										variant="secondary"
-										placeholder="0000 0000 0000 0000"
-										value={form.cardNumber}
-										onChange={(event) => handlers.setCardNumber(event.target.value)}
-									/>
-								</TextField>
-								<TextField variant="secondary" aria-label="Nome do titular" isRequired isInvalid={validation.isMissingCardHolderName}>
-									<Label>Nome do titular</Label>
-									<Input
-										variant="secondary"
-										placeholder="Nome igual ao cartão"
-										value={form.cardHolderName}
-										onChange={(event) => handlers.setCardHolderName(event.target.value)}
-									/>
-								</TextField>
-								<TextField variant="secondary" aria-label="Mês de expiração" isRequired isInvalid={validation.isMissingCardExpirationMonth}>
-									<Label>Mês de expiração</Label>
-									<Input
-										variant="secondary"
-										type="number"
-										min={1}
-										max={12}
-										placeholder="MM"
-										value={form.cardExpirationMonth}
-										onChange={(event) => handlers.setCardExpirationMonth(event.target.value)}
-									/>
-								</TextField>
-								<TextField variant="secondary" aria-label="Ano de expiração" isRequired isInvalid={validation.isMissingCardExpirationYear}>
-									<Label>Ano de expiração</Label>
-									<Input
-										variant="secondary"
-										type="number"
-										min={new Date().getFullYear()}
-										max={new Date().getFullYear() + 20}
-										placeholder="AAAA"
-										value={form.cardExpirationYear}
-										onChange={(event) => handlers.setCardExpirationYear(event.target.value)}
-									/>
-								</TextField>
-								<TextField variant="secondary" aria-label="CVV" isRequired isInvalid={validation.isMissingCardCvv}>
-									<Label>CVV</Label>
-									<Input
-										variant="secondary"
-										type="password"
-										placeholder="000"
-										value={form.cardCvv}
-										onChange={(event) => handlers.setCardCvv(event.target.value)}
-									/>
-								</TextField>
-								<div className="flex flex-col gap-1">
-									<Label>Parcelas</Label>
-									<Select
-										variant="secondary"
-										aria-label="Número de parcelas"
-										value={form.installments}
-										placeholder="Selecione o número de parcelas"
-										onChange={(key) => {
-											if (key) handlers.setInstallments(String(key));
-										}}
-									>
-										<Select.Trigger>
-											<Select.Value />
-											<Select.Indicator />
-										</Select.Trigger>
-										<Select.Popover>
-											<ListBox>
-												{Array.from({ length: 12 }, (_, index) => {
-													const installmentValue = String(index + 1);
-													return (
-														<ListBox.Item
-															key={installmentValue}
-															id={installmentValue}
-															textValue={`${installmentValue}x`}
-														>
-															{installmentValue}x
-															<ListBox.ItemIndicator />
-														</ListBox.Item>
-													);
-												})}
-											</ListBox>
-										</Select.Popover>
-									</Select>
-									{validation.isMissingInstallments && (
-										<p className="text-xs text-danger">Selecione de 1 a 12 parcelas.</p>
-									)}
-								</div>
-							</div>
-						)}
-
-						<TextField variant="secondary" aria-label="URL de Notificação" name="callbackUrl">
-							<Label>URL de Notificação</Label>
+						<TextField variant="secondary" aria-label="Descrição" name="description">
+							<Label>Descrição</Label>
 							<Input
 								variant="secondary"
-								type="url"
-								placeholder="https://seu-site.com/webhook"
-								value={form.callbackUrl}
-								onChange={(event) => handlers.setCallbackUrl(event.target.value)}
+								placeholder="Descrição da transação..."
+								value={form.description}
+								onChange={(event) => handlers.setDescription(event.target.value)}
 							/>
 						</TextField>
+					</div>
 
-						<div className="flex flex-col gap-3 rounded-lg border border-divider p-4">
-							<div className="flex items-center justify-between gap-3">
-								<div className="flex items-start gap-2">
-									<Checkbox
-										variant="secondary"
-										className="mt-0.5"
-										isSelected={form.isMetadataEnabled}
-										onChange={handlers.setIsMetadataEnabled}
-									>
-										<Checkbox.Control>
-											<Checkbox.Indicator />
-										</Checkbox.Control>
-									</Checkbox>
-									<div className="flex flex-col">
-										<span className="text-sm font-medium">Enviar metadata JSON</span>
-										<span className="text-xs text-muted">Use este campo para enviar UTMs e tracking.</span>
-									</div>
-								</div>
-								<div className="flex items-center gap-2">
-									<Select
-										variant="secondary"
-										aria-label="Modelo de metadata"
-										placeholder="Escolha um modelo"
-										onChange={(key) => {
-											if (!key) return;
-											handlers.applyMetadataTemplate(String(key) as MetadataTemplateKey);
-										}}
-									>
-										<Select.Trigger>
-											<Select.Value />
-											<Select.Indicator />
-										</Select.Trigger>
-										<Select.Popover>
-											<ListBox>
-												{(Object.keys(METADATA_TEMPLATES) as MetadataTemplateKey[]).map((templateKey) => (
-													<ListBox.Item
-														key={templateKey}
-														id={templateKey}
-														textValue={METADATA_TEMPLATES[templateKey].label}
-													>
-														{METADATA_TEMPLATES[templateKey].label}
-													</ListBox.Item>
-												))}
-											</ListBox>
-										</Select.Popover>
-									</Select>
-								</div>
-							</div>
-
-							{form.isMetadataEnabled && (
-								<div className="flex flex-col gap-2">
-									<TextField variant="secondary" aria-label="Metadata JSON">
-										<Label>Metadata (JSON)</Label>
-										<JsonEditorInput
-											rows={8}
-											placeholder='{"utm_source":"facebook","utm_campaign":"campanha_checkout"}'
-											value={form.metadataInput}
-											onChange={handlers.setMetadataInput}
-										/>
-									</TextField>
-									{validation.isMissingMetadataJson && (
-										<p className="text-xs text-danger">Informe o JSON de metadata ou desative a opção.</p>
-									)}
-									{!validation.isMissingMetadataJson && validation.isInvalidMetadataJson && (
-										<p className="text-xs text-danger">O conteúdo de metadata deve ser um JSON válido.</p>
-									)}
-								</div>
+					<div className="flex flex-col gap-1.5">
+						<div className="flex items-end gap-2">
+							<AsyncAutocomplete
+								label="Cliente"
+								placeholder="Selecione um cliente"
+								searchPlaceholder="Digite para buscar clientes"
+								minSearchLength={0}
+								searchValue={form.customerSearch}
+								onSearchChange={handlers.setCustomerSearch}
+								isOpen={form.isCustomerAutocompleteOpen}
+								onOpenChange={handlers.setIsCustomerAutocompleteOpen}
+								isLoading={state.isSearchingCustomers}
+								optionVariant="card"
+								options={customerOptions}
+								value={form.selectedCustomer?.id ?? null}
+								emptyMessage="Nenhum cliente encontrado"
+								onChange={(key) => handlers.handleCustomerSelect(key)}
+								className="flex-1"
+							/>
+							{form.selectedCustomer && (
+								<Button variant="danger-soft" size="sm" onPress={handlers.handleRemoveCustomer}>
+									<Icon icon={CancelCircleIcon} size={18} />
+								</Button>
 							)}
 						</div>
 					</div>
 
+					<div className="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0a0a0a] p-4">
+						<div className="flex items-center justify-between gap-3">
+							<div className="flex items-start gap-2">
+								<Checkbox
+									variant="secondary"
+									className="mt-0.5"
+									isSelected={form.isMetadataEnabled}
+									onChange={handlers.setIsMetadataEnabled}
+								>
+									<Checkbox.Control>
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+								</Checkbox>
+								<div className="flex flex-col">
+									<span className="text-sm font-medium text-white">Enviar metadata JSON</span>
+									<span className="text-xs text-white/50">Use este campo para enviar UTMs e tracking.</span>
+								</div>
+							</div>
+							<div className="flex items-center gap-2">
+								<Button
+									variant="secondary"
+									size="sm"
+									onPress={() => handlers.applyMetadataTemplate('utmify')}
+								>
+									Utmify
+								</Button>
+								<Button
+									variant="secondary"
+									size="sm"
+									onPress={() => handlers.applyMetadataTemplate('otimizey')}
+								>
+									Otimizey
+								</Button>
+							</div>
+						</div>
+
+						{form.isMetadataEnabled && (
+							<div className="flex flex-col gap-2">
+								<TextField variant="secondary" aria-label="Metadata JSON">
+									<Label>Metadata (JSON)</Label>
+									<JsonEditorInput
+										rows={8}
+										placeholder='{"utm_source":"facebook","utm_campaign":"campanha_checkout"}'
+										value={form.metadataInput}
+										onChange={handlers.setMetadataInput}
+									/>
+								</TextField>
+								{validation.isMissingMetadataJson && (
+									<p className="text-xs text-danger">Informe o JSON de metadata ou desative a opção.</p>
+								)}
+								{!validation.isMissingMetadataJson && validation.isInvalidMetadataJson && (
+									<p className="text-xs text-danger">O conteúdo de metadata deve ser um JSON válido.</p>
+								)}
+							</div>
+						)}
+					</div>
+
+					<TextField variant="secondary" aria-label="URL de Notificação" name="callbackUrl">
+						<Label>URL de Notificação</Label>
+						<Input
+							variant="secondary"
+							type="url"
+							placeholder="https://seu-site.com/webhook"
+							value={form.callbackUrl}
+							onChange={(event) => handlers.setCallbackUrl(event.target.value)}
+						/>
+					</TextField>
+
 					{data.amountForDisplay > 0 && (
-						<div className="rounded-lg bg-surface-secondary p-4">
+						<div className="rounded-lg bg-[#0a0a0a] border border-white/10 p-4">
 							<div className="flex items-center gap-3 mb-4">
-								<div className="w-10 h-10 rounded-full bg-accent-soft-hover flex items-center justify-center">
-									<Icon icon={Wallet01Icon} className="icon-sm text-accent" />
+								<div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/70">
+									<Icon icon={Wallet01Icon} className="icon-sm" />
 								</div>
 								<div>
-									<span className="text-sm text-foreground/60">Resumo da Transação</span>
+									<span className="text-sm text-white/60">Resumo da Transação</span>
 								</div>
 							</div>
 
 							{data.isLoadingPreview ? (
 								<div className="flex flex-col gap-2">
-									<Skeleton className="h-5 w-full rounded" />
-									<Skeleton className="h-5 w-full rounded" />
-									<div className="border-t border-divider pt-2 mt-1">
-										<Skeleton className="h-7 w-full rounded" />
+									<Skeleton className="h-5 w-full rounded bg-white/5" />
+									<Skeleton className="h-5 w-full rounded bg-white/5" />
+									<div className="border-t border-white/10 pt-2 mt-1">
+										<Skeleton className="h-7 w-full rounded bg-white/5" />
 									</div>
 								</div>
 							) : data.preview ? (
 								<div className="flex flex-col gap-2 text-sm">
 									<div className="flex justify-between">
-										<span className="text-muted">Valor bruto:</span>
-										<span className="font-medium">{formatCurrency(data.preview.amount)}</span>
+										<span className="text-white/50">Valor bruto:</span>
+										<span className="font-medium text-white">{formatCurrency(data.preview.amount)}</span>
 									</div>
 									<div className="flex justify-between">
-										<span className="text-muted">Taxa da plataforma:</span>
-										<span className="font-medium text-danger">- {formatCurrency(data.preview.fee)}</span>
+										<span className="text-white/50">Taxa da plataforma:</span>
+										<span className="font-medium text-[#e23b4a]">- {formatCurrency(data.preview.fee)}</span>
 									</div>
-									<div className="border-t border-divider pt-2 mt-1">
+									<div className="border-t border-white/10 pt-2 mt-1">
 										<div className="flex justify-between">
-											<span className="font-medium">Valor líquido:</span>
-											<span className="font-bold text-success text-lg">{formatCurrency(data.preview.netAmount)}</span>
+											<span className="font-medium text-white">Valor líquido:</span>
+											<span className="font-bold text-[#00a87e] text-lg">{formatCurrency(data.preview.netAmount)}</span>
 										</div>
 									</div>
 								</div>
@@ -505,16 +268,16 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 						</div>
 					)}
 
-					<div className="flex items-start gap-2 rounded-lg bg-warning/10 p-3">
-						<Icon icon={InformationCircleIcon} className="icon-sm shrink-0 text-warning mt-0.5" />
-						<p className="text-xs text-muted">
+					<div className="flex items-start gap-2 rounded-lg border border-[#ec7e00]/20 bg-[#ec7e00]/10 p-3">
+						<Icon icon={InformationCircleIcon} className="icon-sm shrink-0 text-[#ec7e00] mt-0.5" />
+						<p className="text-xs text-white/60">
 							O valor líquido é o valor que será creditado na sua conta após o pagamento ser confirmado, já descontada a
 							taxa da plataforma.
 						</p>
 					</div>
 
 					{state.error && (
-						<div className="flex items-center gap-2 text-sm text-danger">
+						<div className="flex items-center gap-2 text-sm text-[#e23b4a]">
 							<Icon icon={Alert01Icon} className="icon-sm" />
 							<span>{state.error}</span>
 						</div>
@@ -526,8 +289,8 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 					Cancelar
 				</Button>
 				<AsyncButton type="submit" variant="primary" isPending={state.isPending} isDisabled={!validation.isValid}>
-					{actionIcon}
-					Criar Transação
+					<Icon icon={Wallet01Icon} className="icon-sm" />
+					Criar Cobrança PIX
 				</AsyncButton>
 			</Modal.Footer>
 		</form>
@@ -539,33 +302,23 @@ function FormContentSkeleton() {
 		<>
 			<Modal.Body>
 				<div className="flex flex-col gap-6">
-					<div className="flex flex-col gap-5">
+					<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 						<div className="flex flex-col gap-1">
-							<Skeleton className="h-4 w-32 rounded" />
-							<Skeleton className="h-10 w-full rounded-lg" />
-							<Skeleton className="h-3 w-48 rounded" />
-						</div>
-						<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-							<div className="flex flex-col gap-1">
-								<Skeleton className="h-4 w-40 rounded" />
-								<Skeleton className="h-10 w-full rounded-lg" />
-							</div>
-							<div className="flex flex-col gap-1">
-								<Skeleton className="h-4 w-32 rounded" />
-								<Skeleton className="h-10 w-full rounded-lg" />
-							</div>
+							<Skeleton className="h-4 w-40 rounded bg-white/5" />
+							<Skeleton className="h-10 w-full rounded-lg bg-white/5" />
 						</div>
 						<div className="flex flex-col gap-1">
-							<Skeleton className="h-4 w-36 rounded" />
-							<Skeleton className="h-10 w-full rounded-lg" />
+							<Skeleton className="h-4 w-32 rounded bg-white/5" />
+							<Skeleton className="h-10 w-full rounded-lg bg-white/5" />
 						</div>
 					</div>
-					<Skeleton className="h-16 w-full rounded-lg" />
+					<Skeleton className="h-16 w-full rounded-lg bg-white/5" />
+					<Skeleton className="h-16 w-full rounded-lg bg-white/5" />
 				</div>
 			</Modal.Body>
 			<Modal.Footer>
-				<Skeleton className="h-9 w-24 rounded-lg" />
-				<Skeleton className="h-9 w-36 rounded-lg" />
+				<Skeleton className="h-9 w-24 rounded-lg bg-white/5" />
+				<Skeleton className="h-9 w-36 rounded-lg bg-white/5" />
 			</Modal.Footer>
 		</>
 	);
@@ -585,14 +338,18 @@ export function CreateTransactionModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-2xl">
+				<Modal.Dialog className="max-w-2xl bg-[#16181a] border border-white/12 text-white rounded-[24px] p-6 shadow-2xl">
 					<Modal.CloseTrigger />
-					<Modal.Header>
-						<Modal.Icon className="bg-accent text-accent-foreground">
-							<Icon icon={CreditCardIcon} className="icon-md" />
-						</Modal.Icon>
-						<Modal.Heading>Nova Transação</Modal.Heading>
-						<p className="text-sm text-muted">Crie uma nova cobrança PIX ou boleto para sua organização</p>
+					<Modal.Header className="border-b border-white/10 pb-4 mb-5">
+						<div className="flex items-center gap-3">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+								<Icon icon={Wallet01Icon} className="icon-md" />
+							</div>
+							<div>
+								<Modal.Heading className="text-lg font-bold text-white">Nova Cobrança PIX</Modal.Heading>
+								<p className="text-xs text-white/50">Gere uma cobrança instantânea com liquidação D+0</p>
+							</div>
+						</div>
 					</Modal.Header>
 					{feesPromise ? (
 						<Suspense fallback={<FormContentSkeleton />}>

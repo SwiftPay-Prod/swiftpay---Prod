@@ -344,4 +344,17 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   4. Forgot-password → intent `PasswordReset` → `Published`; **`PasswordResetCode` criado (`Pending`, válido)** — bug "nunca era criado" corrigido; código extraído do envelope (`949170`), POST reset-password → código `Used`, login com a NOVA senha → 200.
   5. Site `https://swiftpayment.info/` → 200; `/docs` → 200.
 - `NOTE` Smoke local de integração (`EmailIntentRelayTests`, Testcontainers) segue falhando no sandbox local (ResourceReaper) — não bloqueia: prova definitiva feita em produção.
-- Próxima ação: retomar fase 2 (aposentadoria do Firestore no pipeline de email — migration com colunas de entrega + `PostgresEmailOutboxStore`) e smoke de pagamento sandbox quando houver credenciais.
+## Rollout Revolut 10 / Ultra — Fase 0 + Tela 1 (Transações) — 2026-08-22
+
+## Rollout Revolut 10 / Ultra — Fase 0 + Tela 1 (Transações) — 2026-08-22
+
+- `Spec: DESIGN.md / Issue: #102` Fase 0 — Fundação global do painel:
+  - `src/app/globals.css`: removido uso de `var(--brand-soft)` / `var(--accent)` no estado ativo da sidebar; substituído por tokens fixos Revolut `rgba(73, 79, 223, 0.18)` e `rgba(79, 85, 241, 1)` para garantir fidelidade R1/R10 sem variar por tema.
+  - `src/components/panel/sidebar/sidebar-menu.tsx`: estados ativos/compactos da sidebar padronizados para os tokens Revolut (`#494fdf` / `#4f55f1`), com hover neutro `white/10` e texto `white`/`white/60`.
+  - `src/components/panel/panel-layout.tsx`, `src/components/panel/panel-header.tsx`, `src/components/panel/sidebar/sidebar.tsx`: shell já estava em `#000000`; mantido e reconhecido como base R1.
+- `Spec: DESIGN.md / Issue: #102` Tela 1 — Extrato de Vendas PIX (`src/app/panel/(main)/merchant/transactions/`):
+  - Removido filtro de “Método de Pagamento” da listagem e do hook (`use-transactions-table.ts`); eliminadas importações/estados/validações de `PaymentMethod` e chamadas `method` na API.
+  - `CreateTransactionModal` e `use-create-transaction-form.tsx`: eliminados campos e fluxos de cartão/boleto; criação restrita a PIX com preview/metadata/URL de notificação.
+  - Métricas da tela mantidas como cálculos determinísticos sobre `rows` da API (`totalVolume`, `approved.length`, `conversionRate`), sem mocks; colunas de Valor Bruto/Líquido e badges já usam `font-mono tabular-nums` e `RevolutStatusBadge`.
+- `EVIDÊNCIA` `npx tsc --noEmit` executado neste workstream; saída limpa em `artifact://8` (9.14s, sem erros).
+- `PRÓXIMA AÇÃO` Validar deploy/build em produção e, se necessário, revisar telas 2-8 da Fase 1/Fase 2 seguindo o mesmo checklist R1-R11.

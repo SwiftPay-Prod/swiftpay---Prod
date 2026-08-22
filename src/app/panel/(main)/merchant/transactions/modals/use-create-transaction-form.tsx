@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useTransition, useActionState, useDeferredValue, useEffect, use } from 'react';
-import { parseDate, today, getLocalTimeZone } from '@internationalized/date';
 import { createMerchantPayment, previewPayment } from '@/app/actions/merchant/payments';
 import { listMerchantCustomers } from '@/app/actions/merchant/customers';
 import { toast } from '@heroui/react';
@@ -64,37 +63,19 @@ interface UseCreateTransactionFormProps {
 }
 
 export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onSuccess }: UseCreateTransactionFormProps) {
-	function getMinBoletoDate() {
-		return today(getLocalTimeZone()).add({ days: 2 });
-	}
-
 	const feesResponse = use(feesPromise);
 	const fees = feesResponse?.data;
 
-	const methodOptions = (() => {
-		const options: PaymentMethod[] = [];
-		if (fees?.pixEnabled) options.push(PaymentMethod.Pix);
-		if (fees?.boletoEnabled) options.push(PaymentMethod.Boleto);
-		if (fees?.creditCardEnabled) options.push(PaymentMethod.CreditCard);
-		return options;
-	})();
-
-	const defaultMethod = methodOptions[0] ?? PaymentMethod.Pix;
+	const pixEnabled = fees?.pixEnabled ?? false;
+	const minAmount = fees?.pixMinTransactionAmount ?? 100;
+	const maxAmount = fees?.pixMaxTransactionAmount ?? 100000000;
+	const hasMaxLimit = maxAmount > 0;
 
 	const [isLoadingPreview, startLoadingPreview] = useTransition();
 	const [selectedCustomer, setSelectedCustomer] = useState<MinimalCustomer | null>(null);
 	const [amountFormatted, setAmountFormatted] = useState('');
 	const [description, setDescription] = useState('');
 	const [callbackUrl, setCallbackUrl] = useState('');
-	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(defaultMethod);
-	const [cardNumber, setCardNumber] = useState('');
-	const [cardHolderName, setCardHolderName] = useState('');
-	const [cardExpirationMonth, setCardExpirationMonth] = useState('');
-	const [cardExpirationYear, setCardExpirationYear] = useState('');
-	const [installments, setInstallments] = useState('1');
-	const [cardCvv, setCardCvv] = useState('');
-	const [boletoDueDate, setBoletoDueDate] = useState('');
-	const [boletoInstructions, setBoletoInstructions] = useState('');
 	const [fetchedPreview, setFetchedPreview] = useState<PreviewPaymentData | null>(null);
 	const [isMetadataEnabled, setIsMetadataEnabled] = useState(false);
 	const [metadataInput, setMetadataInput] = useState('');
@@ -102,14 +83,6 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 	const [isCustomerAutocompleteOpen, setIsCustomerAutocompleteOpen] = useState(false);
 	const [fetchedCustomerOptions, setFetchedCustomerOptions] = useState<MinimalCustomer[]>([]);
 	const [lastCompletedCustomerSearch, setLastCompletedCustomerSearch] = useState<string | null>(null);
-
-	const minAmount = paymentMethod === PaymentMethod.Boleto
-		? (fees?.boletoMinTransactionAmount ?? 500)
-		: (fees?.pixMinTransactionAmount ?? 100);
-	const maxAmount = paymentMethod === PaymentMethod.Boleto
-		? (fees?.boletoMaxTransactionAmount ?? 100000000)
-		: (fees?.pixMaxTransactionAmount ?? 100000000);
-	const hasMaxLimit = maxAmount > 0;
 
 	const deferredCustomerSearch = useDeferredValue(customerSearch);
 	const deferredAmountFormatted = useDeferredValue(amountFormatted);
@@ -132,22 +105,6 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 	const isAboveMax = amountCents > 0 && hasMaxLimit && amountCents > maxAmount;
 	const isAmountOutOfRange = isBelowMin || isAboveMax;
 
-	const isBoleto = paymentMethod === PaymentMethod.Boleto;
-	const isCreditCard = paymentMethod === PaymentMethod.CreditCard;
-	const cardDigits = cardNumber.replace(/\D/g, '');
-	const cardCvvDigits = cardCvv.replace(/\D/g, '');
-	const parsedExpirationMonth = Number.parseInt(cardExpirationMonth, 10);
-	const parsedExpirationYear = Number.parseInt(cardExpirationYear, 10);
-	const parsedInstallments = Number.parseInt(installments, 10);
-	const currentYear = new Date().getFullYear();
-	const isMissingCardNumber = isCreditCard && cardDigits.length < 13;
-	const isMissingCardHolderName = isCreditCard && cardHolderName.trim().length < 3;
-	const isMissingCardExpirationMonth =
-		isCreditCard && (Number.isNaN(parsedExpirationMonth) || parsedExpirationMonth < 1 || parsedExpirationMonth > 12);
-	const isMissingCardExpirationYear =
-		isCreditCard && (Number.isNaN(parsedExpirationYear) || parsedExpirationYear < currentYear || parsedExpirationYear > currentYear + 20);
-	const isMissingInstallments = isCreditCard && (Number.isNaN(parsedInstallments) || parsedInstallments < 1 || parsedInstallments > 12);
-	const isMissingCardCvv = isCreditCard && (cardCvvDigits.length < 3 || cardCvvDigits.length > 4);
 	const normalizedMetadata = metadataInput.trim();
 	const shouldValidateMetadata = isMetadataEnabled && normalizedMetadata.length > 0;
 	let isInvalidMetadataJson = false;
@@ -161,23 +118,6 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 	}
 
 	const isMissingMetadataJson = isMetadataEnabled && normalizedMetadata.length === 0;
-	const isMissingBoletoCustomer = isBoleto && !selectedCustomer;
-	const isMissingBoletoDueDate = isBoleto && !boletoDueDate;
-	const minBoletoDateValue = getMinBoletoDate();
-	let boletoDueDateValue = null;
-	let isInvalidBoletoDateValue = false;
-
-	if (boletoDueDate) {
-		try {
-			boletoDueDateValue = parseDate(boletoDueDate);
-		} catch {
-			isInvalidBoletoDateValue = true;
-		}
-	}
-
-	const isInvalidBoletoDueDate =
-		isBoleto &&
-		(!boletoDueDate || isInvalidBoletoDateValue || !boletoDueDateValue || boletoDueDateValue.compare(minBoletoDateValue) < 0);
 
 	useEffect(() => {
 		const term = customerSearchTerm;
@@ -206,8 +146,7 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 		startLoadingPreview(async () => {
 			const previewResponse = await previewPayment(merchantId, {
 				amount: amountCents,
-				method: paymentMethod,
-				installments: paymentMethod === PaymentMethod.CreditCard ? parsedInstallments || 1 : undefined,
+				method: PaymentMethod.Pix,
 			});
 			if (!cancelled) setFetchedPreview(previewResponse?.data ?? null);
 		});
@@ -215,51 +154,30 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 		return () => {
 			cancelled = true;
 		};
-	}, [shouldShowPreview, amountCents, paymentMethod, parsedInstallments, merchantId]);
+	}, [shouldShowPreview, amountCents, merchantId]);
 
 	const [state, formAction, isPending] = useActionState(
 		async (_prevState: FormState, formData: FormData): Promise<FormState> => {
 			const amount = formattedCurrencyToCents(amountFormatted) ?? 0;
 			const resolvedDescription = description || (formData.get('description') as string);
-			const minBoletoDateOnSubmit = getMinBoletoDate();
 
 			if (amount <= 0) return { error: 'Informe um valor válido' };
+			if (!pixEnabled) return { error: 'PIX não está habilitado para esta organização.' };
 			if (isMetadataEnabled && normalizedMetadata.length === 0) {
 				return { error: 'Informe o JSON de metadata ou desative a opção de envio' };
 			}
 			if (isMetadataEnabled && isInvalidMetadataJson) {
 				return { error: 'O campo metadata deve conter um JSON válido' };
 			}
-			if (isBoleto && !selectedCustomer?.id) return { error: 'Selecione um cliente para emitir o boleto' };
-			if (isCreditCard && isMissingCardNumber) return { error: 'Informe um número de cartão válido' };
-			if (isCreditCard && isMissingCardHolderName) return { error: 'Informe o nome do titular do cartão' };
-			if (isCreditCard && isMissingCardExpirationMonth) return { error: 'Informe o mês de expiração do cartão' };
-			if (isCreditCard && isMissingCardExpirationYear) return { error: 'Informe o ano de expiração do cartão' };
-			if (isCreditCard && isMissingInstallments) return { error: 'Informe a quantidade de parcelas (1 a 12)' };
-			if (isCreditCard && isMissingCardCvv) return { error: 'Informe um CVV válido do cartão' };
-			if (
-				isBoleto &&
-				(isInvalidBoletoDateValue || !boletoDueDateValue || boletoDueDateValue.compare(minBoletoDateOnSubmit) < 0)
-			) {
-				return { error: 'A data de vencimento do boleto deve ser no minimo D+2' };
-			}
 
 			const res = await createMerchantPayment(merchantId, {
-				method: paymentMethod,
+				method: PaymentMethod.Pix,
 				amount,
 				description: resolvedDescription?.trim() || undefined,
 				customerId: selectedCustomer?.id,
 				customerPhone: selectedCustomer?.phone ?? undefined,
 				callbackUrl: callbackUrl.trim() || undefined,
 				metadata: isMetadataEnabled ? normalizedMetadata : undefined,
-				cardNumber: isCreditCard ? cardDigits : undefined,
-				cardHolderName: isCreditCard ? cardHolderName.trim() : undefined,
-				cardExpirationMonth: isCreditCard ? parsedExpirationMonth : undefined,
-				cardExpirationYear: isCreditCard ? parsedExpirationYear : undefined,
-				installments: isCreditCard ? parsedInstallments : undefined,
-				cardCvv: isCreditCard ? cardCvvDigits : undefined,
-				boletoDueDate: isBoleto ? boletoDueDate : undefined,
-				boletoInstructions: isBoleto ? boletoInstructions.trim() || undefined : undefined,
 			});
 
 			if (res?.error) return { error: res.error.message || 'Erro ao criar transação' };
@@ -326,40 +244,21 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 		amountForDisplay > 0 &&
 		!isAmountOutOfRange &&
 		!isMissingMetadataJson &&
-		!isInvalidMetadataJson &&
-		(!isBoleto || (!isMissingBoletoCustomer && !isMissingBoletoDueDate && !isInvalidBoletoDueDate)) &&
-		(!isCreditCard || (
-			!isMissingCardNumber &&
-			!isMissingCardHolderName &&
-			!isMissingCardExpirationMonth &&
-			!isMissingCardExpirationYear &&
-			!isMissingInstallments &&
-			!isMissingCardCvv
-		));
+		!isInvalidMetadataJson;
 
-	const hasNoPaymentMethods = methodOptions.length === 0;
+	const hasNoPaymentMethods = !pixEnabled;
 	return {
-		fees: { methodOptions, minAmount, maxAmount, hasMaxLimit, hasNoPaymentMethods },
+		fees: { methodOptions: pixEnabled ? [PaymentMethod.Pix] : [], minAmount, maxAmount, hasMaxLimit, hasNoPaymentMethods },
 		form: {
-			paymentMethod,
+			paymentMethod: PaymentMethod.Pix,
 			amountFormatted,
 			description,
 			callbackUrl,
-			cardNumber,
-			cardHolderName,
-			cardExpirationMonth,
-			cardExpirationYear,
-			installments,
-			cardCvv,
 			isMetadataEnabled,
 			metadataInput,
-			boletoDueDate,
-			boletoInstructions,
 			selectedCustomer,
 			customerSearch,
 			isCustomerAutocompleteOpen,
-			boletoDueDateValue,
-			minBoletoDateValue,
 		},
 		data: {
 			preview,
@@ -377,39 +276,20 @@ export function useCreateTransactionForm({ merchantId, feesPromise, onClose, onS
 			isAmountOutOfRange,
 			isBelowMin,
 			isAboveMax,
-			isBoleto,
-			isCreditCard,
 			isMissingMetadataJson,
 			isInvalidMetadataJson,
-			isMissingBoletoCustomer,
-			isMissingBoletoDueDate,
-			isInvalidBoletoDueDate,
-			isMissingCardNumber,
-			isMissingCardHolderName,
-			isMissingCardExpirationMonth,
-			isMissingCardExpirationYear,
-			isMissingInstallments,
-			isMissingCardCvv,
 			isValid,
 		},
 		handlers: {
-			setPaymentMethod,
+			setPaymentMethod: () => {},
 			handleAmountChange,
 			handleCustomerSelect,
 			handleRemoveCustomer,
 			setDescription,
 			setCallbackUrl,
-			setCardNumber,
-			setCardHolderName,
-			setCardExpirationMonth,
-			setCardExpirationYear,
-			setInstallments,
-			setCardCvv,
 			setIsMetadataEnabled,
 			setMetadataInput: setMetadataInputValue,
 			applyMetadataTemplate,
-			setBoletoDueDate,
-			setBoletoInstructions,
 			setCustomerSearch,
 			setIsCustomerAutocompleteOpen,
 		},
