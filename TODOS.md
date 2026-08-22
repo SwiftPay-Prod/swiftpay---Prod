@@ -40,9 +40,10 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutPeriodSelector.tsx`: seletor de período em cápsula segmentada com pílulas de troca instantânea e botão de sincronização integrado.
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx`: grid 3-col de alto contraste (Faturamento Líquido com growth pill, Volume Bruto e Taxa de Aprovação com health badge).
     - `src/app/panel/(main)/merchant/dashboard/components/WeeklyVolumeChart.tsx` e `VolumeChart.tsx`: gráficos minimalistas de evolução e volume com gradiente suave Cobalt Violet e tooltips flutuantes escuros.
-    - `src/app/panel/(main)/merchant/dashboard/components/SecondaryKpiSection.tsx`: tiles compactos para Ticket Médio, Recusadas, Estornos e Chargebacks com cores semânticas.
+    - `src/app/panel/(main)/merchant/dashboard/components/SecondaryKpiSection.tsx` (Issue: #103): padronização de labels neutros, valores 0 sem alertas falsos em vermelho/laranja e badges semânticos condicionais a valores reais.
     - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx`: skeleton perfeitamente proporcional à nova hierarquia Revolut.
-    - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx`: orquestração completa com reatividade, atalhos de teclado e fallback mobile intactos.
+    - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx` (Issue: #103): sincronização dinâmica do badge de saúde/ícone de conversão e eliminação de cores duras em chargebacks zerados.
+    - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx` (Issue: #103): tratamento do estado inicial sem transações.
     - `.github/workflows/deploy.yml` (Issue: #103): unificação do job de deploy na VPS com docker-compose.production.yaml em swiftpay-api/ e resolução do env file de produção.
   - Verificação (Issue: #103): typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 

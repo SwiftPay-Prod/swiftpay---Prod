@@ -25,12 +25,16 @@ export function SecondaryKpiSection({
 	const blurClass = isBalanceVisible ? '' : 'visual-blur';
 	const avgTicket = kpis.completedTransactions > 0 ? Math.round(kpis.totalVolume / kpis.completedTransactions) : 0;
 
+	const hasFailed = kpis.failedTransactions > 0;
+	const hasRefunded = kpis.refundedAmount > 0;
+	const hasChargebacks = kpis.chargebackCount > 0;
+
 	return (
 		<div className={`grid grid-cols-2 gap-2.5 ${className}`}>
 			{/* Tile 1: Ticket Médio */}
 			<div className="flex flex-col justify-between gap-1.5 rounded-[16px] border border-white/8 bg-[#0a0a0a] p-3.5 transition-all hover:border-white/15">
 				<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
-					<RevolutTrendingUpIcon size={13} className="text-[#00a87e]" />
+					<RevolutTrendingUpIcon size={13} className="text-white/40" />
 					<span>Ticket Médio</span>
 				</div>
 				<div className={`font-mono text-base font-bold tracking-tight text-white ${blurClass}`}>
@@ -40,22 +44,44 @@ export function SecondaryKpiSection({
 
 			{/* Tile 2: Recusadas */}
 			<div className="flex flex-col justify-between gap-1.5 rounded-[16px] border border-white/8 bg-[#0a0a0a] p-3.5 transition-all hover:border-white/15">
-				<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#ec7e00]/90">
-					<RevolutAlertIcon size={13} className="text-[#ec7e00]" />
-					<span>Recusadas</span>
+				<div className="flex items-center justify-between gap-1">
+					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+						<RevolutAlertIcon size={13} className={hasFailed ? 'text-[#ec7e00]' : 'text-white/40'} />
+						<span>Recusadas</span>
+					</div>
+					{hasFailed && (
+						<span className="rounded border border-[#ec7e00]/20 bg-[#ec7e00]/10 px-1.5 py-0.2 font-mono text-[10px] font-semibold text-[#ec7e00]">
+							Alerta
+						</span>
+					)}
 				</div>
-				<div className={`font-mono text-base font-bold tracking-tight text-[#ec7e00] ${blurClass}`}>
+				<div
+					className={`font-mono text-base font-bold tracking-tight ${
+						hasFailed ? 'text-[#ec7e00]' : 'text-white'
+					} ${blurClass}`}
+				>
 					<AnimatedNumber value={kpis.failedTransactions} />
 				</div>
 			</div>
 
 			{/* Tile 3: Estornos */}
 			<div className="flex flex-col justify-between gap-1.5 rounded-[16px] border border-white/8 bg-[#0a0a0a] p-3.5 transition-all hover:border-white/15">
-				<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#e23b4a]/90">
-					<RevolutRefundIcon size={13} className="text-[#e23b4a]" />
-					<span>Estornos</span>
+				<div className="flex items-center justify-between gap-1">
+					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+						<RevolutRefundIcon size={13} className={hasRefunded ? 'text-[#e23b4a]' : 'text-white/40'} />
+						<span>Estornos</span>
+					</div>
+					{hasRefunded && (
+						<span className="rounded border border-[#e23b4a]/20 bg-[#e23b4a]/10 px-1.5 py-0.2 font-mono text-[10px] font-semibold text-[#e23b4a]">
+							Estornado
+						</span>
+					)}
 				</div>
-				<div className={`font-mono text-base font-bold tracking-tight text-[#e23b4a] ${blurClass}`}>
+				<div
+					className={`font-mono text-base font-bold tracking-tight ${
+						hasRefunded ? 'text-[#e23b4a]' : 'text-white'
+					} ${blurClass}`}
+				>
 					<AnimatedCurrency value={kpis.refundedAmount} />
 				</div>
 			</div>
@@ -63,8 +89,8 @@ export function SecondaryKpiSection({
 			{/* Tile 4: Chargebacks */}
 			<div className="flex flex-col justify-between gap-1.5 rounded-[16px] border border-white/8 bg-[#0a0a0a] p-3.5 transition-all hover:border-white/15">
 				<div className="flex items-center justify-between gap-1">
-					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#e23b4a]/90">
-						<RevolutAlertIcon size={13} className="text-[#e23b4a]" />
+					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
+						<RevolutAlertIcon size={13} className={hasChargebacks ? 'text-[#e23b4a]' : 'text-white/40'} />
 						<span>Chargebacks</span>
 					</div>
 
@@ -74,7 +100,11 @@ export function SecondaryKpiSection({
 						</span>
 					)}
 				</div>
-				<div className={`font-mono text-base font-bold tracking-tight text-[#e23b4a] ${blurClass}`}>
+				<div
+					className={`font-mono text-base font-bold tracking-tight ${
+						hasChargebacks ? 'text-[#e23b4a]' : 'text-white'
+					} ${blurClass}`}
+				>
 					<AnimatedNumber value={kpis.chargebackCount} />
 				</div>
 			</div>

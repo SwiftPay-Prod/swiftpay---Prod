@@ -235,19 +235,39 @@ function ApprovalHealthCard({
 	kpis: MerchantKpiData;
 	isBalanceVisible: boolean;
 }) {
-	const isHealthy = kpis.approvalRate >= 80;
-	const isMedium = kpis.approvalRate >= 60 && kpis.approvalRate < 80;
+	const total = kpis.totalTransactions ?? 0;
+	const hasTransactions = total > 0;
+	const approvalRate = kpis.approvalRate ?? 0;
+
+	const isHealthy = hasTransactions && approvalRate >= 80;
+	const isMedium = hasTransactions && approvalRate >= 60 && approvalRate < 80;
 	const blurClass = isBalanceVisible ? '' : 'visual-blur';
 
-	const healthColor = isHealthy ? '#00a87e' : isMedium ? '#ec7e00' : '#e23b4a';
+	const healthColor = !hasTransactions
+		? 'rgba(255, 255, 255, 0.4)'
+		: isHealthy
+			? '#00a87e'
+			: isMedium
+				? '#ec7e00'
+				: '#e23b4a';
+
+	const badgeBg = !hasTransactions
+		? 'bg-white/5 text-white/50'
+		: isHealthy
+			? 'bg-[#00a87e]/15 text-[#00a87e]'
+			: isMedium
+				? 'bg-[#ec7e00]/15 text-[#ec7e00]'
+				: 'bg-[#e23b4a]/15 text-[#e23b4a]';
+
+	const HealthIcon = !hasTransactions || isHealthy ? RevolutCheckIcon : RevolutAlertIcon;
 
 	return (
 		<div className="flex flex-col justify-between gap-3.5 rounded-[20px] border border-white/12 bg-[#16181a] p-5 transition-all hover:border-white/20">
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						<div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e]">
-							<RevolutCheckIcon size={14} />
+						<div className={`flex h-6 w-6 items-center justify-center rounded-lg ${badgeBg}`}>
+							<HealthIcon size={14} />
 						</div>
 						<span className="text-[11px] font-semibold uppercase tracking-wider text-white/60">
 							Saúde de Conversão
@@ -258,7 +278,7 @@ function ApprovalHealthCard({
 						className={`font-mono text-sm font-bold ${blurClass}`}
 						style={{ color: healthColor }}
 					>
-						{kpis.approvalRate.toFixed(1)}%
+						{hasTransactions ? `${approvalRate.toFixed(1)}%` : '—'}
 					</span>
 				</div>
 
@@ -267,18 +287,20 @@ function ApprovalHealthCard({
 					<div
 						className="h-full rounded-full transition-all"
 						style={{
-							width: `${Math.min(kpis.approvalRate, 100)}%`,
+							width: hasTransactions ? `${Math.min(approvalRate, 100)}%` : '0%',
 							backgroundColor: healthColor,
 						}}
 					/>
 				</div>
 
 				<span className="text-xs text-white/50">
-					{isHealthy
-						? 'Taxa de aprovação dentro do padrão de excelência'
-						: isMedium
-							? 'Taxa moderada — monitore transações recusadas'
-							: 'Atenção — volume de recusas acima da média'}
+					{!hasTransactions
+						? 'Nenhuma transação registrada no período'
+						: isHealthy
+							? 'Taxa de aprovação dentro do padrão de excelência'
+							: isMedium
+								? 'Taxa moderada — monitore transações recusadas'
+								: 'Atenção — volume de recusas acima da média'}
 				</span>
 			</div>
 
@@ -287,13 +309,17 @@ function ApprovalHealthCard({
 					<span className="text-[10px] uppercase text-white/40 font-semibold">Aprovadas</span>
 					<span className={`text-sm font-bold text-white ${blurClass}`}>
 						{kpis.completedTransactions}
-						<span className="text-xs font-normal text-white/40"> / {kpis.totalTransactions}</span>
+						<span className="text-xs font-normal text-white/40"> / {total}</span>
 					</span>
 				</div>
 
 				<div className="flex flex-col gap-0.5">
 					<span className="text-[10px] uppercase text-white/40 font-semibold">Chargebacks</span>
-					<span className="text-sm font-bold text-[#e23b4a]">
+					<span
+						className={`text-sm font-bold ${
+							kpis.chargebackCount > 0 ? 'text-[#e23b4a]' : 'text-white'
+						}`}
+					>
 						{kpis.chargebackCount}
 						{kpis.chargebackRate > 0 && (
 							<span className="text-xs font-normal text-white/40"> ({kpis.chargebackRate.toFixed(1)}%)</span>

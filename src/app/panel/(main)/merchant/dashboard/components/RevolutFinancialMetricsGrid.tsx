@@ -35,10 +35,20 @@ export function RevolutFinancialMetricsGrid({
 	const hasTxGrowth = transactionsGrowth != null && !isNaN(transactionsGrowth);
 	const isTxGrowthPositive = hasTxGrowth && transactionsGrowth > 0;
 
+	const totalTransactions = kpis.totalTransactions ?? 0;
+	const hasTransactions = totalTransactions > 0;
 	const approvalRate = kpis.approvalRate ?? 0;
-	const isHighApproval = approvalRate >= 80;
-	const isMediumApproval = approvalRate >= 60 && approvalRate < 80;
+	const isHighApproval = hasTransactions && approvalRate >= 80;
+	const isMediumApproval = hasTransactions && approvalRate >= 60 && approvalRate < 80;
 
+	const ApprovalIcon = !hasTransactions || isHighApproval ? RevolutCheckIcon : RevolutAlertIcon;
+	const iconBg = !hasTransactions
+		? 'bg-white/5 text-white/50'
+		: isHighApproval
+			? 'bg-[#00a87e]/15 text-[#00a87e]'
+			: isMediumApproval
+				? 'bg-[#ec7e00]/15 text-[#ec7e00]'
+				: 'bg-[#e23b4a]/15 text-[#e23b4a]';
 	return (
 		<div className={`grid grid-cols-1 gap-3.5 sm:grid-cols-3 ${className}`}>
 			{/* Card 1: Faturamento Líquido */}
@@ -114,8 +124,8 @@ export function RevolutFinancialMetricsGrid({
 			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 transition-all hover:border-white/20">
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e]">
-							<RevolutCheckIcon size={16} />
+						<div className={`flex h-7 w-7 items-center justify-center rounded-lg ${iconBg}`}>
+							<ApprovalIcon size={16} />
 						</div>
 						<span className="text-[11px] font-semibold uppercase tracking-wider text-white/60">
 							Taxa de Aprovação
@@ -123,17 +133,23 @@ export function RevolutFinancialMetricsGrid({
 					</div>
 
 					{/* Health Pill */}
-					<div
-						className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-							isHighApproval
-								? 'border border-[#00a87e]/20 bg-[#00a87e]/15 text-[#00a87e]'
-								: isMediumApproval
-									? 'border border-[#ec7e00]/20 bg-[#ec7e00]/15 text-[#ec7e00]'
-									: 'border border-[#e23b4a]/20 bg-[#e23b4a]/15 text-[#e23b4a]'
-						}`}
-					>
-						{isHighApproval ? 'Excelente' : isMediumApproval ? 'Estável' : 'Atenção'}
-					</div>
+					{!hasTransactions ? (
+						<div className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-xs font-semibold text-white/50">
+							Sem Vendas
+						</div>
+					) : (
+						<div
+							className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+								isHighApproval
+									? 'border border-[#00a87e]/20 bg-[#00a87e]/15 text-[#00a87e]'
+									: isMediumApproval
+										? 'border border-[#ec7e00]/20 bg-[#ec7e00]/15 text-[#ec7e00]'
+										: 'border border-[#e23b4a]/20 bg-[#e23b4a]/15 text-[#e23b4a]'
+							}`}
+						>
+							{isHighApproval ? 'Excelente' : isMediumApproval ? 'Estável' : 'Atenção'}
+						</div>
+					)}
 				</div>
 
 				<div className="flex flex-col gap-1">
