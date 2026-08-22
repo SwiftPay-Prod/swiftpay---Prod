@@ -39,13 +39,13 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutHeroBalanceCard.tsx`: card hero com saldo tabular de grande impacto (`AnimatedCurrency`), visual-blur atômico, sub-métricas (Pendente/Reserva com tooltip) e botões de ação em pílula (+ Criar Cobrança, Solicitar Saque, Extrato de Saldo).
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutPeriodSelector.tsx`: seletor de período em cápsula segmentada com pílulas de troca instantânea e botão de sincronização integrado.
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx`: grid 3-col de alto contraste (Faturamento Líquido com growth pill, Volume Bruto e Taxa de Aprovação com health badge).
-    - `src/app/panel/(main)/merchant/dashboard/components/WeeklyVolumeChart.tsx` e `VolumeChart.tsx`: gráficos minimalistas de evolução e volume com gradiente suave Cobalt Violet e tooltips flutuantes escuros.
-    - `src/app/panel/(main)/merchant/dashboard/components/SecondaryKpiSection.tsx` (Issue: #103): padronização de labels neutros, valores 0 sem alertas falsos em vermelho/laranja e badges semânticos condicionais a valores reais.
-    - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx`: skeleton perfeitamente proporcional à nova hierarquia Revolut.
-    - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx` (Issue: #103): sincronização dinâmica do badge de saúde/ícone de conversão e eliminação de cores duras em chargebacks zerados.
-    - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx` (Issue: #103): tratamento do estado inicial sem transações e tipagem defensiva.
-    - `src/app/panel/(main)/merchant/dashboard/components/WeeklyVolumeChart.tsx` e `VolumeChart.tsx` (Issue: #103): blindagem null-safe contra dados parciais e formatação resiliente de datas.
-    - `.github/workflows/deploy.yml` (Issue: #103): unificação do job de deploy na VPS com docker-compose.production.yaml em swiftpay-api/, resolução do env file e health check curl não bloqueante.
+    - `DESIGN.md` (Issue: #103): formalização das 7 regras absolutas do Revolut 10 / Retail & Ultra Design System.
+    - `src/app/panel/(main)/merchant/dashboard/components/RevolutAnalyticsChart.tsx` (Issue: #103): gráfico financeiro nativo com abas interativas de métricas (Faturamento Líquido, Volume Bruto, Transações) e gradiente Cobalt Violet puro.
+    - `src/app/panel/(main)/merchant/dashboard/components/PaymentMethodBreakdown.tsx` (Issue: #103): módulo de distribuição por método de captura (PIX D+0, Cartão D+30, Boleto D+1) com barras proporcionais e dados reais.
+    - `src/app/panel/(main)/merchant/dashboard/components/RiskDisputesControl.tsx` (Issue: #103): módulo unificado de controle de risco, disputas, estornos, recusas e índice de chargeback (< 1.0%).
+    - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx` (Issue: #103): skeleton proporcional à nova arquitetura de 2 colunas.
+    - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx` (Issue: #103): orquestração definitiva eliminando todas as cópias genéricas ("mocks").
+    - Remoção de componentes legados (`SecondaryKpiSection.tsx`, `VolumeChart.tsx`, `WeeklyVolumeChart.tsx`, `DashboardCards.tsx`).
   - Verificação (Issue: #103): typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 
 ## Governança universal de contexto
