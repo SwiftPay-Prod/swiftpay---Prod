@@ -785,35 +785,29 @@ export function useCheckoutOnboarding({
 
 		setSavingStepKey(stepKey);
 		try {
-			const currentForm = {
-				...onboardingForm.getValues(),
-				...(visualDraft ? {
-					primaryColor: visualDraft.primaryColor,
-					secondaryColor: visualDraft.secondaryColor,
-					colorMode: visualDraft.colorMode,
-					logoUrl: visualDraft.logoUrl,
-					backgroundImageUrl: visualDraft.backgroundImageUrl,
-					faviconUrl: visualDraft.faviconUrl,
-				} : {})
-			};
+			// React Hook Form is the single source of truth at the instant the user
+			// presses Save. Draft state is derived asynchronously for the preview
+			// and must never overwrite newer form values.
+			const currentForm = onboardingForm.getValues();
 			let payload: UpdateCheckoutRequest = {};
 
 			switch (stepKey) {
 				case 'visual': {
-					const targetPrimary = currentForm.primaryColor ?? formValues.primaryColor;
-					const targetSecondary = currentForm.secondaryColor ?? formValues.secondaryColor;
-					const targetColorMode = currentForm.colorMode ?? formValues.colorMode;
-					const targetLogo = currentForm.logoUrl ?? formValues.logoUrl;
-					const targetBackground = currentForm.backgroundImageUrl ?? formValues.backgroundImageUrl;
-					const targetFavicon = currentForm.faviconUrl ?? formValues.faviconUrl;
+					const primaryColor = normalizeHexColor(currentForm.primaryColor);
+					const secondaryColor = normalizeHexColor(currentForm.secondaryColor);
 
 					payload = {
-						primaryColor: normalizeHexColor(targetPrimary) || targetPrimary || CHECKOUT_PRIMARY_COLOR_DEFAULT,
-						secondaryColor: targetColorMode === CheckoutColorMode.Gradient ? (normalizeHexColor(targetSecondary) || targetSecondary) : undefined,
-						colorMode: targetColorMode,
-						logoUrl: targetLogo ?? undefined,
-						backgroundImageUrl: targetBackground ?? undefined,
-						faviconUrl: targetFavicon ?? undefined,
+						primaryColor: primaryColor ?? CHECKOUT_PRIMARY_COLOR_DEFAULT,
+						secondaryColor:
+							currentForm.colorMode === CheckoutColorMode.Gradient
+								? secondaryColor
+								: undefined,
+						colorMode: currentForm.colorMode,
+						// Empty strings are intentional: the backend maps them to null,
+						// allowing a previously saved asset to be removed.
+						logoUrl: currentForm.logoUrl,
+						backgroundImageUrl: currentForm.backgroundImageUrl,
+						faviconUrl: currentForm.faviconUrl,
 					};
 					break;
 				}
@@ -1043,7 +1037,7 @@ export function useCheckoutOnboarding({
 		} finally {
 			setSavingStepKey(null);
 		}
-	}, [checkout, formValues, merchantId, onRefresh, productsDraft, messagesDraft, trackingDraft, seoDraft]);
+	}, [checkout, formValues, merchantId, onboardingForm, onRefresh, productsDraft, messagesDraft, trackingDraft, seoDraft]);
 	const livePreviewUrl = (() => {
 		if (!checkout?.checkoutUrl) {
 			return null;
