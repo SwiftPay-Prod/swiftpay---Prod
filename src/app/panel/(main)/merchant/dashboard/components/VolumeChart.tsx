@@ -1,65 +1,110 @@
 'use client';
 
+import React from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import { formatCurrency } from '@/utils/currency';
+import { RevolutAnalyticsIcon } from '@/components/ui/revolut-icons';
 import type { MerchantDailyVolumeData, MerchantWeeklyVolumeData } from '@/types/merchant/dashboard';
 
+const REVOLUT_ACCENT = '#494fdf';
+
 const volumeChartConfig = {
-  volume: {
-    label: 'Volume',
-    color: 'var(--accent)',
-  },
+	volume: {
+		label: 'Volume',
+		color: REVOLUT_ACCENT,
+	},
 } satisfies ChartConfig;
 
-interface VolumeChartProps {
-  data: MerchantDailyVolumeData[];
-  adaptiveData: MerchantWeeklyVolumeData[];
-  isHourlyGranularity: boolean;
-  isProcessing?: boolean;
-  periodLabel?: string;
+export interface VolumeChartProps {
+	data: MerchantDailyVolumeData[];
+	adaptiveData: MerchantWeeklyVolumeData[];
+	isHourlyGranularity: boolean;
+	isProcessing?: boolean;
+	periodLabel?: string;
+	className?: string;
 }
 
-export function VolumeChart({ data, adaptiveData, isHourlyGranularity, isProcessing, periodLabel }: VolumeChartProps) {
-  const chartData = isHourlyGranularity
-    ? adaptiveData.map((item) => ({
-        date: item.label,
-        volume: item.volume,
-        transactionCount: item.transactionCount,
-      }))
-    : data.map((item) => ({
-        date: new Date(item.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' }),
-        volume: item.volume,
-        transactionCount: item.transactionCount,
-      }));
+export function VolumeChart({
+	data,
+	adaptiveData,
+	isHourlyGranularity,
+	isProcessing = false,
+	periodLabel,
+	className = '',
+}: VolumeChartProps) {
+	const chartData = isHourlyGranularity
+		? adaptiveData.map((item) => ({
+				date: item.label,
+				volume: item.volume,
+				transactionCount: item.transactionCount,
+			}))
+		: data.map((item) => ({
+				date: new Date(item.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' }),
+				volume: item.volume,
+				transactionCount: item.transactionCount,
+			}));
 
-  return (
-    <div className={`mockup-chart-card ${isProcessing ? 'opacity-70' : ''}`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="mockup-chart-title">
-            {isHourlyGranularity ? 'Volume por hora' : 'Volume diário'}
-          </div>
-          <p className="text-xs text-muted-foreground mt-0.5">{periodLabel || 'Últimos 7 dias'}</p>
-        </div>
-        {isProcessing && <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-accent border-t-transparent" />}
-      </div>
-      <ChartContainer config={volumeChartConfig} className="h-32 w-full">
-        <BarChart accessibilityLayer data={chartData}>
-          <CartesianGrid vertical={false} strokeDasharray="3 3" className="stroke-border" />
-          <XAxis dataKey="date" tickLine={false} tickMargin={6} axisLine={false} fontSize={9} className="text-muted-foreground" />
-          <ChartTooltip
-            content={
-              <ChartTooltipContent
-                formatter={(value, name) =>
-                  name === 'volume' ? formatCurrency(value as number) : `${value} transações`
-                }
-              />
-            }
-          />
-          <Bar dataKey="volume" fill="var(--accent)" radius={[3, 3, 0, 0]} />
-        </BarChart>
-      </ChartContainer>
-    </div>
-  );
+	return (
+		<div
+			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 transition-all hover:border-white/20 ${
+				isProcessing ? 'opacity-70' : ''
+			} ${className}`}
+		>
+			<div className="flex items-center justify-between gap-2 pb-4">
+				<div className="flex items-center gap-2.5">
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1]">
+						<RevolutAnalyticsIcon size={16} />
+					</div>
+					<div>
+						<div className="text-sm font-semibold text-white tracking-tight">
+							{isHourlyGranularity ? 'Volume por Hora' : 'Volume Diário'}
+						</div>
+						<p className="text-xs text-white/50">{periodLabel || 'Distribuição no período selecionado'}</p>
+					</div>
+				</div>
+
+				{isProcessing && (
+					<div className="h-4 w-4 animate-spin rounded-full border-2 border-[#4f55f1] border-t-transparent" />
+				)}
+			</div>
+
+			<ChartContainer config={volumeChartConfig} className="h-44 w-full">
+				<BarChart accessibilityLayer data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+					<CartesianGrid vertical={false} strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
+
+					<XAxis
+						dataKey="date"
+						tickLine={false}
+						tickMargin={8}
+						axisLine={false}
+						fontSize={10}
+						tick={{ fill: 'rgba(255, 255, 255, 0.45)', fontFamily: 'var(--font-mono, monospace)' }}
+					/>
+
+					<ChartTooltip
+						content={
+							<ChartTooltipContent
+								className="border border-white/15 bg-[#0a0a0a]/95 backdrop-blur-md text-white shadow-2xl rounded-xl"
+								formatter={(value, name) =>
+									name === 'volume' ? (
+										<span className="font-mono font-semibold text-[#4f55f1]">{formatCurrency(value as number)}</span>
+									) : (
+										`${value} transações`
+									)
+								}
+							/>
+						}
+					/>
+
+					<Bar
+						dataKey="volume"
+						fill={REVOLUT_ACCENT}
+						radius={[4, 4, 0, 0]}
+						maxBarSize={40}
+					/>
+				</BarChart>
+			</ChartContainer>
+		</div>
+	);
 }

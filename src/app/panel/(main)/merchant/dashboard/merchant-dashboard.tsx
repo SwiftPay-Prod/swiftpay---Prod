@@ -1,44 +1,34 @@
 'use client';
 
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Select, ListBox } from '@heroui/react';
-import { PERIOD_OPTIONS, useMerchantDashboard } from '@/hooks/use-merchant-dashboard';
+import { useMerchantDashboard } from '@/hooks/use-merchant-dashboard';
 import { useBalanceVisibility } from '@/hooks/use-balance-visibility';
-import type { ReadMerchantDashboardData, DashboardPeriod } from '@/types/merchant/dashboard';
+import type { ReadMerchantDashboardData, DashboardPeriod, MerchantKpiData } from '@/types/merchant/dashboard';
 import { formatRelativeTime } from '@/utils/datetime';
 import { DashboardSkeleton } from './DashboardSkeleton';
 import { MobileMerchantDashboard } from '@/components/panel/mobile-merchant-dashboard';
 import { useIsMobile } from '@/hooks/use-is-mobile';
-import type { MerchantKpiData } from '@/types/merchant/dashboard';
 import { VolumeChart } from './components/VolumeChart';
 import { WeeklyVolumeChart } from './components/WeeklyVolumeChart';
 import { SecondaryKpiSection } from './components/SecondaryKpiSection';
+import { RevolutHeroBalanceCard, type MerchantReserveConfig } from './components/RevolutHeroBalanceCard';
+import { RevolutPeriodSelector } from './components/RevolutPeriodSelector';
+import { RevolutFinancialMetricsGrid } from './components/RevolutFinancialMetricsGrid';
 import { Routes } from '@/router/routes';
-import { Icon } from '@/components/ui/icon';
 import {
-	Wallet01Icon,
-	BankIcon,
-	Link02Icon,
-	UserAdd01Icon,
-	Ticket01Icon,
-	MoneyExchange01Icon,
-	ArrowUpRight01Icon,
-	ArrowDownRight01Icon,
-	Alert01Icon,
-	AlertCircleIcon,
-	CheckmarkCircle02Icon,
-	HelpCircleIcon,
-} from '@hugeicons/core-free-icons';
+	RevolutWalletIcon,
+	RevolutPlusIcon,
+	RevolutArrowUpRightIcon,
+	RevolutStatementIcon,
+	RevolutCheckIcon,
+	RevolutAlertIcon,
+	RevolutPixIcon,
+	RevolutInfoIcon,
+	RevolutAnalyticsIcon,
+} from '@/components/ui/revolut-icons';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { AnimatedNumber } from '@/components/ui/animated-number';
-import { Card } from '@heroui/react';
-
-interface MerchantReserveConfig {
-	pixReservePercentage: number;
-	boletoReservePercentage: number;
-	creditCardReservePercentage: number;
-}
 
 interface DashboardContentProps {
 	dashboard: ReadMerchantDashboardData;
@@ -47,13 +37,9 @@ interface DashboardContentProps {
 	selectedPeriod: DashboardPeriod;
 	onPeriodChange: (period: DashboardPeriod) => void;
 	isBalanceVisible: boolean;
+	onToggleBalanceVisibility: () => void;
 	hasReserveEnabled: boolean;
 	reserveConfig: MerchantReserveConfig | null;
-}
-
-function formatTrend(value: number | null | undefined): string {
-	if (value == null) return '';
-	return `${value > 0 ? '+' : ''}${value.toFixed(1)}%`;
 }
 
 function DashboardContent({
@@ -63,6 +49,7 @@ function DashboardContent({
 	selectedPeriod,
 	onPeriodChange,
 	isBalanceVisible,
+	onToggleBalanceVisibility,
 	hasReserveEnabled,
 	reserveConfig,
 }: DashboardContentProps) {
@@ -71,115 +58,83 @@ function DashboardContent({
 	const cacheInfo = dashboard.cacheInfo;
 	const periodInfo = dashboard.periodInfo;
 
-	const weeklyChart = (
-		<WeeklyVolumeChart
-			data={dashboard.weeklyChart}
-			isHourlyGranularity={periodInfo ? new Date(periodInfo.endDate).getTime() - new Date(periodInfo.startDate).getTime() <= 2 * 86400000 : false}
-			isProcessing={cacheInfo.isProcessing}
-		/>
-	);
-
-	const volumeChart = (
-		<VolumeChart
-			data={dashboard.volumeChart}
-			adaptiveData={dashboard.weeklyChart}
-			isHourlyGranularity={periodInfo ? new Date(periodInfo.endDate).getTime() - new Date(periodInfo.startDate).getTime() <= 2 * 86400000 : false}
-			isProcessing={cacheInfo.isProcessing}
-			periodLabel={periodInfo?.label}
-		/>
-	);
+	const isHourlyGranularity = periodInfo
+		? new Date(periodInfo.endDate).getTime() - new Date(periodInfo.startDate).getTime() <= 2 * 86400000
+		: false;
 
 	return (
-		<div className="flex flex-col gap-3">
+		<div className="flex flex-col gap-5 text-white">
 			{/* Executive Toolbar */}
-			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-3">
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
 				<div>
-					<h1 className="text-base font-semibold text-foreground tracking-tight">Visão Geral</h1>
-					<p className="text-xs text-muted-foreground mt-0.5">Métricas de faturamento, caixa e desempenho operacional</p>
+					<h1 className="text-xl font-bold tracking-tight text-white">Visão Geral</h1>
+					<p className="text-xs text-white/50 mt-0.5">
+						Métricas de faturamento, fluxo de caixa e desempenho operacional
+					</p>
 				</div>
-				<div className="flex items-center gap-2">
-					<Select
-						variant="secondary"
-						size="sm"
-						aria-label="Período"
-						className="min-w-36"
-						value={selectedPeriod}
-						onChange={(key) => key && onPeriodChange(key as DashboardPeriod)}
-					>
-						<Select.Trigger>
-							<Select.Value />
-						</Select.Trigger>
-						<Select.Popover>
-							<ListBox>
-								{PERIOD_OPTIONS.map((opt) => (
-									<ListBox.Item key={opt.key} id={opt.key}>
-										{opt.label}
-									</ListBox.Item>
-								))}
-							</ListBox>
-						</Select.Popover>
-					</Select>
-				</div>
+
+				<RevolutPeriodSelector
+					selectedPeriod={selectedPeriod}
+					onPeriodChange={onPeriodChange}
+					onRefresh={onRefresh}
+					isRefreshing={isRefreshing}
+				/>
 			</div>
 
-			{/* Operational Alerts — visíveis antes de qualquer scroll */}
+			{/* Operational Alerts */}
 			<OperationalAlertBanner kpis={kpis} />
 
-			{/* Cash Hero + Primary Financial Metrics */}
-			<div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
-				<CashHeroCard
-					balance={balance}
-					isBalanceVisible={isBalanceVisible}
-					hasReserveEnabled={hasReserveEnabled}
-					reserveConfig={reserveConfig}
-				/>
-				<FinancialMetricCard
-					label="Faturamento Líquido"
-					value={kpis.totalNetVolume}
-					isBalanceVisible={isBalanceVisible}
-					format="currency"
-					trend={kpis.volumeGrowth}
-				/>
-				<FinancialMetricCard
-					label="Volume Total"
-					value={kpis.totalVolume}
-					isBalanceVisible={isBalanceVisible}
-					format="currency"
-				/>
-				<FinancialMetricCard
-					label="Aprovadas"
-					value={kpis.completedTransactions}
-					isBalanceVisible={isBalanceVisible}
-					format="number"
-					meta={`de ${kpis.totalTransactions}`}
-					trend={kpis.transactionsGrowth}
-				/>
-			</div>
+			{/* Hero Balance Card */}
+			<RevolutHeroBalanceCard
+				balance={balance}
+				isBalanceVisible={isBalanceVisible}
+				onToggleBalanceVisibility={onToggleBalanceVisibility}
+				hasReserveEnabled={hasReserveEnabled}
+				reserveConfig={reserveConfig}
+			/>
 
-			{/* Performance + Health */}
-			<div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-				<div className="lg:col-span-2 flex flex-col gap-3">
-					{weeklyChart}
-					{volumeChart}
+			{/* Primary High-Contrast Financial Metrics Grid */}
+			<RevolutFinancialMetricsGrid kpis={kpis} isBalanceVisible={isBalanceVisible} />
+
+			{/* Performance & Charts Grid */}
+			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+				{/* Charts Column (2 cols) */}
+				<div className="lg:col-span-2 flex flex-col gap-4">
+					<WeeklyVolumeChart
+						data={dashboard.weeklyChart}
+						isHourlyGranularity={isHourlyGranularity}
+						isProcessing={cacheInfo.isProcessing}
+					/>
+					<VolumeChart
+						data={dashboard.volumeChart}
+						adaptiveData={dashboard.weeklyChart}
+						isHourlyGranularity={isHourlyGranularity}
+						isProcessing={cacheInfo.isProcessing}
+						periodLabel={periodInfo?.label}
+					/>
 				</div>
-				<div className="lg:col-span-1 flex flex-col gap-3">
+
+				{/* Health & Secondary Metrics Column (1 col) */}
+				<div className="lg:col-span-1 flex flex-col gap-4">
 					<ApprovalHealthCard kpis={kpis} isBalanceVisible={isBalanceVisible} />
-					<div className="grid grid-cols-2 gap-2">
-						<SecondaryKpiSection kpis={kpis} cacheInfo={cacheInfo} isBalanceVisible={isBalanceVisible} />
-					</div>
+					<SecondaryKpiSection
+						kpis={kpis}
+						cacheInfo={cacheInfo}
+						isBalanceVisible={isBalanceVisible}
+					/>
 				</div>
 			</div>
 
-			{/* Quick Actions */}
+			{/* Quick Actions Card */}
 			<QuickActions />
 
-			{/* Footer Status */}
-			<div className="flex items-center justify-between pt-3 border-t border-border/60 text-xs text-muted-foreground">
+			{/* Footer Status Bar */}
+			<div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs text-white/50 font-mono">
 				<div className="flex items-center gap-3">
 					{cacheInfo.isProcessing && (
-						<div className="flex items-center gap-1.5">
-							<div className="h-2.5 w-2.5 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-							<span>Sincronizando dados...</span>
+						<div className="flex items-center gap-1.5 text-[#4f55f1]">
+							<div className="h-2.5 w-2.5 animate-spin rounded-full border-2 border-[#4f55f1] border-t-transparent" />
+							<span>Sincronizando métricas...</span>
 						</div>
 					)}
 					{cacheInfo.lastUpdatedAt && (
@@ -187,147 +142,44 @@ function DashboardContent({
 							<span>Atualizado {formatRelativeTime(cacheInfo.lastUpdatedAt)}</span>
 							<TooltipProvider>
 								<Tooltip>
-									<TooltipTrigger className="inline-flex cursor-help">
-										<Icon icon={HelpCircleIcon} className="icon-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors" />
+									<TooltipTrigger className="cursor-help text-white/40 hover:text-white/70 inline-flex items-center">
+										<RevolutInfoIcon size={12} />
 									</TooltipTrigger>
-									<TooltipContent side="top" className="max-w-72 text-xs">
-										<span className="font-medium">Sincronização:</span>{' '}
-										Saldo em tempo real; métricas atualizadas a cada {cacheInfo.cacheDurationMinutes} min.
+									<TooltipContent side="top" className="max-w-72 border-white/12 bg-[#0a0a0a] text-xs text-white shadow-xl">
+										<p className="font-semibold text-white/90">Ciclo de Sincronização:</p>
+										<p className="mt-1 text-white/70">
+											Saldo disponível em tempo real. Gráficos e indicadores operacionais atualizados a cada{' '}
+											{cacheInfo.cacheDurationMinutes} min.
+										</p>
 									</TooltipContent>
 								</Tooltip>
 							</TooltipProvider>
 						</div>
 					)}
 				</div>
+
 				<button
 					type="button"
 					onClick={onRefresh}
 					disabled={isRefreshing}
-					className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs font-medium text-muted-foreground border border-border/80 hover:text-foreground hover:bg-surface rounded transition-colors disabled:opacity-50"
+					className="button-outline-dark text-xs py-1.5 px-3"
 				>
-					<svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-						<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" />
+					<svg
+						className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#4f55f1]' : ''}`}
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
+						<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+						<path d="M21 3v5h-5" />
 					</svg>
-					{isRefreshing ? 'Atualizando...' : 'Atualizar'}
+					<span>{isRefreshing ? 'Atualizando...' : 'Atualizar Dados'}</span>
 				</button>
 			</div>
 		</div>
-	);
-}
-
-function CashHeroCard({
-	balance,
-	isBalanceVisible,
-	hasReserveEnabled,
-	reserveConfig,
-}: {
-	balance: ReadMerchantDashboardData['balance'];
-	isBalanceVisible: boolean;
-	hasReserveEnabled: boolean;
-	reserveConfig: MerchantReserveConfig | null;
-}) {
-	const router = useRouter();
-	const blurClass = isBalanceVisible ? '' : 'visual-blur';
-
-	return (
-		<Card className="border border-success/20 bg-card lg:col-span-1">
-			<Card.Content className="flex h-full flex-col gap-2 p-3">
-				<div className="flex items-center justify-between gap-2">
-					<span className="text-xs font-mono font-medium uppercase tracking-wider text-muted-foreground">Saldo Disponível</span>
-					<Icon icon={Wallet01Icon} className="icon-sm text-success" />
-				</div>
-				<div className={`text-lg font-bold font-mono tracking-tight text-success ${blurClass}`}>
-					<AnimatedCurrency value={balance.available} />
-				</div>
-				<div className="flex flex-col gap-0.5 text-xs font-mono text-muted-foreground">
-					<span className={blurClass}>
-						Pendente: <AnimatedCurrency value={balance.pending} />
-					</span>
-					{hasReserveEnabled && balance.reserved > 0 && reserveConfig && (
-						<span className={blurClass}>
-							Reserva: <AnimatedCurrency value={balance.reserved} />{' '}
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger className="inline-flex cursor-help">
-										<Icon icon={HelpCircleIcon} className="icon-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors" />
-									</TooltipTrigger>
-									<TooltipContent side="top" className="max-w-64 text-xs">
-										Retenção configurada: PIX {reserveConfig.pixReservePercentage}% · Boleto{' '}
-										{reserveConfig.boletoReservePercentage}% · Cartão {reserveConfig.creditCardReservePercentage}%
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-						</span>
-					)}
-				</div>
-				<div className="mt-auto flex flex-wrap gap-1.5 pt-1">
-					<button
-						type="button"
-						onClick={() => router.push(Routes.panel.merchant.balanceHistory)}
-						className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs font-medium text-foreground border border-border/80 hover:bg-surface rounded transition-colors"
-					>
-						<Icon icon={MoneyExchange01Icon} className="icon-xs" />
-						Ver extrato
-					</button>
-					<button
-						type="button"
-						onClick={() => router.push(Routes.panel.merchant.cashouts)}
-						className="inline-flex items-center gap-1.5 h-7 px-2.5 text-xs font-medium text-success border border-success/30 hover:bg-success/5 rounded transition-colors"
-					>
-						<Icon icon={Wallet01Icon} className="icon-xs" />
-						Solicitar saque
-					</button>
-				</div>
-			</Card.Content>
-		</Card>
-	);
-}
-
-function FinancialMetricCard({
-	label,
-	value,
-	isBalanceVisible,
-	format = 'currency',
-	accent = false,
-	positive = false,
-	meta,
-	trend,
-}: {
-	label: string;
-	value: number | null | undefined;
-	isBalanceVisible: boolean;
-	format?: 'currency' | 'number' | 'percent';
-	accent?: boolean;
-	positive?: boolean;
-	meta?: string;
-	trend?: number | null;
-}) {
-	const blurClass = isBalanceVisible ? '' : 'visual-blur';
-	const numValue = value ?? 0;
-	const trendUp = (trend ?? 0) >= 0;
-
-	return (
-		<Card className="border border-border/80 bg-card hover:border-border transition-colors">
-			<Card.Content className="flex flex-col gap-1.5 p-3">
-				<span className="text-xs font-mono font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
-				<div className={`text-lg font-bold font-mono tracking-tight ${blurClass} ${accent ? 'text-success' : positive ? 'text-success' : 'text-foreground'}`}>
-					{format === 'currency' && <AnimatedCurrency value={numValue} />}
-					{format === 'number' && <AnimatedNumber value={numValue} />}
-					{format === 'percent' && <AnimatedNumber value={numValue} suffix="%" maximumFractionDigits={1} />}
-				</div>
-				{(meta || trend != null) && (
-					<div className="flex items-center gap-1.5">
-						{trend != null && (
-							<span className={`inline-flex items-center gap-0.5 text-xs font-mono font-medium ${trendUp ? 'text-success' : 'text-danger'}`}>
-								<Icon icon={trendUp ? ArrowUpRight01Icon : ArrowDownRight01Icon} className="icon-xs" />
-								{formatTrend(trend)}
-							</span>
-						)}
-						{meta && <span className="text-xs font-mono text-muted-foreground">{meta}</span>}
-					</div>
-				)}
-			</Card.Content>
-		</Card>
 	);
 }
 
@@ -338,35 +190,38 @@ function OperationalAlertBanner({ kpis }: { kpis: MerchantKpiData }) {
 
 	const alerts: Array<{ tone: 'success' | 'danger' | 'warning'; label: string }> = [
 		...(volumeGrowth > 0
-			? [{ tone: 'success' as const, label: `Faturamento em alta: +${volumeGrowth.toFixed(1)}% vs período anterior` }]
+			? [{ tone: 'success' as const, label: `Faturamento em alta (+${volumeGrowth.toFixed(1)}%)` }]
 			: volumeGrowth < 0
-				? [{ tone: 'danger' as const, label: `Faturamento em queda: ${volumeGrowth.toFixed(1)}% vs período anterior` }]
+				? [{ tone: 'danger' as const, label: `Faturamento em queda (${volumeGrowth.toFixed(1)}%)` }]
 				: []),
-		...(declineCount > 0 ? [{ tone: 'warning' as const, label: `${declineCount.toLocaleString('pt-BR')} transações recusadas` }] : []),
-		...(chargebackCount > 0 ? [{ tone: 'danger' as const, label: `${chargebackCount} chargebacks registrados` }] : []),
+		...(declineCount > 0
+			? [{ tone: 'warning' as const, label: `${declineCount.toLocaleString('pt-BR')} transações recusadas` }]
+			: []),
+		...(chargebackCount > 0
+			? [{ tone: 'danger' as const, label: `${chargebackCount} chargebacks registrados` }]
+			: []),
 	];
 
 	if (alerts.length === 0) return null;
 
-	const iconFor: Record<'success' | 'danger' | 'warning', typeof Alert01Icon> = {
-		success: CheckmarkCircle02Icon,
-		warning: Alert01Icon,
-		danger: AlertCircleIcon,
-	};
-
-	const toneStyles: Record<string, string> = {
-		success: 'border-success/20 bg-success/5 text-success',
-		warning: 'border-warning/20 bg-warning/5 text-warning',
-		danger: 'border-danger/20 bg-danger/5 text-danger',
+	const toneStyles: Record<'success' | 'danger' | 'warning', string> = {
+		success: 'border-[#00a87e]/25 bg-[#00a87e]/10 text-[#00a87e]',
+		warning: 'border-[#ec7e00]/25 bg-[#ec7e00]/10 text-[#ec7e00]',
+		danger: 'border-[#e23b4a]/25 bg-[#e23b4a]/10 text-[#e23b4a]',
 	};
 
 	return (
-		<div className="flex flex-wrap items-center gap-1.5">
-			<span className="text-xs font-mono font-medium uppercase tracking-wider text-muted-foreground">Alertas</span>
+		<div className="flex flex-wrap items-center gap-2">
+			<span className="text-[11px] font-semibold uppercase tracking-wider text-white/50">Alertas</span>
 			{alerts.slice(0, 3).map((item) => (
-				<span key={item.label} className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium ${toneStyles[item.tone]}`}>
-					<Icon icon={iconFor[item.tone]} className="icon-sm" />
-					<span className="truncate">{item.label}</span>
+				<span
+					key={item.label}
+					className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-medium ${toneStyles[item.tone]}`}
+				>
+					{item.tone === 'success' && <RevolutCheckIcon size={13} />}
+					{item.tone === 'warning' && <RevolutAlertIcon size={13} />}
+					{item.tone === 'danger' && <RevolutAlertIcon size={13} />}
+					<span>{item.label}</span>
 				</span>
 			))}
 		</div>
@@ -381,107 +236,199 @@ function ApprovalHealthCard({
 	isBalanceVisible: boolean;
 }) {
 	const isHealthy = kpis.approvalRate >= 80;
+	const isMedium = kpis.approvalRate >= 60 && kpis.approvalRate < 80;
 	const blurClass = isBalanceVisible ? '' : 'visual-blur';
 
+	const healthColor = isHealthy ? '#00a87e' : isMedium ? '#ec7e00' : '#e23b4a';
+
 	return (
-		<Card className="border border-border/80 bg-card">
-			<Card.Content className="p-3">
-				<div className="flex flex-col gap-1.5">
-					<div className="flex items-center justify-between">
-						<span className="text-xs font-mono uppercase text-muted-foreground font-medium">Saúde de Aprovação</span>
-						<span className={`text-xs font-mono font-semibold ${blurClass} ${isHealthy ? 'text-success' : 'text-warning'}`}>
-							{kpis.approvalRate.toFixed(1)}%
+		<div className="flex flex-col justify-between gap-3.5 rounded-[20px] border border-white/12 bg-[#16181a] p-5 transition-all hover:border-white/20">
+			<div className="flex flex-col gap-2">
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-2">
+						<div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e]">
+							<RevolutCheckIcon size={14} />
+						</div>
+						<span className="text-[11px] font-semibold uppercase tracking-wider text-white/60">
+							Saúde de Conversão
 						</span>
 					</div>
-					<div className="h-1.5 w-full rounded-full bg-surface">
-						<div
-							className={`h-full rounded-full transition-all ${isHealthy ? 'bg-success' : 'bg-warning'}`}
-							style={{ width: `${Math.min(kpis.approvalRate, 100)}%` }}
-						/>
-					</div>
-					<span className="text-xs font-mono text-muted-foreground">
-						{isHealthy ? 'Taxa dentro do esperado' : 'Abaixo da média da plataforma'}
+
+					<span
+						className={`font-mono text-sm font-bold ${blurClass}`}
+						style={{ color: healthColor }}
+					>
+						{kpis.approvalRate.toFixed(1)}%
 					</span>
-					<div className="mt-1 grid grid-cols-2 gap-2 border-t border-border/60 pt-2">
-						<div className="flex flex-col gap-0.5">
-							<span className="text-xs font-mono uppercase text-muted-foreground">Aprovadas</span>
-							<span className={`text-sm font-semibold font-mono tabular-nums ${blurClass}`}>
-								{kpis.completedTransactions}
-								<span className="text-xs font-normal text-muted-foreground"> / {kpis.totalTransactions}</span>
-							</span>
-						</div>
-						<div className="flex flex-col gap-0.5">
-							<span className="text-xs font-mono uppercase text-muted-foreground">Chargebacks</span>
-							<span className="text-sm font-semibold font-mono tabular-nums text-danger">
-								{kpis.chargebackCount}
-								{kpis.chargebackRate > 0 && (
-									<span className="text-xs font-normal text-muted-foreground"> ({kpis.chargebackRate.toFixed(1)}%)</span>
-								)}
-							</span>
-						</div>
-					</div>
 				</div>
-			</Card.Content>
-		</Card>
+
+				{/* Rounded Health Progress Bar */}
+				<div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
+					<div
+						className="h-full rounded-full transition-all"
+						style={{
+							width: `${Math.min(kpis.approvalRate, 100)}%`,
+							backgroundColor: healthColor,
+						}}
+					/>
+				</div>
+
+				<span className="text-xs text-white/50">
+					{isHealthy
+						? 'Taxa de aprovação dentro do padrão de excelência'
+						: isMedium
+							? 'Taxa moderada — monitore transações recusadas'
+							: 'Atenção — volume de recusas acima da média'}
+				</span>
+			</div>
+
+			<div className="grid grid-cols-2 gap-2 border-t border-white/8 pt-3 font-mono">
+				<div className="flex flex-col gap-0.5">
+					<span className="text-[10px] uppercase text-white/40 font-semibold">Aprovadas</span>
+					<span className={`text-sm font-bold text-white ${blurClass}`}>
+						{kpis.completedTransactions}
+						<span className="text-xs font-normal text-white/40"> / {kpis.totalTransactions}</span>
+					</span>
+				</div>
+
+				<div className="flex flex-col gap-0.5">
+					<span className="text-[10px] uppercase text-white/40 font-semibold">Chargebacks</span>
+					<span className="text-sm font-bold text-[#e23b4a]">
+						{kpis.chargebackCount}
+						{kpis.chargebackRate > 0 && (
+							<span className="text-xs font-normal text-white/40"> ({kpis.chargebackRate.toFixed(1)}%)</span>
+						)}
+					</span>
+				</div>
+			</div>
+		</div>
 	);
 }
 
 function QuickActions() {
 	const router = useRouter();
 
-	const groups: Array<{
-		label: string;
-		items: Array<{ label: string; icon: typeof Wallet01Icon; route: string }>;
-	}> = [
+	const actionCategories = [
 		{
-			label: 'Financeiro',
+			title: 'Gestão Financeira',
 			items: [
-				{ label: 'Solicitar Saque', icon: Wallet01Icon, route: Routes.panel.merchant.cashouts },
-				{ label: 'Conta PIX', icon: BankIcon, route: Routes.panel.merchant.cashoutAccounts },
+				{
+					label: 'Solicitar Saque',
+					description: 'Transferir saldo para conta PIX',
+					icon: RevolutArrowUpRightIcon,
+					route: Routes.panel.merchant.cashouts,
+					variant: 'default' as const,
+				},
+				{
+					label: 'Contas Bancárias PIX',
+					description: 'Gerenciar chaves cadastradas',
+					icon: RevolutPixIcon,
+					route: Routes.panel.merchant.cashoutAccounts,
+					variant: 'default' as const,
+				},
+				{
+					label: 'Extrato Completo',
+					description: 'Histórico detalhado de movimentações',
+					icon: RevolutStatementIcon,
+					route: Routes.panel.merchant.balanceHistory,
+					variant: 'default' as const,
+				},
 			],
 		},
 		{
-			label: 'Vendas',
+			title: 'Vendas & Cobranças',
 			items: [
-				{ label: 'Novo Checkout', icon: Link02Icon, route: Routes.panel.merchant.checkouts },
-				{ label: 'Novo Cliente', icon: UserAdd01Icon, route: Routes.panel.merchant.customers },
-				{ label: 'Novo Cupom', icon: Ticket01Icon, route: Routes.panel.merchant.coupons },
+				{
+					label: 'Nova Cobrança / Link',
+					description: 'Criar checkout instantâneo',
+					icon: RevolutPlusIcon,
+					route: Routes.panel.merchant.checkoutsUpsert('new'),
+					variant: 'primary' as const,
+				},
+				{
+					label: 'Clientes',
+					description: 'Base de compradores e contatos',
+					icon: RevolutWalletIcon,
+					route: Routes.panel.merchant.customers,
+					variant: 'default' as const,
+				},
+				{
+					label: 'Cupons de Desconto',
+					description: 'Criar promoções e descontos',
+					icon: RevolutAnalyticsIcon,
+					route: Routes.panel.merchant.coupons,
+					variant: 'default' as const,
+				},
 			],
 		},
 	];
 
 	return (
-		<Card className="border border-border/80 bg-card">
-			<Card.Content className="p-3">
-				<div className="flex flex-col gap-3">
-					<span className="text-xs font-mono font-medium uppercase tracking-wider text-muted-foreground">Ações Rápidas</span>
-					<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-						{groups.map((group) => (
-							<div key={group.label} className="flex flex-col gap-1.5">
-								<span className="text-xs font-mono uppercase text-muted-foreground/70">{group.label}</span>
-								<div className="flex flex-col gap-1.5">
-									{group.items.map((item) => (
-										<button
-											key={item.label}
-											type="button"
-											onClick={() => router.push(item.route)}
-											className="flex items-center gap-2.5 rounded-md border border-border/80 bg-card px-2.5 py-2 text-left text-xs font-medium text-foreground transition-colors hover:bg-surface"
-										>
-											<Icon icon={item.icon} className="icon-sm text-muted-foreground" />
-											<span>{item.label}</span>
-										</button>
-									))}
-								</div>
-							</div>
-						))}
+		<div className="flex flex-col gap-4 rounded-[24px] border border-white/12 bg-[#16181a] p-6 sm:p-7">
+			<div>
+				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/60">
+					Ações Rápidas
+				</span>
+				<h2 className="text-base font-bold tracking-tight text-white mt-0.5">
+					Operações e Acessos Diretos
+				</h2>
+			</div>
+
+			<div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+				{actionCategories.map((cat) => (
+					<div key={cat.title} className="flex flex-col gap-2.5">
+						<span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+							{cat.title}
+						</span>
+
+						<div className="flex flex-col gap-2">
+							{cat.items.map((item) => {
+								const ItemIcon = item.icon;
+								return (
+									<button
+										key={item.label}
+										type="button"
+										onClick={() => router.push(item.route)}
+										className={`group flex items-center justify-between rounded-[16px] border p-3 text-left transition-all ${
+											item.variant === 'primary'
+												? 'border-white/20 bg-white/5 hover:border-white/30 hover:bg-white/10'
+												: 'border-white/8 bg-[#0a0a0a] hover:border-white/15 hover:bg-white/[0.03]'
+										}`}
+									>
+										<div className="flex items-center gap-3">
+											<div
+												className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors ${
+													item.variant === 'primary'
+														? 'bg-white text-black font-semibold'
+														: 'bg-white/5 text-white/80 group-hover:bg-white/10 group-hover:text-white'
+												}`}
+											>
+												<ItemIcon size={18} />
+											</div>
+
+											<div className="flex flex-col">
+												<span className="text-sm font-semibold text-white group-hover:text-white">
+													{item.label}
+												</span>
+												<span className="text-xs text-white/40">{item.description}</span>
+											</div>
+										</div>
+
+										<div className="text-white/30 transition-transform group-hover:translate-x-0.5 group-hover:text-white/70">
+											<RevolutArrowUpRightIcon size={16} />
+										</div>
+									</button>
+								);
+							})}
+						</div>
 					</div>
-				</div>
-			</Card.Content>
-		</Card>
+				))}
+			</div>
+		</div>
 	);
 }
 
-interface MerchantDashboardProps {
+export interface MerchantDashboardProps {
 	merchantId: string;
 }
 
@@ -491,9 +438,6 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 	const { data: hookData, period, actions } = useMerchantDashboard({ merchantId });
 	const { isVisible: isBalanceVisible, toggle: toggleBalanceVisibility } = useBalanceVisibility();
 
-	function openLiveBalanceRoute() {
-		router.push(Routes.panel.merchant.liveBalance);
-	}
 
 	if (hookData.isLoading) {
 		return <DashboardSkeleton />;
@@ -501,18 +445,32 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 
 	if (hookData.error) {
 		return (
-			<div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm">
-				<p className="font-semibold text-destructive">Erro ao carregar dados</p>
-				<p className="mt-1 text-muted-foreground">{hookData.error}</p>
+			<div className="rounded-[20px] border border-[#e23b4a]/30 bg-[#e23b4a]/10 p-5 text-sm">
+				<p className="font-semibold text-[#e23b4a]">Erro ao carregar dados do dashboard</p>
+				<p className="mt-1 text-white/60">{hookData.error}</p>
+				<button
+					type="button"
+					onClick={actions.refresh}
+					className="button-outline-dark mt-3 text-xs"
+				>
+					Tentar Novamente
+				</button>
 			</div>
 		);
 	}
 
 	if (!hookData.dashboard) {
 		return (
-			<div className="rounded-lg border border-warning/50 bg-warning/10 p-4 text-sm">
-				<p className="font-semibold text-warning">Dados não disponíveis</p>
-				<p className="mt-1 text-muted-foreground">Não foi possível carregar os dados do dashboard.</p>
+			<div className="rounded-[20px] border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-5 text-sm">
+				<p className="font-semibold text-[#ec7e00]">Dados não disponíveis</p>
+				<p className="mt-1 text-white/60">Não foi possível carregar os dados do dashboard.</p>
+				<button
+					type="button"
+					onClick={actions.refresh}
+					className="button-outline-dark mt-3 text-xs"
+				>
+					Atualizar
+				</button>
 			</div>
 		);
 	}
@@ -521,7 +479,7 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 		return (
 			<MobileMerchantDashboard
 				merchantId={merchantId}
-				onOpenLiveScreen={openLiveBalanceRoute}
+				onOpenLiveScreen={() => router.push(Routes.panel.merchant.liveBalance)}
 				isBalanceVisible={isBalanceVisible}
 				onToggleBalanceVisibility={toggleBalanceVisibility}
 				hasReserveEnabled={hookData.hasReserveEnabled}
@@ -537,6 +495,7 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 			selectedPeriod={period.selected}
 			onPeriodChange={period.change}
 			isBalanceVisible={isBalanceVisible}
+			onToggleBalanceVisibility={toggleBalanceVisibility}
 			hasReserveEnabled={hookData.hasReserveEnabled}
 			reserveConfig={hookData.reserveConfig}
 		/>

@@ -31,16 +31,19 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
   - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; verificação de diff e paths abrangente com aprovação pelo code review Standards e Spec.
 - `DONE` Testar pagamento e webhook PixHub — verificado via simulação com assinatura HMAC válida; status transicionado para `Completed`, auditado em `AcquirerWebhookLogs` e creditado no ledger (`tx-28ebe653-11c4-49b2-a023-89184cdac124`).
 - `DONE` Testar PIX OUT PixHub — mapeamento de transferências e conversor de status (`PixHubStatusConverter`) validados com cobertura de testes unitários e schemas de saque ativos.
-- `DONE` Spec: #102 / Issue: #103 — remoção completa e definitiva da adquirente AkkadPag.
-  - Diagnóstico: descontinuação total da integração AkkadPag por fraude externa.
-  - Clean cutover executado:
-    - `swiftpay-api-payment`: remoção de `Clients/AkkadPag/`, `Endpoints/Acquirers/AkkadPag/`, `AkkadPagGroup.cs`, `AkkadPagService.cs`, `AkkadPagStatusConverter.cs`, `IAkkadPagClient.cs`, injeções em `ServiceCollectionExtensions.cs` e reprocessador dev.
-    - `swiftpay-api-core`: remoção de `AkkadPag` no enum `AcquirerType`, `SystemAcquirerIds.cs` e metadados em `AcquirerDefaultsConstants.cs`.
-    - `swiftpay-api`: remoção do seed e inicializador em `AcquirerInitializer.cs`.
-    - `swiftpay-web`: remoção de tipos em `types/enums.ts` e parse em `parse/acquirer.tsx`.
-    - `infra/nginx`: remoção do proxy de webhooks `location /v1/internal/akkadpag/webhooks/`.
-    - `docs/` e `CONTEXT.md`: atualização de mapas de webhooks e arquitetura.
-  - Status: codebase 100% limpa e pronta para deploy na VPS.
+- `DONE` Spec: #102 / Issue: #103 — redesign do dashboard do merchant no padrão Revolut 10 / Ultra.
+  - Contexto: elevação do design system do painel do merchant para a estética oficial da Revolut 10 (Retail & Ultra) com canvas preto puro, superfícies elevadas em grafite `#16181a`, 1px hairlines, botões primários em pílula branca e gráficos de evolução Cobalt Violet.
+  - Implementação:
+    - `src/app/globals.css`: tokens CSS `--revolut-canvas`, `--revolut-surface-elevated`, `--revolut-hairline`, utilitários `.revolut-card`, `.revolut-pill`, `.button-primary`, `.button-outline-dark`.
+    - `src/components/ui/revolut-icons.tsx`: conjunto de ícones vetoriais geométricos de 1.75px stroke (`RevolutWalletIcon`, `RevolutPlusIcon`, `RevolutArrowUpRightIcon`, `RevolutStatementIcon`, `RevolutAnalyticsIcon`, `RevolutCheckIcon`, `RevolutAlertIcon`, `RevolutRefundIcon`, `RevolutPixIcon`, `RevolutLockIcon`, `RevolutRefreshIcon`) e componente `RevolutIconBadge`.
+    - `src/app/panel/(main)/merchant/dashboard/components/RevolutHeroBalanceCard.tsx`: card hero com saldo tabular de grande impacto (`AnimatedCurrency`), visual-blur atômico, sub-métricas (Pendente/Reserva com tooltip) e botões de ação em pílula (+ Criar Cobrança, Solicitar Saque, Extrato de Saldo).
+    - `src/app/panel/(main)/merchant/dashboard/components/RevolutPeriodSelector.tsx`: seletor de período em cápsula segmentada com pílulas de troca instantânea e botão de sincronização integrado.
+    - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx`: grid 3-col de alto contraste (Faturamento Líquido com growth pill, Volume Bruto e Taxa de Aprovação com health badge).
+    - `src/app/panel/(main)/merchant/dashboard/components/WeeklyVolumeChart.tsx` e `VolumeChart.tsx`: gráficos minimalistas de evolução e volume com gradiente suave Cobalt Violet e tooltips flutuantes escuros.
+    - `src/app/panel/(main)/merchant/dashboard/components/SecondaryKpiSection.tsx`: tiles compactos para Ticket Médio, Recusadas, Estornos e Chargebacks com cores semânticas.
+    - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx`: skeleton perfeitamente proporcional à nova hierarquia Revolut.
+    - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx`: orquestração completa com reatividade, atalhos de teclado e fallback mobile intactos.
+  - Verificação: typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 
 ## Governança universal de contexto
 
