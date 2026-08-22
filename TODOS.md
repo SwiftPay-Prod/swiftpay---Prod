@@ -41,7 +41,7 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx`: grid 3-col de alto contraste (Faturamento Líquido com growth pill, Volume Bruto e Taxa de Aprovação com health badge).
     - `DESIGN.md` (Issue: #103): formalização das 7 regras absolutas do Revolut 10 / Retail & Ultra Design System.
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutAnalyticsChart.tsx` (Issue: #103): gráfico financeiro nativo com abas interativas de métricas (Faturamento Líquido, Volume Bruto, Transações) e gradiente Cobalt Violet puro.
-    - `src/app/panel/(main)/merchant/dashboard/components/PaymentMethodBreakdown.tsx` (Issue: #103): módulo de distribuição por método de captura (PIX D+0, Cartão D+30, Boleto D+1) com barras proporcionais e dados reais.
+    - `src/app/panel/(main)/merchant/dashboard/components/PaymentMethodBreakdown.tsx` (Issue: #103): módulo 100% focado na infraestrutura PIX (D+0 instantâneo, latência <3s, volume dinâmico e conversão de QR Codes).
     - `src/app/panel/(main)/merchant/dashboard/components/RiskDisputesControl.tsx` (Issue: #103): módulo unificado de controle de risco, disputas, estornos, recusas e índice de chargeback (< 1.0%).
     - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx` (Issue: #103): skeleton proporcional à nova arquitetura de 2 colunas.
     - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx` (Issue: #103): orquestração definitiva eliminando todas as cópias genéricas ("mocks").

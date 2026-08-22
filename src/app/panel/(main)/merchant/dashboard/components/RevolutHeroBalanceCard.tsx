@@ -130,8 +130,7 @@ export function RevolutHeroBalanceCard({
 											>
 												<p className="font-semibold text-white/90">Retenção de Reserva:</p>
 												<p className="mt-1 text-white/70">
-													PIX {reserveConfig.pixReservePercentage}% · Boleto {reserveConfig.boletoReservePercentage}% · Cartão{' '}
-													{reserveConfig.creditCardReservePercentage}%
+													Taxa de garantia PIX {reserveConfig.pixReservePercentage}% retida conforme contrato de operação.
 												</p>
 											</TooltipContent>
 										</Tooltip>
