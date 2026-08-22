@@ -8,7 +8,7 @@ import type { MerchantDailyVolumeData, MerchantWeeklyVolumeData } from '@/types/
 
 const REVOLUT_COBALT = '#4f55f1';
 
-export type ChartMetricMode = 'net_volume' | 'total_volume' | 'transactions';
+export type ChartMetricMode = 'volume' | 'transactions';
 
 export interface RevolutAnalyticsChartProps {
 	weeklyData?: MerchantWeeklyVolumeData[] | null;
@@ -25,7 +25,7 @@ export function RevolutAnalyticsChart({
 	isProcessing = false,
 	className = '',
 }: RevolutAnalyticsChartProps) {
-	const [activeMode, setActiveMode] = useState<ChartMetricMode>('net_volume');
+	const [activeMode, setActiveMode] = useState<ChartMetricMode>('volume');
 
 	const safeWeekly = Array.isArray(weeklyData) ? weeklyData : [];
 	const safeDaily = Array.isArray(dailyData) ? dailyData : [];
@@ -36,20 +36,17 @@ export function RevolutAnalyticsChart({
 		const label = 'label' in item ? item.label : new Date(item.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit' });
 		const volume = typeof item.volume === 'number' ? item.volume : 0;
 		const transactionCount = typeof item.transactionCount === 'number' ? item.transactionCount : 0;
-		const netVolume = Math.round(volume * 0.98); // approximate net after platform fee
 
 		return {
 			label,
 			volume,
-			netVolume,
 			transactionCount,
 		};
 	});
 
 	const metricTabs: Array<{ id: ChartMetricMode; label: string }> = [
-		{ id: 'net_volume', label: 'Faturamento Líquido' },
-		{ id: 'total_volume', label: 'Volume Bruto' },
-		{ id: 'transactions', label: 'Transações' },
+		{ id: 'volume', label: 'Volume (R$)' },
+		{ id: 'transactions', label: 'Transações (Qtd)' },
 	];
 
 	return (
@@ -67,7 +64,7 @@ export function RevolutAnalyticsChart({
 					<div>
 						<h2 className="text-base font-bold text-white tracking-tight">Performance e Tendência</h2>
 						<p className="text-xs text-white/50">
-							{isHourlyGranularity ? 'Fluxo detalhado nas últimas horas' : 'Evolução da receita agregada no período'}
+							{isHourlyGranularity ? 'Fluxo detalhado nas últimas horas' : 'Evolução agregada no período selecionado'}
 						</p>
 					</div>
 				</div>
@@ -81,7 +78,7 @@ export function RevolutAnalyticsChart({
 								key={tab.id}
 								type="button"
 								onClick={() => setActiveMode(tab.id)}
-								className={`rounded-full px-3 py-1.5 text-xs transition-all ${
+								className={`rounded-full px-3.5 py-1.5 text-xs transition-all ${
 									isActive
 										? 'border border-white/15 bg-[#16181a] font-semibold text-white shadow-sm'
 										: 'font-medium text-white/50 hover:text-white'
@@ -125,18 +122,12 @@ export function RevolutAnalyticsChart({
 										<span className="text-[11px] font-semibold uppercase text-white/50">{item.label}</span>
 										<div className="flex items-center justify-between gap-4 pt-1 border-t border-white/10">
 											<span className="text-white/70">
-												{activeMode === 'net_volume'
-													? 'Faturamento Líquido'
-													: activeMode === 'total_volume'
-														? 'Volume Bruto'
-														: 'Transações'}
+												{activeMode === 'volume' ? 'Volume' : 'Transações'}
 											</span>
 											<span className="font-bold text-[#4f55f1]">
-												{activeMode === 'net_volume'
-													? formatCurrency(item.netVolume)
-													: activeMode === 'total_volume'
-														? formatCurrency(item.volume)
-														: `${item.transactionCount} tx`}
+												{activeMode === 'volume'
+													? formatCurrency(item.volume)
+													: `${item.transactionCount} txs`}
 											</span>
 										</div>
 									</div>
@@ -146,7 +137,7 @@ export function RevolutAnalyticsChart({
 
 						<Area
 							type="monotone"
-							dataKey={activeMode === 'net_volume' ? 'netVolume' : activeMode === 'total_volume' ? 'volume' : 'transactionCount'}
+							dataKey={activeMode === 'volume' ? 'volume' : 'transactionCount'}
 							stroke={REVOLUT_COBALT}
 							strokeWidth={2.5}
 							fill="url(#revolutCobaltGradient)"

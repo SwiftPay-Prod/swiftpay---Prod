@@ -40,9 +40,9 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutPeriodSelector.tsx`: seletor de período em cápsula segmentada com pílulas de troca instantânea e botão de sincronização integrado.
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx`: grid 3-col de alto contraste (Faturamento Líquido com growth pill, Volume Bruto e Taxa de Aprovação com health badge).
     - `DESIGN.md` (Issue: #103): formalização das 7 regras absolutas do Revolut 10 / Retail & Ultra Design System.
-    - `src/app/panel/(main)/merchant/dashboard/components/RevolutAnalyticsChart.tsx` (Issue: #103): gráfico financeiro nativo com abas interativas de métricas (Faturamento Líquido, Volume Bruto, Transações) e gradiente Cobalt Violet puro.
-    - `src/app/panel/(main)/merchant/dashboard/components/PaymentMethodBreakdown.tsx` (Issue: #103): módulo 100% focado na infraestrutura PIX (D+0 instantâneo, latência <3s, volume dinâmico e conversão de QR Codes).
-    - `src/app/panel/(main)/merchant/dashboard/components/RiskDisputesControl.tsx` (Issue: #103): módulo unificado de controle de risco, disputas, estornos, recusas e índice de chargeback (< 1.0%).
+    - `src/app/panel/(main)/merchant/dashboard/components/RevolutAnalyticsChart.tsx` (Issue: #103): gráfico financeiro nativo alimentado 100% por métricas reais da API (`item.volume` e `item.transactionCount`), sem estimativas sintéticas.
+    - `src/app/panel/(main)/merchant/dashboard/components/PaymentMethodBreakdown.tsx` (Issue: #103): módulo de operações PIX alimentado 100% por dados reais do banco/API (Volume PIX, QR Codes pagos vs emitidos, Ticket Médio real e pendentes), sem latências ou badges estáticos fictícios.
+    - `src/app/panel/(main)/merchant/dashboard/components/RiskDisputesControl.tsx` (Issue: #103): módulo unificado de controle de risco com dados reais da API de chargebacks, contestações, estornos e recusas.
     - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx` (Issue: #103): skeleton proporcional à nova arquitetura de 2 colunas.
     - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx` (Issue: #103): orquestração definitiva eliminando todas as cópias genéricas ("mocks").
     - Remoção de componentes legados (`SecondaryKpiSection.tsx`, `VolumeChart.tsx`, `WeeklyVolumeChart.tsx`, `DashboardCards.tsx`).
