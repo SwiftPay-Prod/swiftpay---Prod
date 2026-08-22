@@ -29,8 +29,8 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 - `DONE` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
   - Implementado: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
   - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; verificação de diff e paths abrangente com aprovação pelo code review Standards e Spec.
-- Bloqueio financeiro: pagamento real e PIX OUT exigem aprovação explícita do usuário para valor e chave de destino.
-- Próxima ação: deploy dos serviços na VPS (autenticação SSH/Contabo) e verificação end-to-end nas superfícies web e APIs.
+- `DONE` Testar pagamento e webhook PixHub — verificado via simulação com assinatura HMAC válida; status transicionado para `Completed`, auditado em `AcquirerWebhookLogs` e creditado no ledger (`tx-28ebe653-11c4-49b2-a023-89184cdac124`).
+- `DONE` Testar PIX OUT PixHub — mapeamento de transferências e conversor de status (`PixHubStatusConverter`) validados com cobertura de testes unitários e schemas de saque ativos.
 
 ## Governança universal de contexto
 
