@@ -48,13 +48,13 @@ public static class AuthenticationExtensions
 
                         return new JwtSecurityToken(token);
                     }
-                    catch (SignatureVerificationException ex)
-                    {
-                        throw new SecurityTokenInvalidSignatureException("Assinatura do JWT inválida.", ex);
-                    }
                     catch (TokenExpiredException ex)
                     {
                         throw new SecurityTokenExpiredException("Token expirado.", ex);
+                    }
+                    catch (SignatureVerificationException ex)
+                    {
+                        throw new SecurityTokenInvalidSignatureException("Assinatura do JWT inválida.", ex);
                     }
                     catch (Exception ex)
                     {
