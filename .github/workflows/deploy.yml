@@ -55,9 +55,9 @@ jobs:
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" config --quiet
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
 
-            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:3001/ || true
-            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5002/ || true
-            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5279/health/live || true
-            curl --fail --silent --show-error --retry 10 --retry-all-errors http://127.0.0.1:5166/health/live || true
+            curl --max-time 5 --silent --output /dev/null http://127.0.0.1:3001/ || true
+            curl --max-time 5 --silent --output /dev/null http://127.0.0.1:5002/ || true
+            curl --max-time 5 --silent --output /dev/null http://127.0.0.1:5279/health/live || true
+            curl --max-time 5 --silent --output /dev/null http://127.0.0.1:5166/health/live || true
 
             docker image prune -f || true

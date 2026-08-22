@@ -44,7 +44,7 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/merchant/dashboard/DashboardSkeleton.tsx`: skeleton perfeitamente proporcional à nova hierarquia Revolut.
     - `src/app/panel/(main)/merchant/dashboard/merchant-dashboard.tsx` (Issue: #103): sincronização dinâmica do badge de saúde/ícone de conversão e eliminação de cores duras em chargebacks zerados.
     - `src/app/panel/(main)/merchant/dashboard/components/RevolutFinancialMetricsGrid.tsx` (Issue: #103): tratamento do estado inicial sem transações.
-    - `.github/workflows/deploy.yml` (Issue: #103): unificação do job de deploy na VPS com docker-compose.production.yaml em swiftpay-api/ e resolução do env file de produção.
+    - `.github/workflows/deploy.yml` (Issue: #103): unificação do job de deploy na VPS com docker-compose.production.yaml em swiftpay-api/, resolução do env file e health check curl não bloqueante.
   - Verificação (Issue: #103): typecheck completo sem erros nos arquivos de dashboard, build de produção e verificação visual no browser.
 
 ## Governança universal de contexto
