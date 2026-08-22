@@ -210,7 +210,7 @@ Serviços Core
 │   ├── PixTransactionService → PixService
 │   ├── CreditCardTransactionService
 │   └── BoletoTransactionService
-├── PixService → AcquirerServiceFactory → IAcquirerService (9 implementações)
+├── PixService → AcquirerServiceFactory → IAcquirerService (13 implementações)
 ├── PaymentProcessingService → ILedgerService + IMessagePublisher + PrimaryDbContext
 ├── CashoutService (~1935 linhas) → ILedgerService + WithdrawService + IMessagePublisher
 ├── CashoutWebhookService → HTTP + retry
@@ -220,7 +220,7 @@ Serviços Core
 ├── WithdrawService → AcquirerServiceFactory → IAcquirerService.WithdrawAsync()
 ├── PlatformPayoutWebhookService → ILedgerService
 ├── AcquirerNominalTrackingService → PrimaryDbContext
-└── 9 Acquirer Services (um por adquirente)
+└── 13 Acquirer Services (um por adquirente, incluindo PixHub)
 ```
 
 ---

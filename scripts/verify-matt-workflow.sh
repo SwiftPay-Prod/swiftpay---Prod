@@ -11,11 +11,11 @@ while IFS= read -r path; do
     TODOS.md)
       todos_staged=true
       ;;
-    src/*|swiftpay-api/*|swiftpay-api-core/*|swiftpay-api-payment/*|swiftpay-web-checkout/*|infra/*|Dockerfile|docker-compose*.yaml|*.csproj|package.json|package-lock.json)
+    src/*|swiftpay-api/*|swiftpay-api-core/*|swiftpay-api-payment/*|swiftpay-web-checkout/*|infra/*|scripts/*|.github/workflows/*|Dockerfile|docker-compose*.yaml|*.csproj|package.json|package-lock.json|start.sh|stop.sh)
       source_change=true
       ;;
   esac
-done < <(git diff --cached --name-only --diff-filter=ACMR)
+done < <(git diff --cached --name-only --diff-filter=ACMRD)
 
 if [[ "$source_change" != true ]]; then
   exit 0
@@ -29,7 +29,7 @@ EOF
   exit 1
 fi
 
-added_todos=$(git diff --cached --unified=0 -- TODOS.md)
+added_todos=$(git diff --cached --unified=0 -- TODOS.md | sed -n '/^+++ /d; /^+/p')
 if [[ ! "$added_todos" =~ (Spec|Issue|Ticket):[[:space:]]*#?[0-9]+ ]] &&
    [[ ! "$added_todos" =~ https://github.com/.*/issues/[0-9]+ ]]; then
   cat >&2 <<'EOF'

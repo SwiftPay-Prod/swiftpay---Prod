@@ -45,6 +45,7 @@ public sealed class PixHubWebhookSignatureVerifierTests
     [InlineData("")]
     [InlineData("invalid")]
     [InlineData("t=abc,v1=hash")]
+    [InlineData("t=9223372036854775807,v1=0000000000000000000000000000000000000000000000000000000000000000")]
     public void Verify_WithMalformedHeader_ReturnsFalse(string signature)
     {
         PixHubWebhookSignatureVerifier.Verify(Payload, signature, Secret, Now).Should().BeFalse();

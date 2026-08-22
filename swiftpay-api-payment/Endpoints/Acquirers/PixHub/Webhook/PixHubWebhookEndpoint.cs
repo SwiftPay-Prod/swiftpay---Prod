@@ -1,10 +1,8 @@
 using System.Text.Json;
 using FastEndpoints;
-using Microsoft.EntityFrameworkCore;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
-using swiftpay_api_payment.Clients.PixHub;
 using swiftpay_api_payment.Clients.PixHub.Models;
 using swiftpay_api_payment.EndpointsGroups.Acquirers;
 using swiftpay_api_payment.Interfaces;
@@ -39,21 +37,9 @@ public sealed class PixHubWebhookEndpoint(
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        using var reader = new StreamReader(HttpContext.Request.Body);
-        var rawBody = await reader.ReadToEndAsync(ct);
-        var signature = HttpContext.Request.Headers["PixHub-Signature"].FirstOrDefault();
-        var webhookSecret = await dbContext.Acquirers
-            .AsNoTracking()
-            .Where(acquirer => acquirer.Type == AcquirerType.PixHub)
-            .Select(acquirer => acquirer.WebhookToken)
-            .SingleOrDefaultAsync(ct);
-
-        if (!PixHubWebhookSignatureVerifier.Verify(rawBody, signature, webhookSecret ?? string.Empty, DateTimeOffset.UtcNow))
-        {
-            logger.LogWarning("PixHub webhook rejected because signature validation failed");
-            await Send.UnauthorizedAsync(ct);
-            return;
-        }
+        using var bodyBuffer = new MemoryStream();
+        await HttpContext.Request.Body.CopyToAsync(bodyBuffer, ct);
+        var rawBody = bodyBuffer.ToArray();
 
         PixHubWebhookPayload? payload;
         try

@@ -113,6 +113,8 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 
 	const primaryColor = formValues.primaryColor ?? (config?.primaryColor ?? PRIMARY_DEFAULT);
 	const secondaryColor = formValues.secondaryColor ?? (config?.secondaryColor ?? '');
+	const normalizedPrimaryColor = normalizeCheckoutHexColor(primaryColor) ?? PRIMARY_DEFAULT;
+	const normalizedSecondaryColor = normalizeCheckoutHexColor(secondaryColor) ?? SECONDARY_DEFAULT;
 	const colorMode = formValues.colorMode ?? getInitialColorMode();
 	const logoUrl = formValues.logoUrl ?? (config?.logoUrl ?? '');
 	const backgroundImageUrl = formValues.backgroundImageUrl ?? (config?.backgroundImageUrl ?? '');
@@ -211,7 +213,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 											className="flex flex-wrap gap-3"
 											variant="square"
 											size="md"
-											value={parseColor(primaryColor || PRIMARY_DEFAULT)}
+											value={parseColor(normalizedPrimaryColor)}
 											onChange={handlePrimaryColorChange}
 										>
 											{PRESET_COLORS.map((color) => (
@@ -238,7 +240,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 											<FieldError />
 										</TextField>
 										<ColorPicker
-											value={parseColor(primaryColor || PRIMARY_DEFAULT)}
+											value={parseColor(normalizedPrimaryColor)}
 											onChange={handlePrimaryColorChange}
 										>
 											<ColorPicker.Trigger className="flex size-10 items-center justify-center rounded-xl border border-divider bg-surface transition-all hover:bg-surface-soft-hover">
@@ -278,7 +280,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 													className="flex flex-wrap gap-3"
 													variant="square"
 													size="md"
-													value={parseColor(secondaryColor || SECONDARY_DEFAULT)}
+													value={parseColor(normalizedSecondaryColor)}
 													onChange={handleSecondaryColorChange}
 												>
 													{PRESET_COLORS.map((color) => (
@@ -305,7 +307,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 													<FieldError />
 												</TextField>
 												<ColorPicker
-													value={parseColor(secondaryColor || SECONDARY_DEFAULT)}
+													value={parseColor(normalizedSecondaryColor)}
 													onChange={handleSecondaryColorChange}
 												>
 													<ColorPicker.Trigger className="flex size-10 items-center justify-center rounded-xl border border-divider bg-surface transition-all hover:bg-surface-soft-hover">

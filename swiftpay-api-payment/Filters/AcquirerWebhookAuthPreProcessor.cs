@@ -7,6 +7,7 @@ using swiftpay_api_core.Database;
 using swiftpay_api_core.Interfaces;
 using swiftpay_api_core.Models.Database;
 using swiftpay_api_core.Models.Inputs;
+using swiftpay_api_payment.Clients.PixHub;
 using swiftpay_api_payment.Endpoints.Models;
 
 namespace swiftpay_api_payment.Filters;
@@ -185,7 +186,8 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
             || headerName.Equals("X-Webhook-Code", StringComparison.OrdinalIgnoreCase)
             || headerName.Equals("X-Webhook-Signature", StringComparison.OrdinalIgnoreCase)
             || headerName.Equals("X-HeartPay-Signature", StringComparison.OrdinalIgnoreCase)
-            || headerName.Equals("X-Signature", StringComparison.OrdinalIgnoreCase);
+            || headerName.Equals("X-Signature", StringComparison.OrdinalIgnoreCase)
+            || headerName.Equals("PixHub-Signature", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string? ResolveLocation(HttpContext context)
@@ -306,6 +308,11 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
             return await ValidateMagicPaySignatureAsync(context, acquirer.WebhookToken);
         }
 
+        if (IsAcquirerCodeFamily(acquirer.Code, "pixhub"))
+        {
+            return await ValidatePixHubSignatureAsync(context, acquirer.WebhookToken);
+        }
+
         if (!context.Request.Headers.TryGetValue("X-Webhook-Signature", out var signatureHeader))
             return false;
 
@@ -361,6 +368,30 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
 
         return SecureCompare(expectedBase64FromHex, normalizedSignature)
             || SecureCompare(expectedBase64UrlFromHex, normalizedSignature);
+    }
+
+    private static async Task<bool> ValidatePixHubSignatureAsync(HttpContext context, string webhookToken)
+    {
+        if (!context.Request.Headers.TryGetValue("PixHub-Signature", out var signatureHeader))
+            return false;
+
+        context.Request.Body.Position = 0;
+        using var bodyStream = new MemoryStream();
+        try
+        {
+            await context.Request.Body.CopyToAsync(bodyStream, CancellationToken.None);
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
+        context.Request.Body.Position = 0;
+
+        return PixHubWebhookSignatureVerifier.Verify(
+            bodyStream.ToArray(),
+            signatureHeader.ToString(),
+            webhookToken,
+            DateTimeOffset.UtcNow);
     }
 
     private static async Task<bool> ValidateHeartPaySignatureAsync(HttpContext context, string webhookToken)

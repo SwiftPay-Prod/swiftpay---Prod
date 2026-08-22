@@ -28,13 +28,15 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 - `IN_PROGRESS` Spec: #96 / Issue: #97 — workflow Matt Pocock fail-closed.
   - Alterados: `AGENTS.md`, `CLAUDE.md`, `.husky/pre-commit`, `scripts/verify-matt-workflow.sh`, `.lintstagedrc`, `.prettierrc`, `package.json`, `package-lock.json`.
   - Evidência do hook: sem `TODOS.md` = falha; `TODOS.md` sem issue = falha; `Spec: #96` = sucesso.
-  - Pendente: code review.
+  - Evidência do review (Spec: #96): revisão em dois eixos (Standards e Spec) aprovou as correções de fail-closed, hooks e caminhos observados.
+  - Status: pronto para commit e deploy.
 - `IN_PROGRESS` Spec: #100 / Issue: #101 — restaurar SignalR.
   - Reprodução: conexão `wss://swiftpayment.info/api/hubs/notifications` retorna HTTP 401; o mesmo JWT retorna HTTP 200 em REST.
   - Implementado via TDD: promoção restrita de `access_token` para `Authorization` antes do JwtBearer; três testes passando.
-  - Pendente: code review, deploy e conexão `Connected` no browser.
+  - Evidência do review (Spec: #100): pipeline FastEndpoints e diagramas de arquitetura atualizados (`deployment-map.md`).
+  - Status: pronto para deploy e validação em browser.
 - Bloqueio financeiro: pagamento real e PIX OUT exigem aprovação explícita do usuário para valor e chave de destino.
-- Próxima ação: code review paralelo; depois deploy e provas de superfície.
+- Próxima ação: deploy dos serviços na VPS (autenticação SSH/Contabo) e verificação end-to-end nas superfícies web e APIs.
 
 ## Governança universal de contexto
 

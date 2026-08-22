@@ -1,6 +1,6 @@
 # SWIFTPAY — Mapa de Webhooks
 
-> **Data de análise:** 21/05/2026
+> **Atualizado em:** 22/08/2026
 
 ---
 
@@ -10,7 +10,7 @@ O SWIFTPAY opera webhooks em **duas direções**:
 
 | Direção | Origem | Destino | Propósito | Tráfego |
 |---------|--------|---------|-----------|---------|
-| **Incoming** | Adquirentes (9) | swiftpay-api-payment | Notificação de pagamento/saque processado | Webhook HTTP POST |
+| **Incoming** | Adquirentes (13) | swiftpay-api-payment | Notificação de pagamento/saque processado | Webhook HTTP POST |
 | **Outgoing** | swiftpay-api-payment | Merchant (URL de callback) | Notificação de evento de pagamento/saque | Webhook HTTP POST (+ retry) |
 
 Arquitetura: **Publish-Subscribe via RabbitMQ** para desacoplar o recebimento do webhook do processamento dos efeitos colaterais (ledger, notificações, emails, dashboard).
@@ -32,6 +32,10 @@ Todos os endpoints de webhook estão em `swiftpay-api-payment` sob o prefixo `/v
 | 7 | HunterPay | `POST /v1/internal/hunterpay/webhooks` | HMAC-SHA256 |
 | 8 | Pluggou | `POST /v1/internal/pluggou/webhooks` | Token |
 | 9 | ActivePayments | `POST /v1/internal/activepayments/webhooks` | HMAC-SHA256 + IP |
+| 10 | MagicPay | `POST /v1/internal/magicpay/webhooks` | HMAC-SHA256 |
+| 11 | AkkadPag | `POST /v1/internal/akkadpag/webhooks/transactions` e `/withdrawals` | Token |
+| 12 | FlevoPay | `POST /v1/internal/flevopay/webhooks` | Configuração da processadora |
+| 13 | PixHub | `POST /v1/internal/pixhub/webhooks` | `PixHub-Signature` HMAC-SHA256 sobre `{timestamp}.{rawBody}` |
 
 ---
 
@@ -55,8 +59,9 @@ POST /v1/internal/{code}/webhooks
   │   │   ├─ Token: Authorization Bearer, X-Webhook-Token, X-Webhook-Code
   │   │   ├─ IP: X-Forwarded-For (primeiro IP), RemoteIpAddress, CIDR suportado
   │   │   └─ HMAC-SHA256: X-Webhook-Signature (hex, base64, base64url)
-  │   │       └─ HeartPay especial: X-HeartPay-Signature + X-HeartPay-Timestamp → "{ts}.{body}"
-  │   ├─ 5. Loga request bruto (AcquirerWebhookLogs)
+  │   │       ├─ HeartPay: X-HeartPay-Signature + X-HeartPay-Timestamp → "{ts}.{body}"
+  │   │       └─ PixHub: PixHub-Signature `t={ts},v1={hash}` → "{ts}.{rawBody}", tolerância de 5 min
+  │   ├─ 5. Loga request bruto (AcquirerWebhookLogs), mascarando assinaturas
   │   └─ 6. Armazena Acquirer no HttpContext.Items
   │
   ├─▶ FastEndpoints: Deserialize + Validate (FluentValidation)

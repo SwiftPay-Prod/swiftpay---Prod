@@ -150,6 +150,7 @@ No ambiente `Production`:
 | [!Dev]         | UseRateLimiter() |
 |                | UseCors() |
 |                | UseCorrelationId() |
+|                | SignalRQueryStringAuthenticationMiddleware (`/hubs` only: `access_token` → `Authorization`) |
 |                | UseAuthentication() |
 |                | UseSessionValidation() |
 |                | UseAuthorization() |
