@@ -149,11 +149,6 @@ export function GeneralTab({ acquirer }: GeneralTabProps) {
 				>
 					<div className="space-y-3">
 						<FeatureSupportRow label="PIX" supported={acquirer.supportsPix} />
-						<Separator />
-						<FeatureSupportRow label="Cartão de Crédito" supported={acquirer.supportsCreditCard} />
-						<Separator />
-						<FeatureSupportRow label="Boleto" supported={acquirer.supportsBoleto} />
-						<Separator />
 						<FeatureSupportRow label="Saque" supported={acquirer.supportsWithdrawal} />
 					</div>
 				</SystemAccordion>

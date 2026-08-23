@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { PaymentMethod } from '@/types/enums';
 
 export const buyerFieldSchema = z.enum(['Name', 'Email', 'Phone']);
-export const paymentMethodSchema = z.enum([PaymentMethod.Pix, PaymentMethod.Boleto, PaymentMethod.CreditCard]);
+export const paymentMethodSchema = z.enum([PaymentMethod.Pix]);
 export const expirationPresetSchema = z.enum(['1d', '2d', '3d', '7d', 'custom']);
 export const themeModeSchema = z.enum(['Light', 'Dark', 'Auto']);
 
@@ -29,8 +29,6 @@ export const paymentLinkFormSchema = z.object({
   settings: z.object({
     callbackUrl: z.string().trim().optional(),
     pixExpirationMinutes: z.string(),
-    boletoDueDate: z.string(),
-    boletoInstructions: z.string(),
     canExpire: z.boolean(),
     expirationPreset: expirationPresetSchema,
     customExpiresAt: z.string(),

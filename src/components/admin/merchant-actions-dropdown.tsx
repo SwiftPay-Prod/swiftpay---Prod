@@ -163,7 +163,7 @@ export function MerchantActionButtons({
 					isDisabled={!canEvaluate || !canModify || evaluateReason !== null || isPending}
 					onPress={onEvaluate}
 				>
-					<Icon icon={CheckListIcon} className="icon-sm text-[#4f55f1]" />
+					<Icon icon={CheckListIcon} className="icon-sm text-brand" />
 					<span>Avaliar</span>
 				</Button>
 			)}
@@ -263,13 +263,13 @@ export function MerchantActionsDropdown({
 					}}
 				>
 					{onEvaluate && (
-						<Dropdown.Item
-							key="evaluate"
-							id="evaluate"
-							textValue="Avaliar"
-							isDisabled={!canEvaluate || !canModify || evaluateReason !== null}
-							className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
-						>
+										<Dropdown.Item
+					key="evaluate"
+					id="evaluate"
+					textValue="Avaliar"
+					isDisabled={!canEvaluate || !canModify || evaluateReason !== null}
+					className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
+				>
 							<div className="flex items-center gap-2.5">
 								<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
 									<Icon icon={CheckListIcon} className="icon-xs text-[#4f55f1]" />
@@ -313,7 +313,7 @@ export function MerchantActionsDropdown({
 						id="activate"
 						textValue="Ativar"
 						isDisabled={!canModify || activateReason !== null}
-						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
+						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
 					>
 						<div className="flex items-center gap-2.5">
 							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/25">
@@ -333,7 +333,7 @@ export function MerchantActionsDropdown({
 						id="inactivate"
 						textValue="Inativar"
 						isDisabled={!canModify || inactivateReason !== null}
-						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
+						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
 					>
 						<div className="flex items-center gap-2.5">
 							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/25">
@@ -353,7 +353,7 @@ export function MerchantActionsDropdown({
 						id="suspend"
 						textValue="Suspender"
 						isDisabled={!canModify || suspendReason !== null}
-						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-40 data-[disabled=true]:pointer-events-none cursor-pointer"
+						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
 					>
 						<div className="flex items-center gap-2.5">
 							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#f5a623]/15 text-[#f5a623] border border-[#f5a623]/25">

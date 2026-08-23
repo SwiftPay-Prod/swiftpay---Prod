@@ -37,11 +37,11 @@ import { WithdrawalAccordion } from './components/withdrawal-accordion';
 import { RateLimitingAccordion } from './components/rate-limiting-accordion';
 import { ReferralAccordion } from './components/referral-accordion';
 import { usePlatformSettingsForm } from './hooks/use-platform-settings-form';
-import type { AdminPlatformSettingsData, PaymentLinkDomainMethodOptions } from '@/types/admin/platform-settings';
+import type { AdminPlatformSettingsData } from '@/types/admin/platform-settings';
 import type { AdminPlatformPayoutAccountData } from '@/types/admin/platform-payouts';
 import type { ApiResponse, Paginated } from '@/types/common';
 import {
-	AutomaticCashoutFrequency,
+
 	FeeChargeMode,
 	ReferralWithdrawalIntervalUnit,
 	WithdrawalApprovalMode,
@@ -58,74 +58,6 @@ interface PlatformSettingsFormProps {
 	payoutAccountsPromise: PlatformPayoutAccountsPromise;
 }
 
-interface FormValues {
-	pixMinTransactionAmount: string;
-	pixMaxTransactionAmount: string;
-	pixTimeoutMinutes: string;
-	pixEnabled: boolean;
-	pixApiFeeMode: FeeChargeMode;
-	pixApiFeeFixed: string;
-	pixApiFeePercentage: string;
-	pixCheckoutFeeMode: FeeChargeMode;
-	pixCheckoutFeeFixed: string;
-	pixCheckoutFeePercentage: string;
-	pixPaymentLinkFeeMode: FeeChargeMode;
-	pixPaymentLinkFeeFixed: string;
-	pixPaymentLinkFeePercentage: string;
-	pixReservePercentage: string;
-	pixReserveCompensationDays: string;
-	boletoMinTransactionAmount: string;
-	boletoMaxTransactionAmount: string;
-	boletoEnabled: boolean;
-	creditCardEnabled: boolean;
-	paymentLinkDomainOptions: PaymentLinkDomainMethodOptions[];
-	boletoApiFeeMode: FeeChargeMode;
-	boletoApiFeeFixed: string;
-	boletoApiFeePercentage: string;
-	boletoCheckoutFeeMode: FeeChargeMode;
-	boletoCheckoutFeeFixed: string;
-	boletoCheckoutFeePercentage: string;
-	boletoPaymentLinkFeeMode: FeeChargeMode;
-	boletoPaymentLinkFeeFixed: string;
-	boletoPaymentLinkFeePercentage: string;
-	boletoReservePercentage: string;
-	boletoReserveCompensationDays: string;
-	creditCardApiFeeMode: FeeChargeMode;
-	creditCardApiFeeFixed: string;
-	creditCardApiFeePercentage: string;
-	creditCardApiInstallmentFeePercentage: string;
-	creditCardCheckoutFeeMode: FeeChargeMode;
-	creditCardCheckoutFeeFixed: string;
-	creditCardCheckoutFeePercentage: string;
-	creditCardCheckoutInstallmentFeePercentage: string;
-	creditCardPaymentLinkFeeMode: FeeChargeMode;
-	creditCardPaymentLinkFeeFixed: string;
-	creditCardPaymentLinkFeePercentage: string;
-	creditCardPaymentLinkInstallmentFeePercentage: string;
-	creditCardReservePercentage: string;
-	creditCardReserveCompensationDays: string;
-	withdrawalFeeMode: FeeChargeMode;
-	withdrawalFeeFixed: string;
-	withdrawalFeePercentage: string;
-	minWithdrawalAmount: string;
-	withdrawalEnabled: boolean;
-	selfNominalSwitchEnabled: boolean;
-	withdrawalApprovalMode: WithdrawalApprovalMode;
-	rateLimitPerMinute: string;
-	rateLimitPerHour: string;
-	rateLimitPerDay: string;
-	referralDurationMonths: string;
-	referralCommissionPercentage: string;
-	referralCommissionWithdrawalIntervalValue: string;
-	referralCommissionWithdrawalIntervalUnit: ReferralWithdrawalIntervalUnit;
-	referralCommissionMinWithdrawalAmount: string;
-	referralCommissionWithdrawalFeeFixed: string;
-	isAutomaticCashoutEnabled: boolean;
-	automaticCashoutFrequency: AutomaticCashoutFrequency;
-	automaticCashoutMinAmount: string;
-	automaticCashoutMaxAmount: string;
-	automaticCashoutPayoutAccountId: string;
-}
 
 const feeChargeModeOptions: Array<{
 	key: FeeChargeMode;
@@ -265,14 +197,6 @@ function PlatformSettingsFormContent({
 		setShowPixReserveField,
 		showPixReserveCompensationField,
 		setShowPixReserveCompensationField,
-		showBoletoReserveField,
-		setShowBoletoReserveField,
-		showBoletoReserveCompensationField,
-		setShowBoletoReserveCompensationField,
-		showCreditCardReserveField,
-		setShowCreditCardReserveField,
-		showCreditCardReserveCompensationField,
-		setShowCreditCardReserveCompensationField,
 		domainModalState,
 		handleDomainDraftFieldChange,
 		openCreatePaymentLinkDomainModal,

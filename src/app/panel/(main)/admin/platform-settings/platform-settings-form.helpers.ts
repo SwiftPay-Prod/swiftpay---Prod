@@ -81,10 +81,6 @@ export function paymentMethodLabel(method: PaymentMethod): string {
 	switch (method) {
 		case PaymentMethod.Pix:
 			return 'PIX';
-		case PaymentMethod.Boleto:
-			return 'Boleto';
-		case PaymentMethod.CreditCard:
-			return 'Cartão';
 		default:
 			return method;
 	}
@@ -94,10 +90,6 @@ export function paymentMethodColor(method: PaymentMethod): ParseColor {
 	switch (method) {
 		case PaymentMethod.Pix:
 			return 'success';
-		case PaymentMethod.Boleto:
-			return 'warning';
-		case PaymentMethod.CreditCard:
-			return 'accent';
 		default:
 			return 'default';
 	}
@@ -106,8 +98,6 @@ export function paymentMethodColor(method: PaymentMethod): ParseColor {
 export function buildFallbackDomainOptionsFromLegacy(settings: AdminPlatformSettingsData): PaymentLinkDomainMethodOptions[] {
 	const items: Array<{ method: PaymentMethod; baseUrl: string | null | undefined }> = [
 		{ method: PaymentMethod.Pix, baseUrl: settings.pixPaymentLinkBaseUrl },
-		{ method: PaymentMethod.Boleto, baseUrl: settings.boletoPaymentLinkBaseUrl },
-		{ method: PaymentMethod.CreditCard, baseUrl: settings.creditCardPaymentLinkBaseUrl },
 	];
 
 	return items
@@ -176,40 +166,7 @@ export function mapSettingsToForm(settings: AdminPlatformSettingsData): FormValu
 		pixPaymentLinkFeePercentage: basisPointsToPercentage(settings.pixPaymentLinkFeePercentage),
 		pixReservePercentage: basisPointsToPercentage(settings.pixReservePercentage),
 		pixReserveCompensationDays: String(settings.pixReserveCompensationDays),
-		boletoMinTransactionAmount: centsToFormattedCurrency(settings.boletoMinTransactionAmount),
-		boletoMaxTransactionAmount: centsToFormattedCurrency(settings.boletoMaxTransactionAmount),
-		boletoEnabled: settings.boletoEnabled,
-		creditCardEnabled: settings.creditCardEnabled,
 		paymentLinkDomainOptions: normalizedDomainOptions,
-		boletoApiFeeMode: settings.boletoApiFeeMode,
-		boletoApiFeeFixed: centsToFormattedCurrency(settings.boletoApiFeeFixed),
-		boletoApiFeePercentage: basisPointsToPercentage(settings.boletoApiFeePercentage),
-		boletoCheckoutFeeMode: settings.boletoCheckoutFeeMode,
-		boletoCheckoutFeeFixed: centsToFormattedCurrency(settings.boletoCheckoutFeeFixed),
-		boletoCheckoutFeePercentage: basisPointsToPercentage(settings.boletoCheckoutFeePercentage),
-		boletoPaymentLinkFeeMode: settings.boletoPaymentLinkFeeMode,
-		boletoPaymentLinkFeeFixed: centsToFormattedCurrency(settings.boletoPaymentLinkFeeFixed),
-		boletoPaymentLinkFeePercentage: basisPointsToPercentage(settings.boletoPaymentLinkFeePercentage),
-		boletoReservePercentage: basisPointsToPercentage(settings.boletoReservePercentage),
-		boletoReserveCompensationDays: String(settings.boletoReserveCompensationDays),
-		creditCardApiFeeMode: settings.creditCardApiFeeMode,
-		creditCardApiFeeFixed: centsToFormattedCurrency(settings.creditCardApiFeeFixed),
-		creditCardApiFeePercentage: basisPointsToPercentage(settings.creditCardApiFeePercentage),
-		creditCardApiInstallmentFeePercentage: basisPointsToPercentage(settings.creditCardApiInstallmentFeePercentage),
-		creditCardCheckoutFeeMode: settings.creditCardCheckoutFeeMode,
-		creditCardCheckoutFeeFixed: centsToFormattedCurrency(settings.creditCardCheckoutFeeFixed),
-		creditCardCheckoutFeePercentage: basisPointsToPercentage(settings.creditCardCheckoutFeePercentage),
-		creditCardCheckoutInstallmentFeePercentage: basisPointsToPercentage(
-			settings.creditCardCheckoutInstallmentFeePercentage
-		),
-		creditCardPaymentLinkFeeMode: settings.creditCardPaymentLinkFeeMode,
-		creditCardPaymentLinkFeeFixed: centsToFormattedCurrency(settings.creditCardPaymentLinkFeeFixed),
-		creditCardPaymentLinkFeePercentage: basisPointsToPercentage(settings.creditCardPaymentLinkFeePercentage),
-		creditCardPaymentLinkInstallmentFeePercentage: basisPointsToPercentage(
-			settings.creditCardPaymentLinkInstallmentFeePercentage
-		),
-		creditCardReservePercentage: basisPointsToPercentage(settings.creditCardReservePercentage),
-		creditCardReserveCompensationDays: String(settings.creditCardReserveCompensationDays),
 		withdrawalFeeMode: settings.withdrawalFeeMode,
 		withdrawalFeeFixed: centsToFormattedCurrency(settings.withdrawalFeeFixed),
 		withdrawalFeePercentage: basisPointsToPercentage(settings.withdrawalFeePercentage),
@@ -258,10 +215,6 @@ export function buildUpdatePayload(formData: FormValues): AdminUpdatePlatformSet
 		pixPaymentLinkFeePercentage: toBasisPoints(formData.pixPaymentLinkFeePercentage),
 		pixReservePercentage: toBasisPoints(formData.pixReservePercentage),
 		pixReserveCompensationDays: toNumber(formData.pixReserveCompensationDays),
-		boletoMinTransactionAmount: toCents(formData.boletoMinTransactionAmount),
-		boletoMaxTransactionAmount: toCents(formData.boletoMaxTransactionAmount),
-		boletoEnabled: formData.boletoEnabled,
-		creditCardEnabled: formData.creditCardEnabled,
 		paymentLinkDomainOptions: formData.paymentLinkDomainOptions.map((group) => ({
 			method: group.method,
 			options: group.options
@@ -274,35 +227,6 @@ export function buildUpdatePayload(formData: FormValues): AdminUpdatePlatformSet
 				}))
 				.filter((option) => option.id && option.name && option.baseUrl),
 		})),
-		boletoApiFeeMode: formData.boletoApiFeeMode,
-		boletoApiFeeFixed: toCents(formData.boletoApiFeeFixed),
-		boletoApiFeePercentage: toBasisPoints(formData.boletoApiFeePercentage),
-		boletoCheckoutFeeMode: formData.boletoCheckoutFeeMode,
-		boletoCheckoutFeeFixed: toCents(formData.boletoCheckoutFeeFixed),
-		boletoCheckoutFeePercentage: toBasisPoints(formData.boletoCheckoutFeePercentage),
-		boletoPaymentLinkFeeMode: formData.boletoPaymentLinkFeeMode,
-		boletoPaymentLinkFeeFixed: toCents(formData.boletoPaymentLinkFeeFixed),
-		boletoPaymentLinkFeePercentage: toBasisPoints(formData.boletoPaymentLinkFeePercentage),
-		boletoReservePercentage: toBasisPoints(formData.boletoReservePercentage),
-		boletoReserveCompensationDays: toNumber(formData.boletoReserveCompensationDays),
-		creditCardApiFeeMode: formData.creditCardApiFeeMode,
-		creditCardApiFeeFixed: toCents(formData.creditCardApiFeeFixed),
-		creditCardApiFeePercentage: toBasisPoints(formData.creditCardApiFeePercentage),
-		creditCardApiInstallmentFeePercentage: toBasisPoints(formData.creditCardApiInstallmentFeePercentage),
-		creditCardCheckoutFeeMode: formData.creditCardCheckoutFeeMode,
-		creditCardCheckoutFeeFixed: toCents(formData.creditCardCheckoutFeeFixed),
-		creditCardCheckoutFeePercentage: toBasisPoints(formData.creditCardCheckoutFeePercentage),
-		creditCardCheckoutInstallmentFeePercentage: toBasisPoints(
-			formData.creditCardCheckoutInstallmentFeePercentage
-		),
-		creditCardPaymentLinkFeeMode: formData.creditCardPaymentLinkFeeMode,
-		creditCardPaymentLinkFeeFixed: toCents(formData.creditCardPaymentLinkFeeFixed),
-		creditCardPaymentLinkFeePercentage: toBasisPoints(formData.creditCardPaymentLinkFeePercentage),
-		creditCardPaymentLinkInstallmentFeePercentage: toBasisPoints(
-			formData.creditCardPaymentLinkInstallmentFeePercentage
-		),
-		creditCardReservePercentage: toBasisPoints(formData.creditCardReservePercentage),
-		creditCardReserveCompensationDays: toNumber(formData.creditCardReserveCompensationDays),
 		withdrawalFeeMode: formData.withdrawalFeeMode,
 		withdrawalFeeFixed: toCents(formData.withdrawalFeeFixed),
 		withdrawalFeePercentage: toBasisPoints(formData.withdrawalFeePercentage),
@@ -339,17 +263,6 @@ export function validatePayload(payload: AdminUpdatePlatformSettingsRequest): st
 		return 'O Valor Máximo do PIX nao pode ser menor que o Valor Mínimo.';
 	}
 
-	const minBoleto = payload.boletoMinTransactionAmount ?? 0;
-	const maxBoleto = payload.boletoMaxTransactionAmount ?? 0;
-
-	if (minBoleto < 0 || maxBoleto < 0) {
-		return 'Os limites do Boleto nao podem ser negativos.';
-	}
-
-	if (maxBoleto < minBoleto) {
-		return 'O Valor Máximo do Boleto nao pode ser menor que o Valor Mínimo.';
-	}
-
 	const timeout = payload.pixTimeoutMinutes ?? 0;
 	if (timeout < 1 || timeout > 1440) {
 		return 'O timeout do PIX deve estar entre 1 e 1440 minutos.';
@@ -360,17 +273,6 @@ export function validatePayload(payload: AdminUpdatePlatformSettingsRequest): st
 		payload.pixCheckoutFeePercentage,
 		payload.pixPaymentLinkFeePercentage,
 		payload.pixReservePercentage,
-		payload.boletoApiFeePercentage,
-		payload.boletoCheckoutFeePercentage,
-		payload.boletoPaymentLinkFeePercentage,
-		payload.boletoReservePercentage,
-		payload.creditCardApiFeePercentage,
-		payload.creditCardApiInstallmentFeePercentage,
-		payload.creditCardCheckoutFeePercentage,
-		payload.creditCardCheckoutInstallmentFeePercentage,
-		payload.creditCardPaymentLinkFeePercentage,
-		payload.creditCardPaymentLinkInstallmentFeePercentage,
-		payload.creditCardReservePercentage,
 		payload.withdrawalFeePercentage,
 	];
 
@@ -380,8 +282,6 @@ export function validatePayload(payload: AdminUpdatePlatformSettingsRequest): st
 
 	const reserveCompensationDaysFields = [
 		payload.pixReserveCompensationDays,
-		payload.boletoReserveCompensationDays,
-		payload.creditCardReserveCompensationDays,
 	];
 
 	if (reserveCompensationDaysFields.some((value) => value != null && (value < 0 || value > 365))) {
@@ -392,12 +292,6 @@ export function validatePayload(payload: AdminUpdatePlatformSettingsRequest): st
 		payload.pixApiFeeFixed,
 		payload.pixCheckoutFeeFixed,
 		payload.pixPaymentLinkFeeFixed,
-		payload.boletoApiFeeFixed,
-		payload.boletoCheckoutFeeFixed,
-		payload.boletoPaymentLinkFeeFixed,
-		payload.creditCardApiFeeFixed,
-		payload.creditCardCheckoutFeeFixed,
-		payload.creditCardPaymentLinkFeeFixed,
 		payload.withdrawalFeeFixed,
 		payload.minWithdrawalAmount,
 	];

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type ReactNode } from 'react';
 import { Button, Tooltip, Chip, Disclosure, DisclosureGroup, Popover } from '@heroui/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSidebar } from '@/contexts/sidebar-context';
@@ -14,30 +14,6 @@ import { ArrowDown01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { SIDEBAR_EXPANDED_SECTIONS_KEY } from '@/constants/base';
 import type { Key } from '@react-types/shared';
-import './sidebar-effects.css';
-
-const SIDEBAR_EFFECT_CLASS: Record<NonNullable<RouteConfig['sidebarEffect']>, string> = {
-	'gold-reflection': 'sidebar-effect-gold-reflection',
-	'soft-shimmer': 'sidebar-effect-soft-shimmer',
-	'gentle-pulse': 'sidebar-effect-gentle-pulse',
-	'underline-sweep': 'sidebar-effect-underline-sweep',
-	'top-glint': 'sidebar-effect-top-glint',
-	'aurora-wash': 'sidebar-effect-aurora-wash',
-	'border-flow': 'sidebar-effect-border-flow',
-	'corner-glow': 'sidebar-effect-corner-glow',
-	'diagonal-sheen': 'sidebar-effect-diagonal-sheen',
-	'halo-breathe': 'sidebar-effect-halo-breathe',
-	'mist-pass': 'sidebar-effect-mist-pass',
-	'prism-glow': 'sidebar-effect-prism-glow',
-	'satin-wave': 'sidebar-effect-satin-wave',
-	'soft-neon': 'sidebar-effect-soft-neon',
-	'sparkle-drift': 'sidebar-effect-sparkle-drift',
-};
-
-function getSidebarEffectClass(item: RouteConfig): string {
-	if (item.isDisabled || !item.sidebarEffect) return '';
-	return SIDEBAR_EFFECT_CLASS[item.sidebarEffect] ?? '';
-}
 
 interface SidebarMenuProps {
 	sections: MenuSection[];
@@ -119,7 +95,7 @@ function useActiveRoute() {
 interface MenuItemBadgeProps {
 	item: RouteConfig;
 	isReviewRoute: boolean;
-	statusChip: React.ReactNode | null;
+	statusChip: ReactNode | null;
 }
 
 function MenuItemBadge({ item, isReviewRoute, statusChip }: MenuItemBadgeProps) {
@@ -129,7 +105,7 @@ function MenuItemBadge({ item, isReviewRoute, statusChip }: MenuItemBadgeProps) 
 
 	if (item.badgeText) {
 		return (
-			<span className="mockup-sidebar-badge ml-auto">{item.badgeText}</span>
+			<span className="ml-auto rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-semibold text-white/70">{item.badgeText}</span>
 		);
 	}
 
@@ -147,7 +123,6 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 	const { selectedMerchant } = useMerchant();
 
 	const active = isActive(item.path);
-	const effectClassName = getSidebarEffectClass(item);
 	const icon = getIcon(item.iconName);
 	const isReviewRoute = item.path === Routes.panel.merchant.review;
 
@@ -160,19 +135,17 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 			{statusParse.label}
 		</Chip>
 	) : null;
-
 	const buttonClassName = [
-	showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
-	effectClassName,
-	active
-		? 'mockup-sidebar-item active'
-		: 'mockup-sidebar-item',
-	item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
-	!showFull && active ? '!bg-[#494fdf]/15 !text-[#4f55f1] rounded-md' : '',
-	!showFull && !active ? 'rounded-md text-white/60 hover:text-white hover:bg-white/10' : '',
-]
-	.filter(Boolean)
-	.join(' ');
+		showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
+		active
+			? 'bg-[#494fdf]/15 text-[#4f55f1] border-l-2 border-[#4f55f1] rounded-r-lg'
+			: 'text-white/60 hover:text-white hover:bg-white/10 rounded-lg',
+		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
+		!showFull && active ? '!bg-[#494fdf]/15 !text-[#4f55f1] rounded-md' : '',
+		!showFull && !active ? 'rounded-md text-white/60 hover:text-white hover:bg-white/10' : '',
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	const menuButton = (
 		<button
@@ -209,7 +182,6 @@ function PopoverMenuItem({ item, onClose }: PopoverMenuItemProps) {
 	const { selectedMerchant } = useMerchant();
 
 	const active = isActive(item.path);
-	const effectClassName = getSidebarEffectClass(item);
 	const icon = getIcon(item.iconName);
 	const isReviewRoute = item.path === Routes.panel.merchant.review;
 
@@ -225,7 +197,6 @@ function PopoverMenuItem({ item, onClose }: PopoverMenuItemProps) {
 
 	const buttonClassName = [
 		'w-full justify-start gap-3 font-normal rounded-md transition-all duration-150',
-		effectClassName,
 		active ? '!bg-default !text-foreground' : 'text-muted hover:text-foreground hover:bg-default/50',
 		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
 	]
@@ -296,7 +267,7 @@ function MenuSectionComponent({ section, showFull }: MenuSectionComponentProps) 
 
 	const triggerClassName = [
 		'group my-0.5 flex w-full items-center justify-between rounded-md px-3 py-2 transition-all duration-150',
-		'mockup-sidebar-section-title !mb-0 !pl-3',
+		'text-[11px] font-semibold uppercase tracking-widest text-white/40',
 	].join(' ');
 
 	return (

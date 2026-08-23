@@ -1039,36 +1039,6 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 										<Label className="text-sm">PIX</Label>
 									</Switch>
 									<Switch
-										isSelected={formData.supportsBoleto}
-										onChange={(isSelected) =>
-											setFormData((prev) => ({
-												...prev,
-												supportsBoleto: isSelected,
-												boletoEnabled: isSelected,
-											}))
-										}
-									>
-										<Switch.Control>
-											<Switch.Thumb />
-										</Switch.Control>
-										<Label className="text-sm">Boleto</Label>
-									</Switch>
-									<Switch
-										isSelected={formData.supportsCreditCard}
-										onChange={(isSelected) =>
-											setFormData((prev) => ({
-												...prev,
-												supportsCreditCard: isSelected,
-												creditCardEnabled: isSelected,
-											}))
-										}
-									>
-										<Switch.Control>
-											<Switch.Thumb />
-										</Switch.Control>
-										<Label className="text-sm">Cartão de Crédito</Label>
-									</Switch>
-									<Switch
 										isSelected={formData.supportsWithdrawal}
 										onChange={(isSelected) => setFormData((prev) => ({ ...prev, supportsWithdrawal: isSelected }))}
 									>

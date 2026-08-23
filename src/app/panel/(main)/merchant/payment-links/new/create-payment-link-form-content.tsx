@@ -749,17 +749,11 @@ function Step2Billing({
 	onPassFeeToCustomerChange,
 }: Step2BillingProps) {
 	const hasPix = enabledMethods.includes(PaymentMethod.Pix);
-	const hasBoleto = enabledMethods.includes(PaymentMethod.Boleto);
-	const hasCreditCard = enabledMethods.includes(PaymentMethod.CreditCard);
 	const enabledMins = [
 		hasPix ? (fees?.pixMinTransactionAmount ?? 100) : null,
-		hasBoleto ? (fees?.boletoMinTransactionAmount ?? 500) : null,
-		hasCreditCard ? (fees?.pixMinTransactionAmount ?? 100) : null,
 	].filter((v): v is number => v !== null);
 	const enabledMaxes = [
 		hasPix ? (fees?.pixMaxTransactionAmount ?? 100000000) : null,
-		hasBoleto ? (fees?.boletoMaxTransactionAmount ?? 100000000) : null,
-		hasCreditCard ? (fees?.pixMaxTransactionAmount ?? 100000000) : null,
 	].filter((v): v is number => v !== null);
 	const minAmount = enabledMins.length > 0 ? Math.max(...enabledMins) : 100;
 	const maxAmount = enabledMaxes.length > 0 ? Math.min(...enabledMaxes) : 100000000;

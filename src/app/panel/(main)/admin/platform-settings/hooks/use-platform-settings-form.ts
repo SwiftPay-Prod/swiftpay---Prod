@@ -57,19 +57,6 @@ export function usePlatformSettingsForm({
 	const [showPixReserveCompensationField, setShowPixReserveCompensationField] = useState(() =>
 		hasConfiguredDays(initialData.pixReserveCompensationDays)
 	);
-	const [showBoletoReserveField, setShowBoletoReserveField] = useState(() =>
-		hasConfiguredPercentage(initialData.boletoReservePercentage)
-	);
-	const [showBoletoReserveCompensationField, setShowBoletoReserveCompensationField] = useState(() =>
-		hasConfiguredDays(initialData.boletoReserveCompensationDays)
-	);
-	const [showCreditCardReserveField, setShowCreditCardReserveField] = useState(() =>
-		hasConfiguredPercentage(initialData.creditCardReservePercentage)
-	);
-	const [showCreditCardReserveCompensationField, setShowCreditCardReserveCompensationField] = useState(() =>
-		hasConfiguredDays(initialData.creditCardReserveCompensationDays)
-	);
-
 	const [isDomainModalOpen, setIsDomainModalOpen] = useState(false);
 	const [domainModalMethod, setDomainModalMethod] = useState<PaymentMethod | null>(null);
 	const [domainModalOptionId, setDomainModalOptionId] = useState<string | null>(null);
@@ -325,12 +312,6 @@ export function usePlatformSettingsForm({
 					setPendingDomainRemovalKey(null);
 					setShowPixReserveField(hasConfiguredPercentage(nextData.pixReservePercentage));
 					setShowPixReserveCompensationField(hasConfiguredDays(nextData.pixReserveCompensationDays));
-					setShowBoletoReserveField(hasConfiguredPercentage(nextData.boletoReservePercentage));
-					setShowBoletoReserveCompensationField(hasConfiguredDays(nextData.boletoReserveCompensationDays));
-					setShowCreditCardReserveField(hasConfiguredPercentage(nextData.creditCardReservePercentage));
-					setShowCreditCardReserveCompensationField(
-						hasConfiguredDays(nextData.creditCardReserveCompensationDays)
-					);
 				}
 
 				onSaveSuccess?.({ message: response?.message ?? 'As configurações foram salvas com sucesso.' });
@@ -360,14 +341,6 @@ export function usePlatformSettingsForm({
 		setShowPixReserveField,
 		showPixReserveCompensationField,
 		setShowPixReserveCompensationField,
-		showBoletoReserveField,
-		setShowBoletoReserveField,
-		showBoletoReserveCompensationField,
-		setShowBoletoReserveCompensationField,
-		showCreditCardReserveField,
-		setShowCreditCardReserveField,
-		showCreditCardReserveCompensationField,
-		setShowCreditCardReserveCompensationField,
 		domainModalState: {
 			isOpen: isDomainModalOpen,
 			method: domainModalMethod,

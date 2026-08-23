@@ -12,8 +12,6 @@ interface FeatureFlagsAccordionProps {
 
 type ToggleField =
 	| 'pixEnabled'
-	| 'boletoEnabled'
-	| 'creditCardEnabled'
 	| 'withdrawalEnabled'
 	| 'selfNominalSwitchEnabled';
 

@@ -23,8 +23,6 @@ export const EXPIRATION_DAYS_MAP: Partial<Record<ExpirationPreset, number>> = {
 
 export const PAYMENT_METHOD_HINTS: Record<PaymentMethod, string> = {
 	[PaymentMethod.Pix]: 'Confirmação imediata e maior taxa de conversão.',
-	[PaymentMethod.Boleto]: 'Ideal para clientes que preferem pagar depois.',
-	[PaymentMethod.CreditCard]: 'Aceite cartão com parcelamento em até 12x.',
 };
 
 export const PRESET_COLORS = [

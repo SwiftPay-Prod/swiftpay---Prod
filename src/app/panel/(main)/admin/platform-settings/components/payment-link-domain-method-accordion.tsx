@@ -34,16 +34,10 @@ interface PaymentLinkDomainMethodAccordionProps {
 }
 
 function methodActionClasses(method: PaymentMethod): string {
-	switch (method) {
-		case PaymentMethod.Pix:
-			return 'text-success hover:border-success-soft-hover hover:bg-success-soft';
-		case PaymentMethod.Boleto:
-			return 'text-warning hover:border-warning-soft-hover hover:bg-warning-soft';
-		case PaymentMethod.CreditCard:
-			return 'text-accent hover:border-accent-soft-hover hover:bg-accent-soft';
-		default:
-			return 'text-foreground hover:border-divider hover:bg-content2';
+	if (method === PaymentMethod.Pix) {
+		return 'text-success hover:border-success-soft-hover hover:bg-success-soft';
 	}
+	return 'text-foreground hover:border-divider hover:bg-content2';
 }
 
 function PaymentLinkDomainSortableItem({

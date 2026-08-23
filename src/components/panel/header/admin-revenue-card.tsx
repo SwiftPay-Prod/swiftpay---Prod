@@ -62,7 +62,7 @@ export function AdminRevenueCard({
 					/>
 				</div>
 			</Popover.Trigger>
-			<Popover.Content className="p-0 w-80 sm:w-96 bg-[#16181a] border border-white/12 rounded-2xl text-white shadow-2xl" placement="bottom">
+			<Popover.Content className="p-0 w-80 sm:w-96 bg-card border border-white/12 rounded-2xl text-white" placement="bottom">
 				<div className="p-4">
 					<div className="flex items-center justify-between mb-3">
 						<span className="text-sm font-semibold text-foreground">Resumo da Plataforma</span>

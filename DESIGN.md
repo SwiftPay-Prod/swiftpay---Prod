@@ -44,7 +44,7 @@ rules:
   - id: R9-REAL-DATA-TRACEABILITY
     rule: "Every visual metric MUST be traceable to a named API field or a deterministic computation of named API fields. When creating or modifying a dashboard component, the developer MUST be able to name the exact API property (e.g. kpis.approvalRate, balance.available, item.transactionCount) for every displayed value. Any value without a traceable API source is a mock and violates R8."
   - id: R10-REVOLUT-SCOPE
-    rule: "The Revolut 10 / Ultra design system applies exclusively to the Merchant Dashboard surface (src/app/panel/(main)/merchant/dashboard/). Other panels and pages follow the standard HeroUI v3 + Tailwind v4 design system documented in .github/instructions/swiftpay-web/design-system-and-code-quality.instructions.md."
+    rule: "The Revolut 10 / Ultra design system applies to all SwiftPay surfaces: merchant dashboard, admin panel, checkout public, sidebar, and all secondary screens."
   - id: R11-PIX-ONLY-GATEWAY
     rule: "SwiftPay operates as a 100% PIX-only payment gateway. The dashboard, checkout, and all merchant-facing surfaces MUST NOT reference credit cards, boletos, or any payment method other than PIX. All payment method UI, terminology, and metrics assume exclusive PIX infrastructure (QR Code, Copia e Cola, SPI/Banco Central settlement)."
 ---

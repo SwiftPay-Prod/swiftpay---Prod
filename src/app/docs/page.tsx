@@ -701,7 +701,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 8: Integrar via IA */}
-        <section id="integrar-ia" className="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl p-6 shadow-md space-y-4">
+        <section id="integrar-ia" className="bg-revolut-card border border-revolut-hairline text-white rounded-2xl p-6 space-y-4">
           <div className="flex items-center gap-2">
             <SparklesIcon className="w-6 h-6 text-emerald-200" />
             <h2 className="text-xl font-bold tracking-tight">Integrar via IA (Copilot, Cursor, ChatGPT)</h2>

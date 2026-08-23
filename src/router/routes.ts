@@ -63,9 +63,7 @@ export const Routes = {
       checkouts: '/panel/merchant/checkouts',
       checkoutsUpsert: (id: string = 'new') => `/panel/merchant/checkouts/upsert/${id}`,
       checkoutDetails: (id: string) => `/panel/merchant/checkouts/${id}`,
-      payments: {
-        creditCard: '/panel/merchant/payments/credit-card',
-      },
+      // payments: removed non-PIX credit-card route per R11
     },
 
     admin: {

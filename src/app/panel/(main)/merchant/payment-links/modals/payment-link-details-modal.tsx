@@ -64,7 +64,6 @@ function DetailsContent({ paymentLinkPromise }: { paymentLinkPromise: PaymentLin
   const statusParse = paymentStatusParse[link.status];
   const lifetimeParse = paymentLinkLifetimeStatusParse[link.lifetimeStatus];
   const hasPix = link.enabledMethods.includes(PaymentMethod.Pix);
-  const hasBoleto = link.enabledMethods.includes(PaymentMethod.Boleto);
   const hasCallbacks = link.callbackUrl || link.redirectUrl;
 
   return (

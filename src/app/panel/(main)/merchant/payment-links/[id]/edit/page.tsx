@@ -68,8 +68,6 @@ export default async function EditPaymentLinkPage({ params, searchParams }: Prop
 	const initialSettingsValues: Partial<SettingsFormState> = {
 		callbackUrl: paymentLink.callbackUrl ?? '',
 		pixExpirationMinutes: paymentLink.pixExpirationMinutes?.toString() ?? '',
-		boletoDueDate: paymentLink.boletoDueDate ?? '',
-		boletoInstructions: paymentLink.boletoInstructions ?? '',
 		canExpire: paymentLink.expiresAt !== null,
 		expirationPreset: paymentLink.expiresAt ? 'custom' : '1d',
 		customExpiresAt: paymentLink.expiresAt ? isoToDatetimeLocal(paymentLink.expiresAt) : '',

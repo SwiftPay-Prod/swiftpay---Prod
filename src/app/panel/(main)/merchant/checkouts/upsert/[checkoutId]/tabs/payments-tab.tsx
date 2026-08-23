@@ -18,8 +18,6 @@ interface PaymentsTabProps {
 	onFormChange: (updates: Partial<CheckoutOnboardingFormData>) => void;
 	onDraftChange?: (draft: {
 		pixEnabled: boolean;
-		creditCardEnabled: boolean;
-		boletoEnabled: boolean;
 		hasPendingChanges: boolean;
 	}) => void;
 }

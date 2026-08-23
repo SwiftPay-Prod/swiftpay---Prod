@@ -66,8 +66,6 @@ export default async function NewPaymentLinkPage({ searchParams }: Props) {
 	const initialSettingsValues: Partial<SettingsFormState> = {
 		callbackUrl: source.callbackUrl ?? '',
 		pixExpirationMinutes: source.pixExpirationMinutes?.toString() ?? '',
-		boletoDueDate: source.boletoDueDate ?? '',
-		boletoInstructions: source.boletoInstructions ?? '',
 		canExpire: source.expiresAt !== null,
 		expirationPreset: source.expiresAt ? 'custom' : '1d',
 		customExpiresAt: source.expiresAt ? isoToDatetimeLocal(source.expiresAt) : '',

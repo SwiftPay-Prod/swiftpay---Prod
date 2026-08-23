@@ -17,14 +17,12 @@ import { DocumentDisplay, EmailLink, ExternalLink, PhoneLink } from '@/component
 import {
 	mapParseColorToChipColor,
 	merchantDocumentTypeParse,
-	merchantIdentityDocumentTypeParse,
 	merchantKycStatusParse,
 	merchantOperationTypeParse,
 	merchantStatusParse,
 } from '@/parse';
-import type { AdminMerchantAddressData, AdminMerchantDetails, AdminMerchantKycData } from '@/types/admin/merchants';
+import type { AdminMerchantAddressData, AdminMerchantKycData } from '@/types/admin/merchants';
 import {
-	MerchantIdentityDocumentType,
 	MerchantKycDocumentType,
 	MerchantKycOperationType,
 	MerchantKycStatus,
@@ -208,11 +206,6 @@ export function MerchantBusinessAccordion({ merchant, accordionIdPrefix }: Merch
 }
 
 export function MerchantDocumentsAccordion({ merchant, accordionIdPrefix, viewer }: MerchantOrganizationAccordionProps) {
-	const imageUploaderProps =
-		viewer === 'admin'
-			? { isAdmin: true as const }
-			: { merchantId: merchant.id, isAdmin: false as const };
-
 	return (
 		<SystemAccordion
 			id={resolveAccordionId(accordionIdPrefix, 'documents')}
@@ -222,93 +215,180 @@ export function MerchantDocumentsAccordion({ merchant, accordionIdPrefix, viewer
 			summary="Arquivos do KYC"
 			color="accent"
 		>
-			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-				<ImageUploader
-					{...imageUploaderProps}
-					folder={UploadFolder.Kyc}
-					label="Comprovante de endereço"
-					description="Documento que comprova o endereço da organização"
-					maxFiles={1}
-					value={[]}
-					onChange={() => {}}
-					fileValue={merchant.kyc?.proofOfAddress ? [merchant.kyc.proofOfAddress] : []}
-					onFileValueChange={() => {}}
-					onlyView
-					sensitivePreview
-				/>
-				<ImageUploader
-					{...imageUploaderProps}
-					folder={UploadFolder.Kyc}
-					label="Documento de identidade (frente)"
-					description="Frente do documento de identidade do responsável"
-					maxFiles={1}
-					value={[]}
-					onChange={() => {}}
-					fileValue={merchant.kyc?.documentFront ? [merchant.kyc.documentFront] : []}
-					onFileValueChange={() => {}}
-					onlyView
-					sensitivePreview
-				/>
-				<ImageUploader
-					{...imageUploaderProps}
-					folder={UploadFolder.Kyc}
-					label="Documento de identidade (verso)"
-					description="Verso do documento de identidade do responsável"
-					maxFiles={1}
-					value={[]}
-					onChange={() => {}}
-					fileValue={merchant.kyc?.documentBack ? [merchant.kyc.documentBack] : []}
-					onFileValueChange={() => {}}
-					onlyView
-					sensitivePreview
-				/>
-				<ImageUploader
-					{...imageUploaderProps}
-					folder={UploadFolder.Kyc}
-					label="Selfie com documento"
-					description="Foto do responsável segurando o documento"
-					maxFiles={1}
-					value={[]}
-					onChange={() => {}}
-					fileValue={merchant.kyc?.selfie ? [merchant.kyc.selfie] : []}
-					onFileValueChange={() => {}}
-					onlyView
-					sensitivePreview
-				/>
-				{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
+			{viewer === 'admin' ? (
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<ImageUploader
-						{...imageUploaderProps}
+						isAdmin={true}
 						folder={UploadFolder.Kyc}
-						label="Cartão CNPJ"
-						description="Documento emitido pela Receita Federal"
+						label="Comprovante de endereço"
+						description="Documento que comprova o endereço da organização"
 						maxFiles={1}
 						value={[]}
 						onChange={() => {}}
-						fileValue={merchant.kyc?.cnpjCard ? [merchant.kyc.cnpjCard] : []}
+						fileValue={merchant.kyc?.proofOfAddress ? [merchant.kyc.proofOfAddress] : []}
 						onFileValueChange={() => {}}
 						onlyView
 						sensitivePreview
 					/>
-				)}
-				{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
 					<ImageUploader
-						{...imageUploaderProps}
+						isAdmin={true}
 						folder={UploadFolder.Kyc}
-						label="Contrato social"
-						description="Contrato social consolidado da organização"
+						label="Documento de identidade (frente)"
+						description="Frente do documento de identidade do responsável"
+						maxFiles={1}
 						value={[]}
 						onChange={() => {}}
-						fileValue={merchant.kyc?.companyContract ? [merchant.kyc.companyContract] : []}
+						fileValue={merchant.kyc?.documentFront ? [merchant.kyc.documentFront] : []}
 						onFileValueChange={() => {}}
 						onlyView
 						sensitivePreview
 					/>
-				)}
-			</div>
+					<ImageUploader
+						isAdmin={true}
+						folder={UploadFolder.Kyc}
+						label="Documento de identidade (verso)"
+						description="Verso do documento de identidade do responsável"
+						maxFiles={1}
+						value={[]}
+						onChange={() => {}}
+						fileValue={merchant.kyc?.documentBack ? [merchant.kyc.documentBack] : []}
+						onFileValueChange={() => {}}
+						onlyView
+						sensitivePreview
+					/>
+					<ImageUploader
+						isAdmin={true}
+						folder={UploadFolder.Kyc}
+						label="Selfie com documento"
+						description="Foto do responsável segurando o documento"
+						maxFiles={1}
+						value={[]}
+						onChange={() => {}}
+						fileValue={merchant.kyc?.selfie ? [merchant.kyc.selfie] : []}
+						onFileValueChange={() => {}}
+						onlyView
+						sensitivePreview
+					/>
+					{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
+						<ImageUploader
+							isAdmin={true}
+							folder={UploadFolder.Kyc}
+							label="Cartão CNPJ"
+							description="Documento emitido pela Receita Federal"
+							maxFiles={1}
+							value={[]}
+							onChange={() => {}}
+							fileValue={merchant.kyc?.cnpjCard ? [merchant.kyc.cnpjCard] : []}
+							onFileValueChange={() => {}}
+							onlyView
+							sensitivePreview
+						/>
+					)}
+					{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
+						<ImageUploader
+							isAdmin={true}
+							folder={UploadFolder.Kyc}
+							label="Contrato social"
+							description="Contrato social consolidado da organização"
+							maxFiles={1}
+							value={[]}
+							onChange={() => {}}
+							fileValue={merchant.kyc?.companyContract ? [merchant.kyc.companyContract] : []}
+							onFileValueChange={() => {}}
+							onlyView
+							sensitivePreview
+						/>
+					)}
+				</div>
+			) : (
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<ImageUploader
+						merchantId={merchant.id}
+						folder={UploadFolder.Kyc}
+						label="Comprovante de endereço"
+						description="Documento que comprova o endereço da organização"
+						maxFiles={1}
+						value={[]}
+						onChange={() => {}}
+						fileValue={merchant.kyc?.proofOfAddress ? [merchant.kyc.proofOfAddress] : []}
+						onFileValueChange={() => {}}
+						onlyView
+						sensitivePreview
+					/>
+					<ImageUploader
+						merchantId={merchant.id}
+						folder={UploadFolder.Kyc}
+						label="Documento de identidade (frente)"
+						description="Frente do documento de identidade do responsável"
+						maxFiles={1}
+						value={[]}
+						onChange={() => {}}
+						fileValue={merchant.kyc?.documentFront ? [merchant.kyc.documentFront] : []}
+						onFileValueChange={() => {}}
+						onlyView
+						sensitivePreview
+					/>
+					<ImageUploader
+						merchantId={merchant.id}
+						folder={UploadFolder.Kyc}
+						label="Documento de identidade (verso)"
+						description="Verso do documento de identidade do responsável"
+						maxFiles={1}
+						value={[]}
+						onChange={() => {}}
+						fileValue={merchant.kyc?.documentBack ? [merchant.kyc.documentBack] : []}
+						onFileValueChange={() => {}}
+						onlyView
+						sensitivePreview
+					/>
+					<ImageUploader
+						merchantId={merchant.id}
+						folder={UploadFolder.Kyc}
+						label="Selfie com documento"
+						description="Foto do responsável segurando o documento"
+						maxFiles={1}
+						value={[]}
+						onChange={() => {}}
+						fileValue={merchant.kyc?.selfie ? [merchant.kyc.selfie] : []}
+						onFileValueChange={() => {}}
+						onlyView
+						sensitivePreview
+					/>
+					{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
+						<ImageUploader
+							merchantId={merchant.id}
+							folder={UploadFolder.Kyc}
+							label="Cartão CNPJ"
+							description="Documento emitido pela Receita Federal"
+							maxFiles={1}
+							value={[]}
+							onChange={() => {}}
+							fileValue={merchant.kyc?.cnpjCard ? [merchant.kyc.cnpjCard] : []}
+							onFileValueChange={() => {}}
+							onlyView
+							sensitivePreview
+						/>
+					)}
+					{merchant.kyc?.documentType === MerchantKycDocumentType.CNPJ && (
+						<ImageUploader
+							merchantId={merchant.id}
+							folder={UploadFolder.Kyc}
+							label="Contrato social"
+							description="Contrato social consolidado da organização"
+							maxFiles={1}
+							value={[]}
+							onChange={() => {}}
+							fileValue={merchant.kyc?.companyContract ? [merchant.kyc.companyContract] : []}
+							onFileValueChange={() => {}}
+							onlyView
+							sensitivePreview
+						/>
+					)}
+				</div>
+			)}
 		</SystemAccordion>
 	);
 }
-
 export function MerchantDatesAccordion({ merchant, accordionIdPrefix }: MerchantOrganizationAccordionProps) {
 	return (
 		<SystemAccordion

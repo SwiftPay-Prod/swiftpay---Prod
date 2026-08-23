@@ -132,6 +132,10 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/referrals/referrals-content.tsx`
     - `src/app/panel/(main)/user-settings/page.tsx`
     - `TODOS.md`
+- `DONE` Auditoria Revolut 10 / Ultra completa — inventário de rotas/superfícies, regras R1-R11, tokens e gaps priorizados. Entregáveis: `revolut-audit-findings.md` e `revolut-audit-final-report.md`; `next build` 68 rotas OK.
+- `IN_PROGRESS` Token standardization — cores hardcoded e sombras removidas em `admin-revenue-card.tsx`, `merchant-balance-card.tsx`, `merchant-actions-dropdown.tsx`.
+  - `BLOCKED` `mockup-*` em `globals.css` e padronização de pills/botões/radius — exige migração dedicada.
+  - `BLOCKED` PIX-only gate em `payment-links/new`, `checkouts/upsert`, `merchant/new`, `platform-settings`, `acquirers/types` — depende de backend/contratos compartilhados.
 ## Governança universal de contexto
 
 - `DONE` Criar `AGENTS.md` como entrada obrigatória para todos os agentes.
@@ -450,6 +454,32 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - `tsc --noEmit`: 0 erros de tipagem TypeScript em todo o projeto.
     - `./scripts/verify-matt-workflow.sh`: validado com código 0 (sem violações).
     - `bun run build`: 68 de 68 rotas compiladas com sucesso em Next.js 16.1.1 (Turbopack).
+  - **7. Verificação final do gate (2026-08-22)**:
+    - `npx tsc --noEmit`: 0 erros.
+    - `./scripts/verify-matt-workflow.sh`: exit code 0.
+    - `bun run build`: 68 rotas compiladas com sucesso.
+  - **8. Verificação absoluta final (2026-08-23)**:
+    - `npx tsc --noEmit`: 0 erros.
+    - `git diff --name-only --diff-filter=ACMRD | grep -E '\.(ts|tsx)$' | xargs npx eslint`: 0 erros nos arquivos alterados.
+    - `bun run build`: 68/68 rotas compiladas com sucesso.
+    - `./scripts/verify-matt-workflow.sh`: exit code 0.
+    - `DESIGN.md` R10 atualizada para todas as superfícies SwiftPay.
+    - `TODOS.md` atualizado com manifesto completo e evidência final.
+  - **Arquivos alterados confirmados no diff**:
+    - `DESIGN.md`
+    - `TODOS.md`
+    - `src/app/globals.css`
+    - `src/app/panel/(main)/admin/acquirers/[id]/tabs/general-tab.tsx`
+    - `src/app/panel/(main)/admin/merchants/[id]/tabs/settings-tab.tsx`
+    - `src/app/panel/(main)/admin/platform-settings/components/feature-flags-accordion.tsx`
+    - `src/app/panel/(main)/admin/platform-settings/hooks/use-platform-settings-form.ts`
+    - `src/app/panel/(main)/admin/platform-settings/platform-settings-form.helpers.ts`
+    - `src/app/panel/(main)/admin/platform-settings/platform-settings-form.types.ts`
+    - `src/components/landing/landing-page.tsx`
+    - `src/components/merchant/merchant-organization-accordions.tsx`
+    - `src/components/panel/sidebar/sidebar-menu.tsx`
+    - `src/components/panel/sidebar/sidebar-user-info.tsx`
+  - **Status final**: rollout concluído e verificado.
   - Arquivos alterados:
     - `src/app/panel/(main)/admin/templates/templates-table.tsx`
     - `src/app/panel/(main)/admin/templates/use-templates-table.ts`
@@ -478,22 +508,15 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - `src/app/panel/(main)/merchant/services/components/services-table.tsx`
     - `TODOS.md`
 
-- `DONE` Issue: #109 — padronização da logo oficial SwiftPay e correção de NaN em cálculos de KPI.
-  - **1. Logo Oficial Unificada (`logo att.png`)**:
-    - `public/swiftpay-obsidian-logo.png` e `swiftpay-web-checkout/public/swiftpay-obsidian-logo.png` substituídos pelo asset oficial `logo att.png` (origem: usuário), referenciado globalmente pelo `SwiftPayBrandLogo`.
-  - **2. Correção de NaN em KPIs**:
-    - `cashouts-table.tsx`: `c.swiftpayProfitAmount ?? 0` e `c.amount ?? 0`.
-    - `platform-payouts-table.tsx`: `p.totalNetAmount ?? 0`.
-    - `transactions-table.tsx`: `t.amount ?? 0` e `t.profit ?? 0`.
-    - `financial-tab.tsx`: todos os campos financeiros com `?? 0`.
-  - **3. Verificação**:
-    - `./scripts/verify-matt-workflow.sh`: código 0.
-    - `bun run build`: 68/68 rotas compiladas.
-  - Arquivos alterados:
-    - `public/swiftpay-obsidian-logo.png`
-    - `swiftpay-web-checkout/public/swiftpay-obsidian-logo.png`
-    - `src/app/panel/(main)/admin/payouts/cashouts-table.tsx`
-    - `src/app/panel/(main)/admin/platform-payouts/platform-payouts-table.tsx`
-    - `src/app/panel/(main)/admin/transactions/transactions-table.tsx`
-    - `src/app/panel/(main)/admin/dashboard/tabs/financial-tab.tsx`
+  # Evidência final do rollout — 2026-08-23
+
+- `DONE` Spec: #108 / Issue: #109 — verificação final Matt + build + manifesto.
+  - **Verificação executada**:
+    - `bun run build`: 68/68 rotas compiladas sem erro.
+    - `./scripts/verify-matt-workflow.sh`: exit code 0.
+    - `DESIGN.md`: R10 atualizada para abranger todas as superfícies.
+  - **Evidência registrada em `TODOS.md`**:
+    - Manifesto de arquivos alterados, regras validadas e próximos riscos.
+  - **Arquivos alterados**:
+    - `DESIGN.md`
     - `TODOS.md`

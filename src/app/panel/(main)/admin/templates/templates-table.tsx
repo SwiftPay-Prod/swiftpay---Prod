@@ -70,10 +70,12 @@ function getColumns(
 			header: 'Tipo',
 			render: (template) => {
 				const typeParsed = checkoutTemplateTypeParse[template.type];
+				const fallback = { label: template.type ?? '—', color: 'default', icon: null };
+				const resolved = typeParsed ?? fallback;
 				return (
-					<Chip variant="soft" color={mapParseColorToChipColor(typeParsed.color)} size="sm" className="gap-1">
-						{typeParsed.icon}
-						{typeParsed.label}
+					<Chip variant="soft" color={mapParseColorToChipColor(resolved.color)} size="sm" className="gap-1">
+						{resolved.icon}
+						{resolved.label}
 					</Chip>
 				);
 			},
@@ -204,13 +206,22 @@ function renderMobileTemplateCard(template: AdminMinimalTemplate, _index: number
 						<span className="text-xs text-muted font-mono">{template.code}</span>
 					</div>
 				</div>
-				<Chip
-					variant="soft"
-					color={mapParseColorToChipColor(checkoutTemplateTypeParse[template.type].color)}
-					className="text-xs w-fit"
-				>
-					{checkoutTemplateTypeParse[template.type].label}
-				</Chip>
+							{(() => {
+				const resolved = checkoutTemplateTypeParse[template.type] ?? {
+					label: template.type ?? '—',
+					color: 'default',
+					icon: null,
+				};
+				return (
+					<Chip
+						variant="soft"
+						color={mapParseColorToChipColor(resolved.color)}
+						className="text-xs w-fit"
+					>
+						{resolved.label}
+					</Chip>
+				);
+			})()}
 				<div className="flex items-center gap-1.5">
 					{template.isActive ? (
 						<Icon icon={CheckmarkCircle02Icon} className="icon-sm text-success" />

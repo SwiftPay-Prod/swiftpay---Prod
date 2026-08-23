@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { Button, Popover, Tooltip } from '@heroui/react';
@@ -57,7 +57,7 @@ export function MerchantBalanceCard({
 					/>
 				</div>
 			</Popover.Trigger>
-			<Popover.Content className="p-0 w-72 sm:w-80 bg-[#16181a] border border-white/12 rounded-2xl text-white shadow-2xl" placement="bottom">
+			<Popover.Content className="p-0 w-72 sm:w-80 bg-card border border-white/12 rounded-2xl text-white" placement="bottom">
 				<div className="p-4">
 					<div className="flex items-center justify-between mb-3">
 						<div>

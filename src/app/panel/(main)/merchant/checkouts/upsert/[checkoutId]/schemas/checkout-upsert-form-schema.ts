@@ -19,10 +19,8 @@ export const checkoutOnboardingFormSchema = z
     templateId: z.string().default(''),
 
     // Payments
-    pixEnabled: z.boolean().default(false),
+    pixEnabled: z.boolean().default(true),
     pixExpirationMinutes: z.number().int().default(30),
-    creditCardEnabled: z.boolean().default(false),
-    boletoEnabled: z.boolean().default(false),
     reservationExpirationMinutes: z.number().int().default(15),
 
     // Customer
@@ -93,12 +91,11 @@ export const checkoutOnboardingFormSchema = z
       });
     }
 
-    const hasPaymentMethod = value.pixEnabled || value.creditCardEnabled || value.boletoEnabled;
-    if (!hasPaymentMethod) {
+    if (!value.pixEnabled) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['pixEnabled'],
-        message: 'Ative ao menos um método de pagamento.',
+        message: 'Ative o método de pagamento PIX.',
       });
     }
 
@@ -255,8 +252,6 @@ type CheckoutReviewValidationInput = Pick<
   | 'name'
   | 'templateId'
   | 'pixEnabled'
-  | 'creditCardEnabled'
-  | 'boletoEnabled'
   | 'productsCount'
   | 'successUrl'
   | 'cancelUrl'

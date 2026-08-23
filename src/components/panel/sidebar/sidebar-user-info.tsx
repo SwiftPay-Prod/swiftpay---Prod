@@ -209,10 +209,10 @@ export function SidebarUserInfo({ forceFull = false }: SidebarUserInfoProps) {
 				<Accordion hideSeparator className="px-0">
 					<Accordion.Item id="user-menu">
 						<Accordion.Heading>
-							<Accordion.Trigger className="flex items-center gap-2 w-full hover:bg-surface-secondary rounded-lg p-2 transition-colors">
+							<Accordion.Trigger className="flex items-center gap-2 w-full hover:bg-white/10 rounded-xl p-2 transition-colors">
 								{userTrigger}
 								<Accordion.Indicator>
-									<Icon icon={ArrowDown01Icon} className="icon-sm text-muted shrink-0" />
+									<Icon icon={ArrowDown01Icon} className="icon-sm text-white/60 shrink-0" />
 								</Accordion.Indicator>
 							</Accordion.Trigger>
 						</Accordion.Heading>
