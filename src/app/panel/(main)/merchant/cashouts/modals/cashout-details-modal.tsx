@@ -140,7 +140,7 @@ function DetailsContent({ cashoutPromise }: { cashoutPromise: CashoutPromise }) 
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex flex-col gap-4 pb-4 border-b border-divider">
+			<div className="flex flex-col gap-4 pb-4 border-b border-border">
 				<div className="flex flex-col gap-1">
 					<span className="text-2xl sm:text-3xl font-bold text-foreground">{formatCurrency(cashout.amount)}</span>
 					<span className="text-sm text-foreground/70">Total debitado da conta</span>
@@ -158,7 +158,7 @@ function DetailsContent({ cashoutPromise }: { cashoutPromise: CashoutPromise }) 
 
 			<div className="hidden md:block">
 				<Accordion hideSeparator className="px-0">
-					<Accordion.Item id="cashout-progress-desktop" defaultExpanded className="rounded-lg border border-divider bg-surface-secondary">
+					<Accordion.Item id="cashout-progress-desktop" defaultExpanded className="rounded-lg border border-border bg-surface-secondary">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between p-4">
 								<div className="flex items-center gap-2">
@@ -179,7 +179,7 @@ function DetailsContent({ cashoutPromise }: { cashoutPromise: CashoutPromise }) 
 
 			<div className="md:hidden">
 				<Accordion hideSeparator className="px-0">
-					<Accordion.Item id="cashout-progress-mobile" className="rounded-lg border border-divider bg-surface-secondary">
+					<Accordion.Item id="cashout-progress-mobile" className="rounded-lg border border-border bg-surface-secondary">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between p-4">
 								<div className="flex items-center gap-2">

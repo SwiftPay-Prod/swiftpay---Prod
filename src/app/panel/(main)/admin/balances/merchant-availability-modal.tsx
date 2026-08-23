@@ -70,7 +70,7 @@ function MerchantAvailabilityList({
 			</div>
 
 			{data.items.length === 0 ? (
-				<div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-divider py-8 text-muted">
+				<div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-8 text-muted">
 					<Icon icon={Building02Icon} className="icon-xl mb-2 opacity-50" />
 					<p className="text-sm">
 						{currentSearch
@@ -123,7 +123,7 @@ function MerchantAvailabilityList({
 			)}
 
 			{data.totalPages > 1 && (
-				<div className="flex items-center justify-between border-t border-divider pt-2">
+				<div className="flex items-center justify-between border-t border-border pt-2">
 					<p className="text-xs text-muted">
 						{(data.page - 1) * data.pageSize + 1} - {Math.min(data.page * data.pageSize, data.totalItems)} de {data.totalItems}
 					</p>

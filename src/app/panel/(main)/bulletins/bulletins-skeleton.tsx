@@ -9,14 +9,14 @@ export function BulletinsSkeleton() {
 		<div className="flex flex-col gap-6 text-white">
 			<div className="flex items-center justify-between border-b border-white/10 pb-5">
 				<div className="flex items-center gap-2">
-					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-						<Icon icon={News01Icon} className="icon-sm text-[#4f55f1]" />
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+						<Icon icon={News01Icon} className="icon-sm text-link" />
 					</div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Informativos</h1>
 				</div>
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-0 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-0 overflow-hidden">
 				<div className="flex flex-col">
 					{Array.from({ length: 5 }).map((_, i) => (
 						<div key={i} className="flex items-center gap-3 px-4 py-4 border-b border-white/8 last:border-b-0">

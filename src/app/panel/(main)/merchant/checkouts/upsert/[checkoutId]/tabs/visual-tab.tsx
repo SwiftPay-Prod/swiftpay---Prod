@@ -70,7 +70,7 @@ function GradientPreviewLarge({
 	if (!primaryColor || !secondaryColor) return null;
 	return (
 		<div
-			className="h-24 w-full rounded-xl border border-divider shadow-inner"
+			className="h-24 w-full rounded-xl border border-border shadow-inner"
 			style={{
 				background: `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`,
 			}}
@@ -242,7 +242,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 											value={parseColor(normalizedPrimaryColor)}
 											onChange={handlePrimaryColorChange}
 										>
-											<ColorPicker.Trigger className="flex size-10 items-center justify-center rounded-xl border border-divider bg-surface transition-all hover:bg-surface-soft-hover">
+											<ColorPicker.Trigger className="flex size-10 items-center justify-center rounded-xl border border-border bg-surface transition-all hover:bg-surface-soft-hover">
 												<ColorSwatch size="sm" className="rounded-lg" />
 											</ColorPicker.Trigger>
 											<ColorPicker.Popover className="gap-3 p-3">
@@ -309,7 +309,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 													value={parseColor(normalizedSecondaryColor)}
 													onChange={handleSecondaryColorChange}
 												>
-													<ColorPicker.Trigger className="flex size-10 items-center justify-center rounded-xl border border-divider bg-surface transition-all hover:bg-surface-soft-hover">
+													<ColorPicker.Trigger className="flex size-10 items-center justify-center rounded-xl border border-border bg-surface transition-all hover:bg-surface-soft-hover">
 														<ColorSwatch size="sm" className="rounded-lg" />
 													</ColorPicker.Trigger>
 													<ColorPicker.Popover className="gap-3 p-3">
@@ -352,7 +352,7 @@ export function VisualTab({ checkout, merchantId, onSave, isSaving, onFormChange
 						bodyClassName="p-4"
 					>
 						<div className="space-y-4">
-							<div className="rounded-lg border border-divider bg-surface-secondary p-3">
+							<div className="rounded-lg border border-border bg-surface-secondary p-3">
 								<p className="text-xs font-semibold text-foreground">Arquivos visuais</p>
 								<p className="text-xs text-muted-foreground">
 									Use arquivos leves e nítidos. Envie logo, fundo e favicon para reforçar a identidade da página.

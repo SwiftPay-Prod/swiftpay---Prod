@@ -127,7 +127,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
 			key: 'netAmount',
 			header: 'Valor Recebido',
 			render: (cashout) => (
-				<span className="font-bold font-mono text-[#00a87e] tabular-nums">{formatCurrency(cashout.netAmount)}</span>
+				<span className="font-bold font-mono text-success tabular-nums">{formatCurrency(cashout.netAmount)}</span>
 			),
 		},
 		{
@@ -192,10 +192,10 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutListItem>[] {
 							>
 								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 							</Button>
-							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+							<Dropdown.Popover className="min-w-48 bg-card border border-white/12 rounded-xl text-whitexl">
 								<Dropdown.Menu aria-label="Ações do saque">
-									<Dropdown.Item id="cancel" textValue="Cancelar saque" className="text-[#e23b4a] hover:bg-white/10" onPress={() => onCancel(cashout)}>
-										<Icon icon={CancelCircleIcon} className="icon-xs text-[#e23b4a]" />
+									<Dropdown.Item id="cancel" textValue="Cancelar saque" className="text-danger hover:bg-white/10" onPress={() => onCancel(cashout)}>
+										<Icon icon={CancelCircleIcon} className="icon-xs text-danger" />
 										Cancelar saque
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -218,7 +218,7 @@ function renderMobileCashoutCard(
 
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -253,7 +253,7 @@ function renderMobileCashoutCard(
 				</div>
 				<div className="min-w-0">
 					<p className="text-[11px] uppercase tracking-wider text-white/40">Valor Recebido</p>
-					<p className="mt-0.5 text-sm font-bold font-mono text-[#00a87e] truncate">{formatCurrency(cashout.netAmount)}</p>
+					<p className="mt-0.5 text-sm font-bold font-mono text-success truncate">{formatCurrency(cashout.netAmount)}</p>
 				</div>
 			</div>
 
@@ -364,17 +364,17 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<RevolutWalletIcon size={16} />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Saques PIX</h1>
 						{isAutoCashoutEnabled !== null && (
 							<span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-mono font-semibold ${
 								isAutoCashoutEnabled
-									? 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30'
+									? 'bg-success/15 text-success border border-success/30'
 									: 'bg-white/5 text-white/50 border border-white/10'
 							}`}>
-								<span className={`h-1.5 w-1.5 rounded-full ${isAutoCashoutEnabled ? 'bg-[#00a87e]' : 'bg-white/40'}`} />
+								<span className={`h-1.5 w-1.5 rounded-full ${isAutoCashoutEnabled ? 'bg-success' : 'bg-white/40'}`} />
 								{isAutoCashoutEnabled ? 'Automático Ativo' : 'Manual'}
 							</span>
 						)}
@@ -410,7 +410,7 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 			{/* High-Contrast 4-Tile KPI Summary */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{/* Total Debitado */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total Debitado
@@ -429,26 +429,26 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 				</div>
 
 				{/* Valor Recebido */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Valor Recebido
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<RevolutCheckIcon size={14} />
 						</div>
 					</div>
 					<div>
 						<AnimatedCurrency
 							value={completedNet}
-							className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums"
+							className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums"
 						/>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liquidado na conta bancária</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Liquidado na conta bancária</p>
 					</div>
 				</div>
 
 				{/* Taxas de Saque */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Taxas Operacionais
@@ -467,12 +467,12 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 				</div>
 
 				{/* Solicitações */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Solicitações
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<RevolutWalletIcon size={14} />
 						</div>
 					</div>
@@ -486,7 +486,7 @@ export function CashoutsTable({ merchantId, readOnly = false }: CashoutsTablePro
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.items.items}

@@ -65,7 +65,7 @@ export function ReferralPixKeyManager({
 						</Modal.Header>
 						<Modal.Body>
 							{!isEditing && hasPixKey && (
-								<div className="flex flex-col gap-4 rounded-xl border border-divider bg-surface p-4">
+								<div className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
 									<div className="flex flex-col gap-2">
 										<span className="text-xs text-muted">Tipo da chave PIX</span>
 										<div>
@@ -90,7 +90,7 @@ export function ReferralPixKeyManager({
 							)}
 
 							{!isEditing && !hasPixKey && (
-								<div className="flex flex-col gap-4 rounded-xl border border-divider bg-surface p-4">
+								<div className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
 									<p className="text-sm text-muted">
 										Você ainda não possui uma conta PIX cadastrada para receber comissão.
 									</p>

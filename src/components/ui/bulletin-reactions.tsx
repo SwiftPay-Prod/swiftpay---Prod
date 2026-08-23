@@ -81,7 +81,7 @@ export function BulletinReactions({
 					<Popover.Content className="p-0 w-fit">
 						<EmojiPicker.Root
 							onEmojiSelect={({ emoji }) => handleEmojiSelect(emoji)}
-							className="isolate flex h-80 w-fit flex-col bg-surface text-foreground rounded-lg shadow-lg"
+							className="isolate flex h-80 w-fit flex-col bg-surface text-foreground rounded-lglg"
 							locale="pt"
 						>
 							<EmojiPicker.Search

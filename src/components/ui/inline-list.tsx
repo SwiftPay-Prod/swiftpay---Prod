@@ -31,7 +31,7 @@ export function InlineList<T>({
 	if (safeItems.length === 0) return <>{empty}</>;
 
 	return (
-		<div className={`rounded-xl border border-divider overflow-hidden ${className ?? ''}`}>
+		<div className={`rounded-xl border border-border overflow-hidden ${className ?? ''}`}>
 			{safeItems.map((item, index) => (
 				<div
 					key={getKey(item)}

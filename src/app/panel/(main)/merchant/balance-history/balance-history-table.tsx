@@ -73,13 +73,13 @@ function getColumns(
 				const isPositive = diff > 0;
 				return (
 					<div className="flex items-center gap-1.5">
-						<span className={`font-mono text-sm font-bold tabular-nums ${isPositive ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}>
+						<span className={`font-mono text-sm font-bold tabular-nums ${isPositive ? 'text-success' : 'text-danger'}`}>
 							{isPositive ? '+' : ''}{formatCurrency(diff)}
 						</span>
 						<span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-mono font-semibold ${
 							isPositive
-								? 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30'
-								: 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30'
+								? 'bg-success/15 text-success border border-success/30'
+								: 'bg-danger/15 text-danger border border-danger/30'
 						}`}>
 							{isPositive ? 'Crédito' : 'Débito'}
 						</span>
@@ -104,13 +104,13 @@ function getColumns(
 				<div className="flex items-center gap-2">
 					{item.hasCorrections ? (
 						<>
-							<Icon icon={Alert01Icon} className="icon-sm text-[#ec7e00]" />
-							<span className="text-xs font-mono text-[#ec7e00] font-medium">{item.totalCorrections} ajuste(s)</span>
+							<Icon icon={Alert01Icon} className="icon-sm text-warning" />
+							<span className="text-xs font-mono text-warning font-medium">{item.totalCorrections} ajuste(s)</span>
 						</>
 					) : (
 						<>
-							<Icon icon={CheckmarkCircle02Icon} className="icon-sm text-[#00a87e]" />
-							<span className="text-xs font-mono text-[#00a87e] font-medium">Saldo Consistente</span>
+							<Icon icon={CheckmarkCircle02Icon} className="icon-sm text-success" />
+							<span className="text-xs font-mono text-success font-medium">Saldo Consistente</span>
 						</>
 					)}
 				</div>
@@ -143,7 +143,7 @@ function renderMobileBalanceHistoryCard(item: MinimalBalanceHistory, _index: num
 	const isPositive = diff > 0;
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -172,7 +172,7 @@ function renderMobileBalanceHistoryCard(item: MinimalBalanceHistory, _index: num
 					{diff === 0 ? (
 						<span className="text-xs text-white/40">0,00</span>
 					) : (
-						<span className={`font-mono text-xs font-bold tabular-nums ${isPositive ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}>
+						<span className={`font-mono text-xs font-bold tabular-nums ${isPositive ? 'text-success' : 'text-danger'}`}>
 							{isPositive ? '+' : ''}{formatCurrency(diff)}
 						</span>
 					)}
@@ -211,7 +211,7 @@ export function BalanceHistoryTable({ merchantId, initialFilters }: BalanceHisto
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<RevolutStatementIcon size={16} />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Extrato & Histórico de Saldo</h1>
@@ -225,7 +225,7 @@ export function BalanceHistoryTable({ merchantId, initialFilters }: BalanceHisto
 			{/* 4-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{/* Reconciliações */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Reconciliações
@@ -243,17 +243,17 @@ export function BalanceHistoryTable({ merchantId, initialFilters }: BalanceHisto
 				</div>
 
 				{/* Com Correções */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Ajustes Automáticos
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-warning/15 text-warning border border-warning/30">
 							<Icon icon={Alert01Icon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#ec7e00] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-warning tracking-tight tabular-nums block">
 							<AnimatedNumber value={withCorrections} />
 						</span>
 						<p className="text-xs text-white/40 font-mono mt-0.5">Correções automáticas aplicadas</p>
@@ -261,36 +261,36 @@ export function BalanceHistoryTable({ merchantId, initialFilters }: BalanceHisto
 				</div>
 
 				{/* Saldo Atual */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Saldo Consolidado
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<Icon icon={Wallet01Icon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
 						<AnimatedCurrency
 							value={currentBalance}
-							className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums"
+							className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums"
 						/>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Saldo após último ciclo</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Saldo após último ciclo</p>
 					</div>
 				</div>
 
 				{/* Última Diferença */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Último Movimento
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={ArrowDataTransferHorizontalIcon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
-						<span className={`text-2xl font-extrabold font-mono tracking-tight tabular-nums block ${lastChange >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}>
+						<span className={`text-2xl font-extrabold font-mono tracking-tight tabular-nums block ${lastChange >= 0 ? 'text-success' : 'text-danger'}`}>
 							<AnimatedCurrency value={Math.abs(lastChange)} prefix={lastChange >= 0 ? '+' : '-'} />
 						</span>
 						<p className="text-xs text-white/40 font-mono mt-0.5">Impacto no saldo</p>
@@ -299,7 +299,7 @@ export function BalanceHistoryTable({ merchantId, initialFilters }: BalanceHisto
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.balanceHistory.items}

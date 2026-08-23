@@ -100,7 +100,7 @@ export function AddressStep({
 						isSelected={allowManualAddressEntry}
 						onChange={setAllowManualAddressEntry}
 						isDisabled={isBusy || !isFieldEditable('postalCode')}
-						className="w-full rounded-lg border border-divider px-3 py-3"
+						className="w-full rounded-lg border border-border px-3 py-3"
 					>
 						<Checkbox.Control>
 							<Checkbox.Indicator />

@@ -139,7 +139,7 @@ function ModalContent({
 						</p>
 					</div>
 
-					<div className="flex items-center gap-3 p-3 rounded-lg bg-content1 border border-divider">
+					<div className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border">
 						<Icon icon={Wallet01Icon} className="icon-md text-accent" />
 						<div className="flex flex-col">
 							<span className="text-sm font-medium">{merchantName}</span>
@@ -270,7 +270,7 @@ function ModalContent({
 						</div>
 					)}
 
-					<div className="flex items-start gap-3 rounded-lg bg-content1 p-3">
+					<div className="flex items-start gap-3 rounded-lg bg-card p-3">
 						<Icon icon={AlertDiamondIcon} className="icon-sm shrink-0 text-warning mt-0.5" />
 						<p className="text-xs text-muted">
 							Créditos aumentam o saldo da organização e débitos reduzem. A contraparte é registrada no

@@ -234,7 +234,7 @@ function renderMobilePhysicalProductCard(
 	const stock = product.stockQuantity;
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -318,8 +318,8 @@ export function PhysicalProductsTable({ merchantId, initialFilters }: PhysicalPr
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={PackageIcon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={PackageIcon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Produtos Físicos</h1>
 					</div>
@@ -359,7 +359,7 @@ export function PhysicalProductsTable({ merchantId, initialFilters }: PhysicalPr
 			{/* 4-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{/* Total no Catálogo */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total no Catálogo
@@ -377,30 +377,30 @@ export function PhysicalProductsTable({ merchantId, initialFilters }: PhysicalPr
 				</div>
 
 				{/* Produtos Ativos */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Produtos Ativos
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<RevolutCheckIcon size={14} />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 							<AnimatedNumber value={activeProducts} />
 						</span>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Disponíveis para venda</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Disponíveis para venda</p>
 					</div>
 				</div>
 
 				{/* Preço Médio */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Preço Médio PIX
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<RevolutWalletIcon size={14} />
 						</div>
 					</div>
@@ -414,7 +414,7 @@ export function PhysicalProductsTable({ merchantId, initialFilters }: PhysicalPr
 				</div>
 
 				{/* Categorias */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Categorias
@@ -433,7 +433,7 @@ export function PhysicalProductsTable({ merchantId, initialFilters }: PhysicalPr
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.products.items}

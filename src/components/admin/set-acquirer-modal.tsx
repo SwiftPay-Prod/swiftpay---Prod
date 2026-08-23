@@ -250,7 +250,7 @@ export function SetAcquirerModal({
 															className={`flex items-start gap-3 rounded-lg border p-2.5 text-left transition-colors ${
 																isSelected
 																		? 'border-accent bg-accent/10 cursor-pointer'
-																		: 'border-divider bg-surface hover:bg-surface-secondary cursor-pointer'
+																		: 'border-border bg-surface hover:bg-surface-secondary cursor-pointer'
 																}`}
 														>
 															<Avatar size="sm" className="shrink-0 mt-0.5">
@@ -311,14 +311,14 @@ export function SetAcquirerModal({
 																</div>
 																<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-foreground/80 mt-0.5">
 																	{acquirer.pixInFeeMode && (
-																		<span className="flex items-center gap-1">
+																		<span className="flex items-center gap-1 tabular-nums">
 																			<Icon icon={QrCodeIcon} className="size-3 text-success" />
 																			PIX: {formatFeeRate(acquirer.pixInFeeMode, acquirer.pixInFeeFixed, acquirer.pixInFeePercentage)}
 																		</span>
 																	)}
 																	
 																	{acquirer.payoutFeeMode && (
-																		<span className="flex items-center gap-1">
+																		<span className="flex items-center gap-1 tabular-nums">
 																			<Icon icon={Wallet01Icon} className="size-3 text-accent" />
 																			Saque: {formatFeeRate(acquirer.payoutFeeMode, acquirer.payoutFeeFixed, acquirer.payoutFeePercentage)}
 																		</span>
@@ -347,7 +347,7 @@ export function SetAcquirerModal({
 									</Alert.Content>
 								</Alert>
 
-								<div className="rounded-xl border border-divider bg-surface p-4">
+								<div className="rounded-xl border border-border bg-surface p-4">
 									<div className="flex flex-col gap-3 rounded-lg border border-accent/30 bg-accent/5 p-3">
 											<div className="flex items-center gap-3">
 										<Avatar size="lg">
@@ -427,7 +427,7 @@ export function SetAcquirerModal({
 												<span className="flex items-center gap-1.5">
 													<Icon icon={QrCodeIcon} className="size-4 text-success" />
 													<span className="text-muted">PIX:</span>
-													<span className="font-medium">{formatFeeRate(selectedAcquirer.pixInFeeMode, selectedAcquirer.pixInFeeFixed, selectedAcquirer.pixInFeePercentage)}</span>
+													<span className="font-medium tabular-nums">{formatFeeRate(selectedAcquirer.pixInFeeMode, selectedAcquirer.pixInFeeFixed, selectedAcquirer.pixInFeePercentage)}</span>
 												</span>
 											)}
 											
@@ -435,7 +435,7 @@ export function SetAcquirerModal({
 												<span className="flex items-center gap-1.5">
 													<Icon icon={Wallet01Icon} className="size-4 text-accent" />
 													<span className="text-muted">Saque:</span>
-													<span className="font-medium">{formatFeeRate(selectedAcquirer.payoutFeeMode, selectedAcquirer.payoutFeeFixed, selectedAcquirer.payoutFeePercentage)}</span>
+													<span className="font-medium tabular-nums">{formatFeeRate(selectedAcquirer.payoutFeeMode, selectedAcquirer.payoutFeeFixed, selectedAcquirer.payoutFeePercentage)}</span>
 												</span>
 											)}
 										</div>

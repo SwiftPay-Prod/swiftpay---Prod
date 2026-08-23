@@ -36,7 +36,7 @@ export function RevolutPeriodSelector({
 	return (
 		<div className={`flex items-center gap-2 ${className}`}>
 			{/* Segmented Capsule Pill Container */}
-			<div className="flex items-center gap-1 rounded-full border border-white/10 bg-[#0a0a0a] p-1 overflow-x-auto scrollbar-hide shadow-inner">
+			<div className="flex items-center gap-1 rounded-full border border-white/10 bg-surface-deep p-1 overflow-x-auto scrollbar-hide shadow-inner">
 				{REVOLUT_QUICK_PERIODS.map((period) => {
 					const isActive = selectedPeriod === period.key;
 					return (
@@ -46,7 +46,7 @@ export function RevolutPeriodSelector({
 							onClick={() => onPeriodChange(period.key)}
 							className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs transition-all ${
 								isActive
-									? 'border border-white/15 bg-[#16181a] font-semibold text-white shadow-sm'
+									? 'border border-white/15 bg-card font-semibold text-whitesm'
 									: 'font-medium text-white/60 hover:bg-white/5 hover:text-white'
 							}`}
 						>
@@ -63,9 +63,9 @@ export function RevolutPeriodSelector({
 					onClick={onRefresh}
 					disabled={isRefreshing}
 					title="Atualizar dados"
-					className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#0a0a0a] text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+					className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-surface-deep text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
 				>
-					<RevolutRefreshIcon size={14} className={isRefreshing ? 'animate-spin text-[#4f55f1]' : ''} />
+					<RevolutRefreshIcon size={14} className={isRefreshing ? 'animate-spin text-link' : ''} />
 				</button>
 			)}
 		</div>

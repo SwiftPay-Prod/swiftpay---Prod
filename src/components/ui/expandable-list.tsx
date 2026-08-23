@@ -45,7 +45,7 @@ export function ExpandableList<T>({
 				const isExpanded = expandedKey === key;
 
 				return (
-					<div key={key} className="rounded-xl border border-divider overflow-hidden bg-surface">
+					<div key={key} className="rounded-xl border border-border overflow-hidden bg-surface">
 						<button
 							type="button"
 							onClick={() => onToggle(key)}
@@ -72,13 +72,13 @@ export function ExpandableList<T>({
 						</button>
 
 						{isExpanded && (
-							<div className="px-4 py-4 border-t border-divider bg-surface-secondary">
+							<div className="px-4 py-4 border-t border-border bg-surface-secondary">
 								{renderContent(item)}
 							</div>
 						)}
 
 						{renderFooter && (
-							<div className="px-4 py-3 border-t border-divider">
+							<div className="px-4 py-3 border-t border-border">
 								{renderFooter(item)}
 							</div>
 						)}
@@ -93,7 +93,7 @@ export function ExpandableListSkeleton({ rows = 3 }: { rows?: number }) {
 	return (
 		<div className="flex flex-col gap-2">
 			{Array.from({ length: rows }).map((_, index) => (
-				<div key={index} className="rounded-xl border border-divider overflow-hidden bg-surface p-4">
+				<div key={index} className="rounded-xl border border-border overflow-hidden bg-surface p-4">
 					<div className="flex items-center gap-3">
 						<Skeleton className="size-10 rounded-lg shrink-0" />
 						<div className="flex flex-col gap-2 flex-1">
@@ -124,7 +124,7 @@ export function ExpandableListContentSkeleton({ lines = 3, showReactions = false
 				))}
 			</div>
 			{showReactions && (
-				<div className="border-t border-divider pt-4">
+				<div className="border-t border-border pt-4">
 					<Skeleton className="h-8 w-8 rounded-lg" />
 				</div>
 			)}

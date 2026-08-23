@@ -34,24 +34,24 @@ function getToneClass(color: string, isLight: boolean) {
 	switch (color) {
 		case 'success':
 			return isLight
-				? 'border-emerald-400/35 bg-white/85 text-emerald-700 shadow-[0_18px_40px_rgba(16,185,129,0.24)]'
-				: 'border-emerald-400/25 bg-black/55 text-emerald-200 shadow-[0_18px_40px_rgba(16,185,129,0.22)]';
+				? 'border-emerald-400/35 bg-white/85 text-emerald-700'
+				: 'border-emerald-400/25 bg-black/55 text-emerald-200';
 		case 'warning':
 			return isLight
-				? 'border-amber-400/35 bg-white/85 text-amber-700 shadow-[0_18px_40px_rgba(245,158,11,0.24)]'
-				: 'border-amber-400/25 bg-black/55 text-amber-100 shadow-[0_18px_40px_rgba(245,158,11,0.22)]';
+				? 'border-amber-400/35 bg-white/85 text-amber-700'
+				: 'border-amber-400/25 bg-black/55 text-amber-100';
 		case 'danger':
 			return isLight
-				? 'border-rose-400/35 bg-white/85 text-rose-700 shadow-[0_18px_40px_rgba(244,63,94,0.2)]'
-				: 'border-rose-400/25 bg-black/55 text-rose-100 shadow-[0_18px_40px_rgba(244,63,94,0.2)]';
+				? 'border-rose-400/35 bg-white/85 text-rose-700'
+				: 'border-rose-400/25 bg-black/55 text-rose-100';
 		case 'accent':
 			return isLight
-				? 'border-sky-400/35 bg-white/85 text-sky-700 shadow-[0_18px_40px_rgba(14,165,233,0.22)]'
-				: 'border-sky-400/25 bg-black/55 text-sky-100 shadow-[0_18px_40px_rgba(14,165,233,0.2)]';
+				? 'border-sky-400/35 bg-white/85 text-sky-700'
+				: 'border-sky-400/25 bg-black/55 text-sky-100';
 		default:
 			return isLight
-				? 'border-foreground/12 bg-white/85 text-foreground shadow-[0_18px_40px_rgba(15,23,42,0.12)]'
-				: 'border-white/10 bg-black/55 text-white shadow-[0_18px_40px_rgba(0,0,0,0.24)]';
+				? 'border-foreground/12 bg-white/85 text-foreground'
+				: 'border-white/10 bg-black/55 text-white';
 	}
 }
 

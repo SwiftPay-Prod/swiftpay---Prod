@@ -77,7 +77,7 @@ function DetailsContent({ couponPromise }: DetailsContentProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-start gap-4 border-b border-divider pb-4">
+      <div className="flex items-start gap-4 border-b border-border pb-4">
         <Avatar size="lg" className="shrink-0 bg-accent/10">
           <Avatar.Fallback className="text-accent">
             <Icon icon={Coupon01Icon} className="icon-md" />

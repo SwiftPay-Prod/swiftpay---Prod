@@ -71,7 +71,7 @@ export function JsonCodeBlock({ value, className, maxHeight = '300px', label }: 
 		return (
 			<div className={cn('flex min-w-0 max-w-full flex-col gap-1 sm:col-span-2', className)}>
 				{label && <span className="text-xs text-muted">{label}</span>}
-				<div className="rounded-lg bg-content1 p-3 text-xs text-muted">-</div>
+				<div className="rounded-lg bg-card p-3 text-xs text-muted">-</div>
 			</div>
 		);
 	}

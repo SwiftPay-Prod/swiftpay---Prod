@@ -92,7 +92,7 @@ export function JsonEditorInput({
 	}
 
 	return (
-		<div className={cn('rounded-xl border border-divider bg-zinc-900', className)}>
+		<div className={cn('rounded-xl border border-border bg-zinc-900', className)}>
 			<div
 				ref={editorRef}
 				role="textbox"

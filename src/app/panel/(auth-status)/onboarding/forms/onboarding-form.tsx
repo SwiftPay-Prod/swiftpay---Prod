@@ -50,13 +50,13 @@ function OnboardingStepOptions({ controller }: OnboardingFormProps) {
 							size="lg"
 							className={`h-18 w-full flex-col items-center justify-center gap-1 border text-center transition-colors ${
 								isSelected
-									? 'border-[#494fdf] bg-[#494fdf]/15 text-white'
+									? 'border-brand bg-brand/15 text-white'
 									: 'border-white/12 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
 							}`}
 							onPress={() => handleOptionToggle(activeStep.id, option.id)}
 							isDisabled={isFinishing}
 						>
-							<Icon icon={option.icon} className={`h-6 w-6 ${isSelected ? 'text-[#4f55f1]' : 'text-white/60'}`} />
+							<Icon icon={option.icon} className={`h-6 w-6 ${isSelected ? 'text-link' : 'text-white/60'}`} />
 							<span className={`text-sm font-medium ${isSelected ? 'text-white font-bold' : 'text-white/80'}`}>{option.label}</span>
 						</Button>
 					);
@@ -73,7 +73,7 @@ function OnboardingStepOptions({ controller }: OnboardingFormProps) {
 					variant="secondary"
 					isSelected={controller.answers.goals.includes(option.id)}
 					onChange={() => handleOptionToggle(activeStep.id, option.id)}
-					className="w-full rounded-lg border border-divider px-3 py-2"
+					className="w-full rounded-lg border border-border px-3 py-2"
 					isDisabled={isFinishing}
 				>
 					<Checkbox.Control>
@@ -129,7 +129,7 @@ export function OnboardingForm({ controller }: OnboardingFormProps) {
 			<Card>
 				<Card.Content className="flex flex-col gap-4">
 					<div className="flex items-center gap-3">
-						<div className="flex size-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex size-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/30">
 							<Icon icon={activeStep.icon} className="icon-md" />
 						</div>
 						<div className="flex flex-col">

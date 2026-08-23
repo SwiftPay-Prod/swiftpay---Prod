@@ -47,7 +47,7 @@ export function IntegrationDetailsModal({
 						<div className="flex flex-col gap-4 text-sm text-muted">
 							<p>{description}</p>
 
-							<div className="flex flex-col gap-2 rounded-lg border border-divider p-3">
+							<div className="flex flex-col gap-2 rounded-lg border border-border p-3">
 								<span className="text-sm font-medium text-foreground">O que você pode fazer</span>
 								<ul className="list-disc pl-5">
 									{capabilities.map((item) => (
@@ -56,7 +56,7 @@ export function IntegrationDetailsModal({
 								</ul>
 							</div>
 
-							<div className="flex flex-col gap-2 rounded-lg border border-divider p-3">
+							<div className="flex flex-col gap-2 rounded-lg border border-border p-3">
 								<span className="text-sm font-medium text-foreground">Exemplos de uso</span>
 								<ul className="list-disc pl-5">
 									{examples.map((item) => (

@@ -270,8 +270,8 @@ export function NotificationsContent({
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={Notification01Icon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={Notification01Icon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Notificações</h1>
 					</div>
@@ -332,7 +332,7 @@ export function NotificationsContent({
 										{option.icon}
 										<span>{option.label}</span>
 										{count > 0 && (
-											<span className="px-1.5 py-0.5 text-xs rounded-md font-medium bg-content2">{count}</span>
+											<span className="px-1.5 py-0.5 text-xs rounded-md font-medium bg-surface-deep">{count}</span>
 										)}
 										<Tabs.Indicator className={indicatorClass} />
 									</Tabs.Tab>

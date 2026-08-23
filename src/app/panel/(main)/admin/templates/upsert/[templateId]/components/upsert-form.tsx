@@ -625,7 +625,7 @@ export function TemplateUpsertForm({ template, templatePromise }: TemplateUpsert
 					)}
 
 					{!isEditMode && (
-						<div className="rounded-xl border border-divider bg-surface p-4">
+						<div className="rounded-xl border border-border bg-surface p-4">
 							<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
 								<Button
 									variant="secondary"

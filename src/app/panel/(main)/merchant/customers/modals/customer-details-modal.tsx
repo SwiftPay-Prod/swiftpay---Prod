@@ -76,7 +76,7 @@ function DetailsContent({ customerPromise }: { customerPromise: CustomerPromise 
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex flex-col gap-4 pb-4 border-b border-divider">
+			<div className="flex flex-col gap-4 pb-4 border-b border-border">
 				<div className="flex flex-col gap-1">
 					<span className="text-xl font-bold text-foreground">{customer.name}</span>
 					<span className="text-sm text-foreground/70">Cliente cadastrado na plataforma</span>
@@ -211,7 +211,7 @@ function PaymentsContent({
 						return (
 							<div
 								key={payment.id}
-								className="flex flex-col gap-3 rounded-lg border border-divider bg-background p-4"
+								className="flex flex-col gap-3 rounded-lg border border-border bg-background p-4"
 							>
 								<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
 									<div className="flex flex-col gap-1">

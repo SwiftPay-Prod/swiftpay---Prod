@@ -22,8 +22,8 @@ export function AchievementCard({ achievement, isSelectedEmblem, onSelect }: Ach
         className={[
           'relative flex flex-col items-center gap-2 p-3 rounded-xl border transition-all text-center w-full cursor-pointer',
           achievement.isEarned
-            ? 'bg-surface border-divider hover:border-accent hover:bg-accent/5'
-            : 'bg-surface/50 border-divider/50 opacity-50 hover:opacity-70',
+            ? 'bg-surface border-border hover:border-accent hover:bg-accent/5'
+            : 'bg-surface/50 border-border/50 opacity-50 hover:opacity-70',
           isSelectedEmblem && 'ring-2 ring-accent border-accent bg-accent/10',
         ].filter(Boolean).join(' ')}
       >
@@ -36,7 +36,7 @@ export function AchievementCard({ achievement, isSelectedEmblem, onSelect }: Ach
             unoptimized
           />
           {!achievement.isEarned && (
-            <div className="absolute bottom-0 right-0 bg-surface border border-divider rounded-full p-0.5">
+            <div className="absolute bottom-0 right-0 bg-surface border border-border rounded-full p-0.5">
               <Icon icon={LockIcon} className="icon-xs text-muted" />
             </div>
           )}

@@ -370,7 +370,7 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 					/>
 				)}
 
-				<div className="mt-4 border-t border-divider pt-4">
+				<div className="mt-4 border-t border-border pt-4">
 					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
 						<button
 							type="button"

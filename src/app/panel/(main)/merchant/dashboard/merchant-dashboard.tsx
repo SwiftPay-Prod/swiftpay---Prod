@@ -114,8 +114,8 @@ function DashboardContent({
 			<div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs text-white/50 font-mono">
 				<div className="flex items-center gap-3">
 					{cacheInfo?.isProcessing && (
-						<div className="flex items-center gap-1.5 text-[#4f55f1]">
-							<div className="h-2.5 w-2.5 animate-spin rounded-full border-2 border-[#4f55f1] border-t-transparent" />
+						<div className="flex items-center gap-1.5 text-link">
+							<div className="h-2.5 w-2.5 animate-spin rounded-full border-2 border-link border-t-transparent" />
 							<span>Sincronizando métricas...</span>
 						</div>
 					)}
@@ -127,7 +127,7 @@ function DashboardContent({
 									<TooltipTrigger className="cursor-help text-white/40 hover:text-white/70 inline-flex items-center">
 										<RevolutInfoIcon size={12} />
 									</TooltipTrigger>
-									<TooltipContent side="top" className="max-w-72 border-white/12 bg-[#0a0a0a] text-xs text-white shadow-xl">
+									<TooltipContent side="top" className="max-w-72 border-white/12 bg-surface-deep text-xs text-whitexl">
 										<p className="font-semibold text-white/90">Ciclo de Liquidação:</p>
 										<p className="mt-1 text-white/70">
 											Saldo disponível atualizado em tempo real (PIX D+0). Gráficos e indicadores operacionais consolidados a cada{' '}
@@ -147,7 +147,7 @@ function DashboardContent({
 					className="button-outline-dark text-xs py-1.5 px-3"
 				>
 					<svg
-						className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#4f55f1]' : ''}`}
+						className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-link' : ''}`}
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
@@ -224,7 +224,7 @@ function QuickActions() {
 	];
 
 	return (
-		<div className="flex flex-col gap-5 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7">
+		<div className="flex flex-col gap-5 rounded-[20px] border border-white/12 bg-card p-6 sm:p-7">
 			<div>
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 					Ações Rápidas
@@ -252,7 +252,7 @@ function QuickActions() {
 										className={`group flex items-center justify-between rounded-[16px] border p-3 text-left transition-all ${
 											item.variant === 'primary'
 												? 'border-white/20 bg-white/5 hover:border-white/30 hover:bg-white/10'
-												: 'border-white/8 bg-[#0a0a0a] hover:border-white/15 hover:bg-white/[0.03]'
+												: 'border-white/8 bg-surface-deep hover:border-white/15 hover:bg-white/[0.03]'
 										}`}
 									>
 										<div className="flex items-center gap-3">
@@ -304,8 +304,8 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 
 	if (hookData.error) {
 		return (
-			<div className="rounded-[20px] border border-[#e23b4a]/30 bg-[#e23b4a]/10 p-5 text-sm">
-				<p className="font-semibold text-[#e23b4a]">Erro ao carregar dados do dashboard</p>
+			<div className="rounded-[20px] border border-danger/30 bg-danger/10 p-5 text-sm">
+				<p className="font-semibold text-danger">Erro ao carregar dados do dashboard</p>
 				<p className="mt-1 text-white/60">{hookData.error}</p>
 				<button
 					type="button"
@@ -320,8 +320,8 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 
 	if (!hookData.dashboard) {
 		return (
-			<div className="rounded-[20px] border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-5 text-sm">
-				<p className="font-semibold text-[#ec7e00]">Dados não disponíveis</p>
+			<div className="rounded-[20px] border border-warning/30 bg-warning/10 p-5 text-sm">
+				<p className="font-semibold text-warning">Dados não disponíveis</p>
 				<p className="mt-1 text-white/60">Não foi possível carregar os dados do dashboard.</p>
 				<button
 					type="button"

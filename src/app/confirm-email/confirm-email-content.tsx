@@ -44,7 +44,7 @@ export function ConfirmEmailContent({
         </div>
         
         <div className="flex-1 flex items-center justify-center p-4">
-          <Card className="flex w-full max-w-md flex-col items-center gap-4 p-8 text-center backdrop-blur-sm bg-background/80">
+          <Card className="flex w-full max-w-md flex-col items-center gap-4 p-8 text-center backdrop-blur-sm bg-card">
             {status === "success" && (
               <>
                 <div className="flex size-16 items-center justify-center rounded-full bg-success/10">

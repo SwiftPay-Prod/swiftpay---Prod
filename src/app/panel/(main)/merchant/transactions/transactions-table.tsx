@@ -154,7 +154,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 			key: 'netAmount',
 			header: 'Líquido',
 			render: (payment) => (
-				<span className="text-sm font-bold font-mono text-[#00a87e] tabular-nums">{formatCurrency(payment.netAmount)}</span>
+				<span className="text-sm font-bold font-mono text-success tabular-nums">{formatCurrency(payment.netAmount)}</span>
 			),
 		},
 		{
@@ -251,10 +251,10 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalPayment>[] {
 							>
 								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 							</Button>
-							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+							<Dropdown.Popover className="min-w-48 bg-card border border-white/12 rounded-xl text-whitexl">
 								<Dropdown.Menu aria-label="Ações da transação">
 									<Dropdown.Item id="resend-webhook" textValue="Reenviar webhook" className="text-white hover:bg-white/10" onPress={() => onResendWebhook(payment)}>
-										<Icon icon={SentIcon} className="icon-xs text-[#4f55f1]" />
+										<Icon icon={SentIcon} className="icon-xs text-link" />
 										Reenviar webhook
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -274,7 +274,7 @@ function renderMobileTransactionCard(
 ) {
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -314,7 +314,7 @@ function renderMobileTransactionCard(
 				</div>
 				<div className="min-w-0">
 					<p className="text-[11px] uppercase tracking-wider text-white/40">Líquido</p>
-					<p className="mt-0.5 text-sm font-bold font-mono text-[#00a87e] truncate">{formatCurrency(payment.netAmount)}</p>
+					<p className="mt-0.5 text-sm font-bold font-mono text-success truncate">{formatCurrency(payment.netAmount)}</p>
 				</div>
 			</div>
 
@@ -395,7 +395,7 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<RevolutPixIcon size={16} />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Extrato de Vendas PIX</h1>
@@ -420,7 +420,7 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 			{/* High-Contrast 3-Tile KPI Summary */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				{/* Volume Total */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Volume Filtrado
@@ -439,37 +439,37 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 				</div>
 
 				{/* Cobranças Liquidadas */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Cobranças Liquidadas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<RevolutCheckIcon size={14} />
 						</div>
 					</div>
 					<div>
 						<div className="flex items-baseline gap-2">
-							<span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
+							<span className="text-2xl sm:text-3xl font-extrabold font-mono text-success tracking-tight tabular-nums">
 								{approved.length}
 							</span>
 							<span className="text-xs font-mono text-white/40">
 								de {rows.length} ordens
 							</span>
 						</div>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">
+						<p className="text-xs text-success/80 font-mono mt-0.5">
 							{formatCurrency(approvedVolume)} em caixa
 						</p>
 					</div>
 				</div>
 
 				{/* Taxa de Conversão PIX */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Taxa de Conversão PIX
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<RevolutTrendingUpIcon size={14} />
 						</div>
 					</div>
@@ -483,7 +483,7 @@ export function TransactionsTable({ merchantId, readOnly = false }: Transactions
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.payments.items}

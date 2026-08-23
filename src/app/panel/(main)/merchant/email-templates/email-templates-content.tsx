@@ -39,7 +39,7 @@ function renderMobileEmailTemplateCard(item: TemplateRow, _index: number, openAc
 	const parse = merchantEmailTemplateTypeParse[item.type];
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
+			className={`rounded-xl border border-border bg-surface p-3 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -176,8 +176,8 @@ export function EmailTemplatesContent({ templatesPromise }: EmailTemplatesConten
 		<div className="flex flex-col gap-6 text-white">
 			{/* Executive Header */}
 			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
-				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-					<Icon icon={Mail02Icon} className="icon-sm text-[#4f55f1]" />
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+					<Icon icon={Mail02Icon} className="icon-sm text-link" />
 				</div>
 				<div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Templates de Email</h1>
@@ -188,7 +188,7 @@ export function EmailTemplatesContent({ templatesPromise }: EmailTemplatesConten
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={rows}

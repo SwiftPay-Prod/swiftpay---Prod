@@ -288,7 +288,7 @@ export function ReferralSettingsTab({
 			)}
 
 			<Accordion defaultExpandedKeys={[]}>
-				<Accordion.Item id="referrals" className="rounded-xl border border-divider bg-surface">
+				<Accordion.Item id="referrals" className="rounded-xl border border-border bg-surface">
 					<Accordion.Heading>
 						<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 							<div className="flex items-center gap-3">

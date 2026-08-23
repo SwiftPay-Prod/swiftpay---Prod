@@ -96,7 +96,7 @@ export function NumberTicket({ value, className, durationMs = 900 }: NumberTicke
   const { integer, cents } = splitCurrencyParts(displayValue);
 
   return (
-    <div className={cn('inline-flex items-end justify-center gap-1 leading-none tabular-nums', className)}>
+    <div className={cn('inline-flex items-end justify-center gap-1 leading-none tabular-nums', className)} aria-live="polite">
       <span className="mb-[0.2em] text-[0.28em] font-semibold text-current/90">R$</span>
       <span className="font-black tracking-tight">{integer}</span>
       <span className="pb-[0.14em] text-[0.32em] font-semibold text-current/85">,{cents}</span>

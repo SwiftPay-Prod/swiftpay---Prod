@@ -91,7 +91,7 @@ export function OverviewTab({
 					<OperationalAlerts financial={financial} growth={growth} />
 				</div>
 				<div className="lg:col-span-1">
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+					<div className="rounded-[20px] border border-white/12 bg-card p-5">
 						<ApprovalHealthBar financial={financial} />
 					</div>
 				</div>
@@ -113,14 +113,14 @@ function QuickActions() {
 	const router = useRouter();
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5">
 			<div className="flex flex-col gap-3">
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Ações Rápidas</span>
 				<div className="flex flex-col gap-2">
 					<button
 						type="button"
 						onClick={() => router.push(Routes.panel.admin.users)}
-						className="flex items-center gap-2 rounded-lg border border-white/10 bg-[#0a0a0a] px-3 py-2 text-left text-xs text-white/70 transition-colors hover:text-white hover:border-white/20 hover:bg-white/10"
+						className="flex items-center gap-2 rounded-lg border border-white/10 bg-surface-deep px-3 py-2 text-left text-xs text-white/70 transition-colors hover:text-white hover:border-white/20 hover:bg-white/10"
 					>
 						<Icon icon={UserAdd01Icon} className="icon-xs shrink-0" />
 						<span>Revisar cadastros pendentes</span>
@@ -128,7 +128,7 @@ function QuickActions() {
 					<button
 						type="button"
 						onClick={() => router.push(Routes.panel.admin.merchants)}
-						className="flex items-center gap-2 rounded-lg border border-white/10 bg-[#0a0a0a] px-3 py-2 text-left text-xs text-white/70 transition-colors hover:text-white hover:border-white/20 hover:bg-white/10"
+						className="flex items-center gap-2 rounded-lg border border-white/10 bg-surface-deep px-3 py-2 text-left text-xs text-white/70 transition-colors hover:text-white hover:border-white/20 hover:bg-white/10"
 					>
 						<Icon icon={Settings01Icon} className="icon-xs shrink-0" />
 						<span>Aprovar novas organizações</span>
@@ -152,10 +152,10 @@ function OperationalContextCard({
 
 	const pendingKyc = merchants.pendingKycMerchants;
 	const pendingText = pendingKyc > 0 ? `${pendingKyc.toLocaleString('pt-BR')} organizações aguardando KYC` : 'Sem KYC pendente';
-	const pendingTone = pendingKyc > 0 ? 'text-[#ec7e00]' : 'text-[#00a87e]';
+	const pendingTone = pendingKyc > 0 ? 'text-warning' : 'text-success';
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5">
 			<div className="flex flex-col gap-3">
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Contexto Operacional</span>
 				<div className="flex flex-col gap-2 text-xs">
@@ -229,7 +229,7 @@ function FinancialOverviewCards({
 			value: periodData.netRevenue,
 			growth: netRevenueGrowth,
 			meta: `${marginPercent.toFixed(2)}% margem`,
-			color: 'text-[#00a87e]',
+			color: 'text-success',
 			icon: <RevolutCheckIcon size={16} />,
 		},
 	];
@@ -237,7 +237,7 @@ function FinancialOverviewCards({
 	return (
 		<div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
 			{kpis.map((item) => (
-				<div key={item.label} className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div key={item.label} className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">{item.label}</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
@@ -282,13 +282,13 @@ function OperationalAlerts({ financial, growth }: { financial: AdminFinancialKpi
 	if (alerts.length === 0) return null;
 
 	const toneStyles: Record<string, string> = {
-		success: 'border-[#00a87e]/20 bg-[#00a87e]/10 text-[#00a87e]',
-		warning: 'border-[#ec7e00]/20 bg-[#ec7e00]/10 text-[#ec7e00]',
-		danger: 'border-[#e23b4a]/20 bg-[#e23b4a]/10 text-[#e23b4a]',
+		success: 'border-success/20 bg-success/10 text-success',
+		warning: 'border-warning/20 bg-warning/10 text-warning',
+		danger: 'border-danger/20 bg-danger/10 text-danger',
 	};
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5">
 			<div className="flex flex-col gap-3">
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Alertas Operacionais</span>
 				<div className="flex flex-col gap-2">
@@ -312,13 +312,13 @@ function ApprovalHealthBar({ financial }: { financial: AdminFinancialKpis }) {
 		<div className="flex flex-col gap-2">
 			<div className="flex items-center justify-between">
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Saúde de Pagamentos</span>
-				<span className={`text-xs font-mono font-semibold ${isHealthy ? 'text-[#00a87e]' : 'text-[#ec7e00]'}`}>
+				<span className={`text-xs font-mono font-semibold ${isHealthy ? 'text-success' : 'text-warning'}`}>
 					{approvalRate.toFixed(1)}%
 				</span>
 			</div>
-			<div className="h-1.5 w-full rounded-full bg-[#0a0a0a]">
+			<div className="h-1.5 w-full rounded-full bg-surface-deep">
 				<div
-					className={`h-full rounded-full transition-all ${isHealthy ? 'bg-[#00a87e]' : 'text-[#ec7e00]'}`}
+					className={`h-full rounded-full transition-all ${isHealthy ? 'bg-success' : 'bg-warning'}`}
 					style={{ width: `${Math.min(approvalRate, 100)}%` }}
 				/>
 			</div>
@@ -334,7 +334,7 @@ function FinancialSecondaryCards({ financial, growth }: { financial: AdminFinanc
 	const ticketMedio = financial.completedTransactions > 0 ? financial.totalVolume / financial.completedTransactions : 0;
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5">
 			<div className="grid grid-cols-2 gap-3">
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center justify-between">
@@ -343,7 +343,7 @@ function FinancialSecondaryCards({ financial, growth }: { financial: AdminFinanc
 							<Tooltip.Trigger>
 								<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 							</Tooltip.Trigger>
-							<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+							<Tooltip.Content className="max-w-72 bg-card border border-white/12 text-white">
 								<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 								<span className="font-medium">Ticket Médio por Transação</span>
 								<br />
@@ -364,7 +364,7 @@ function FinancialSecondaryCards({ financial, growth }: { financial: AdminFinanc
 							<Tooltip.Trigger>
 								<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 							</Tooltip.Trigger>
-							<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+							<Tooltip.Content className="max-w-72 bg-card border border-white/12 text-white">
 								<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 								<span className="font-medium">Total de Saques (Payouts)</span>
 								<br />
@@ -422,14 +422,14 @@ function FinancialPeriodCards({ financial }: { financial: AdminFinancialKpis }) 
 				{ title: 'Esta Semana', volume: financial.volumeThisWeek, fees: financial.feesThisWeek, acquirer: financial.acquirerFeesThisWeek, net: financial.netRevenueThisWeek },
 				{ title: 'Este Mês', volume: financial.volumeThisMonth, fees: financial.feesThisMonth, acquirer: financial.acquirerFeesThisMonth, net: financial.netRevenueThisMonth },
 			].map((period) => (
-				<div key={period.title} className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+				<div key={period.title} className="rounded-[20px] border border-white/12 bg-card p-5">
 					<div className="flex items-center justify-between">
 						<span className="text-xs font-semibold uppercase tracking-widest text-white/70">{period.title}</span>
 						<Tooltip>
 							<Tooltip.Trigger>
 								<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 							</Tooltip.Trigger>
-							<Tooltip.Content className="max-w-64 bg-[#16181a] border border-white/12 text-white">
+							<Tooltip.Content className="max-w-64 bg-card border border-white/12 text-white">
 								<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 								<span className="text-xs">Métricas financeiras de {period.title.toLowerCase()}</span>
 							</Tooltip.Content>
@@ -442,15 +442,15 @@ function FinancialPeriodCards({ financial }: { financial: AdminFinancialKpis }) 
 						</div>
 						<div className="flex items-center justify-between">
 							<span className="text-white/50">Receita Bruta</span>
-							<AnimatedCurrency value={period.fees} className="font-mono font-medium text-[#00a87e] tabular-nums" />
+							<AnimatedCurrency value={period.fees} className="font-mono font-medium text-success tabular-nums" />
 						</div>
 						<div className="flex items-center justify-between">
 							<span className="text-white/50">Custo Adquirentes</span>
-							<AnimatedCurrency value={period.acquirer} className="font-mono font-medium text-[#e23b4a] tabular-nums" />
+							<AnimatedCurrency value={period.acquirer} className="font-mono font-medium text-danger tabular-nums" />
 						</div>
 						<div className="flex items-center justify-between border-t border-white/12 pt-2">
-							<span className="font-semibold text-[#00a87e]">Resultado Líquido</span>
-							<AnimatedCurrency value={period.net} className="font-mono font-bold text-[#00a87e] tabular-nums" />
+							<span className="font-semibold text-success">Resultado Líquido</span>
+							<AnimatedCurrency value={period.net} className="font-mono font-bold text-success tabular-nums" />
 						</div>
 					</div>
 				</div>

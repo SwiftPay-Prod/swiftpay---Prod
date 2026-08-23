@@ -45,15 +45,15 @@ export function MerchantBalanceCard({
 	return (
 		<Popover isOpen={isOpen} onOpenChange={setIsOpen}>
 			<Popover.Trigger>
-				<div className="group relative flex items-center gap-1 md:gap-2 rounded-full border h-8 md:h-9 min-w-24 md:min-w-28 px-2.5 md:px-3 py-1 md:py-1.5 overflow-hidden cursor-pointer hover:bg-[#00a87e]/15 transition-colors shrink-0 bg-[#00a87e]/10 border-[#00a87e]/30 text-[#00a87e]">
-					<Icon icon={Wallet01Icon} className="icon-xs hidden sm:block relative text-[#00a87e]" />
+				<div className="group relative flex items-center gap-1 md:gap-2 rounded-full border h-8 md:h-9 min-w-24 md:min-w-28 px-2.5 md:px-3 py-1 md:py-1.5 overflow-hidden cursor-pointer hover:bg-success/15 transition-colors shrink-0 bg-success/10 border-success/30 text-success">
+					<Icon icon={Wallet01Icon} className="icon-xs hidden sm:block relative text-success" />
 					<AnimatedCurrency
 						value={balanceAvailable}
-						className={`text-xs md:text-sm font-bold font-mono tabular-nums relative text-[#00a87e] ${isBalanceVisible ? '' : 'visual-blur'}`}
+						className={`text-xs md:text-sm font-bold font-mono tabular-nums relative text-success ${isBalanceVisible ? '' : 'visual-blur'}`}
 					/>
 					<Icon
 						icon={ArrowDown01Icon}
-						className={`icon-xs relative transition-transform ${isOpen ? 'rotate-180' : ''} text-[#00a87e]`}
+						className={`icon-xs relative transition-transform ${isOpen ? 'rotate-180' : ''} text-success`}
 					/>
 				</div>
 			</Popover.Trigger>

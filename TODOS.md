@@ -539,3 +539,21 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - `npm run build` → ✓ Compiled successfully in 2.7min, 66 rotas (68→66, 4 rotas boleto/credit-card removidas), Skipping validation of types
   - **Arquivos alterados**: 38 `M/D` (tipos, parse, router, painel merchant/admin, converters, proxy, docs) + `src/components/ui/boleto-barcode-image.tsx` deletado
   - **Fixup 2026-08-23 (Spec: #110)**: removido import órfão `BarCodeIcon` em `src/app/panel/(main)/admin/merchants/[id]/evaluate/merchant-evaluate.tsx` (purge R11 residual) — `grep -rn BarCodeIcon|CreditCardIcon src` →0, `npm run build` 66 rotas OK, `npx tsc --noEmit` 10 erros pré-existentes (CalendarDate/RangeValue) inalterados
+
+- `DONE` Spec: #111 — Fechamento integral da auditoria Revolut 10/Ultra (P1 resíduos + P2 + Shard E) — 2026-08-23
+  - **Contexto**: onda P1 de 228 arquivos estava não-commitada e com working tree quebrado (2 erros TS novos); plano de fechamento exaustivo executado em 7 fases.
+  - **Implementado**:
+    - Fase 1 (estabilização): restaurado default `summaryClassName` no destructure de `system-accordion.tsx` (resolve 2× TS2304); guard `payload[0]?.payload` em `RevolutAnalyticsChart.tsx` (TS2532).
+    - Fase 2 (R4): removidas `shadow-(xl|2xl|lg|md)` em error.tsx, help/page, auth-modal, landing-{cta,developer,page,pricing,security,hero}, live-balance-screen e live-balance-notification-stack; help trocou `hover:shadow-lg` por `hover:border-white/20`.
+    - Fase 3 (hex/tokens): `REVOLUT_COBALT` e 3 `stopColor` → `var(--brand)` (= `#494fdf`, paridade exata); `via-[#494fdf]` → `via-brand`; `bg-[#00a87e]` → `bg-success`; `ACCORDION_COLOR_MAP` sem violet/blue/sky/mauve/slate (8 consumers migrados para `"accent"` ou prop removida).
+    - Fase 4 (pontuais): bug da barra de approval health (`text-warning` → `bg-warning`) em overview-tab:321; confirm-email `bg-background/80` → `bg-card`; `tabular-nums` nos spans de taxa do set-acquirer-modal; `CopyableValue` com `break-all` (fonte única dos modais PIX/EID); 5 tiles do acquirer-ranking-list `rounded-lg` → `rounded-xl`.
+    - Fase 5 (A11y): Skeleton com `aria-hidden`; templates-table mobile card com `role="button"`/`tabIndex`/Enter-Space/`aria-label`; platform-balances-mobile com labels nos botões eye/refresh/reconcile; logs-table com wrapper `aria-busy={isPending}` + fallback `role="status"`; data-table `Table.Body` com `aria-busy`/`aria-live`; AnimatedCurrency e NumberTicket com `aria-live="polite"`.
+    - Fase 6 (ADR): `docs/decisions/2026-08-23-live-balance-immersive-exception.md` — exceção teatral para backgrounds/* + PRESET_COLORS.
+    - Fase 7 (Shard E): addendum `docs/audits/E-shard-publicas-globals-livebalance-addendum.md` (RESOLVIDO/EXCEÇÃO item a item); manifesto `docs/audits/certified-files.txt` = **860 arquivos pós-purge**; checkbox pendente do V2 fechado.
+  - **Gates**:
+    - `npx tsc --noEmit --skipLibCheck` → apenas conjunto documentado CalendarDate/RangeValue/CalendarDateTime (9 erros pré-existentes, duplicação pnpm react-stately) — **0 novos**.
+    - `npm run build` → ✓ compilado; 67 rotas estáticas + 15 dinâmicas no routes-manifest.
+    - eslint changed-files → 174 erros pré-existentes da onda P1 (`no-unused-vars` 148, `no-unescaped-entities` 18, hooks 10), nenhum introduzido pelas fases 1–7; baseline HEAD confirma os mesmos padrões.
+    - Greps de fechamento: shadows R4 só em exceções registradas; hex canônicos do accordion → 0; `aria-busy` → 6 ocorrências.
+  - **Verificação visual**: pendente de execução do dev server pelo operador (landing `/`, `/confirm-email`, dashboard admin — gráfico Cobalt e barra âmbar).
+  - **Arquivos alterados**: onda P1 completa (228) + fases 1–7 (~30 arquivos adicionais incl. docs de auditoria); commit único desta entrada.

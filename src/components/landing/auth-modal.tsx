@@ -30,7 +30,7 @@ export function AuthModal({ isOpen, mode, onClose, onSwitchMode }: AuthModalProp
 			/>
 
 			{/* Modal Dialog */}
-			<div className="relative z-10 w-full max-w-md rounded-[24px] border border-white/12 bg-[#16181a] p-6 sm:p-8 shadow-2xl transition-all animate-in zoom-in-95 duration-200 text-white">
+			<div className="relative z-10 w-full max-w-md rounded-[24px] border border-white/12 bg-card p-6 sm:p-8 transition-all animate-in zoom-in-95 duration-200 text-white">
 				{/* Close button */}
 				<button
 					type="button"

@@ -109,7 +109,7 @@ function WizardModeStepper({
 				</div>
 
 				<div className="mt-3">
-					<div className="h-2 w-full overflow-hidden rounded-full bg-content2">
+					<div className="h-2 w-full overflow-hidden rounded-full bg-surface-deep">
 						<div
 							className="h-full rounded-full bg-accent transition-all duration-300"
 							style={{ width: `${progressPercent}%` }}
@@ -167,7 +167,7 @@ function WizardModeStepper({
 				</div>
 
 				{showNavigation && (
-					<div className="mt-4 border-t border-divider pt-4">
+					<div className="mt-4 border-t border-border pt-4">
 						<div className="flex items-center justify-end gap-2">
 							{onBack && (
 								<Button
@@ -391,7 +391,7 @@ function EditorStepper({
 				</div>
 
 				{submitSlot && (
-					<div className="mt-3 flex items-center justify-end border-t border-divider pt-3">
+					<div className="mt-3 flex items-center justify-end border-t border-border pt-3">
 						{submitSlot}
 					</div>
 				)}

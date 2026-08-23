@@ -3,7 +3,7 @@ import { Skeleton } from '@heroui/react';
 export function OrderUpsertFormSkeleton() {
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-xl border border-divider bg-surface p-4">
+      <div className="rounded-xl border border-border bg-surface p-4">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Skeleton className="size-10 rounded-lg" />
@@ -16,7 +16,7 @@ export function OrderUpsertFormSkeleton() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-divider bg-surface p-4">
+      <div className="rounded-xl border border-border bg-surface p-4">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
           <Skeleton className="h-16 rounded-lg" />
           <Skeleton className="h-16 rounded-lg" />
@@ -25,7 +25,7 @@ export function OrderUpsertFormSkeleton() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-divider bg-surface p-4">
+      <div className="rounded-xl border border-border bg-surface p-4">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <Skeleton className="size-10 rounded-lg" />

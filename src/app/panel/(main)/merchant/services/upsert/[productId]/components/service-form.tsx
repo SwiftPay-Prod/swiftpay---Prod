@@ -542,7 +542,7 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 	}) {
 		return (
 			<SystemAccordion defaultExpandedKeys={[params.id]} className="px-0">
-				<SystemAccordion.Item id={params.id} className="rounded-xl border border-divider bg-surface">
+				<SystemAccordion.Item id={params.id} className="rounded-xl border border-border bg-surface">
 					<SystemAccordion.Heading>
 						<SystemAccordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 							<div className="flex items-center gap-3">
@@ -765,7 +765,7 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 										<p className="text-xs text-muted">Categorias</p>
 										<p className="text-sm font-medium">{selectedCategoryIds.length}</p>
 									</div>
-									<div className="rounded-lg border border-content3 px-3 py-2">
+									<div className="rounded-lg border border-border px-3 py-2">
 										<p className="text-xs text-muted">Variantes pendentes</p>
 										<p className="text-sm font-medium">{pendingVariants.length}</p>
 									</div>
@@ -777,7 +777,7 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 			</InternalTabs>
 
 			{!isEditMode && (
-				<div className="rounded-xl border border-divider bg-surface p-4">
+				<div className="rounded-xl border border-border bg-surface p-4">
 					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
 						<Button
 							variant="secondary"

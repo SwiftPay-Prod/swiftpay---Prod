@@ -223,11 +223,11 @@ export function ConfigureIntegrationModal({
 									);
 								})}
 
-							<div className="flex flex-col gap-3 rounded-lg border border-divider p-3">
+							<div className="flex flex-col gap-3 rounded-lg border border-border p-3">
 								<span className="text-sm font-medium text-foreground">Notificações</span>
 
 								{notificationItems.map((item) => (
-									<div key={item.key} className="flex items-start justify-between gap-3 rounded-md bg-content1 p-3">
+									<div key={item.key} className="flex items-start justify-between gap-3 rounded-md bg-card p-3">
 										<div className="flex flex-col gap-1">
 											<span className="text-sm font-medium text-foreground">{item.label}</span>
 											<p className="text-xs text-muted">{item.description}</p>

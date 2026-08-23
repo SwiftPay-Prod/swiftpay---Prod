@@ -1158,7 +1158,7 @@ function DigitalItemsListContent({
 		const isUpdating = updatingIds.has(item.id);
 
 		return (
-			<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+			<div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
 				<div className="flex items-center gap-3 mb-2">
 					<Avatar size="sm">
 						<Avatar.Fallback className={`bg-${typeParse.color}/10 text-${typeParse.color}`}>
@@ -1496,7 +1496,7 @@ export function DigitalItemsSection({
 		const isVisible = visiblePendingValues.has(item.tempId);
 
 		return (
-			<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+			<div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
 				<div className="flex items-center gap-3 mb-2">
 					<Avatar size="sm">
 						<Avatar.Fallback className={`bg-${typeParse.color}/10 text-${typeParse.color}`}>
@@ -1583,7 +1583,7 @@ export function DigitalItemsSection({
 					/>
 
 					{onUnlimitedStockChange && (
-						<div className="pt-2 border-t border-divider">
+						<div className="pt-2 border-t border-border">
 							<Switch
 								isSelected={!isUnlimitedStock}
 								onChange={(isSelected) => onUnlimitedStockChange(!isSelected)}

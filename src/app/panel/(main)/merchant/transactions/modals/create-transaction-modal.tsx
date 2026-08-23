@@ -160,7 +160,7 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 						</div>
 					</div>
 
-					<div className="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0a0a0a] p-4">
+					<div className="flex flex-col gap-3 rounded-lg border border-white/10 bg-surface-deep p-4">
 						<div className="flex items-center justify-between gap-3">
 							<div className="flex items-start gap-2">
 								<Checkbox
@@ -229,7 +229,7 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 					</TextField>
 
 					{data.amountForDisplay > 0 && (
-						<div className="rounded-lg bg-[#0a0a0a] border border-white/10 p-4">
+						<div className="rounded-lg bg-surface-deep border border-white/10 p-4">
 							<div className="flex items-center gap-3 mb-4">
 								<div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/70">
 									<Icon icon={Wallet01Icon} className="icon-sm" />
@@ -255,12 +255,12 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 									</div>
 									<div className="flex justify-between">
 										<span className="text-white/50">Taxa da plataforma:</span>
-										<span className="font-medium text-[#e23b4a]">- {formatCurrency(data.preview.fee)}</span>
+										<span className="font-medium text-danger">- {formatCurrency(data.preview.fee)}</span>
 									</div>
 									<div className="border-t border-white/10 pt-2 mt-1">
 										<div className="flex justify-between">
 											<span className="font-medium text-white">Valor líquido:</span>
-											<span className="font-bold text-[#00a87e] text-lg">{formatCurrency(data.preview.netAmount)}</span>
+											<span className="font-bold text-success text-lg">{formatCurrency(data.preview.netAmount)}</span>
 										</div>
 									</div>
 								</div>
@@ -268,8 +268,8 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 						</div>
 					)}
 
-					<div className="flex items-start gap-2 rounded-lg border border-[#ec7e00]/20 bg-[#ec7e00]/10 p-3">
-						<Icon icon={InformationCircleIcon} className="icon-sm shrink-0 text-[#ec7e00] mt-0.5" />
+					<div className="flex items-start gap-2 rounded-lg border border-warning/20 bg-warning/10 p-3">
+						<Icon icon={InformationCircleIcon} className="icon-sm shrink-0 text-warning mt-0.5" />
 						<p className="text-xs text-white/60">
 							O valor líquido é o valor que será creditado na sua conta após o pagamento ser confirmado, já descontada a
 							taxa da plataforma.
@@ -277,7 +277,7 @@ function FormContent({ merchantId, onClose, onSuccess, feesPromise }: FormConten
 					</div>
 
 					{state.error && (
-						<div className="flex items-center gap-2 text-sm text-[#e23b4a]">
+						<div className="flex items-center gap-2 text-sm text-danger">
 							<Icon icon={Alert01Icon} className="icon-sm" />
 							<span>{state.error}</span>
 						</div>
@@ -338,11 +338,11 @@ export function CreateTransactionModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-2xl bg-[#16181a] border border-white/12 text-white rounded-[20px] p-6 shadow-2xl">
+				<Modal.Dialog className="max-w-2xl bg-card border border-white/12 text-white rounded-[20px] p-62xl">
 					<Modal.CloseTrigger />
 					<Modal.Header className="border-b border-white/10 pb-4 mb-5">
 						<div className="flex items-center gap-3">
-							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/25">
 								<Icon icon={Wallet01Icon} className="icon-md" />
 							</div>
 							<div>

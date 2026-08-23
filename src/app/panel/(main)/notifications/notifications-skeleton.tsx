@@ -39,7 +39,7 @@ const pageSizeOptions = [
 
 function NotificationItemSkeleton() {
 	return (
-		<div className="flex gap-4 px-4 py-4 border-b border-divider last:border-b-0">
+		<div className="flex gap-4 px-4 py-4 border-b border-border last:border-b-0">
 			<div className="shrink-0">
 				<Skeleton className="size-10 rounded-xl" />
 			</div>
@@ -64,8 +64,8 @@ export function NotificationsSkeleton({ filters }: NotificationsSkeletonProps) {
 	return (
 		<div className="flex flex-col gap-6 text-white">
 			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
-				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-					<Icon icon={Notification01Icon} className="icon-sm text-[#4f55f1]" />
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+					<Icon icon={Notification01Icon} className="icon-sm text-link" />
 				</div>
 				<div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Notificações</h1>

@@ -35,7 +35,7 @@ export function PaymentMethodBreakdown({
 
 	return (
 		<div
-			className={`flex flex-col justify-between gap-5 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${className}`}
+			className={`flex flex-col justify-between gap-5 rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 transition-all ${className}`}
 		>
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex flex-col gap-1">
@@ -47,7 +47,7 @@ export function PaymentMethodBreakdown({
 					</h3>
 				</div>
 
-				<div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1 text-xs font-mono text-white/60">
+				<div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-deep px-3 py-1 text-xs font-mono text-white/60">
 					<span>Conversão:</span>
 					<span className={`font-bold text-white ${blurClass}`}>{approvalRate.toFixed(1)}%</span>
 				</div>
@@ -55,10 +55,10 @@ export function PaymentMethodBreakdown({
 
 			<div className="flex flex-col gap-3 font-mono">
 				{/* Block 1: Real PIX Volume & Conversion */}
-				<div className="flex flex-col gap-3 rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 transition-all hover:border-white/15">
+				<div className="flex flex-col gap-3 rounded-[18px] border border-white/8 bg-surface-deep p-4 transition-all hover:border-white/15">
 					<div className="flex items-center justify-between gap-3">
 						<div className="flex items-center gap-3">
-							<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#00a87e]/15 text-[#00a87e]">
+							<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-success/15 text-success">
 								<RevolutPixIcon size={18} />
 							</div>
 							<div className="flex flex-col font-sans">
@@ -82,7 +82,7 @@ export function PaymentMethodBreakdown({
 					{/* Real Conversion Progress Bar */}
 					<div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
 						<div
-							className="h-full rounded-full bg-[#00a87e] transition-all"
+							className="h-full rounded-full bg-success transition-all"
 							style={{ width: `${Math.min(approvalRate, 100)}%` }}
 						/>
 					</div>
@@ -90,9 +90,9 @@ export function PaymentMethodBreakdown({
 
 				{/* Block 2: Real Database Sub-metrics */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-					<div className="flex items-center justify-between rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4">
+					<div className="flex items-center justify-between rounded-[18px] border border-white/8 bg-surface-deep p-4">
 						<div className="flex items-center gap-2.5 font-sans">
-							<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1]">
+							<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link">
 								<RevolutTrendingUpIcon size={16} />
 							</div>
 							<div className="flex flex-col">
@@ -105,7 +105,7 @@ export function PaymentMethodBreakdown({
 						</span>
 					</div>
 
-					<div className="flex items-center justify-between rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4">
+					<div className="flex items-center justify-between rounded-[18px] border border-white/8 bg-surface-deep p-4">
 						<div className="flex items-center gap-2.5 font-sans">
 							<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-white/50">
 								<RevolutAlertIcon size={16} />

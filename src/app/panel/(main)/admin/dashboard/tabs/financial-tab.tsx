@@ -56,7 +56,7 @@ export function FinancialTab({
 function PayoutKpiCards({ financial, growth }: { financial: AdminFinancialKpis; growth: AdminDashboardGrowthKpis }) {
 	return (
 		<div className="grid grid-cols-2 gap-3 lg:grid-cols-2">
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex items-center gap-4">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 flex items-center gap-4">
 				<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-white/70">
 					<Icon icon={Wallet03Icon} className="icon-sm" />
 				</div>
@@ -67,8 +67,8 @@ function PayoutKpiCards({ financial, growth }: { financial: AdminFinancialKpis; 
 				</div>
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex items-center gap-4">
-				<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 flex items-center gap-4">
+				<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-success/15 text-success border border-success/30">
 					<Icon icon={Wallet01Icon} className="icon-sm" />
 				</div>
 				<div className="flex flex-col">
@@ -88,10 +88,10 @@ function VolumeChart({ data, periodLabel }: { data: AdminDailyVolumeData[]; peri
 	}));
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 			<div className="px-1 pt-1">
 				<div className="flex items-center gap-2">
-					<Icon icon={AnalyticsUpIcon} className="icon-xs text-[#4f55f1]" />
+					<Icon icon={AnalyticsUpIcon} className="icon-xs text-link" />
 					<span className="text-sm font-semibold text-white">TPV Diário</span>
 				</div>
 				<p className="text-xs text-white/50 mt-1">{periodLabel} (todas as organizações)</p>
@@ -136,10 +136,10 @@ function VolumeVsProfitChart({ data, periodLabel }: { data: AdminDailyVolumeData
 	const marginPercentage = totalVolume > 0 ? (totalNetProfit / totalVolume) * 100 : 0;
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 			<div className="px-1 pt-1">
 				<div className="flex items-center gap-2">
-					<Icon icon={Wallet03Icon} className="icon-xs text-[#00a87e]" />
+					<Icon icon={Wallet03Icon} className="icon-xs text-success" />
 					<span className="text-sm font-semibold text-white">TPV vs Resultado Líquido</span>
 				</div>
 				<p className="text-xs text-white/50 mt-1">
@@ -205,10 +205,10 @@ function MarginChart({ data, periodLabel }: { data: AdminDailyVolumeData[]; peri
 	const avgMargin = chartData.length > 0 ? chartData.reduce((sum, item) => sum + item.margin, 0) / chartData.length : 0;
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 			<div className="px-1 pt-1">
 				<div className="flex items-center gap-2">
-					<Icon icon={Wallet03Icon} className="icon-xs text-[#00a87e]" />
+					<Icon icon={Wallet03Icon} className="icon-xs text-success" />
 					<span className="text-sm font-semibold text-white">Margem Líquida Diária</span>
 				</div>
 				<p className="text-xs text-white/50 mt-1">
@@ -282,10 +282,10 @@ function CumulativeVolumeChart({ data, periodLabel }: { data: AdminDailyVolumeDa
 	const totalCumulative = data.reduce((sum, item) => sum + item.volume, 0);
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 			<div className="px-1 pt-1">
 				<div className="flex items-center gap-2">
-					<Icon icon={AnalyticsUpIcon} className="icon-xs text-[#4f55f1]" />
+					<Icon icon={AnalyticsUpIcon} className="icon-xs text-link" />
 					<span className="text-sm font-semibold text-white">TPV Acumulado</span>
 				</div>
 				<p className="text-xs text-white/50 mt-1">{periodLabel}, total acumulado: {formatCurrency(totalCumulative)}</p>

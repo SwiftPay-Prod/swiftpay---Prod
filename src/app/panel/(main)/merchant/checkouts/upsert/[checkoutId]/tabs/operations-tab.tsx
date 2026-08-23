@@ -219,7 +219,7 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 						<span className="text-xs text-muted">Volume total: {formatCurrency(transactionsTotalAmount)}</span>
 					</div>
 					{payments.length === 0 ? (
-						<div className="flex items-center gap-2 rounded-lg border border-divider p-3 text-sm text-muted">
+						<div className="flex items-center gap-2 rounded-lg border border-border p-3 text-sm text-muted">
 							<Icon icon={InformationCircleIcon} className="icon-sm" />
 							Nenhuma transação encontrada para este checkout ainda.
 						</div>
@@ -228,7 +228,7 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 							{payments.slice(0, 10).map((item) => {
 								const status = paymentStatusParse[item.status];
 								return (
-									<div key={item.id} className="flex items-center justify-between gap-2 rounded-lg border border-divider px-3 py-2">
+									<div key={item.id} className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
 										<div className="flex min-w-0 flex-col gap-0.5">
 											<span className="truncate text-sm font-medium">{item.customer?.name ?? 'Cliente não informado'}</span>
 											<span className="text-xs text-muted">{formatDate(item.createdAt)}</span>
@@ -252,7 +252,7 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 					<Card.Content className="flex flex-col gap-3 py-4">
 						<p className="text-sm font-medium">Pedidos recentes</p>
 						{orders.length === 0 ? (
-							<div className="flex items-center gap-2 rounded-lg border border-divider p-3 text-sm text-muted">
+							<div className="flex items-center gap-2 rounded-lg border border-border p-3 text-sm text-muted">
 								<Icon icon={InformationCircleIcon} className="icon-sm" />
 								Nenhum pedido vinculado encontrado até agora.
 							</div>
@@ -261,7 +261,7 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 								{orders.slice(0, 8).map((item) => {
 									const orderStatus = orderStatusParse[item.order.status];
 									return (
-										<div key={item.order.id} className="flex items-center justify-between gap-2 rounded-lg border border-divider px-3 py-2">
+										<div key={item.order.id} className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
 											<div className="flex min-w-0 flex-col gap-0.5">
 												<span className="truncate text-sm font-medium">{item.order.orderNumber ?? item.order.id}</span>
 												<span className="text-xs text-muted">{formatDate(item.order.createdAt)}</span>
@@ -284,14 +284,14 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 					<Card.Content className="flex flex-col gap-3 py-4">
 						<p className="text-sm font-medium">Clientes recorrentes</p>
 						{customers.length === 0 ? (
-							<div className="flex items-center gap-2 rounded-lg border border-divider p-3 text-sm text-muted">
+							<div className="flex items-center gap-2 rounded-lg border border-border p-3 text-sm text-muted">
 								<Icon icon={InformationCircleIcon} className="icon-sm" />
 								Nenhum cliente identificado nas vendas deste checkout.
 							</div>
 						) : (
 							<div className="flex flex-col gap-2">
 								{customers.slice(0, 8).map((item) => (
-									<div key={item.id} className="flex items-center justify-between gap-2 rounded-lg border border-divider px-3 py-2">
+									<div key={item.id} className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
 										<div className="flex min-w-0 flex-col gap-0.5">
 											<span className="truncate text-sm font-medium">{item.name}</span>
 											<span className="truncate text-xs text-muted">{item.email ?? item.document ?? 'Sem contato'}</span>

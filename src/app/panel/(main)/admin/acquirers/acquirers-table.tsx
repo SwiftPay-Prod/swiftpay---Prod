@@ -191,7 +191,7 @@ function getColumns(
 							</span>
 						)}
 						{acquirer.supportsWithdrawal && (
-							<span className="inline-flex items-center gap-1 rounded-full border border-[#494fdf]/20 bg-[#494fdf]/10 px-2 py-0.5 text-[11px] font-mono text-[#4f55f1]">
+							<span className="inline-flex items-center gap-1 rounded-full border border-brand/20 bg-brand/10 px-2 py-0.5 text-[11px] font-mono text-link">
 								<Icon icon={Wallet01Icon} className="icon-xs" />
 								PIX Out
 							</span>
@@ -296,7 +296,7 @@ function renderMobileAcquirerCard(acquirer: AdminAcquirerData, _index: number, o
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-border bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -511,8 +511,8 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={ServerStack01Icon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Processadoras PIX</h1>
 					</div>
@@ -536,7 +536,7 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 			{/* 3-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				{/* Total */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total Cadastradas
@@ -554,30 +554,30 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 				</div>
 
 				{/* Ativas */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Operando PIX SPI
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
-							<Icon icon={QrCodeIcon} className="icon-xs text-[#00a87e]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
+							<Icon icon={QrCodeIcon} className="icon-xs text-success" />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 							{activeAcquirers}
 						</span>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Captura ativa em produção</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Captura ativa em produção</p>
 					</div>
 				</div>
 
 				{/* Organizações */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Organizações Vinculadas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Building02Icon} className="icon-xs" />
 						</div>
 					</div>
@@ -591,9 +591,9 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 			<DataTable
-				className="rounded-[20px] border border-white/12 bg-[#16181a]"
+				className="rounded-[20px] border border-white/12 bg-card"
 				columns={columns}
 				data={data.acquirers.items}
 				keyExtractor={(acquirer) => acquirer.id}
@@ -635,11 +635,11 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 
 			<Modal.Backdrop isOpen={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
 				<Modal.Container size="lg" placement="center" scroll="outside">
-					<Modal.Dialog className="max-w-md rounded-[28px] border border-white/12 bg-[#16181a] p-6 text-white">
+					<Modal.Dialog className="max-w-md rounded-[28px] border border-white/12 bg-card p-6 text-white">
 						<Modal.CloseTrigger className="text-white/40 hover:text-white" />
 						<Modal.Header className="pb-4 border-b border-white/8">
 							<div className="flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/30">
 									<Icon icon={Add01Icon} className="icon-md" />
 								</div>
 								<div>
@@ -679,11 +679,11 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 										menuTrigger="focus"
 									>
 										<Label className="text-xs font-semibold text-white/70">Tipo de Processadora</Label>
-										<ComboBox.InputGroup className="rounded-xl border border-white/10 bg-[#0a0a0a]">
+										<ComboBox.InputGroup className="rounded-xl border border-white/10 bg-surface-deep">
 											<Input variant="secondary" className="text-xs text-white" placeholder="Buscar tipo de processadora..." />
 											<ComboBox.Trigger className="text-white/40" />
 										</ComboBox.InputGroup>
-										<ComboBox.Popover className="rounded-xl border border-white/12 bg-[#16181a]">
+										<ComboBox.Popover className="rounded-xl border border-white/12 bg-card">
 											<ListBox
 												items={acquirerTypeItems}
 												renderEmptyState={() => (
@@ -711,16 +711,16 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 										<Label className="text-xs font-semibold text-white/70">Nome de Exibição</Label>
 										<Input
 											variant="secondary"
-											className="rounded-xl border border-white/10 bg-[#0a0a0a] text-xs text-white"
+											className="rounded-xl border border-white/10 bg-surface-deep text-xs text-white"
 											placeholder="Ex: PixHub Primary SPI"
 											value={createFormData.displayName}
 											onChange={(e) => setCreateFormData((prev) => ({ ...prev, displayName: e.target.value }))}
 											disabled={isCreating}
 										/>
 									</TextField>
-									<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+									<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 										<div className="flex items-center gap-2">
-											<Icon icon={QrCodeIcon} className="icon-xs text-[#00a87e]" />
+											<Icon icon={QrCodeIcon} className="icon-xs text-success" />
 											<span className="text-xs font-bold text-white">Captura PIX Instantânea</span>
 										</div>
 										<span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
@@ -728,7 +728,7 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 										</span>
 									</div>
 									{createState.error && (
-										<p className="text-xs font-mono text-[#e23b4a]">{createState.error}</p>
+										<p className="text-xs font-mono text-danger">{createState.error}</p>
 									)}
 								</div>
 							</Modal.Body>

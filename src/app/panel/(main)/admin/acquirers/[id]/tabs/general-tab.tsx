@@ -212,7 +212,7 @@ export function GeneralTab({ acquirer }: GeneralTabProps) {
 				<SystemAccordion
 					id="acquirer-webhook"
 					icon={Link01Icon}
-					color="blue"
+					color="accent"
 					title="Webhook da Processadora"
 					defaultExpanded={false}
 				>

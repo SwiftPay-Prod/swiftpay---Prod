@@ -128,7 +128,7 @@ function renderMobilePlatformAutomaticCashoutLogCard(item: AdminAutomaticCashout
 	const envParse = paymentEnvironmentParse[item.environment];
 	const statusParse = automaticCashoutStatusParse[item.status];
 	return (
-		<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+		<div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
 			<div className="flex items-start justify-between gap-3 mb-3">
 				<div>
 					<span className="font-medium text-sm">{formatCurrency(item.amountAttempted)}</span>
@@ -157,7 +157,7 @@ function renderMobilePlatformAutomaticCashoutLogCard(item: AdminAutomaticCashout
 				{item.payoutId && (
 					<div className="flex flex-col gap-0.5">
 						<span className="text-xs text-muted">Saque Plataforma</span>
-						<code className="rounded bg-content2 px-1.5 py-0.5 text-xs w-fit">{item.payoutId.slice(0, 8)}...</code>
+						<code className="rounded bg-surface-deep px-1.5 py-0.5 text-xs w-fit">{item.payoutId.slice(0, 8)}...</code>
 					</div>
 				)}
 			</div>

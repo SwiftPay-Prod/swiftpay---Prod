@@ -97,7 +97,7 @@ export function ComboboxFilter({
 			</SearchField>
 
 			{isOpen && (
-				<div className="absolute z-20 mt-2 w-full rounded-xl border border-divider shadow-lg bg-surface">
+				<div className="absolute z-20 mt-2 w-full rounded-xl border border-border  bg-surface">
 					<ListBox aria-label={label} onAction={(key) => handleSelect(String(key))}>
 						{listItems.map((item) => (
 							<ListBox.Item key={item.value} id={item.value} textValue={item.label}>

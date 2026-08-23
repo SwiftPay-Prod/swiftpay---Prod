@@ -271,15 +271,15 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 		return (
 			<div className="flex flex-col gap-6 text-white">
 				<div className="flex items-center gap-2 border-b border-white/10 pb-5">
-					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-						<Icon icon={BankIcon} className="icon-sm text-[#4f55f1]" />
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+						<Icon icon={BankIcon} className="icon-sm text-link" />
 					</div>
 					<div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Saldos da Plataforma</h1>
 						<p className="text-xs text-white/50">Lucro, taxas e saldos por adquirente</p>
 					</div>
 				</div>
-				<div className="rounded-[20px] border border-[#e23b4a]/30 bg-[#e23b4a]/10 p-4 text-[#e23b4a]">
+				<div className="rounded-[20px] border border-danger/30 bg-danger/10 p-4 text-danger">
 					<p className="font-bold text-sm">Erro ao carregar saldos</p>
 					<p className="text-xs text-white/80 mt-1">{error}</p>
 				</div>
@@ -304,15 +304,15 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 		return (
 			<div className="flex flex-col gap-6 text-white">
 				<div className="flex items-center gap-2 border-b border-white/10 pb-5">
-					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-						<Icon icon={BankIcon} className="icon-sm text-[#4f55f1]" />
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+						<Icon icon={BankIcon} className="icon-sm text-link" />
 					</div>
 					<div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Saldos da Plataforma</h1>
 						<p className="text-xs text-white/50">Lucro, taxas e saldos por adquirente</p>
 					</div>
 				</div>
-				<div className="rounded-[20px] border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-4 text-[#ec7e00]">
+				<div className="rounded-[20px] border border-warning/30 bg-warning/10 p-4 text-warning">
 					<p className="font-bold text-sm">Dados não disponíveis</p>
 					<p className="text-xs text-white/80 mt-1">Não foi possível carregar os saldos da plataforma.</p>
 				</div>
@@ -434,8 +434,8 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={BankIcon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={BankIcon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Saldos da Plataforma</h1>
 					</div>
@@ -446,7 +446,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 
 				<div className="flex flex-wrap items-center gap-2">
 					{(isRefreshPending || isReconcilePending) && (
-						<div className="flex items-center gap-2 rounded-full bg-[#ec7e00]/15 border border-[#ec7e00]/30 px-3 py-1 text-xs font-medium text-[#ec7e00]">
+						<div className="flex items-center gap-2 rounded-full bg-warning/15 border border-warning/30 px-3 py-1 text-xs font-medium text-warning">
 							<Spinner size="sm" color="warning" />
 							<span>{isReconcilePending ? 'Reconciliando...' : 'Atualizando...'}</span>
 						</div>
@@ -502,12 +502,12 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 			{/* 4-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{/* Saldo Disponível */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Saldo Disponível
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={ShieldEnergyIcon} className="icon-xs" />
 						</div>
 					</div>
@@ -521,19 +521,19 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 				</div>
 
 				{/* Taxas de Saque */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Taxas de Saque
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-danger/15 text-danger border border-danger/30">
 							<Icon icon={MinusSignIcon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
 						<AnimatedCurrency
 							value={balanceData.totalWithdrawalFeeIfWithdrawAll}
-							className="text-2xl font-extrabold font-mono text-[#e23b4a] tracking-tight tabular-nums block"
+							className="text-2xl font-extrabold font-mono text-danger tracking-tight tabular-nums block"
 							prefix="-"
 						/>
 						<p className="text-xs text-white/40 font-mono mt-0.5">Custos se sacar todo o disponível</p>
@@ -541,26 +541,26 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 				</div>
 
 				{/* Saldo Líquido */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Saldo Líquido
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<Icon icon={MoneyExchange01Icon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
 						<AnimatedCurrency
 							value={platformNetIfWithdrawAll}
-							className={`text-2xl font-extrabold font-mono tracking-tight tabular-nums block ${platformNetIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+							className={`text-2xl font-extrabold font-mono tracking-tight tabular-nums block ${platformNetIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 						/>
 						<p className="text-xs text-white/40 font-mono mt-0.5">Disponível menos taxas</p>
 					</div>
 				</div>
 
 				{/* Total Sacado */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total Sacado
@@ -581,10 +581,10 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 			{/* Cards de resumo */}
 			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 				{/* Resumo do Lucro */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 flex flex-col justify-between">
 					<div className="flex items-center justify-between pb-4 border-b border-white/8">
 						<div className="flex items-center gap-2">
-							<div className={`flex h-7 w-7 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30' : 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30'}`}>
+							<div className={`flex h-7 w-7 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-danger/15 text-danger border border-danger/30' : 'bg-success/15 text-success border border-success/30'}`}>
 								<Icon icon={MoneyReceiveSquareIcon} className="icon-xs" />
 							</div>
 							<span className="text-sm font-bold text-white">
@@ -594,7 +594,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 						<span className="text-xs font-mono text-white/40">SwiftPay Net</span>
 					</div>
 					<div className="flex flex-col gap-3 pt-4">
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 							<div className="flex items-center gap-1.5">
 								<span className="text-xs font-medium text-white/60">
 									{isTotalSwiftPayProfitNegative ? 'Prejuízo Líquido (Taxas - Custos)' : 'Lucro Líquido (Taxas - Custos)'}
@@ -613,11 +613,11 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							</div>
 							<AnimatedCurrency
 								value={totalSwiftPayProfit}
-								className={`font-mono text-sm font-bold tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`}
+								className={`font-mono text-sm font-bold tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`}
 							/>
 						</div>
 
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 							<div className="flex items-center gap-1.5">
 								<span className="text-xs font-medium text-white/60">Em Processamento</span>
 								<Tooltip>
@@ -632,12 +632,12 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							</div>
 							<AnimatedCurrency
 								value={balanceData.platformBlocked}
-								className="font-mono text-sm font-bold text-[#ec7e00] tabular-nums"
+								className="font-mono text-sm font-bold text-warning tabular-nums"
 								prefix="-"
 							/>
 						</div>
 
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 							<div className="flex items-center gap-1.5">
 								<span className="text-xs font-medium text-white/60">Já Sacados</span>
 								<Tooltip>
@@ -672,17 +672,17 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							</div>
 							<AnimatedCurrency
 								value={totalAvailableForWithdrawal}
-								className="font-mono text-sm font-extrabold text-[#00a87e] tabular-nums"
+								className="font-mono text-sm font-extrabold text-success tabular-nums"
 							/>
 						</div>
 					</div>
 				</div>
 
 				{/* Resumo dos Saques */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 flex flex-col justify-between">
 					<div className="flex items-center justify-between pb-4 border-b border-white/8">
 						<div className="flex items-center gap-2">
-							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 								<Icon icon={Wallet03Icon} className="icon-xs" />
 							</div>
 							<span className="text-sm font-bold text-white">Resumo dos Saques</span>
@@ -690,7 +690,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 						<span className="text-xs font-mono text-white/40">Custos e Repasses</span>
 					</div>
 					<div className="flex flex-col gap-3 pt-4">
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 							<div className="flex items-center gap-1.5">
 								<span className="text-xs font-medium text-white/60">Total de Taxas (se sacar tudo)</span>
 								<Tooltip>
@@ -705,12 +705,12 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							</div>
 							<AnimatedCurrency
 								value={balanceData.totalWithdrawalFeeIfWithdrawAll}
-								className="font-mono text-sm font-bold text-[#e23b4a] tabular-nums"
+								className="font-mono text-sm font-bold text-danger tabular-nums"
 								prefix="-"
 							/>
 						</div>
 
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 							<div className="flex items-center gap-1.5">
 								<span className="text-xs font-medium text-white/60">Saldo Líquido</span>
 								<Tooltip>
@@ -725,11 +725,11 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							</div>
 							<AnimatedCurrency
 								value={platformNetIfWithdrawAll}
-								className={`font-mono text-sm font-bold tabular-nums ${platformNetIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+								className={`font-mono text-sm font-bold tabular-nums ${platformNetIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 							/>
 						</div>
 
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 flex items-center justify-between">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 flex items-center justify-between">
 							<div className="flex items-center gap-1.5">
 								<span className="text-xs font-medium text-white/60">Saldo Conta SwiftPay</span>
 								<Tooltip>
@@ -760,14 +760,14 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 
 			{/* Em processamento */}
 			{balanceData.platformBlocked > 0 && (
-				<div className="rounded-[20px] border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-4 flex items-center gap-3">
-					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#ec7e00]/20 text-[#ec7e00]">
+				<div className="rounded-[20px] border border-warning/30 bg-warning/10 p-4 flex items-center gap-3">
+					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-warning/20 text-warning">
 						<Icon icon={Wallet02Icon} className="icon-sm" />
 					</div>
 					<div>
 						<h4 className="text-sm font-bold text-white">Saques em Processamento</h4>
 						<p className="text-xs text-white/70">
-							Você tem <span className="font-mono font-bold text-[#ec7e00]">{formatCurrency(balanceData.platformBlocked)}</span> em saques aguardando liquidação.
+							Você tem <span className="font-mono font-bold text-warning">{formatCurrency(balanceData.platformBlocked)}</span> em saques aguardando liquidação.
 						</p>
 					</div>
 				</div>
@@ -780,22 +780,22 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 						slot="trigger"
 						variant="ghost"
 						size="sm"
-						className="h-auto gap-2 rounded-xl border border-white/10 bg-[#16181a] px-3.5 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white"
+						className="h-auto gap-2 rounded-xl border border-white/10 bg-card px-3.5 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white"
 					>
 						{balanceData.isConsistent ? (
-							<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-success" />
 						) : (
-							<Icon icon={AlertDiamondIcon} className="icon-xs text-[#e23b4a]" />
+							<Icon icon={AlertDiamondIcon} className="icon-xs text-danger" />
 						)}
 						<span className="font-medium">Validação de Consistência</span>
 						<Disclosure.Indicator className="icon-xs text-white/40" />
 					</Button>
 				</Disclosure.Heading>
 				<Disclosure.Content>
-					<Disclosure.Body className="mt-2 rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+					<Disclosure.Body className="mt-2 rounded-[20px] border border-white/12 bg-card p-5">
 						<div className="mb-4 flex items-center justify-between">
 							<div className="flex items-center gap-2">
-								<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+								<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 									<Icon icon={Analytics02Icon} className="icon-xs" />
 								</div>
 								<span className="text-sm font-bold text-white">Auditoria de Consistência</span>
@@ -811,25 +811,25 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 							)}
 						</div>
 						<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 space-y-1">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 space-y-1">
 								<span className="text-xs text-white/50">Saldo nas Adquirentes</span>
 								<p className="font-mono text-base font-extrabold text-white tabular-nums">{formatCurrency(totalAcquirerGrossBalance)}</p>
 							</div>
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 space-y-1">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 space-y-1">
 								<span className="text-xs text-white/50">Plataforma (Disponível + Bloqueado)</span>
 								<p className="font-mono text-base font-extrabold text-white tabular-nums">{formatCurrency(platformTotalBalance)}</p>
 							</div>
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5 space-y-1">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5 space-y-1">
 								<span className="text-xs text-white/50">Organizações (Disponível + Bloqueado)</span>
 								<p className="font-mono text-base font-extrabold text-white tabular-nums">{formatCurrency(totalMerchantBalance)}</p>
 							</div>
 						</div>
 
 						{!balanceData.isConsistent && (
-							<div className="mt-4 rounded-xl border border-[#e23b4a]/30 bg-[#e23b4a]/10 p-3.5 flex items-center gap-3">
-								<Icon icon={AlertDiamondIcon} className="icon-sm text-[#e23b4a]" />
+							<div className="mt-4 rounded-xl border border-danger/30 bg-danger/10 p-3.5 flex items-center gap-3">
+								<Icon icon={AlertDiamondIcon} className="icon-sm text-danger" />
 								<p className="text-xs text-white/80">
-									Diferença de <span className="font-mono font-bold text-[#e23b4a]">{formatCurrency(balanceData.consistencyDifferenceAbsolute)}</span>. Use o botão de reconciliação para verificar e corrigir.
+									Diferença de <span className="font-mono font-bold text-danger">{formatCurrency(balanceData.consistencyDifferenceAbsolute)}</span>. Use o botão de reconciliação para verificar e corrigir.
 								</p>
 							</div>
 						)}
@@ -839,10 +839,10 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 
 			{/* Saldos por Adquirente */}
 			{balanceData.acquirerBalances.length > 0 ? (
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 space-y-5">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
 						<div className="flex items-center gap-2">
-							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 								<Icon icon={ServerStack01Icon} className="icon-xs" />
 							</div>
 							<span className="text-sm font-bold text-white">Saldos por Adquirente</span>
@@ -858,7 +858,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 								onChange={setSearchAcquirer}
 								className="w-full sm:w-48"
 							>
-								<SearchField.Group className="bg-[#0a0a0a] border-white/10">
+								<SearchField.Group className="bg-surface-deep border-white/10">
 									<SearchField.SearchIcon>
 										<Icon icon={Search01Icon} className="icon-xs text-white/40" />
 									</SearchField.SearchIcon>
@@ -899,7 +899,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 
 							return (
 								<Accordion hideSeparator className="px-0" key={acq.acquirerId}>
-									<Accordion.Item id={acq.acquirerId} className="rounded-[20px] border border-white/10 bg-[#0a0a0a] overflow-hidden">
+									<Accordion.Item id={acq.acquirerId} className="rounded-[20px] border border-white/10 bg-surface-deep overflow-hidden">
 										<Accordion.Heading>
 											<Accordion.Trigger className="flex w-full items-center justify-between p-4 hover:bg-white/[0.02] transition-colors">
 												<div className="flex min-w-0 items-center gap-3">
@@ -907,11 +907,11 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														<Avatar size="sm" className="bg-white/5 border border-white/10">
 															<Avatar.Image src={acquirerLogoUrl} alt={acquirerDisplayName} />
 															<Avatar.Fallback>
-																<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+																<Icon icon={ServerStack01Icon} className="icon-sm text-link" />
 															</Avatar.Fallback>
 														</Avatar>
 													) : (
-														<div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+														<div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 															<Icon icon={ServerStack01Icon} className="icon-sm" />
 														</div>
 													)}
@@ -946,7 +946,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 															<p className="text-[11px] font-medium text-white/40 uppercase tracking-wider">Entrada</p>
 															<AnimatedCurrency
 																value={acq.totalIn}
-																className="text-xs font-mono font-bold text-[#00a87e] tabular-nums"
+																className="text-xs font-mono font-bold text-success tabular-nums"
 																prefix="+"
 															/>
 														</div>
@@ -954,7 +954,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 															<p className="text-[11px] font-medium text-white/40 uppercase tracking-wider">Saldo Líquido</p>
 															<AnimatedCurrency
 																value={netIfWithdrawAll}
-																className={`text-xs font-mono font-bold tabular-nums ${netIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+																className={`text-xs font-mono font-bold tabular-nums ${netIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 															/>
 														</div>
 													</div>
@@ -987,7 +987,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 																</Tooltip.Content>
 															</Tooltip>
 														</div>
-														<AnimatedCurrency value={acq.totalIn} className="font-mono text-xs font-bold text-[#00a87e] tabular-nums" prefix="+" />
+														<AnimatedCurrency value={acq.totalIn} className="font-mono text-xs font-bold text-success tabular-nums" prefix="+" />
 													</div>
 													<div className="flex items-center justify-between">
 														<div className="flex items-center gap-1.5">
@@ -1002,7 +1002,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 																</Tooltip.Content>
 															</Tooltip>
 														</div>
-														<AnimatedCurrency value={acq.totalOut} className="font-mono text-xs font-bold text-[#e23b4a] tabular-nums" prefix="-" />
+														<AnimatedCurrency value={acq.totalOut} className="font-mono text-xs font-bold text-danger tabular-nums" prefix="-" />
 													</div>
 													<div className="flex items-center justify-between border-t border-white/8 pt-2.5">
 														<div className="flex items-center gap-1.5">
@@ -1019,7 +1019,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={acq.grossBalance}
-															className={`font-mono text-xs font-extrabold tabular-nums ${acq.grossBalance >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+															className={`font-mono text-xs font-extrabold tabular-nums ${acq.grossBalance >= 0 ? 'text-success' : 'text-danger'}`}
 														/>
 													</div>
 													<div className="flex items-center justify-between">
@@ -1037,7 +1037,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={acq.merchantBalance}
-															className={`font-mono text-xs font-bold tabular-nums ${acq.merchantBalance >= 0 ? 'text-[#4f55f1]' : 'text-[#e23b4a]'}`}
+															className={`font-mono text-xs font-bold tabular-nums ${acq.merchantBalance >= 0 ? 'text-link' : 'text-danger'}`}
 														/>
 													</div>
 													<div className="flex items-center justify-between">
@@ -1063,7 +1063,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 															</button>
 															<AnimatedCurrency
 																value={acq.merchantAvailableBalance}
-																className={`font-mono text-xs font-bold tabular-nums ${acq.merchantAvailableBalance >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+																className={`font-mono text-xs font-bold tabular-nums ${acq.merchantAvailableBalance >= 0 ? 'text-success' : 'text-danger'}`}
 															/>
 														</div>
 													</div>
@@ -1087,7 +1087,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={acq.totalAcquirerFees}
-															className="font-mono text-xs font-bold text-[#e23b4a] tabular-nums"
+															className="font-mono text-xs font-bold text-danger tabular-nums"
 															prefix="-"
 														/>
 													</div>
@@ -1111,7 +1111,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={acq.platformPayoutsProcessing}
-															className="font-mono text-xs font-bold text-[#ec7e00] tabular-nums"
+															className="font-mono text-xs font-bold text-warning tabular-nums"
 															prefix="-"
 														/>
 													</div>
@@ -1130,7 +1130,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={availableForWithdrawal}
-															className={`font-mono text-xs font-bold tabular-nums ${availableForWithdrawal >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+															className={`font-mono text-xs font-bold tabular-nums ${availableForWithdrawal >= 0 ? 'text-success' : 'text-danger'}`}
 														/>
 													</div>
 													<div className="flex items-center justify-between">
@@ -1148,7 +1148,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={acq.withdrawalFeeIfWithdrawAll}
-															className="font-mono text-xs font-bold text-[#e23b4a] tabular-nums"
+															className="font-mono text-xs font-bold text-danger tabular-nums"
 															prefix="-"
 														/>
 													</div>
@@ -1167,7 +1167,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 														</div>
 														<AnimatedCurrency
 															value={netIfWithdrawAll}
-															className={`font-mono text-xs font-extrabold tabular-nums ${netIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+															className={`font-mono text-xs font-extrabold tabular-nums ${netIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 														/>
 													</div>
 												</div>
@@ -1180,7 +1180,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 					</div>
 				</div>
 			) : (
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-12 text-center">
+				<div className="rounded-[20px] border border-white/12 bg-card p-12 text-center">
 					<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-white/40 mx-auto mb-3 border border-white/10">
 						<Icon icon={BankIcon} className="icon-md" />
 					</div>

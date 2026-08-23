@@ -732,7 +732,7 @@ export function EmailTemplateEditor({ templatePromise, merchantId, templateType 
 
 			<DragOverlay>
 				{activePaletteType && (
-					<div className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-sm font-medium text-accent shadow-lg">
+					<div className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-sm font-medium text-accentlg">
 						Soltar para adicionar bloco
 					</div>
 				)}

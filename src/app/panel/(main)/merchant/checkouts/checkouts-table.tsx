@@ -93,7 +93,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCheckout>[] {
 					<div className="flex items-center gap-2">
 						<span className="font-bold text-sm text-white truncate max-w-52">{checkout.name}</span>
 						{!checkout.onboardingCompleted && (
-							<span className="inline-flex items-center rounded-full border border-[#ec7e00]/30 bg-[#ec7e00]/15 px-2 py-0.5 text-[11px] font-mono font-semibold text-[#ec7e00]">
+							<span className="inline-flex items-center rounded-full border border-warning/30 bg-warning/15 px-2 py-0.5 text-[11px] font-mono font-semibold text-warning">
 								Incompleto
 							</span>
 						)}
@@ -136,7 +136,7 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCheckout>[] {
 			key: 'payments',
 			header: 'Vendas PIX',
 			align: 'center',
-			render: (checkout) => <span className="text-sm font-mono font-bold text-[#00a87e]">{checkout.paymentCount}</span>,
+			render: (checkout) => <span className="text-sm font-mono font-bold text-success">{checkout.paymentCount}</span>,
 		},
 		{
 			key: 'createdAt',
@@ -179,10 +179,10 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCheckout>[] {
 						>
 							<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 						</Button>
-						<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+						<Dropdown.Popover className="min-w-48 bg-card border border-white/12 rounded-xl text-whitexl">
 							<Dropdown.Menu aria-label="Ações do checkout">
-								<Dropdown.Item id="edit" textValue="Editar checkout" className="text-[#4f55f1] hover:bg-white/10" onPress={() => onEdit(checkout.id)}>
-									<Icon icon={PencilEdit02Icon} className="icon-xs text-[#4f55f1]" />
+								<Dropdown.Item id="edit" textValue="Editar checkout" className="text-link hover:bg-white/10" onPress={() => onEdit(checkout.id)}>
+									<Icon icon={PencilEdit02Icon} className="icon-xs text-link" />
 									Editar checkout
 								</Dropdown.Item>
 								{checkout.checkoutUrl && (
@@ -192,13 +192,13 @@ function getColumns(config: ColumnConfig): DataTableColumn<MinimalCheckout>[] {
 									</Dropdown.Item>
 								)}
 								{checkout.checkoutUrl && (
-									<Dropdown.Item id="open" textValue="Abrir checkout" className="text-[#00a87e] hover:bg-white/10" onPress={() => onOpenLink(checkout.checkoutUrl ?? '')}>
-										<Icon icon={Link01Icon} className="icon-xs text-[#00a87e]" />
+									<Dropdown.Item id="open" textValue="Abrir checkout" className="text-success hover:bg-white/10" onPress={() => onOpenLink(checkout.checkoutUrl ?? '')}>
+										<Icon icon={Link01Icon} className="icon-xs text-success" />
 										Abrir checkout
 									</Dropdown.Item>
 								)}
-								<Dropdown.Item id="delete" textValue="Excluir checkout" className="text-[#e23b4a] hover:bg-white/10" onPress={() => handleAction(() => onDelete(checkout.id, checkout.name))}>
-									<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
+								<Dropdown.Item id="delete" textValue="Excluir checkout" className="text-danger hover:bg-white/10" onPress={() => handleAction(() => onDelete(checkout.id, checkout.name))}>
+									<Icon icon={Delete02Icon} className="icon-xs text-danger" />
 									Excluir checkout
 								</Dropdown.Item>
 							</Dropdown.Menu>
@@ -217,7 +217,7 @@ function renderMobileCheckoutCard(
 ) {
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -241,7 +241,7 @@ function renderMobileCheckoutCard(
 			</div>
 			<div className="mt-3 flex items-center justify-between border-t border-white/8 pt-3 text-xs font-mono">
 				<span className="text-white/60">{checkout.productCount} produto(s)</span>
-				<span className="font-bold text-[#00a87e]">{checkout.paymentCount} venda(s) PIX</span>
+				<span className="font-bold text-success">{checkout.paymentCount} venda(s) PIX</span>
 			</div>
 		</div>
 	);
@@ -301,7 +301,7 @@ export function CheckoutsTable({ merchantId, initialFilters }: CheckoutsTablePro
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<RevolutPixIcon size={16} />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Checkouts & Links PIX</h1>
@@ -324,7 +324,7 @@ export function CheckoutsTable({ merchantId, initialFilters }: CheckoutsTablePro
 			{/* 4-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{/* Total Checkouts */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total Checkouts
@@ -342,25 +342,25 @@ export function CheckoutsTable({ merchantId, initialFilters }: CheckoutsTablePro
 				</div>
 
 				{/* Checkouts Ativos */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Checkouts Ativos
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<RevolutCheckIcon size={14} />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 							<AnimatedNumber value={activeCount} />
 						</span>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Capturando pagamentos online</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Capturando pagamentos online</p>
 					</div>
 				</div>
 
 				{/* Produtos Vinculados */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Produtos Vinculados
@@ -378,12 +378,12 @@ export function CheckoutsTable({ merchantId, initialFilters }: CheckoutsTablePro
 				</div>
 
 				{/* Vendas Realizadas */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Vendas Realizadas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<RevolutTrendingUpIcon size={14} />
 						</div>
 					</div>
@@ -397,7 +397,7 @@ export function CheckoutsTable({ merchantId, initialFilters }: CheckoutsTablePro
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.checkouts.items}

@@ -67,7 +67,7 @@ export function SidebarMobileNavbar({ user }: SidebarMobileNavbarProps) {
 
 	return (
 		<nav className="fixed bottom-4 left-4 right-4 z-40 md:hidden">
-			<div className="relative overflow-hidden rounded-2xl border border-border bg-background/80 px-2 py-2 backdrop-blur-xl shadow-2xl">
+			<div className="relative overflow-hidden rounded-2xl border border-border bg-background/80 px-2 py-2 backdrop-blur-xl2xl">
 				<div className="relative z-10 flex items-center">
 					{mainItems.map((item) => {
 						const active = isRouteActive(pathname, item.path);
@@ -75,7 +75,7 @@ export function SidebarMobileNavbar({ user }: SidebarMobileNavbarProps) {
 						return (
 							<div key={item.path} className="relative flex flex-1 flex-col items-center">
 								{active && (
-									<span className="absolute -top-1 left-1/2 h-1 w-5 -translate-x-1/2 rounded-full bg-[#4f55f1]" />
+									<span className="absolute -top-1 left-1/2 h-1 w-5 -translate-x-1/2 rounded-full bg-link" />
 								)}
 								<Button
 									variant="ghost"

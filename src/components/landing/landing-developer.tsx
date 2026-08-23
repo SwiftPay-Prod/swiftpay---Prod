@@ -86,7 +86,7 @@ func main() {
 					
 					{/* Text Column */}
 					<div className="lg:col-span-5 space-y-6">
-						<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-semibold text-[#4f55f1]">
+						<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-card text-xs font-semibold text-link">
 							<Icon icon={CodeIcon} className="w-3.5 h-3.5" />
 							<span className="font-mono">DEVELOPER EXPERIENCE</span>
 						</div>
@@ -101,15 +101,15 @@ func main() {
 
 						<div className="space-y-3 pt-2">
 							<div className="flex items-center gap-3">
-								<div className="h-2 w-2 rounded-full bg-[#00a87e]" />
+								<div className="h-2 w-2 rounded-full bg-success" />
 								<span className="text-sm font-semibold text-white">Ambiente Sandbox gratuito para testes</span>
 							</div>
 							<div className="flex items-center gap-3">
-								<div className="h-2 w-2 rounded-full bg-[#00a87e]" />
+								<div className="h-2 w-2 rounded-full bg-success" />
 								<span className="text-sm font-semibold text-white">Webhooks assinados por HMAC SHA-256</span>
 							</div>
 							<div className="flex items-center gap-3">
-								<div className="h-2 w-2 rounded-full bg-[#00a87e]" />
+								<div className="h-2 w-2 rounded-full bg-success" />
 								<span className="text-sm font-semibold text-white">Especificação pública OpenAPI / Scalar UI</span>
 							</div>
 						</div>
@@ -127,10 +127,10 @@ func main() {
 
 					{/* Terminal / Code Editor Column */}
 					<div className="lg:col-span-7">
-						<div className="rounded-2xl border border-white/12 bg-[#0a0a0a] shadow-2xl overflow-hidden">
+						<div className="rounded-2xl border border-white/12 bg-surface-deep overflow-hidden">
 							
 							{/* Code Header Bar */}
-							<div className="flex items-center justify-between border-b border-white/10 bg-[#16181a] px-4 py-3">
+							<div className="flex items-center justify-between border-b border-white/10 bg-card px-4 py-3">
 								<div className="flex items-center space-x-2">
 									<button
 										type="button"
@@ -183,7 +183,7 @@ func main() {
 									onClick={handleCopy}
 									className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors cursor-pointer"
 								>
-									<Icon icon={copied ? CheckmarkCircle02Icon : Copy01Icon} className="w-3.5 h-3.5 text-[#4f55f1]" />
+									<Icon icon={copied ? CheckmarkCircle02Icon : Copy01Icon} className="w-3.5 h-3.5 text-link" />
 									<span>{copied ? 'Copiado!' : 'Copiar'}</span>
 								</button>
 							</div>
@@ -196,12 +196,12 @@ func main() {
 							</div>
 
 							{/* Terminal Footer Benchmark Status */}
-							<div className="border-t border-white/10 bg-[#16181a] px-4 py-2.5 flex items-center justify-between text-xs font-mono text-white/60">
+							<div className="border-t border-white/10 bg-card px-4 py-2.5 flex items-center justify-between text-xs font-mono text-white/60">
 								<div className="flex items-center gap-2">
-									<Icon icon={ZapIcon} className="w-3.5 h-3.5 text-[#00a87e]" />
+									<Icon icon={ZapIcon} className="w-3.5 h-3.5 text-success" />
 									<span>Tempo médio de execução: <strong className="text-white">38ms</strong></span>
 								</div>
-								<span className="text-[#00a87e] font-bold">200 OK</span>
+								<span className="text-success font-bold">200 OK</span>
 							</div>
 
 						</div>

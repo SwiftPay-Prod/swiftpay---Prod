@@ -192,7 +192,7 @@ export function AdminDashboard() {
 			{/* Unified Executive Toolbar */}
 			<div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 border-b border-white/12 pb-4">
 				<div className="flex items-center gap-3">
-					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 						<Icon icon={Analytics02Icon} className="icon-md text-accent" />
 					</div>
 					<div>
@@ -206,7 +206,7 @@ export function AdminDashboard() {
 
 			{/* Consolidated Financial Hero */}
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+				<div className="rounded-[20px] border border-white/12 bg-card">
 					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
 							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">TPV</span>
@@ -214,7 +214,7 @@ export function AdminDashboard() {
 								<Tooltip.Trigger>
 									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+								<Tooltip.Content className="max-w-72 bg-card border border-white/12 text-white">
 									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">TPV, Total Payment Volume</span>
 									<br />
@@ -232,7 +232,7 @@ export function AdminDashboard() {
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+				<div className="rounded-[20px] border border-white/12 bg-card">
 					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
 							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Receita Bruta</span>
@@ -240,7 +240,7 @@ export function AdminDashboard() {
 								<Tooltip.Trigger>
 									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+								<Tooltip.Content className="max-w-72 bg-card border border-white/12 text-white">
 									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">Receita Bruta (Taxas Cobradas)</span>
 									<br />
@@ -263,7 +263,7 @@ export function AdminDashboard() {
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+				<div className="rounded-[20px] border border-white/12 bg-card">
 					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
 							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Custo Adquirentes</span>
@@ -271,7 +271,7 @@ export function AdminDashboard() {
 								<Tooltip.Trigger>
 									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+								<Tooltip.Content className="max-w-72 bg-card border border-white/12 text-white">
 									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">Custo das Adquirentes</span>
 									<br />
@@ -294,7 +294,7 @@ export function AdminDashboard() {
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a]">
+				<div className="rounded-[20px] border border-white/12 bg-card">
 					<div className="flex flex-col justify-between gap-3 p-5">
 						<div className="flex items-center justify-between">
 							<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Receita Líquida</span>
@@ -302,7 +302,7 @@ export function AdminDashboard() {
 								<Tooltip.Trigger>
 									<Icon icon={HelpCircleIcon} className="icon-xs cursor-help text-white/50 hover:text-white/80 transition-colors" />
 								</Tooltip.Trigger>
-								<Tooltip.Content className="max-w-72 bg-[#16181a] border border-white/12 text-white">
+								<Tooltip.Content className="max-w-72 bg-card border border-white/12 text-white">
 									<Tooltip.Arrow className="fill-[#16181a] stroke-white/12" />
 									<span className="font-medium">Receita Líquida</span>
 									<br />

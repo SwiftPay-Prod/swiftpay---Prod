@@ -40,7 +40,7 @@ export function LandingFaq() {
 				
 				{/* Header */}
 				<div className="text-center space-y-4 mb-16">
-					<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-semibold text-[#4f55f1]">
+					<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-card text-xs font-semibold text-link">
 						<Icon icon={HelpCircleIcon} className="w-3.5 h-3.5" />
 						<span className="font-mono">PERGUNTAS FREQUENTES</span>
 					</div>
@@ -59,7 +59,7 @@ export function LandingFaq() {
 						return (
 							<div
 								key={faq.q}
-								className="rounded-2xl border border-white/12 bg-[#16181a] overflow-hidden transition-colors hover:border-white/25"
+								className="rounded-2xl border border-white/12 bg-card overflow-hidden transition-colors hover:border-white/25"
 							>
 								<button
 									type="button"
@@ -72,7 +72,7 @@ export function LandingFaq() {
 									<Icon
 										icon={ArrowDown01Icon}
 										className={`w-5 h-5 text-white/70 shrink-0 transition-transform duration-200 ${
-											isOpen ? 'rotate-180 text-[#4f55f1]' : ''
+											isOpen ? 'rotate-180 text-link' : ''
 										}`}
 									/>
 								</button>

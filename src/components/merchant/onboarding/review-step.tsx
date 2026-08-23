@@ -81,7 +81,7 @@ function ReviewSection({
 	isComplete: boolean;
 }) {
 	return (
-		<Card className="bg-content2">
+		<Card className="bg-surface-deep">
 			<Card.Content className="gap-0">
 				<div className="flex items-center justify-between mb-3">
 					<h4 className="text-medium font-semibold text-foreground">{title}</h4>

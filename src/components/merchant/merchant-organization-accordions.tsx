@@ -119,7 +119,7 @@ export function MerchantContactAccordion({ merchant, accordionIdPrefix }: Mercha
 			icon={Call02Icon}
 			title="Contato"
 			summary="Dados de contato"
-			color="blue"
+			color="accent"
 		>
 			<div className="grid grid-cols-1 gap-2 md:grid-cols-2">
 				<InfoField label="E-mail comercial">

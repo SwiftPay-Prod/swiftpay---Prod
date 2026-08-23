@@ -100,7 +100,7 @@ export function StockAdjustmentModal({
 					<form action={formAction}>
 						<Modal.Body>
 							<div className="flex flex-col gap-4">
-								<div className="flex items-center justify-between rounded-lg bg-content2 p-4">
+								<div className="flex items-center justify-between rounded-lg bg-surface-deep p-4">
 									<span className="text-sm text-muted">Estoque atual</span>
 									<span className="text-lg font-semibold">{currentStock ?? '∞'}</span>
 								</div>

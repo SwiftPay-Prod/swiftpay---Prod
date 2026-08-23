@@ -6,7 +6,7 @@ import { formatCurrency } from '@/utils/currency';
 import { RevolutAnalyticsIcon } from '@/components/ui/revolut-icons';
 import type { MerchantDailyVolumeData, MerchantWeeklyVolumeData } from '@/types/merchant/dashboard';
 
-const REVOLUT_COBALT = '#4f55f1';
+const REVOLUT_COBALT = 'var(--brand)';
 
 export type ChartMetricMode = 'volume' | 'transactions';
 
@@ -51,14 +51,14 @@ export function RevolutAnalyticsChart({
 
 	return (
 		<div
-			className={`flex flex-col gap-6 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${
+			className={`flex flex-col gap-6 rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 transition-all ${
 				isProcessing ? 'opacity-70' : ''
 			} ${className}`}
 		>
 			{/* Header: Title + Mode Pill Selector */}
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 				<div className="flex items-center gap-3">
-					<div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#494fdf]/15 text-[#4f55f1]">
+					<div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-brand/15 text-link">
 						<RevolutAnalyticsIcon size={20} />
 					</div>
 					<div>
@@ -70,7 +70,7 @@ export function RevolutAnalyticsChart({
 				</div>
 
 				{/* Metric Mode Pill Selector */}
-				<div className="flex items-center gap-1 rounded-full border border-white/10 bg-[#0a0a0a] p-1">
+				<div className="flex items-center gap-1 rounded-full border border-white/10 bg-surface-deep p-1">
 					{metricTabs.map((tab) => {
 						const isActive = activeMode === tab.id;
 						return (
@@ -80,7 +80,7 @@ export function RevolutAnalyticsChart({
 								onClick={() => setActiveMode(tab.id)}
 								className={`rounded-full px-3.5 py-1.5 text-xs transition-all ${
 									isActive
-										? 'border border-white/15 bg-[#16181a] font-semibold text-white shadow-sm'
+										? 'border border-white/15 bg-card font-semibold text-whitesm'
 										: 'font-medium text-white/50 hover:text-white'
 								}`}
 							>
@@ -97,9 +97,9 @@ export function RevolutAnalyticsChart({
 					<AreaChart data={chartData} margin={{ top: 12, right: 8, left: 8, bottom: 0 }}>
 						<defs>
 							<linearGradient id="revolutCobaltGradient" x1="0" y1="0" x2="0" y2="1">
-								<stop offset="0%" stopColor="#494fdf" stopOpacity={0.45} />
-								<stop offset="60%" stopColor="#494fdf" stopOpacity={0.06} />
-								<stop offset="100%" stopColor="#494fdf" stopOpacity={0} />
+								<stop offset="0%" stopColor="var(--brand)" stopOpacity={0.45} />
+								<stop offset="60%" stopColor="var(--brand)" stopOpacity={0.06} />
+								<stop offset="100%" stopColor="var(--brand)" stopOpacity={0} />
 							</linearGradient>
 						</defs>
 
@@ -116,15 +116,15 @@ export function RevolutAnalyticsChart({
 						<Tooltip
 							content={({ active, payload }) => {
 								if (!active || !payload || payload.length === 0) return null;
-								const item = payload[0].payload;
+								const item = payload[0]?.payload;
 								return (
-									<div className="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-[#0a0a0a]/95 p-3.5 shadow-2xl backdrop-blur-md font-mono text-xs text-white min-w-44">
+									<div className="flex flex-col gap-1.5 rounded-2xl border border-white/15 bg-surface-deep/95 p-3.5  backdrop-blur-md font-mono text-xs text-white min-w-44">
 										<span className="text-[11px] font-semibold uppercase text-white/50">{item.label}</span>
 										<div className="flex items-center justify-between gap-4 pt-1 border-t border-white/10">
 											<span className="text-white/70">
 												{activeMode === 'volume' ? 'Volume' : 'Transações'}
 											</span>
-											<span className="font-bold text-[#4f55f1]">
+											<span className="font-bold text-link">
 												{activeMode === 'volume'
 													? formatCurrency(item.volume)
 													: `${item.transactionCount} txs`}

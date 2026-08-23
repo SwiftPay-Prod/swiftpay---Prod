@@ -120,7 +120,7 @@ export function AdminCashoutEvaluateModal({
 						</div>
 
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<div className="rounded-lg border border-divider p-4">
+							<div className="rounded-lg border border-border p-4">
 								<div className="flex items-center gap-2 mb-3">
 									<Icon icon={Building02Icon} className="icon-sm text-accent" />
 									<h4 className="font-semibold text-sm text-foreground">Organização</h4>
@@ -141,7 +141,7 @@ export function AdminCashoutEvaluateModal({
 								</div>
 							</div>
 
-							<div className="rounded-lg border border-divider p-4">
+							<div className="rounded-lg border border-border p-4">
 								<div className="flex items-center gap-2 mb-3">
 									<Icon icon={Key01Icon} className="icon-sm text-accent" />
 									<h4 className="font-semibold text-sm text-foreground">Conta de Destino</h4>

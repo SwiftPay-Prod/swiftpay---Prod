@@ -254,11 +254,11 @@ export function PlatformBalancesMobile({
 		<>
 			<div className="flex flex-col gap-3 pb-24 text-white">
 				{/* Hero balance card */}
-				<div className="relative overflow-hidden rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+				<div className="relative overflow-hidden rounded-[20px] border border-white/12 bg-card p-5">
 					{/* Card header: label + actions */}
 					<div className="relative z-10 mb-4 flex items-center justify-between">
 						<div className="flex items-center gap-2">
-							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 								<Icon icon={ShieldEnergyIcon} className="icon-xs" />
 							</div>
 							<p className="text-xs font-bold uppercase tracking-wider text-white/70">Plataforma SwiftPay</p>
@@ -272,6 +272,7 @@ export function PlatformBalancesMobile({
 										onClick={() => handleReconcile(false)}
 										disabled={isRefreshPending || isReconcilePending}
 										className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+										aria-label="Reconciliar saldos"
 									>
 										<Icon icon={ShieldKeyIcon} className="icon-xs" />
 									</button>
@@ -284,6 +285,7 @@ export function PlatformBalancesMobile({
 							<button
 								type="button"
 								onClick={() => setIsHidden(!isHidden)}
+								aria-label={isHidden ? 'Mostrar saldo' : 'Ocultar saldo'}
 								className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
 							>
 								<Icon icon={isHidden ? EyeIcon : ViewOffSlashIcon} className="icon-xs" />
@@ -293,6 +295,7 @@ export function PlatformBalancesMobile({
 								onClick={handleRefresh}
 								disabled={isRefreshPending || isReconcilePending}
 								className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+								aria-label="Atualizar saldos"
 							>
 								<Icon
 									icon={ArrowReloadHorizontalIcon}
@@ -314,11 +317,11 @@ export function PlatformBalancesMobile({
 
 					{/* Sub-stats */}
 					<div className="relative z-10 flex gap-2">
-						<div className="flex-1 rounded-xl border border-white/8 bg-[#0a0a0a] px-3 py-2.5">
+						<div className="flex-1 rounded-xl border border-white/8 bg-surface-deep px-3 py-2.5">
 							<p className="mb-0.5 text-[11px] font-medium text-white/40">Processando</p>
-							<Val value={balanceData.platformBlocked} isHidden={isHidden} className="text-sm font-bold font-mono tabular-nums text-[#ec7e00]" prefix="-" />
+							<Val value={balanceData.platformBlocked} isHidden={isHidden} className="text-sm font-bold font-mono tabular-nums text-warning" prefix="-" />
 						</div>
-						<div className="flex-1 rounded-xl border border-white/8 bg-[#0a0a0a] px-3 py-2.5">
+						<div className="flex-1 rounded-xl border border-white/8 bg-surface-deep px-3 py-2.5">
 							<p className="mb-0.5 text-[11px] font-medium text-white/40">Total Sacado</p>
 							<Val value={balanceData.platformPayoutsOut} isHidden={isHidden} className="text-sm font-bold font-mono tabular-nums text-white/70" />
 						</div>
@@ -327,9 +330,9 @@ export function PlatformBalancesMobile({
 
 				{/* 2×2 stats grid */}
 				<div className="grid grid-cols-2 gap-2">
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-3.5 flex flex-col justify-between">
+					<div className="rounded-[20px] border border-white/12 bg-card p-3.5 flex flex-col justify-between">
 						<div className="mb-2 flex items-center gap-1.5">
-							<div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30">
+							<div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-danger/15 text-danger border border-danger/30">
 								<Icon icon={MinusSignIcon} className="icon-xs" />
 							</div>
 							<p className="line-clamp-1 text-xs font-medium text-white/50">Taxas de Saque</p>
@@ -337,15 +340,15 @@ export function PlatformBalancesMobile({
 						<Val
 							value={balanceData.totalWithdrawalFeeIfWithdrawAll}
 							isHidden={isHidden}
-							className="text-base font-bold font-mono tabular-nums text-[#e23b4a]"
+							className="text-base font-bold font-mono tabular-nums text-danger"
 							prefix="-"
 						/>
 						<p className="mt-0.5 text-[10px] text-white/40 font-mono">Se sacar tudo</p>
 					</div>
 
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-3.5 flex flex-col justify-between">
+					<div className="rounded-[20px] border border-white/12 bg-card p-3.5 flex flex-col justify-between">
 						<div className="mb-2 flex items-center gap-1.5">
-							<div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${platformNetIfWithdrawAll >= 0 ? 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30' : 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30'}`}>
+							<div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${platformNetIfWithdrawAll >= 0 ? 'bg-success/15 text-success border border-success/30' : 'bg-danger/15 text-danger border border-danger/30'}`}>
 								<Icon icon={MoneyExchange01Icon} className="icon-xs" />
 							</div>
 							<p className="line-clamp-1 text-xs font-medium text-white/50">Saldo Líquido</p>
@@ -353,25 +356,25 @@ export function PlatformBalancesMobile({
 						<Val
 							value={platformNetIfWithdrawAll}
 							isHidden={isHidden}
-							className={`text-base font-bold font-mono tabular-nums ${platformNetIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+							className={`text-base font-bold font-mono tabular-nums ${platformNetIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 						/>
 						<p className="mt-0.5 text-[10px] text-white/40 font-mono">Disponível - Taxas</p>
 					</div>
 
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-3.5 flex flex-col justify-between">
+					<div className="rounded-[20px] border border-white/12 bg-card p-3.5 flex flex-col justify-between">
 						<div className="mb-2 flex items-center gap-1.5">
-							<div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30' : 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30'}`}>
+							<div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-danger/15 text-danger border border-danger/30' : 'bg-success/15 text-success border border-success/30'}`}>
 								<Icon icon={MoneyReceiveSquareIcon} className="icon-xs" />
 							</div>
-							<p className={`line-clamp-1 text-xs font-medium ${isTotalSwiftPayProfitNegative ? 'text-[#e23b4a]' : 'text-white/50'}`}>{isTotalSwiftPayProfitNegative ? 'Prejuízo SwiftPay' : 'Lucro SwiftPay'}</p>
+							<p className={`line-clamp-1 text-xs font-medium ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-white/50'}`}>{isTotalSwiftPayProfitNegative ? 'Prejuízo SwiftPay' : 'Lucro SwiftPay'}</p>
 						</div>
-						<Val value={totalSwiftPayProfit} isHidden={isHidden} className={`text-base font-bold font-mono tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`} />
+						<Val value={totalSwiftPayProfit} isHidden={isHidden} className={`text-base font-bold font-mono tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`} />
 						<p className="mt-0.5 text-[10px] text-white/40 font-mono">Taxas - Custos</p>
 					</div>
 
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-3.5 flex flex-col justify-between">
+					<div className="rounded-[20px] border border-white/12 bg-card p-3.5 flex flex-col justify-between">
 						<div className="mb-2 flex items-center gap-1.5">
-							<div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 								<Icon icon={BankIcon} className="icon-xs" />
 							</div>
 							<p className="line-clamp-1 text-xs font-medium text-white/50">Nas Adquirentes</p>
@@ -382,14 +385,14 @@ export function PlatformBalancesMobile({
 				</div>
 				{/* Processing alert */}
 				{balanceData.platformBlocked > 0 && (
-					<div className="rounded-[20px] border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-3.5 flex items-center gap-3">
-						<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#ec7e00]/20 text-[#ec7e00]">
+					<div className="rounded-[20px] border border-warning/30 bg-warning/10 p-3.5 flex items-center gap-3">
+						<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-warning/20 text-warning">
 							<Icon icon={Wallet02Icon} className="icon-xs" />
 						</div>
 						<div>
 							<p className="text-xs font-bold text-white">Saques em Processamento</p>
 							<p className="text-[11px] text-white/70">
-								<span className={`font-mono font-bold text-[#ec7e00] ${isHidden ? 'visual-blur' : ''}`}>{formatCurrency(balanceData.platformBlocked)}</span> aguardando liquidação.
+								<span className={`font-mono font-bold text-warning ${isHidden ? 'visual-blur' : ''}`}>{formatCurrency(balanceData.platformBlocked)}</span> aguardando liquidação.
 							</p>
 						</div>
 					</div>
@@ -397,11 +400,11 @@ export function PlatformBalancesMobile({
 
 				{/* Accordion: Resumo do Lucro + Resumo dos Saques */}
 				<Accordion hideSeparator className="gap-2 px-0">
-					<Accordion.Item id="lucro" className="overflow-hidden rounded-[20px] border border-white/12 bg-[#16181a]">
+					<Accordion.Item id="lucro" className="overflow-hidden rounded-[20px] border border-white/12 bg-card">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between p-3.5 hover:bg-white/[0.02]">
 								<div className="flex items-center gap-2">
-									<div className={`flex h-6 w-6 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-[#e23b4a]/15 text-[#e23b4a]' : 'bg-[#00a87e]/15 text-[#00a87e]'}`}>
+									<div className={`flex h-6 w-6 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-danger/15 text-danger' : 'bg-success/15 text-success'}`}>
 										<Icon icon={MoneyReceiveSquareIcon} className="icon-xs" />
 									</div>
 									<span className="text-xs font-bold text-white">{isTotalSwiftPayProfitNegative ? 'Resumo do Prejuízo' : 'Resumo do Lucro'}</span>
@@ -411,14 +414,14 @@ export function PlatformBalancesMobile({
 						</Accordion.Heading>
 						<Accordion.Panel>
 							<Accordion.Body className="p-3.5 pt-0">
-								<div className="space-y-2.5 rounded-xl border border-white/8 bg-[#0a0a0a] p-3">
+								<div className="space-y-2.5 rounded-xl border border-white/8 bg-surface-deep p-3">
 									<div className="flex items-center justify-between">
 										<span className="text-xs text-white/60">{isTotalSwiftPayProfitNegative ? 'Prejuízo Líquido' : 'Lucro Líquido'}</span>
-										<Val value={totalSwiftPayProfit} isHidden={isHidden} className={`font-mono text-xs font-bold tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`} />
+										<Val value={totalSwiftPayProfit} isHidden={isHidden} className={`font-mono text-xs font-bold tabular-nums ${isTotalSwiftPayProfitNegative ? 'text-danger' : 'text-success'}`} />
 									</div>
 									<div className="flex items-center justify-between">
 										<span className="text-xs text-white/60">Em Processamento</span>
-										<Val value={balanceData.platformBlocked} isHidden={isHidden} className="font-mono text-xs font-bold text-[#ec7e00] tabular-nums" prefix="-" />
+										<Val value={balanceData.platformBlocked} isHidden={isHidden} className="font-mono text-xs font-bold text-warning tabular-nums" prefix="-" />
 									</div>
 									<div className="flex items-center justify-between">
 										<span className="text-xs text-white/60">Já Sacados</span>
@@ -429,7 +432,7 @@ export function PlatformBalancesMobile({
 										<Val
 											value={totalAvailableForWithdrawal}
 											isHidden={isHidden}
-											className="font-mono text-xs font-extrabold text-[#00a87e] tabular-nums"
+											className="font-mono text-xs font-extrabold text-success tabular-nums"
 										/>
 									</div>
 								</div>
@@ -437,11 +440,11 @@ export function PlatformBalancesMobile({
 						</Accordion.Panel>
 					</Accordion.Item>
 
-					<Accordion.Item id="saques" className="overflow-hidden rounded-[20px] border border-white/12 bg-[#16181a]">
+					<Accordion.Item id="saques" className="overflow-hidden rounded-[20px] border border-white/12 bg-card">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between p-3.5 hover:bg-white/[0.02]">
 								<div className="flex items-center gap-2">
-									<div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1]">
+									<div className="flex h-6 w-6 items-center justify-center rounded-lg bg-brand/15 text-link">
 										<Icon icon={Wallet03Icon} className="icon-xs" />
 									</div>
 									<span className="text-xs font-bold text-white">Resumo dos Saques</span>
@@ -451,13 +454,13 @@ export function PlatformBalancesMobile({
 						</Accordion.Heading>
 						<Accordion.Panel>
 							<Accordion.Body className="p-3.5 pt-0">
-								<div className="space-y-2.5 rounded-xl border border-white/8 bg-[#0a0a0a] p-3">
+								<div className="space-y-2.5 rounded-xl border border-white/8 bg-surface-deep p-3">
 									<div className="flex items-center justify-between">
 										<span className="text-xs text-white/60">Taxas se sacar tudo</span>
 										<Val
 											value={balanceData.totalWithdrawalFeeIfWithdrawAll}
 											isHidden={isHidden}
-											className="font-mono text-xs font-bold text-[#e23b4a] tabular-nums"
+											className="font-mono text-xs font-bold text-danger tabular-nums"
 											prefix="-"
 										/>
 									</div>
@@ -466,7 +469,7 @@ export function PlatformBalancesMobile({
 										<Val
 											value={platformNetIfWithdrawAll}
 											isHidden={isHidden}
-											className={`font-mono text-xs font-bold tabular-nums ${platformNetIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+											className={`font-mono text-xs font-bold tabular-nums ${platformNetIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 										/>
 									</div>
 									<div className="flex items-center justify-between border-t border-white/8 pt-2.5">
@@ -486,19 +489,19 @@ export function PlatformBalancesMobile({
 							slot="trigger"
 							variant="ghost"
 							size="sm"
-							className="h-auto gap-2 rounded-xl border border-white/10 bg-[#16181a] px-3.5 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white"
+							className="h-auto gap-2 rounded-xl border border-white/10 bg-card px-3.5 py-2 text-xs text-white/70 hover:bg-white/5 hover:text-white"
 						>
 							{isConsistent ? (
-								<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+								<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-success" />
 							) : (
-								<Icon icon={AlertDiamondIcon} className="icon-xs text-[#e23b4a]" />
+								<Icon icon={AlertDiamondIcon} className="icon-xs text-danger" />
 							)}
 							<span className="font-medium">Validação de Consistência</span>
 							<Disclosure.Indicator className="icon-xs text-white/40" />
 						</Button>
 					</Disclosure.Heading>
 					<Disclosure.Content>
-						<Disclosure.Body className="mt-2 rounded-[20px] border border-white/12 bg-[#16181a] p-4">
+						<Disclosure.Body className="mt-2 rounded-[20px] border border-white/12 bg-card p-4">
 							<div className="mb-3 flex items-center justify-between">
 								<span className="text-xs font-bold text-white">Consistência de Saldos</span>
 								{isConsistent ? (
@@ -512,30 +515,30 @@ export function PlatformBalancesMobile({
 								)}
 							</div>
 							<div className="space-y-2 text-xs">
-								<div className="flex items-center justify-between rounded-lg border border-white/8 bg-[#0a0a0a] p-2.5">
+								<div className="flex items-center justify-between rounded-lg border border-white/8 bg-surface-deep p-2.5">
 									<span className="text-white/60">Adquirentes</span>
 									<span className={`font-mono font-bold text-white tabular-nums ${isHidden ? 'visual-blur' : ''}`}>
 										{formatCurrency(totalAcquirerGrossBalance)}
 									</span>
 								</div>
-								<div className="flex items-center justify-between rounded-lg border border-white/8 bg-[#0a0a0a] p-2.5">
+								<div className="flex items-center justify-between rounded-lg border border-white/8 bg-surface-deep p-2.5">
 									<span className="text-white/60">Plataforma</span>
 									<span className={`font-mono font-bold text-white tabular-nums ${isHidden ? 'visual-blur' : ''}`}>
 										{formatCurrency(platformTotalBalance)}
 									</span>
 								</div>
-								<div className="flex items-center justify-between rounded-lg border border-white/8 bg-[#0a0a0a] p-2.5">
+								<div className="flex items-center justify-between rounded-lg border border-white/8 bg-surface-deep p-2.5">
 									<span className="text-white/60">Organizações</span>
 									<span className={`font-mono font-bold text-white tabular-nums ${isHidden ? 'visual-blur' : ''}`}>
 										{formatCurrency(totalMerchantBalance)}
 									</span>
 								</div>
 								{!isConsistent && (
-									<div className="mt-2 rounded-lg border border-[#e23b4a]/30 bg-[#e23b4a]/10 p-2.5 flex items-center gap-2">
-										<Icon icon={AlertDiamondIcon} className="icon-xs text-[#e23b4a]" />
+									<div className="mt-2 rounded-lg border border-danger/30 bg-danger/10 p-2.5 flex items-center gap-2">
+										<Icon icon={AlertDiamondIcon} className="icon-xs text-danger" />
 										<p className="text-[11px] text-white/80">
 											Diferença de{' '}
-											<span className={`font-mono font-bold text-[#e23b4a] ${isHidden ? 'visual-blur' : ''}`}>
+											<span className={`font-mono font-bold text-danger ${isHidden ? 'visual-blur' : ''}`}>
 												{formatCurrency(balanceData.consistencyDifferenceAbsolute)}
 											</span>
 										</p>
@@ -548,7 +551,7 @@ export function PlatformBalancesMobile({
 
 				{/* Saldos por Adquirente */}
 				{balanceData.acquirerBalances.length > 0 && (
-					<div className="space-y-3 rounded-[20px] border border-white/12 bg-[#16181a] p-4">
+					<div className="space-y-3 rounded-[20px] border border-white/12 bg-card p-4">
 						<div className="flex items-center justify-between border-b border-white/8 pb-3">
 							<span className="text-xs font-bold text-white">Saldos por Adquirente</span>
 							<span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-mono text-white/60">
@@ -556,7 +559,7 @@ export function PlatformBalancesMobile({
 							</span>
 						</div>
 						<SearchField aria-label="Buscar adquirente" value={searchAcquirer} onChange={setSearchAcquirer}>
-							<SearchField.Group className="bg-[#0a0a0a] border-white/10">
+							<SearchField.Group className="bg-surface-deep border-white/10">
 								<SearchField.SearchIcon>
 									<Icon icon={Search01Icon} className="icon-xs text-white/40" />
 								</SearchField.SearchIcon>
@@ -596,7 +599,7 @@ export function PlatformBalancesMobile({
 
 								return (
 									<Accordion hideSeparator className="px-0" key={acq.acquirerId}>
-										<Accordion.Item id={acq.acquirerId} className="rounded-[18px] border border-white/10 bg-[#0a0a0a] overflow-hidden">
+										<Accordion.Item id={acq.acquirerId} className="rounded-[18px] border border-white/10 bg-surface-deep overflow-hidden">
 											<Accordion.Heading>
 												<Accordion.Trigger className="flex w-full items-center justify-between p-3 hover:bg-white/[0.02]">
 													<div className="flex min-w-0 items-center gap-2">
@@ -604,11 +607,11 @@ export function PlatformBalancesMobile({
 															<Avatar size="sm" className="bg-white/5 border border-white/10">
 																<Avatar.Image src={acquirerLogoUrl} alt={acquirerDisplayName} />
 																<Avatar.Fallback>
-																	<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+																	<Icon icon={ServerStack01Icon} className="icon-sm text-link" />
 																</Avatar.Fallback>
 															</Avatar>
 														) : (
-															<div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+															<div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 																<Icon icon={ServerStack01Icon} className="icon-xs" />
 															</div>
 														)}
@@ -629,7 +632,7 @@ export function PlatformBalancesMobile({
 															<Val
 																value={acq.totalIn}
 																isHidden={isHidden}
-																className="text-xs font-mono font-bold text-[#00a87e] tabular-nums"
+																className="text-xs font-mono font-bold text-success tabular-nums"
 																prefix="+"
 															/>
 														</div>
@@ -658,29 +661,29 @@ export function PlatformBalancesMobile({
 													)}
 
 													{/* Fluxo na Adquirente */}
-													<div className="space-y-2 rounded-xl border border-white/8 bg-[#16181a] p-3">
+													<div className="space-y-2 rounded-xl border border-white/8 bg-card p-3">
 														<p className="text-[10px] font-bold uppercase tracking-wide text-white/40">
 															Fluxo na Adquirente
 														</p>
 														<div className="flex justify-between">
 															<span className="text-xs text-white/60">Total entrada</span>
-															<Val value={acq.totalIn} isHidden={isHidden} className="text-xs font-mono font-bold text-[#00a87e] tabular-nums" prefix="+" />
+															<Val value={acq.totalIn} isHidden={isHidden} className="text-xs font-mono font-bold text-success tabular-nums" prefix="+" />
 														</div>
 														<div className="flex justify-between">
 															<span className="text-xs text-white/60">Total saída</span>
-															<Val value={acq.totalOut} isHidden={isHidden} className="text-xs font-mono font-bold text-[#e23b4a] tabular-nums" prefix="-" />
+															<Val value={acq.totalOut} isHidden={isHidden} className="text-xs font-mono font-bold text-danger tabular-nums" prefix="-" />
 														</div>
 														<div className="flex justify-between border-t border-white/8 pt-2">
 															<span className="text-xs font-bold text-white">Saldo na Adquirente</span>
 															<Val
 																value={acq.grossBalance}
 																isHidden={isHidden}
-																className={`text-xs font-mono font-extrabold tabular-nums ${acq.grossBalance >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+																className={`text-xs font-mono font-extrabold tabular-nums ${acq.grossBalance >= 0 ? 'text-success' : 'text-danger'}`}
 															/>
 														</div>
 														<div className="flex justify-between">
 															<span className="text-xs text-white/60">Saldo organizações</span>
-															<Val value={acq.merchantBalance} isHidden={isHidden} className="text-xs font-mono font-bold text-[#4f55f1] tabular-nums" />
+															<Val value={acq.merchantBalance} isHidden={isHidden} className="text-xs font-mono font-bold text-link tabular-nums" />
 														</div>
 														<div className="flex justify-between items-center pt-1">
 															<button
@@ -693,20 +696,20 @@ export function PlatformBalancesMobile({
 															<Val
 																value={acq.merchantAvailableBalance}
 																isHidden={isHidden}
-																className={`text-xs font-mono font-bold tabular-nums ${acq.merchantAvailableBalance >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+																className={`text-xs font-mono font-bold tabular-nums ${acq.merchantAvailableBalance >= 0 ? 'text-success' : 'text-danger'}`}
 															/>
 														</div>
 													</div>
 
 													{/* Para Saque */}
-													<div className="space-y-2 rounded-xl border border-white/8 bg-[#16181a] p-3">
+													<div className="space-y-2 rounded-xl border border-white/8 bg-card p-3">
 														<p className="text-[10px] font-bold uppercase tracking-wide text-white/40">Para Saque</p>
 														<div className="flex justify-between">
 															<span className="text-xs text-white/60">Taxas à adquirente</span>
 															<Val
 																value={acq.totalAcquirerFees}
 																isHidden={isHidden}
-																className="text-xs font-mono font-bold text-[#e23b4a] tabular-nums"
+																className="text-xs font-mono font-bold text-danger tabular-nums"
 																prefix="-"
 															/>
 														</div>
@@ -715,7 +718,7 @@ export function PlatformBalancesMobile({
 															<Val
 																value={acq.platformPayoutsProcessing}
 																isHidden={isHidden}
-																className="text-xs font-mono font-bold text-[#ec7e00] tabular-nums"
+																className="text-xs font-mono font-bold text-warning tabular-nums"
 																prefix="-"
 															/>
 														</div>
@@ -724,7 +727,7 @@ export function PlatformBalancesMobile({
 															<Val
 																value={availableForWithdrawal}
 																isHidden={isHidden}
-																className={`text-xs font-mono font-bold tabular-nums ${availableForWithdrawal >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+																className={`text-xs font-mono font-bold tabular-nums ${availableForWithdrawal >= 0 ? 'text-success' : 'text-danger'}`}
 															/>
 														</div>
 														<div className="flex justify-between">
@@ -732,7 +735,7 @@ export function PlatformBalancesMobile({
 															<Val
 																value={acq.withdrawalFeeIfWithdrawAll}
 																isHidden={isHidden}
-																className="text-xs font-mono font-bold text-[#e23b4a] tabular-nums"
+																className="text-xs font-mono font-bold text-danger tabular-nums"
 																prefix="-"
 															/>
 														</div>
@@ -741,7 +744,7 @@ export function PlatformBalancesMobile({
 															<Val
 																value={netIfWithdrawAll}
 																isHidden={isHidden}
-																className={`text-xs font-mono font-extrabold tabular-nums ${netIfWithdrawAll >= 0 ? 'text-[#00a87e]' : 'text-[#e23b4a]'}`}
+																className={`text-xs font-mono font-extrabold tabular-nums ${netIfWithdrawAll >= 0 ? 'text-success' : 'text-danger'}`}
 															/>
 														</div>
 													</div>

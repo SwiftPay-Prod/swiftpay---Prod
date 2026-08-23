@@ -84,7 +84,7 @@ function renderAccordionCard(params: {
 }) {
   return (
     <SystemAccordion defaultExpandedKeys={[params.id]} className="px-0">
-      <SystemAccordion.Item id={params.id} className="rounded-xl border border-divider bg-surface">
+      <SystemAccordion.Item id={params.id} className="rounded-xl border border-border bg-surface">
         <SystemAccordion.Heading>
           <SystemAccordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
             <div className="flex items-center gap-3">
@@ -796,7 +796,7 @@ export function OrderUpsertFormContent() {
             title: 'Cliente',
             summary: customerSummary,
             children: isEditMode ? (
-              <div className="rounded-lg border border-divider bg-surface-secondary p-3">
+              <div className="rounded-lg border border-border bg-surface-secondary p-3">
                 <p className="text-sm font-medium">{selectedCustomer?.name ?? 'Cliente nao informado'}</p>
                 <p className="text-xs text-muted">{selectedCustomer?.email ?? selectedCustomer?.document ?? '-'}</p>
               </div>
@@ -864,7 +864,7 @@ export function OrderUpsertFormContent() {
                     />
 
                     {selectedProduct && (
-                      <div className="flex flex-col gap-3 rounded-lg border border-divider p-3">
+                      <div className="flex flex-col gap-3 rounded-lg border border-border p-3">
                         <div className="flex items-center gap-3">
                           {selectedProduct.imageUrl && (
                             <Image
@@ -921,7 +921,7 @@ export function OrderUpsertFormContent() {
                 {orderItems.length > 0 ? (
                   <div className="flex flex-col gap-2">
                     {orderItems.map((item, index) => (
-                      <div key={`${item.productId}-${item.variantId ?? 'no-variant'}-${index}`} className="flex items-center gap-3 rounded-lg border border-divider p-3">
+                      <div key={`${item.productId}-${item.variantId ?? 'no-variant'}-${index}`} className="flex items-center gap-3 rounded-lg border border-border p-3">
                         {item.imageUrl && (
                           <Image
                             src={item.imageUrl}
@@ -974,15 +974,15 @@ export function OrderUpsertFormContent() {
               <div className="flex flex-col gap-4">
                 {isEditMode ? (
                   <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                    <div className="rounded-lg border border-divider p-3">
+                    <div className="rounded-lg border border-border p-3">
                       <p className="text-xs text-muted">Cupom</p>
                       <p className="text-sm font-medium">{couponCode || '-'}</p>
                     </div>
-                    <div className="rounded-lg border border-divider p-3">
+                    <div className="rounded-lg border border-border p-3">
                       <p className="text-xs text-muted">Frete</p>
                       <p className="text-sm font-medium">{formatCurrency(shippingCents)}</p>
                     </div>
-                    <div className="rounded-lg border border-divider p-3 lg:col-span-2">
+                    <div className="rounded-lg border border-border p-3 lg:col-span-2">
                       <p className="text-xs text-muted">Observacoes</p>
                       <p className="text-sm font-medium">{notes || '-'}</p>
                     </div>
@@ -1063,7 +1063,7 @@ export function OrderUpsertFormContent() {
                           <span className="font-medium">{formatCurrency(shippingCents)}</span>
                         </div>
                       )}
-                      <div className="border-t border-divider pt-2 mt-1">
+                      <div className="border-t border-border pt-2 mt-1">
                         <div className="flex justify-between">
                           <span className="font-medium">Total estimado:</span>
                           <span className="font-bold text-lg">{formatCurrency(total)}</span>

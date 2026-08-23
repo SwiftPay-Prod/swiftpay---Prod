@@ -800,7 +800,6 @@ function SettingsTabForm({
 							id="wayne"
 							title="Protocolo Wayne"
 							iconNode={<Image src="/icons/bat.png" alt="Bat icon" width={24} height={24} className="size-6" />}
-							color="slate"
 							defaultExpanded={false}
 							summary={`${wayneSettings.environment} · Ciclo ${wayneSettings.cycleVolume} · Amostragem ${wayneSettings.samplingRatePercent}% · ${wayneSettings.isEnabled ? 'Ativado' : 'Desativado'}`}
 						>
@@ -1061,7 +1060,7 @@ function SettingsTabForm({
 							id="saques"
 							icon={Money01Icon}
 							title="Saques"
-							color="violet"
+							color="accent"
 							defaultExpanded={false}
 							summary={
 								<>

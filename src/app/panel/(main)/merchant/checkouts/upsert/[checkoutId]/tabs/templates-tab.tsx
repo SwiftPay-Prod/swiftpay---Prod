@@ -102,7 +102,7 @@ function TemplateCard({
 				</div>
 			)}
 
-			<div className="relative aspect-video w-full overflow-hidden rounded-t-xl bg-content1">
+			<div className="relative aspect-video w-full overflow-hidden rounded-t-xl bg-card">
 				{template.thumbnailUrl ? (
 					<Image src={template.thumbnailUrl} alt={template.name} fill className="object-cover" />
 				) : (
@@ -161,12 +161,12 @@ function FeatureItem({ icon, title, supported }: { icon: IconSvgElement; title: 
 	return (
 		<div
 			className={`flex items-center gap-3 rounded-xl p-3 transition-colors ${
-				supported ? 'bg-success/10 text-success' : 'bg-content1 text-muted'
+				supported ? 'bg-success/10 text-success' : 'bg-card text-muted'
 			}`}
 		>
 			<div
 				className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${
-					supported ? 'bg-success-soft-hover' : 'bg-content2'
+					supported ? 'bg-success-soft-hover' : 'bg-surface-deep'
 				}`}
 			>
 				<Icon icon={icon} className="icon-md" />
@@ -351,7 +351,7 @@ function TemplatePreviewModal({
 						<div className="flex flex-col gap-4">
 							{allImages.length > 0 && currentImage && (
 								<div className="flex flex-col gap-3">
-									<div className="relative flex h-80 w-full items-center justify-center overflow-hidden rounded-xl bg-content1">
+									<div className="relative flex h-80 w-full items-center justify-center overflow-hidden rounded-xl bg-card">
 										<Image
 											src={currentImage}
 											alt={`Preview ${currentImageIndex + 1}`}
@@ -678,7 +678,7 @@ export function TemplatesTab({ checkout, merchantId, templates, onRefresh }: Tem
 				<Card>
 					<Card.Content className="py-12">
 						<div className="flex flex-col items-center gap-4 text-center">
-							<div className="flex size-16 items-center justify-center rounded-full bg-content1">
+							<div className="flex size-16 items-center justify-center rounded-full bg-card">
 								<Icon icon={Image01Icon} className="icon-lg text-muted" />
 							</div>
 							<div>

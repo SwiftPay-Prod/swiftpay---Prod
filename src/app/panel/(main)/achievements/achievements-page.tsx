@@ -72,7 +72,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 					<div>
 						<div className="flex items-center gap-2">
-							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 								<Icon icon={StarAward02Icon} className="icon-sm" />
 							</div>
 							<h1 className="text-xl font-bold tracking-tight text-white">Conquistas</h1>
@@ -80,7 +80,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 						<p className="text-xs text-white/50 mt-1">Seus emblemas, dinastias e progresso de nível.</p>
 					</div>
 				</div>
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-8 text-center">
+				<div className="rounded-[20px] border border-white/12 bg-card p-8 text-center">
 					<p className="text-sm text-white/50">{response?.error?.message ?? 'Não foi possível carregar as conquistas.'}</p>
 				</div>
 			</div>
@@ -155,7 +155,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<Icon icon={StarAward02Icon} className="icon-sm" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Conquistas</h1>
@@ -168,7 +168,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 			</div>
 
 			{/* User Progress Card */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<UserProfileProgressCard
 					name={userName}
 					profileImageUrl={userProfileImageUrl}
@@ -191,7 +191,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 			<Separator className="bg-white/10" />
 
 			{/* Tabs */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<InternalTabs ariaLabel="Seções de conquistas" items={ACHIEVEMENT_TAB_ITEMS} defaultSelectedKey="achievements">
 					<Tabs.Panel id="achievements" className="pt-4">
 						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">

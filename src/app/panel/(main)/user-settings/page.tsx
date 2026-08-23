@@ -199,8 +199,8 @@ export default function UserSettingsPage() {
 	return (
 		<div className="flex flex-col gap-6 text-white">
 			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
-				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-					<Icon icon={Settings05Icon} className="icon-sm text-[#4f55f1]" />
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+					<Icon icon={Settings05Icon} className="icon-sm text-link" />
 				</div>
 				<div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Ajustes</h1>
@@ -319,7 +319,7 @@ export default function UserSettingsPage() {
 						</div>
 					)}
 
-					<div className="border-t border-divider pt-4">
+					<div className="border-t border-border pt-4">
 						<div className="flex items-center justify-between gap-4">
 							<div className="flex items-start gap-3">
 								<div className={`flex items-center justify-center w-10 h-10 rounded-lg ${isSoundEnabled ? 'bg-accent/10' : 'bg-danger/10'}`}>

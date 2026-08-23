@@ -503,7 +503,7 @@ export function LiveBalanceSettingsModal({
                       </Select.Popover>
                     </Select>
 
-                    <div className="rounded-[1.25rem] border border-dashed border-border/70 bg-content1/50 p-2.5">
+                    <div className="rounded-[1.25rem] border border-dashed border-border/70 bg-card/50 p-2.5">
                       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
                         Selecionados
                       </p>
@@ -577,7 +577,7 @@ export function LiveBalanceSettingsModal({
                     </Select>
                   </div>
 
-                  <div className="rounded-[1.25rem] border border-dashed border-border/70 bg-content1/50 p-2.5">
+                  <div className="rounded-[1.25rem] border border-dashed border-border/70 bg-card/50 p-2.5">
                     <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">
                       Selecionados
                     </p>

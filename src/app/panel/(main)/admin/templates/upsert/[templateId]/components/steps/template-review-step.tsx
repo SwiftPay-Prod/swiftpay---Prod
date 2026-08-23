@@ -197,7 +197,7 @@ export function TemplateReviewStep({
 			<SystemAccordion
 				id="template-review-media"
 				icon={PaintBoardIcon}
-				color="blue"
+				color="accent"
 				title="Revisão de mídia"
 				summary="Arquivos visuais vinculados ao template"
 				defaultExpanded={defaultExpanded}

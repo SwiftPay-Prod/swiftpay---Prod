@@ -29,7 +29,7 @@ export function IntegrationCard({
 	onOpenConfigure,
 }: IntegrationCardProps) {
 	return (
-		<article className="flex h-full flex-col rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+		<article className="flex h-full flex-col rounded-[20px] border border-white/12 bg-card p-5">
 			<div className="flex items-start justify-between gap-4">
 				<IntegrationPlatformInfo
 					name={name}

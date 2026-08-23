@@ -69,7 +69,7 @@ function SummaryTile({
     success: 'border-success/30 bg-success/5 text-success',
     warning: 'border-warning/30 bg-warning/5 text-warning',
     danger: 'border-danger/30 bg-danger/5 text-danger',
-    default: 'border-divider bg-content1 text-foreground',
+    default: 'border-border bg-card text-foreground',
     accent: 'border-accent/30 bg-accent/5 text-accent',
   };
 
@@ -106,7 +106,7 @@ function MovementMetric({
     success: 'border-success/30 bg-success/5 text-success',
     warning: 'border-warning/30 bg-warning/5 text-warning',
     danger: 'border-danger/30 bg-danger/5 text-danger',
-    default: 'border-divider bg-content1 text-foreground',
+    default: 'border-border bg-card text-foreground',
   };
 
   return (
@@ -152,7 +152,7 @@ function TimelineCard({
     ? 'bg-success text-success-foreground'
     : isActive
       ? 'bg-accent text-accent-foreground'
-      : 'bg-content2 text-muted';
+      : 'bg-surface-deep text-muted';
 
   return (
     <div className={`rounded-lg border border-foreground/10 bg-surface p-4 ${!isCompleted && !isActive ? 'opacity-60' : ''}`}>
@@ -593,7 +593,7 @@ function BalancePanel({
     success: 'bg-success/5 text-success',
     warning: 'bg-warning/5 text-warning',
     danger: 'bg-danger/5 text-danger',
-    default: 'bg-content1 text-foreground',
+    default: 'bg-card text-foreground',
     accent: 'bg-accent/5 text-accent',
   };
 

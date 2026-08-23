@@ -110,9 +110,9 @@ function TransactionStatusTimeline({ payment }: { payment: PaymentDetails }) {
 	function getStepStateClasses(step: { completed: boolean; isError?: boolean }) {
 		if (step.completed) {
 			if (step.isError) {
-				return 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30';
+				return 'bg-danger/15 text-danger border border-danger/30';
 			}
-			return 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30';
+			return 'bg-success/15 text-success border border-success/30';
 		}
 		return 'bg-white/5 text-white/40 border border-white/8';
 	}
@@ -132,7 +132,7 @@ function TransactionStatusTimeline({ payment }: { payment: PaymentDetails }) {
 							</span>
 						</div>
 						{index < steps.length - 1 && (
-							<div className={`h-px flex-1 mx-2 ${step.completed ? 'bg-[#00a87e]/40' : 'bg-white/8'}`} />
+							<div className={`h-px flex-1 mx-2 ${step.completed ? 'bg-success/40' : 'bg-white/8'}`} />
 						)}
 					</div>
 				))}
@@ -160,7 +160,7 @@ function TransactionStatusTimeline({ payment }: { payment: PaymentDetails }) {
 function DetailsContentSkeleton() {
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-6 flex flex-col gap-4">
+			<div className="rounded-[20px] bg-card border border-white/12 p-6 flex flex-col gap-4">
 				<Skeleton className="h-8 w-48 rounded-lg bg-white/5" />
 				<Skeleton className="h-12 w-64 rounded-lg bg-white/5" />
 			</div>
@@ -193,7 +193,7 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 	return (
 		<div className="flex flex-col gap-5 text-white">
 			{/* Digital Receipt Hero Header */}
-			<div className="rounded-[20px] bg-[#0a0a0a] border border-white/12 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+			<div className="rounded-[20px] bg-surface-deep border border-white/12 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 				<div>
 					<div className="flex items-center gap-2">
 						<RevolutStatusBadge status={payment.status} label={paymentStatusParse[payment.status]?.label} size="md" />
@@ -203,7 +203,7 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 						<span className="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight tabular-nums">
 							{formatCurrency(payment.amount)}
 						</span>
-						<p className="text-xs font-mono text-[#00a87e] mt-1 font-semibold">
+						<p className="text-xs font-mono text-success mt-1 font-semibold">
 							Líquido recebido: {formatCurrency(payment.netAmount)}
 						</p>
 					</div>
@@ -222,7 +222,7 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 			</div>
 
 			{/* Timeline Card */}
-			<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-5">
+			<div className="rounded-[20px] bg-card border border-white/12 p-5">
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/40 block mb-4">
 					Ciclo de Liquidação PIX
 				</span>
@@ -232,7 +232,7 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 			{/* Financial Breakdown Grid */}
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				{/* Values */}
-				<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-5 flex flex-col gap-3">
+				<div className="rounded-[20px] bg-card border border-white/12 p-5 flex flex-col gap-3">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/40">
 						Detalhamento Financeiro
 					</span>
@@ -247,19 +247,19 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 						</div>
 						{payment.reserveDeductedAmount > 0 && (
 							<div className="flex items-center justify-between border-b border-white/8 pb-2">
-								<span className="text-[#ec7e00]">Reserva Financeira</span>
-								<span className="text-[#ec7e00] tabular-nums">-{formatCurrency(payment.reserveDeductedAmount)}</span>
+								<span className="text-warning">Reserva Financeira</span>
+								<span className="text-warning tabular-nums">-{formatCurrency(payment.reserveDeductedAmount)}</span>
 							</div>
 						)}
 						<div className="flex items-center justify-between pt-1">
 							<span className="font-bold text-white">Valor Líquido Merchant</span>
-							<span className="font-bold text-[#00a87e] text-base tabular-nums">{formatCurrency(payment.netAmount)}</span>
+							<span className="font-bold text-success text-base tabular-nums">{formatCurrency(payment.netAmount)}</span>
 						</div>
 					</div>
 				</div>
 
 				{/* Customer & Payer */}
-				<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-5 flex flex-col gap-3">
+				<div className="rounded-[20px] bg-card border border-white/12 p-5 flex flex-col gap-3">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/40">
 						Dados do Cliente / Pagador
 					</span>
@@ -288,14 +288,14 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 
 			{/* PIX QR Code if Pending */}
 			{payment.pix?.copyAndPaste && payment.status === 'Pending' && (
-				<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-6 flex flex-col items-center gap-4 text-center">
+				<div className="rounded-[20px] bg-card border border-white/12 p-6 flex flex-col items-center gap-4 text-center">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/40">
 						QR Code Dinâmico para Pagamento
 					</span>
-					<div className="p-4 bg-white rounded-2xl shadow-lg">
+					<div className="p-4 bg-white rounded-2xllg">
 						<QRCodeSVG value={payment.pix.copyAndPaste} size={180} level="M" marginSize={0} />
 					</div>
-					<div className="w-full max-w-md bg-[#0a0a0a] border border-white/10 p-3 rounded-xl flex items-center justify-between gap-2">
+					<div className="w-full max-w-md bg-surface-deep border border-white/10 p-3 rounded-xl flex items-center justify-between gap-2">
 						<span className="text-xs font-mono text-white/70 truncate flex-1 text-left">
 							{payment.pix.copyAndPaste}
 						</span>
@@ -315,7 +315,7 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 			)}
 
 			{/* Webhook & Callback Section */}
-			<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-5 flex flex-col gap-3">
+			<div className="rounded-[20px] bg-card border border-white/12 p-5 flex flex-col gap-3">
 				<div className="flex items-center justify-between">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/40">
 						Entrega de Webhook
@@ -327,17 +327,17 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 							onClick={() => onResendWebhook?.(payment.id)}
 							className="button-outline-dark text-xs py-1 px-3"
 						>
-							<Icon icon={SentIcon} className="icon-xs text-[#4f55f1]" />
+							<Icon icon={SentIcon} className="icon-xs text-link" />
 							{isResendingWebhook ? 'Reenviando...' : 'Reenviar Webhook'}
 						</button>
 					)}
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-					<div className="bg-[#0a0a0a] border border-white/8 p-3 rounded-xl flex flex-col gap-1">
+					<div className="bg-surface-deep border border-white/8 p-3 rounded-xl flex flex-col gap-1">
 						<span className="text-white/40">URL de Notificação</span>
 						<span className="text-white truncate">{payment.callbackUrl || 'Não configurada'}</span>
 					</div>
-					<div className="bg-[#0a0a0a] border border-white/8 p-3 rounded-xl flex flex-col gap-1">
+					<div className="bg-surface-deep border border-white/8 p-3 rounded-xl flex flex-col gap-1">
 						<span className="text-white/40">Tentativas Realizadas</span>
 						<span className="text-white">{payment.callbackAttempts} tentativa(s)</span>
 					</div>
@@ -346,11 +346,11 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 
 			{/* Metadata Payload if exists */}
 			{payment.metadata && (
-				<div className="rounded-[20px] bg-[#16181a] border border-white/12 p-5 flex flex-col gap-3">
+				<div className="rounded-[20px] bg-card border border-white/12 p-5 flex flex-col gap-3">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/40">
 						Payload Customizado (Metadata)
 					</span>
-					<pre className="text-xs font-mono bg-[#0a0a0a] border border-white/8 p-4 rounded-xl overflow-auto max-h-48 text-white/80">
+					<pre className="text-xs font-mono bg-surface-deep border border-white/8 p-4 rounded-xl overflow-auto max-h-48 text-white/80">
 						{JSON.stringify(JSON.parse(payment.metadata), null, 2)}
 					</pre>
 				</div>
@@ -393,11 +393,11 @@ export function MerchantTransactionDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-3xl bg-[#16181a] border border-white/12 text-white rounded-[20px] p-6 shadow-2xl">
+				<Modal.Dialog className="max-w-3xl bg-card border border-white/12 text-white rounded-[20px] p-62xl">
 					<Modal.CloseTrigger />
 					<Modal.Header className="border-b border-white/10 pb-4 mb-5">
 						<div className="flex items-center gap-3">
-							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/25">
 								<RevolutPixIcon size={20} />
 							</div>
 							<div>

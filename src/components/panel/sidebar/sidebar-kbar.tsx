@@ -36,7 +36,7 @@ function SidebarKbarTrigger({ showFull }: { showFull: boolean }) {
 		return (
 			<Button
 				variant="secondary"
-				className="w-full justify-between gap-2 rounded-xl border border-divider px-3 py-2.5"
+				className="w-full justify-between gap-2 rounded-xl border border-border px-3 py-2.5"
 				onPress={() => query.toggle()}
 			>
 				<span className="flex items-center gap-2 text-sm text-muted">
@@ -72,8 +72,8 @@ function SidebarKbarPalette() {
 	return (
 		<KBarPortal>
 			<KBarPositioner className="z-300 bg-overlay/60 backdrop-blur-sm">
-				<KBarAnimator className="w-full max-w-2xl overflow-hidden rounded-2xl border border-divider bg-surface shadow-xl">
-					<div className="border-b border-divider">
+				<KBarAnimator className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-surfacexl">
+					<div className="border-b border-border">
 						<KBarSearch
 							className="kbar-search-input m-0 h-14 w-full border-0 bg-transparent px-4 text-base text-foreground outline-none placeholder:text-muted"
 							placeholder="Digite um comando ou pesquise..."

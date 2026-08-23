@@ -4,7 +4,7 @@ import { Card, Skeleton } from '@heroui/react';
 
 function FeeBlockSkeleton() {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-divider p-3">
+    <div className="flex items-center gap-3 rounded-xl border border-border p-3">
       <Skeleton className="h-9 w-9 shrink-0 rounded-lg" />
       <div className="flex flex-col gap-1">
         <Skeleton className="h-3 w-16 rounded-lg" />
@@ -16,7 +16,7 @@ function FeeBlockSkeleton() {
 
 function FeeColumnSkeleton() {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-divider p-4">
+    <div className="flex flex-col gap-3 rounded-xl border border-border p-4">
       <div className="flex items-center gap-2">
         <Skeleton className="h-4 w-4 rounded" />
         <Skeleton className="h-4 w-20 rounded-lg" />

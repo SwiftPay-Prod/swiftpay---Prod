@@ -13,7 +13,7 @@ interface ReviewIssuesAlertProps {
 
 export function ReviewStepLayout({ title, description, children }: ReviewStepLayoutProps) {
   return (
-    <div className="rounded-xl border border-divider bg-surface p-4">
+    <div className="rounded-xl border border-border bg-surface p-4">
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold">{title}</p>
         <p className="text-xs text-muted">{description}</p>

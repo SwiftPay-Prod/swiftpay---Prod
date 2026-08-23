@@ -102,7 +102,7 @@ export function DocumentViewer({ file, title, description, className = '' }: Doc
 						{isPdfFile && (
 							<button
 								type="button"
-								className="flex size-full cursor-pointer flex-col items-center justify-center gap-2 bg-surface transition-colors hover:bg-content1"
+								className="flex size-full cursor-pointer flex-col items-center justify-center gap-2 bg-surface transition-colors hover:bg-card"
 								onClick={() => setIsModalOpen(true)}
 							>
 								<Icon icon={File01Icon} className="size-12 text-muted" />

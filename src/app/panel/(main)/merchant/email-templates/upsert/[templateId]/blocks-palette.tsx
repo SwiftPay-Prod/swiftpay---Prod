@@ -33,7 +33,7 @@ function DraggablePaletteItem({ type, label, description, icon, isDisabled }: Dr
 			style={style}
 			{...listeners}
 			{...attributes}
-			className={`flex items-center gap-3 rounded-lg border border-border bg-content1 p-3 transition-colors ${
+			className={`flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-colors ${
 				isDisabled
 					? 'cursor-not-allowed grayscale'
 					: 'cursor-grab hover:border-accent hover:bg-accent/5 active:cursor-grabbing'

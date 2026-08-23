@@ -94,8 +94,8 @@ export function ReferralsContent({
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={UserGroupIcon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={UserGroupIcon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">{title}</h1>
 					</div>
@@ -105,30 +105,30 @@ export function ReferralsContent({
 
 			{/* 4-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Saldo Disponível
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<Icon icon={Wallet01Icon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
 						<AnimatedCurrency
 							value={data.availableCommissionBalance ?? 0}
-							className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block"
+							className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block"
 						/>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Liberado para saque PIX</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Liberado para saque PIX</p>
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Comissão Estimada
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Analytics01Icon} className="icon-xs" />
 						</div>
 					</div>
@@ -141,7 +141,7 @@ export function ReferralsContent({
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Comissão Já Paga
@@ -159,7 +159,7 @@ export function ReferralsContent({
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Usuários Indicados
@@ -177,9 +177,9 @@ export function ReferralsContent({
 				</div>
 			</div>
 			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 flex flex-col gap-4">
 					<div className="flex items-center gap-3 border-b border-white/8 pb-4">
-						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Link01Icon} className="icon-md" />
 						</div>
 						<div>
@@ -188,12 +188,12 @@ export function ReferralsContent({
 						</div>
 					</div>
 					<div className="flex flex-col gap-4">
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+						<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
 							<div className="flex flex-col gap-3">
 								<div className="flex items-center justify-between gap-2">
 									<div className="min-w-0 flex-1">
 										<span className="text-xs text-white/50">Código de indicação</span>
-										<p className="mt-1 font-mono text-sm font-bold text-[#4f55f1]">{referralCode || 'Não gerado'}</p>
+										<p className="mt-1 font-mono text-sm font-bold text-link">{referralCode || 'Não gerado'}</p>
 									</div>
 									<CopyReferralLinkButton
 										value={referralCode}
@@ -217,21 +217,21 @@ export function ReferralsContent({
 						</div>
 
 						<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5">
 								<span className="text-xs text-white/50">Chave PIX de recebimento</span>
 								<p className="mt-1 text-sm font-bold text-white">{payoutPixKeyType ? 'Configurada' : 'Não configurada'}</p>
 								{payoutPixKeyType && payoutPixKey && (
 									<p className="mt-1 break-all font-mono text-xs text-white/60">{payoutPixKey}</p>
 								)}
 							</div>
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-3.5">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-3.5">
 								<span className="text-xs text-white/50">Próxima janela de saque</span>
 								<p className="mt-1 text-sm font-bold text-white">{nextAllowedAtLabel}</p>
 							</div>
 						</div>
 
 						{!referralCode && showHeaderActions && (
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
 								<div className="flex flex-col gap-3">
 									<span className="text-xs text-white/70">
 										Você ainda não possui um link permanente. Gere agora para começar a indicar.
@@ -270,9 +270,9 @@ export function ReferralsContent({
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 flex flex-col gap-4">
 					<div className="flex items-center gap-3 border-b border-white/8 pb-4">
-						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Analytics01Icon} className="icon-md" />
 						</div>
 						<div>
@@ -281,14 +281,14 @@ export function ReferralsContent({
 						</div>
 					</div>
 					<div className="flex flex-col gap-4">
-						<div className="rounded-xl border border-white/8 bg-[#0a0a0a] divide-y divide-white/8 overflow-hidden">
+						<div className="rounded-xl border border-white/8 bg-surface-deep divide-y divide-white/8 overflow-hidden">
 							<div className="flex items-center justify-between gap-3 px-4 py-3">
 								<span className="text-xs text-white/50">Duração da indicação</span>
 								<span className="font-mono text-sm font-bold text-white">{data.referralDurationMonths ?? 0} meses</span>
 							</div>
 							<div className="flex items-center justify-between gap-3 px-4 py-3">
 								<span className="text-xs text-white/50">Comissão sobre lucro</span>
-								<span className="font-mono text-sm font-bold text-[#00a87e]">{basisPointsToPercentage(data.referralCommissionPercentage ?? 0)}%</span>
+								<span className="font-mono text-sm font-bold text-success">{basisPointsToPercentage(data.referralCommissionPercentage ?? 0)}%</span>
 							</div>
 							<div className="flex items-center justify-between gap-3 px-4 py-3">
 								<span className="text-xs text-white/50">Intervalo para novo saque</span>
@@ -304,7 +304,7 @@ export function ReferralsContent({
 							</div>
 						</div>
 
-						<div className="flex items-start gap-2.5 rounded-xl border border-[#ec7e00]/30 bg-[#ec7e00]/10 p-3.5 text-xs text-[#ec7e00]">
+						<div className="flex items-start gap-2.5 rounded-xl border border-warning/30 bg-warning/10 p-3.5 text-xs text-warning">
 							<Icon icon={InformationCircleIcon} className="icon-sm mt-0.5 shrink-0" />
 							<span>
 								Se a conta indicada ficar Inativa ou Suspensa, o ganho sobre as transações dela fica congelado até reativação.
@@ -314,7 +314,7 @@ export function ReferralsContent({
 				</div>
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6">
 				<div className="flex flex-col gap-1 border-b border-white/8 pb-4 mb-4">
 					<h3 className="text-sm font-bold text-white">Indicados e Comissões</h3>
 					<p className="text-xs text-white/50">Acompanhe usuários indicados, histórico de repasses e solicitações de saque.</p>

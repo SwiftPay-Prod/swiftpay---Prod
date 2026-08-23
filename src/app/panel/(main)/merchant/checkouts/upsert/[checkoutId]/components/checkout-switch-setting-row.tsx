@@ -30,7 +30,7 @@ export function CheckoutSwitchSettingRow({
 	disabledLabel = 'Inativo',
 }: CheckoutSwitchSettingRowProps) {
 	return (
-		<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+		<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 			<div className="flex items-start gap-3">
 				{icon && <Icon icon={icon} className="icon-sm mt-0.5 text-muted" />}
 				<div className="flex flex-col">

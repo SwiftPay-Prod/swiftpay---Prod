@@ -679,7 +679,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="accent"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-accent-soft-hover bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-accent-soft"
 						iconClassName="icon-md text-accent"
@@ -707,7 +707,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="success"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-success-soft-hover bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-success-soft"
 						iconClassName="icon-md text-success"
@@ -730,7 +730,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="secondary"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-secondary/30 bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-secondary/10"
 						iconClassName="icon-md text-secondary"
@@ -754,7 +754,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="warning"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-warning-soft-hover bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-warning-soft"
 						iconClassName="icon-md text-warning"
@@ -782,7 +782,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="accent"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-accent-soft-hover bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-accent-soft"
 						iconClassName="icon-md text-accent"
@@ -809,7 +809,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="secondary"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-secondary/30 bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-secondary/10"
 						iconClassName="icon-md text-secondary"
@@ -838,7 +838,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 						color="accent"
 						defaultExpanded={true}
 						itemClassName="rounded-xl border border-accent-soft-hover bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-accent-soft"
 						iconClassName="icon-md text-accent"
@@ -869,7 +869,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 							color="success"
 							defaultExpanded={true}
 							itemClassName="rounded-xl border border-success-soft-hover bg-surface"
-							triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+							triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 							summaryClassName="text-xs text-muted"
 							iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-success-soft"
 							iconClassName="icon-md text-success"
@@ -896,11 +896,11 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 										<p className="text-xs text-muted">Cupons</p>
 										<p className="text-sm font-medium">{selectedCouponIds.length}</p>
 									</div>
-									<div className="rounded-lg border border-content3 px-3 py-2">
+									<div className="rounded-lg border border-border px-3 py-2">
 										<p className="text-xs text-muted">Variantes pendentes</p>
 										<p className="text-sm font-medium">{pendingVariants.length}</p>
 									</div>
-									<div className="rounded-lg border border-content3 px-3 py-2">
+									<div className="rounded-lg border border-border px-3 py-2">
 										<p className="text-xs text-muted">Itens digitais pendentes</p>
 										<p className="text-sm font-medium">{pendingDigitalItems.length}</p>
 									</div>
@@ -911,7 +911,7 @@ export function DigitalProductFormContent({ merchantId, environment, product }: 
 				)}
 
 				{!isEditMode && (
-					<div className="rounded-xl border border-divider bg-surface p-4">
+					<div className="rounded-xl border border-border bg-surface p-4">
 						<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
 							<Button
 								variant="secondary"

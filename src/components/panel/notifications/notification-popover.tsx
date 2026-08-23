@@ -227,7 +227,7 @@ export function NotificationPopover() {
 							<Tag
 								id="User"
 								textValue="Pessoal"
-								className="cursor-pointer flex-1 justify-center gap-2 py-2 border border-divider bg-surface text-foreground data-selected:border-accent-soft-hover data-selected:bg-accent-soft data-selected:text-accent"
+								className="cursor-pointer flex-1 justify-center gap-2 py-2 border border-border bg-surface text-foreground data-selected:border-accent-soft-hover data-selected:bg-accent-soft data-selected:text-accent"
 							>
 								<Icon icon={UserIcon} className="icon-xs" />
 								{hasMerchantTab ? renderScopeLabel('Pessoal', userNotifications.unreadCount) : <span className="text-base font-medium">Pessoal</span>}
@@ -236,7 +236,7 @@ export function NotificationPopover() {
 								<Tag
 									id="Merchant"
 									textValue="Organização"
-									className="cursor-pointer flex-1 justify-center gap-2 py-2 border border-divider bg-surface text-foreground data-selected:border-warning-soft-hover data-selected:bg-warning-soft data-selected:text-warning"
+									className="cursor-pointer flex-1 justify-center gap-2 py-2 border border-border bg-surface text-foreground data-selected:border-warning-soft-hover data-selected:bg-warning-soft data-selected:text-warning"
 								>
 									<Icon icon={Building06Icon} className="icon-xs" />
 									{renderScopeLabel('Organização', merchantNotifications.unreadCount)}
@@ -252,7 +252,7 @@ export function NotificationPopover() {
 						{isLoadingNotifications ? (
 							<div className="flex flex-col gap-2">
 								{Array.from({ length: 4 }).map((_, i) => (
-									<div key={i} className="flex gap-3 p-3 rounded-xl border border-divider bg-surface">
+									<div key={i} className="flex gap-3 p-3 rounded-xl border border-border bg-surface">
 										<Skeleton className="w-8 h-8 rounded-lg shrink-0" />
 										<div className="flex-1 space-y-2">
 											<Skeleton className="h-4 w-3/4 rounded" />

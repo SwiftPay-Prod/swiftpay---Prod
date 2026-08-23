@@ -115,7 +115,7 @@ export function LandingPage({ initialAuthMode = null }: LandingPageProps) {
 						</div>
 
 						<div className="md:col-span-5">
-							<div className="relative overflow-hidden rounded-3xl border border-border bg-card/85 p-5 shadow-2xl">
+							<div className="relative overflow-hidden rounded-3xl border border-border bg-card/85 p-5">
 								<div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent/15 blur-3xl" />
 								<div className="relative">
 									<p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Fluxo operacional</p>

@@ -47,12 +47,12 @@ export function RevolutHeroBalanceCard({
 
 	return (
 		<div
-			className={`relative overflow-hidden rounded-[20px] bg-[#16181a] border border-white/12 p-6 sm:p-7 transition-all ${className}`}
+			className={`relative overflow-hidden rounded-[20px] bg-card border border-white/12 p-6 sm:p-7 transition-all ${className}`}
 		>
 			{/* Ambient Cobalt Glow */}
 			<div
 				aria-hidden="true"
-				className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[#494fdf]/10 blur-3xl"
+				className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand/10 blur-3xl"
 			/>
 
 			<div className="relative z-10 flex flex-col justify-between gap-6">
@@ -71,10 +71,10 @@ export function RevolutHeroBalanceCard({
 
 					<div className="flex items-center gap-2">
 						{/* Real-time Status Badge */}
-						<div className="inline-flex items-center gap-1.5 rounded-full border border-[#00a87e]/20 bg-[#00a87e]/10 px-2.5 py-0.5 text-[11px] font-medium text-[#00a87e]">
+						<div className="inline-flex items-center gap-1.5 rounded-full border border-success/20 bg-success/10 px-2.5 py-0.5 text-[11px] font-medium text-success">
 							<span className="relative flex h-1.5 w-1.5">
-								<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00a87e] opacity-75" />
-								<span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#00a87e]" />
+								<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+								<span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-success" />
 							</span>
 							<span>Tempo Real</span>
 						</div>
@@ -124,7 +124,7 @@ export function RevolutHeroBalanceCard({
 											</TooltipTrigger>
 											<TooltipContent
 												side="top"
-												className="max-w-64 border-white/12 bg-[#0a0a0a] text-xs text-white shadow-xl"
+												className="max-w-64 border-white/12 bg-surface-deep text-xs text-whitexl"
 											>
 												<p className="font-semibold text-white/90">Retenção de Reserva:</p>
 												<p className="mt-1 text-white/70">

@@ -61,21 +61,21 @@ function DetailsContentSkeleton() {
 function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; onViewTransaction?: (paymentId: string) => void }) {
 	return (
 		<div className="flex flex-col gap-4 text-white">
-			<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
-				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-sm text-[#00a87e]" />} title="Valores" />
+			<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
+				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-sm text-success" />} title="Valores" />
 				<div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
 					<DetailRow label="Subtotal" value={<span className="font-mono text-white tabular-nums">{formatCurrency(order.subtotalAmount)}</span>} />
 					<DetailRow label="Desconto" value={<span className="font-mono text-white/70 tabular-nums">{formatCurrency(order.discountAmount)}</span>} />
 					<DetailRow label="Frete" value={<span className="font-mono text-white/70 tabular-nums">{formatCurrency(order.shippingAmount)}</span>} />
 					<DetailRow
 						label="Total PIX"
-						value={<span className="text-[#00a87e] font-bold font-mono text-base tabular-nums">{formatCurrency(order.totalAmount)}</span>}
+						value={<span className="text-success font-bold font-mono text-base tabular-nums">{formatCurrency(order.totalAmount)}</span>}
 					/>
 				</div>
 			</div>
 
-			<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
-				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm text-[#4f55f1]" />} title="Informações Gerais" />
+			<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
+				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm text-link" />} title="Informações Gerais" />
 				<div className="grid grid-cols-2 gap-4 mt-2">
 					<DetailRow label="ID do Pedido" value={<CopyableValue value={order.id} label="ID" />} mono />
 					<DetailRow label="Criado em" value={<span className="font-mono text-white/70">{formatDate(order.createdAt)}</span>} />
@@ -89,8 +89,8 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			</div>
 
 			{order.customer && (
-				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
-					<SectionTitle icon={<Icon icon={UserIcon} className="icon-sm text-[#4f55f1]" />} title="Cliente" />
+				<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
+					<SectionTitle icon={<Icon icon={UserIcon} className="icon-sm text-link" />} title="Cliente" />
 					<div className="grid grid-cols-2 gap-4 mt-2">
 						<DetailRow label="Nome" value={<span className="font-bold text-white">{order.customer.name ?? '-'}</span>} />
 						<DetailRow label="Email" value={<EmailLink email={order.customer.email} />} />
@@ -101,8 +101,8 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			)}
 
 			{order.shippingAddress && (
-				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
-					<SectionTitle icon={<Icon icon={Location01Icon} className="icon-sm text-[#4f55f1]" />} title="Endereço de Entrega" />
+				<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
+					<SectionTitle icon={<Icon icon={Location01Icon} className="icon-sm text-link" />} title="Endereço de Entrega" />
 					<div className="grid grid-cols-2 gap-4 mt-2">
 						<DetailRow label="Rua" value={`${order.shippingAddress.street}, ${order.shippingAddress.number}`} />
 						{order.shippingAddress.complement && (
@@ -117,8 +117,8 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			)}
 
 			{order.items && order.items.length > 0 && (
-				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
-					<SectionTitle icon={<Icon icon={PackageIcon} className="icon-sm text-[#4f55f1]" />} title={`Itens (${order.items.length})`} />
+				<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
+					<SectionTitle icon={<Icon icon={PackageIcon} className="icon-sm text-link" />} title={`Itens (${order.items.length})`} />
 					<div className="flex flex-col gap-3 mt-2">
 						{order.items.map((item, index) => (
 							<div key={item.id ?? index} className="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/8">
@@ -143,8 +143,8 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 			)}
 
 			{order.payment && (
-				<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
-					<SectionTitle icon={<Icon icon={QrCodeIcon} className="icon-sm text-[#00a87e]" />} title="Pagamento PIX" />
+				<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
+					<SectionTitle icon={<Icon icon={QrCodeIcon} className="icon-sm text-success" />} title="Pagamento PIX" />
 					<div className="grid grid-cols-2 gap-4 mt-2">
 						<DetailRow label="ID da Transação" value={<CopyableValue value={order.payment.id} label="ID" />} mono />
 						<DetailRow
@@ -161,10 +161,10 @@ function OrderDetailsTab({ order, onViewTransaction }: { order: OrderDetails; on
 							}
 						/>
 						<DetailRow label="Valor Bruto" value={<span className="font-mono font-bold text-white">{formatCurrency(order.payment.amount)}</span>} />
-						<DetailRow label="Taxa Gateway" value={<span className="font-mono text-[#e23b4a]">{typeof order.payment.fee === 'number' ? formatCurrency(order.payment.fee) : '-'}</span>} />
+						<DetailRow label="Taxa Gateway" value={<span className="font-mono text-danger">{typeof order.payment.fee === 'number' ? formatCurrency(order.payment.fee) : '-'}</span>} />
 						<DetailRow
 							label="Valor Líquido"
-							value={typeof order.payment.netAmount === 'number' ? <span className="text-[#00a87e] font-mono font-bold">{formatCurrency(order.payment.netAmount)}</span> : '-'}
+							value={typeof order.payment.netAmount === 'number' ? <span className="text-success font-mono font-bold">{formatCurrency(order.payment.netAmount)}</span> : '-'}
 						/>
 					</div>
 					{onViewTransaction && (
@@ -201,9 +201,9 @@ const timelineTypeIcons: Record<TimelineEvent['type'], React.ReactNode> = {
 };
 
 const timelineTypeColors: Record<TimelineEvent['type'], string> = {
-	created: 'bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30',
-	payment: 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30',
-	fulfillment: 'bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30',
+	created: 'bg-brand/15 text-link border border-brand/30',
+	payment: 'bg-success/15 text-success border border-success/30',
+	fulfillment: 'bg-warning/15 text-warning border border-warning/30',
 	status: 'bg-white/5 text-white/70 border border-white/10',
 };
 
@@ -307,11 +307,11 @@ function DetailsContent({ orderPromise, onViewTransaction }: DetailsContentProps
 			<div className="flex flex-col gap-4 pb-4 border-b border-white/8">
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-0.5">
-						<span className="text-base font-mono font-bold text-[#4f55f1]">{order.orderNumber}</span>
+						<span className="text-base font-mono font-bold text-link">{order.orderNumber}</span>
 						<span className="text-xs text-white/50">Número do pedido</span>
 					</div>
 					<div className="flex flex-col gap-0.5 items-end">
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tabular-nums">{formatCurrency(order.totalAmount)}</span>
+						<span className="text-2xl font-extrabold font-mono text-success tabular-nums">{formatCurrency(order.totalAmount)}</span>
 						<span className="text-xs text-white/50">Total PIX</span>
 					</div>
 				</div>
@@ -353,11 +353,11 @@ export function OrderDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-3xl rounded-[28px] border border-white/12 bg-[#16181a] p-6 text-white">
+				<Modal.Dialog className="max-w-3xl rounded-[28px] border border-white/12 bg-card p-6 text-white">
 					<Modal.CloseTrigger className="text-white/40 hover:text-white" />
 					<Modal.Header className="pb-4 border-b border-white/8">
 						<div className="flex items-center gap-3">
-							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/30">
 								<Icon icon={ShoppingCartCheck01Icon} className="icon-md" />
 							</div>
 							<div>

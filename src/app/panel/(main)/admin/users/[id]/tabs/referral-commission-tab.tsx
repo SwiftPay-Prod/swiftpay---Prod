@@ -55,7 +55,7 @@ function getColumns(): DataTableColumn<AdminUserReferralCommissionPaymentHistory
 
 function renderMobileCommissionHistoryCard(item: AdminUserReferralCommissionPaymentHistory) {
   return (
-    <div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+    <div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
       <div className="flex items-start justify-between gap-3 mb-3">
         <span className="font-medium text-sm">{formatCurrency(item.amount)}</span>
         <span className="text-xs text-muted">{formatDate(item.paidAt)}</span>
@@ -133,11 +133,11 @@ export function ReferralCommissionTab({ user, onSaved }: ReferralCommissionTabPr
           </div>
         </Card.Header>
         <Card.Content className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-xl border border-divider bg-surface p-4">
+          <div className="rounded-xl border border-border bg-surface p-4">
             <p className="text-xs text-muted">Comissão total estimada</p>
             <p className="text-lg font-semibold">{formatCurrency(user.referralCommission.estimatedCommissionTotal)}</p>
           </div>
-          <div className="rounded-xl border border-divider bg-surface p-4">
+          <div className="rounded-xl border border-border bg-surface p-4">
             <p className="text-xs text-muted">Comissão já paga</p>
             <p className="text-lg font-semibold">{formatCurrency(user.referralCommission.paidCommissionTotal)}</p>
           </div>
@@ -158,11 +158,11 @@ export function ReferralCommissionTab({ user, onSaved }: ReferralCommissionTabPr
           </div>
         </Card.Header>
         <Card.Content className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          <div className="rounded-xl border border-divider bg-surface p-3">
+          <div className="rounded-xl border border-border bg-surface p-3">
             <span className="text-xs text-muted">Tipo da chave</span>
             <p className="text-sm font-medium">{pixKeyType ?? 'Não informado'}</p>
           </div>
-          <div className="rounded-xl border border-divider bg-surface p-3">
+          <div className="rounded-xl border border-border bg-surface p-3">
             <span className="text-xs text-muted">Chave PIX</span>
             <p className="text-sm font-medium break-all">{user.referralPayoutPixKey || 'Não informado'}</p>
           </div>

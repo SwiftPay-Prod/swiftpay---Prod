@@ -89,8 +89,8 @@ export function ReviewContent({ merchant }: ReviewContentProps) {
 
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div className="flex items-center gap-3">
-					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-						<Icon icon={Building02Icon} className="icon-sm text-[#4f55f1]" />
+					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+						<Icon icon={Building02Icon} className="icon-sm text-link" />
 					</div>
 					<div>
 						<h1 className="text-xl font-bold tracking-tight text-white">{currentMerchant.name || 'Organização'}</h1>

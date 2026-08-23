@@ -104,7 +104,7 @@ function TrackingOptionSection({
 	options: TrackingOption[];
 }) {
 	return (
-		<div className="flex flex-col gap-4 rounded-lg bg-content1 p-1">
+		<div className="flex flex-col gap-4 rounded-lg bg-card p-1">
 			<div className="flex items-center gap-2 text-xs text-foreground/60">
 				<Chip variant="soft" color={mapParseColorToChipColor(badgeColor)} size="sm">
 					{badgeLabel}
@@ -114,7 +114,7 @@ function TrackingOptionSection({
 
 			<div className="flex flex-col gap-3">
 				{options.map((option) => (
-					<div key={option.id} className="rounded-lg border border-divider bg-surface p-3">
+					<div key={option.id} className="rounded-lg border border-border bg-surface p-3">
 						<Checkbox variant="secondary" isSelected={option.isSelected} onChange={option.onChange}>
 							<div className="flex gap-3">
 								<Checkbox.Control>
@@ -250,7 +250,7 @@ export function TemplateConfigurationStep({
 				summary="Configure se o template é gratuito ou pago"
 				defaultExpanded={defaultExpanded}
 			>
-				<div className="flex flex-col gap-4 rounded-lg bg-content1">
+				<div className="flex flex-col gap-4 rounded-lg bg-card">
 					<div className="flex items-center gap-2 text-xs text-foreground/60">
 						<Chip variant="soft" color="warning" size="sm">
 							Configuração
@@ -272,7 +272,7 @@ export function TemplateConfigurationStep({
 				</div>
 
 				{!isFree && (
-					<div className="flex flex-col gap-4 rounded-lg bg-content1">
+					<div className="flex flex-col gap-4 rounded-lg bg-card">
 
 						<div
 							className={

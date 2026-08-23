@@ -54,7 +54,7 @@ function MobileCardButton({ onClick, disabled, children }: MobileCardButtonProps
 
 	return (
 		<div
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${isInteractive ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-border bg-surface p-3 overflow-hidden ${isInteractive ? 'cursor-pointer' : ''}`}
 			onClick={isInteractive ? onClick : undefined}
 			role={isInteractive ? 'button' : undefined}
 			tabIndex={isInteractive ? 0 : undefined}

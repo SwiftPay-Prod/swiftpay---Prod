@@ -48,7 +48,7 @@ function AcquirerBucketItem({ bucket }: { bucket: AdminMerchantAcquirerBucket })
 
 	return (
 		<Accordion hideSeparator className="px-0" key={bucket.merchantAcquirerId ?? 'legacy'}>
-			<Accordion.Item id={bucket.merchantAcquirerId ?? 'legacy'} className="rounded-lg border border-divider bg-surface">
+			<Accordion.Item id={bucket.merchantAcquirerId ?? 'legacy'} className="rounded-lg border border-border bg-surface">
 				<Accordion.Heading>
 					<Accordion.Trigger className="flex w-full items-center justify-between p-4">
 						<div className="flex flex-1 items-center gap-3">
@@ -60,7 +60,7 @@ function AcquirerBucketItem({ bucket }: { bucket: AdminMerchantAcquirerBucket })
 									</Avatar.Fallback>
 								</Avatar>
 							) : (
-								<div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-content1">
+								<div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-card">
 									<Icon icon={ServerStack01Icon} className="icon-sm text-muted" />
 								</div>
 							)}

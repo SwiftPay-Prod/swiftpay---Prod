@@ -50,11 +50,11 @@ export function MobileBottomSheet({ isOpen, onClose, onClosed, title, subtitle, 
 				onClick={onClose}
 			/>
 			<div
-				className={`absolute inset-x-0 bottom-0 rounded-t-3xl border border-divider bg-surface p-4 transition-transform duration-200 ease-out ${
+				className={`absolute inset-x-0 bottom-0 rounded-t-3xl border border-border bg-surface p-4 transition-transform duration-200 ease-out ${
 					isVisible ? 'translate-y-0' : 'translate-y-full'
 				}`}
 			>
-				<div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-content2" />
+				<div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-surface-deep" />
 				{(resolvedTitle || subtitle) && (
 					<div className="mb-3">
 						{resolvedTitle ? <div className="text-sm font-semibold truncate">{resolvedTitle}</div> : null}

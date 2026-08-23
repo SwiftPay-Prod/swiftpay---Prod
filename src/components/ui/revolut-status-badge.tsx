@@ -37,8 +37,8 @@ export function RevolutStatusBadge({
 		normalized === 'confirmed'
 	) {
 		return (
-			<span className={`inline-flex items-center gap-1.5 rounded-full border border-[#00a87e]/30 bg-[#00a87e]/15 font-mono font-semibold text-[#00a87e] ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
-				<span className="h-1.5 w-1.5 rounded-full bg-[#00a87e]" />
+			<span className={`inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/15 font-mono font-semibold text-success ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
+				<span className="h-1.5 w-1.5 rounded-full bg-success" />
 				{label || 'Concluído'}
 			</span>
 		);
@@ -55,8 +55,8 @@ export function RevolutStatusBadge({
 		normalized === 'under_review'
 	) {
 		return (
-			<span className={`inline-flex items-center gap-1.5 rounded-full border border-[#ec7e00]/30 bg-[#ec7e00]/15 font-mono font-semibold text-[#ec7e00] ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
-				<span className="h-1.5 w-1.5 rounded-full bg-[#ec7e00] animate-pulse" />
+			<span className={`inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/15 font-mono font-semibold text-warning ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
+				<span className="h-1.5 w-1.5 rounded-full bg-warning animate-pulse" />
 				{label || 'Pendente'}
 			</span>
 		);
@@ -72,8 +72,8 @@ export function RevolutStatusBadge({
 		normalized === 'denied'
 	) {
 		return (
-			<span className={`inline-flex items-center gap-1.5 rounded-full border border-[#e23b4a]/30 bg-[#e23b4a]/15 font-mono font-semibold text-[#e23b4a] ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
-				<span className="h-1.5 w-1.5 rounded-full bg-[#e23b4a]" />
+			<span className={`inline-flex items-center gap-1.5 rounded-full border border-danger/30 bg-danger/15 font-mono font-semibold text-danger ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
+				<span className="h-1.5 w-1.5 rounded-full bg-danger" />
 				{label || 'Falhou'}
 			</span>
 		);
@@ -87,8 +87,8 @@ export function RevolutStatusBadge({
 		normalized === 'chargeback'
 	) {
 		return (
-			<span className={`inline-flex items-center gap-1.5 rounded-full border border-[#494fdf]/30 bg-[#494fdf]/15 font-mono font-semibold text-[#4f55f1] ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
-				<span className="h-1.5 w-1.5 rounded-full bg-[#4f55f1]" />
+			<span className={`inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/15 font-mono font-semibold text-link ${size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-xs'} ${className}`}>
+				<span className="h-1.5 w-1.5 rounded-full bg-link" />
 				{label || 'Estornado'}
 			</span>
 		);

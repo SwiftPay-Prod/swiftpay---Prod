@@ -98,18 +98,18 @@ function getConversionColor(percentage: number): ChipColor {
 
 function getConversionTextClassName(percentage: number): string {
   const color = getConversionColor(percentage);
-  if (color === 'danger') return 'text-[#e23b4a]';
-  if (color === 'accent') return 'text-[#4f55f1]';
-  if (color === 'warning') return 'text-[#ec7e00]';
-  return 'text-[#00a87e]';
+  if (color === 'danger') return 'text-danger';
+  if (color === 'accent') return 'text-link';
+  if (color === 'warning') return 'text-warning';
+  return 'text-success';
 }
 
 function getApprovalRateEvolutionTextClassName(percentage: number): string {
-  if (percentage <= 15) return 'text-[#e23b4a]';
-  if (percentage <= 25) return 'text-[#ec7e00]';
+  if (percentage <= 15) return 'text-danger';
+  if (percentage <= 25) return 'text-warning';
   if (percentage <= 35) return 'text-amber-500';
-  if (percentage <= 50) return 'text-[#4f55f1]';
-  return 'text-[#00a87e]';
+  if (percentage <= 50) return 'text-link';
+  return 'text-success';
 }
 
 function getEffectiveConversion(last7Days: number | null, yesterday: number | null): number | null {
@@ -621,8 +621,8 @@ export function SettingsContent({
     <>
       <div className="flex flex-col gap-6 bg-[#000000] text-white">
         <div className="flex items-center gap-3 border-b border-white/10 pb-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-            <Icon icon={Settings02Icon} className="icon-sm text-[#4f55f1]" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+            <Icon icon={Settings02Icon} className="icon-sm text-link" />
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight text-white">Configurações</h1>
@@ -635,7 +635,7 @@ export function SettingsContent({
           defaultSelectedKey="nominals"
         >
           <Tabs.Panel id="nominals" className="flex flex-col gap-4 p-0 pt-4">
-            <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+            <div className="rounded-[20px] border border-white/12 bg-card p-5">
               <div>
                 <div className="flex flex-col gap-1">
                   <div>
@@ -847,7 +847,7 @@ export function SettingsContent({
                             enabled={selectedNominal.supportsPix}
                             label="PIX SPI"
                             icon={QrCodeIcon}
-                            colorClass="bg-[#00a87e]/15 text-[#00a87e] border-white/20"
+                            colorClass="bg-success/15 text-success border-white/20"
                           />
                         </div>
                       </div>
@@ -914,7 +914,7 @@ export function SettingsContent({
                           <span className="rounded-md border border-white/12 px-1.5 py-0.5 text-white">
                             Transações: <strong>{item.totalTransactions.toLocaleString('pt-BR')}</strong>
                           </span>
-                          <span className="rounded-md border border-white/20 bg-[#494fdf]/10 px-1.5 py-0.5 text-[#4f55f1]">
+                          <span className="rounded-md border border-white/20 bg-brand/10 px-1.5 py-0.5 text-link">
                             Seleções: <strong>{item.timesSelected.toLocaleString('pt-BR')}</strong>
                           </span>
                         </div>
@@ -988,9 +988,9 @@ export function SettingsContent({
                     </div>
 
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                      <div className="flex flex-col gap-1 rounded-lg border border-white/20 bg-[#494fdf]/10 p-2">
+                      <div className="flex flex-col gap-1 rounded-lg border border-white/20 bg-brand/10 p-2">
                         <div className="flex items-center justify-between gap-2">
-                          <Label className="text-xs font-semibold text-[#4f55f1]">Variante A</Label>
+                          <Label className="text-xs font-semibold text-link">Variante A</Label>
                           <Chip size="sm" variant="soft" color="accent" className="h-5 text-xs">
                             {formatSplitPercent(activeAbTest.variantAWeightPercent)}%
                           </Chip>
@@ -998,9 +998,9 @@ export function SettingsContent({
                         <span className="text-xs text-white">{abVariantA ? getNominalDisplayLabel(abVariantA) : 'Nominal A'}</span>
                       </div>
 
-                      <div className="flex flex-col gap-1 rounded-lg border border-white/20 bg-[#ec7e00]/10 p-2">
+                      <div className="flex flex-col gap-1 rounded-lg border border-white/20 bg-warning/10 p-2">
                         <div className="flex items-center justify-between gap-2">
-                          <Label className="text-xs font-semibold text-[#ec7e00]">Variante B</Label>
+                          <Label className="text-xs font-semibold text-warning">Variante B</Label>
                           <Chip size="sm" variant="soft" color="warning" className="h-5 text-xs">
                             {formatSplitPercent(activeAbTest.variantBWeightPercent)}%
                           </Chip>
@@ -1352,7 +1352,7 @@ export function SettingsContent({
                     const isExpanded = expandedAbHistoryKeys.has(item.id);
 
                     return (
-                      <SectionAccordion.Item key={item.id} id={item.id} className="rounded-xl border border-white/8 bg-[#16181a]">
+                      <SectionAccordion.Item key={item.id} id={item.id} className="rounded-xl border border-white/8 bg-card">
                         <SectionAccordion.Heading>
                           <SectionAccordion.Trigger className="flex w-full items-center justify-between px-3 py-2.5">
                             <div className="flex w-full flex-col items-start gap-2 text-left">
@@ -1529,10 +1529,10 @@ export function SettingsContent({
           </Tabs.Panel>
 
           <Tabs.Panel id="danger" className="p-0 pt-4">
-            <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+            <div className="rounded-[20px] border border-white/12 bg-card p-5">
               <div>
                 <div className="flex flex-col gap-1">
-                  <div className="text-[#e23b4a]">Zona de Perigo</div>
+                  <div className="text-danger">Zona de Perigo</div>
                   <Description>Ações irreversíveis para sua organização</Description>
                 </div>
               </div>
@@ -1568,7 +1568,7 @@ export function SettingsContent({
             <Modal.CloseTrigger />
 
             <Modal.Header>
-              <Modal.Icon className="bg-danger-soft text-[#e23b4a]">
+              <Modal.Icon className="bg-danger-soft text-danger">
                 <Icon icon={Alert02Icon} className="icon-md" />
               </Modal.Icon>
               <Modal.Heading>Encerrar teste A/B</Modal.Heading>
@@ -1593,17 +1593,17 @@ export function SettingsContent({
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {winnerSelectionOptions.map((item) => {
                     const isSelected = abWinnerMerchantAcquirerId === item.merchantAcquirerId;
-                    const selectedBorderClass = item.color === 'warning' ? 'border-[#ec7e00]' : 'border-[#4f55f1]';
+                    const selectedBorderClass = item.color === 'warning' ? 'border-warning' : 'border-link';
                     const display = splitDisplayLabel(item.displayLabel);
 
                     return (
                       <label
                         key={item.merchantAcquirerId}
                         className={[
-                          'flex h-full w-full cursor-pointer flex-col gap-2 rounded-lg border bg-[#16181a] px-3 py-3 transition-colors',
+                          'flex h-full w-full cursor-pointer flex-col gap-2 rounded-lg border bg-card px-3 py-3 transition-colors',
                           isSelected
                             ? selectedBorderClass
-                            : 'border-white/12 bg-[#16181a] hover:border-white/20',
+                            : 'border-white/12 bg-card hover:border-white/20',
                         ].join(' ')}
                         aria-disabled={isAbTestPending}
                       >
@@ -1629,7 +1629,7 @@ export function SettingsContent({
                               {item.variantLabel}
                             </Chip>
                           </div>
-                          {isSelected && <Icon icon={CheckmarkCircle02Icon} className="icon-sm text-[#4f55f1]" />}
+                          {isSelected && <Icon icon={CheckmarkCircle02Icon} className="icon-sm text-link" />}
                         </div>
 
                         <span className="text-sm text-white">

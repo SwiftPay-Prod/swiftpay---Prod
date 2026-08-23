@@ -106,13 +106,13 @@ export function DateTimePicker({
 								nav: 'absolute inset-x-0 flex items-center justify-between',
 								button_previous: cn(
 									'inline-flex size-7 items-center justify-center rounded-md',
-									'text-muted hover:bg-content2 hover:text-foreground',
+									'text-muted hover:bg-surface-deep hover:text-foreground',
 									'focus:outline-none focus:ring-1 focus:ring-accent',
 									'disabled:pointer-events-none disabled:opacity-50'
 								),
 								button_next: cn(
 									'inline-flex size-7 items-center justify-center rounded-md',
-									'text-muted hover:bg-content2 hover:text-foreground',
+									'text-muted hover:bg-surface-deep hover:text-foreground',
 									'focus:outline-none focus:ring-1 focus:ring-accent',
 									'disabled:pointer-events-none disabled:opacity-50'
 								),
@@ -123,17 +123,17 @@ export function DateTimePicker({
 								day: 'relative p-0 text-center text-sm',
 								day_button: cn(
 									'inline-flex size-9 items-center justify-center rounded-md font-normal',
-									'hover:bg-content2 focus:outline-none focus:ring-1 focus:ring-accent',
+									'hover:bg-surface-deep focus:outline-none focus:ring-1 focus:ring-accent',
 									'aria-selected:bg-accent aria-selected:text-accent-foreground aria-selected:hover:bg-accent'
 								),
 								selected: '',
-								today: 'bg-content2',
+								today: 'bg-surface-deep',
 								outside: 'text-muted/50',
 								disabled: 'text-muted/30 pointer-events-none',
 								hidden: 'invisible',
 							}}
 						/>
-						<div className="border-t border-outline bg-content1 px-3 py-2.5">
+						<div className="border-t border-outline bg-card px-3 py-2.5">
 							<div className="flex items-center gap-3">
 								<div className="flex items-center gap-1.5 text-muted">
 									<Icon icon={Clock01Icon} className="icon-sm" />

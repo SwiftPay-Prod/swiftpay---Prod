@@ -264,7 +264,7 @@ export function ReconciliationModal({ isOpen, onOpenChange, data, onApplyFix, is
                           value={formatCurrency(data.details.totalCompletedPayoutNetAmount)}
                           valueClass="text-accent"
                         />
-                        <div className="grid grid-cols-1 gap-3 rounded-lg border border-foreground/10 bg-content1 px-3 py-2.5 md:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-3 rounded-lg border border-foreground/10 bg-card px-3 py-2.5 md:grid-cols-3">
                           <DetailRow label="Pagamentos concluidos" value={data.details.completedPaymentsCount} />
                           <DetailRow label="Saques processando" value={data.details.processingPayoutItemsCount} />
                           <DetailRow label="Saques concluidos" value={data.details.completedPayoutItemsCount} />
@@ -359,7 +359,7 @@ export function ReconciliationModal({ isOpen, onOpenChange, data, onApplyFix, is
                       ))}
 
                       {totalPages > 1 && (
-                        <div className="flex items-center justify-between border-t border-divider pt-2">
+                        <div className="flex items-center justify-between border-t border-border pt-2">
                           <p className="text-xs text-muted">
                             {pageStart + 1} - {Math.min(pageStart + ACQUIRERS_PAGE_SIZE, filteredAcquirers.length)} de {filteredAcquirers.length}
                           </p>
@@ -388,7 +388,7 @@ export function ReconciliationModal({ isOpen, onOpenChange, data, onApplyFix, is
                       )}
                     </div>
                   ) : (
-                    <div className="rounded-xl border border-dashed border-divider bg-content1 p-4 text-sm text-muted">
+                    <div className="rounded-xl border border-dashed border-border bg-card p-4 text-sm text-muted">
                       Nenhuma adquirente encontrada para o filtro atual.
                     </div>
                   )}
@@ -479,7 +479,7 @@ function PlatformAccountRow({
     <div className={`rounded-lg border p-3 ${hasDiscrepancy ? 'border-warning/40 bg-warning/5' : 'border-foreground/10 bg-surface'}`}>
       <div className="flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex min-w-0 items-start gap-3">
-          <div className={`rounded-lg p-2 ${hasDiscrepancy ? 'bg-warning/10' : 'bg-content1'}`}>
+          <div className={`rounded-lg p-2 ${hasDiscrepancy ? 'bg-warning/10' : 'bg-card'}`}>
             <Icon icon={icon} className={`icon-md ${hasDiscrepancy ? 'text-warning' : accentClass}`} />
           </div>
           <div className="min-w-0">
@@ -515,7 +515,7 @@ function AccountStat({
   compact?: boolean;
 }) {
   return (
-    <div className={`rounded-lg bg-content1 ${compact ? 'px-3 py-2.5' : 'px-3 py-3'}`}>
+    <div className={`rounded-lg bg-card ${compact ? 'px-3 py-2.5' : 'px-3 py-3'}`}>
       <p className="text-xs uppercase tracking-wide text-muted">{label}</p>
       <p className={`mt-1 whitespace-nowrap font-mono text-sm font-semibold ${valueClass}`}>{valueLabel ?? formatCurrency(value ?? 0)}</p>
     </div>
@@ -571,7 +571,7 @@ function AcquirerReconciliationCard({ acquirer }: { acquirer: AcquirerReconcilia
         <Accordion.Panel>
           <Accordion.Body className="border-t border-foreground/10 p-3">
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-[0.82fr_1.18fr]">
-              <div className="flex flex-col gap-2.5 rounded-lg border border-foreground/10 bg-content1 p-3">
+              <div className="flex flex-col gap-2.5 rounded-lg border border-foreground/10 bg-card p-3">
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <CompactMetric label="Volume bruto" value={formatCurrency(acquirer.grossVolume)} valueClass="text-foreground" />
                   <CompactMetric label="Taxas da adquirente" value={`-${formatCurrency(acquirer.totalAcquirerFees)}`} valueClass="text-danger" />
@@ -620,7 +620,7 @@ function AcquirerMetricCard({
   const hasDiscrepancy = details.current !== details.expected;
 
   return (
-    <div className={`rounded-lg border p-3 ${hasDiscrepancy ? 'border-warning/40 bg-warning/5' : 'border-foreground/10 bg-content1'}`}>
+    <div className={`rounded-lg border p-3 ${hasDiscrepancy ? 'border-warning/40 bg-warning/5' : 'border-foreground/10 bg-card'}`}>
       <div className="mb-2.5 flex items-center gap-2">
         <Icon icon={icon} className={`icon-sm ${hasDiscrepancy ? 'text-warning' : accentClass}`} />
         <p className="text-sm font-medium">{title}</p>

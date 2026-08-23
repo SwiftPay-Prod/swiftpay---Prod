@@ -34,7 +34,7 @@ export default function PublicDocsPage() {
   return (
     <div className="min-h-screen bg-[#000000] text-white font-sans antialiased flex flex-col md:flex-row">
       {/* Mobile Top Header */}
-      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#16181a] border-b border-white/12 sticky top-0 z-40">
+      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-card border-b border-white/12 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <SwiftPayBrandLogo showText={true} iconSize={32} textClassName="text-lg" />
         </div>
@@ -49,7 +49,7 @@ export default function PublicDocsPage() {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-64 bg-[#16181a] border-r border-white/12 flex flex-col transition-transform duration-200 ease-in-out ${
+        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-64 bg-card border-r border-white/12 flex flex-col transition-transform duration-200 ease-in-out ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
@@ -86,16 +86,16 @@ export default function PublicDocsPage() {
                 }}
                 className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   isActive
-                    ? 'bg-[#00a87e]/15 text-[#00a87e] font-semibold'
+                    ? 'bg-success/15 text-success font-semibold'
                     : 'text-white/60 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#00a87e]' : 'text-white/60'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-success' : 'text-white/60'}`} />
                   <span>{item.label}</span>
                 </div>
                 {item.badge && (
-                  <span className="text-xs bg-[#00a87e]/15 text-[#00a87e] font-bold px-1.5 py-0.5 rounded">
+                  <span className="text-xs bg-success/15 text-success font-bold px-1.5 py-0.5 rounded">
                     {item.badge}
                   </span>
                 )}
@@ -105,7 +105,7 @@ export default function PublicDocsPage() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-white/12 bg-[#16181a]/50">
+        <div className="p-4 border-t border-white/12 bg-card/50">
           <div className="flex items-center justify-between text-xs text-white/60">
             <span>Versão da API</span>
             <span className="font-mono text-xs bg-white/10 text-white px-1.5 py-0.5 rounded font-semibold">
@@ -126,7 +126,7 @@ export default function PublicDocsPage() {
         </div>
 
         {/* Section 1: Guia de Início Rápido */}
-        <section id="inicio" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-5">
+        <section id="inicio" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-5">
           <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
             Guia de Início Rápido
           </h2>
@@ -148,7 +148,7 @@ export default function PublicDocsPage() {
                 2
               </span>
               <div>
-                <strong className="font-semibold text-white">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba "Configurações e API" e copie sua Chave Secreta (<code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">secretKey</code>).
+                <strong className="font-semibold text-white">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba "Configurações e API" e copie sua Chave Secreta (<code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">secretKey</code>).
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -156,7 +156,7 @@ export default function PublicDocsPage() {
                 3
               </span>
               <div>
-                <strong className="font-semibold text-white">Autentique suas Requisições:</strong> Para toda chamada à API, obtenha o token JWT em <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">POST /v1/auth/token</code> e inclua no cabeçalho HTTP <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;token&gt;</code>.
+                <strong className="font-semibold text-white">Autentique suas Requisições:</strong> Para toda chamada à API, obtenha o token JWT em <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">POST /v1/auth/token</code> e inclua no cabeçalho HTTP <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;token&gt;</code>.
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -164,7 +164,7 @@ export default function PublicDocsPage() {
                 4
               </span>
               <div>
-                <strong className="font-semibold text-white">Crie sua Primeira Transação:</strong> Use o endpoint <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">POST /v1/transactions</code> para gerar sua primeira cobrança PIX instantânea com QR Code e Pix Copia e Cola.
+                <strong className="font-semibold text-white">Crie sua Primeira Transação:</strong> Use o endpoint <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">POST /v1/transactions</code> para gerar sua primeira cobrança PIX instantânea com QR Code e Pix Copia e Cola.
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -179,10 +179,10 @@ export default function PublicDocsPage() {
         </section>
 
         {/* Section 2: Autenticação */}
-        <section id="autenticacao" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-5">
+        <section id="autenticacao" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-5">
           <h2 className="text-xl font-bold text-white tracking-tight">Autenticação</h2>
           <p className="text-sm text-white/60 leading-relaxed">
-            A autenticação é feita via OAuth2 Client Credentials ou Token JWT. Envie sua chave no cabeçalho <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;accessToken&gt;</code> em todas as requisições. Requisições sem uma chave válida retornarão um erro <code className="text-xs bg-rose-500/15 text-rose-300 px-1.5 py-0.5 rounded font-mono">401 Unauthorized</code>.
+            A autenticação é feita via OAuth2 Client Credentials ou Token JWT. Envie sua chave no cabeçalho <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;accessToken&gt;</code> em todas as requisições. Requisições sem uma chave válida retornarão um erro <code className="text-xs bg-rose-500/15 text-rose-300 px-1.5 py-0.5 rounded font-mono">401 Unauthorized</code>.
           </p>
 
           <div className="space-y-3">
@@ -201,8 +201,8 @@ export default function PublicDocsPage() {
               >
                 {copiedSection === 'auth-curl' ? (
                   <>
-                    <CheckIcon className="w-3.5 h-3.5 text-[#00a87e]" />
-                    <span className="text-[#00a87e] font-medium">Copiado!</span>
+                    <CheckIcon className="w-3.5 h-3.5 text-success" />
+                    <span className="text-success font-medium">Copiado!</span>
                   </>
                 ) : (
                   <>
@@ -236,10 +236,10 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 3: Transações */}
-        <section id="transacoes" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
+        <section id="transacoes" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="bg-[#00a87e]/15 text-[#00a87e] font-mono text-xs font-bold px-2 py-0.5 rounded">
+              <span className="bg-success/15 text-success font-mono text-xs font-bold px-2 py-0.5 rounded">
                 POST
               </span>
               <span className="font-mono text-xs text-white/60">/v1/transactions</span>
@@ -267,37 +267,37 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </thead>
                 <tbody className="divide-y divide-white/12 text-white">
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">method</td>
-                    <td className="p-3 text-[#00a87e] font-semibold">Sim</td>
+                    <td className="p-3 font-mono text-success">method</td>
+                    <td className="p-3 text-success font-semibold">Sim</td>
                     <td className="p-3">Método de pagamento (usar "PIX")</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">amount</td>
-                    <td className="p-3 text-[#00a87e] font-semibold">Sim</td>
+                    <td className="p-3 font-mono text-success">amount</td>
+                    <td className="p-3 text-success font-semibold">Sim</td>
                     <td className="p-3">Valor da cobrança em centavos (ex: 1000 = R$ 10,00)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">currency</td>
+                    <td className="p-3 font-mono text-success">currency</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Moeda (Padrão: "BRL")</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">description</td>
+                    <td className="p-3 font-mono text-success">description</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Descrição livre da cobrança exibida ao pagador</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">customerName</td>
+                    <td className="p-3 font-mono text-success">customerName</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Nome completo do pagador (recomendado para comprovação)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">customerDocument</td>
+                    <td className="p-3 font-mono text-success">customerDocument</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">CPF (11 dígitos) ou CNPJ (14 dígitos) válido do pagador</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">customerEmail</td>
+                    <td className="p-3 font-mono text-success">customerEmail</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">E-mail do pagador para envio de comprovante</td>
                   </tr>
@@ -323,8 +323,8 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
               >
                 {copiedSection === 'tx-res' ? (
                   <>
-                    <CheckIcon className="w-3.5 h-3.5 text-[#00a87e]" />
-                    <span className="text-[#00a87e] font-medium">Copiado!</span>
+                    <CheckIcon className="w-3.5 h-3.5 text-success" />
+                    <span className="text-success font-medium">Copiado!</span>
                   </>
                 ) : (
                   <>
@@ -364,7 +364,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 4: Consultas */}
-        <section id="consultas" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
+        <section id="consultas" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-6">
           <div className="flex items-center gap-2 mb-1">
             <span className="bg-blue-500/15 text-blue-400 font-mono text-xs font-bold px-2 py-0.5 rounded">
               GET
@@ -455,10 +455,10 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 5: Saques */}
-        <section id="saques" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
+        <section id="saques" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="bg-[#00a87e]/15 text-[#00a87e] font-mono text-xs font-bold px-2 py-0.5 rounded">
+              <span className="bg-success/15 text-success font-mono text-xs font-bold px-2 py-0.5 rounded">
                 POST
               </span>
               <span className="font-mono text-xs text-white/60">/v1/cashouts</span>
@@ -483,39 +483,39 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </thead>
                 <tbody className="divide-y divide-white/12 text-white">
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">amount</td>
-                    <td className="p-3 text-[#00a87e] font-semibold">Sim</td>
+                    <td className="p-3 font-mono text-success">amount</td>
+                    <td className="p-3 text-success font-semibold">Sim</td>
                     <td className="p-3">Valor do saque em centavos (ex: 5000 = R$ 50,00)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">pixKey</td>
+                    <td className="p-3 font-mono text-success">pixKey</td>
                     <td className="p-3 text-white/60">Opcional*</td>
                     <td className="p-3">Chave PIX de destino (CPF, CNPJ, e-mail, telefone ou aleatória)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">pixKeyType</td>
+                    <td className="p-3 font-mono text-success">pixKeyType</td>
                     <td className="p-3 text-white/60">Opcional*</td>
                     <td className="p-3">Tipo da chave: "CPF", "CNPJ", "Email", "Phone" ou "Random"</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">payoutAccountId</td>
+                    <td className="p-3 font-mono text-success">payoutAccountId</td>
                     <td className="p-3 text-white/60">Opcional*</td>
                     <td className="p-3">ID de conta de pagamento pré-cadastrada (alternativa à chave PIX)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">externalId</td>
+                    <td className="p-3 font-mono text-success">externalId</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Identificador externo para conciliação</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-[#00a87e]">callbackUrl</td>
+                    <td className="p-3 font-mono text-success">callbackUrl</td>
                     <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">URL de callback específica para este saque</td>
                   </tr>
                 </tbody>
               </table>
               <p className="p-3 text-white/60 border-t border-white/12">
-                * Informe <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">pixKey</code> + <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">pixKeyType</code> OU <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">payoutAccountId</code> (nunca ambos).
+                * Informe <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded">pixKey</code> + <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded">pixKeyType</code> OU <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded">payoutAccountId</code> (nunca ambos).
               </p>
             </div>
           </div>
@@ -545,17 +545,17 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 <tbody className="divide-y divide-white/12 text-white">
                   <tr>
                     <td className="p-3 font-mono font-bold text-blue-400">GET</td>
-                    <td className="p-3 font-mono text-[#00a87e]">/v1/cashouts</td>
+                    <td className="p-3 font-mono text-success">/v1/cashouts</td>
                     <td className="p-3">Lista saques com filtros (página, status, período)</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono font-bold text-blue-400">GET</td>
-                    <td className="p-3 font-mono text-[#00a87e]">/v1/cashouts/&#123;id&#125;</td>
+                    <td className="p-3 font-mono text-success">/v1/cashouts/&#123;id&#125;</td>
                     <td className="p-3">Consulta os detalhes de um saque</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono font-bold text-amber-400">POST</td>
-                    <td className="p-3 font-mono text-[#00a87e]">/v1/cashouts/&#123;id&#125;/cancel</td>
+                    <td className="p-3 font-mono text-success">/v1/cashouts/&#123;id&#125;/cancel</td>
                     <td className="p-3">Cancela um saque ainda em processamento</td>
                   </tr>
                 </tbody>
@@ -565,16 +565,16 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 6: Webhooks */}
-        <section id="webhooks" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
+        <section id="webhooks" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-6">
           <div>
             <h2 className="text-xl font-bold text-white tracking-tight">Webhooks & Eventos</h2>
             <p className="text-sm text-white/60 mt-1">
-              Configure a URL de webhook da <strong className="text-white">sua aplicação</strong> no portal (aba "Configurações e API") e a SwiftPay enviará notificações em tempo real (HTTP POST) sempre que uma transação ou saque mudar de status. Você também pode informar um <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded text-xs">callbackUrl</code> por chamada para sobrescrever a URL padrão.
+              Configure a URL de webhook da <strong className="text-white">sua aplicação</strong> no portal (aba "Configurações e API") e a SwiftPay enviará notificações em tempo real (HTTP POST) sempre que uma transação ou saque mudar de status. Você também pode informar um <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded text-xs">callbackUrl</code> por chamada para sobrescrever a URL padrão.
             </p>
           </div>
 
           {/* Webhook Payload Box */}
-          <div className="bg-[#16181a] border border-white/12 rounded-xl p-4 space-y-3 text-xs">
+          <div className="bg-card border border-white/12 rounded-xl p-4 space-y-3 text-xs">
             <div>
               <span className="font-bold text-white block">Exemplo de payload enviado (transação paga):</span>
               <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed mt-2">
@@ -594,7 +594,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
               </pre>
             </div>
             <p className="text-white/60 text-xs">
-              Sua URL deve responder <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">200 OK</code> para confirmar o recebimento. Se não confirmar, a SwiftPay faz novas tentativas com backoff.
+              Sua URL deve responder <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded">200 OK</code> para confirmar o recebimento. Se não confirmar, a SwiftPay faz novas tentativas com backoff.
             </p>
           </div>
 
@@ -602,7 +602,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">Eventos de Transação e Saque</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-card/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 flex-shrink-0"></span>
                 <div>
                   <strong className="font-semibold text-white block">Aguardando Pagamento</strong>
@@ -610,7 +610,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </div>
               </div>
 
-              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-card/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></span>
                 <div>
                   <strong className="font-semibold text-white block">Transação Paga</strong>
@@ -618,7 +618,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </div>
               </div>
 
-              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-card/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-rose-500 mt-1.5 flex-shrink-0"></span>
                 <div>
                   <strong className="font-semibold text-white block">Transação Reembolsada</strong>
@@ -626,7 +626,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </div>
               </div>
 
-              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-card/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></span>
                 <div>
                   <strong className="font-semibold text-white block">Saque Processando</strong>
@@ -634,7 +634,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </div>
               </div>
 
-              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-card/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></span>
                 <div>
                   <strong className="font-semibold text-white block">Saque Concluído</strong>
@@ -642,7 +642,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                 </div>
               </div>
 
-              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-card/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-white/10 mt-1.5 flex-shrink-0"></span>
                 <div>
                   <strong className="font-semibold text-white block">Disputa MED (Infração PIX)</strong>
@@ -654,7 +654,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 7: Erros */}
-        <section id="erros" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-5">
+        <section id="erros" className="bg-card border border-white/12 rounded-[20px] p-6  space-y-5">
           <h2 className="text-xl font-bold text-white tracking-tight">Tabela de Erros HTTP</h2>
           <p className="text-sm text-white/60 leading-relaxed">
             Respostas de erro padrão da API com códigos HTTP e mensagens detalhadas.
@@ -671,7 +671,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
               </thead>
               <tbody className="divide-y divide-white/12 text-white">
                 <tr>
-                  <td className="p-3 font-mono font-bold text-[#00a87e]">200 / 201</td>
+                  <td className="p-3 font-mono font-bold text-success">200 / 201</td>
                   <td className="p-3 font-semibold">OK / Created</td>
                   <td className="p-3">Requisição executada com sucesso.</td>
                 </tr>
@@ -718,11 +718,11 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   'ai-prompt'
                 )
               }
-              className="inline-flex items-center gap-2 text-xs font-semibold bg-[#16181a] text-[#00a87e] hover:bg-[#00a87e]/15 px-4 py-2.5 rounded-xl  transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold bg-card text-success hover:bg-success/15 px-4 py-2.5 rounded-xl  transition-colors"
             >
               {copiedSection === 'ai-prompt' ? (
                 <>
-                  <CheckIcon className="w-4 h-4 text-[#00a87e]" />
+                  <CheckIcon className="w-4 h-4 text-success" />
                   <span>Prompt Copiado!</span>
                 </>
               ) : (
@@ -737,7 +737,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
               href="https://swiftpayment.info/api/payment/docs"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-semibold bg-[#16181a] text-[#00a87e] hover:bg-[#00a87e]/15 px-4 py-2.5 rounded-xl  transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold bg-card text-success hover:bg-success/15 px-4 py-2.5 rounded-xl  transition-colors"
             >
               <BookIcon className="w-4 h-4" />
               <span>Documentação Interativa (OpenAPI)</span>

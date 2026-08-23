@@ -349,7 +349,7 @@ export function ComplianceStep({
                 isSelected={selected}
                 onChange={() => onTogglePaymentMethod(option.value)}
                 isDisabled={isBusy || !isFieldEditable('paymentMethods')}
-                className="rounded-lg border border-divider p-2"
+                className="rounded-lg border border-border p-2"
               >
                 <Checkbox.Control>
                   <Checkbox.Indicator />

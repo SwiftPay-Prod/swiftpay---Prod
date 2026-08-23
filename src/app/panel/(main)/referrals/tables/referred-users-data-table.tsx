@@ -91,7 +91,7 @@ function getMovementColumns(): DataTableColumn<UserReferralReferredUserMovements
 
 function renderMobileReferredUserMovementCard(item: UserReferralReferredUserMovementsData['movements'][number]) {
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-4 overflow-hidden">
 			<div className="flex items-start justify-between gap-2 mb-2">
 				<span className="font-mono tabular-nums text-white">{formatCurrency(item.commissionAmount)}</span>
 				<RevolutStatusBadge
@@ -133,12 +133,12 @@ function ReferredUserMovementsContent({
 	return (
 		<div className="flex flex-col gap-4 w-full">
 			<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5">
 					<span className="text-xs text-muted">Indicado</span>
 					<p className="text-sm font-medium text-foreground">{data.referredUserName || 'Sem nome'}</p>
 					<EmailLink email={data.referredUserEmail} className="text-xs" />
 				</div>
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5">
 					<span className="text-xs text-muted">Comissão total gerada</span>
 					<p className="text-sm font-semibold text-success">{formatCurrency(data.totalCommissionAmount)}</p>
 				</div>
@@ -229,7 +229,7 @@ function getColumns(
 							aria-label="Ver movimentações de comissão"
 						>
 							<Icon icon={Analytics01Icon} className="icon-xs" />
-							<Tooltip.Content className="bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+							<Tooltip.Content className="bg-card border border-white/12 rounded-xl text-whitexl">
 								Ver movimentações de comissão
 							</Tooltip.Content>
 						</Button>
@@ -348,7 +348,7 @@ export function ReferredUsersDataTable({
 		const expirationDate = getExpirationDate(item.referredAt, referralDurationMonths);
 		return (
 			<div
-				className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
+				className={`rounded-[20px] border border-white/12 bg-card p-4 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
 				onClick={openActions}
 				role={openActions ? 'button' : undefined}
 				tabIndex={openActions ? 0 : undefined}

@@ -181,7 +181,7 @@ export function GeneralTab({ merchant }: GeneralTabProps) {
 								merchantKycPendingItemStatusParse[item.status as keyof typeof merchantKycPendingItemStatusParse];
 
 							return (
-								<div key={item.id} className="flex flex-col gap-3 rounded-xl border border-divider bg-content1 p-4">
+								<div key={item.id} className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4">
 									<div className="flex items-start justify-between gap-3">
 										<div className="flex flex-col gap-1">
 											<div className="flex items-center gap-2">

@@ -20,7 +20,7 @@ function KpiTile({ label, value, description, tone = 'default' }: KpiTileProps) 
         ? 'border-success-soft-hover bg-success/10'
         : tone === 'warning'
           ? 'border-warning-soft-hover bg-warning/10'
-          : 'border-divider bg-surface-secondary';
+          : 'border-border bg-surface-secondary';
 
   return (
     <div className={`rounded-lg border px-3 py-2 ${toneClassName}`}>
@@ -54,7 +54,7 @@ export function TemplateKpisTab({ template, formattedFee }: TemplateKpisTabProps
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-xl border border-divider bg-surface p-4">
+      <div className="rounded-xl border border-border bg-surface p-4">
         <div className="flex items-center justify-between gap-3">
           <SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm" />} title="KPIs do Template" />
           <Chip variant="soft" color="default" size="sm">

@@ -115,7 +115,7 @@ function getColumns(
               type="button"
               onClick={() => onOpenReview(item.id)}
               disabled={openingRequestId === item.id}
-              className={`button-outline-dark cursor-pointer text-xs py-1.5 px-3 ${item.status === ReferralCommissionWithdrawalRequestStatus.Requested ? 'border-[#ec7e00]/40 text-[#ec7e00]' : ''}`}
+              className={`button-outline-dark cursor-pointer text-xs py-1.5 px-3 ${item.status === ReferralCommissionWithdrawalRequestStatus.Requested ? 'border-warning/40 text-warning' : ''}`}
             >
               <Icon icon={Wallet01Icon} className="icon-xs" />
               <span>
@@ -146,7 +146,7 @@ function renderMobileAdminWithdrawalRequestCard(item: AdminMinimalReferralCommis
 
   return (
     <div
-      className="rounded-[20px] border border-white/10 bg-[#0a0a0a] p-4 flex flex-col gap-3"
+      className="rounded-[20px] border border-white/10 bg-surface-deep p-4 flex flex-col gap-3"
       onClick={openActions}
       role={openActions ? 'button' : undefined}
       tabIndex={openActions ? 0 : undefined}
@@ -330,8 +330,8 @@ export function ReferralWithdrawalRequestsTable({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-              <Icon icon={Wallet01Icon} className="icon-sm text-[#4f55f1]" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+              <Icon icon={Wallet01Icon} className="icon-sm text-link" />
             </div>
             <h1 className="text-xl font-bold tracking-tight text-white">Saques das Indicações</h1>
           </div>
@@ -355,7 +355,7 @@ export function ReferralWithdrawalRequestsTable({
 
       {/* 3-Tile High Contrast KPI Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+        <div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
               Total de Pedidos
@@ -372,30 +372,30 @@ export function ReferralWithdrawalRequestsTable({
           </div>
         </div>
 
-        <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+        <div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
               Aguardando Liberação
             </span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30">
-              <Icon icon={HourglassIcon} className="icon-xs text-[#ec7e00]" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-warning/15 text-warning border border-warning/30">
+              <Icon icon={HourglassIcon} className="icon-xs text-warning" />
             </div>
           </div>
           <div>
-            <span className="text-2xl font-extrabold font-mono text-[#ec7e00] tracking-tight tabular-nums block">
+            <span className="text-2xl font-extrabold font-mono text-warning tracking-tight tabular-nums block">
               {pendingRequests}
             </span>
-            <p className="text-xs text-[#ec7e00]/80 font-mono mt-0.5">Pendentes de aprovação e pagamento PIX</p>
+            <p className="text-xs text-warning/80 font-mono mt-0.5">Pendentes de aprovação e pagamento PIX</p>
           </div>
         </div>
 
-        <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+        <div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
               Volume na Página
             </span>
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
-              <Icon icon={MoneyExchange01Icon} className="icon-xs text-[#00a87e]" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
+              <Icon icon={MoneyExchange01Icon} className="icon-xs text-success" />
             </div>
           </div>
           <div>
@@ -409,7 +409,7 @@ export function ReferralWithdrawalRequestsTable({
       </div>
 
       {/* Main Data Table */}
-      <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+      <div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
         <DataTable
           columns={columns}
           data={items.items}

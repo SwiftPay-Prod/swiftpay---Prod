@@ -60,7 +60,7 @@ export function MerchantControlsAccordion({
 			id="merchant-controls"
 			icon={Settings05Icon}
 			title="Funcionalidades"
-			color="sky"
+			color="accent"
 			defaultExpanded={false}
 			summary={summary}
 		>
@@ -68,7 +68,7 @@ export function MerchantControlsAccordion({
 				{items.map((item) => (
 					<div
 						key={item.field}
-						className="grid grid-cols-1 gap-4 rounded-lg bg-content1 p-3 xl:grid-cols-[minmax(0,1fr)_16rem]"
+						className="grid grid-cols-1 gap-4 rounded-lg bg-card p-3 xl:grid-cols-[minmax(0,1fr)_16rem]"
 					>
 						<div className="min-w-0">
 							<span className="block max-w-90 wrap-break-word text-sm font-medium leading-5 text-foreground">{item.name}</span>

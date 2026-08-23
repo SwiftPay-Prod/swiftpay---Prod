@@ -57,9 +57,9 @@ export function PanelHeader({ title, user }: PanelHeaderProps) {
 					<button
 						type="button"
 						onClick={() => router.push(Routes.panel.merchant.liveBalance)}
-						className="inline-flex items-center gap-1.5 h-7 px-3 text-xs font-semibold text-[#00a87e] bg-[#00a87e]/15 border border-[#00a87e]/30 hover:bg-[#00a87e]/25 rounded-full transition-colors"
+						className="inline-flex items-center gap-1.5 h-7 px-3 text-xs font-semibold text-success bg-success/15 border border-success/30 hover:bg-success/25 rounded-full transition-colors"
 					>
-						<span className="w-1.5 h-1.5 rounded-full bg-[#00a87e] shrink-0 animate-pulse" />
+						<span className="w-1.5 h-1.5 rounded-full bg-success shrink-0 animate-pulse" />
 						Live
 					</button>
 

@@ -42,23 +42,23 @@ export function AccessAccountDetailsModal({
 					<Modal.Body>
 						{selectedAccountRow ? (
 							<div className="flex flex-col gap-3 text-sm">
-								<div className="rounded-lg border border-divider bg-content2 p-3">
+								<div className="rounded-lg border border-border bg-surface-deep p-3">
 									<p className="text-xs text-muted">Adquirente</p>
 									<p className="font-medium text-foreground">{selectedAccountRow.acquirerDisplayName}</p>
 								</div>
-								<div className="rounded-lg border border-divider bg-content2 p-3">
+								<div className="rounded-lg border border-border bg-surface-deep p-3">
 									<p className="text-xs text-muted">Login</p>
 									<p className="font-medium text-foreground">
 										{isSensitiveVisible ? selectedAccountRow.login : maskLogin(selectedAccountRow.login)}
 									</p>
 								</div>
-								<div className="rounded-lg border border-divider bg-content2 p-3">
+								<div className="rounded-lg border border-border bg-surface-deep p-3">
 									<p className="text-xs text-muted">Senha</p>
 									<p className="font-medium text-foreground">
 										{isSensitiveVisible ? selectedAccountRow.password : maskPassword(selectedAccountRow.password)}
 									</p>
 								</div>
-								<div className="rounded-lg border border-divider bg-content2 p-3">
+								<div className="rounded-lg border border-border bg-surface-deep p-3">
 									<p className="text-xs text-muted">Descricao</p>
 									<p className="font-medium text-foreground">
 										{isSensitiveVisible

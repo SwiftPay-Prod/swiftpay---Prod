@@ -80,7 +80,7 @@ function ItemsTable({
 	if (items.length === 0) return null;
 
 	return (
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5 overflow-hidden">
 			<SectionTitle icon={<Icon icon={ServerStack01Icon} className="icon-sm" />} title="Itens por Adquirente" />
 			<div className="mt-3 flex flex-col gap-3">
 				{items.map((item) => {
@@ -93,8 +93,8 @@ function ItemsTable({
 						item.failureReason
 					);
 					return (
-						<div key={item.id} className="rounded-[20px] border border-white/12 bg-[#0a0a0a] overflow-hidden">
-							<div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/12 bg-[#0a0a0a]">
+						<div key={item.id} className="rounded-[20px] border border-white/12 bg-surface-deep overflow-hidden">
+							<div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-white/12 bg-surface-deep">
 								<div className="flex items-center gap-2.5 min-w-0">
 									{item.acquirerLogoUrl ? (
 										<Image
@@ -174,7 +174,7 @@ function ItemsTable({
 					);
 				})}
 			</div>
-			<div className="mt-3 flex items-center justify-between rounded-[20px] bg-[#0a0a0a] border border-white/12 px-4 py-2.5">
+			<div className="mt-3 flex items-center justify-between rounded-[20px] bg-surface-deep border border-white/12 px-4 py-2.5">
 				<span className="text-sm font-medium text-white/70">Total</span>
 				<div className="flex items-center gap-6">
 					<div className="flex flex-col items-end">
@@ -237,7 +237,7 @@ function DetailsContent({
 				)}
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5">
 				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-sm" />} title="Valores" />
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 					<DetailRow label="Valor Total" value={<span className="font-mono tabular-nums text-white">{formatCurrency(payout.totalAmount)}</span>} />
@@ -252,7 +252,7 @@ function DetailsContent({
 				</div>
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5">
 				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-sm" />} title="Informações Gerais" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow label="ID" value={<CopyableValue value={payout.id} label="ID" />} mono />
@@ -268,7 +268,7 @@ function DetailsContent({
 			</div>
 
 			{payout.payoutAccount && (
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5">
 					<SectionTitle icon={<Icon icon={Key01Icon} className="icon-sm" />} title="Conta de Destino" />
 					<div className="grid grid-cols-2 gap-4">
 						<DetailRow
@@ -288,7 +288,7 @@ function DetailsContent({
 				</div>
 			)}
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5">
 				<SectionTitle icon={<Icon icon={UserIcon} className="icon-sm" />} title="Solicitante" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow label="ID" value={<CopyableValue value={payout.requestedByUserId} label="ID do Usuário" />} mono />
@@ -432,7 +432,7 @@ export function AdminPlatformPayoutDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-4xl rounded-[20px] border border-white/12 bg-[#16181a]">
+				<Modal.Dialog className="max-w-4xl rounded-[20px] border border-white/12 bg-card">
 					<Modal.CloseTrigger />
 					{payoutPromise && (
 						<Suspense

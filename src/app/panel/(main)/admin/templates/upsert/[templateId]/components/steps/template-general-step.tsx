@@ -131,7 +131,7 @@ export function TemplateGeneralStep({
 					</Select>
 
 					{selectedType && (
-						<p className="rounded-lg bg-content1 p-3 text-xs text-muted">
+						<p className="rounded-lg bg-card p-3 text-xs text-muted">
 							{selectedType === CheckoutTemplateType.SingleOrder && (
 								<>
 									O tipo <strong>Pedido Único</strong> tem expiração e os produtos já vêm pré-definidos no checkout.
@@ -190,7 +190,7 @@ export function TemplateGeneralStep({
 			<SystemAccordion
 				id="template-basic-descriptions"
 				icon={File01Icon}
-				color="blue"
+				color="accent"
 				title="Descrições e apresentação"
 				summary="Textos exibidos para o merchant"
 				defaultExpanded={defaultExpanded}

@@ -82,7 +82,7 @@ function getColumns(
 								<Icon icon={ViewIcon} className="icon-xs" />
 								<span className="sr-only">Ver detalhes</span>
 							</button>
-							<Tooltip.Content className="bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+							<Tooltip.Content className="bg-card border border-white/12 rounded-xl text-whitexl">
 								Ver detalhes
 							</Tooltip.Content>
 						</Tooltip>
@@ -97,7 +97,7 @@ function getColumns(
 									<Icon icon={CancelCircleIcon} className="icon-xs" />
 									<span className="sr-only">Cancelar solicitação</span>
 								</button>
-								<Tooltip.Content className="bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+								<Tooltip.Content className="bg-card border border-white/12 rounded-xl text-whitexl">
 									Cancelar solicitação
 								</Tooltip.Content>
 							</Tooltip>
@@ -113,7 +113,7 @@ function renderMobileWithdrawalRequestCard(item: UserReferralCommissionWithdrawa
 	const meta = getStatusMeta(item.status);
 	return (
 		<div
-			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-card p-4 overflow-hidden${openActions ? ' cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}

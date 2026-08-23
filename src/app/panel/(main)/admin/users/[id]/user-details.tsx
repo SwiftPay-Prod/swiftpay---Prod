@@ -384,7 +384,7 @@ export function UserDetails({
 						<SystemAccordion
 							id="user-last-access"
 							icon={ComputerIcon}
-							color="blue"
+							color="accent"
 							title="Último acesso"
 							summary={lastAccessSummary}
 						>
@@ -417,7 +417,6 @@ export function UserDetails({
 						<SystemAccordion
 							id="user-dates"
 							icon={Calendar03Icon}
-							color="slate"
 							title="Datas"
 							summary={`Criado em ${formatDate(user.createdAt)}`}
 						>

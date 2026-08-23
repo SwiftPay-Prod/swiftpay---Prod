@@ -37,7 +37,7 @@ export function RiskDisputesControl({
 
 	return (
 		<div
-			className={`flex flex-col justify-between gap-5 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${className}`}
+			className={`flex flex-col justify-between gap-5 rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 transition-all ${className}`}
 		>
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex flex-col gap-1">
@@ -52,8 +52,8 @@ export function RiskDisputesControl({
 				<div
 					className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
 						isHealthyRisk
-							? 'border border-[#00a87e]/20 bg-[#00a87e]/10 text-[#00a87e]'
-							: 'border border-[#e23b4a]/20 bg-[#e23b4a]/10 text-[#e23b4a]'
+							? 'border border-success/20 bg-success/10 text-success'
+							: 'border border-danger/20 bg-danger/10 text-danger'
 					}`}
 				>
 					{isHealthyRisk ? 'Risco Seguro (< 1%)' : 'Atenção ao Risco'}
@@ -62,13 +62,13 @@ export function RiskDisputesControl({
 
 			<div className="grid grid-cols-2 gap-3 font-mono">
 				{/* Tile 1: Índice de Chargeback */}
-				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 transition-all hover:border-white/15">
+				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-surface-deep p-4 transition-all hover:border-white/15">
 					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
-						<RevolutAlertIcon size={14} className={hasActiveDisputes ? 'text-[#e23b4a]' : 'text-white/40'} />
+						<RevolutAlertIcon size={14} className={hasActiveDisputes ? 'text-danger' : 'text-white/40'} />
 						<span>Taxa de Chargeback</span>
 					</div>
 					<div className="flex items-baseline gap-1.5">
-						<span className={`text-lg font-bold ${hasActiveDisputes ? 'text-[#e23b4a]' : 'text-white'} ${blurClass}`}>
+						<span className={`text-lg font-bold ${hasActiveDisputes ? 'text-danger' : 'text-white'} ${blurClass}`}>
 							<AnimatedNumber value={chargebackRate} suffix="%" maximumFractionDigits={2} />
 						</span>
 						<span className="text-[11px] text-white/40">limite 1.0%</span>
@@ -76,13 +76,13 @@ export function RiskDisputesControl({
 				</div>
 
 				{/* Tile 2: Disputas Abertas */}
-				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 transition-all hover:border-white/15">
+				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-surface-deep p-4 transition-all hover:border-white/15">
 					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
-						<RevolutLockIcon size={14} className={hasActiveDisputes ? 'text-[#e23b4a]' : 'text-white/40'} />
+						<RevolutLockIcon size={14} className={hasActiveDisputes ? 'text-danger' : 'text-white/40'} />
 						<span>Disputas / Contestações</span>
 					</div>
 					<div className="flex items-baseline gap-1.5">
-						<span className={`text-lg font-bold ${hasActiveDisputes ? 'text-[#e23b4a]' : 'text-white'} ${blurClass}`}>
+						<span className={`text-lg font-bold ${hasActiveDisputes ? 'text-danger' : 'text-white'} ${blurClass}`}>
 							<AnimatedNumber value={chargebackCount} />
 						</span>
 						<span className="text-[11px] text-white/40">casos</span>
@@ -90,26 +90,26 @@ export function RiskDisputesControl({
 				</div>
 
 				{/* Tile 3: Estornos */}
-				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 transition-all hover:border-white/15">
+				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-surface-deep p-4 transition-all hover:border-white/15">
 					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
-						<RevolutRefundIcon size={14} className={hasRefunds ? 'text-[#e23b4a]' : 'text-white/40'} />
+						<RevolutRefundIcon size={14} className={hasRefunds ? 'text-danger' : 'text-white/40'} />
 						<span>Estornos Devolvidos</span>
 					</div>
 					<div className="flex items-baseline gap-1.5">
-						<span className={`text-lg font-bold ${hasRefunds ? 'text-[#e23b4a]' : 'text-white'} ${blurClass}`}>
+						<span className={`text-lg font-bold ${hasRefunds ? 'text-danger' : 'text-white'} ${blurClass}`}>
 							<AnimatedCurrency value={refundedAmount} />
 						</span>
 					</div>
 				</div>
 
 				{/* Tile 4: Transações Recusadas */}
-				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 transition-all hover:border-white/15">
+				<div className="flex flex-col justify-between gap-2 rounded-[18px] border border-white/8 bg-surface-deep p-4 transition-all hover:border-white/15">
 					<div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/50">
-						<RevolutAlertIcon size={14} className={hasFailed ? 'text-[#ec7e00]' : 'text-white/40'} />
+						<RevolutAlertIcon size={14} className={hasFailed ? 'text-warning' : 'text-white/40'} />
 						<span>Recusas Operacionais</span>
 					</div>
 					<div className="flex items-baseline gap-1.5">
-						<span className={`text-lg font-bold ${hasFailed ? 'text-[#ec7e00]' : 'text-white'} ${blurClass}`}>
+						<span className={`text-lg font-bold ${hasFailed ? 'text-warning' : 'text-white'} ${blurClass}`}>
 							<AnimatedNumber value={failedTransactions} />
 						</span>
 						<span className="text-[11px] text-white/40">bloqueios</span>

@@ -38,7 +38,7 @@ function ContactCard({ icon, title, description, action, href, color, external =
 	};
 
 	return (
-		<Card className="p-5 hover:shadow-lg transition-shadow">
+		<Card className="p-5 hover:border-white/20 transition-colors">
 			<div className="flex items-start gap-4">
 				<div className={`p-3 rounded-xl ${colorClasses[color]}`}>
 					<Icon icon={icon} className="icon-lg" />
@@ -94,8 +94,8 @@ export default function HelpPage() {
 		<div className="flex flex-col gap-8 text-white">
 			{/* Executive Header */}
 			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
-				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-					<Icon icon={CustomerService01Icon} className="icon-sm text-[#4f55f1]" />
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+					<Icon icon={CustomerService01Icon} className="icon-sm text-link" />
 				</div>
 				<div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Central de Ajuda</h1>

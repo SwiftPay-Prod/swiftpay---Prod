@@ -184,7 +184,7 @@ function DetailsContent({ checkoutPromise }: { checkoutPromise: CheckoutPromise 
 
 						{selectedTab === 'kpis' && (
 							<div className="flex flex-col gap-4">
-								<div className="rounded-xl border border-divider bg-surface p-4">
+								<div className="rounded-xl border border-border bg-surface p-4">
 									<div className="flex items-center justify-between gap-3">
 										<SectionTitle icon={<Icon icon={ShoppingCart01Icon} className="icon-sm" />} title="KPIs do Checkout" />
 									{kpis.transactionCount > 0 && (
@@ -213,19 +213,19 @@ function DetailsContent({ checkoutPromise }: { checkoutPromise: CheckoutPromise 
 											<p className="text-xs text-warning">Acessos (sessões)</p>
 											<p className="text-base font-semibold text-warning">{kpis.accessCount}</p>
 										</div>
-										<div className="rounded-lg border border-divider bg-surface-secondary px-3 py-2">
+										<div className="rounded-lg border border-border bg-surface-secondary px-3 py-2">
 											<p className="text-xs text-muted">Pedidos criados</p>
 											<p className="text-base font-semibold">{kpis.orderCount}</p>
 										</div>
-										<div className="rounded-lg border border-divider bg-surface-secondary px-3 py-2">
+										<div className="rounded-lg border border-border bg-surface-secondary px-3 py-2">
 											<p className="text-xs text-muted">Transações</p>
 											<p className="text-base font-semibold">{kpis.transactionCount}</p>
 										</div>
-										<div className="rounded-lg border border-divider bg-surface-secondary px-3 py-2">
+										<div className="rounded-lg border border-border bg-surface-secondary px-3 py-2">
 											<p className="text-xs text-muted">Transações aprovadas</p>
 											<p className="text-base font-semibold">{kpis.completedTransactions}</p>
 										</div>
-										<div className="rounded-lg border border-divider bg-surface-secondary px-3 py-2 xl:col-span-3">
+										<div className="rounded-lg border border-border bg-surface-secondary px-3 py-2 xl:col-span-3">
 											<p className="text-xs text-muted">Clientes únicos</p>
 											<p className="text-base font-semibold">{kpis.customerCount}</p>
 										</div>

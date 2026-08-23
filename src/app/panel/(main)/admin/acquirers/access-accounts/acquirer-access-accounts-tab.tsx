@@ -73,8 +73,8 @@ export function AcquirerAccessAccountsTab({
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={UserCheck01Icon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={UserCheck01Icon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Contas de Acesso</h1>
 					</div>
@@ -108,12 +108,12 @@ export function AcquirerAccessAccountsTab({
 
 			{/* 2-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total de Contas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={UserCheck01Icon} className="icon-xs" />
 						</div>
 					</div>
@@ -125,26 +125,26 @@ export function AcquirerAccessAccountsTab({
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Processadoras Vinculadas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
-							<Icon icon={UserCheck01Icon} className="icon-xs text-[#00a87e]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
+							<Icon icon={UserCheck01Icon} className="icon-xs text-success" />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 							{state.acquirers.length}
 						</span>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Gateways com credencial cadastrada</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Gateways com credencial cadastrada</p>
 					</div>
 				</div>
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={state.paginatedRows}

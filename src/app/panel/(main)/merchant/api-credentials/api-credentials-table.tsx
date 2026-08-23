@@ -148,7 +148,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 									<button
 										type="button"
 										onClick={() => config.onRegenerate(credential)}
-										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#494fdf]/30 bg-[#494fdf]/15 text-[#4f55f1] hover:border-[#494fdf]/50 hover:bg-[#494fdf]/25 transition-colors"
+										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-brand/30 bg-brand/15 text-link hover:border-brand/50 hover:bg-brand/25 transition-colors"
 									>
 										<Icon icon={ArrowReloadHorizontalIcon} className="icon-sm" />
 										<Tooltip.Content>Regenerar chave</Tooltip.Content>
@@ -158,7 +158,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<ApiCredentialListDat
 									<button
 										type="button"
 										onClick={() => config.onDelete(credential)}
-										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#e23b4a]/30 bg-[#e23b4a]/15 text-[#e23b4a] hover:border-[#e23b4a]/50 hover:bg-[#e23b4a]/25 transition-colors"
+										className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-danger/30 bg-danger/15 text-danger hover:border-danger/50 hover:bg-danger/25 transition-colors"
 									>
 										<Icon icon={Delete02Icon} className="icon-sm" />
 										<Tooltip.Content>Revogar</Tooltip.Content>
@@ -183,7 +183,7 @@ function renderMobileApiCredentialCard(
 
 	return (
 		<div
-			className={`rounded-xl border border-white/12 bg-[#16181a] p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-white/12 bg-card p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -299,8 +299,8 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={ShieldKeyIcon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={ShieldKeyIcon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Credenciais de API</h1>
 					</div>
@@ -342,7 +342,7 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 			{/* 3-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				{/* Total */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total Criadas
@@ -357,27 +357,27 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 				</div>
 
 				{/* Ativas */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Chaves Ativas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<Icon icon={ShieldKeyIcon} className="icon-xs" />
 						</div>
 					</div>
-					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+					<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 						{activeCredentials}
 					</span>
 				</div>
 
 				{/* Produção */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Produção SPI
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={ArrowReloadHorizontalIcon} className="icon-xs" />
 						</div>
 					</div>
@@ -386,7 +386,7 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 					</span>
 				</div>
 			</div>
-		<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+		<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 			<DataTable
 				columns={columns}
 				data={data.items.items}
@@ -414,8 +414,8 @@ export function ApiCredentialsTable({ fetchPromise, merchantId, filters }: ApiCr
 			/>
 		</div>
 
-			<div className="flex items-start gap-2 rounded-xl bg-[#ec7e00]/10 p-4">
-				<Icon icon={InformationCircleIcon} className="icon-md shrink-0 text-[#ec7e00]" />
+			<div className="flex items-start gap-2 rounded-xl bg-warning/10 p-4">
+				<Icon icon={InformationCircleIcon} className="icon-md shrink-0 text-warning" />
 				<div className="flex flex-col gap-1">
 					<p className="text-sm font-medium text-white">Importante</p>
 					<p className="text-sm text-white/50">

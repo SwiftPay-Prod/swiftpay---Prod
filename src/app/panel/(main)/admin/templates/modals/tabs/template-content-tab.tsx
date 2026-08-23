@@ -8,11 +8,11 @@ interface TemplateContentTabProps {
 
 export function TemplateContentTab({ template }: TemplateContentTabProps) {
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-divider bg-surface p-4">
+    <div className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
       {template.thumbnailUrl ? (
         <div className="flex flex-col gap-2">
           <Label>Thumbnail</Label>
-          <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-lg border border-divider">
+          <div className="relative aspect-video w-full max-w-xl overflow-hidden rounded-lg border border-border">
             <Image src={template.thumbnailUrl} alt={template.name} fill className="object-cover" />
           </div>
         </div>
@@ -38,7 +38,7 @@ export function TemplateContentTab({ template }: TemplateContentTabProps) {
           <Label>Imagens de preview</Label>
           <div className="grid grid-cols-2 gap-2">
             {template.previewImages.map((url, index) => (
-              <div key={`${url}-${index}`} className="relative aspect-video overflow-hidden rounded-lg border border-divider">
+              <div key={`${url}-${index}`} className="relative aspect-video overflow-hidden rounded-lg border border-border">
                 <Image src={url} alt={`Preview ${index + 1}`} fill className="object-cover" />
               </div>
             ))}

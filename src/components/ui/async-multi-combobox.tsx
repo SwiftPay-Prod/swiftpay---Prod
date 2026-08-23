@@ -97,7 +97,7 @@ export function AsyncMultiCombobox({
 					)}
 					<ComboBox.Trigger className="absolute right-3 top-1/2 -translate-y-1/2" />
 				</ComboBox.InputGroup>
-				<ComboBox.Popover className="rounded-lg border border-divider bg-surface p-2 shadow-lg">
+				<ComboBox.Popover className="rounded-lg border border-border bg-surface p-2lg">
 					<div className="flex flex-col gap-2">
 						{!isSearchReady && (
 							<span className="text-xs text-muted px-2">Digite pelo menos {minSearchLength} caractere(s)</span>

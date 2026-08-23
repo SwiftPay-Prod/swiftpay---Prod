@@ -19,7 +19,7 @@ export function DashboardSkeleton() {
 			</div>
 
 			{/* Hero Balance Card Skeleton */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 flex flex-col gap-6">
+			<div className="rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 flex flex-col gap-6">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2.5">
 						<Skeleton className="h-8 w-8 rounded-xl bg-white/5" />
@@ -46,7 +46,7 @@ export function DashboardSkeleton() {
 			{/* 3-Column Financial Metrics Grid Skeleton */}
 			<div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
 				{[...Array(3)].map((_, i) => (
-					<div key={i} className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between gap-4">
+					<div key={i} className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 flex flex-col justify-between gap-4">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-2">
 								<Skeleton className="h-7 w-7 rounded-lg bg-white/5" />
@@ -66,7 +66,7 @@ export function DashboardSkeleton() {
 			<div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
 				{/* Chart + Payment Breakdown Column */}
 				<div className="lg:col-span-2 flex flex-col gap-5">
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 flex flex-col gap-5">
+					<div className="rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 flex flex-col gap-5">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-3">
 								<Skeleton className="h-9 w-9 rounded-2xl bg-white/5" />
@@ -77,11 +77,11 @@ export function DashboardSkeleton() {
 						<Skeleton className="h-56 w-full rounded-2xl bg-white/5" />
 					</div>
 
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 flex flex-col gap-4">
+					<div className="rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 flex flex-col gap-4">
 						<Skeleton className="h-5 w-48 rounded-md bg-white/5" />
 						<div className="flex flex-col gap-3">
 							{[...Array(3)].map((_, i) => (
-								<div key={i} className="rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 flex flex-col gap-2">
+								<div key={i} className="rounded-[18px] border border-white/8 bg-surface-deep p-4 flex flex-col gap-2">
 									<div className="flex items-center justify-between">
 										<Skeleton className="h-8 w-36 rounded-md bg-white/5" />
 										<Skeleton className="h-6 w-24 rounded-md bg-white/5" />
@@ -95,14 +95,14 @@ export function DashboardSkeleton() {
 
 				{/* Risk & Quick Actions Column */}
 				<div className="lg:col-span-1 flex flex-col gap-5">
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 flex flex-col gap-4">
+					<div className="rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 flex flex-col gap-4">
 						<div className="flex items-center justify-between">
 							<Skeleton className="h-5 w-44 rounded-md bg-white/5" />
 							<Skeleton className="h-5 w-24 rounded-full bg-white/5" />
 						</div>
 						<div className="grid grid-cols-2 gap-3">
 							{[...Array(4)].map((_, i) => (
-								<div key={i} className="rounded-[18px] border border-white/8 bg-[#0a0a0a] p-4 flex flex-col gap-2">
+								<div key={i} className="rounded-[18px] border border-white/8 bg-surface-deep p-4 flex flex-col gap-2">
 									<Skeleton className="h-3 w-16 rounded-md bg-white/5" />
 									<Skeleton className="h-6 w-20 rounded-md bg-white/5" />
 								</div>
@@ -110,7 +110,7 @@ export function DashboardSkeleton() {
 						</div>
 					</div>
 
-					<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 flex flex-col gap-4">
+					<div className="rounded-[20px] border border-white/12 bg-card p-6 sm:p-7 flex flex-col gap-4">
 						<Skeleton className="h-5 w-32 rounded-md bg-white/5" />
 						<div className="flex flex-col gap-2">
 							{[...Array(3)].map((_, i) => (

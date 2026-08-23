@@ -331,12 +331,12 @@ export function LiveBalanceScreen({ onBack, totalRevenue, isRevenueReady = true,
 
       <div className="relative flex min-h-dvh w-full flex-col px-3 pb-4 pt-3 sm:px-6 sm:py-4">
         <div className="flex w-full items-center justify-between gap-2 sm:gap-3">
-          <div className="inline-flex w-fit max-w-full shrink-0 items-center gap-2 rounded-full bg-black/60 px-3.5 py-1.5 text-white ring-1 ring-white/12 shadow-2xl backdrop-blur-md">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-[#00a87e]" />
+          <div className="inline-flex w-fit max-w-full shrink-0 items-center gap-2 rounded-full bg-black/60 px-3.5 py-1.5 text-white ring-1 ring-white/12 backdrop-blur-md">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
             <span className="truncate text-xs sm:text-sm font-bold font-mono tracking-wider uppercase text-white/90">PIX Live SPI</span>
           </div>
 
-          <div className="flex shrink-0 items-center gap-2 rounded-full bg-background/45 p-1 ring-1 ring-border/30 shadow-lg backdrop-blur-md dark:bg-black/25 dark:ring-white/10">
+          <div className="flex shrink-0 items-center gap-2 rounded-full bg-background/45 p-1 ring-1 ring-border/30 backdrop-blur-md dark:bg-black/25 dark:ring-white/10">
             <Button
               variant="ghost"
               isIconOnly

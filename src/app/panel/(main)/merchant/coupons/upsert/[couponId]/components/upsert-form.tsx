@@ -226,7 +226,7 @@ export function CouponUpsertForm({ merchantId, environment, couponPromise }: Cou
 	}) {
 		return (
 			<SystemAccordion defaultExpandedKeys={[params.id]} className="px-0">
-				<SystemAccordion.Item id={params.id} className="rounded-xl border border-divider bg-surface">
+				<SystemAccordion.Item id={params.id} className="rounded-xl border border-border bg-surface">
 					<SystemAccordion.Heading>
 						<SystemAccordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 							<div className="flex items-center gap-3">

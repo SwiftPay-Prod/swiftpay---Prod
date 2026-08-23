@@ -349,7 +349,7 @@ export function ImageUploader({
 						</Modal.Header>
 						<Modal.Body>
 							{previewItem && (
-								<div className="relative min-h-96 overflow-hidden rounded-lg bg-content2">
+								<div className="relative min-h-96 overflow-hidden rounded-lg bg-surface-deep">
 									{isImageFileType(previewItem.contentType) || !previewItem.contentType ? (
 										<div className="relative h-[70vh] w-full">
 											<Image

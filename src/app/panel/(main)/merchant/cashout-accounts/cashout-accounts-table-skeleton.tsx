@@ -17,7 +17,7 @@ export function CashoutAccountsTableSkeleton() {
 			</div>
 
 			<Card className="overflow-hidden">
-				<div className="flex flex-wrap items-center justify-between gap-2 border-b border-divider p-4">
+				<div className="flex flex-wrap items-center justify-between gap-2 border-b border-border p-4">
 					<Skeleton className="h-5 w-48 rounded" />
 					<Skeleton className="h-10 w-40 rounded-lg" />
 				</div>
@@ -25,7 +25,7 @@ export function CashoutAccountsTableSkeleton() {
 				<div className="overflow-x-auto">
 					<table className="w-full min-w-150">
 						<thead>
-							<tr className="border-b border-divider bg-surface-secondary">
+							<tr className="border-b border-border bg-surface-secondary">
 								<th className="px-4 py-3 text-left">
 									<Skeleton className="h-4 w-20 rounded" />
 								</th>
@@ -48,7 +48,7 @@ export function CashoutAccountsTableSkeleton() {
 						</thead>
 						<tbody>
 							{Array.from({ length: 5 }).map((_, index) => (
-								<tr key={index} className="border-b border-divider last:border-b-0">
+								<tr key={index} className="border-b border-border last:border-b-0">
 									<td className="px-4 py-3">
 										<div className="flex flex-col gap-1">
 											<div className="flex items-center gap-2">

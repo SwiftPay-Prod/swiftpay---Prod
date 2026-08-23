@@ -25,7 +25,7 @@ export function FormSaveFooter({
 	const updatedAtLabel = lastUpdated ? formatDate(lastUpdated) : 'Não disponível';
 
 	return (
-		<div className="form-save-footer flex flex-col gap-4 rounded-lg border border-default bg-content1 p-4 sm:flex-row sm:items-center sm:justify-between">
+		<div className="form-save-footer flex flex-col gap-4 rounded-lg border border-default bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
 			<div className="flex min-w-0 flex-col gap-2">
 				{tips.map((tip) => (
 					<div key={tip} className="flex items-start gap-2">

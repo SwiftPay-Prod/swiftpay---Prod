@@ -36,7 +36,7 @@ function ReviewField({
 	preWrap?: boolean;
 }) {
 	return (
-		<div className="rounded-md border border-divider px-2 py-1.5">
+		<div className="rounded-md border border-border px-2 py-1.5">
 			<p className="text-xs text-muted">{label}</p>
 			<p
 				className={[
@@ -209,7 +209,7 @@ export function ReviewStep({
 					</div>
 					<div className="mt-3 flex flex-col gap-2">
 						{uniqueCorrectionRequests.map((item) => (
-							<div key={item.itemId} className="rounded-md border border-divider bg-content1 px-3 py-2">
+							<div key={item.itemId} className="rounded-md border border-border bg-card px-3 py-2">
 								<div className="flex flex-wrap items-center gap-2">
 									<span className="rounded-full bg-warning-soft px-2 py-0.5 text-xs font-medium text-warning">
 										Campo: {item.fieldLabel}
@@ -236,7 +236,7 @@ export function ReviewStep({
 					</div>
 				</div>
 
-				<div className="border-t border-divider" />
+				<div className="border-t border-border" />
 
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center justify-between">
@@ -256,7 +256,7 @@ export function ReviewStep({
 					</div>
 				</div>
 
-				<div className="border-t border-divider" />
+				<div className="border-t border-border" />
 
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center justify-between">
@@ -296,7 +296,7 @@ export function ReviewStep({
 					<ReviewField label="Descrição do negócio" value={answers.businessDescription} preWrap />
 				</div>
 
-				<div className="border-t border-divider" />
+				<div className="border-t border-border" />
 
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center justify-between">
@@ -305,7 +305,7 @@ export function ReviewStep({
 					</div>
 					<div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">
 						{documentSummary.map((item) => (
-							<div key={item.key} className="rounded-md border border-divider px-2 py-1.5">
+							<div key={item.key} className="rounded-md border border-border px-2 py-1.5">
 								<div className="flex items-center justify-between gap-2">
 									<p className="text-xs text-muted">{item.label}</p>
 									<span
@@ -342,7 +342,7 @@ export function ReviewStep({
 				isSelected={answers.declarationAccepted}
 				onChange={(checked) => onValueChange('declarationAccepted', checked)}
 				isDisabled={isBusy}
-				className="w-full rounded-lg border border-divider px-3 py-3"
+				className="w-full rounded-lg border border-border px-3 py-3"
 			>
 				<Checkbox.Control>
 					<Checkbox.Indicator />

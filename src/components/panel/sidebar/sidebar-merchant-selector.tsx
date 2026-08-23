@@ -469,7 +469,7 @@ export function SidebarMerchantSelector({ forceFull = false }: SidebarMerchantSe
 			<AnimatePresence>
 				{isOpenDrawer && !shouldUseMobileDrawer && (
 					<motion.div
-						className="absolute left-full top-0 z-90 ml-2 w-80 overflow-hidden rounded-xl border border-default bg-surface shadow-2xl"
+						className="absolute left-full top-0 z-90 ml-2 w-80 overflow-hidden rounded-xl border border-default bg-surface2xl"
 						initial={{ x: -24, opacity: 0 }}
 						animate={{ x: 0, opacity: 1 }}
 						exit={{ x: -24, opacity: 0 }}

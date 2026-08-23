@@ -37,7 +37,7 @@ function methodActionClasses(method: PaymentMethod): string {
 	if (method === PaymentMethod.Pix) {
 		return 'text-success hover:border-success-soft-hover hover:bg-success-soft';
 	}
-	return 'text-foreground hover:border-divider hover:bg-content2';
+	return 'text-foreground hover:border-border hover:bg-surface-deep';
 }
 
 function PaymentLinkDomainSortableItem({
@@ -66,7 +66,7 @@ function PaymentLinkDomainSortableItem({
 			textValue={`${option.name} ${option.baseUrl}`}
 			className='bg-transparent data-[hovered=true]:bg-transparent data-[selected=true]:bg-transparent data-[pressed=true]:bg-transparent data-[focused=true]:bg-transparent data-[pressed=true]:scale-100 data-[pressed=true]:transform-none data-[pressed=true]:opacity-100'
 		>
-			<div className='grid w-full grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-divider bg-content1 p-3'>
+			<div className='grid w-full grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-border bg-card p-3'>
 
 				<div className='min-w-0'>
 					<div className='flex flex-wrap items-center gap-2'>
@@ -141,7 +141,7 @@ export function PaymentLinkDomainMethodAccordion({
 	const methodOptions = paymentLinkDomainOptions.find((group) => group.method === method)?.options ?? [];
 
 	return (
-		<div className="rounded-lg border p-4 border-divider bg-content1">
+		<div className="rounded-lg border p-4 border-border bg-card">
 			<div className='flex flex-wrap items-center justify-between gap-3'>
 				<div className='flex items-center gap-2'>
 					<Chip
@@ -167,7 +167,7 @@ export function PaymentLinkDomainMethodAccordion({
 
 			<div className='mt-3'>
 				{methodOptions.length === 0 ? (
-					<div className='rounded-lg border border-dashed border-divider bg-content1 p-3 text-xs text-muted'>
+					<div className='rounded-lg border border-dashed border-border bg-card p-3 text-xs text-muted'>
 						Nenhum domínio configurado para {paymentMethodLabel(method)}.
 					</div>
 				) : (

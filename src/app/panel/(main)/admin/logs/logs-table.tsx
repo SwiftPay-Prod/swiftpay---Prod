@@ -117,10 +117,10 @@ function AcquirerIdentity({ log, catalog = [] }: { log: AdminLogEntry; catalog?:
 					alt={displayName}
 					width={32}
 					height={32}
-					className="rounded-md border border-divider object-cover shrink-0"
+					className="rounded-md border border-border object-cover shrink-0"
 				/>
 			) : (
-				<div className="h-8 w-8 rounded-md border border-divider bg-content1 text-xs text-muted flex items-center justify-center shrink-0">
+				<div className="h-8 w-8 rounded-md border border-border bg-card text-xs text-muted flex items-center justify-center shrink-0">
 					{initial}
 				</div>
 			)}
@@ -329,7 +329,7 @@ function ApiLogDetailsModal({
 							</div>
 							<div className="flex flex-col gap-1 sm:col-span-2">
 								<span className="text-xs text-muted">Detalhes</span>
-								<div className="rounded-lg bg-content1 p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
+								<div className="rounded-lg bg-card p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
 									{getDetailsDisplay(log)}
 								</div>
 							</div>
@@ -438,7 +438,7 @@ function SecurityLogDetailsModal({
 							</div>
 							<div className="flex flex-col gap-1 sm:col-span-2">
 								<span className="text-xs text-muted">Detalhes</span>
-								<div className="rounded-lg bg-content1 p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
+								<div className="rounded-lg bg-card p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
 									{formatValue(log.details)}
 								</div>
 							</div>
@@ -559,19 +559,19 @@ function EmailLogDetailsModal({
 							</div>
 							<div className="flex flex-col gap-1 sm:col-span-2">
 								<span className="text-xs text-muted">Parâmetros</span>
-								<div className="rounded-lg bg-content1 p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
+								<div className="rounded-lg bg-card p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
 									{formatValue(log.emailParameters)}
 								</div>
 							</div>
 							<div className="flex flex-col gap-1 sm:col-span-2">
 								<span className="text-xs text-muted">Erro</span>
-								<div className="rounded-lg bg-content1 p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
+								<div className="rounded-lg bg-card p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
 									{formatValue(log.emailErrorMessage)}
 								</div>
 							</div>
 							<div className="flex flex-col gap-1 sm:col-span-2">
 								<span className="text-xs text-muted">Detalhes</span>
-								<div className="rounded-lg bg-content1 p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
+								<div className="rounded-lg bg-card p-3 text-xs text-muted whitespace-pre-wrap wrap-break-word">
 									{formatValue(log.details)}
 								</div>
 							</div>
@@ -997,7 +997,7 @@ function renderMobileLogCard(log: AdminLogEntry, index: number, openActions?: ()
 	return (
 		<div
 			key={log.id}
-			className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-border bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -1269,7 +1269,7 @@ function ProfilerContent() {
 					API de Pagamentos
 				</Button>
 			</div>
-			<div className="overflow-hidden rounded-lg border border-content2 bg-content1">
+			<div className="overflow-hidden rounded-lg border border-border bg-card">
 				<iframe
 					src={iframeUrl}
 					className="h-175 w-full border-0"
@@ -1290,8 +1290,8 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 		return (
 			<div className="flex flex-col gap-6 text-white">
 				<div className="flex items-center gap-3 border-b border-white/10 pb-5">
-					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-						<Icon icon={File01Icon} className="icon-sm text-[#4f55f1]" />
+					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+						<Icon icon={File01Icon} className="icon-sm text-link" />
 					</div>
 					<div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Logs do Sistema</h1>
@@ -1300,8 +1300,8 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 						</p>
 					</div>
 				</div>
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] overflow-hidden">
-					<div className="border-b border-content2 px-4 pt-4 pb-0">
+				<div className="rounded-[20px] border border-white/12 bg-card overflow-hidden">
+					<div className="border-b border-border px-4 pt-4 pb-0">
 						<InternalTabs
 							ariaLabel="Tipos de logs"
 							items={logTypeTabItems}
@@ -1378,7 +1378,7 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 								alt={displayName}
 								width={20}
 								height={20}
-								className="rounded-sm border border-divider object-cover shrink-0"
+								className="rounded-sm border border-border object-cover shrink-0"
 							/>
 						) : null,
 					};
@@ -1477,8 +1477,8 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={File01Icon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={File01Icon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Logs do Sistema</h1>
 					</div>
@@ -1489,15 +1489,17 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden" aria-busy={isPending}>
 				<Suspense
 					fallback={
-						<LogsTableFallback
-							columns={columns}
-							minWidth={minWidth}
-							pageSize={Number(filterState.values.pageSize)}
-							filters={dataTableFilters}
-						/>
+						<div role="status" aria-label="Carregando logs">
+							<LogsTableFallback
+								columns={columns}
+								minWidth={minWidth}
+								pageSize={Number(filterState.values.pageSize)}
+								filters={dataTableFilters}
+							/>
+						</div>
 					}
 				>
 					<LogsTableContent

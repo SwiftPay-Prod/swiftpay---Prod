@@ -249,7 +249,7 @@
 - [x] **Tabela 156 gaps** `path:linha | componente | regra | sev | evidência | origem` §3 (60 PR +96 shards A/B/C/D — E addendum pendente)
 - [x] **Checklist aderência** §4 por categoria (tipografia, spacing, cores, radius, elevação, estados, A11y, breakpoints, pills, squircles, charts, copy, R8-R11, tokens)
 - [x] **Ações P0/P1/P2 14 priorizadas** §5 sem implementação
-- [ ] **Pendente:** Shard E `path:linha` 120 arquivos → `E-*.csv` + `certified-files-595.txt` + selo `871/871` + `unverified` manual — ETA <10 min
+- [x] **Shard E fechado (2026-08-23):** `path:linha` detalhado em `E-shard-publicas-globals-livebalance-addendum.md` (RESOLVIDO/EXCEÇÃO item a item); manifesto pós-purge em `certified-files.txt` — selo **860/860** (15 arquivos boleto removidos no P0)
 
 ---
 

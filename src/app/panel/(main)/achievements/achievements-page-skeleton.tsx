@@ -9,13 +9,13 @@ export function AchievementsPageSkeleton() {
 		<div className="flex flex-col gap-6 text-white">
 			<div className="flex items-center justify-between border-b border-white/10 pb-5">
 				<div className="flex items-center gap-2">
-					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-						<Icon icon={StarAward02Icon} className="icon-sm text-[#4f55f1]" />
+					<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+						<Icon icon={StarAward02Icon} className="icon-sm text-link" />
 					</div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Conquistas</h1>
 				</div>
 			</div>
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5">
 				<div className="flex items-center gap-4">
 					<Skeleton className="w-16 h-16 rounded-full bg-white/10 shrink-0" />
 					<div className="flex flex-col gap-2 flex-1 min-w-0">

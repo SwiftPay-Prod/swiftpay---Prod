@@ -276,7 +276,7 @@ export function AcquirerDetails({ acquirer, currentUserRole }: AcquirerDetailsPr
 						<button
 							type="button"
 							onClick={() => setIsDeleteModalOpen(true)}
-							className="button-outline-dark cursor-pointer text-xs border-[#e23b4a]/40 text-[#e23b4a] hover:bg-[#e23b4a]/10"
+							className="button-outline-dark cursor-pointer text-xs border-danger/40 text-danger hover:bg-danger/10"
 						>
 							<Icon icon={Delete02Icon} className="icon-xs" />
 							<span>Deletar Processadora</span>

@@ -332,7 +332,7 @@ export function ProductsTab({ checkout, merchantId, onRefresh, onDraftChange }: 
 						)}
 
 						{groupedProducts.length === 0 ? (
-							<Card className="border border-dashed border-divider bg-surface-secondary">
+							<Card className="border border-dashed border-border bg-surface-secondary">
 								<Card.Content className="flex items-start gap-3">
 									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-soft">
 										<Icon icon={InformationCircleIcon} className="icon-md text-accent" />
@@ -347,7 +347,7 @@ export function ProductsTab({ checkout, merchantId, onRefresh, onDraftChange }: 
 								</Card.Content>
 							</Card>
 						) : filteredRows.length === 0 ? (
-							<Card className="border border-dashed border-divider bg-surface-secondary">
+							<Card className="border border-dashed border-border bg-surface-secondary">
 								<Card.Content className="flex items-start gap-3">
 									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-soft">
 										<Icon icon={InformationCircleIcon} className="icon-md text-accent" />

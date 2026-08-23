@@ -199,7 +199,7 @@ function CredentialEnvironmentSection({
 
 	return (
 		<Accordion defaultExpandedKeys={[]}>
-			<Accordion.Item id={id} className="rounded-xl border border-divider bg-surface">
+			<Accordion.Item id={id} className="rounded-xl border border-border bg-surface">
 				<Accordion.Heading>
 					<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 						<div className="flex items-center gap-3">
@@ -466,7 +466,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 					</div>
 				)}
 				<Accordion defaultExpandedKeys={[]}>
-					<Accordion.Item id="status-webhook" className="rounded-xl border border-divider bg-surface">
+					<Accordion.Item id="status-webhook" className="rounded-xl border border-border bg-surface">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 								<div className="flex items-center gap-3">
@@ -629,7 +629,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 				/>
 
 				<Accordion defaultExpandedKeys={[]}>
-					<Accordion.Item id="fees" className="rounded-xl border border-divider bg-surface">
+					<Accordion.Item id="fees" className="rounded-xl border border-border bg-surface">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 								<div className="flex items-center gap-3">
@@ -727,7 +727,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 				</div>
 			)}
 			<Accordion defaultExpandedKeys={[]}>
-				<Accordion.Item id="status-edit" className="rounded-xl border border-divider bg-surface">
+				<Accordion.Item id="status-edit" className="rounded-xl border border-border bg-surface">
 					<Accordion.Heading>
 						<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 							<div className="flex items-center gap-3">
@@ -892,7 +892,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 							summary={buildCompensationSummary(formData.pixHasCompensation, formData.pixCompensationDays)}
 						>
 							<div className="flex flex-col gap-4">
-								<div className="flex items-center justify-between rounded-lg border border-border bg-content1 p-2.5">
+								<div className="flex items-center justify-between rounded-lg border border-border bg-card p-2.5">
 									<div className="flex flex-col gap-0.5">
 										<span className="text-sm font-medium text-white">Compensação em dias</span>
 										<span className="text-xs text-muted">Liquidação D+X no PIX</span>
@@ -1043,7 +1043,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 			)}
 
 			<Accordion defaultExpandedKeys={[]}>
-				<Accordion.Item id="fees-edit" className="rounded-xl border border-divider bg-surface">
+				<Accordion.Item id="fees-edit" className="rounded-xl border border-border bg-surface">
 					<Accordion.Heading>
 						<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 							<div className="flex items-center gap-3">
@@ -1248,7 +1248,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 
 			{isGod && (
 				<Accordion defaultExpandedKeys={[]}>
-					<Accordion.Item id="webhook-auth-edit" className="rounded-xl border border-divider bg-surface">
+					<Accordion.Item id="webhook-auth-edit" className="rounded-xl border border-border bg-surface">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 								<div className="flex items-center gap-3">
@@ -1338,7 +1338,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 
 			{isGod && (
 				<Accordion defaultExpandedKeys={[]}>
-					<Accordion.Item id="creds-production-edit" className="rounded-xl border border-divider bg-surface">
+					<Accordion.Item id="creds-production-edit" className="rounded-xl border border-border bg-surface">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 								<div className="flex items-center gap-3">
@@ -1408,7 +1408,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 
 			{isGod && (
 				<Accordion defaultExpandedKeys={[]}>
-					<Accordion.Item id="creds-sandbox-edit" className="rounded-xl border border-divider bg-surface">
+					<Accordion.Item id="creds-sandbox-edit" className="rounded-xl border border-border bg-surface">
 						<Accordion.Heading>
 							<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 								<div className="flex items-center gap-3">

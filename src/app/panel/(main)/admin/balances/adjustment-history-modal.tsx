@@ -32,7 +32,7 @@ const SCOPE_LABEL: Record<'Platform' | 'Acquirer', string> = {
 
 function AdjustmentCard({ item, mode }: { item: AdminPlatformBalanceAdjustmentHistoryData; mode: 'platform' | 'merchant' }) {
 	return (
-		<div className="flex items-start gap-3 rounded-xl border border-divider bg-surface p-3">
+		<div className="flex items-start gap-3 rounded-xl border border-border bg-surface p-3">
 			<div className="flex flex-1 flex-col gap-1.5 min-w-0">
 				<div className="flex flex-wrap items-center gap-2">
 					{mode === 'platform' ? (
@@ -66,7 +66,7 @@ function AdjustmentSkeleton() {
 	return (
 		<div className="flex flex-col gap-2">
 			{Array.from({ length: 8 }).map((_, i) => (
-				<div key={i} className="h-16 animate-pulse rounded-xl bg-content2" />
+				<div key={i} className="h-16 animate-pulse rounded-xl bg-surface-deep" />
 			))}
 		</div>
 	);
@@ -89,7 +89,7 @@ function ListPagination({
 	const from = (page - 1) * pageSize + 1;
 	const to = Math.min(page * pageSize, totalItems);
 	return (
-		<div className="flex items-center justify-between border-t border-divider pt-3">
+		<div className="flex items-center justify-between border-t border-border pt-3">
 			<span className="text-xs text-muted">{from}–{to} de {totalItems}</span>
 			<div className="flex items-center gap-1">
 				<Button isIconOnly size="sm" variant="tertiary" isDisabled={page <= 1} onPress={() => onPageChange(page - 1)}>
@@ -135,7 +135,7 @@ function HistoryListContent({
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="flex flex-wrap items-end gap-3 rounded-xl border border-divider bg-surface p-3">
+			<div className="flex flex-wrap items-end gap-3 rounded-xl border border-border bg-surface p-3">
 				{mode === 'platform' && (
 					<div className="flex flex-wrap gap-2">
 						{(['Platform', 'Acquirer'] as const).map((s) => (

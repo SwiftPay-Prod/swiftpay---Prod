@@ -113,7 +113,7 @@ function renderMobileAdminAutomaticCashoutLogCard(item: AdminAutomaticCashoutLog
 	const envParse = paymentEnvironmentParse[item.environment];
 	const statusParse = automaticCashoutStatusParse[item.status];
 	return (
-		<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+		<div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
 			<div className="flex items-start justify-between gap-3 mb-3">
 				<div>
 					<span className="font-medium text-sm">{item.merchantName}</span>

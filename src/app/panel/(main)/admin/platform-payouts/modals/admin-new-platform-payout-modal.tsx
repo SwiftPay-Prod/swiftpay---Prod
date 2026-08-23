@@ -92,7 +92,7 @@ function PreviewItemsTable({ items }: { items: AdminPreviewPlatformPayoutItemDat
 	return (
 		<div className="overflow-x-auto">
 			<table className="w-full text-sm">
-				<thead className="bg-content2">
+				<thead className="bg-surface-deep">
 					<tr>
 						<th className="px-3 py-2 text-left text-xs font-semibold text-foreground/70">Adquirente</th>
 						<th className="px-3 py-2 text-right text-xs font-semibold text-foreground/70">Disponível</th>
@@ -105,7 +105,7 @@ function PreviewItemsTable({ items }: { items: AdminPreviewPlatformPayoutItemDat
 					{items.map((item) => {
 						const feeModeLabel = feeChargeModeParse[item.payoutFeeMode]?.label ?? item.payoutFeeMode;
 						return (
-							<tr key={item.acquirerId} className="hover:bg-content2/50">
+							<tr key={item.acquirerId} className="hover:bg-surface-deep/50">
 								<td className="px-2 py-2.5">
 									<div className="flex items-center gap-2">
 										{item.acquirerLogoUrl ? (
@@ -116,7 +116,7 @@ function PreviewItemsTable({ items }: { items: AdminPreviewPlatformPayoutItemDat
 												</Avatar.Fallback>
 											</Avatar>
 										) : (
-											<div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-content1">
+											<div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-card">
 												<Icon icon={ServerStack01Icon} className="icon-xs text-muted" />
 											</div>
 										)}
@@ -443,7 +443,7 @@ function PlatformPayoutForm({
 						<span className="text-sm text-danger">{availabilityError}</span>
 					</div>
 				) : (
-					<div className="rounded-xl bg-content1">
+					<div className="rounded-xl bg-card">
 						<div className="flex items-center gap-3">
 							<div className="w-10 h-10 rounded-full flex items-center justify-center bg-success-soft-hover">
 								<Icon icon={Wallet01Icon} className="icon-sm text-success" />
@@ -468,7 +468,7 @@ function PlatformPayoutForm({
 						<span className="text-sm text-danger">{accountsError}</span>
 					</div>
 				) : accounts.length > 0 ? (
-					<div className="rounded-xl flex flex-col gap-4 bg-content1">
+					<div className="rounded-xl flex flex-col gap-4 bg-card">
 						<div className="flex items-center gap-2">
 							<Icon icon={Key01Icon} className="icon-sm text-accent" />
 							<h4 className="font-semibold text-sm text-foreground">Conta de Destino</h4>
@@ -677,7 +677,7 @@ function PlatformPayoutForm({
 																			</Avatar.Fallback>
 																		</Avatar>
 																	) : (
-																		<div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-content1">
+																		<div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-card">
 																			<Icon icon={ServerStack01Icon} className="icon-xs text-muted" />
 																		</div>
 																	)}
@@ -704,7 +704,7 @@ function PlatformPayoutForm({
 								</Autocomplete>
 
 								{selectedAcquirerItems.length === 0 ? (
-									<div className="rounded-lg bg-content1 p-4 text-sm text-foreground/60">
+									<div className="rounded-lg bg-card p-4 text-sm text-foreground/60">
 										Selecione uma adquirente para definir o valor de saque.
 									</div>
 								) : (
@@ -723,7 +723,7 @@ function PlatformPayoutForm({
 																</Avatar.Fallback>
 															</Avatar>
 														) : (
-															<div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-content1">
+															<div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-card">
 																<Icon icon={ServerStack01Icon} className="icon-xs text-muted" />
 															</div>
 														)}

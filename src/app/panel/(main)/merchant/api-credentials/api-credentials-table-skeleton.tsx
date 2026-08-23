@@ -24,7 +24,7 @@ export function ApiCredentialsTableSkeleton({ pageSize = 10 }: ApiCredentialsTab
 			</div>
 
 			<Card className="overflow-hidden">
-				<div className="flex flex-wrap items-center gap-2 border-b border-divider p-4">
+				<div className="flex flex-wrap items-center gap-2 border-b border-border p-4">
 					<Skeleton className="h-10 w-48 rounded-lg" />
 					<Skeleton className="h-10 w-40 rounded-lg" />
 					<Skeleton className="h-10 w-36 rounded-lg" />
@@ -35,7 +35,7 @@ export function ApiCredentialsTableSkeleton({ pageSize = 10 }: ApiCredentialsTab
 				<div className="overflow-x-auto">
 					<table className="w-full min-w-150">
 						<thead>
-							<tr className="border-b border-divider bg-surface-secondary">
+							<tr className="border-b border-border bg-surface-secondary">
 								<th className="px-4 py-3 text-left">
 									<Skeleton className="h-4 w-16 rounded" />
 								</th>
@@ -61,7 +61,7 @@ export function ApiCredentialsTableSkeleton({ pageSize = 10 }: ApiCredentialsTab
 						</thead>
 						<tbody>
 							{Array.from({ length: pageSize }).map((_, index) => (
-								<tr key={index} className="border-b border-divider last:border-b-0">
+								<tr key={index} className="border-b border-border last:border-b-0">
 									<td className="px-4 py-3">
 										<div className="flex items-center gap-2">
 											<Skeleton className="h-5 w-5 rounded" />
@@ -96,7 +96,7 @@ export function ApiCredentialsTableSkeleton({ pageSize = 10 }: ApiCredentialsTab
 					</table>
 				</div>
 
-				<div className="flex items-center justify-between border-t border-divider p-4">
+				<div className="flex items-center justify-between border-t border-border p-4">
 					<Skeleton className="h-5 w-40 rounded" />
 					<div className="flex items-center gap-2">
 						<Skeleton className="h-9 w-9 rounded-lg" />

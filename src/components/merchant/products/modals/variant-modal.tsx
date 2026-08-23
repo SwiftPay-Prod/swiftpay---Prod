@@ -316,7 +316,7 @@ function VariantForm({
 										{isEdit ? (
 											<div className="flex flex-col gap-2">
 												<Label>Quantidade em estoque</Label>
-												<div className="flex items-center gap-3 rounded-lg border border-default bg-content2 p-3">
+												<div className="flex items-center gap-3 rounded-lg border border-default bg-surface-deep p-3">
 													<span className="text-lg font-semibold">{initialValues.stockValue ?? '∞'}</span>
 													<span className="text-xs text-muted">Para alterar o estoque, utilize a aba &quot;Estoque&quot;</span>
 												</div>
@@ -340,7 +340,7 @@ function VariantForm({
 								)}
 
 								{productType === ProductType.Physical && isUnlimitedStock && (
-									<div className="flex items-center justify-between rounded-lg border border-default bg-content2 p-3">
+									<div className="flex items-center justify-between rounded-lg border border-default bg-surface-deep p-3">
 										<span className="text-sm">Estoque ilimitado</span>
 										<span className="text-lg font-semibold">∞</span>
 									</div>

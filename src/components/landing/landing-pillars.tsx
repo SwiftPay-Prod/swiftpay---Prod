@@ -52,7 +52,7 @@ export function LandingPillars() {
 				
 				{/* Section Header */}
 				<div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-					<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-semibold text-[#4f55f1]">
+					<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-card text-xs font-semibold text-link">
 						<span className="font-mono">ARQUITETURA & RECURSOS</span>
 					</div>
 					<h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
@@ -68,14 +68,14 @@ export function LandingPillars() {
 					{pillars.map((pillar) => (
 						<div
 							key={pillar.title}
-							className="group relative rounded-2xl border border-white/12 bg-[#16181a] p-6 sm:p-8 transition-all hover:border-white/25 hover:shadow-[0_4px_24px_rgba(73,79,223,0.12)] flex flex-col justify-between"
+							className="group relative rounded-2xl border border-white/12 bg-card p-6 sm:p-8 transition-all hover:border-white/25 hover:shadow-[0_4px_24px_rgba(73,79,223,0.12)] flex flex-col justify-between"
 						>
 							<div className="space-y-4">
 								<div className="flex items-center justify-between">
 									<span className="text-xs font-mono font-bold text-white/50 tracking-wider">
 										{pillar.code}
 									</span>
-									<span className="rounded-md bg-white/5 border border-white/10 px-2.5 py-1 text-xs font-mono font-semibold text-[#00a87e]">
+									<span className="rounded-md bg-white/5 border border-white/10 px-2.5 py-1 text-xs font-mono font-semibold text-success">
 										{pillar.tag}
 									</span>
 								</div>
@@ -92,7 +92,7 @@ export function LandingPillars() {
 
 							<div className="pt-6 mt-6 border-t border-white/8 flex items-center justify-between text-xs font-semibold text-white/80">
 								<span className="flex items-center gap-2">
-									<Icon icon={pillar.icon} className="w-4 h-4 text-[#4f55f1]" />
+									<Icon icon={pillar.icon} className="w-4 h-4 text-link" />
 									<span>Tecnologia Nativa</span>
 								</span>
 								<Icon icon={ArrowUpRight01Icon} className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />

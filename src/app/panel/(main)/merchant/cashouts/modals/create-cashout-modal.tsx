@@ -381,7 +381,7 @@ function FormContent({
 						)}
 					</div>
 					{requiresFullWithdrawalNow && (
-						<div className="flex items-center justify-between gap-3 rounded-lg border border-divider p-3">
+						<div className="flex items-center justify-between gap-3 rounded-lg border border-border p-3">
 							<div className="flex flex-col gap-0.5">
 								<span className="text-sm font-medium">Sacar saldo total disponível</span>
 								<span className="text-xs text-muted">
@@ -511,7 +511,7 @@ function FormContent({
 								<div className="flex flex-col gap-2">
 									<Skeleton className="h-5 w-full rounded" />
 									<Skeleton className="h-5 w-full rounded" />
-									<div className="border-t border-divider pt-2 mt-1">
+									<div className="border-t border-border pt-2 mt-1">
 										<Skeleton className="h-7 w-full rounded" />
 									</div>
 								</div>
@@ -535,7 +535,7 @@ function FormContent({
 										</span>
 										<span className="font-medium text-danger">- {formatCurrency(preview.fee)}</span>
 									</div>
-									<div className="border-t border-divider pt-2 mt-1">
+									<div className="border-t border-border pt-2 mt-1">
 										<div className="flex justify-between">
 											<span className="font-medium text-success">Você vai receber:</span>
 											<span className="font-bold text-lg text-success">{formatCurrency(preview.netAmount)}</span>

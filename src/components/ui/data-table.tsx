@@ -354,9 +354,9 @@ export function DataTable<T>({
 										type="button"
 										onClick={filters.onRefresh}
 										disabled={filters.isRefreshing}
-										className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+										className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-deep px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
 									>
-										<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${filters.isRefreshing ? 'animate-spin text-[#4f55f1]' : 'text-white/60'}`} />
+										<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${filters.isRefreshing ? 'animate-spin text-link' : 'text-white/60'}`} />
 										Atualizar
 									</button>
 								)}
@@ -372,7 +372,7 @@ export function DataTable<T>({
 
 					<div className="md:hidden rounded-xl bg-surface">
 						<Accordion>
-							<Accordion.Item id="filters" className="rounded-xl border border-divider bg-surface">
+							<Accordion.Item id="filters" className="rounded-xl border border-border bg-surface">
 								<Accordion.Heading>
 									<Accordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
 										<span className="font-medium">Filtros</span>
@@ -388,9 +388,9 @@ export function DataTable<T>({
 													type="button"
 													onClick={filters.onRefresh}
 													disabled={filters.isRefreshing}
-													className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#0a0a0a] px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
+													className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-deep px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white disabled:opacity-50"
 												>
-													<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${filters.isRefreshing ? 'animate-spin text-[#4f55f1]' : 'text-white/60'}`} />
+													<Icon icon={ArrowReloadHorizontalIcon} className={`icon-sm ${filters.isRefreshing ? 'animate-spin text-link' : 'text-white/60'}`} />
 													Atualizar
 												</button>
 											)}
@@ -450,6 +450,8 @@ export function DataTable<T>({
 								})}
 							</Table.Header>
 							<Table.Body
+								aria-busy={isLoading}
+								aria-live="polite"
 								renderEmptyState={() => (
 									<EmptyState className="flex w-full flex-col items-center justify-center gap-2 py-12 text-center">
 										<Icon icon={RemoveCircleIcon} className="icon-md text-muted" />
@@ -535,7 +537,7 @@ export function DataTable<T>({
 
 			<div className="md:hidden">
 				{isLoading ? (
-					<div className="flex flex-col gap-2 p-2 rounded-xl border border-divider bg-surface">
+					<div className="flex flex-col gap-2 p-2 rounded-xl border border-border bg-surface">
 						{Array.from({ length: Math.min(skeletonRows, 5) }).map((_, index) => (
 							<Skeleton key={index} className="h-16 rounded-xl" />
 						))}
@@ -550,7 +552,7 @@ export function DataTable<T>({
 									renderMobileCard(item, index, effectiveMobileActions ? () => openMobileActions(item) : undefined)
 								) : (
 									<div
-										className={`rounded-xl border border-divider bg-surface overflow-hidden ${
+										className={`rounded-xl border border-border bg-surface overflow-hidden ${
 											effectiveMobileActions ? 'cursor-pointer' : ''
 										}`}
 										onClick={effectiveMobileActions ? () => openMobileActions(item) : undefined}
@@ -576,7 +578,7 @@ export function DataTable<T>({
 													.slice(1)
 													.filter((col) => col.key !== 'actions')
 													.map((column) => (
-														<div key={column.key} className="rounded-lg bg-content1 p-2 min-w-0 overflow-hidden">
+														<div key={column.key} className="rounded-lg bg-card p-2 min-w-0 overflow-hidden">
 															<span className="text-xs text-muted">{column.header}</span>
 															<div className="mt-1 text-sm truncate">{column.render(item)}</div>
 														</div>
@@ -591,7 +593,7 @@ export function DataTable<T>({
 				)}
 
 				{pagination && (
-					<div className="mt-3 rounded-xl border border-divider bg-surface p-3">
+					<div className="mt-3 rounded-xl border border-border bg-surface p-3">
 						<Pagination size="sm">
 							<Pagination.Summary>
 								Mostrando {start}-{end} de {pagination.totalItems} resultados

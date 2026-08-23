@@ -11,7 +11,7 @@ export function SetAcquirerModalSkeleton() {
 				{[...Array(3)].map((_, i) => (
 					<div
 						key={i}
-						className="flex items-center gap-3 rounded-lg border border-divider bg-surface p-3"
+						className="flex items-center gap-3 rounded-lg border border-border bg-surface p-3"
 					>
 						<Skeleton className="size-10 rounded-full" />
 						<div className="flex flex-1 flex-col gap-1">

@@ -211,7 +211,7 @@ export function FeaturesTab({
 						bodyClassName="p-4"
 					>
 						<div className="space-y-4">
-									<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+									<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 										<div className="flex flex-col">
 											<Label className="text-sm">Habilitar cupons</Label>
 											<span className="text-xs text-muted">Status: {formData.couponEnabled ? 'Ativo' : 'Inativo'}</span>
@@ -257,7 +257,7 @@ export function FeaturesTab({
 						bodyClassName="p-4"
 					>
 						<div className="space-y-4">
-									<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+									<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 										<div className="flex flex-col">
 											<Label className="text-sm">Habilitar frete</Label>
 											<span className="text-xs text-muted">Status: {formData.shippingEnabled ? 'Ativo' : 'Inativo'}</span>
@@ -317,7 +317,7 @@ export function FeaturesTab({
 						bodyClassName="p-4"
 					>
 						<div className="space-y-4">
-							<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+							<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 								<div className="flex flex-col">
 									<Label className="text-sm">Habilitar valor mínimo</Label>
 									<span className="text-xs text-muted">Status: {formData.minimumValue != null ? 'Ativo' : 'Inativo'}</span>
@@ -359,7 +359,7 @@ export function FeaturesTab({
 						bodyClassName="p-4"
 					>
 						<div className="space-y-4">
-									<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+									<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 										<div className="flex flex-col">
 											<Label className="text-sm">Habilitar timer</Label>
 											<span className="text-xs text-muted">Status: {formData.showTimer ? 'Ativo' : 'Inativo'}</span>
@@ -437,7 +437,7 @@ export function FeaturesTab({
 						}
 					>
 						<div className="space-y-4">
-									<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+									<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 										<div className="flex flex-col">
 											<Label className="text-sm">Habilitar prova social</Label>
 											<span className="text-xs text-muted">Status: {formData.socialProofEnabled ? 'Ativo' : 'Inativo'}</span>
@@ -593,7 +593,7 @@ export function FeaturesTab({
 				)}
 
 			{!hasAnyFeature && (
-				<Card className="border-default bg-content1">
+				<Card className="border-default bg-card">
 					<Card.Content className="py-6">
 						<div className="flex flex-col items-center gap-3 text-center">
 							<Icon icon={InformationCircleIcon} className="icon-lg text-muted" />

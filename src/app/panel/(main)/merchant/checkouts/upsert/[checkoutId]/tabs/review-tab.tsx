@@ -196,14 +196,14 @@ export function ReviewTab({ merchantId, checkout, onRefresh, reviewDraft }: Revi
 
           <div className="grid grid-cols-1 gap-2 xl:grid-cols-2">
             {summaryFields.map((field) => (
-              <div key={field.id} className="rounded-lg border border-divider px-3 py-2">
+              <div key={field.id} className="rounded-lg border border-border px-3 py-2">
                 <p className="text-xs text-muted">{field.label}</p>
                 <p className="text-sm font-medium">{field.value}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex items-start gap-2 rounded-lg bg-content2 p-3">
+          <div className="flex items-start gap-2 rounded-lg bg-surface-deep p-3">
             <Icon icon={Tick02Icon} className="icon-sm mt-0.5 shrink-0 text-accent" />
             <p className="text-xs text-muted">
               O resumo desta etapa mostra apenas nome, template, pagamentos e produtos. Ao salvar e finalizar,

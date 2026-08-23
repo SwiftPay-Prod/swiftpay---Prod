@@ -138,10 +138,10 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 	const buttonClassName = [
 		showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
 		active
-			? 'bg-[#494fdf]/15 text-[#4f55f1] border-l-2 border-[#4f55f1] rounded-r-lg'
+			? 'bg-brand/15 text-link border-l-2 border-link rounded-r-lg'
 			: 'text-white/60 hover:text-white hover:bg-white/10 rounded-lg',
 		item.isDisabled ? 'opacity-60 cursor-not-allowed' : '',
-		!showFull && active ? '!bg-[#494fdf]/15 !text-[#4f55f1] rounded-md' : '',
+		!showFull && active ? '!bg-brand/15 !text-link rounded-md' : '',
 		!showFull && !active ? 'rounded-md text-white/60 hover:text-white hover:bg-white/10' : '',
 	]
 		.filter(Boolean)

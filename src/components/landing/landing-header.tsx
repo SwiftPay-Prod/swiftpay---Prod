@@ -84,7 +84,7 @@ export function LandingHeader({ onOpenAuth }: LandingHeaderProps) {
 
 			{/* Mobile Navigation Drawer */}
 			{mobileMenuOpen && (
-				<div className="md:hidden border-b border-white/12 bg-[#16181a] px-4 pt-4 pb-6 space-y-4 animate-in slide-in-from-top-2 duration-150 text-white">
+				<div className="md:hidden border-b border-white/12 bg-card px-4 pt-4 pb-6 space-y-4 animate-in slide-in-from-top-2 duration-150 text-white">
 					<nav className="flex flex-col space-y-3">
 						{navItems.map((item) => (
 							<a
@@ -99,7 +99,7 @@ export function LandingHeader({ onOpenAuth }: LandingHeaderProps) {
 						<Link
 							href="/docs"
 							onClick={() => setMobileMenuOpen(false)}
-							className="text-base font-semibold text-[#4f55f1] flex items-center gap-1.5 pt-1"
+							className="text-base font-semibold text-link flex items-center gap-1.5 pt-1"
 						>
 							<span>Documentação API REST</span>
 						</Link>

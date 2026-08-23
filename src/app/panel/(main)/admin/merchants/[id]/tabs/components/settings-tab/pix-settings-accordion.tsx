@@ -196,7 +196,7 @@ export function PixSettingsAccordion({
 				</div>
 			</div>
 
-			<div className="flex flex-wrap items-center gap-4 rounded-lg border border-divider p-3">
+			<div className="flex flex-wrap items-center gap-4 rounded-lg border border-border p-3">
 				<Checkbox variant="secondary" isSelected={showReserveField} onChange={onToggleReserveField}>
 					<Checkbox.Control>
 						<Checkbox.Indicator />

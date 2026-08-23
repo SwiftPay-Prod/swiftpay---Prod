@@ -60,7 +60,7 @@ interface AdminTransactionDetailsModalProps {
 function LedgerTabSkeleton() {
 	return (
 		<div className="flex flex-col gap-5">
-			<div className="grid grid-cols-3 gap-3 rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+			<div className="grid grid-cols-3 gap-3 rounded-xl border border-white/12 bg-surface-deep p-4">
 				{[...Array(3)].map((_, i) => (
 					<div key={i} className="flex flex-col gap-1">
 						<div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ function LedgerTabSkeleton() {
 						<div key={txIndex} className="relative pl-12">
 							<Skeleton className="absolute left-3 top-0 size-5 rounded-full bg-white/10" />
 
-							<div className="rounded-xl border border-white/12 bg-[#0a0a0a] overflow-hidden">
+							<div className="rounded-xl border border-white/12 bg-surface-deep overflow-hidden">
 								<div className="flex items-center justify-between gap-3 border-b border-white/8 bg-white/5 px-4 py-3">
 									<div className="flex flex-col gap-0.5">
 										<Skeleton className="h-4 w-40 rounded bg-white/5" />
@@ -166,7 +166,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 	if (response?.error) {
 		return (
 			<div className="flex flex-col items-center justify-center py-12 text-center">
-				<Icon icon={InformationCircleIcon} className="icon-xl text-[#e23b4a] mb-3" />
+				<Icon icon={InformationCircleIcon} className="icon-xl text-danger mb-3" />
 				<p className="text-white/60">{response.error.message}</p>
 			</div>
 		);
@@ -205,7 +205,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 
 	return (
 		<div className="flex flex-col gap-5">
-			<div className="grid grid-cols-3 gap-3 rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+			<div className="grid grid-cols-3 gap-3 rounded-xl border border-white/12 bg-surface-deep p-4">
 				<div className="flex flex-col gap-1">
 					<div className="flex items-center gap-2 text-xs text-white/50">
 						<Icon icon={Wallet01Icon} className="icon-xs" />
@@ -231,7 +231,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 					</div>
 					<span
 						className={`font-mono text-sm font-medium tabular-nums ${
-							ledgerData.profit > 0 ? 'text-[#00a87e]' : ledgerData.profit < 0 ? 'text-[#e23b4a]' : 'text-white'
+							ledgerData.profit > 0 ? 'text-success' : ledgerData.profit < 0 ? 'text-danger' : 'text-white'
 						}`}
 					>
 						{formatCurrency(ledgerData.profit)}
@@ -253,9 +253,9 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 								<div
 									className={`absolute left-3 top-0 flex h-5 w-5 items-center justify-center rounded-full ${
 										isPending
-											? 'bg-[#ec7e00]/20 text-[#ec7e00]'
+											? 'bg-warning/20 text-warning'
 											: isConfirmed
-											? 'bg-[#00a87e]/20 text-[#00a87e]'
+											? 'bg-success/20 text-success'
 											: 'bg-white/10 text-white/70'
 									}`}
 								>
@@ -268,7 +268,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 									)}
 								</div>
 
-								<div className="rounded-xl border border-white/12 bg-[#0a0a0a] overflow-hidden">
+								<div className="rounded-xl border border-white/12 bg-surface-deep overflow-hidden">
 									<div className="flex items-center justify-between gap-3 border-b border-white/8 bg-white/5 px-4 py-3">
 										<div className="flex flex-col gap-0.5">
 											<span className="text-sm font-medium text-white">{tx.title}</span>
@@ -287,7 +287,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 													<div className="flex items-center gap-3 min-w-0">
 														<div
 															className={`h-2 w-2 shrink-0 rounded-full ${
-																isCredit ? 'bg-[#00a87e]' : 'bg-[#e23b4a]'
+																isCredit ? 'bg-success' : 'bg-danger'
 															}`}
 														/>
 														<div className="flex flex-col gap-0.5 min-w-0">
@@ -301,7 +301,7 @@ function LedgerContent({ ledgerPromise }: LedgerTabContentProps) {
 													</div>
 													<span
 														className={`shrink-0 font-mono text-sm font-medium tabular-nums ${
-															isCredit ? 'text-[#00a87e]' : 'text-[#e23b4a]'
+															isCredit ? 'text-success' : 'text-danger'
 														}`}
 													>
 														{isCredit ? '+' : '-'} {formatCurrency(entry.amount)}
@@ -365,7 +365,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 				</div>
 			</div>
 
-			<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+			<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 				<SectionTitle icon={<Icon icon={DollarCircleIcon} className="icon-xs" />} title="Valores" />
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 					<DetailRow label="Valor Bruto" value={<span className="font-mono text-white tabular-nums">{formatCurrency(transaction.amount)}</span>} />
@@ -376,7 +376,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 					{transaction.reserveDeductedAmount > 0 && (
 						<DetailRow
 							label="Desconto de reserva financeira"
-							value={<span className="font-mono text-[#ec7e00] tabular-nums">-{formatCurrency(transaction.reserveDeductedAmount)}</span>}
+							value={<span className="font-mono text-warning tabular-nums">-{formatCurrency(transaction.reserveDeductedAmount)}</span>}
 						/>
 					)}
 					<DetailRow label="Valor Líquido" value={<span className="font-mono text-white tabular-nums">{formatCurrency(transaction.netAmount)}</span>} />
@@ -388,9 +388,9 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 							<span
 								className={`font-mono tabular-nums ${
 									transaction.profit > 0
-										? 'text-[#00a87e]'
+										? 'text-success'
 										: transaction.profit < 0
-										? 'text-[#e23b4a]'
+										? 'text-danger'
 										: 'text-white'
 								}`}
 							>
@@ -401,7 +401,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 				</div>
 			</div>
 
-			<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+			<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 				<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-xs" />} title="Informações Gerais" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow label="ID" value={<CopyableValue value={transaction.id} label="ID" />} mono />
@@ -434,7 +434,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 				</div>
 			</div>
 
-			<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+			<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 				<SectionTitle icon={<Icon icon={Building02Icon} className="icon-xs" />} title="Organização" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow
@@ -451,7 +451,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 			</div>
 
 			{transaction.acquirer && (
-				<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+				<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 					<SectionTitle icon={<Icon icon={Wallet01Icon} className="icon-xs" />} title="Adquirente" />
 					<div className="grid grid-cols-2 gap-4">
 						<DetailRow label="Nome" value={transaction.acquirer.name ?? '-'} />
@@ -474,7 +474,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 			)}
 
 			{transaction.customer && (
-				<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+				<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 					<SectionTitle icon={<Icon icon={UserIcon} className="icon-xs" />} title="Cliente" />
 					<div className="grid grid-cols-2 gap-4">
 						<DetailRow label="Nome" value={transaction.customer.name ?? '-'} />
@@ -485,7 +485,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 			)}
 
 			{transaction.pix && (
-				<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+				<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 					<SectionTitle icon={<Icon icon={Wallet01Icon} className="icon-xs" />} title="Dados PIX" />
 					<div className="grid grid-cols-2 gap-4">
 						<DetailRow label="TxId" value={<CopyableValue value={transaction.pix.txId} label="TxId" />} mono />
@@ -514,7 +514,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 				</div>
 			)}
 
-			<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+			<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 				<SectionTitle icon={<Icon icon={Link01Icon} className="icon-xs" />} title="Callback/Webhook" />
 				<div className="grid grid-cols-2 gap-4">
 					<DetailRow
@@ -542,7 +542,7 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 			</div>
 
 			{transaction.metadata && (
-				<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
+				<div className="rounded-xl border border-white/12 bg-surface-deep p-4">
 					<SectionTitle icon={<Icon icon={InformationCircleIcon} className="icon-xs" />} title="Metadata" />
 					<pre className="text-xs font-mono bg-black/40 border border-white/8 text-white p-3 rounded-lg overflow-auto max-h-40">
 						{JSON.stringify(JSON.parse(transaction.metadata), null, 2)}
@@ -572,7 +572,7 @@ function ModalContent({
 	if (response?.error) {
 		return (
 			<div className="flex flex-col items-center justify-center py-12 gap-4">
-				<Icon icon={InformationCircleIcon} className="icon-lg text-[#e23b4a]" />
+				<Icon icon={InformationCircleIcon} className="icon-lg text-danger" />
 				<p className="text-white/60">{response.error.message}</p>
 			</div>
 		);
@@ -617,7 +617,7 @@ function ModalContent({
 	return (
 		<>
 			<Modal.Header>
-				<Modal.Icon className="bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+				<Modal.Icon className="bg-brand/15 text-link border border-brand/25">
 					<Icon icon={DollarCircleIcon} className="icon-xs" />
 				</Modal.Icon>
 				<Modal.Heading className="text-white">Detalhes da Transação</Modal.Heading>
@@ -696,14 +696,14 @@ export function AdminTransactionDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-4xl bg-[#16181a] border border-white/12 rounded-[20px]">
+				<Modal.Dialog className="max-w-4xl bg-card border border-white/12 rounded-[20px]">
 					<Modal.CloseTrigger />
 					{transactionPromise && (
 						<Suspense
 							fallback={
 								<>
 									<Modal.Header>
-										<Modal.Icon className="bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+										<Modal.Icon className="bg-brand/15 text-link border border-brand/25">
 											<Icon icon={DollarCircleIcon} className="icon-xs" />
 										</Modal.Icon>
 										<Modal.Heading className="text-white">Detalhes da Transação</Modal.Heading>

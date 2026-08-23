@@ -46,7 +46,7 @@ export function ComplementHistoryAccordion({
           return (
             <div
               key={item.id}
-              className={`flex flex-col gap-2 rounded-lg border border-divider bg-content1 p-3 shadow-xs border-l-4 ${statusAccentClass}`}
+              className={`flex flex-col gap-2 rounded-lg border border-border bg-card p-3  border-l-4 ${statusAccentClass}`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex flex-col gap-1">
@@ -67,7 +67,7 @@ export function ComplementHistoryAccordion({
               </div>
 
               {item.respondedAt && (
-                <div className="rounded-md border border-divider bg-surface p-2.5">
+                <div className="rounded-md border border-border bg-surface p-2.5">
                   <span className="text-xs font-semibold text-muted">Novo valor informado</span>
                   <p className="mt-0.5 text-xs font-semibold text-foreground">{newValue}</p>
 

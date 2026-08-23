@@ -105,7 +105,7 @@ export function NotificationItem({
 	return (
 		<div
 			className={`relative flex rounded-xl gap-3 border transition-all ${
-				notification.isRead ? 'bg-surface border-divider' : scopeConfig.unreadContainerClass
+				notification.isRead ? 'bg-surface border-border' : scopeConfig.unreadContainerClass
 			} ${variant === 'compact' ? 'p-3' : 'px-4 py-3'}`}
 		>
 			<div className={`shrink-0 flex items-center justify-center ${variant === 'compact' ? 'size-8' : 'size-9'} rounded-lg bg-${iconColorClass}/10 text-${iconColorClass}`}>

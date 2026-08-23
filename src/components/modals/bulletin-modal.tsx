@@ -86,7 +86,7 @@ export function BulletinModal({
 					<Modal.Body className="flex flex-col gap-4 text-foreground">
 						<RichTextPreview content={bulletin.content} />
 
-						<div className="border-t border-divider pt-4">
+						<div className="border-t border-border pt-4">
 							{isLoadingContent ? (
 								<BulletinReactionsSkeleton />
 							) : bulletinContent ? (

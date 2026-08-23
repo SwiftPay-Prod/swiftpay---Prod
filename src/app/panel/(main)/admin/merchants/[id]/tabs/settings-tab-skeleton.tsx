@@ -72,7 +72,7 @@ export function SettingsTabSkeleton() {
 
 			<FormCardSkeleton fieldsCount={3} />
 
-			<div className="flex items-center justify-between rounded-lg border border-default bg-content1 p-4">
+			<div className="flex items-center justify-between rounded-lg border border-default bg-card p-4">
 				<div className="flex items-center gap-2">
 					<Skeleton className="size-6 rounded" />
 					<Skeleton className="h-4 w-80 rounded" />

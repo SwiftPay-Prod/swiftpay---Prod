@@ -184,7 +184,7 @@ export function MerchantActionButtons({
 				isDisabled={!canModify || activateReason !== null || isPending}
 				onPress={onActivate}
 			>
-				<Icon icon={PlayCircleIcon} className="icon-sm text-[#00a87e]" />
+				<Icon icon={PlayCircleIcon} className="icon-sm text-success" />
 				<span>Ativar</span>
 			</Button>
 			<Button
@@ -193,7 +193,7 @@ export function MerchantActionButtons({
 				isDisabled={!canModify || inactivateReason !== null || isPending}
 				onPress={onInactivate}
 			>
-				<Icon icon={CancelCircleIcon} className="icon-sm text-[#e23b4a]" />
+				<Icon icon={CancelCircleIcon} className="icon-sm text-danger" />
 				<span>Inativar</span>
 			</Button>
 			<Button
@@ -245,7 +245,7 @@ export function MerchantActionsDropdown({
 				<Icon icon={MenuTwoLineIcon} className="icon-sm text-white/80" />
 				{!onlyIcon && <span className="font-semibold text-xs text-white">Ações</span>}
 			</Button>
-			<Dropdown.Popover className="min-w-60 rounded-2xl border border-white/12 bg-[#16181a] p-1.5 shadow-2xl backdrop-blur-xl text-white">
+			<Dropdown.Popover className="min-w-60 rounded-2xl border border-white/12 bg-card p-1.5  backdrop-blur-xl text-white">
 				<Dropdown.Menu
 					aria-label="Ações da organização"
 					onAction={(key) => {
@@ -271,8 +271,8 @@ export function MerchantActionsDropdown({
 					className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
 				>
 							<div className="flex items-center gap-2.5">
-								<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-									<Icon icon={CheckListIcon} className="icon-xs text-[#4f55f1]" />
+								<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+									<Icon icon={CheckListIcon} className="icon-xs text-link" />
 								</div>
 								<div className="flex flex-col gap-0.5">
 									<Label className="text-xs font-semibold text-white cursor-pointer">Avaliar</Label>
@@ -316,8 +316,8 @@ export function MerchantActionsDropdown({
 						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
 					>
 						<div className="flex items-center gap-2.5">
-							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/25">
-								<Icon icon={PlayCircleIcon} className="icon-xs text-[#00a87e]" />
+							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-success/15 text-success border border-success/25">
+								<Icon icon={PlayCircleIcon} className="icon-xs text-success" />
 							</div>
 							<div className="flex flex-col gap-0.5">
 								<Label className="text-xs font-semibold text-white cursor-pointer">Ativar</Label>
@@ -336,8 +336,8 @@ export function MerchantActionsDropdown({
 						className="rounded-xl p-2.5 hover:bg-white/10 transition-colors text-white data-[disabled=true]:opacity-60 data-[disabled=true]:pointer-events-none cursor-pointer data-[disabled=true]:text-white/80"
 					>
 						<div className="flex items-center gap-2.5">
-							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/25">
-								<Icon icon={CancelCircleIcon} className="icon-xs text-[#e23b4a]" />
+							<div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-danger/15 text-danger border border-danger/25">
+								<Icon icon={CancelCircleIcon} className="icon-xs text-danger" />
 							</div>
 							<div className="flex flex-col gap-0.5">
 								<Label className="text-xs font-semibold text-white cursor-pointer">Inativar</Label>

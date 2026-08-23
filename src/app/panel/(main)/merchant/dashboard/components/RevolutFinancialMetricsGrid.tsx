@@ -49,18 +49,18 @@ export function RevolutFinancialMetricsGrid({
 	const iconBg = !hasTransactions
 		? 'bg-white/5 text-white/50'
 		: isHighApproval
-			? 'bg-[#00a87e]/15 text-[#00a87e]'
+			? 'bg-success/15 text-success'
 			: isMediumApproval
-				? 'bg-[#ec7e00]/15 text-[#ec7e00]'
-				: 'bg-[#e23b4a]/15 text-[#e23b4a]';
+				? 'bg-warning/15 text-warning'
+				: 'bg-danger/15 text-danger';
 
 	return (
 		<div className={`grid grid-cols-1 gap-3.5 sm:grid-cols-3 ${className}`}>
 			{/* Card 1: Faturamento Líquido */}
-			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 transition-all hover:border-white/20">
+			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 transition-all hover:border-white/20">
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e]">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success">
 							<RevolutTrendingUpIcon size={16} />
 						</div>
 						<span className="text-[11px] font-semibold uppercase tracking-wider text-white/60">
@@ -73,9 +73,9 @@ export function RevolutFinancialMetricsGrid({
 						<div
 							className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-semibold ${
 								isVolumeGrowthPositive
-									? 'border border-[#00a87e]/20 bg-[#00a87e]/15 text-[#00a87e]'
+									? 'border border-success/20 bg-success/15 text-success'
 									: isVolumeGrowthNegative
-										? 'border border-[#e23b4a]/20 bg-[#e23b4a]/15 text-[#e23b4a]'
+										? 'border border-danger/20 bg-danger/15 text-danger'
 										: 'bg-white/5 text-white/60'
 							}`}
 						>
@@ -103,10 +103,10 @@ export function RevolutFinancialMetricsGrid({
 			</div>
 
 			{/* Card 2: Volume Bruto */}
-			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 transition-all hover:border-white/20">
+			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 transition-all hover:border-white/20">
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1]">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link">
 							<RevolutStatementIcon size={16} />
 						</div>
 						<span className="text-[11px] font-semibold uppercase tracking-wider text-white/60">
@@ -126,7 +126,7 @@ export function RevolutFinancialMetricsGrid({
 			</div>
 
 			{/* Card 3: Taxa de Aprovação / Conversão */}
-			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 transition-all hover:border-white/20">
+			<div className="flex flex-col justify-between gap-4 rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 transition-all hover:border-white/20">
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex items-center gap-2">
 						<div className={`flex h-7 w-7 items-center justify-center rounded-lg ${iconBg}`}>
@@ -146,10 +146,10 @@ export function RevolutFinancialMetricsGrid({
 						<div
 							className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
 								isHighApproval
-									? 'border border-[#00a87e]/20 bg-[#00a87e]/15 text-[#00a87e]'
+									? 'border border-success/20 bg-success/15 text-success'
 									: isMediumApproval
-										? 'border border-[#ec7e00]/20 bg-[#ec7e00]/15 text-[#ec7e00]'
-										: 'border border-[#e23b4a]/20 bg-[#e23b4a]/15 text-[#e23b4a]'
+										? 'border border-warning/20 bg-warning/15 text-warning'
+										: 'border border-danger/20 bg-danger/15 text-danger'
 							}`}
 						>
 							{isHighApproval ? 'Excelente' : isMediumApproval ? 'Estável' : 'Atenção'}
@@ -166,7 +166,7 @@ export function RevolutFinancialMetricsGrid({
 						{hasTxGrowth && transactionsGrowth !== 0 && (
 							<span
 								className={`inline-flex items-center text-xs font-mono font-medium ${
-									isTxGrowthPositive ? 'text-[#00a87e]' : 'text-[#e23b4a]'
+									isTxGrowthPositive ? 'text-success' : 'text-danger'
 								}`}
 							>
 								{isTxGrowthPositive ? '+' : ''}

@@ -41,7 +41,7 @@ export function CopyableValue({ value, label }: CopyableValueProps) {
 
 	return (
 		<div className="flex items-center gap-2 min-w-0">
-			<span className="font-mono text-xs text-foreground truncate flex-1 min-w-0">{value}</span>
+			<span className="font-mono text-xs text-foreground break-all flex-1 min-w-0">{value}</span>
 			<Tooltip>
 				<Button isIconOnly size="sm" variant="ghost" onPress={handleCopy} className="shrink-0">
 					<Icon icon={Copy01Icon} className="icon-xs" />

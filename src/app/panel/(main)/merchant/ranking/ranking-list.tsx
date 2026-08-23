@@ -149,7 +149,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<Icon icon={Award05Icon} className="icon-sm" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Leaderboard de Faturamento</h1>
@@ -179,7 +179,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 
 			{/* Top-3 Podium */}
 			{podiumEntries.length > 0 && (
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 					<TopThreePodium entries={podiumEntries} currentUserId={currentUserId} type={type} />
 				</div>
 			)}
@@ -187,21 +187,21 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 			{/* Leader Metric Bar */}
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 				{/* Líder */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Líder do Período (#1)</span>
 					<div className="flex items-baseline justify-between gap-2">
 						<span className="text-sm font-bold text-white truncate">{firstEntry?.userName || '—'}</span>
-						<span className="text-sm font-extrabold font-mono text-[#ec7e00] tabular-nums">
+						<span className="text-sm font-extrabold font-mono text-warning tabular-nums">
 							{formatCurrency(leaderVolume)}
 						</span>
 					</div>
 				</div>
 
 				{/* Minha Posição */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Sua Posição</span>
 					<div className="flex items-baseline justify-between gap-2">
-						<span className="text-lg font-extrabold font-mono text-[#494fdf] tabular-nums">
+						<span className="text-lg font-extrabold font-mono text-brand tabular-nums">
 							#{currentUserEntry?.position ?? 5}
 						</span>
 						<span className="text-sm font-extrabold font-mono text-white tabular-nums">
@@ -211,11 +211,11 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 				</div>
 
 				{/* Diferença */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Diferença para o #1</span>
 					<div className="flex items-baseline justify-between gap-2">
 						<span className="text-xs text-white/40">Faltam para a liderança:</span>
-						<span className="text-sm font-extrabold font-mono text-[#e23b4a] tabular-nums">
+						<span className="text-sm font-extrabold font-mono text-danger tabular-nums">
 							- {formatCurrency(gapToLeader)}
 						</span>
 					</div>
@@ -223,7 +223,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 			</div>
 
 			{/* Filter Toolbar */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-3 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-3 overflow-hidden">
 				<div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
 					<div className="flex flex-wrap items-center gap-2">
 						<InternalTagTabs
@@ -246,7 +246,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 								placeholder="Buscar vendedor ou organização..."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								className="w-full h-8 pl-3 pr-3 text-xs bg-[#0a0a0a] border border-white/12 rounded-lg text-white placeholder:text-white/40 outline-none focus:border-[#4f55f1] transition-colors"
+								className="w-full h-8 pl-3 pr-3 text-xs bg-surface-deep border border-white/12 rounded-lg text-white placeholder:text-white/40 outline-none focus:border-link transition-colors"
 							/>
 						</div>
 					</div>
@@ -260,7 +260,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 									onClick={() => handlePeriodChange(option.key)}
 									className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
 										period === option.key
-											? 'bg-[#494fdf] border-[#4f55f1] text-white'
+											? 'bg-brand border-link text-white'
 											: 'border-white/10 text-white/60 hover:border-white/20 hover:text-white'
 									}`}
 								>
@@ -305,7 +305,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 			)}
 
 			{rankingStatus === 'Processing' && (
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-8 text-center">
+				<div className="rounded-[20px] border border-white/12 bg-card p-8 text-center">
 					<RevolutStatusBadge status="Processing" label="Processando ranking..." />
 					<p className="text-xs text-white/50 mt-2">Os dados estão sendo atualizados. Isso pode levar alguns minutos.</p>
 				</div>

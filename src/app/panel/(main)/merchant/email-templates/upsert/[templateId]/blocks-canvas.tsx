@@ -35,7 +35,7 @@ function SortableBlock({ block, isSelected, onSelect, onDelete, onDuplicate }: S
 			ref={setNodeRef}
 			style={style}
 			className={`group relative rounded-lg border-2 transition-colors ${
-				isSelected ? 'border-accent bg-accent/5' : 'border-transparent bg-content1 hover:border-border'
+				isSelected ? 'border-accent bg-accent/5' : 'border-transparent bg-card hover:border-border'
 			}`}
 		>
 			<div

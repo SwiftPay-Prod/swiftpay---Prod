@@ -86,9 +86,9 @@ export function AnimatedCurrency({ value, duration = 1000, className, compact = 
 	}, [value, duration, isClient, compact, formatValue]);
 
 	if (!isClient) {
-		return <span className={className}>-</span>;
+		return <span className={className} aria-live="polite">-</span>;
 	}
 
-	return <span ref={spanRef} className={className}>{formatValue(0)}</span>;
+	return <span ref={spanRef} className={className} aria-live="polite">{formatValue(0)}</span>;
 }
 

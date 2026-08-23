@@ -10,7 +10,7 @@ export function TemplateResourcesTab({ template }: TemplateResourcesTabProps) {
   const { coreFeatures, trackingFeatures } = getTemplateFeatureSets(template);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-divider bg-surface p-4">
+    <div className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
       <div className="flex flex-col gap-2">
         <Label>Funcionalidades do template</Label>
         <div className="flex flex-wrap gap-2">

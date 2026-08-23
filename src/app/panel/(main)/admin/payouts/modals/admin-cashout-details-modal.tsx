@@ -233,7 +233,7 @@ function DetailsContent({ cashout }: { cashout: AdminCashoutDetails }) {
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex flex-col gap-4 pb-4 border-b border-divider">
+			<div className="flex flex-col gap-4 pb-4 border-b border-border">
 				<div className="flex flex-col gap-1">
 					<span className="text-2xl sm:text-3xl font-bold text-foreground">{formatCurrency(cashout.amount)}</span>
 					<span className="text-sm text-foreground/70">Total debitado da conta</span>

@@ -207,7 +207,7 @@ export function DocumentItem({ label, file }: DocumentItemProps) {
   }
 
   return (
-    <div className="flex items-center justify-between p-3 bg-content2 rounded-lg">
+    <div className="flex items-center justify-between p-3 bg-surface-deep rounded-lg">
       <div className="flex items-center gap-3">
           <Icon icon={DocumentValidationIcon} className="icon-md text-default-400" />
         <div>

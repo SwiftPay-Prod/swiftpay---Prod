@@ -89,14 +89,14 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutAccountListDa
 								{keyTypeParse?.label}
 							</span>
 							{account.isDefault && (
-								<span className="inline-flex items-center gap-1 rounded-full border border-[#494fdf]/30 bg-[#494fdf]/15 px-2 py-0.5 text-xs font-mono font-semibold text-[#4f55f1]">
+								<span className="inline-flex items-center gap-1 rounded-full border border-brand/30 bg-brand/15 px-2 py-0.5 text-xs font-mono font-semibold text-link">
 									<Icon icon={StarIcon} className="icon-xs" />
 									Padrão
 								</span>
 							)}
 						</div>
 						<div className="flex items-center gap-2">
-							<code className="rounded-lg bg-[#0a0a0a] border border-white/8 px-2.5 py-1 text-xs font-mono text-white font-medium">
+							<code className="rounded-lg bg-surface-deep border border-white/8 px-2.5 py-1 text-xs font-mono text-white font-medium">
 								{account.pixKey}
 							</code>
 							<Tooltip>
@@ -168,22 +168,22 @@ function getColumns(config: ColumnsConfig): DataTableColumn<CashoutAccountListDa
 								>
 									<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 								</Button>
-								<Dropdown.Popover className="min-w-52 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+								<Dropdown.Popover className="min-w-52 bg-card border border-white/12 rounded-xl text-whitexl">
 									<Dropdown.Menu aria-label="Ações da conta de saque">
 										{isPending && (
-											<Dropdown.Item id="verify" textValue="Verificar conta" className="text-[#00a87e] hover:bg-white/10" onPress={() => config.onVerify(account)}>
-												<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-[#00a87e]" />
+											<Dropdown.Item id="verify" textValue="Verificar conta" className="text-success hover:bg-white/10" onPress={() => config.onVerify(account)}>
+												<Icon icon={CheckmarkCircle02Icon} className="icon-xs text-success" />
 												Verificar conta
 											</Dropdown.Item>
 										)}
 										{!isPending && !account.isDefault && (
-											<Dropdown.Item id="set-default" textValue="Definir como padrão" className="text-[#4f55f1] hover:bg-white/10" onPress={() => config.onSetDefault(account)}>
-												<Icon icon={StarIcon} className="icon-xs text-[#4f55f1]" />
+											<Dropdown.Item id="set-default" textValue="Definir como padrão" className="text-link hover:bg-white/10" onPress={() => config.onSetDefault(account)}>
+												<Icon icon={StarIcon} className="icon-xs text-link" />
 												Definir como padrão
 											</Dropdown.Item>
 										)}
-										<Dropdown.Item id="delete" textValue="Excluir conta" className="text-[#e23b4a] hover:bg-white/10" onPress={() => config.onDelete(account)}>
-											<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
+										<Dropdown.Item id="delete" textValue="Excluir conta" className="text-danger hover:bg-white/10" onPress={() => config.onDelete(account)}>
+											<Icon icon={Delete02Icon} className="icon-xs text-danger" />
 											Excluir conta
 										</Dropdown.Item>
 									</Dropdown.Menu>
@@ -206,7 +206,7 @@ function renderMobileCashoutAccountCard(
 
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${openActions ? 'cursor-pointer hover:border-white/20' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -227,7 +227,7 @@ function renderMobileCashoutAccountCard(
 						{keyTypeParsed?.label}
 					</span>
 					{account.isDefault && (
-						<span className="inline-flex items-center gap-1 rounded-full border border-[#494fdf]/30 bg-[#494fdf]/15 px-2 py-0.5 text-xs font-mono font-semibold text-[#4f55f1]">
+						<span className="inline-flex items-center gap-1 rounded-full border border-brand/30 bg-brand/15 px-2 py-0.5 text-xs font-mono font-semibold text-link">
 							Padrão
 						</span>
 					)}
@@ -279,7 +279,7 @@ export function CashoutAccountsTable({ fetchPromise, merchantId, filters, readOn
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<RevolutPixIcon size={16} />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Contas Bancárias PIX</h1>
@@ -301,7 +301,7 @@ export function CashoutAccountsTable({ fetchPromise, merchantId, filters, readOn
 				)}
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.items.items}
@@ -322,8 +322,8 @@ export function CashoutAccountsTable({ fetchPromise, merchantId, filters, readOn
 			</div>
 
 			{!readOnly && (
-				<div className="flex items-start gap-3 rounded-[20px] border border-white/12 bg-[#16181a] p-5 text-white">
-					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#ec7e00]/15 text-[#ec7e00] border border-[#ec7e00]/30">
+				<div className="flex items-start gap-3 rounded-[20px] border border-white/12 bg-card p-5 text-white">
+					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-warning/15 text-warning border border-warning/30">
 						<Icon icon={InformationCircleIcon} className="icon-sm" />
 					</div>
 					<div className="flex flex-col gap-1">

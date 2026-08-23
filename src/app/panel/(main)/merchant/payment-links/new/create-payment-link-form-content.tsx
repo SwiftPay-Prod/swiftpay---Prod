@@ -602,7 +602,7 @@ export function CreatePaymentLinkFormContent({
 				</div>
 
 				{!paymentLinkId && (
-					<div className="rounded-xl border border-divider bg-surface p-4">
+					<div className="rounded-xl border border-border bg-surface p-4">
 						<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
 							<Button
 								variant="secondary"
@@ -673,14 +673,14 @@ function Step1Methods({ enabledMethods, availableMethods, onMethodToggle }: Step
 								textValue={option.label}
 								className={cn(
 									'h-auto w-full cursor-pointer rounded-xl border bg-surface p-4 transition-all',
-									isSelected ? 'border-accent bg-accent-soft' : 'border-divider hover:border-accent/40'
+									isSelected ? 'border-accent bg-accent-soft' : 'border-border hover:border-accent/40'
 								)}
 							>
 								<div className="flex items-start gap-3">
 									<div
 										className={cn(
 											'flex size-10 shrink-0 items-center justify-center rounded-lg',
-											isSelected ? 'bg-accent text-accent-foreground' : 'bg-content2 text-muted'
+											isSelected ? 'bg-accent text-accent-foreground' : 'bg-surface-deep text-muted'
 										)}
 									>
 										{option.icon ? <span className="[&_svg]:size-5">{option.icon}</span> : null}
@@ -753,7 +753,7 @@ function Step2Billing({
 				color="accent"
 				defaultExpanded={true}
 				itemClassName="rounded-xl border border-accent-soft-hover bg-surface"
-				triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+				triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 				summaryClassName="text-xs text-muted"
 				iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-accent-soft"
 				iconClassName="icon-md text-accent"
@@ -857,7 +857,7 @@ function Step5Product({
 				color="secondary"
 				defaultExpanded={true}
 				itemClassName="rounded-xl border border-secondary/30 bg-surface"
-				triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+				triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 				summaryClassName="text-xs text-muted"
 				iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-secondary/10"
 				iconClassName="icon-md text-secondary"
@@ -954,7 +954,7 @@ function SettingsAccordionTitle({
 						? 'border-accent-soft-hover bg-accent-soft text-accent'
 						: statusTone === 'secondary'
 							? 'border-secondary/30 bg-secondary/10 text-secondary'
-							: 'border-divider bg-content2 text-muted';
+							: 'border-border bg-surface-deep text-muted';
 
 	return (
 		<span className="flex items-center gap-2">
@@ -1027,7 +1027,7 @@ function Step3Settings({
 						}
 						summary={pixExpirationMinutes.trim() ? `Expira em ${pixExpirationMinutes} min` : 'Usa expiração padrão'}
 						itemClassName="rounded-xl border border-success-soft-hover bg-surface"
-						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+						triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 						summaryClassName="text-xs text-muted"
 						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-success/10"
 						iconClassName="icon-md text-success"
@@ -1077,7 +1077,7 @@ function Step3Settings({
 					)}
 					triggerClassName={cn(
 						'flex w-full items-center justify-between rounded-t-xl px-4 py-3',
-						isCustomExpirationPending ? 'bg-danger-soft' : 'bg-content2'
+						isCustomExpirationPending ? 'bg-danger-soft' : 'bg-surface-deep'
 					)}
 					summaryClassName={cn('text-xs', isCustomExpirationPending ? 'text-danger' : 'text-muted')}
 					iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-warning-soft"
@@ -1188,7 +1188,7 @@ function Step3Settings({
 							: 'Nenhum campo obrigatório'
 					}
 					itemClassName="rounded-xl border border-accent-soft-hover bg-surface"
-					triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+					triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 					summaryClassName="text-xs text-muted"
 					iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-accent-soft"
 					iconClassName="icon-md text-accent"
@@ -1235,10 +1235,10 @@ function Step3Settings({
 						/>
 					}
 					summary={callbackUrl.trim() ? 'URL de callback configurada' : 'Sem callback'}
-					itemClassName="rounded-xl border border-divider bg-surface"
-					triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+					itemClassName="rounded-xl border border-border bg-surface"
+					triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 					summaryClassName="text-xs text-muted"
-					iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-content2"
+					iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-surface-deep"
 					iconClassName="icon-md text-muted"
 					defaultExpanded={false}
 					bodyClassName="p-4"
@@ -1270,7 +1270,7 @@ function Step3Settings({
 					}
 					summary={showFees ? 'Taxas visíveis para o comprador' : 'Taxas ocultas para o comprador'}
 					itemClassName="rounded-xl border border-warning-soft-hover bg-surface"
-					triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+					triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 					summaryClassName="text-xs text-muted"
 					iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-warning-soft"
 					iconClassName="icon-md text-warning"
@@ -1357,7 +1357,7 @@ function Step4Visual({ merchantId, visual, setVisualField }: Step4VisualProps) {
 								'relative flex flex-col overflow-hidden rounded-xl border text-left transition-all focus-visible:outline-none',
 								isSelected
 									? 'border-accent ring-2 ring-accent ring-offset-2 ring-offset-background'
-									: 'border-divider bg-surface hover:border-accent/50'
+									: 'border-border bg-surface hover:border-accent/50'
 							)}
 						>
 							<div className={cn('flex p-3', outerBg ?? 'bg-linear-to-r from-[#e8eaed] to-[#0f1117]')}>
@@ -1389,7 +1389,7 @@ function Step4Visual({ merchantId, visual, setVisualField }: Step4VisualProps) {
 							</div>
 							<div
 								className={cn(
-									'flex items-center gap-2.5 border-t border-divider px-3 py-2.5',
+									'flex items-center gap-2.5 border-t border-border px-3 py-2.5',
 									isSelected ? 'bg-accent/5' : 'bg-surface'
 								)}
 							>
@@ -1557,7 +1557,7 @@ function Step4Review({
 				color="success"
 				defaultExpanded={true}
 				itemClassName="rounded-xl border border-success-soft-hover bg-surface"
-				triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-content2 px-4 py-3"
+				triggerClassName="flex w-full items-center justify-between rounded-t-xl bg-surface-deep px-4 py-3"
 				summaryClassName="text-xs text-muted"
 				iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-success/10"
 				iconClassName="icon-md text-success"
@@ -1584,7 +1584,7 @@ function Step4Review({
 							<span
 								className={cn(
 									'rounded-full px-2 py-0.5 text-xs font-semibold',
-									passFeeToCustomer ? 'bg-warning-soft text-warning' : 'bg-content2 text-muted'
+									passFeeToCustomer ? 'bg-warning-soft text-warning' : 'bg-surface-deep text-muted'
 								)}
 							>
 								{passFeeToCustomer ? 'Sim' : 'Não'}
@@ -1594,7 +1594,7 @@ function Step4Review({
 							<span
 								className={cn(
 									'rounded-full px-2 py-0.5 text-xs font-semibold',
-									showFees ? 'bg-success-soft text-success' : 'bg-content2 text-muted'
+									showFees ? 'bg-success-soft text-success' : 'bg-surface-deep text-muted'
 								)}
 							>
 								{showFees ? 'Exibir' : 'Ocultar'}
@@ -1613,7 +1613,7 @@ function Step4Review({
 						)}
 					</div>
 
-					<div className="border-t border-divider pt-3">
+					<div className="border-t border-border pt-3">
 						<p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-secondary">Produto e visual</p>
 						{productName || description || productImageUrl ? (
 							<div className="flex items-start gap-3">
@@ -1623,10 +1623,10 @@ function Step4Review({
 										alt={productName || 'Imagem do produto'}
 										width={64}
 										height={64}
-										className="size-16 rounded-lg border border-divider object-cover"
+										className="size-16 rounded-lg border border-border object-cover"
 									/>
 								) : (
-									<div className="flex size-16 items-center justify-center rounded-lg border border-dashed border-divider bg-content2 text-xs text-muted">
+									<div className="flex size-16 items-center justify-center rounded-lg border border-dashed border-border bg-surface-deep text-xs text-muted">
 										Sem foto
 									</div>
 								)}
@@ -1639,7 +1639,7 @@ function Step4Review({
 							<p className="text-xs text-muted">Nenhuma informação de produto foi definida.</p>
 						)}
 
-						<div className="mt-2 border-t border-divider pt-2">
+						<div className="mt-2 border-t border-border pt-2">
 							<ReviewRow label="Tema">
 								{themeMode === 'Auto' ? 'Automático' : themeMode === 'Light' ? 'Claro' : 'Escuro'}
 							</ReviewRow>
@@ -1672,7 +1672,7 @@ function Step4Review({
 
 										if (!preview) {
 											return (
-												<div key={method} className="rounded-xl border border-divider bg-content1 p-3 text-sm text-muted">
+												<div key={method} className="rounded-xl border border-border bg-card p-3 text-sm text-muted">
 													{isAmountOutOfRange
 														? `A prévia de ${methodData.label} será exibida quando o valor estiver dentro do limite permitido.`
 														: `Não foi possível carregar a prévia para ${methodData.label}.`}
@@ -1684,7 +1684,7 @@ function Step4Review({
 										const merchantReceives = passFeeToCustomer ? preview.amount : preview.netAmount;
 
 										return (
-											<div key={method} className="rounded-xl bg-content1">
+											<div key={method} className="rounded-xl bg-card">
 												<div className="mb-1.5 flex items-center gap-2 text-xs font-semibold text-foreground">
 													{methodData.icon}
 													{methodData.label}
@@ -1698,7 +1698,7 @@ function Step4Review({
 														<span className="text-muted">Taxa</span>
 														<span className="font-medium text-danger">{formatCurrency(preview.fee)}</span>
 													</div>
-													<div className="flex items-center justify-between border-t border-divider pt-2">
+													<div className="flex items-center justify-between border-t border-border pt-2">
 														<span className="font-medium">Cliente paga</span>
 														<span className="text-sm font-bold text-accent">{formatCurrency(customerPays)}</span>
 													</div>
@@ -1742,7 +1742,7 @@ function StepError({ message }: { message: string }) {
 
 function ReviewRow({ label, children }: { label: string; children: React.ReactNode }) {
 	return (
-		<div className="flex items-start justify-between gap-3 border-b border-divider py-1.5 text-xs last:border-0 last:pb-0">
+		<div className="flex items-start justify-between gap-3 border-b border-border py-1.5 text-xs last:border-0 last:pb-0">
 			<span className="shrink-0 text-muted">{label}</span>
 			<span className="text-right font-semibold text-foreground">{children}</span>
 		</div>

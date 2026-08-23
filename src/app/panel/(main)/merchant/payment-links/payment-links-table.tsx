@@ -109,7 +109,7 @@ function getColumns(
 			key: 'expiresAt',
 			header: 'Expira em',
 			render: (link) => (
-				<span className={`text-xs font-mono ${link.isExpired ? 'text-[#e23b4a]' : 'text-white/50'}`}>
+				<span className={`text-xs font-mono ${link.isExpired ? 'text-danger' : 'text-white/50'}`}>
 					{link.lifetimeStatus === 'NeverExpires' ? 'Não expira' : link.expiresAt ? formatDate(link.expiresAt) : '-'}
 				</span>
 			),
@@ -145,7 +145,7 @@ function getColumns(
 							>
 								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 							</Button>
-							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+							<Dropdown.Popover className="min-w-48 bg-card border border-white/12 rounded-xl text-whitexl">
 								<Dropdown.Menu
 									aria-label="Ações do link de pagamento"
 									onAction={(key) => {
@@ -163,25 +163,25 @@ function getColumns(
 									}}
 								>
 									{canEdit && (
-										<Dropdown.Item id="edit" textValue="Editar link" className="text-[#4f55f1] hover:bg-white/10">
-											<Icon icon={PencilEdit01Icon} className="icon-xs text-[#4f55f1]" />
+										<Dropdown.Item id="edit" textValue="Editar link" className="text-link hover:bg-white/10">
+											<Icon icon={PencilEdit01Icon} className="icon-xs text-link" />
 											Editar link
 										</Dropdown.Item>
 									)}
-									<Dropdown.Item id="clone" textValue="Clonar link" className="text-[#ec7e00] hover:bg-white/10">
-										<Icon icon={Copy02Icon} className="icon-xs text-[#ec7e00]" />
+									<Dropdown.Item id="clone" textValue="Clonar link" className="text-warning hover:bg-white/10">
+										<Icon icon={Copy02Icon} className="icon-xs text-warning" />
 										Clonar link
 									</Dropdown.Item>
-									<Dropdown.Item id="whatsapp" textValue="Compartilhar no WhatsApp" className="text-[#00a87e] hover:bg-white/10">
-										<Icon icon={WhatsappIcon} className="icon-xs text-[#00a87e]" />
+									<Dropdown.Item id="whatsapp" textValue="Compartilhar no WhatsApp" className="text-success hover:bg-white/10">
+										<Icon icon={WhatsappIcon} className="icon-xs text-success" />
 										Compartilhar no WhatsApp
 									</Dropdown.Item>
 									<Dropdown.Item id="open" textValue="Abrir link" className="text-white hover:bg-white/10">
 										<Icon icon={ExternalLink} className="icon-xs text-white/80" />
 										Abrir link
 									</Dropdown.Item>
-									<Dropdown.Item id="delete" textValue="Excluir link" className="text-[#e23b4a] hover:bg-white/10">
-										<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
+									<Dropdown.Item id="delete" textValue="Excluir link" className="text-danger hover:bg-white/10">
+										<Icon icon={Delete02Icon} className="icon-xs text-danger" />
 										Excluir link
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -203,7 +203,7 @@ function renderMobilePaymentLinkCard(
 
 	return (
 		<div
-			className={`rounded-2xl border border-white/10 bg-[#16181a] p-4 text-white overflow-hidden transition-all ${
+			className={`rounded-2xl border border-white/10 bg-card p-4 text-white overflow-hidden transition-all ${
 				onOpenActions ? 'cursor-pointer hover:border-white/20' : ''
 			}`}
 			onClick={onOpenActions}
@@ -286,7 +286,7 @@ export function PaymentLinksTable({ merchantId }: PaymentLinksTableProps) {
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<RevolutPixIcon size={16} />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Links de Pagamento PIX</h1>
@@ -309,7 +309,7 @@ export function PaymentLinksTable({ merchantId }: PaymentLinksTableProps) {
 			{/* 3-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				{/* Total Links */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Total de Links
@@ -327,12 +327,12 @@ export function PaymentLinksTable({ merchantId }: PaymentLinksTableProps) {
 				</div>
 
 				{/* Volume em Links */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Volume Cobrado
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<RevolutCheckIcon size={14} />
 						</div>
 					</div>
@@ -346,17 +346,17 @@ export function PaymentLinksTable({ merchantId }: PaymentLinksTableProps) {
 				</div>
 
 				{/* Eficiência PIX */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Liquidação Instantânea
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<RevolutTrendingUpIcon size={14} />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 							D+0 SPI
 						</span>
 						<p className="text-xs text-white/40 font-mono mt-0.5">Liquidação direta em conta</p>
@@ -365,7 +365,7 @@ export function PaymentLinksTable({ merchantId }: PaymentLinksTableProps) {
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.paymentLinks.items}

@@ -51,7 +51,7 @@ export function CheckoutProductSortableRow({
 			<div
 				ref={setNodeRef}
 				style={style}
-				className="grid w-full grid-cols-[auto_1fr_auto_auto] items-center gap-3 rounded-xl border border-divider bg-content1 p-3"
+				className="grid w-full grid-cols-[auto_1fr_auto_auto] items-center gap-3 rounded-xl border border-border bg-card p-3"
 			>
 				<button
 					type="button"

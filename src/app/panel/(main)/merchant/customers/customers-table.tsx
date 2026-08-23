@@ -138,14 +138,14 @@ function getColumns(config: ColumnsConfig): DataTableColumn<MinimalCustomer>[] {
 							>
 								<Icon icon={MoreHorizontalCircle01Icon} className="icon-sm" />
 							</Button>
-							<Dropdown.Popover className="min-w-48 bg-[#16181a] border border-white/12 rounded-xl text-white shadow-xl">
+							<Dropdown.Popover className="min-w-48 bg-card border border-white/12 rounded-xl text-whitexl">
 								<Dropdown.Menu aria-label="Ações do cliente">
-									<Dropdown.Item id="edit" textValue="Editar cliente" className="text-[#4f55f1] hover:bg-white/10" onPress={() => onEdit(customer.id)}>
-										<Icon icon={PencilEdit01Icon} className="icon-xs text-[#4f55f1]" />
+									<Dropdown.Item id="edit" textValue="Editar cliente" className="text-link hover:bg-white/10" onPress={() => onEdit(customer.id)}>
+										<Icon icon={PencilEdit01Icon} className="icon-xs text-link" />
 										Editar cliente
 									</Dropdown.Item>
-									<Dropdown.Item id="delete" textValue="Excluir cliente" className="text-[#e23b4a] hover:bg-white/10" onPress={() => onDelete(customer)}>
-										<Icon icon={Delete02Icon} className="icon-xs text-[#e23b4a]" />
+									<Dropdown.Item id="delete" textValue="Excluir cliente" className="text-danger hover:bg-white/10" onPress={() => onDelete(customer)}>
+										<Icon icon={Delete02Icon} className="icon-xs text-danger" />
 										Excluir cliente
 									</Dropdown.Item>
 								</Dropdown.Menu>
@@ -167,7 +167,7 @@ function renderMobileCustomerCard(
 
 	return (
 		<div
-			className={`rounded-[20px] border border-white/12 bg-[#16181a] p-4 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-[20px] border border-white/12 bg-card p-4 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -249,7 +249,7 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 							<Icon icon={UserGroupIcon} className="icon-sm" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Clientes</h1>
@@ -272,7 +272,7 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 			{/* 4-Tile KPI Grid */}
 			<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
 				{/* Total */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Total</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
@@ -285,20 +285,20 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 				</div>
 
 				{/* Ativos */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Ativos</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<Icon icon={ViewIcon} className="icon-xs" />
 						</div>
 					</div>
-					<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums">
+					<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums">
 						<AnimatedNumber value={activeCount} />
 					</span>
 				</div>
 
 				{/* Inativos */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Inativos</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
@@ -311,7 +311,7 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 				</div>
 
 				{/* Cobranças */}
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Cobranças</span>
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 text-white/70">
@@ -325,7 +325,7 @@ export function CustomersTable({ merchantId, readOnly = false }: CustomersTableP
 			</div>
 
 			{/* Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.customers.items}

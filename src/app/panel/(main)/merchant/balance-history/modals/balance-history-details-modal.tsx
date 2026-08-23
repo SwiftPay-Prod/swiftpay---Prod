@@ -78,7 +78,7 @@ function CorrectionItem({ correction }: { correction: BalanceCorrection }) {
 				<p className="text-sm text-muted">{correction.description}</p>
 
 				{(correction.expectedAmount !== 0 || correction.actualAmount !== 0) && (
-					<div className="flex flex-wrap gap-4 pt-2 border-t border-divider">
+					<div className="flex flex-wrap gap-4 pt-2 border-t border-border">
 						<div className="flex flex-col">
 							<span className="text-xs text-muted">Valor Esperado</span>
 							<span className="font-medium">{formatCurrency(correction.expectedAmount)}</span>
@@ -175,7 +175,7 @@ function ModalContent({ detailsPromise }: { detailsPromise: DetailsPromise }) {
 
 					{/* Comparação de Saldo */}
 					<Card className="p-0 overflow-hidden">
-						<div className="bg-surface-soft p-4 border-b border-divider">
+						<div className="bg-surface-soft p-4 border-b border-border">
 							<div className="flex items-center gap-2">
 								<Icon icon={Wallet01Icon} className="icon-md text-accent" />
 								<span className="font-medium">Comparação de Saldo</span>
@@ -220,7 +220,7 @@ function ModalContent({ detailsPromise }: { detailsPromise: DetailsPromise }) {
 
 					{/* Timeline de Movimentações Analisadas */}
 					<Card className="p-0 overflow-hidden">
-						<div className="bg-surface-soft p-4 border-b border-divider">
+						<div className="bg-surface-soft p-4 border-b border-border">
 							<div className="flex items-center gap-2">
 								<Icon icon={ArrowDataTransferHorizontalIcon} className="icon-md text-accent" />
 								<span className="font-medium">Movimentações Analisadas ({transactions.totalTransactionsAnalyzed} transações)</span>
@@ -293,7 +293,7 @@ function ModalContent({ detailsPromise }: { detailsPromise: DetailsPromise }) {
 					)}
 
 					{/* Seção Informativa */}
-					<div className="bg-surface-soft border border-divider rounded-lg p-4">
+					<div className="bg-surface-soft border border-border rounded-lg p-4">
 						<div className="flex flex-col gap-2">
 							<span className="text-sm font-medium text-foreground">Por que isso acontece?</span>
 							<p className="text-sm text-muted">

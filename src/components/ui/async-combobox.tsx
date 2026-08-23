@@ -161,7 +161,7 @@ export function AsyncCombobox({
 					<ComboBox.Trigger className="absolute right-3 top-1/2 -translate-y-1/2" />
 				)}
 			</ComboBox.InputGroup>
-			<ComboBox.Popover className="rounded-lg border border-divider p-2 shadow-lg">
+			<ComboBox.Popover className="rounded-lg border border-border p-2lg">
 				<div className="flex flex-col gap-2">
 					{!isSearchReady && !value && (
 						<span className="text-xs text-muted-foreground px-2">

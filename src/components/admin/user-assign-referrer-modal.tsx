@@ -200,7 +200,7 @@ function UserAssignReferrerModalContent({
 	return (
 		<>
 			<Modal.Body className="flex flex-col gap-4">
-				<div className="rounded-xl border border-divider bg-content1 p-4">
+				<div className="rounded-xl border border-border bg-card p-4">
 					<p className="text-sm text-muted">Usuário selecionado</p>
 					<p className="text-sm font-medium">{details.name ?? 'Sem nome'} ({details.email})</p>
 				</div>
@@ -238,7 +238,7 @@ function UserAssignReferrerModalContent({
 							</AsyncButton>
 						</div>
 
-						<div className="rounded-xl border border-divider bg-surface p-2">
+						<div className="rounded-xl border border-border bg-surface p-2">
 							{results.length === 0 ? (
 								<p className="px-2 py-3 text-xs text-muted">Nenhum usuário encontrado para seleção.</p>
 							) : (
@@ -292,7 +292,7 @@ function UserAssignReferrerModalContent({
 							</label>
 						)}
 
-						<label className="flex flex-col gap-2 rounded-xl border border-divider bg-content1 p-3 text-sm">
+						<label className="flex flex-col gap-2 rounded-xl border border-border bg-card p-3 text-sm">
 							<div className="flex items-start gap-3">
 							<input
 								type="checkbox"
@@ -311,7 +311,7 @@ function UserAssignReferrerModalContent({
 						</label>
 
 						{processHistoricalCommission && selectedReferrerId && (
-							<div className="rounded-xl border border-divider bg-surface p-3">
+							<div className="rounded-xl border border-border bg-surface p-3">
 								<p className="text-sm font-medium text-foreground">Preview da comissão histórica</p>
 								{isPreviewLoading ? (
 									<div className="flex items-center gap-2 pt-2 text-sm text-muted">

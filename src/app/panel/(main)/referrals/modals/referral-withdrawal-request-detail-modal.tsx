@@ -55,15 +55,15 @@ export function ReferralWithdrawalRequestDetailModal({
 					{request && statusMeta && (
 						<Modal.Body className="flex flex-col gap-4">
 							<div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-								<div className="rounded-xl border border-divider bg-surface p-3">
+								<div className="rounded-xl border border-border bg-surface p-3">
 									<span className="text-xs text-muted">Identificador</span>
 									<p className="text-xs font-mono text-foreground break-all">{request.id}</p>
 								</div>
-								<div className="rounded-xl border border-divider bg-surface p-3">
+								<div className="rounded-xl border border-border bg-surface p-3">
 									<span className="text-xs text-muted">Solicitado em</span>
 									<p className="text-sm font-medium text-foreground">{formatDate(request.requestedAt)}</p>
 								</div>
-								<div className="rounded-xl border border-divider bg-surface p-3">
+								<div className="rounded-xl border border-border bg-surface p-3">
 									<span className="text-xs text-muted">Status</span>
 									<div className="mt-1">
 										<Chip variant="soft" color={statusMeta.color} size="sm">
@@ -73,7 +73,7 @@ export function ReferralWithdrawalRequestDetailModal({
 								</div>
 							</div>
 
-							<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+							<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 								<span className="text-sm font-medium text-foreground">Resumo do saque</span>
 								<div className="flex justify-between text-sm">
 									<span className="text-muted">Valor solicitado</span>
@@ -83,13 +83,13 @@ export function ReferralWithdrawalRequestDetailModal({
 									<span className="text-muted">Taxa fixa aplicada</span>
 									<span className="font-medium text-danger">- {formatCurrency(request.feeAmount)}</span>
 								</div>
-								<div className="flex justify-between text-sm border-t border-divider pt-2 mt-1">
+								<div className="flex justify-between text-sm border-t border-border pt-2 mt-1">
 									<span className="text-muted">Valor líquido a receber</span>
 									<span className="font-semibold text-success">+ {formatCurrency(request.netAmount)}</span>
 								</div>
 							</div>
 
-							<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+							<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 								<div className="flex items-center gap-2">
 									<Icon icon={Key01Icon} className="icon-sm text-accent" />
 									<span className="text-sm font-medium text-foreground">Conta de recebimento</span>
@@ -110,7 +110,7 @@ export function ReferralWithdrawalRequestDetailModal({
 							</div>
 
 							{request.notes && (
-								<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+								<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 									<span className="text-sm font-medium text-foreground">Observações</span>
 									<p className="text-sm text-muted">{request.notes}</p>
 								</div>

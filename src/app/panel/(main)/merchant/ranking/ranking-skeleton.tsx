@@ -5,7 +5,7 @@ import { Skeleton, Card } from '@heroui/react';
 export function RankingContentSkeleton() {
 	return (
 		<>
-			<div className="flex items-end justify-center gap-3 rounded-xl border border-divider bg-surface/40 px-3 py-4 mb-1">
+			<div className="flex items-end justify-center gap-3 rounded-xl border border-border bg-surface/40 px-3 py-4 mb-1">
 				{[56, 72, 56].map((h, i) => (
 					<div key={i} className="flex flex-col items-center gap-1.5 w-24">
 						<Skeleton className="w-16 h-16 rounded-full" />

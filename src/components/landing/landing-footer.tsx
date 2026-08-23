@@ -23,8 +23,8 @@ export function LandingFooter({ onOpenAuth }: LandingFooterProps) {
 						</p>
 						
 						{/* Status Badge */}
-						<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/12 bg-[#16181a] text-xs font-mono text-white">
-							<span className="h-2 w-2 rounded-full bg-[#00a87e] animate-pulse" />
+						<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/12 bg-card text-xs font-mono text-white">
+							<span className="h-2 w-2 rounded-full bg-success animate-pulse" />
 							<span>Todos os sistemas operacionais (99.99% SLA)</span>
 						</div>
 					</div>

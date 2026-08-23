@@ -390,7 +390,7 @@ export function ReferralWithdrawalRequestPanel({
                       <span className="text-muted">Taxa fixa:</span>
                       <span className="font-medium text-danger">- {formatCurrency(withdrawalFeeFixed)}</span>
                     </div>
-                    <div className="border-t border-divider pt-2 mt-1">
+                    <div className="border-t border-border pt-2 mt-1">
                       <div className="flex justify-between">
                         <span className="font-medium text-success">Você vai receber:</span>
                         <span className="font-bold text-lg text-success">{formatCurrency(estimatedNetAmount)}</span>

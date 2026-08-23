@@ -64,7 +64,7 @@ function getColumns(): DataTableColumn<AdminMinimalReferredUser>[] {
 function renderMobileReferredUserCard(item: AdminMinimalReferredUser) {
 	const statusParsed = userStatusParse[item.status];
 	return (
-		<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+		<div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
 			<div className="flex items-start justify-between gap-3 mb-3">
 				<div>
 					<span className="font-medium text-sm">{item.name || 'Sem nome'}</span>

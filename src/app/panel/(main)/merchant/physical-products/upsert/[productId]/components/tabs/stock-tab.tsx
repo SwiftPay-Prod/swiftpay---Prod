@@ -71,7 +71,7 @@ export function StockTab({
 						) : null}
 
 						{isEditMode ? (
-							<div className="flex items-center justify-between rounded-lg bg-content2 p-4">
+							<div className="flex items-center justify-between rounded-lg bg-surface-deep p-4">
 								<span className="text-sm text-muted">Quantidade disponível</span>
 								<span className="text-2xl font-bold">{stockQuantity ?? 0}</span>
 							</div>

@@ -473,7 +473,7 @@ function ProviderCard({ config, data, onUpdate, defaultExpanded }: ProviderCardP
 			bodyClassName="p-4"
 		>
 			<div className="space-y-4">
-				<div className="flex items-center justify-between gap-3 rounded-lg border border-divider px-3 py-2">
+				<div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
 					<div className="flex flex-col">
 						<Label className="text-sm">Habilitar {config.name}</Label>
 						<span className="text-xs text-muted">Status: {(providerData.enabled as boolean) ? 'Ativo' : 'Inativo'}</span>
@@ -611,7 +611,7 @@ export function TrackingTab({ checkout, merchantId, onRefresh, onDraftChange }: 
 
 	if (activeProviders.length === 0) {
 		return (
-			<div className="rounded-xl border border-default bg-content1 px-4 py-6">
+			<div className="rounded-xl border border-default bg-card px-4 py-6">
 					<div className="flex flex-col items-center gap-3 text-center">
 						<Icon icon={AnalyticsUpIcon} className="icon-lg text-muted" />
 						<div>

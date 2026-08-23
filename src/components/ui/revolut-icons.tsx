@@ -385,10 +385,10 @@ export function RevolutIconBadge({
 
 	const variantMap = {
 		default: 'bg-white/5 text-white/90',
-		primary: 'bg-[#494fdf]/15 text-[#4f55f1]',
-		success: 'bg-[#00a87e]/15 text-[#00a87e]',
-		danger: 'bg-[#e23b4a]/15 text-[#e23b4a]',
-		warning: 'bg-[#ec7e00]/15 text-[#ec7e00]',
+		primary: 'bg-brand/15 text-link',
+		success: 'bg-success/15 text-success',
+		danger: 'bg-danger/15 text-danger',
+		warning: 'bg-warning/15 text-warning',
 		neutral: 'bg-white/10 text-white',
 		subtle: 'bg-white/[0.03] text-white/60',
 	};

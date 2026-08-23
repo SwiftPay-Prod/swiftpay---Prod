@@ -278,8 +278,8 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={Award05Icon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={Award05Icon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Ranking de Processadoras</h1>
 					</div>
@@ -295,7 +295,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 						</span>
 					)}
 					{isRankingProcessing && (
-						<div className="flex items-center gap-1.5 rounded-full border border-[#ec7e00]/30 bg-[#ec7e00]/10 px-3 py-1 text-xs font-mono text-[#ec7e00]">
+						<div className="flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-mono text-warning">
 							<Icon icon={Loading03Icon} className="icon-xs animate-spin" />
 							<span>Processando</span>
 						</div>
@@ -314,17 +314,17 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 
 			{/* 3-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Líder de Conversão
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
-							<Icon icon={Award05Icon} className="icon-xs text-[#00a87e]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
+							<Icon icon={Award05Icon} className="icon-xs text-success" />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block truncate">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block truncate">
 							{top1 ? (top1.displayName ?? top1.name) : '—'}
 						</span>
 						<p className="text-xs text-white/40 font-mono mt-0.5">
@@ -333,12 +333,12 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Taxa Média de Aprovação
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Award05Icon} className="icon-xs" />
 						</div>
 					</div>
@@ -350,7 +350,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Transações Auditadas
@@ -369,10 +369,10 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 			</div>
 
 			{/* Ranking List */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 space-y-5">
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Award05Icon} className="icon-xs" />
 						</div>
 						<span className="text-sm font-bold text-white">Classificação das Processadoras</span>
@@ -405,21 +405,21 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 							return (
 								<div
 									key={entry.acquirerId}
-									className="flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-white/8 bg-[#0a0a0a] p-4 hover:border-white/15 transition-colors"
+									className="flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-white/8 bg-surface-deep p-4 hover:border-white/15 transition-colors"
 								>
 									<div className="flex items-center gap-3">
-										<div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl font-mono text-xs font-extrabold ${entry.position === 1 ? 'bg-[#00a87e]/20 text-[#00a87e] border border-[#00a87e]/40' : entry.position === 2 ? 'bg-[#494fdf]/20 text-[#4f55f1] border border-[#494fdf]/40' : 'bg-white/5 text-white/60 border border-white/10'}`}>
+										<div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl font-mono text-xs font-extrabold ${entry.position === 1 ? 'bg-success/20 text-success border border-success/40' : entry.position === 2 ? 'bg-brand/20 text-link border border-brand/40' : 'bg-white/5 text-white/60 border border-white/10'}`}>
 											#{entry.position}
 										</div>
 										{entry.logoUrl ? (
 											<Avatar size="sm" className="bg-white/5 border border-white/10">
 												<Avatar.Image src={entry.logoUrl} alt={entry.displayName ?? entry.name} />
 												<Avatar.Fallback>
-													<Icon icon={ServerStack01Icon} className="icon-sm text-[#4f55f1]" />
+													<Icon icon={ServerStack01Icon} className="icon-sm text-link" />
 												</Avatar.Fallback>
 											</Avatar>
 										) : (
-											<div className="flex size-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
+											<div className="flex size-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
 												<Icon icon={ServerStack01Icon} className="icon-sm" />
 											</div>
 										)}
@@ -445,7 +445,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 									<div className="flex items-center gap-4 sm:ml-auto">
 										<div className="text-right">
 											<p className="text-[11px] font-medium text-white/40 uppercase tracking-wider">Aprovação</p>
-											<span className="font-mono text-sm font-bold text-[#00a87e] tabular-nums">
+											<span className="font-mono text-sm font-bold text-success tabular-nums">
 												{formatApprovalRate(entry.approvalRate)}
 											</span>
 										</div>
@@ -474,11 +474,11 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 
 		<Modal.Backdrop isOpen={scoreDetailsEntry !== null} onOpenChange={handleCloseScoreDetails}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-2xl rounded-[28px] border border-white/12 bg-[#16181a] p-6 text-white">
+				<Modal.Dialog className="max-w-2xl rounded-[28px] border border-white/12 bg-card p-6 text-white">
 					<Modal.CloseTrigger className="text-white/40 hover:text-white" />
 					<Modal.Header className="pb-4 border-b border-white/8">
 						<div className="flex items-center gap-3">
-							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/15 text-link border border-brand/30">
 								<Icon icon={HelpCircleIcon} className="icon-md" />
 							</div>
 							<div>
@@ -493,7 +493,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 					<Modal.Body className="py-4">
 						{scoreDetailsEntry && scoreBreakdown && (
 							<div className="flex flex-col gap-4 text-sm">
-								<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+								<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
 									<p className="font-bold text-xs text-white/70 uppercase tracking-wider">Fórmula de Ponderação</p>
 									<div className="mt-2 flex flex-col gap-1 text-xs text-white/60">
 										<p>1. Taxa de aprovação entra com peso 10.</p>
@@ -501,18 +501,18 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 										<p>3. Eficiência contra falhas (1 - taxa de falha) entra com peso 5.</p>
 										<p>4. A soma ponderada é normalizada e convertida para escala de 0 a 1000.</p>
 									</div>
-									<div className="mt-3 rounded-lg border border-white/8 bg-white/5 p-3">
+									<div className="mt-3 rounded-xl border border-white/8 bg-white/5 p-3">
 										<p className="text-[11px] font-mono text-white/40">Aplicação desta processadora</p>
-										<p className="font-mono text-xs font-semibold text-[#00a87e] mt-1">
+										<p className="font-mono text-xs font-semibold text-success mt-1">
 											(({formatApprovalRate(scoreBreakdown.approvalRate)}/100 × 10) + ({scoreDetailsEntry.analyzedTransactions}/{sampleSize} × 5) + ((1 - {formatApprovalRate(scoreBreakdown.failureRate)}/100) × 5)) ÷ 20 × 1000
 										</p>
 									</div>
 								</div>
 
-								<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4">
+								<div className="rounded-xl border border-white/8 bg-surface-deep p-4">
 									<p className="font-bold text-xs text-white/70 uppercase tracking-wider mb-3">Métricas Auditadas</p>
 									<div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-										<div className="rounded-lg border border-white/8 bg-white/5 p-3">
+										<div className="rounded-xl border border-white/8 bg-white/5 p-3">
 											<div className="flex items-center justify-between gap-2">
 												<p className="text-xs text-white/50">Taxa de aprovação</p>
 												<span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
@@ -524,7 +524,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 											</p>
 										</div>
 
-										<div className="rounded-lg border border-white/8 bg-white/5 p-3">
+										<div className="rounded-xl border border-white/8 bg-white/5 p-3">
 											<div className="flex items-center justify-between gap-2">
 												<p className="text-xs text-white/50">Volume analisado</p>
 												<span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-mono text-white/70">
@@ -536,7 +536,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 											</p>
 										</div>
 
-										<div className="rounded-lg border border-white/8 bg-white/5 p-3">
+										<div className="rounded-xl border border-white/8 bg-white/5 p-3">
 											<div className="flex items-center justify-between gap-2">
 												<p className="text-xs text-white/50">Taxa de falha</p>
 												<span className="rounded-full border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-[10px] font-mono text-red-400">
@@ -548,15 +548,15 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 											</p>
 										</div>
 
-										<div className="rounded-lg border border-white/12 bg-[#494fdf]/10 p-3">
+										<div className="rounded-xl border border-white/12 bg-brand/10 p-3">
 											<div className="flex items-center justify-between gap-2">
-												<p className="text-xs text-[#4f55f1] font-bold">Score Final</p>
-												<span className="rounded-full border border-[#494fdf]/30 bg-[#494fdf]/20 px-2 py-0.5 text-[10px] font-mono text-[#4f55f1]">
+												<p className="text-xs text-link font-bold">Score Final</p>
+												<span className="rounded-full border border-brand/30 bg-brand/20 px-2 py-0.5 text-[10px] font-mono text-link">
 													0 a 1000
 												</span>
 											</div>
 											<p className="font-mono text-base font-extrabold text-white mt-1">
-												{scoreBreakdown.totalComponent.toFixed(2)}/20 → <span className="text-[#00a87e]">{scoreBreakdown.calculatedScore}</span>/1000
+												{scoreBreakdown.totalComponent.toFixed(2)}/20 → <span className="text-success">{scoreBreakdown.calculatedScore}</span>/1000
 											</p>
 										</div>
 									</div>

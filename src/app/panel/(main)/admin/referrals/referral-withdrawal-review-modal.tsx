@@ -275,25 +275,25 @@ function ReferralWithdrawalReviewModalContent({
 			<form onSubmit={handleSubmit(onSubmit)}>
 			<Modal.Body className="flex flex-col gap-4">
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-					<div className="rounded-xl border border-divider bg-surface p-3">
+					<div className="rounded-xl border border-border bg-surface p-3">
 						<span className="text-xs text-muted">Solicitado</span>
 						<p className="text-sm font-semibold text-foreground">+ {formatCurrency(requestedAmount)}</p>
 					</div>
-					<div className="rounded-xl border border-divider bg-surface p-3">
+					<div className="rounded-xl border border-border bg-surface p-3">
 						<span className="text-xs text-muted">Saldo disponível</span>
 						<p className="text-sm font-semibold text-accent">+ {formatCurrency(details.availableCommissionBalance)}</p>
 					</div>
-					<div className="rounded-xl border border-divider bg-surface p-3">
+					<div className="rounded-xl border border-border bg-surface p-3">
 						<span className="text-xs text-muted">Saldo total</span>
 						<p className="text-sm font-semibold text-success">+ {formatCurrency(totalBalanceAmount)}</p>
 					</div>
-					<div className="rounded-xl border border-divider bg-surface p-3">
+					<div className="rounded-xl border border-border bg-surface p-3">
 						<span className="text-xs text-muted">Solicitado em</span>
 						<p className="text-sm font-medium text-foreground">{formatDate(details.requestedAt)}</p>
 					</div>
 				</div>
 
-				<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+				<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 					<div className="flex items-center justify-between gap-2">
 						<span className="text-sm font-medium text-foreground">Gerente de contas</span>
 						<Chip variant="soft" size="sm" color={mapParseColorToChipColor(referrerStatusParse.color)}>
@@ -305,7 +305,7 @@ function ReferralWithdrawalReviewModalContent({
 				</div>
 
 				<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-					<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+					<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 						<span className="text-sm font-medium text-foreground">Configuração da indicação</span>
 						<div className="flex justify-between text-sm">
 							<span className="text-muted">Duração da indicação</span>
@@ -323,7 +323,7 @@ function ReferralWithdrawalReviewModalContent({
 						</div>
 					</div>
 
-					<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+					<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 						<span className="text-sm font-medium text-foreground">Taxas e limites</span>
 						<div className="flex justify-between text-sm">
 							<span className="text-muted">Saque mínimo</span>
@@ -337,14 +337,14 @@ function ReferralWithdrawalReviewModalContent({
 							<span className="text-muted">Solicitações pendentes</span>
 							<span className="font-medium text-warning">- {formatCurrency(details.pendingWithdrawalRequestsTotal)}</span>
 						</div>
-						<div className="flex justify-between text-sm border-t border-divider pt-2 mt-1">
+						<div className="flex justify-between text-sm border-t border-border pt-2 mt-1">
 							<span className="text-muted">Quanto tem que enviar para o usuário em R$ (líquido mínimo: R$ 0,01)</span>
 							<span className="font-semibold text-success">+ {formatCurrency(netSuggestedToSend)}</span>
 						</div>
 					</div>
 				</div>
 
-				<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+				<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 					<div className="flex items-center justify-between gap-2">
 						<div className="flex items-center gap-2">
 							<Icon icon={Key01Icon} className="icon-sm text-accent" />
@@ -360,7 +360,7 @@ function ReferralWithdrawalReviewModalContent({
 					{details.reviewReason && <p className="text-xs text-warning">Motivo da análise: {details.reviewReason}</p>}
 				</div>
 
-				<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+				<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 					<div className="flex items-center justify-between gap-2">
 						<span className="text-sm font-medium text-foreground">Detalhes do pagamento</span>
 						{paymentDetails && <span className="text-xs text-muted">Pago em {formatDate(paymentDetails.paidAt)}</span>}
@@ -368,19 +368,19 @@ function ReferralWithdrawalReviewModalContent({
 					{paymentDetails ? (
 						<>
 							<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-								<div className="rounded-lg border border-divider bg-background p-3 flex flex-col gap-1">
+								<div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-1">
 									<span className="text-xs text-muted">Pago por</span>
 									<p className="text-sm font-medium text-foreground">{paymentDetails.paidByUserName || 'Sem nome'}</p>
 									<p className="text-xs text-muted break-all">{paymentDetails.paidByUserEmail}</p>
 								</div>
-								<div className="rounded-lg border border-divider bg-background p-3 flex flex-col gap-1">
+								<div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-1">
 									<span className="text-xs text-muted">Pagamento ID</span>
 									<p className="text-xs font-mono text-foreground break-all">{paymentDetails.id}</p>
 								</div>
 							</div>
 
 							<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-								<div className="rounded-lg border border-divider bg-background p-3 flex flex-col gap-2">
+								<div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-2">
 									<div className="flex justify-between text-sm">
 										<span className="text-muted">Valor solicitado</span>
 										<span className="font-medium text-foreground">{formatCurrency(paymentDetails.requestedAmount)}</span>
@@ -393,13 +393,13 @@ function ReferralWithdrawalReviewModalContent({
 										<span className="text-muted">Taxa</span>
 										<span className="font-medium text-danger">- {formatCurrency(paymentDetails.feeAmount)}</span>
 									</div>
-									<div className="flex justify-between text-sm border-t border-divider pt-2 mt-1">
+									<div className="flex justify-between text-sm border-t border-border pt-2 mt-1">
 										<span className="text-muted">Valor líquido enviado</span>
 										<span className="font-semibold text-success">+ {formatCurrency(paymentDetails.netAmount)}</span>
 									</div>
 								</div>
 
-								<div className="rounded-lg border border-divider bg-background p-3 flex flex-col gap-2">
+								<div className="rounded-lg border border-border bg-background p-3 flex flex-col gap-2">
 									<div className="flex justify-between text-sm">
 										<span className="text-muted">Chave PIX usada</span>
 										<span className="font-medium text-foreground">{paymentPixKeyLabel ?? 'Não informado'}</span>
@@ -491,7 +491,7 @@ function ReferralWithdrawalReviewModalContent({
 							<FieldError>{errors.amount?.message}</FieldError>
 						</TextField>
 
-						<div className="rounded-xl border border-divider bg-surface p-3 flex flex-col gap-2">
+						<div className="rounded-xl border border-border bg-surface p-3 flex flex-col gap-2">
 							<div className="flex justify-between text-sm">
 								<span className="text-muted">Valor pago</span>
 								<span className="font-medium text-foreground">+ {formatCurrency(paidAmountInCents)}</span>
@@ -500,7 +500,7 @@ function ReferralWithdrawalReviewModalContent({
 								<span className="text-muted">Taxa fixa aplicada</span>
 								<span className="font-medium text-danger">- {formatCurrency(withdrawalFeeFixed)}</span>
 							</div>
-							<div className="flex justify-between text-sm border-t border-divider pt-2 mt-1">
+							<div className="flex justify-between text-sm border-t border-border pt-2 mt-1">
 								<span className="text-muted">Quanto tem que enviar para o usuário em R$ (líquido mínimo: R$ 0,01)</span>
 								<span className="font-semibold text-success">+ {formatCurrency(paidNetAmount)}</span>
 							</div>

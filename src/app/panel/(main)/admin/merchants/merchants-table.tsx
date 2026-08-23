@@ -195,7 +195,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			render: (merchant) => (
 				<div className="flex flex-col">
 					<span className="text-sm font-bold font-mono text-white tabular-nums">{formatCurrency(merchant.lifetimeVolume)}</span>
-					<span className="text-xs text-[#ec7e00] font-mono">{formatCurrency(merchant.totalFeesPaid)} em taxas</span>
+					<span className="text-xs text-warning font-mono">{formatCurrency(merchant.totalFeesPaid)} em taxas</span>
 				</div>
 			),
 		},
@@ -206,7 +206,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 				const balance = merchant.availableBalance;
 				const isNegative = balance < 0;
 				return (
-					<span className={`text-sm font-bold font-mono tabular-nums ${isNegative ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`}>
+					<span className={`text-sm font-bold font-mono tabular-nums ${isNegative ? 'text-danger' : 'text-success'}`}>
 						{isNegative ? '-' : ''}{formatCurrency(Math.abs(balance))}
 					</span>
 				);
@@ -267,7 +267,7 @@ function renderMobileMerchantCard(merchant: AdminMinimalMerchant, _index: number
 
 	return (
 		<div
-			className={`rounded-xl border border-white/12 bg-[#16181a] p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+			className={`rounded-xl border border-white/12 bg-card p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 			onClick={openActions}
 			role={openActions ? 'button' : undefined}
 			tabIndex={openActions ? 0 : undefined}
@@ -310,7 +310,7 @@ function renderMobileMerchantCard(merchant: AdminMinimalMerchant, _index: number
 					</div>
 					<div className="flex flex-col items-end">
 						<span className="text-xs text-white/50">Saldo</span>
-						<span className={`text-sm font-bold font-mono tabular-nums ${isNegativeBalance ? 'text-[#e23b4a]' : 'text-[#00a87e]'}`}>
+						<span className={`text-sm font-bold font-mono tabular-nums ${isNegativeBalance ? 'text-danger' : 'text-success'}`}>
 							{isNegativeBalance ? '-' : ''}{formatCurrency(Math.abs(merchant.availableBalance))}
 						</span>
 					</div>
@@ -396,8 +396,8 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
 				<div>
 					<div className="flex items-center gap-2">
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-							<Icon icon={Building02Icon} className="icon-sm text-[#4f55f1]" />
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+							<Icon icon={Building02Icon} className="icon-sm text-link" />
 						</div>
 						<h1 className="text-xl font-bold tracking-tight text-white">Organizações</h1>
 					</div>
@@ -408,7 +408,7 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 
 			{/* 4-Tile High Contrast KPI Grid */}
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Organizações
@@ -425,24 +425,24 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Ativas
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-success/15 text-success border border-success/30">
 							<RevolutCheckIcon size={14} />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#00a87e] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-success tracking-tight tabular-nums block">
 							<AnimatedNumber value={activeMerchants} />
 						</span>
-						<p className="text-xs text-[#00a87e]/80 font-mono mt-0.5">Operando</p>
+						<p className="text-xs text-success/80 font-mono mt-0.5">Operando</p>
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							Volume
@@ -459,26 +459,26 @@ export function MerchantsTable({ initialFilters, currentUserRole = UserRole.Admi
 					</div>
 				</div>
 
-				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 flex flex-col justify-between gap-3">
+				<div className="rounded-[20px] border border-white/12 bg-card p-5 flex flex-col justify-between gap-3">
 					<div className="flex items-center justify-between">
 						<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 							KYC Pendente
 						</span>
-						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
+						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/30">
 							<Icon icon={Tag01Icon} className="icon-xs" />
 						</div>
 					</div>
 					<div>
-						<span className="text-2xl font-extrabold font-mono text-[#ec7e00] tracking-tight tabular-nums block">
+						<span className="text-2xl font-extrabold font-mono text-warning tracking-tight tabular-nums block">
 							<AnimatedNumber value={kycPendingCount} />
 						</span>
-						<p className="text-xs text-[#ec7e00]/80 font-mono mt-0.5">Aguardando análise</p>
+						<p className="text-xs text-warning/80 font-mono mt-0.5">Aguardando análise</p>
 					</div>
 				</div>
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-card p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.items.items}

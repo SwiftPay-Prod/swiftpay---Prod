@@ -24,14 +24,14 @@ function IntegrationPlatformAvatar({ name, imageUrl, isActive }: IntegrationPlat
 
 	if (!imageUrl) {
 		return (
-			<div className="flex h-11 w-11 items-center justify-center rounded-lg bg-content2 text-sm font-semibold text-foreground">
+			<div className="flex h-11 w-11 items-center justify-center rounded-lg bg-surface-deep text-sm font-semibold text-foreground">
 				{name.charAt(0)}
 			</div>
 		);
 	}
 
 	return (
-		<Avatar size="lg" className="relative overflow-hidden bg-content2">
+		<Avatar size="lg" className="relative overflow-hidden bg-surface-deep">
 			{!isImageLoaded ? <div className="absolute inset-0 animate-pulse bg-content3/50" /> : null}
 			<Avatar.Image
 				src={imageUrl}

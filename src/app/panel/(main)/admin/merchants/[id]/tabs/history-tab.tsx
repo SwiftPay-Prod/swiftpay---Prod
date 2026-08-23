@@ -170,7 +170,7 @@ function AcquirerHistorySection({
 		const changedByName = item.changedByUserName?.trim() || 'Usuário';
 
 		return (
-			<div className="rounded-xl border border-divider bg-surface p-3 overflow-hidden">
+			<div className="rounded-xl border border-border bg-surface p-3 overflow-hidden">
 				<div className="flex flex-col gap-3">
 					{/* Header: Action chip */}
 					<div className="flex items-center justify-between">
@@ -470,7 +470,7 @@ function SettingsHistorySection({
 
 		return (
 			<div
-				className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions && hasDetails ? 'cursor-pointer' : ''}`}
+				className={`rounded-xl border border-border bg-surface p-3 overflow-hidden ${openActions && hasDetails ? 'cursor-pointer' : ''}`}
 				onClick={openActions && hasDetails ? openActions : undefined}
 				role={openActions && hasDetails ? 'button' : undefined}
 				tabIndex={openActions && hasDetails ? 0 : undefined}
@@ -809,8 +809,8 @@ function SettingsDetailsModal({ item, onClose }: SettingsDetailsModalProps) {
 	return (
 		<Modal.Backdrop isOpen={!!item} onOpenChange={(open) => !open && onClose()}>
 			<Modal.Container size="md" scroll="outside">
-				<Modal.Dialog className="max-w-xl border border-divider bg-content1 shadow-lg">
-					<Modal.Header className="border-b border-divider bg-content1 px-5 pt-5 pb-3">
+				<Modal.Dialog className="max-w-xl border border-border bg-cardlg">
+					<Modal.Header className="border-b border-border bg-card px-5 pt-5 pb-3">
 						<Modal.Icon className="bg-accent text-accent-foreground">
 							<Icon icon={Settings01Icon} className="icon-md" />
 						</Modal.Icon>
@@ -819,10 +819,10 @@ function SettingsDetailsModal({ item, onClose }: SettingsDetailsModalProps) {
 							{categoryParse?.label ?? item.category} • {formatDate(item.createdAt)}
 						</p>
 					</Modal.Header>
-					<Modal.Body className="bg-content1 px-5 py-4">
+					<Modal.Body className="bg-card px-5 py-4">
 						<div className="flex flex-col gap-5">
 							{item.description && (
-								<div className="rounded-lg bg-content2 border border-divider p-3">
+								<div className="rounded-lg bg-surface-deep border border-border p-3">
 									<div className="flex items-start gap-3">
 										<Icon icon={TextFontIcon} className="icon-md text-muted shrink-0 mt-0.5" />
 										<div>
@@ -851,7 +851,7 @@ function SettingsDetailsModal({ item, onClose }: SettingsDetailsModalProps) {
 										return (
 											<div
 												key={field}
-												className="rounded-lg border border-divider bg-content2 p-3"
+												className="rounded-lg border border-border bg-surface-deep p-3"
 											>
 												<p className="text-sm font-medium mb-3">{getFieldLabel(normalizedField)}</p>
 												<div className="grid gap-3 md:grid-cols-[1fr_auto_1fr] md:items-center">
@@ -883,7 +883,7 @@ function SettingsDetailsModal({ item, onClose }: SettingsDetailsModalProps) {
 								</div>
 							</div>
 
-							<div className="flex items-center gap-2 text-sm text-muted rounded-lg border border-divider bg-content2 px-4 py-3">
+							<div className="flex items-center gap-2 text-sm text-muted rounded-lg border border-border bg-surface-deep px-4 py-3">
 								<Icon icon={UserCircle02Icon} className="icon-sm" />
 								<span>Alterado por: {item.changedByUserName || 'Sistema'}</span>
 								{item.changedByUserId && (
@@ -901,7 +901,7 @@ function SettingsDetailsModal({ item, onClose }: SettingsDetailsModalProps) {
 							</div>
 						</div>
 					</Modal.Body>
-					<Modal.Footer className="border-t border-divider bg-content1 px-5 py-3">
+					<Modal.Footer className="border-t border-border bg-card px-5 py-3">
 						<Button variant="tertiary" onPress={onClose}>
 							Fechar
 						</Button>

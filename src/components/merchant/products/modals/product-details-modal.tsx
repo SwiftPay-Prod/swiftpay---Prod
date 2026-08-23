@@ -381,7 +381,7 @@ function DetailsContent({ productPromise, merchantId }: DetailsContentProps) {
 	return (
 		<div className="flex flex-col gap-6">
 			{/* Header do Produto */}
-			<div className="flex items-start gap-4 pb-4 border-b border-divider">
+			<div className="flex items-start gap-4 pb-4 border-b border-border">
 				{coverImageUrl ? (
 					<button type="button" onClick={() => setPreviewUrl(coverImageUrl)} className="shrink-0">
 						<Avatar size="lg">
@@ -543,7 +543,7 @@ function DetailsContent({ productPromise, merchantId }: DetailsContentProps) {
 						<Modal.Body>
 							{previewUrl && (
 								<div
-									className="relative w-full overflow-hidden rounded-lg bg-content2"
+									className="relative w-full overflow-hidden rounded-lg bg-surface-deep"
 									style={{ aspectRatio: '16 / 9' }}
 								>
 									<Image src={previewUrl} alt={product.name} className="object-contain" fill />

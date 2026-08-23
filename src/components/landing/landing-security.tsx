@@ -14,12 +14,12 @@ export function LandingSecurity() {
 		<section id="security" className="relative py-16 sm:py-24 bg-[#000000] border-t border-white/10 text-white">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				
-				<div className="rounded-2xl border border-white/12 bg-[#16181a] p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+				<div className="rounded-2xl border border-white/12 bg-card p-8 sm:p-12 relative overflow-hidden">
 					<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
 						
 						{/* Left Text */}
 						<div className="lg:col-span-6 space-y-4">
-							<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-white/5 text-xs font-semibold text-[#4f55f1]">
+							<div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border border-white/12 bg-white/5 text-xs font-semibold text-link">
 								<Icon icon={SecurityCheckIcon} className="w-3.5 h-3.5" />
 								<span className="font-mono">BLINDAGEM & CONFORMIDADE</span>
 							</div>
@@ -35,9 +35,9 @@ export function LandingSecurity() {
 
 						{/* Right Security Specs */}
 						<div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4 space-y-2">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-4 space-y-2">
 								<div className="flex items-center gap-2 text-white font-bold text-sm">
-									<Icon icon={LockKeyIcon} className="w-4 h-4 text-[#4f55f1]" />
+									<Icon icon={LockKeyIcon} className="w-4 h-4 text-link" />
 									<span>Criptografia E2E</span>
 								</div>
 								<p className="text-xs text-white/50 leading-normal">
@@ -45,9 +45,9 @@ export function LandingSecurity() {
 								</p>
 							</div>
 
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4 space-y-2">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-4 space-y-2">
 								<div className="flex items-center gap-2 text-white font-bold text-sm">
-									<Icon icon={Key01Icon} className="w-4 h-4 text-[#4f55f1]" />
+									<Icon icon={Key01Icon} className="w-4 h-4 text-link" />
 									<span>Chaves Isoladas</span>
 								</div>
 								<p className="text-xs text-white/50 leading-normal">
@@ -55,9 +55,9 @@ export function LandingSecurity() {
 								</p>
 							</div>
 
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4 space-y-2">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-4 space-y-2">
 								<div className="flex items-center gap-2 text-white font-bold text-sm">
-									<Icon icon={SecurityCheckIcon} className="w-4 h-4 text-[#00a87e]" />
+									<Icon icon={SecurityCheckIcon} className="w-4 h-4 text-success" />
 									<span>Antifraude Nativo</span>
 								</div>
 								<p className="text-xs text-white/50 leading-normal">
@@ -65,9 +65,9 @@ export function LandingSecurity() {
 								</p>
 							</div>
 
-							<div className="rounded-xl border border-white/8 bg-[#0a0a0a] p-4 space-y-2">
+							<div className="rounded-xl border border-white/8 bg-surface-deep p-4 space-y-2">
 								<div className="flex items-center gap-2 text-white font-bold text-sm">
-									<Icon icon={DocumentValidationIcon} className="w-4 h-4 text-[#00a87e]" />
+									<Icon icon={DocumentValidationIcon} className="w-4 h-4 text-success" />
 									<span>PCI-DSS & BACEN</span>
 								</div>
 								<p className="text-xs text-white/50 leading-normal">

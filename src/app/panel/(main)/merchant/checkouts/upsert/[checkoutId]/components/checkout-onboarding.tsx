@@ -403,7 +403,7 @@ export function CheckoutOnboarding({
 			/>
 
 			{checkout?.status === 'Active' && checkout.checkoutUrl && (
-				<div className="flex flex-col gap-2 rounded-xl border border-divider bg-surface p-3 sm:flex-row sm:items-center sm:justify-between">
+				<div className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-3 sm:flex-row sm:items-center sm:justify-between">
 					<div className="min-w-0 flex-1">
 						<p className="text-xs text-muted">Link do checkout ativo</p>
 						<p className="truncate text-sm font-medium text-foreground">{checkout.checkoutUrl}</p>
@@ -500,7 +500,7 @@ export function CheckoutOnboarding({
 			</div>
 
 			{!useInternalTabs && (
-				<div className="rounded-xl border border-divider bg-surface p-4">
+				<div className="rounded-xl border border-border bg-surface p-4">
 					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
 						<Button
 							variant="secondary"
@@ -551,7 +551,7 @@ export function CheckoutOnboarding({
 
 			{isFinalizingActivationTransition && (
 				<div className="fixed inset-0 z-110 flex items-center justify-center bg-background/72 p-4 backdrop-blur-sm">
-					<div className="w-full max-w-md rounded-2xl border border-divider bg-surface p-5 shadow-2xl">
+					<div className="w-full max-w-md rounded-2xl border border-border bg-surface p-52xl">
 						<div className="flex items-center gap-3">
 							<Spinner size="sm" />
 							<div className="flex flex-col gap-1">
@@ -567,8 +567,8 @@ export function CheckoutOnboarding({
 
 			{livePreviewUrl && isPreviewModalOpen && (
 				<div className="fixed inset-0 z-120 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm sm:p-6">
-					<div className="flex h-[78vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-divider bg-background shadow-2xl">
-						<div className="flex items-center justify-between gap-3 border-b border-divider px-4 py-3">
+					<div className="flex h-[78vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-border bg-background2xl">
+						<div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
 							<div className="flex min-w-0 items-center gap-2">
 								<Icon icon={ViewIcon} className="icon-sm text-accent" />
 								<div className="flex min-w-0 flex-col">
@@ -587,11 +587,11 @@ export function CheckoutOnboarding({
 								</Button>
 							</div>
 						</div>
-						<div className="flex-1 bg-content1 p-3">
+						<div className="flex-1 bg-card p-3">
 							<iframe
 								title="Preview em tempo real do checkout"
 								src={livePreviewUrl}
-								className="h-full w-full rounded-lg border border-divider bg-background"
+								className="h-full w-full rounded-lg border border-border bg-background"
 							/>
 						</div>
 					</div>
@@ -617,7 +617,7 @@ export function CheckoutOnboarding({
 									<p>
 										A partir de agora, sempre que você salvar uma alteração, o checkout público é atualizado automaticamente.
 									</p>
-									<div className="rounded-lg border border-divider bg-content1 p-3">
+									<div className="rounded-lg border border-border bg-card p-3">
 										<p className="mb-2 font-medium">O que você pode configurar agora:</p>
 										<ul className="list-disc space-y-1 pl-5 text-muted">
 											<li>Nome interno, template e aparência visual completa</li>

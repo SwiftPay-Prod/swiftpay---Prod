@@ -6,15 +6,15 @@ export function ProfileSkeleton() {
 	return (
 		<div className="flex flex-col gap-6 text-white">
 			<div className="flex items-center gap-3 border-b border-white/10 pb-5">
-				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/25">
-					<Icon icon={UserCircleIcon} className="icon-sm text-[#4f55f1]" />
+				<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/15 text-link border border-brand/25">
+					<Icon icon={UserCircleIcon} className="icon-sm text-link" />
 				</div>
 				<div>
 					<h1 className="text-xl font-bold tracking-tight text-white">Perfil</h1>
 					<p className="text-xs text-white/50 mt-0.5">Edite suas informações públicas.</p>
 				</div>
 			</div>
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 flex flex-col gap-6">
+			<div className="rounded-[20px] border border-white/12 bg-card p-6 flex flex-col gap-6">
 				<h3 className="text-sm font-bold text-white border-b border-white/8 pb-3">Foto & Identidade</h3>
 				<div className="flex items-start gap-6">
 					<Skeleton className="w-24 h-24 rounded-full bg-white/10 shrink-0" />
@@ -35,7 +35,7 @@ export function ProfileSkeleton() {
 				</div>
 			</div>
 
-			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-6 flex flex-col gap-4">
+			<div className="rounded-[20px] border border-white/12 bg-card p-6 flex flex-col gap-4">
 				<h3 className="text-sm font-bold text-white border-b border-white/8 pb-3">Redes Sociais</h3>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					{Array.from({ length: 6 }).map((_, i) => (

@@ -324,7 +324,7 @@ function PlatformSettingsFormContent({
 							</TextField>
 						</div>
 
-						<div className="flex flex-wrap items-center gap-4 rounded-lg border border-divider bg-content1 p-3">
+						<div className="flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-3">
 							<Checkbox
 								variant="secondary"
 								isSelected={showPixReserveField}
@@ -412,7 +412,7 @@ function PlatformSettingsFormContent({
 						)}
 						<Separator />
 						<div className="grid grid-cols-1 gap-6">
-							<div className="flex flex-col gap-4 rounded-lg bg-content1">
+							<div className="flex flex-col gap-4 rounded-lg bg-card">
 								<div className="flex items-center gap-2 text-xs text-foreground/60">
 									<Chip variant="soft" color="accent" size="sm">
 										API
@@ -495,7 +495,7 @@ function PlatformSettingsFormContent({
 									)}
 								</div>
 							</div>
-							<div className="flex flex-col gap-4 rounded-lg bg-content1">
+							<div className="flex flex-col gap-4 rounded-lg bg-card">
 								<div className="flex items-center gap-2 text-xs text-foreground/60">
 									<Chip variant="soft" color="accent" size="sm">
 										Checkout
@@ -578,7 +578,7 @@ function PlatformSettingsFormContent({
 									)}
 								</div>
 							</div>
-							<div className="flex flex-col gap-4 rounded-lg bg-content1">
+							<div className="flex flex-col gap-4 rounded-lg bg-card">
 								<div className="flex items-center gap-2 text-xs text-foreground/60">
 									<Chip variant="soft" color="accent" size="sm">
 										Link de Pagamento
@@ -1078,7 +1078,7 @@ export function PlatformSettingsSkeleton() {
 	return (
 		<div className="flex flex-col gap-4">
 			{[1, 2, 3, 4].map((i) => (
-				<div key={i} className="rounded-lg border border-divider bg-surface">
+				<div key={i} className="rounded-lg border border-border bg-surface">
 					<div className="flex items-center gap-3 px-4 py-3">
 						<Skeleton className="size-10 rounded-lg" />
 						<div className="flex flex-col gap-1">
@@ -1086,7 +1086,7 @@ export function PlatformSettingsSkeleton() {
 							<Skeleton className="h-3 w-48 rounded-lg" />
 						</div>
 					</div>
-					<div className="border-t border-divider p-4">
+					<div className="border-t border-border p-4">
 						<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 							{[1, 2, 3].map((j) => (
 								<div key={j} className="flex flex-col gap-2">

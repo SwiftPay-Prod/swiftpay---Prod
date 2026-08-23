@@ -8,28 +8,16 @@ import { Icon } from '@/components/ui/icon';
 type IconName = ComponentProps<typeof Icon>['icon'];
 
 const ACCORDION_COLOR_MAP: Record<string, string> = {
-	accent: '#4f55f1',
-	blue: '#60a5fa',
-	sky: '#38bdf8',
-	cyan: '#22d3ee',
-	success: '#00a87e',
-	emerald: '#00a87e',
-	teal: '#00a87e',
-	green: '#00a87e',
-	warning: '#fbbf24',
-	amber: '#f59e0b',
-	orange: '#fb923c',
-	secondary: '#c084fc',
-	violet: '#a78bfa',
-	indigo: '#818cf8',
-	danger: '#f87171',
-	rose: '#fb7185',
-	red: '#f87171',
-	fuchsia: '#e879f9',
-	mauve: '#e2e8f0',
-	slate: '#cbd5e1',
-	default: '#e2e8f0',
-	muted: '#94a3b8',
+	accent: 'var(--accent)',
+	success: 'var(--success)',
+	emerald: 'var(--success)',
+	teal: 'var(--success)',
+	green: 'var(--success)',
+	warning: 'var(--warning)',
+	danger: 'var(--danger)',
+	rose: 'var(--danger)',
+	secondary: 'var(--secondary)',
+	muted: 'rgba(255,255,255,0.45)',
 };
 
 function resolveAccordionColor(color?: string): string | undefined {
@@ -106,20 +94,19 @@ function SectionAccordionBase(props: SectionAccordionProps) {
 		defaultExpanded = true,
 		children,
 		accordionClassName = 'px-0',
-		itemClassName = 'rounded-[20px] border border-white/12 bg-[#16181a] overflow-hidden transition-all duration-200 shadow-sm',
+		itemClassName = 'rounded-[20px] border border-white/12 bg-card overflow-hidden transition-all duration-200sm',
 		triggerClassName = 'flex w-full items-center justify-between p-4 sm:p-5 hover:bg-white/[0.02] transition-colors cursor-pointer group text-left',
 		iconContainerClassName = 'flex size-8 shrink-0 items-center justify-center rounded-lg border',
-		iconClassName = 'icon-sm',
 		summaryClassName = 'text-xs font-mono text-white/50 mt-0.5',
-		bodyClassName = 'flex flex-col gap-4 p-4 sm:p-6 border-t border-white/8 bg-[#0a0a0a]/40',
+		iconClassName = 'icon-sm',
+		bodyClassName = 'flex flex-col gap-4 p-4 sm:p-6 border-t border-white/8 bg-surface-deep/40',
 		indicatorIcon = ArrowDown01Icon,
 		indicatorClassName = 'icon-sm text-white/40 group-hover:text-white transition-transform duration-200',
 	} = props;
 
-	const resolvedColor = resolveAccordionColor(color) ?? '#4f55f1';
+	const resolvedColor = resolveAccordionColor(color) ?? 'var(--accent)';
 	const iconContainerStyle: CSSProperties = {
 		backgroundColor: buildColorMix(resolvedColor, 15),
-		borderColor: buildColorMix(resolvedColor, 28),
 	};
 	const iconStyle: CSSProperties = {
 		color: resolvedColor,

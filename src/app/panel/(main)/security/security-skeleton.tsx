@@ -48,11 +48,11 @@ export function SecuritySkeleton() {
 					</div>
 				</div>
 
-				<div className="rounded-xl border border-divider bg-surface overflow-hidden">
+				<div className="rounded-xl border border-border bg-surface overflow-hidden">
 					<div className="overflow-x-auto">
 						<table className="w-full min-w-200">
 							<thead>
-								<tr className="border-b border-divider bg-surface-secondary">
+								<tr className="border-b border-border bg-surface-secondary">
 									{['Dispositivo', 'Navegador / SO', 'Endereço IP', 'Localização', 'Último Acesso', 'Cadastrado em', 'Status', 'Ações'].map((header) => (
 										<th key={header} className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">
 											{header}
@@ -62,7 +62,7 @@ export function SecuritySkeleton() {
 							</thead>
 							<tbody>
 								{Array.from({ length: 3 }).map((_, index) => (
-									<tr key={index} className="border-b border-divider last:border-b-0">
+									<tr key={index} className="border-b border-border last:border-b-0">
 										{Array.from({ length: 8 }).map((_, cellIndex) => (
 											<td key={cellIndex} className="px-4 py-4">
 												<Skeleton className="h-5 w-full max-w-24 rounded-lg" />

@@ -150,7 +150,7 @@ export function SingleImageUpload({
 						type="button"
 						onClick={() => setPreviewOpen(true)}
 						disabled={isInteractionDisabled}
-						className="group relative flex h-full w-full items-center justify-center rounded-xl border border-divider bg-surface overflow-hidden cursor-pointer"
+						className="group relative flex h-full w-full items-center justify-center rounded-xl border border-border bg-surface overflow-hidden cursor-pointer"
 					>
 						<Image src={value} alt={label} className="h-full w-full object-cover" fill />
 						<div className="absolute inset-0 flex flex-col items-center justify-center bg-background/70 opacity-0 transition-opacity group-hover:opacity-100">
@@ -197,7 +197,7 @@ export function SingleImageUpload({
 						</Modal.Header>
 						<Modal.Body>
 							{value && (
-								<div className="relative w-full overflow-hidden rounded-lg bg-content2" style={{ aspectRatio: '16 / 9' }}>
+								<div className="relative w-full overflow-hidden rounded-lg bg-surface-deep" style={{ aspectRatio: '16 / 9' }}>
 									<Image src={value} alt={label} className="object-contain" fill />
 								</div>
 							)}

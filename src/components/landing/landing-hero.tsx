@@ -26,16 +26,16 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 				<div className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto">
 					
 					{/* Status Pill Badge */}
-					<div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-[#16181a] px-4 py-1.5 text-xs font-semibold text-white shadow-sm">
-						<span className="flex h-2 w-2 rounded-full bg-[#00a87e] animate-pulse" />
-						<span className="text-[#00a87e] font-mono">Motor SPI Nativo:</span>
+					<div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-card px-4 py-1.5 text-xs font-semibold text-white shadow-sm">
+						<span className="flex h-2 w-2 rounded-full bg-success animate-pulse" />
+						<span className="text-success font-mono">Motor SPI Nativo:</span>
 						<span className="text-white/60">Processamento PIX em Sub-50ms & Liquidação D+0</span>
 					</div>
 
 					{/* Main Headline */}
 					<h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
 						Processamento de Pagamentos PIX para a{' '}
-						<span className="text-[#4f55f1]">
+						<span className="text-link">
 							Elite do Digital.
 						</span>
 					</h1>
@@ -50,7 +50,7 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 						<button
 							type="button"
 							onClick={() => onOpenAuth('signup')}
-							className="group flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-bold text-black shadow-lg hover:bg-white/90 active:scale-[0.98] transition-all cursor-pointer"
+							className="group flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-bold text-black hover:bg-white/90 active:scale-[0.98] transition-all cursor-pointer"
 						>
 							<span>Começar Agora Gratuitamente</span>
 							<Icon icon={ArrowRight01Icon} className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -68,7 +68,7 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 							href="/docs"
 							className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-transparent px-4 py-3.5 text-sm font-semibold text-white/60 hover:text-white transition-colors"
 						>
-							<Icon icon={CodeIcon} className="w-4 h-4 text-[#4f55f1]" />
+							<Icon icon={CodeIcon} className="w-4 h-4 text-link" />
 							<span>Documentação API</span>
 						</Link>
 					</div>
@@ -76,7 +76,7 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 					{/* Trust Badges Bar */}
 					<div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 border-t border-white/10 w-full max-w-3xl text-left">
 						<div className="flex items-center gap-2.5">
-							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#16181a] text-[#4f55f1] border border-white/10">
+							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card text-link border border-white/10">
 								<Icon icon={ZapIcon} className="w-4 h-4" />
 							</div>
 							<div>
@@ -86,7 +86,7 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 						</div>
 
 						<div className="flex items-center gap-2.5">
-							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#16181a] text-[#00a87e] border border-white/10">
+							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card text-success border border-white/10">
 								<Icon icon={CheckmarkCircle02Icon} className="w-4 h-4" />
 							</div>
 							<div>
@@ -96,7 +96,7 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 						</div>
 
 						<div className="flex items-center gap-2.5">
-							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#16181a] text-[#00a87e] border border-white/10">
+							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card text-success border border-white/10">
 								<Icon icon={LockKeyIcon} className="w-4 h-4" />
 							</div>
 							<div>
@@ -106,7 +106,7 @@ export function LandingHero({ onOpenAuth }: LandingHeroProps) {
 						</div>
 
 						<div className="flex items-center gap-2.5">
-							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#16181a] text-[#4f55f1] border border-white/10">
+							<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-card text-link border border-white/10">
 								<Icon icon={SecurityCheckIcon} className="w-4 h-4" />
 							</div>
 							<div>

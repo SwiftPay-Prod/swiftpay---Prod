@@ -647,7 +647,7 @@ export function MerchantEvaluate({ merchant }: MerchantEvaluateProps) {
 															className={`flex cursor-pointer items-start gap-3 rounded-lg border p-2.5 text-left transition-colors ${
 																isSelected
 																	? 'border-accent bg-accent/10'
-																	: 'border-divider bg-surface hover:bg-surface-secondary'
+																	: 'border-border bg-surface hover:bg-surface-secondary'
 															}`}
 														>
 															<Avatar size="sm" className="mt-0.5 shrink-0">

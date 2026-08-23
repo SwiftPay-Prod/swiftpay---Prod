@@ -317,7 +317,7 @@ export function CustomerUpsertFormContent({ merchantId, environment, customer }:
   }) {
     return (
       <SystemAccordion defaultExpandedKeys={[params.id]} className="px-0">
-        <SystemAccordion.Item id={params.id} className="rounded-xl border border-divider bg-surface">
+        <SystemAccordion.Item id={params.id} className="rounded-xl border border-border bg-surface">
           <SystemAccordion.Heading>
             <SystemAccordion.Trigger className="flex w-full items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
@@ -779,7 +779,7 @@ export function CustomerUpsertFormContent({ merchantId, environment, customer }:
                   <p className="text-sm text-muted">Confira os dados preenchidos antes de confirmar.</p>
 
                   <div className="grid grid-cols-1 gap-3 xl:grid-cols-3">
-                    <div className="rounded-lg border border-divider p-3">
+                    <div className="rounded-lg border border-border p-3">
                       <p className="text-xs text-muted">Dados pessoais</p>
                       <div className="mt-2 space-y-1 text-sm">
                         <p><span className="text-muted">Nome:</span> {values.name.trim() || 'Nao informado'}</p>
@@ -795,7 +795,7 @@ export function CustomerUpsertFormContent({ merchantId, environment, customer }:
                       </div>
                     </div>
 
-                    <div className="rounded-lg border border-divider p-3">
+                    <div className="rounded-lg border border-border p-3">
                       <p className="text-xs text-muted">Endereco</p>
                       <div className="mt-2 space-y-1 text-sm">
                         <p><span className="text-muted">CEP:</span> {values.address.postalCode || 'Nao informado'}</p>
@@ -806,7 +806,7 @@ export function CustomerUpsertFormContent({ merchantId, environment, customer }:
                       </div>
                     </div>
 
-                    <div className="rounded-lg border border-divider p-3">
+                    <div className="rounded-lg border border-border p-3">
                       <p className="text-xs text-muted">Configuracoes</p>
                       <div className="mt-2 space-y-1 text-sm">
                         <p><span className="text-muted">ID externo:</span> {values.externalId?.trim() || 'Nao informado'}</p>

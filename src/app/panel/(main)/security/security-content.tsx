@@ -63,7 +63,7 @@ export function SecurityContent({ devices, onRefresh, isRefreshing }: SecurityCo
 	function renderMobileDeviceCard(device: TrustedDeviceData, _index: number, openActions?: () => void) {
 		return (
 			<div
-				className={`rounded-xl border border-divider bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
+				className={`rounded-xl border border-border bg-surface p-3 overflow-hidden ${openActions ? 'cursor-pointer' : ''}`}
 				onClick={openActions}
 				role={openActions ? 'button' : undefined}
 				tabIndex={openActions ? 0 : undefined}
