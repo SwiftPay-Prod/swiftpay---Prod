@@ -43,8 +43,6 @@ export interface VisualDraftState {
 
 export interface PaymentsDraftState {
 	pixEnabled: boolean;
-	creditCardEnabled: boolean;
-	boletoEnabled: boolean;
 	hasPendingChanges: boolean;
 }
 
@@ -254,8 +252,6 @@ function buildOnboardingFormDefaults(checkout: CheckoutData | null): CheckoutOnb
 
 		pixEnabled: config?.pixEnabled ?? false,
 		pixExpirationMinutes: config?.pixExpirationMinutes ?? 30,
-		creditCardEnabled: config?.creditCardEnabled ?? false,
-		boletoEnabled: config?.boletoEnabled ?? false,
 		reservationExpirationMinutes: config?.reservationExpirationMinutes ?? 15,
 
 		requireCustomerPhone: config?.requireCustomerPhone ?? false,
@@ -353,7 +349,7 @@ function sanitizeUrl(url: string | null | undefined): string | undefined {
 function validateStepValues(stepKey: CheckoutStepSaveKey, values: any): string | null {
 	switch (stepKey) {
 		case 'payments': {
-			const hasPaymentMethod = values.pixEnabled || values.creditCardEnabled || values.boletoEnabled;
+			const hasPaymentMethod = values.pixEnabled;
 			if (!hasPaymentMethod) {
 				return 'Ative ao menos um método de pagamento.';
 			}
@@ -540,9 +536,7 @@ export function useCheckoutOnboarding({
 			return draft;
 		});
 		setValue('pixEnabled', draft?.pixEnabled ?? checkout?.config?.pixEnabled ?? false, { shouldValidate: true });
-		setValue('creditCardEnabled', draft?.creditCardEnabled ?? checkout?.config?.creditCardEnabled ?? false, { shouldValidate: true });
-		setValue('boletoEnabled', draft?.boletoEnabled ?? checkout?.config?.boletoEnabled ?? false, { shouldValidate: true });
-	}, [checkout?.config?.boletoEnabled, checkout?.config?.creditCardEnabled, checkout?.config?.pixEnabled, setValue]);
+	}, [checkout?.config?.pixEnabled, setValue]);
 
 	const applyCustomerDraft = useCallback((draft: CustomerDraftState | null) => {
 		setCustomerDraft((prev) => {
@@ -747,8 +741,6 @@ export function useCheckoutOnboarding({
 			name: formValues?.name ?? checkout.name ?? '',
 			templateId: formValues?.templateId ?? checkout.template?.id ?? '',
 			pixEnabled: formValues?.pixEnabled ?? checkout.config?.pixEnabled ?? false,
-			creditCardEnabled: formValues?.creditCardEnabled ?? checkout.config?.creditCardEnabled ?? false,
-			boletoEnabled: formValues?.boletoEnabled ?? checkout.config?.boletoEnabled ?? false,
 			productsCount: formValues?.productsCount ?? checkout.products.length,
 			successUrl: formValues?.successUrl ?? checkout.config?.successUrl ?? '',
 			cancelUrl: formValues?.cancelUrl ?? checkout.config?.cancelUrl ?? '',
@@ -796,8 +788,6 @@ export function useCheckoutOnboarding({
 					payload = {
 						pixEnabled: formValues.pixEnabled,
 						pixExpirationMinutes: formValues.pixExpirationMinutes,
-						creditCardEnabled: formValues.creditCardEnabled,
-						boletoEnabled: formValues.boletoEnabled,
 						reservationExpirationMinutes: formValues.reservationExpirationMinutes,
 					};
 					break;
@@ -950,8 +940,6 @@ export function useCheckoutOnboarding({
 					faviconUrl: cfg.faviconUrl ?? '',
 					pixEnabled: cfg.pixEnabled ?? false,
 					pixExpirationMinutes: cfg.pixExpirationMinutes ?? 30,
-					creditCardEnabled: cfg.creditCardEnabled ?? false,
-					boletoEnabled: cfg.boletoEnabled ?? false,
 					reservationExpirationMinutes: cfg.reservationExpirationMinutes ?? 15,
 					requireCustomerPhone: cfg.requireCustomerPhone ?? false,
 					requireCustomerDocument: cfg.requireCustomerDocument ?? false,
@@ -1045,9 +1033,7 @@ export function useCheckoutOnboarding({
 		if (step.key === 'payments') {
 			const hasPaymentMethod = [
 				formValues?.pixEnabled ?? checkout?.config?.pixEnabled,
-				formValues?.creditCardEnabled ?? checkout?.config?.creditCardEnabled,
-				formValues?.boletoEnabled ?? checkout?.config?.boletoEnabled,
-			].some(Boolean);
+				].some(Boolean);
 			return { ...step, fullIndex, isCompleted: hasPaymentMethod };
 		}
 		if (step.key === 'products') {
@@ -1238,8 +1224,6 @@ export function useCheckoutOnboarding({
 				onboardingCompleted: true,
 				onboardingStep: 0,
 				pixEnabled: paymentsDraft?.pixEnabled ?? config?.pixEnabled ?? false,
-				creditCardEnabled: paymentsDraft?.creditCardEnabled ?? config?.creditCardEnabled ?? false,
-				boletoEnabled: paymentsDraft?.boletoEnabled ?? config?.boletoEnabled ?? false,
 				requireCustomerPhone: customerDraft?.requireCustomerPhone ?? config?.requireCustomerPhone ?? false,
 				requireCustomerDocument:
 					customerDraft?.requireCustomerDocument ?? config?.requireCustomerDocument ?? false,

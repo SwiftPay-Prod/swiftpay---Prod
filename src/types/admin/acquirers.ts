@@ -37,8 +37,6 @@ export interface AdminAcquirerData {
 
   // Enabled Operations
   pixEnabled: boolean;
-  boletoEnabled: boolean;
-  creditCardEnabled: boolean;
 
   // API Configuration (masked for security)
   apiBaseUrl: string | null;
@@ -56,8 +54,6 @@ export interface AdminAcquirerData {
 
   // Features
   supportsPix: boolean;
-  supportsCreditCard: boolean;
-  supportsBoleto: boolean;
   supportsWithdrawal: boolean;
 
   // Webhook Configuration
@@ -79,25 +75,11 @@ export interface AdminAcquirerData {
   // Settlement compensation configuration
   pixHasCompensation: boolean;
   pixCompensationDays: number;
-  boletoHasCompensation: boolean;
-  boletoCompensationDays: number;
-  creditCardHasCompensation: boolean;
-  creditCardCompensationDays: number;
 
   // PIX In Fees (Acquirer charges)
   pixInFeeMode: FeeChargeMode | null;
   pixInFeeFixed: number | null;
   pixInFeePercentage: number | null;
-
-  // BOLETO In Fees (Acquirer charges)
-  boletoInFeeMode: FeeChargeMode | null;
-  boletoInFeeFixed: number | null;
-  boletoInFeePercentage: number | null;
-
-  // Credit Card In Fees (Acquirer charges)
-  creditCardInFeeMode: FeeChargeMode | null;
-  creditCardInFeeFixed: number | null;
-  creditCardInFeePercentage: number | null;
 
   // Payout Fees (Acquirer charges)
   payoutFeeMode: FeeChargeMode | null;
@@ -107,16 +89,10 @@ export interface AdminAcquirerData {
 
   // Fee Split Handling (Auto split by acquirer)
   pixFeeSplitHandling: PaymentFeeSplitHandling;
-  boletoFeeSplitHandling: PaymentFeeSplitHandling;
-  creditCardFeeSplitHandling: PaymentFeeSplitHandling;
 
   // Transaction Limits
   minPixAmount: number;
   maxPixAmount: number;
-  minBoletoAmount: number;
-  maxBoletoAmount: number;
-  minCreditCardAmount: number;
-  maxCreditCardAmount: number;
   minPayoutAmount: number;
   maxPayoutAmount: number;
 
@@ -170,37 +146,19 @@ export interface AdminUpdateAcquirerRequest {
 
   // Funcionalidades (o que a adquirente suporta tecnicamente)
   supportsPix?: boolean | null;
-  supportsBoleto?: boolean | null;
-  supportsCreditCard?: boolean | null;
   supportsWithdrawal?: boolean | null;
 
   // Operações Habilitadas
   pixEnabled?: boolean | null;
-  boletoEnabled?: boolean | null;
-  creditCardEnabled?: boolean | null;
 
   // Settlement compensation configuration
   pixHasCompensation?: boolean | null;
   pixCompensationDays?: number | null;
-  boletoHasCompensation?: boolean | null;
-  boletoCompensationDays?: number | null;
-  creditCardHasCompensation?: boolean | null;
-  creditCardCompensationDays?: number | null;
   
   // PIX In Fees
   pixInFeeMode?: FeeChargeMode | null;
   pixInFeeFixed?: number | null;
   pixInFeePercentage?: number | null;
-
-  // BOLETO In Fees
-  boletoInFeeMode?: FeeChargeMode | null;
-  boletoInFeeFixed?: number | null;
-  boletoInFeePercentage?: number | null;
-
-  // Credit Card In Fees
-  creditCardInFeeMode?: FeeChargeMode | null;
-  creditCardInFeeFixed?: number | null;
-  creditCardInFeePercentage?: number | null;
   
   // Payout Fees
   payoutFeeMode?: FeeChargeMode | null;
@@ -210,16 +168,10 @@ export interface AdminUpdateAcquirerRequest {
 
   // Fee Split Handling
   pixFeeSplitHandling?: PaymentFeeSplitHandling | null;
-  boletoFeeSplitHandling?: PaymentFeeSplitHandling | null;
-  creditCardFeeSplitHandling?: PaymentFeeSplitHandling | null;
 
   // Transaction Limits
   minPixAmount?: number | null;
   maxPixAmount?: number | null;
-  minBoletoAmount?: number | null;
-  maxBoletoAmount?: number | null;
-  minCreditCardAmount?: number | null;
-  maxCreditCardAmount?: number | null;
   minPayoutAmount?: number | null;
   maxPayoutAmount?: number | null;
   
@@ -240,18 +192,10 @@ export interface AdminUpdateAcquirerData {
   hasWebhookAllowedIps: boolean;
   accessAccounts: AcquirerAccessAccount[];
   supportsPix: boolean;
-  supportsBoleto: boolean;
-  supportsCreditCard: boolean;
   supportsWithdrawal: boolean;
   pixEnabled: boolean;
-  boletoEnabled: boolean;
-  creditCardEnabled: boolean;
   pixHasCompensation: boolean;
   pixCompensationDays: number;
-  boletoHasCompensation: boolean;
-  boletoCompensationDays: number;
-  creditCardHasCompensation: boolean;
-  creditCardCompensationDays: number;
 }
 
 export interface AdminCreateAcquirerAccessAccountRequest {
@@ -301,8 +245,6 @@ export interface AdminCreateAcquirerRequest {
   description?: string | null;
   accessAccounts?: AcquirerAccessAccount[] | null;
   pixEnabled?: boolean | null;
-  boletoEnabled?: boolean | null;
-  creditCardEnabled?: boolean | null;
 }
 
 export interface AdminCreateAcquirerData {
@@ -315,11 +257,7 @@ export interface AdminCreateAcquirerData {
   operationTypes: string[];
   isActive: boolean;
   supportsPix: boolean;
-  supportsBoleto: boolean;
-  supportsCreditCard: boolean;
   pixEnabled: boolean;
-  boletoEnabled: boolean;
-  creditCardEnabled: boolean;
   accessAccounts: AcquirerAccessAccount[];
   createdAt: string;
 }
@@ -476,8 +414,6 @@ export interface AcquirerOperationConfig {
 export interface AcquirerRequiredFieldsConfig {
   auth: AcquirerAuthConfig;
   pix: AcquirerOperationConfig | null;
-  boleto: AcquirerOperationConfig | null;
-  creditCard: AcquirerOperationConfig | null;
   withdrawal: AcquirerOperationConfig | null;
 }
 

@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { Card, Chip, Separator, Skeleton } from '@heroui/react';
 import {
 	QrCodeIcon,
-	BarCodeIcon,
-	CreditCardIcon,
 	Wallet01Icon,
 	Shield01Icon,
 	CheckmarkCircle02Icon,
@@ -276,15 +274,9 @@ export function RequiredFieldsTab({ acquirerId }: RequiredFieldsTabProps) {
 			/>
 
 			<OperationCard
-				title="Boleto"
-				icon={<Icon icon={BarCodeIcon} className="icon-md text-accent" />}
-				operation={config.boleto}
-			/>
-
-			<OperationCard
-				title="Cartão de Crédito"
-				icon={<Icon icon={CreditCardIcon} className="icon-md text-accent" />}
-				operation={config.creditCard}
+				title="Saque (Withdrawal)"
+				icon={<Icon icon={Wallet01Icon} className="icon-md text-accent" />}
+				operation={config.withdrawal}
 			/>
 
 			<OperationCard

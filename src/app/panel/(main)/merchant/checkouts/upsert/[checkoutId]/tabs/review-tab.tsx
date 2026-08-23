@@ -19,8 +19,6 @@ interface ReviewTabProps {
   reviewDraft?: {
     payments?: {
       pixEnabled: boolean;
-      creditCardEnabled: boolean;
-      boletoEnabled: boolean;
       hasPendingChanges: boolean;
     } | null;
     customer?: {

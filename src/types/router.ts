@@ -17,7 +17,6 @@ export type IconName =
   | 'Bell'
   | 'DocumentText'
   | 'MoneyBag'
-  | 'Card'
   | 'Banknote'
   | 'QrCode'
   | 'QuestionCircle'

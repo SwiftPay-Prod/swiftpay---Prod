@@ -43,8 +43,6 @@ export interface MerchantKycData {
   monthlyRevenue: number | null;
   averageTicket: number | null;
   usesPix: boolean;
-  usesBoleto: boolean;
-  usesCreditCard: boolean;
   proofOfAddress: FileData | null;
   documentFront: FileData | null;
   documentBack: FileData | null;
@@ -155,8 +153,6 @@ export interface UpdateMerchantRequest {
   monthlyRevenue?: number | null;
   averageTicket?: number | null;
   usesPix?: boolean | null;
-  usesBoleto?: boolean | null;
-  usesCreditCard?: boolean | null;
   proofOfAddressFileId?: string | null;
   documentFrontFileId?: string | null;
   documentBackFileId?: string | null;

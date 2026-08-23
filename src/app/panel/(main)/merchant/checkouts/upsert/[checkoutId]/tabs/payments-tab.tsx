@@ -5,7 +5,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { Label, Input, TextField, FieldError } from '@heroui/react';
 import { NumericFormat } from 'react-number-format';
 import { SectionAccordion } from '@/components/ui/system-accordion';
-import { QrCodeIcon, CreditCardIcon, Invoice02Icon, Clock01Icon } from '@hugeicons/core-free-icons';
+import { QrCodeIcon, Clock01Icon } from '@hugeicons/core-free-icons';
 import { CheckoutTabSaveLayout } from '../components/checkout-tab-save-layout';
 import { CheckoutSwitchSettingRow } from '../components/checkout-switch-setting-row';
 import type { CheckoutData } from '@/types/merchant/checkouts';
@@ -40,8 +40,6 @@ export function PaymentsTab({ checkout, onSave, isSaving, onFormChange, onDraftC
 	useEffect(() => {
 		onDraftChange?.({
 			pixEnabled,
-			creditCardEnabled: false,
-			boletoEnabled: false,
 			hasPendingChanges: hasChanges,
 		});
 	}, [pixEnabled, hasChanges, onDraftChange]);

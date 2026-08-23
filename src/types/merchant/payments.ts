@@ -71,14 +71,6 @@ export interface PaymentPixDetails {
   expiresAt: string | null;
 }
 
-export interface PaymentBoletoDetails {
-  barcode: string | null;
-  digitableLine: string | null;
-  pdfUrl: string | null;
-  proxyUrl: string | null;
-  dueDate: string | null;
-}
-
 export interface PaymentOrderItemDetails {
   id: string;
   productName: string;
@@ -131,7 +123,6 @@ export interface PaymentDetails {
   order: PaymentOrderDetails | null;
   customer: PaymentCustomerDetails | null;
   pix: PaymentPixDetails | null;
-  boleto: PaymentBoletoDetails | null;
 }
 
 export interface CreatePaymentRequest {
@@ -143,14 +134,6 @@ export interface CreatePaymentRequest {
   customerId?: string;
   customerPhone?: string;
   pixExpirationMinutes?: number;
-  boletoDueDate?: string;
-  boletoInstructions?: string;
-  cardNumber?: string;
-  cardHolderName?: string;
-  cardExpirationMonth?: number;
-  cardExpirationYear?: number;
-  installments?: number;
-  cardCvv?: string;
   callbackUrl?: string;
   metadata?: string;
 }
@@ -160,13 +143,6 @@ export interface CreatePaymentPixData {
   qrCode: string | null;
   copyAndPaste: string | null;
   expiresAt: string | null;
-}
-
-export interface CreatePaymentBoletoData {
-  barcode: string | null;
-  digitableLine: string | null;
-  pdfUrl: string | null;
-  dueDate: string | null;
 }
 
 export interface CreatePaymentData {
@@ -184,14 +160,12 @@ export interface CreatePaymentData {
   createdAt: string;
   customerId: string | null;
   pix: CreatePaymentPixData | null;
-  boleto: CreatePaymentBoletoData | null;
 }
 
 
 export interface PreviewPaymentRequest {
   amount: number;
   method?: PaymentMethod;
-  installments?: number;
   feeContext?: 'Api' | 'Checkout' | 'PaymentLink';
   environment?: PaymentEnvironment;
 }

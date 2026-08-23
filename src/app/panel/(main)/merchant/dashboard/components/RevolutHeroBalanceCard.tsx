@@ -19,8 +19,6 @@ import type { ReadMerchantDashboardData } from '@/types/merchant/dashboard';
 
 export interface MerchantReserveConfig {
 	pixReservePercentage: number;
-	boletoReservePercentage: number;
-	creditCardReservePercentage: number;
 }
 
 export interface RevolutHeroBalanceCardProps {

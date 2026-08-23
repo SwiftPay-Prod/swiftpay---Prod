@@ -9,8 +9,7 @@ import {
 	File01Icon,
 	CheckmarkCircle02Icon,
 	ArrowLeft01Icon,
-	ArrowRight01Icon,
-} from '@hugeicons/core-free-icons';
+	ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { fetchAddressByCep } from '@/app/actions/address';
 import { AsyncButton } from '@/components/ui/async-button';
 import { Icon } from '@/components/ui/icon';
@@ -21,10 +20,8 @@ import type {
 	MerchantOnboardingAnswers,
 	MerchantOnboardingController,
 	MerchantOnboardingFieldCorrection,
-	MerchantOnboardingStepId,
-} from '../types/merchant-onboarding.types';
+	MerchantOnboardingStepId } from '../types/merchant-onboarding.types';
 import { MerchantKycStatus } from '@/types/enums';
-import { shouldShowCreditCardWarning } from '../validations/merchant-onboarding.validation';
 import { formattedCurrencyToCents } from '@/utils/currency';
 import { isValidCEP } from '@/utils/validations';
 import { BasicStep } from './steps/basic-step';
@@ -60,8 +57,7 @@ function buildDocumentFiles(merchant: MerchantData | null): DocumentFilesMap {
 		documentBackFileId: merchant?.kyc?.documentBack ?? null,
 		selfieFileId: merchant?.kyc?.selfie ?? null,
 		cnpjCardFileId: merchant?.kyc?.cnpjCard ?? null,
-		companyContractFileId: merchant?.kyc?.companyContract ?? null,
-	};
+		companyContractFileId: merchant?.kyc?.companyContract ?? null };
 }
 
 const STEP_ACCORDION_CONFIG: Record<MerchantOnboardingStepId, OnboardingAccordionConfig> = {
@@ -69,8 +65,7 @@ const STEP_ACCORDION_CONFIG: Record<MerchantOnboardingStepId, OnboardingAccordio
 	address: { icon: MapPinIcon, color: 'warning' },
 	compliance: { icon: SecurityCheckIcon, color: 'secondary' },
 	documents: { icon: File01Icon, color: 'orange' },
-	review: { icon: CheckmarkCircle02Icon, color: 'success' },
-};
+	review: { icon: CheckmarkCircle02Icon, color: 'success' } };
 
 export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormProps) {
 	const {
@@ -93,8 +88,7 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 		isSubmitting,
 		isFieldEditable,
 		persistAnswers,
-		stepperSteps,
-	} = controller;
+		stepperSteps } = controller;
 
 	type MerchantOnboardingAnswerField = Extract<keyof MerchantOnboardingAnswers, string>;
 
@@ -152,7 +146,6 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 		allowManualAddressEntry || Boolean(answers.address || answers.neighborhood || answers.city || answers.state);
 	const monthlyRevenueInCents = formattedCurrencyToCents(answers.monthlyRevenue);
 	const averageTicketInCents = formattedCurrencyToCents(answers.averageTicket);
-	const showCreditCardWarning = shouldShowCreditCardWarning(answers);
 	const requiredUploads = UPLOAD_REQUIREMENTS.filter((item) => item.isRequired(answers));
 	const paymentMethodsSummary =
 		answers.paymentMethods.length > 0
@@ -251,8 +244,7 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 
 		setDocumentFiles((current) => ({
 			...current,
-			[key]: nextFile,
-		}));
+			[key]: nextFile }));
 
 		handleValueChange(key, nextFile?.id ?? null);
 
@@ -341,7 +333,6 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 						isFieldEditable={isFieldEditable}
 						monthlyRevenueInCents={monthlyRevenueInCents}
 						averageTicketInCents={averageTicketInCents}
-						showCreditCardWarning={showCreditCardWarning}
 						matchesStepError={matchesStepError}
 						getFieldCorrections={getFieldCorrections}
 						onValueChange={handleValueChange}
@@ -378,7 +369,6 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 						declarationAcceptedError={declarationAcceptedError}
 					/>
 				)}
-
 
 				<div className="mt-4 border-t border-divider pt-4">
 					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">

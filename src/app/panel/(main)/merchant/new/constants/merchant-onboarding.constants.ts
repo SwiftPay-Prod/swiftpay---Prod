@@ -69,8 +69,7 @@ export const UPLOAD_REQUIREMENTS: MerchantOnboardingUploadRequirement[] = [
 		label: 'Contrato Social ou Requerimento de Empresário',
 		description: 'Documento societário atualizado da empresa.',
 		isRequired: (answers) =>
-			answers.documentType === MerchantKycDocumentType.CNPJ &&
-			answers.paymentMethods.includes(PaymentMethod.CreditCard),
+			answers.documentType === MerchantKycDocumentType.CNPJ,
 	},
 	{
 		key: 'cnpjCardFileId',
@@ -109,8 +108,6 @@ export function buildInitialAnswers(merchant: MerchantData | null): MerchantOnbo
 
 	const paymentMethods: PaymentMethod[] = [];
 	if (kyc?.usesPix) paymentMethods.push(PaymentMethod.Pix);
-	if (kyc?.usesBoleto) paymentMethods.push(PaymentMethod.Boleto);
-	if (kyc?.usesCreditCard) paymentMethods.push(PaymentMethod.CreditCard);
 
 	return {
 		name: merchant?.name ?? '',

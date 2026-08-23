@@ -338,8 +338,6 @@ export interface CheckoutConfigData {
   // Payment Settings
   pixEnabled: boolean;
   pixExpirationMinutes: number;
-  creditCardEnabled: boolean;
-  boletoEnabled: boolean;
   minimumValue: number | null;
   // Feature Settings
   couponEnabled: boolean;
@@ -501,8 +499,6 @@ export interface UpdateCheckoutRequest {
   onboardingCompleted?: boolean;
   // Payment Settings
   pixEnabled?: boolean;
-  creditCardEnabled?: boolean;
-  boletoEnabled?: boolean;
   pixExpirationMinutes?: number;
   // Feature Settings
   couponEnabled?: boolean;

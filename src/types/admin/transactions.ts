@@ -92,14 +92,6 @@ export interface AdminTransactionPixDetails {
   expiresAt: string | null;
 }
 
-export interface AdminTransactionBoletoDetails {
-  barcode: string | null;
-  digitableLine: string | null;
-  pdfUrl: string | null;
-  proxyUrl: string | null;
-  dueDate: string | null;
-}
-
 export interface AdminTransactionDetails {
   id: string;
   transactionVisualizationUrl: string | null;
@@ -133,7 +125,6 @@ export interface AdminTransactionDetails {
   acquirer: AdminTransactionAcquirerDetails | null;
   customer: AdminTransactionCustomerDetails | null;
   pix: AdminTransactionPixDetails | null;
-  boleto: AdminTransactionBoletoDetails | null;
 }
 
 export interface AdminTransactionLedgerAccountData {

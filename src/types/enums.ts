@@ -161,8 +161,6 @@ export enum MerchantKycPendingField {
   MonthlyRevenue = "MonthlyRevenue",
   AverageTicket = "AverageTicket",
   UsesPix = "UsesPix",
-  UsesBoleto = "UsesBoleto",
-  UsesCreditCard = "UsesCreditCard",
   ProofOfAddressFileId = "ProofOfAddressFileId",
   DocumentFrontFileId = "DocumentFrontFileId",
   DocumentBackFileId = "DocumentBackFileId",
@@ -208,9 +206,10 @@ export enum PaymentEnvironment {
 
 export enum PaymentMethod {
   Pix = "Pix",
-  CreditCard = "CreditCard",
-  Boleto = "Boleto",
 }
+
+/** @deprecated R11 — manter somente para leitura legada, nunca usar em create/update */
+export type LegacyPaymentMethod = "Pix" | "CreditCard" | "Boleto";
 
 export enum PaymentRequestSource {
   Api = "Api",
@@ -569,7 +568,6 @@ export enum MerchantAcquirerChangeAction {
 
 export enum MerchantSettingsChangeCategory {
   PixFees = "PixFees",
-  BoletoFees = "BoletoFees",
   WithdrawalFees = "WithdrawalFees",
   PixLimits = "PixLimits",
   WithdrawalLimits = "WithdrawalLimits",

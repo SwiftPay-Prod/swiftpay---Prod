@@ -520,3 +520,22 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Arquivos alterados**:
     - `DESIGN.md`
     - `TODOS.md`
+
+- `DONE` Spec: #110 — P0 Purge PIX-Only R11/R8/docs — 2026-08-23
+  - **Contexto**: Auditoria V2 (871 arquivos, 829 hits `boleto`, 65 gaps R11, 2 R8, 1 docs) — front não era PIX-only por construção.
+  - **Implementado**:
+    - Passo 1: deletado `src/types/boleto.ts`, `src/app/actions/boleto.ts`, `src/app/boleto/**` (7 arquivos, rota 404)
+    - Passo 2: `src/types/enums.ts` `PaymentMethod` → `Pix` only + `LegacyPaymentMethod` legado, `UsesBoleto/CreditCard` e `BoletoFees` removidos
+    - Passo 3: purge `types/admin/acquirers`, `merchants`, `platform-settings` (`Extract<PaymentMethod,'Pix'>`), `transactions` (`BoletoDetails` removido), `merchant/payments`, `payment-links`, `checkouts`, `settings`, `orders`, `crud`
+    - Passo 4: `parse/payment.tsx` (CreditCard/Boleto), `parse/merchant.tsx` (BoletoFees), `router/icons.tsx` (Card removido, `IconName` sem `Card`)
+    - Passo 5-6: UI merchant/admin purgada (checkouts, payment-links, onboarding, acquirers, merchants, transactions, converters, proxy `BOLETO_SUBDOMAIN` removido)
+    - Passo 7: mocks R8 `184592000` → `0`, `||42` → `??0`, `*0.98` removido
+    - Passo 8: `src/app/docs/page.tsx` `slate-950/900/800` → `#000000/#16181a/white/12`
+  - **Verificação**:
+    - `grep -rn -i "boleto|creditCard" src --include="*.ts" --include="*.tsx" | grep -v Legacy | wc -l` → 0
+    - `grep -R -F "184592000" / "|| 42" / "*0.98" src` → 0
+    - `grep -rn "bg-slate|text-slate|border-slate" src/app/docs` → 0
+    - `npx tsc --noEmit --skipLibCheck | grep -v CalendarDate | grep -v RangeValue` → só 2 erros pré-existentes (RevolutAnalyticsChart, DateValue)
+    - `npm run build` → ✓ Compiled successfully in 2.7min, 66 rotas (68→66, 4 rotas boleto/credit-card removidas), Skipping validation of types
+  - **Arquivos alterados**: 38 `M/D` (tipos, parse, router, painel merchant/admin, converters, proxy, docs) + `src/components/ui/boleto-barcode-image.tsx` deletado
+

@@ -31,7 +31,7 @@ export interface CreateOrderRequest {
   merchantId: string;
   customerId: string;
   environment?: PaymentEnvironment;
-  paymentMethod?: PaymentMethod | null;
+  paymentMethod?: Extract<PaymentMethod, 'Pix'> | null;
   items: CreateOrderItemInput[];
   couponCode?: string | null;
   shippingAmount?: number | null;
@@ -94,7 +94,7 @@ export interface MinimalOrderCustomer {
 export interface MinimalOrderPayment {
   id: string;
   status: PaymentStatus;
-  method: PaymentMethod;
+  method: Extract<PaymentMethod, 'Pix'>;
   completedAt: string | null;
 }
 
@@ -125,7 +125,7 @@ export interface OrderCustomerDetails {
 export interface OrderPaymentDetails {
   id: string;
   status: PaymentStatus;
-  method: PaymentMethod;
+  method: Extract<PaymentMethod, 'Pix'>;
   amount: number;
   fee: number;
   netAmount: number;

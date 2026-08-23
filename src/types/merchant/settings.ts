@@ -16,15 +16,6 @@ export interface MerchantSettingsData {
   pixPaymentLinkFeeMode: FeeChargeMode | null;
   pixPaymentLinkFeeFixed: number | null;
   pixPaymentLinkFeePercentage: number | null;
-  boletoApiFeeMode: FeeChargeMode | null;
-  boletoApiFeeFixed: number | null;
-  boletoApiFeePercentage: number | null;
-  boletoCheckoutFeeMode: FeeChargeMode | null;
-  boletoCheckoutFeeFixed: number | null;
-  boletoCheckoutFeePercentage: number | null;
-  boletoPaymentLinkFeeMode: FeeChargeMode | null;
-  boletoPaymentLinkFeeFixed: number | null;
-  boletoPaymentLinkFeePercentage: number | null;
   withdrawalFeeMode: FeeChargeMode | null;
   withdrawalFeeFixed: number | null;
   withdrawalFeePercentage: number | null;
@@ -58,19 +49,11 @@ export interface ReadSettingsData {
 export interface ReadFeesData {
   // Enabled Operations
   pixEnabled: boolean;
-  boletoEnabled: boolean;
-  creditCardEnabled: boolean;
   pixCompensationDays: number;
-  boletoCompensationDays: number;
-  creditCardCompensationDays: number;
   pixReservePercentage: number;
-  boletoReservePercentage: number;
-  creditCardReservePercentage: number;
   
   pixMinTransactionAmount: number;
   pixMaxTransactionAmount: number;
-  boletoMinTransactionAmount: number;
-  boletoMaxTransactionAmount: number;
   pixApiFeeMode: FeeChargeMode;
   pixApiFeeFixed: number;
   pixApiFeePercentage: number;
@@ -80,24 +63,6 @@ export interface ReadFeesData {
   pixPaymentLinkFeeMode: FeeChargeMode;
   pixPaymentLinkFeeFixed: number;
   pixPaymentLinkFeePercentage: number;
-  boletoApiFeeMode: FeeChargeMode;
-  boletoApiFeeFixed: number;
-  boletoApiFeePercentage: number;
-  creditCardApiFeeMode: FeeChargeMode;
-  creditCardApiFeeFixed: number;
-  creditCardApiFeePercentage: number;
-  boletoCheckoutFeeMode: FeeChargeMode;
-  boletoCheckoutFeeFixed: number;
-  boletoCheckoutFeePercentage: number;
-  boletoPaymentLinkFeeMode: FeeChargeMode;
-  boletoPaymentLinkFeeFixed: number;
-  boletoPaymentLinkFeePercentage: number;
-  creditCardCheckoutFeeMode: FeeChargeMode;
-  creditCardCheckoutFeeFixed: number;
-  creditCardCheckoutFeePercentage: number;
-  creditCardPaymentLinkFeeMode: FeeChargeMode;
-  creditCardPaymentLinkFeeFixed: number;
-  creditCardPaymentLinkFeePercentage: number;
   withdrawalFeeMode: FeeChargeMode;
   withdrawalFeeFixed: number;
   withdrawalFeePercentage: number;
@@ -122,8 +87,6 @@ export interface MerchantNominalOption {
   isCurrent: boolean;
   isInAbTest: boolean;
   supportsPix: boolean;
-  supportsBoleto: boolean;
-  supportsCreditCard: boolean;
 }
 
 export type MerchantNominalAbTestLimitType = 'Days' | 'Transactions';

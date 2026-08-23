@@ -32,15 +32,15 @@ export default function PublicDocsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 font-sans antialiased flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#000000] text-white font-sans antialiased flex flex-col md:flex-row">
       {/* Mobile Top Header */}
-      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#16181a] border-b border-white/12 sticky top-0 z-40">
         <div className="flex items-center gap-2">
           <SwiftPayBrandLogo showText={true} iconSize={32} textClassName="text-lg" />
         </div>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 text-slate-300 hover:text-white rounded-lg hover:bg-slate-800"
+          className="p-2 text-white/60 hover:text-white rounded-lg hover:bg-white/5"
           aria-label="Toggle Navigation"
         >
           {mobileMenuOpen ? <CloseIcon className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
@@ -49,19 +49,19 @@ export default function PublicDocsPage() {
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-64 bg-slate-900 border-r border-slate-800 flex flex-col transition-transform duration-200 ease-in-out ${
+        className={`fixed md:sticky top-0 left-0 z-30 h-screen w-64 bg-[#16181a] border-r border-white/12 flex flex-col transition-transform duration-200 ease-in-out ${
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         {/* Brand Header */}
-        <div className="p-5 border-b border-slate-800 hidden md:block">
+        <div className="p-5 border-b border-white/12 hidden md:block">
           <div className="flex items-center gap-2">
             <SwiftPayBrandLogo showText={true} iconSize={36} textClassName="text-xl" />
           </div>
         </div>
-        <div className="px-4 py-3 border-b border-slate-800">
+        <div className="px-4 py-3 border-b border-white/12">
           <div className="relative flex items-center">
-            <SearchIcon className="absolute left-3 w-4 h-4 text-slate-400 pointer-events-none" />
+            <SearchIcon className="absolute left-3 w-4 h-4 text-white/60 pointer-events-none" />
             <Input
               variant="secondary"
               placeholder="Buscar endpoints..."
@@ -86,16 +86,16 @@ export default function PublicDocsPage() {
                 }}
                 className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   isActive
-                    ? 'bg-emerald-500/15 text-emerald-400 font-semibold'
-                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                    ? 'bg-[#00a87e]/15 text-[#00a87e] font-semibold'
+                    : 'text-white/60 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#00a87e]' : 'text-white/60'}`} />
                   <span>{item.label}</span>
                 </div>
                 {item.badge && (
-                  <span className="text-xs bg-emerald-500/15 text-emerald-300 font-bold px-1.5 py-0.5 rounded">
+                  <span className="text-xs bg-[#00a87e]/15 text-[#00a87e] font-bold px-1.5 py-0.5 rounded">
                     {item.badge}
                   </span>
                 )}
@@ -105,10 +105,10 @@ export default function PublicDocsPage() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/50">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-4 border-t border-white/12 bg-[#16181a]/50">
+          <div className="flex items-center justify-between text-xs text-white/60">
             <span>Versão da API</span>
-            <span className="font-mono text-xs bg-slate-700 text-slate-200 px-1.5 py-0.5 rounded font-semibold">
+            <span className="font-mono text-xs bg-white/10 text-white px-1.5 py-0.5 rounded font-semibold">
               v1.0.0 (REST)
             </span>
           </div>
@@ -119,75 +119,75 @@ export default function PublicDocsPage() {
       <main className="flex-1 max-w-4xl p-4 md:p-8 space-y-8 overflow-y-auto">
         {/* Top Header */}
         <div className="space-y-1">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-50 tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
             Documentação da API
           </h1>
-          <p className="text-sm font-medium text-slate-400">SwiftPay Platform</p>
+          <p className="text-sm font-medium text-white/60">SwiftPay Platform</p>
         </div>
 
         {/* Section 1: Guia de Início Rápido */}
-        <section id="inicio" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-5">
-          <h2 className="text-xl font-bold text-slate-50 tracking-tight flex items-center gap-2">
+        <section id="inicio" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-5">
+          <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
             Guia de Início Rápido
           </h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
+          <p className="text-sm text-white/60 leading-relaxed">
             Bem-vindo à documentação da API da SwiftPay. Siga estes passos para começar a integrar nossa API de pagamentos PIX em sua aplicação.
           </p>
 
-          <ol className="space-y-4 text-sm text-slate-200">
+          <ol className="space-y-4 text-sm text-white">
             <li className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-slate-200 font-bold text-xs flex items-center justify-center mt-0.5">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/5 text-white font-bold text-xs flex items-center justify-center mt-0.5">
                 1
               </span>
               <div>
-                <strong className="font-semibold text-slate-50">Crie sua Conta de Loja:</strong> Entre em contato com o administrador da plataforma para criar sua conta. Você receberá seu e-mail e credenciais para acessar o portal de cliente.
+                <strong className="font-semibold text-white">Crie sua Conta de Loja:</strong> Entre em contato com o administrador da plataforma para criar sua conta. Você receberá seu e-mail e credenciais para acessar o portal de cliente.
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-slate-200 font-bold text-xs flex items-center justify-center mt-0.5">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/5 text-white font-bold text-xs flex items-center justify-center mt-0.5">
                 2
               </span>
               <div>
-                <strong className="font-semibold text-slate-50">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba "Configurações e API" e copie sua Chave Secreta (<code className="text-xs bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded font-mono">secretKey</code>).
+                <strong className="font-semibold text-white">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba "Configurações e API" e copie sua Chave Secreta (<code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">secretKey</code>).
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-slate-200 font-bold text-xs flex items-center justify-center mt-0.5">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/5 text-white font-bold text-xs flex items-center justify-center mt-0.5">
                 3
               </span>
               <div>
-                <strong className="font-semibold text-slate-50">Autentique suas Requisições:</strong> Para toda chamada à API, obtenha o token JWT em <code className="text-xs bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded font-mono">POST /v1/auth/token</code> e inclua no cabeçalho HTTP <code className="text-xs bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;token&gt;</code>.
+                <strong className="font-semibold text-white">Autentique suas Requisições:</strong> Para toda chamada à API, obtenha o token JWT em <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">POST /v1/auth/token</code> e inclua no cabeçalho HTTP <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;token&gt;</code>.
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-slate-200 font-bold text-xs flex items-center justify-center mt-0.5">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/5 text-white font-bold text-xs flex items-center justify-center mt-0.5">
                 4
               </span>
               <div>
-                <strong className="font-semibold text-slate-50">Crie sua Primeira Transação:</strong> Use o endpoint <code className="text-xs bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded font-mono">POST /v1/transactions</code> para gerar sua primeira cobrança PIX instantânea com QR Code e Pix Copia e Cola.
+                <strong className="font-semibold text-white">Crie sua Primeira Transação:</strong> Use o endpoint <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">POST /v1/transactions</code> para gerar sua primeira cobrança PIX instantânea com QR Code e Pix Copia e Cola.
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-slate-200 font-bold text-xs flex items-center justify-center mt-0.5">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/5 text-white font-bold text-xs flex items-center justify-center mt-0.5">
                 5
               </span>
               <div>
-                <strong className="font-semibold text-slate-50">Receba Notificações:</strong> Configure a URL de Webhook no seu portal para ser notificado em tempo real sobre as mudanças de status da cobrança ou saque.
+                <strong className="font-semibold text-white">Receba Notificações:</strong> Configure a URL de Webhook no seu portal para ser notificado em tempo real sobre as mudanças de status da cobrança ou saque.
               </div>
             </li>
           </ol>
         </section>
 
         {/* Section 2: Autenticação */}
-        <section id="autenticacao" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-5">
-          <h2 className="text-xl font-bold text-slate-50 tracking-tight">Autenticação</h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
-            A autenticação é feita via OAuth2 Client Credentials ou Token JWT. Envie sua chave no cabeçalho <code className="text-xs bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;accessToken&gt;</code> em todas as requisições. Requisições sem uma chave válida retornarão um erro <code className="text-xs bg-rose-500/15 text-rose-300 px-1.5 py-0.5 rounded font-mono">401 Unauthorized</code>.
+        <section id="autenticacao" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-5">
+          <h2 className="text-xl font-bold text-white tracking-tight">Autenticação</h2>
+          <p className="text-sm text-white/60 leading-relaxed">
+            A autenticação é feita via OAuth2 Client Credentials ou Token JWT. Envie sua chave no cabeçalho <code className="text-xs bg-white/5 text-[#00a87e] px-1.5 py-0.5 rounded font-mono">Authorization: Bearer &lt;accessToken&gt;</code> em todas as requisições. Requisições sem uma chave válida retornarão um erro <code className="text-xs bg-rose-500/15 text-rose-300 px-1.5 py-0.5 rounded font-mono">401 Unauthorized</code>.
           </p>
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">
                 Exemplo de Requisição Autenticada (cURL)
               </h3>
               <button
@@ -197,12 +197,12 @@ export default function PublicDocsPage() {
                     'auth-curl'
                   )
                 }
-                className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-md transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-md transition-colors"
               >
                 {copiedSection === 'auth-curl' ? (
                   <>
-                    <CheckIcon className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400 font-medium">Copiado!</span>
+                    <CheckIcon className="w-3.5 h-3.5 text-[#00a87e]" />
+                    <span className="text-[#00a87e] font-medium">Copiado!</span>
                   </>
                 ) : (
                   <>
@@ -213,7 +213,7 @@ export default function PublicDocsPage() {
               </button>
             </div>
 
-            <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+            <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`# 1. Gerar Token Bearer (Client Credentials)
 curl --location 'https://swiftpayment.info/v1/auth/token' \\
   --header 'Content-Type: application/json' \\
@@ -236,69 +236,69 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 3: Transações */}
-        <section id="transacoes" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+        <section id="transacoes" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="bg-emerald-500/15 text-emerald-300 font-mono text-xs font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#00a87e]/15 text-[#00a87e] font-mono text-xs font-bold px-2 py-0.5 rounded">
                 POST
               </span>
-              <span className="font-mono text-xs text-slate-300">/v1/transactions</span>
+              <span className="font-mono text-xs text-white/60">/v1/transactions</span>
             </div>
-            <h2 className="text-xl font-bold text-slate-50 tracking-tight">
+            <h2 className="text-xl font-bold text-white tracking-tight">
               Criar Cobrança PIX
             </h2>
-            <p className="text-sm text-slate-300 mt-1">
+            <p className="text-sm text-white/60 mt-1">
               Gera uma cobrança PIX instantânea com QR Code e Pix Copia e Cola. O processamento é transparente: a SwiftPay roteia o pagamento pela melhor rota de liquidação disponível.
             </p>
           </div>
 
           {/* Parameters Table */}
           <div className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Parâmetros de Requisição</h3>
-            <div className="border border-slate-800 rounded-xl overflow-hidden text-xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">Parâmetros de Requisição</h3>
+            <div className="border border-white/12 rounded-xl overflow-hidden text-xs">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-800/60 border-b border-slate-800 text-slate-200 font-semibold">
+                  <tr className="bg-white/5/60 border-b border-white/12 text-white font-semibold">
                     <th className="p-3">Campo</th>
                     <th className="p-3">Tipo</th>
                     <th className="p-3">Obrigatório</th>
                     <th className="p-3">Descrição</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-200">
+                <tbody className="divide-y divide-white/12 text-white">
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">method</td>
-                    <td className="p-3 text-emerald-400 font-semibold">Sim</td>
+                    <td className="p-3 font-mono text-[#00a87e]">method</td>
+                    <td className="p-3 text-[#00a87e] font-semibold">Sim</td>
                     <td className="p-3">Método de pagamento (usar "PIX")</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">amount</td>
-                    <td className="p-3 text-emerald-400 font-semibold">Sim</td>
+                    <td className="p-3 font-mono text-[#00a87e]">amount</td>
+                    <td className="p-3 text-[#00a87e] font-semibold">Sim</td>
                     <td className="p-3">Valor da cobrança em centavos (ex: 1000 = R$ 10,00)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">currency</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">currency</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Moeda (Padrão: "BRL")</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">description</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">description</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Descrição livre da cobrança exibida ao pagador</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">customerName</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">customerName</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Nome completo do pagador (recomendado para comprovação)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">customerDocument</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">customerDocument</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">CPF (11 dígitos) ou CNPJ (14 dígitos) válido do pagador</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">customerEmail</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">customerEmail</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">E-mail do pagador para envio de comprovante</td>
                   </tr>
                 </tbody>
@@ -309,7 +309,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
           {/* Response Payload Example */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">
                 Resposta de Sucesso (201 Created)
               </h3>
               <button
@@ -319,12 +319,12 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                     'tx-res'
                   )
                 }
-                className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-md transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-md transition-colors"
               >
                 {copiedSection === 'tx-res' ? (
                   <>
-                    <CheckIcon className="w-3.5 h-3.5 text-emerald-400" />
-                    <span className="text-emerald-400 font-medium">Copiado!</span>
+                    <CheckIcon className="w-3.5 h-3.5 text-[#00a87e]" />
+                    <span className="text-[#00a87e] font-medium">Copiado!</span>
                   </>
                 ) : (
                   <>
@@ -335,7 +335,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
               </button>
             </div>
 
-            <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+            <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`{
   "data": {
     "id": "019fc9e7-6ef3-7a91-98ec-baef52f1fc0c",
@@ -364,19 +364,19 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 4: Consultas */}
-        <section id="consultas" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+        <section id="consultas" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
           <div className="flex items-center gap-2 mb-1">
             <span className="bg-blue-500/15 text-blue-400 font-mono text-xs font-bold px-2 py-0.5 rounded">
               GET
             </span>
-            <span className="font-mono text-xs text-slate-300">/v1/transactions/&#123;id&#125;</span>
+            <span className="font-mono text-xs text-white/60">/v1/transactions/&#123;id&#125;</span>
           </div>
-          <h2 className="text-xl font-bold text-slate-50 tracking-tight">Consultar Status da Transação</h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
+          <h2 className="text-xl font-bold text-white tracking-tight">Consultar Status da Transação</h2>
+          <p className="text-sm text-white/60 leading-relaxed">
             Retorna os detalhes atualizados de uma cobrança PIX pelo ID da transação na SwiftPay.
           </p>
 
-          <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+          <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`curl --location 'https://swiftpayment.info/v1/transactions/019fc9e7-6ef3-7a91-98ec-baef52f1fc0c' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'`}
           </pre>
@@ -385,13 +385,13 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
             <span className="bg-blue-500/15 text-blue-400 font-mono text-xs font-bold px-2 py-0.5 rounded">
               GET
             </span>
-            <span className="font-mono text-xs text-slate-300">/v1/transactions</span>
+            <span className="font-mono text-xs text-white/60">/v1/transactions</span>
           </div>
-          <h2 className="text-xl font-bold text-slate-50 tracking-tight">Listar Transações</h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
+          <h2 className="text-xl font-bold text-white tracking-tight">Listar Transações</h2>
+          <p className="text-sm text-white/60 leading-relaxed">
             Lista as transações da sua conta com paginação e filtros opcionais por status, método, período ou ID externo.
           </p>
-          <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+          <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`curl --location 'https://swiftpayment.info/v1/transactions?page=1&pageSize=20&status=Paid&startDate=2026-08-01&endDate=2026-08-31' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'
 
@@ -416,13 +416,13 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
             <span className="bg-blue-500/15 text-blue-400 font-mono text-xs font-bold px-2 py-0.5 rounded">
               GET
             </span>
-            <span className="font-mono text-xs text-slate-300">/v1/balance</span>
+            <span className="font-mono text-xs text-white/60">/v1/balance</span>
           </div>
-          <h2 className="text-xl font-bold text-slate-50 tracking-tight">Consultar Saldo</h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
+          <h2 className="text-xl font-bold text-white tracking-tight">Consultar Saldo</h2>
+          <p className="text-sm text-white/60 leading-relaxed">
             Retorna o saldo disponível, pendente e reservado da sua conta, além do volume movimentado no período.
           </p>
-          <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+          <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`curl --location 'https://swiftpayment.info/v1/balance' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'
 
@@ -455,72 +455,72 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 5: Saques */}
-        <section id="saques" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+        <section id="saques" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="bg-emerald-500/15 text-emerald-300 font-mono text-xs font-bold px-2 py-0.5 rounded">
+              <span className="bg-[#00a87e]/15 text-[#00a87e] font-mono text-xs font-bold px-2 py-0.5 rounded">
                 POST
               </span>
-              <span className="font-mono text-xs text-slate-300">/v1/cashouts</span>
+              <span className="font-mono text-xs text-white/60">/v1/cashouts</span>
             </div>
-            <h2 className="text-xl font-bold text-slate-50 tracking-tight">Solicitar Saque PIX</h2>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <h2 className="text-xl font-bold text-white tracking-tight">Solicitar Saque PIX</h2>
+            <p className="text-sm text-white/60 leading-relaxed">
               Realiza uma transferência de saída (payout/cashout) via PIX para a chave informada, a partir do saldo disponível da sua conta.
             </p>
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Parâmetros de Requisição</h3>
-            <div className="border border-slate-800 rounded-xl overflow-hidden text-xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">Parâmetros de Requisição</h3>
+            <div className="border border-white/12 rounded-xl overflow-hidden text-xs">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-800/60 border-b border-slate-800 text-slate-200 font-semibold">
+                  <tr className="bg-white/5/60 border-b border-white/12 text-white font-semibold">
                     <th className="p-3">Campo</th>
                     <th className="p-3">Tipo</th>
                     <th className="p-3">Obrigatório</th>
                     <th className="p-3">Descrição</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-200">
+                <tbody className="divide-y divide-white/12 text-white">
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">amount</td>
-                    <td className="p-3 text-emerald-400 font-semibold">Sim</td>
+                    <td className="p-3 font-mono text-[#00a87e]">amount</td>
+                    <td className="p-3 text-[#00a87e] font-semibold">Sim</td>
                     <td className="p-3">Valor do saque em centavos (ex: 5000 = R$ 50,00)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">pixKey</td>
-                    <td className="p-3 text-slate-400">Opcional*</td>
+                    <td className="p-3 font-mono text-[#00a87e]">pixKey</td>
+                    <td className="p-3 text-white/60">Opcional*</td>
                     <td className="p-3">Chave PIX de destino (CPF, CNPJ, e-mail, telefone ou aleatória)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">pixKeyType</td>
-                    <td className="p-3 text-slate-400">Opcional*</td>
+                    <td className="p-3 font-mono text-[#00a87e]">pixKeyType</td>
+                    <td className="p-3 text-white/60">Opcional*</td>
                     <td className="p-3">Tipo da chave: "CPF", "CNPJ", "Email", "Phone" ou "Random"</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">payoutAccountId</td>
-                    <td className="p-3 text-slate-400">Opcional*</td>
+                    <td className="p-3 font-mono text-[#00a87e]">payoutAccountId</td>
+                    <td className="p-3 text-white/60">Opcional*</td>
                     <td className="p-3">ID de conta de pagamento pré-cadastrada (alternativa à chave PIX)</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">externalId</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">externalId</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">Identificador externo para conciliação</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-emerald-400">callbackUrl</td>
-                    <td className="p-3 text-slate-400">Opcional</td>
+                    <td className="p-3 font-mono text-[#00a87e]">callbackUrl</td>
+                    <td className="p-3 text-white/60">Opcional</td>
                     <td className="p-3">URL de callback específica para este saque</td>
                   </tr>
                 </tbody>
               </table>
-              <p className="p-3 text-slate-400 border-t border-slate-800">
-                * Informe <code className="font-mono bg-slate-800 text-emerald-400 px-1 py-0.5 rounded">pixKey</code> + <code className="font-mono bg-slate-800 text-emerald-400 px-1 py-0.5 rounded">pixKeyType</code> OU <code className="font-mono bg-slate-800 text-emerald-400 px-1 py-0.5 rounded">payoutAccountId</code> (nunca ambos).
+              <p className="p-3 text-white/60 border-t border-white/12">
+                * Informe <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">pixKey</code> + <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">pixKeyType</code> OU <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">payoutAccountId</code> (nunca ambos).
               </p>
             </div>
           </div>
 
-          <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed">
+          <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`curl --location 'https://swiftpayment.info/v1/cashouts' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...' \\
   --header 'Content-Type: application/json' \\
@@ -532,30 +532,30 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
           </pre>
 
           <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Outros endpoints de Saque</h3>
-            <div className="border border-slate-800 rounded-xl overflow-hidden text-xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">Outros endpoints de Saque</h3>
+            <div className="border border-white/12 rounded-xl overflow-hidden text-xs">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-800/60 border-b border-slate-800 text-slate-200 font-semibold">
+                  <tr className="bg-white/5/60 border-b border-white/12 text-white font-semibold">
                     <th className="p-3">Método</th>
                     <th className="p-3">Endpoint</th>
                     <th className="p-3">Descrição</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-200">
+                <tbody className="divide-y divide-white/12 text-white">
                   <tr>
                     <td className="p-3 font-mono font-bold text-blue-400">GET</td>
-                    <td className="p-3 font-mono text-emerald-400">/v1/cashouts</td>
+                    <td className="p-3 font-mono text-[#00a87e]">/v1/cashouts</td>
                     <td className="p-3">Lista saques com filtros (página, status, período)</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono font-bold text-blue-400">GET</td>
-                    <td className="p-3 font-mono text-emerald-400">/v1/cashouts/&#123;id&#125;</td>
+                    <td className="p-3 font-mono text-[#00a87e]">/v1/cashouts/&#123;id&#125;</td>
                     <td className="p-3">Consulta os detalhes de um saque</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono font-bold text-amber-400">POST</td>
-                    <td className="p-3 font-mono text-emerald-400">/v1/cashouts/&#123;id&#125;/cancel</td>
+                    <td className="p-3 font-mono text-[#00a87e]">/v1/cashouts/&#123;id&#125;/cancel</td>
                     <td className="p-3">Cancela um saque ainda em processamento</td>
                   </tr>
                 </tbody>
@@ -565,19 +565,19 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 6: Webhooks */}
-        <section id="webhooks" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+        <section id="webhooks" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-6">
           <div>
-            <h2 className="text-xl font-bold text-slate-50 tracking-tight">Webhooks & Eventos</h2>
-            <p className="text-sm text-slate-300 mt-1">
-              Configure a URL de webhook da <strong className="text-slate-50">sua aplicação</strong> no portal (aba "Configurações e API") e a SwiftPay enviará notificações em tempo real (HTTP POST) sempre que uma transação ou saque mudar de status. Você também pode informar um <code className="font-mono bg-slate-800 text-emerald-400 px-1 py-0.5 rounded text-xs">callbackUrl</code> por chamada para sobrescrever a URL padrão.
+            <h2 className="text-xl font-bold text-white tracking-tight">Webhooks & Eventos</h2>
+            <p className="text-sm text-white/60 mt-1">
+              Configure a URL de webhook da <strong className="text-white">sua aplicação</strong> no portal (aba "Configurações e API") e a SwiftPay enviará notificações em tempo real (HTTP POST) sempre que uma transação ou saque mudar de status. Você também pode informar um <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded text-xs">callbackUrl</code> por chamada para sobrescrever a URL padrão.
             </p>
           </div>
 
           {/* Webhook Payload Box */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 text-xs">
+          <div className="bg-[#16181a] border border-white/12 rounded-xl p-4 space-y-3 text-xs">
             <div>
-              <span className="font-bold text-slate-50 block">Exemplo de payload enviado (transação paga):</span>
-              <pre className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 leading-relaxed mt-2">
+              <span className="font-bold text-white block">Exemplo de payload enviado (transação paga):</span>
+              <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed mt-2">
 {`{
   "event": "transaction.updated",
   "data": {
@@ -593,60 +593,60 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
 }`}
               </pre>
             </div>
-            <p className="text-slate-400 text-xs">
-              Sua URL deve responder <code className="font-mono bg-slate-800 text-emerald-400 px-1 py-0.5 rounded">200 OK</code> para confirmar o recebimento. Se não confirmar, a SwiftPay faz novas tentativas com backoff.
+            <p className="text-white/60 text-xs">
+              Sua URL deve responder <code className="font-mono bg-white/5 text-[#00a87e] px-1 py-0.5 rounded">200 OK</code> para confirmar o recebimento. Se não confirmar, a SwiftPay faz novas tentativas com backoff.
             </p>
           </div>
 
           {/* Event Status Badges */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Eventos de Transação e Saque</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white/60">Eventos de Transação e Saque</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div className="p-3 border border-slate-800 rounded-xl bg-slate-900/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 flex-shrink-0"></span>
                 <div>
-                  <strong className="font-semibold text-slate-50 block">Aguardando Pagamento</strong>
-                  <span className="text-slate-400 text-xs">Transação criada, aguardando liquidação no banco.</span>
+                  <strong className="font-semibold text-white block">Aguardando Pagamento</strong>
+                  <span className="text-white/60 text-xs">Transação criada, aguardando liquidação no banco.</span>
                 </div>
               </div>
 
-              <div className="p-3 border border-slate-800 rounded-xl bg-slate-900/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></span>
                 <div>
-                  <strong className="font-semibold text-slate-50 block">Transação Paga</strong>
-                  <span className="text-slate-400 text-xs">PIX confirmado com sucesso na conta da empresa.</span>
+                  <strong className="font-semibold text-white block">Transação Paga</strong>
+                  <span className="text-white/60 text-xs">PIX confirmado com sucesso na conta da empresa.</span>
                 </div>
               </div>
 
-              <div className="p-3 border border-slate-800 rounded-xl bg-slate-900/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-rose-500 mt-1.5 flex-shrink-0"></span>
                 <div>
-                  <strong className="font-semibold text-slate-50 block">Transação Reembolsada</strong>
-                  <span className="text-slate-400 text-xs">Valor devolvido ou estornado ao pagador original.</span>
+                  <strong className="font-semibold text-white block">Transação Reembolsada</strong>
+                  <span className="text-white/60 text-xs">Valor devolvido ou estornado ao pagador original.</span>
                 </div>
               </div>
 
-              <div className="p-3 border border-slate-800 rounded-xl bg-slate-900/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></span>
                 <div>
-                  <strong className="font-semibold text-slate-50 block">Saque Processando</strong>
-                  <span className="text-slate-400 text-xs">Transferência PIX de saída em envio bancário.</span>
+                  <strong className="font-semibold text-white block">Saque Processando</strong>
+                  <span className="text-white/60 text-xs">Transferência PIX de saída em envio bancário.</span>
                 </div>
               </div>
 
-              <div className="p-3 border border-slate-800 rounded-xl bg-slate-900/50 flex items-start gap-2.5">
+              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></span>
                 <div>
-                  <strong className="font-semibold text-slate-50 block">Saque Concluído</strong>
-                  <span className="text-slate-400 text-xs">Transferência enviada e creditada na chave de destino.</span>
+                  <strong className="font-semibold text-white block">Saque Concluído</strong>
+                  <span className="text-white/60 text-xs">Transferência enviada e creditada na chave de destino.</span>
                 </div>
               </div>
 
-              <div className="p-3 border border-slate-800 rounded-xl bg-slate-900/50 flex items-start gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-slate-600 mt-1.5 flex-shrink-0"></span>
+              <div className="p-3 border border-white/12 rounded-xl bg-[#16181a]/50 flex items-start gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-white/10 mt-1.5 flex-shrink-0"></span>
                 <div>
-                  <strong className="font-semibold text-slate-50 block">Disputa MED (Infração PIX)</strong>
-                  <span className="text-slate-400 text-xs">Notificação de contestação ou bloqueio cautelar.</span>
+                  <strong className="font-semibold text-white block">Disputa MED (Infração PIX)</strong>
+                  <span className="text-white/60 text-xs">Notificação de contestação ou bloqueio cautelar.</span>
                 </div>
               </div>
             </div>
@@ -654,24 +654,24 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 7: Erros */}
-        <section id="erros" className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm space-y-5">
-          <h2 className="text-xl font-bold text-slate-50 tracking-tight">Tabela de Erros HTTP</h2>
-          <p className="text-sm text-slate-300 leading-relaxed">
+        <section id="erros" className="bg-[#16181a] border border-white/12 rounded-[20px] p-6  space-y-5">
+          <h2 className="text-xl font-bold text-white tracking-tight">Tabela de Erros HTTP</h2>
+          <p className="text-sm text-white/60 leading-relaxed">
             Respostas de erro padrão da API com códigos HTTP e mensagens detalhadas.
           </p>
 
-          <div className="border border-slate-800 rounded-xl overflow-hidden text-xs">
+          <div className="border border-white/12 rounded-xl overflow-hidden text-xs">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-800/60 border-b border-slate-800 text-slate-200 font-semibold">
+                <tr className="bg-white/5/60 border-b border-white/12 text-white font-semibold">
                   <th className="p-3">Código HTTP</th>
                   <th className="p-3">Status</th>
                   <th className="p-3">Descrição & Solução</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800 text-slate-200">
+              <tbody className="divide-y divide-white/12 text-white">
                 <tr>
-                  <td className="p-3 font-mono font-bold text-emerald-400">200 / 201</td>
+                  <td className="p-3 font-mono font-bold text-[#00a87e]">200 / 201</td>
                   <td className="p-3 font-semibold">OK / Created</td>
                   <td className="p-3">Requisição executada com sucesso.</td>
                 </tr>
@@ -686,7 +686,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   <td className="p-3">Token ausente, inválido ou expirado. Gere um novo token.</td>
                 </tr>
                 <tr>
-                  <td className="p-3 font-mono font-bold text-slate-300">404</td>
+                  <td className="p-3 font-mono font-bold text-white/60">404</td>
                   <td className="p-3 font-semibold">Not Found</td>
                   <td className="p-3">Transação ou recurso solicitado não existe.</td>
                 </tr>
@@ -701,7 +701,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
         </section>
 
         {/* Section 8: Integrar via IA */}
-        <section id="integrar-ia" className="bg-revolut-card border border-revolut-hairline text-white rounded-2xl p-6 space-y-4">
+        <section id="integrar-ia" className="bg-revolut-card border border-revolut-hairline text-white rounded-[20px] p-6 space-y-4">
           <div className="flex items-center gap-2">
             <SparklesIcon className="w-6 h-6 text-emerald-200" />
             <h2 className="text-xl font-bold tracking-tight">Integrar via IA (Copilot, Cursor, ChatGPT)</h2>
@@ -718,11 +718,11 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   'ai-prompt'
                 )
               }
-              className="inline-flex items-center gap-2 text-xs font-semibold bg-slate-900 text-emerald-300 hover:bg-emerald-500/15 px-4 py-2.5 rounded-xl shadow-sm transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold bg-[#16181a] text-[#00a87e] hover:bg-[#00a87e]/15 px-4 py-2.5 rounded-xl  transition-colors"
             >
               {copiedSection === 'ai-prompt' ? (
                 <>
-                  <CheckIcon className="w-4 h-4 text-emerald-400" />
+                  <CheckIcon className="w-4 h-4 text-[#00a87e]" />
                   <span>Prompt Copiado!</span>
                 </>
               ) : (
@@ -737,7 +737,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
               href="https://swiftpayment.info/api/payment/docs"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-semibold bg-slate-900 text-emerald-300 hover:bg-emerald-500/15 px-4 py-2.5 rounded-xl shadow-sm transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold bg-[#16181a] text-[#00a87e] hover:bg-[#00a87e]/15 px-4 py-2.5 rounded-xl  transition-colors"
             >
               <BookIcon className="w-4 h-4" />
               <span>Documentação Interativa (OpenAPI)</span>

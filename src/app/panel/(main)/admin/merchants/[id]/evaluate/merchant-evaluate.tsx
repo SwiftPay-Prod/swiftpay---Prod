@@ -22,7 +22,6 @@ import {
 	QrCodeIcon,
 	BarCodeIcon,
 	Wallet01Icon,
-	CreditCardIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import type { AdminMerchantDetails, EvaluatePendingItemRequest } from '@/types/admin/merchants';
@@ -80,8 +79,6 @@ const PENDING_FIELD_OPTIONS: Array<{ value: MerchantKycPendingField; label: stri
 	{ value: MerchantKycPendingField.MonthlyRevenue, label: 'Receita mensal (R$)' },
 	{ value: MerchantKycPendingField.AverageTicket, label: 'Ticket médio (R$)' },
 	{ value: MerchantKycPendingField.UsesPix, label: 'Métodos de pagamento utilizados (PIX)' },
-	{ value: MerchantKycPendingField.UsesBoleto, label: 'Métodos de pagamento utilizados (Boleto)' },
-	{ value: MerchantKycPendingField.UsesCreditCard, label: 'Métodos de pagamento utilizados (Cartão de crédito)' },
 	{ value: MerchantKycPendingField.ProofOfAddressFileId, label: 'Comprovante de endereço' },
 	{ value: MerchantKycPendingField.DocumentFrontFileId, label: 'Documento frente' },
 	{ value: MerchantKycPendingField.DocumentBackFileId, label: 'Documento verso' },
@@ -89,7 +86,6 @@ const PENDING_FIELD_OPTIONS: Array<{ value: MerchantKycPendingField; label: stri
 	{ value: MerchantKycPendingField.CnpjCardFileId, label: 'Cartão CNPJ' },
 	{ value: MerchantKycPendingField.CompanyContractFileId, label: 'Contrato social' },
 ];
-
 function getPendingFieldLabel(fieldKey: MerchantKycPendingField | null | undefined): string {
 	if (!fieldKey) return 'Campo não informado';
 	return PENDING_FIELD_OPTIONS.find((item) => item.value === fieldKey)?.label ?? fieldKey;
@@ -195,10 +191,6 @@ export function MerchantEvaluate({ merchant }: MerchantEvaluateProps) {
 					return merchant.kyc?.averageTicket != null ? String(merchant.kyc.averageTicket) : '-';
 				case MerchantKycPendingField.UsesPix:
 					return getBooleanLabel(merchant.kyc?.usesPix);
-				case MerchantKycPendingField.UsesBoleto:
-					return getBooleanLabel(merchant.kyc?.usesBoleto);
-				case MerchantKycPendingField.UsesCreditCard:
-					return getBooleanLabel(merchant.kyc?.usesCreditCard);
 				case MerchantKycPendingField.ProofOfAddressFileId:
 					return merchant.kyc?.proofOfAddress?.originalFileName ?? '-';
 				case MerchantKycPendingField.DocumentFrontFileId:
@@ -709,24 +701,6 @@ export function MerchantEvaluate({ merchant }: MerchantEvaluateProps) {
 																			PIX
 																		</Chip>
 																	)}
-																	{acquirer.supportsBoleto && (
-																		<Chip
-																			size="sm"
-																			className="h-5 gap-0.5 text-xs bg-warning/10 text-warning border-warning-soft-hover"
-																		>
-																			<Icon icon={BarCodeIcon} className="size-3" />
-																			Boleto
-																		</Chip>
-																	)}
-																	{acquirer.supportsCreditCard && (
-																		<Chip
-																			size="sm"
-																			className="h-5 gap-0.5 text-xs bg-accent/10 text-accent border-accent-soft-hover"
-																		>
-																			<Icon icon={CreditCardIcon} className="size-3" />
-																			Cartão
-																		</Chip>
-																	)}
 																	{acquirer.supportsWithdrawal && (
 																		<Chip
 																			size="sm"
@@ -746,17 +720,6 @@ export function MerchantEvaluate({ merchant }: MerchantEvaluateProps) {
 																				acquirer.pixInFeeFixed,
 																				acquirer.pixInFeePercentage,
 																				acquirer.pixInFeeMode
-																			)}
-																		</span>
-																	)}
-																	{acquirer.boletoInFeeMode && (
-																		<span className="flex items-center gap-1">
-																			<Icon icon={BarCodeIcon} className="size-3 text-warning" />
-																			Boleto:{' '}
-																			{formatFeeDisplay(
-																				acquirer.boletoInFeeFixed,
-																				acquirer.boletoInFeePercentage,
-																				acquirer.boletoInFeeMode
 																			)}
 																		</span>
 																	)}

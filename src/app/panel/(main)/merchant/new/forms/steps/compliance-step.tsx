@@ -7,9 +7,7 @@ import {
   ListBox,
   Select,
   TextArea,
-  TextField,
-} from '@heroui/react';
-import { CreditCardIcon } from '@hugeicons/core-free-icons';
+  TextField } from '@heroui/react';
 import { PatternFormat } from 'react-number-format';
 import { Icon } from '@/components/ui/icon';
 import { CurrencyCentsInput } from '@/components/ui/currency-cents-input';
@@ -17,8 +15,7 @@ import {
   DOCUMENT_TYPE_OPTIONS,
   IDENTITY_DOCUMENT_TYPE_OPTIONS,
   OPERATION_TYPE_OPTIONS,
-  PAYMENT_METHOD_OPTIONS,
-} from '../../constants/merchant-onboarding.constants';
+  PAYMENT_METHOD_OPTIONS } from '../../constants/merchant-onboarding.constants';
 import type { MerchantOnboardingAnswers } from '../../types/merchant-onboarding.types';
 import { MerchantKycDocumentType } from '@/types/enums';
 import { getDocumentFormat } from '@/utils/input-masks';
@@ -31,7 +28,6 @@ interface ComplianceStepProps {
   isFieldEditable: (field: keyof MerchantOnboardingAnswers) => boolean;
   monthlyRevenueInCents: number | null;
   averageTicketInCents: number | null;
-  showCreditCardWarning: boolean;
   matchesStepError: StepErrorMatcher;
   getFieldCorrections: FieldCorrectionsResolver;
   onValueChange: OnboardingValueChange;
@@ -48,12 +44,10 @@ export function ComplianceStep({
   isFieldEditable,
   monthlyRevenueInCents,
   averageTicketInCents,
-  showCreditCardWarning,
   matchesStepError,
   getFieldCorrections,
   onValueChange,
-  onTogglePaymentMethod,
-}: ComplianceStepProps) {
+  onTogglePaymentMethod }: ComplianceStepProps) {
   const documentTypeError = matchesStepError('compliance', 'Tipo de documento é obrigatório.');
   const documentNumberError = matchesStepError(
     'compliance',

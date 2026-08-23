@@ -7,8 +7,7 @@ import {
 	isPrivateRoute,
 	isPublicRoute,
 	isUserOnboardingRoute,
-	isVerifyEmailRoute,
-} from '@/router/route-guard';
+	isVerifyEmailRoute } from '@/router/route-guard';
 import { BaseCookie } from './constants/base';
 import type { RouteContext } from '@/types/router';
 import { getSelectedMerchant, getSessionData } from './auth/session';
@@ -16,12 +15,7 @@ import { listMerchants } from './app/actions/merchant/crud';
 import type { MinimalMerchant } from './types/merchant/crud';
 import { isMerchantDraftOrComplement } from './utils/merchant-utils';
 
-const BOLETO_SUBDOMAIN = 'boleto';
 const UUID_REGEX = /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-function isBoletoSubdomain(hostname: string): boolean {
-	return hostname.startsWith(`${BOLETO_SUBDOMAIN}.`);
-}
 
 function continueRequest(pathname: string, selectedMerchant?: MinimalMerchant) {
 	const response = NextResponse.next();
@@ -33,8 +27,7 @@ function continueRequest(pathname: string, selectedMerchant?: MinimalMerchant) {
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'lax',
 			maxAge: 60 * 60 * 24,
-			path: '/',
-		});
+			path: '/' });
 	}
 
 	return response;
@@ -48,10 +41,6 @@ export async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 	const hostname = request.headers.get('host')?.split(':')[0] ?? '';
 	const accessToken = request.cookies.get(BaseCookie.accessToken)?.value;
-
-	if (isBoletoSubdomain(hostname) && UUID_REGEX.test(pathname)) {
-		return continueRequest(pathname);
-	}
 
 	if (isOpenRoute(pathname)) {
 		return continueRequest(pathname);
@@ -121,8 +110,7 @@ export async function proxy(request: NextRequest) {
 		userRole: session.role,
 		hasMerchant: selectedMerchant !== null,
 		merchantStatus: selectedMerchant?.status,
-		merchantKycStatus: selectedMerchant?.kycStatus,
-	};
+		merchantKycStatus: selectedMerchant?.kycStatus };
 	const access = canAccessRoute(pathname, context);
 
 	if (
@@ -140,5 +128,4 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)'],
-};
+	matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)'] };

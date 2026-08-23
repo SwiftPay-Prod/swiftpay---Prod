@@ -16,15 +16,12 @@ import {
   ListBox,
   Modal,
   Tooltip,
-  toast,
-} from '@heroui/react';
+  toast } from '@heroui/react';
 import type { Key } from '@heroui/react';
 import {
   Delete02Icon,
   Settings02Icon,
   QrCodeIcon,
-  BarCodeIcon,
-  CreditCardIcon,
   CheckmarkCircle02Icon,
   CancelCircleIcon,
   Alert02Icon,
@@ -32,8 +29,7 @@ import {
   History,
   ArrowReloadHorizontalIcon,
   ArrowDown01Icon,
-  Crown03Icon,
-} from '@hugeicons/core-free-icons';
+  Crown03Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { MerchantDeleteModal } from '@/components/merchant/merchant-delete';
 import { PageHeader } from '@/components/ui/page-header';
@@ -52,8 +48,7 @@ import type {
   MerchantNominalAbTestLimitType,
   ReadNominalsHistoryData,
   ReadNominalAbTestHistoryData,
-  MerchantNominalAbTestHistoryItem,
-} from '@/types/merchant/settings';
+  MerchantNominalAbTestHistoryItem } from '@/types/merchant/settings';
 import { mapParseColorToChipColor } from '@/parse';
 
 interface SettingsContentProps {
@@ -68,30 +63,23 @@ interface SettingsContentProps {
 const CHART_COLORS = {
   accent: 'var(--accent)',
   success: 'var(--success)',
-  warning: 'var(--warning)',
-};
+  warning: 'var(--warning)' };
 
 const approvalRateChartConfig = {
   variantAApprovalRate: {
     label: 'Aprovação A',
-    color: CHART_COLORS.accent,
-  },
+    color: CHART_COLORS.accent },
   variantBApprovalRate: {
     label: 'Aprovação B',
-    color: CHART_COLORS.warning,
-  },
-} satisfies ChartConfig;
+    color: CHART_COLORS.warning } } satisfies ChartConfig;
 
 const volumeChartConfig = {
   variantATotal: {
     label: 'Volume A',
-    color: CHART_COLORS.accent,
-  },
+    color: CHART_COLORS.accent },
   variantBTotal: {
     label: 'Volume B',
-    color: CHART_COLORS.warning,
-  },
-} satisfies ChartConfig;
+    color: CHART_COLORS.warning } } satisfies ChartConfig;
 
 function formatConversion(percentage: number): string {
   return `${percentage.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
@@ -174,16 +162,14 @@ function splitDisplayLabel(label: string): { merchantName: string; nominal: stri
   if (withParentheses && withParentheses[1] && withParentheses[2]) {
     return {
       merchantName: withParentheses[1].trim(),
-      nominal: withParentheses[2].trim(),
-    };
+      nominal: withParentheses[2].trim() };
   }
 
   const withHyphen = label.match(/^(.*)\s-\s(.*)$/);
   if (withHyphen && withHyphen[1] && withHyphen[2]) {
     return {
       merchantName: withHyphen[1].trim(),
-      nominal: withHyphen[2].trim(),
-    };
+      nominal: withHyphen[2].trim() };
   }
 
   return { merchantName: label, nominal: null };
@@ -206,8 +192,7 @@ function formatDateTime(value: string | null): string {
     month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit',
-  });
+    minute: '2-digit' });
 }
 
 function getAbLimitLabel(item: MerchantNominalAbTestHistoryItem): string {
@@ -323,8 +308,7 @@ export function SettingsContent({
   nominals,
   nominalsHistory,
   nominalAbTestHistory,
-  nominalsError,
-}: SettingsContentProps) {
+  nominalsError }: SettingsContentProps) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isSwitchPending, startTransition] = useTransition();
   const [isAbTestPending, startAbTestTransition] = useTransition();
@@ -489,8 +473,7 @@ export function SettingsContent({
           approvedTransactions: activeAbTestHistoryItem.variantA.approvedTransactions,
           totalTransactions: activeAbTestHistoryItem.variantA.totalTransactions,
           variantLabel: 'Variante A',
-          color: 'accent' as const,
-        },
+          color: 'accent' as const },
         {
           merchantAcquirerId: activeAbTestHistoryItem.variantB.merchantAcquirerId,
           displayLabel: activeAbTestHistoryItem.variantB.displayLabel,
@@ -498,8 +481,7 @@ export function SettingsContent({
           approvedTransactions: activeAbTestHistoryItem.variantB.approvedTransactions,
           totalTransactions: activeAbTestHistoryItem.variantB.totalTransactions,
           variantLabel: 'Variante B',
-          color: 'warning' as const,
-        },
+          color: 'warning' as const },
       ];
     }
 
@@ -510,8 +492,7 @@ export function SettingsContent({
       approvedTransactions: null,
       totalTransactions: null,
       variantLabel: index === 0 ? 'Variante A' : 'Variante B',
-      color: index === 0 ? ('accent' as const) : ('warning' as const),
-    }));
+      color: index === 0 ? ('accent' as const) : ('warning' as const) }));
   }, [activeAbTestHistoryItem, activeAbTestWinnerOptions]);
 
   const canStartAbTest = !!abVariantAAcquirerId
@@ -537,8 +518,7 @@ export function SettingsContent({
       toast('Troca de nominal indisponível', {
         description: 'No momento a troca de nominal não está disponível para sua organização.',
         indicator: <Icon icon={Alert02Icon} className="icon-sm" />,
-        variant: 'warning',
-      });
+        variant: 'warning' });
       return;
     }
 
@@ -551,16 +531,14 @@ export function SettingsContent({
         toast('Erro ao trocar nominal', {
           description: response.error.message || 'Não foi possível trocar a nominal agora.',
           indicator: <Icon icon={CancelCircleIcon} className="icon-sm" />,
-          variant: 'danger',
-        });
+          variant: 'danger' });
         return;
       }
 
       toast('Nominal atualizada', {
         description: response?.data?.message || 'A nominal de processamento foi alterada com sucesso.',
         indicator: <Icon icon={CheckmarkCircle02Icon} className="icon-sm" />,
-        variant: 'success',
-      });
+        variant: 'success' });
 
       router.refresh();
     });
@@ -577,23 +555,20 @@ export function SettingsContent({
         variantAWeightPercent: abVariantAWeightPercent,
         limitType: abLimitType,
         maxDurationDays: abLimitType === 'Days' ? abMaxDurationDays : undefined,
-        maxTransactions: abLimitType === 'Transactions' ? abMaxTransactions : undefined,
-      });
+        maxTransactions: abLimitType === 'Transactions' ? abMaxTransactions : undefined });
 
       if (response?.error) {
         toast('Erro ao ativar teste A/B', {
           description: response.error.message || 'Não foi possível ativar o teste A/B agora.',
           indicator: <Icon icon={CancelCircleIcon} className="icon-sm" />,
-          variant: 'danger',
-        });
+          variant: 'danger' });
         return;
       }
 
       toast('Teste A/B ativado', {
         description: response?.data?.message || 'O teste A/B foi iniciado com sucesso.',
         indicator: <Icon icon={CheckmarkCircle02Icon} className="icon-sm" />,
-        variant: 'success',
-      });
+        variant: 'success' });
 
       router.refresh();
     });
@@ -604,31 +579,27 @@ export function SettingsContent({
       toast('Selecione a nominal vencedora', {
         description: 'Escolha qual nominal deve permanecer ativa ao encerrar o teste A/B.',
         indicator: <Icon icon={Alert02Icon} className="icon-sm" />,
-        variant: 'warning',
-      });
+        variant: 'warning' });
       return;
     }
 
     startAbTestTransition(async () => {
       const response = await updateMerchantNominalAbTest(merchantId, {
         enabled: false,
-        winnerMerchantAcquirerId: abWinnerMerchantAcquirerId,
-      });
+        winnerMerchantAcquirerId: abWinnerMerchantAcquirerId });
 
       if (response?.error) {
         toast('Erro ao encerrar teste A/B', {
           description: response.error.message || 'Não foi possível encerrar o teste A/B agora.',
           indicator: <Icon icon={CancelCircleIcon} className="icon-sm" />,
-          variant: 'danger',
-        });
+          variant: 'danger' });
         return;
       }
 
       toast('Teste A/B encerrado', {
         description: response?.data?.message || 'O teste A/B foi encerrado com sucesso.',
         indicator: <Icon icon={CheckmarkCircle02Icon} className="icon-sm" />,
-        variant: 'success',
-      });
+        variant: 'success' });
 
       setIsStopAbTestModalOpen(false);
       router.refresh();

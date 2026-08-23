@@ -330,14 +330,7 @@ export const merchantSettingsChangeCategoryParse: Record<MerchantSettingsChangeC
 		color: 'accent',
 		description: 'Alteração nas taxas de PIX.',
 		icon: <Icon icon={Wallet01Icon} className="icon-sm" />,
-	},
-	BoletoFees: {
-		label: 'Taxas Boleto',
-		color: 'accent',
-		description: 'Alteração nas taxas de boleto.',
-		icon: <Icon icon={Wallet01Icon} className="icon-sm" />,
-	},
-	WithdrawalFees: {
+	},	WithdrawalFees: {
 		label: 'Taxas de Saque',
 		color: 'accent',
 		description: 'Alteração nas taxas de saque.',

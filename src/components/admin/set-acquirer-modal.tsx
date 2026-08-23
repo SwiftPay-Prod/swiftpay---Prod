@@ -4,7 +4,7 @@ import { useState, useEffect, useTransition, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation';
 import { Modal, Button, Avatar, Alert, Chip, TextField, TextArea, Label, FieldError, InputGroup } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import { ArrowRight01Icon, CheckmarkCircle02Icon, ServerStack01Icon, Search01Icon, QrCodeIcon, BarCodeIcon, Wallet01Icon, CreditCardIcon, BankIcon } from '@hugeicons/core-free-icons';
+import { ArrowRight01Icon, CheckmarkCircle02Icon, ServerStack01Icon, Search01Icon, QrCodeIcon, Wallet01Icon, BankIcon } from '@hugeicons/core-free-icons';
 import { SetAcquirerModalSkeleton } from './set-acquirer-modal-skeleton';
 import { AsyncButton } from '@/components/ui/async-button';
 import { SelectFilter } from '@/components/ui/select-filter';
@@ -300,18 +300,8 @@ export function SetAcquirerModal({
 																			PIX
 																		</Chip>
 																	)}
-																	{acquirer.supportsBoleto && (
-																		<Chip size="sm" className="h-5 gap-0.5 text-xs bg-warning/10 text-warning border-warning-soft-hover">
-																			<Icon icon={BarCodeIcon} className="size-3" />
-																			Boleto
-																		</Chip>
-																	)}
-																	{acquirer.supportsCreditCard && (
-																		<Chip size="sm" className="h-5 gap-0.5 text-xs bg-accent/10 text-accent border-accent-soft-hover">
-																			<Icon icon={CreditCardIcon} className="size-3" />
-																			Cartão
-																		</Chip>
-																	)}
+																	
+																	
 																	{acquirer.supportsWithdrawal && (
 																		<Chip size="sm" className="h-5 gap-0.5 text-xs bg-secondary/10 text-secondary border-secondary-soft-hover">
 																			<Icon icon={Wallet01Icon} className="size-3" />
@@ -326,12 +316,7 @@ export function SetAcquirerModal({
 																			PIX: {formatFeeRate(acquirer.pixInFeeMode, acquirer.pixInFeeFixed, acquirer.pixInFeePercentage)}
 																		</span>
 																	)}
-																	{acquirer.boletoInFeeMode && (
-																		<span className="flex items-center gap-1">
-																			<Icon icon={BarCodeIcon} className="size-3 text-warning" />
-																			Boleto: {formatFeeRate(acquirer.boletoInFeeMode, acquirer.boletoInFeeFixed, acquirer.boletoInFeePercentage)}
-																		</span>
-																	)}
+																	
 																	{acquirer.payoutFeeMode && (
 																		<span className="flex items-center gap-1">
 																			<Icon icon={Wallet01Icon} className="size-3 text-accent" />
@@ -426,18 +411,8 @@ export function SetAcquirerModal({
 												PIX
 											</Chip>
 										)}
-										{selectedAcquirer.supportsBoleto && (
-											<Chip size="sm" className="h-5 gap-0.5 text-xs bg-warning/10 text-warning border-warning-soft-hover">
-												<Icon icon={BarCodeIcon} className="size-3" />
-												Boleto
-											</Chip>
-										)}
-										{selectedAcquirer.supportsCreditCard && (
-											<Chip size="sm" className="h-5 gap-0.5 text-xs bg-accent/10 text-accent border-accent-soft-hover">
-												<Icon icon={CreditCardIcon} className="size-3" />
-												Cartão
-											</Chip>
-										)}
+										
+										
 										{selectedAcquirer.supportsWithdrawal && (
 											<Chip size="sm" className="h-5 gap-0.5 text-xs bg-secondary/10 text-secondary border-secondary-soft-hover">
 												<Icon icon={Wallet01Icon} className="size-3" />
@@ -446,7 +421,7 @@ export function SetAcquirerModal({
 										)}
 									</div>
 
-									{(selectedAcquirer.pixInFeeMode || selectedAcquirer.boletoInFeeMode || selectedAcquirer.payoutFeeMode) && (
+									{(selectedAcquirer.pixInFeeMode || selectedAcquirer.payoutFeeMode) && (
 										<div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-foreground/80 mt-1">
 											{selectedAcquirer.pixInFeeMode && (
 												<span className="flex items-center gap-1.5">
@@ -455,13 +430,7 @@ export function SetAcquirerModal({
 													<span className="font-medium">{formatFeeRate(selectedAcquirer.pixInFeeMode, selectedAcquirer.pixInFeeFixed, selectedAcquirer.pixInFeePercentage)}</span>
 												</span>
 											)}
-											{selectedAcquirer.boletoInFeeMode && (
-												<span className="flex items-center gap-1.5">
-													<Icon icon={BarCodeIcon} className="size-4 text-warning" />
-													<span className="text-muted">Boleto:</span>
-													<span className="font-medium">{formatFeeRate(selectedAcquirer.boletoInFeeMode, selectedAcquirer.boletoInFeeFixed, selectedAcquirer.boletoInFeePercentage)}</span>
-												</span>
-											)}
+											
 											{selectedAcquirer.payoutFeeMode && (
 												<span className="flex items-center gap-1.5">
 													<Icon icon={Wallet01Icon} className="size-4 text-accent" />

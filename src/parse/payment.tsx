@@ -29,8 +29,7 @@ import {
 	CallIcon,
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
-	CreditCardIcon,
-	DollarCircleIcon,
+		DollarCircleIcon,
 	File01Icon,
 	HelpCircleIcon,
 	HourglassIcon,
@@ -67,17 +66,7 @@ export const paymentMethodParse: Record<NonNullable<PaymentMethod>, TParse> = {
     color: 'success',
     icon: <Icon icon={Wallet01Icon} className="icon-sm" />,
   },
-  CreditCard: {
-    label: 'Cartão de Crédito',
-    color: 'accent',
-    icon: <Icon icon={CreditCardIcon} className="icon-sm" />,
-  },
-  Boleto: {
-    label: 'Boleto',
-    color: 'default',
-    icon: <Icon icon={File01Icon} className="icon-sm" />,
-  },
-};
+  };
 
 export const paymentStatusParse: Record<NonNullable<PaymentStatus>, TParse> = {
   Pending: {

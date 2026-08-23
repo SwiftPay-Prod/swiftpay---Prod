@@ -6,22 +6,19 @@ import { createMerchant, respondKycPendingItem, submitOnboarding, updateMerchant
 import {
 	buildInitialAnswers,
 	INITIAL_STEP_ERRORS,
-	MERCHANT_ONBOARDING_STEPS,
-} from '../constants/merchant-onboarding.constants';
+	MERCHANT_ONBOARDING_STEPS } from '../constants/merchant-onboarding.constants';
 import {
 	hasStepErrors,
 	isStepValid,
 	validateAllSteps,
-	validateStep,
-} from '../validations/merchant-onboarding.validation';
+	validateStep } from '../validations/merchant-onboarding.validation';
 import type {
 	MerchantOnboardingAnswers,
 	MerchantOnboardingController,
 	MerchantOnboardingFieldCorrection,
 	MerchantOnboardingFormParams,
 	MerchantOnboardingPayload,
-	MerchantOnboardingStepId,
-} from '../types/merchant-onboarding.types';
+	MerchantOnboardingStepId } from '../types/merchant-onboarding.types';
 import { MerchantKycPendingItemStatus, MerchantKycStatus, MerchantOnboardingStep } from '@/types/enums';
 import type { PaymentMethod } from '@/types/enums';
 import { formattedCurrencyToCents } from '@/utils/currency';
@@ -50,15 +47,12 @@ const PENDING_FIELD_TO_ANSWER_FIELD: Record<string, keyof MerchantOnboardingAnsw
 	MonthlyRevenue: 'monthlyRevenue',
 	AverageTicket: 'averageTicket',
 	UsesPix: 'paymentMethods',
-	UsesBoleto: 'paymentMethods',
-	UsesCreditCard: 'paymentMethods',
 	ProofOfAddressFileId: 'proofOfAddressFileId',
 	DocumentFrontFileId: 'documentFrontFileId',
 	DocumentBackFileId: 'documentBackFileId',
 	SelfieFileId: 'selfieFileId',
 	CnpjCardFileId: 'cnpjCardFileId',
-	CompanyContractFileId: 'companyContractFileId',
-};
+	CompanyContractFileId: 'companyContractFileId' };
 
 const ANSWER_FIELD_TO_PAYLOAD_KEYS: Record<keyof MerchantOnboardingAnswers, Array<keyof MerchantOnboardingPayload>> = {
 	name: ['name'],
@@ -82,15 +76,14 @@ const ANSWER_FIELD_TO_PAYLOAD_KEYS: Record<keyof MerchantOnboardingAnswers, Arra
 	website: ['website'],
 	monthlyRevenue: ['monthlyRevenue'],
 	averageTicket: ['averageTicket'],
-	paymentMethods: ['usesPix', 'usesBoleto', 'usesCreditCard'],
+	paymentMethods: ['usesPix'],
 	proofOfAddressFileId: ['proofOfAddressFileId'],
 	documentFrontFileId: ['documentFrontFileId'],
 	documentBackFileId: ['documentBackFileId'],
 	selfieFileId: ['selfieFileId'],
 	cnpjCardFileId: ['cnpjCardFileId'],
 	companyContractFileId: ['companyContractFileId'],
-	declarationAccepted: [],
-};
+	declarationAccepted: [] };
 
 const ANSWER_FIELD_TO_STEP_ID: Record<keyof MerchantOnboardingAnswers, MerchantOnboardingStepId> = {
 	name: 'basic',
@@ -121,8 +114,7 @@ const ANSWER_FIELD_TO_STEP_ID: Record<keyof MerchantOnboardingAnswers, MerchantO
 	selfieFileId: 'documents',
 	cnpjCardFileId: 'documents',
 	companyContractFileId: 'documents',
-	declarationAccepted: 'review',
-};
+	declarationAccepted: 'review' };
 
 function getStepIndexFromMerchant(merchant: MerchantOnboardingFormParams['initialMerchant']): number {
 	if (!merchant) return 0;
@@ -172,27 +164,22 @@ function buildPayload(answers: MerchantOnboardingAnswers): MerchantOnboardingPay
 		monthlyRevenue: formattedCurrencyToCents(answers.monthlyRevenue),
 		averageTicket: formattedCurrencyToCents(answers.averageTicket),
 		usesPix: answers.paymentMethods.includes('Pix' as PaymentMethod),
-		usesBoleto: answers.paymentMethods.includes('Boleto' as PaymentMethod),
-		usesCreditCard: answers.paymentMethods.includes('CreditCard' as PaymentMethod),
 		proofOfAddressFileId: answers.proofOfAddressFileId,
 		documentFrontFileId: answers.documentFrontFileId,
 		documentBackFileId: answers.documentBackFileId,
 		selfieFileId: answers.selfieFileId,
 		cnpjCardFileId: answers.cnpjCardFileId,
-		companyContractFileId: answers.companyContractFileId,
-	};
+		companyContractFileId: answers.companyContractFileId };
 }
 
 export function useMerchantOnboardingForm({
 	initialMerchant,
 	onMerchantCreated,
-	onSubmitted,
-}: MerchantOnboardingFormParams): MerchantOnboardingController {
+	onSubmitted }: MerchantOnboardingFormParams): MerchantOnboardingController {
 	const defaultAnswers = useMemo(() => buildInitialAnswers(initialMerchant), [initialMerchant]);
 	const form = useForm<MerchantOnboardingAnswers>({
 		defaultValues: defaultAnswers,
-		mode: 'onChange',
-	});
+		mode: 'onChange' });
 
 	const watched = useWatch({ control: form.control });
 	const answers: MerchantOnboardingAnswers = useMemo(
@@ -219,8 +206,7 @@ export function useMerchantOnboardingForm({
 			address: isStepValid('address', answers),
 			compliance: isStepValid('compliance', answers),
 			documents: isStepValid('documents', answers),
-			review: isStepValid('review', answers),
-		}),
+			review: isStepValid('review', answers) }),
 		[answers]
 	);
 
@@ -250,8 +236,7 @@ export function useMerchantOnboardingForm({
 			current.push({
 				itemId: item.id,
 				title: item.title,
-				description: item.description,
-			});
+				description: item.description });
 			result[answerField] = current;
 		}
 
@@ -264,8 +249,7 @@ export function useMerchantOnboardingForm({
 			address: 0,
 			compliance: 0,
 			documents: 0,
-			review: 0,
-		};
+			review: 0 };
 
 		for (const [field, corrections] of Object.entries(correctionsByField)) {
 			if (!corrections || corrections.length === 0) {
@@ -293,8 +277,7 @@ export function useMerchantOnboardingForm({
 				isRequired: true,
 				isCompleted: completedByStep[step.id],
 				hasWarning: correctionCountByStep[step.id] > 0,
-				warningCount: correctionCountByStep[step.id],
-			})),
+				warningCount: correctionCountByStep[step.id] })),
 		[completedByStep, correctionCountByStep]
 	);
 
@@ -378,8 +361,7 @@ export function useMerchantOnboardingForm({
 			if (response.error || !response.data) {
 				setStepErrors((prev) => ({
 					...prev,
-					[stepId]: response.error?.message ?? 'Não foi possível salvar os dados.',
-				}));
+					[stepId]: response.error?.message ?? 'Não foi possível salvar os dados.' }));
 				return false;
 			}
 
@@ -391,8 +373,7 @@ export function useMerchantOnboardingForm({
 		if (response.error || !response.data) {
 			setStepErrors((prev) => ({
 				...prev,
-				[stepId]: response.error?.message ?? 'Não foi possível salvar os dados.',
-			}));
+				[stepId]: response.error?.message ?? 'Não foi possível salvar os dados.' }));
 			return false;
 		}
 
@@ -407,8 +388,7 @@ export function useMerchantOnboardingForm({
 		if (created.error || !created.data) {
 			setStepErrors((prev) => ({
 				...prev,
-				basic: created.error?.message ?? 'Não foi possível criar a organização.',
-			}));
+				basic: created.error?.message ?? 'Não foi possível criar a organização.' }));
 			return null;
 		}
 
@@ -481,8 +461,7 @@ export function useMerchantOnboardingForm({
 						if (response.error) {
 							setStepErrors((prev) => ({
 								...prev,
-								review: response.error?.message ?? 'Não foi possível responder um ou mais complementos.',
-							}));
+								review: response.error?.message ?? 'Não foi possível responder um ou mais complementos.' }));
 							return;
 						}
 					}
@@ -495,8 +474,7 @@ export function useMerchantOnboardingForm({
 				if (submitted.error || !submitted.data) {
 					setStepErrors((prev) => ({
 						...prev,
-						review: submitted.error?.message ?? 'Não foi possível enviar o onboarding.',
-					}));
+						review: submitted.error?.message ?? 'Não foi possível enviar o onboarding.' }));
 					return;
 				}
 
@@ -531,6 +509,5 @@ export function useMerchantOnboardingForm({
 		handlePaymentMethodToggle,
 		handleContinue,
 		handleBack,
-		handleSubmit,
-	};
+		handleSubmit };
 }

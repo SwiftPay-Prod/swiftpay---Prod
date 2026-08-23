@@ -6,8 +6,7 @@ import { Icon } from '@/components/ui/icon';
 import { SectionHeader } from '@/components/ui/section-header';
 import { listMerchantPayments, getMerchantPayment } from '@/app/actions/merchant/payments';
 import {
-	CreditCardIcon,
-	ShoppingBag02Icon,
+		ShoppingBag02Icon,
 	UserIcon,
 	Wallet02Icon,
 	ViewIcon,
@@ -149,7 +148,6 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 	return (
 			<div className="flex flex-col gap-4">
 			<SectionHeader
-				icon={<Icon icon={CreditCardIcon} className="icon-sm" />}
 				title="Informações operacionais do checkout"
 				description="Veja as transações, pedidos e clientes gerados por este checkout."
 				action={
@@ -178,7 +176,6 @@ export function CheckoutOperationsTab({ checkout, merchantId, isActive }: Checko
 							<span className="text-2xl font-semibold">{payments.length}</span>
 							<span className="text-xs text-muted">inclui pendentes e concluídas</span>
 						</div>
-						<Icon icon={CreditCardIcon} className="icon-lg text-accent" />
 					</Card.Content>
 				</Card>
 				<Card>

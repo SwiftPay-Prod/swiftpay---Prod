@@ -34,8 +34,8 @@ const ROUTE_KEYWORDS: Record<string, string> = {
 	[Routes.panel.merchant.physicalProducts]: 'organizacao organização produtos fisicos estoque frete peso dimensoes',
 	[Routes.panel.merchant.digitalProducts]: 'organizacao organização produtos digitais arquivo entrega email automatico download',
 	[Routes.panel.merchant.services]: 'organizacao organização servicos agenda atendimento prestacao',
-	[Routes.panel.merchant.transactions]: 'organizacao organização transacoes pagamentos pix boleto cartao conciliação',
-	[Routes.panel.merchant.paymentLinks]: 'organizacao organização link de pagamento links de pagamento cobrança cobrança rápida pix boleto',
+	[Routes.panel.merchant.transactions]: 'organizacao organização transacoes pagamentos pix conciliação',
+	[Routes.panel.merchant.paymentLinks]: 'organizacao organização link de pagamento links de pagamento cobrança cobrança rápida pix',
 	[Routes.panel.merchant.cashouts]: 'organizacao organização saques retirada extrato saldo contas bancarias',
 	[Routes.panel.merchant.cashoutAccounts]: 'organizacao organização contas de saque pix banco chave titularidade',
 	[Routes.panel.merchant.balanceHistory]: 'organizacao organização historico de saldo ledger movimentacoes creditos debitos',
@@ -67,8 +67,7 @@ const ROUTE_KEYWORDS: Record<string, string> = {
 	[Routes.panel.help]: 'ajuda suporte faq atendimento documentação',
 	[Routes.panel.docs]: 'documentacao api integração exemplos webhooks credenciais',
 	[Routes.panel.bulletins]: 'informativos atualizacoes novidades changelog',
-	[Routes.panel.referrals]: 'indique e ganhe referral comissão convites',
-};
+	[Routes.panel.referrals]: 'indique e ganhe referral comissão convites' };
 
 const ROUTE_SHORTCUTS: Record<string, string[]> = {
 	[Routes.panel.merchant.dashboard]: ['m', 'd'],
@@ -85,15 +84,14 @@ const ROUTE_SHORTCUTS: Record<string, string[]> = {
 	[Routes.panel.admin.users]: ['a', 'u'],
 	[Routes.panel.admin.logs]: ['a', 'l'],
 	[Routes.panel.help]: ['h'],
-	[Routes.panel.docs]: ['d'],
-};
+	[Routes.panel.docs]: ['d'] };
 
 const GLOBAL_SYNONYMS =
 	'tela pagina menu navegar acesso abrir ir para atalhos painel plataforma sistema swiftpay';
 
 const SECTION_SYNONYMS: Record<string, string> = {
 	Vendas: 'venda vendas comercial pedidos catalogo loja ecommerce',
-	Financeiro: 'financeiro pagamentos cobrancas pix boleto saques saldo extrato',
+	Financeiro: 'financeiro pagamentos cobrancas pix saques saldo extrato',
 	Configurações: 'configuracoes ajustes preferencias parametros',
 	Administração: 'admin administracao gestor gerenciamento operacao backoffice',
 	Suporte: 'suporte ajuda documentacao faq central de ajuda',
@@ -101,15 +99,13 @@ const SECTION_SYNONYMS: Record<string, string> = {
 	Conta: 'conta usuario perfil seguranca notificacoes',
 	'Atalhos • Organização': 'organizacao organizacao empresa negocio merchant minha organização minha organizacao',
 	'Atalhos • Administração': 'admin administracao operacao plataforma',
-	Navegação: 'navegacao menu acessos rotas',
-};
+	Navegação: 'navegacao menu acessos rotas' };
 
 const PATH_SYNONYMS: Record<string, string> = {
 	[Routes.panel.merchant.review]: 'minha organização minha organizacao perfil da empresa dados da empresa',
 	[Routes.panel.merchant.onboarding]: 'cadastro organizacao completar organizacao enviar documentos',
 	[Routes.panel.admin.merchants]: 'organizacoes empresas merchants clientes b2b',
-	[Routes.panel.security]: 'trocar senha dispositivos confiaveis 2fa autenticacao',
-};
+	[Routes.panel.security]: 'trocar senha dispositivos confiaveis 2fa autenticacao' };
 
 interface ExtraActionDefinition {
 	id: string;
@@ -135,8 +131,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		subtitle: 'Cadastro',
 		keywords: 'minha organização minha organizacao cadastro da organizacao dados da organizacao',
 		iconName: 'ClipboardText',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-order',
 		name: 'Novo Pedido',
@@ -146,8 +141,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar pedido novo order checkout itens cliente',
 		shortcut: ['n', 'o'],
 		iconName: 'ShoppingCartCheck01Icon',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-customer',
 		name: 'Novo Cliente',
@@ -157,8 +151,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar cliente novo customer cadastro comprador',
 		shortcut: ['n', 'c'],
 		iconName: 'UsersGroupTwoRounded',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-physical-product',
 		name: 'Novo Produto Físico',
@@ -168,8 +161,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar produto fisico estoque sku variacao novo',
 		shortcut: ['n', 'f'],
 		iconName: 'BoxMinimalistic',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-digital-product',
 		name: 'Novo Produto Digital',
@@ -179,8 +171,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar produto digital email entrega download novo',
 		shortcut: ['n', 'd'],
 		iconName: 'DigitalProduct',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-service',
 		name: 'Novo Serviço',
@@ -190,8 +181,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar servico novo agenda atendimento',
 		shortcut: ['n', 's'],
 		iconName: 'Service',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-coupon',
 		name: 'Novo Cupom',
@@ -201,8 +191,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar cupom desconto promocao campanha novo',
 		shortcut: ['n', 'u'],
 		iconName: 'Coupon',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-checkout',
 		name: 'Novo Checkout',
@@ -212,8 +201,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar checkout pagina pagamento template novo',
 		shortcut: ['n', 'k'],
 		iconName: 'WidgetAdd',
-		requiresMerchant: true,
-	},
+		requiresMerchant: true },
 	{
 		id: 'merchant-new-payment-link',
 		name: 'Novo link de pagamento',
@@ -222,9 +210,8 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		subtitle: 'Financeiro',
 		keywords: 'criar link de pagamento novo link de pagamento cobrança',
 		shortcut: ['n', 'l'],
-		iconName: 'Card',
-		requiresMerchant: true,
-	},
+		iconName: 'QrCode',
+		requiresMerchant: true },
 	{
 		id: 'admin-new-template',
 		name: 'Novo Template de Checkout',
@@ -234,8 +221,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'admin criar template checkout novo tema',
 		shortcut: ['a', 'n'],
 		iconName: 'WidgetAdd',
-		roles: [UserRole.Admin, UserRole.God],
-	},
+		roles: [UserRole.Admin, UserRole.God] },
 	{
 		id: 'account-security',
 		name: 'Segurança da Conta',
@@ -244,8 +230,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		subtitle: 'Usuário',
 		keywords: 'senha dispositivos confiáveis sessão autenticação',
 		shortcut: ['s', 'e'],
-		iconName: 'Shield',
-	},
+		iconName: 'Shield' },
 	{
 		id: 'account-notifications',
 		name: 'Notificações',
@@ -254,8 +239,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		subtitle: 'Usuário',
 		keywords: 'alertas push notificações avisos',
 		shortcut: ['n'],
-		iconName: 'Bell',
-	},
+		iconName: 'Bell' },
 	{
 		id: 'account-settings',
 		name: 'Configurações do Usuário',
@@ -263,8 +247,7 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		section: 'Conta',
 		subtitle: 'Usuário',
 		keywords: 'perfil conta preferências pessoais',
-		iconName: 'Settings',
-	},
+		iconName: 'Settings' },
 ];
 
 function canUseExtraAction(
@@ -311,8 +294,7 @@ export function buildSidebarKbarActions(params: SidebarKbarActionsParams): Sideb
 		userRole: params.userRole,
 		hasMerchant: params.hasMerchant,
 		merchantStatus: params.merchantStatus,
-		merchantKycStatus: params.merchantKycStatus,
-	};
+		merchantKycStatus: params.merchantKycStatus };
 
 	const disabledRoutePaths = ROUTES_CONFIG.filter((route) => route.isDisabled).map((route) => route.path);
 
@@ -330,8 +312,7 @@ export function buildSidebarKbarActions(params: SidebarKbarActionsParams): Sideb
 			shortcut: ROUTE_SHORTCUTS[route.path],
 			iconName: route.iconName,
 			isExternal: route.isExternal,
-			isDisabled: false,
-		}));
+			isDisabled: false }));
 
 	const extraActions = EXTRA_ACTIONS.filter((action) => canUseExtraAction(action, params, context))
 		.filter((action) => !isDisabledRoutePath(action.path, disabledRoutePaths))
@@ -346,8 +327,7 @@ export function buildSidebarKbarActions(params: SidebarKbarActionsParams): Sideb
 				shortcut: action.shortcut,
 				iconName: action.iconName,
 				isExternal: action.isExternal,
-				isDisabled: action.isDisabled,
-			})
+				isDisabled: action.isDisabled })
 		);
 
 	return [...routeActions, ...extraActions].filter((action) => !isDisabledRoutePath(action.path, disabledRoutePaths));

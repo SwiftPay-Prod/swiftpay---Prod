@@ -85,8 +85,6 @@ export interface AdminMerchantKycData {
   monthlyRevenue?: number | null;
   averageTicket?: number | null;
   usesPix?: boolean | null;
-  usesBoleto?: boolean | null;
-  usesCreditCard?: boolean | null;
   rejectionReason: string | null;
   adminNotes: string | null;
   proofOfAddress: FileData | null;
@@ -110,12 +108,6 @@ export interface AdminMerchantAcquirerData {
   pixInFeeMode: string;
   pixInFeeFixed: number;
   pixInFeePercentage: number;
-  boletoInFeeMode: string;
-  boletoInFeeFixed: number;
-  boletoInFeePercentage: number;
-  creditCardInFeeMode: string;
-  creditCardInFeeFixed: number;
-  creditCardInFeePercentage: number;
   payoutFeeMode: string;
   payoutFeeFixed: number;
   payoutFeePercentage: number;
@@ -285,37 +277,6 @@ export interface AdminMerchantSettingsData {
   pixPaymentLinkFeePercentage: number | null;
   pixReservePercentage: number | null;
   pixReserveCompensationDays: number | null;
-  boletoMinTransactionAmount: number | null;
-  boletoMaxTransactionAmount: number | null;
-  boletoEnabled: boolean | null;
-  isBoletoEnabledInherited: boolean;
-  creditCardEnabled: boolean | null;
-  isCreditCardEnabledInherited: boolean;
-  boletoApiFeeMode: string | null;
-  boletoApiFeeFixed: number | null;
-  boletoApiFeePercentage: number | null;
-  boletoCheckoutFeeMode: string | null;
-  boletoCheckoutFeeFixed: number | null;
-  boletoCheckoutFeePercentage: number | null;
-  boletoPaymentLinkFeeMode: string | null;
-  boletoPaymentLinkFeeFixed: number | null;
-  boletoPaymentLinkFeePercentage: number | null;
-  boletoReservePercentage: number | null;
-  boletoReserveCompensationDays: number | null;
-  creditCardApiFeeMode: string | null;
-  creditCardApiFeeFixed: number | null;
-  creditCardApiFeePercentage: number | null;
-  creditCardApiInstallmentFeePercentage: number | null;
-  creditCardCheckoutFeeMode: string | null;
-  creditCardCheckoutFeeFixed: number | null;
-  creditCardCheckoutFeePercentage: number | null;
-  creditCardCheckoutInstallmentFeePercentage: number | null;
-  creditCardPaymentLinkFeeMode: string | null;
-  creditCardPaymentLinkFeeFixed: number | null;
-  creditCardPaymentLinkFeePercentage: number | null;
-  creditCardPaymentLinkInstallmentFeePercentage: number | null;
-  creditCardReservePercentage: number | null;
-  creditCardReserveCompensationDays: number | null;
   withdrawalFeeMode: string | null;
   withdrawalFeeFixed: number | null;
   withdrawalFeePercentage: number | null;
@@ -362,35 +323,6 @@ export interface MerchantSettingsFormData {
   pixPaymentLinkFeePercentage: string;
   pixReservePercentage: string;
   pixReserveCompensationDays: string;
-  boletoMinTransactionAmount: string;
-  boletoMaxTransactionAmount: string;
-  boletoEnabled: 'default' | 'enabled' | 'disabled';
-  creditCardEnabled: 'default' | 'enabled' | 'disabled';
-  boletoApiFeeMode: string;
-  boletoApiFeeFixed: string;
-  boletoApiFeePercentage: string;
-  boletoCheckoutFeeMode: string;
-  boletoCheckoutFeeFixed: string;
-  boletoCheckoutFeePercentage: string;
-  boletoPaymentLinkFeeMode: string;
-  boletoPaymentLinkFeeFixed: string;
-  boletoPaymentLinkFeePercentage: string;
-  boletoReservePercentage: string;
-  boletoReserveCompensationDays: string;
-  creditCardApiFeeMode: string;
-  creditCardApiFeeFixed: string;
-  creditCardApiFeePercentage: string;
-  creditCardApiInstallmentFeePercentage: string;
-  creditCardCheckoutFeeMode: string;
-  creditCardCheckoutFeeFixed: string;
-  creditCardCheckoutFeePercentage: string;
-  creditCardCheckoutInstallmentFeePercentage: string;
-  creditCardPaymentLinkFeeMode: string;
-  creditCardPaymentLinkFeeFixed: string;
-  creditCardPaymentLinkFeePercentage: string;
-  creditCardPaymentLinkInstallmentFeePercentage: string;
-  creditCardReservePercentage: string;
-  creditCardReserveCompensationDays: string;
   withdrawalFeeMode: string;
   withdrawalFeeFixed: string;
   withdrawalFeePercentage: string;
@@ -401,14 +333,10 @@ export interface MerchantSettingsFormData {
   rateLimitPerHour: string;
   rateLimitPerDay: string;
   paymentLinkPixOptionId: string;
-  paymentLinkBoletoOptionId: string;
-  paymentLinkCreditCardOptionId: string;
 }
 
 export interface MerchantPaymentLinkDomainSelection {
   pixOptionId: string | null;
-  boletoOptionId: string | null;
-  creditCardOptionId: string | null;
 }
 
 export interface AdminUpdateMerchantSettingsRequest {
@@ -428,35 +356,6 @@ export interface AdminUpdateMerchantSettingsRequest {
   pixPaymentLinkFeePercentage?: number | null;
   pixReservePercentage?: number | null;
   pixReserveCompensationDays?: number | null;
-  boletoMinTransactionAmount?: number | null;
-  boletoMaxTransactionAmount?: number | null;
-  boletoEnabled?: boolean | null;
-  creditCardEnabled?: boolean | null;
-  boletoApiFeeMode?: string | null;
-  boletoApiFeeFixed?: number | null;
-  boletoApiFeePercentage?: number | null;
-  boletoCheckoutFeeMode?: string | null;
-  boletoCheckoutFeeFixed?: number | null;
-  boletoCheckoutFeePercentage?: number | null;
-  boletoPaymentLinkFeeMode?: string | null;
-  boletoPaymentLinkFeeFixed?: number | null;
-  boletoPaymentLinkFeePercentage?: number | null;
-  boletoReservePercentage?: number | null;
-  boletoReserveCompensationDays?: number | null;
-  creditCardApiFeeMode?: string | null;
-  creditCardApiFeeFixed?: number | null;
-  creditCardApiFeePercentage?: number | null;
-  creditCardApiInstallmentFeePercentage?: number | null;
-  creditCardCheckoutFeeMode?: string | null;
-  creditCardCheckoutFeeFixed?: number | null;
-  creditCardCheckoutFeePercentage?: number | null;
-  creditCardCheckoutInstallmentFeePercentage?: number | null;
-  creditCardPaymentLinkFeeMode?: string | null;
-  creditCardPaymentLinkFeeFixed?: number | null;
-  creditCardPaymentLinkFeePercentage?: number | null;
-  creditCardPaymentLinkInstallmentFeePercentage?: number | null;
-  creditCardReservePercentage?: number | null;
-  creditCardReserveCompensationDays?: number | null;
   withdrawalFeeMode?: string | null;
   withdrawalFeeFixed?: number | null;
   withdrawalFeePercentage?: number | null;
@@ -560,6 +459,4 @@ export interface AdminMerchantBalancesData {
   acquirers: AdminMerchantAcquirerBucket[];
   totals: AdminMerchantBalanceTotals;
 }
-
-
 

@@ -29,8 +29,6 @@ import {
 	WebhookIcon,
 	InformationCircleIcon,
 	QrCodeIcon,
-	BarCodeIcon,
-	CreditCardIcon,
 	Analytics01Icon,
 	Wallet01Icon,
 } from '@hugeicons/core-free-icons';
@@ -83,12 +81,6 @@ function buildFeeSummary(data: {
 	pixPercentage?: string;
 	pixFixed?: string;
 	pixMode?: string;
-	boletoPercentage?: string;
-	boletoFixed?: string;
-	boletoMode?: string;
-	creditCardPercentage?: string;
-	creditCardFixed?: string;
-	creditCardMode?: string;
 	payoutPercentage?: string;
 	payoutFixed?: string;
 	payoutMode?: string;
@@ -124,8 +116,6 @@ function buildFeeSummary(data: {
 	};
 
 	appendMethodSummary({ prefix: 'PIX', percentage: data.pixPercentage, fixed: data.pixFixed, mode: data.pixMode });
-	appendMethodSummary({ prefix: 'Boleto', percentage: data.boletoPercentage, fixed: data.boletoFixed, mode: data.boletoMode });
-	appendMethodSummary({ prefix: 'Cartão', percentage: data.creditCardPercentage, fixed: data.creditCardFixed, mode: data.creditCardMode });
 	appendMethodSummary({ prefix: 'Saque', percentage: data.payoutPercentage, fixed: data.payoutFixed, mode: data.payoutMode });
 
 	return parts.length > 0 ? parts.join(' | ') : 'Nenhuma taxa configurada';
@@ -302,18 +292,10 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 		nominal: acquirer.nominal || '',
 		logoUrl: acquirer.logoUrl || '',
 		supportsPix: acquirer.supportsPix,
-		supportsBoleto: acquirer.supportsBoleto,
-		supportsCreditCard: acquirer.supportsCreditCard,
 		supportsWithdrawal: acquirer.supportsWithdrawal,
 		pixEnabled: acquirer.pixEnabled,
-		boletoEnabled: acquirer.boletoEnabled,
-		creditCardEnabled: acquirer.creditCardEnabled,
 		pixHasCompensation: acquirer.pixHasCompensation,
 		pixCompensationDays: acquirer.pixCompensationDays,
-		boletoHasCompensation: acquirer.boletoHasCompensation,
-		boletoCompensationDays: acquirer.boletoCompensationDays,
-		creditCardHasCompensation: acquirer.creditCardHasCompensation,
-		creditCardCompensationDays: acquirer.creditCardCompensationDays,
 		webhookAuthMode: acquirer.webhookAuthMode,
 		webhookToken: acquirer.webhookToken || '',
 		webhookAllowedIps: acquirer.webhookAllowedIps || '',
@@ -325,25 +307,13 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 		pixInFeeMode: acquirer.pixInFeeMode || 'PercentageOnly',
 		pixInFeeFixed: centsToFormattedCurrency(acquirer.pixInFeeFixed),
 		pixInFeePercentage: basisPointsToPercentage(acquirer.pixInFeePercentage),
-		boletoInFeeMode: acquirer.boletoInFeeMode || 'PercentageOnly',
-		boletoInFeeFixed: centsToFormattedCurrency(acquirer.boletoInFeeFixed),
-		boletoInFeePercentage: basisPointsToPercentage(acquirer.boletoInFeePercentage),
-		creditCardInFeeMode: acquirer.creditCardInFeeMode || 'PercentageOnly',
-		creditCardInFeeFixed: centsToFormattedCurrency(acquirer.creditCardInFeeFixed),
-		creditCardInFeePercentage: basisPointsToPercentage(acquirer.creditCardInFeePercentage),
 		payoutFeeMode: acquirer.payoutFeeMode || 'FixedOnly',
 		payoutFeeFixed: centsToFormattedCurrency(acquirer.payoutFeeFixed),
 		payoutFeePercentage: basisPointsToPercentage(acquirer.payoutFeePercentage),
 		payoutFeeHandling: acquirer.payoutFeeHandling || 'FeeDeductedFromTransfer',
 		pixFeeSplitHandling: acquirer.pixFeeSplitHandling || 'None',
-		boletoFeeSplitHandling: acquirer.boletoFeeSplitHandling || 'None',
-		creditCardFeeSplitHandling: acquirer.creditCardFeeSplitHandling || 'None',
 		minPixAmount: centsToFormattedCurrency(acquirer.minPixAmount),
 		maxPixAmount: centsToFormattedCurrency(acquirer.maxPixAmount),
-		minBoletoAmount: centsToFormattedCurrency(acquirer.minBoletoAmount),
-		maxBoletoAmount: centsToFormattedCurrency(acquirer.maxBoletoAmount),
-		minCreditCardAmount: centsToFormattedCurrency(acquirer.minCreditCardAmount),
-		maxCreditCardAmount: centsToFormattedCurrency(acquirer.maxCreditCardAmount),
 		minPayoutAmount: centsToFormattedCurrency(acquirer.minPayoutAmount),
 		maxPayoutAmount: centsToFormattedCurrency(acquirer.maxPayoutAmount),
 		syncToMerchantAcquirers: false,
@@ -379,18 +349,10 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 				nominal: formData.nominal.trim() || null,
 				logoUrl: formData.logoUrl.trim() || null,
 				supportsPix: formData.supportsPix,
-				supportsBoleto: formData.supportsBoleto,
-				supportsCreditCard: formData.supportsCreditCard,
 				supportsWithdrawal: formData.supportsWithdrawal,
 				pixEnabled: formData.pixEnabled,
-				boletoEnabled: formData.boletoEnabled,
-				creditCardEnabled: formData.creditCardEnabled,
 				pixHasCompensation: formData.pixHasCompensation,
 				pixCompensationDays: formData.pixHasCompensation ? formData.pixCompensationDays : 0,
-				boletoHasCompensation: formData.boletoHasCompensation,
-				boletoCompensationDays: formData.boletoHasCompensation ? formData.boletoCompensationDays : 0,
-				creditCardHasCompensation: formData.creditCardHasCompensation,
-				creditCardCompensationDays: formData.creditCardHasCompensation ? formData.creditCardCompensationDays : 0,
 				webhookAuthMode: formData.webhookAuthMode,
 				webhookToken: formData.webhookToken.trim() || null,
 				webhookAllowedIps: formData.webhookAllowedIps.trim() || null,
@@ -403,25 +365,13 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 				pixInFeeMode: formData.pixInFeeMode,
 				pixInFeeFixed: formattedCurrencyToCents(formData.pixInFeeFixed) ?? 0,
 				pixInFeePercentage: percentageToBasisPoints(formData.pixInFeePercentage) ?? 0,
-				boletoInFeeMode: formData.boletoInFeeMode,
-				boletoInFeeFixed: formattedCurrencyToCents(formData.boletoInFeeFixed) ?? 0,
-				boletoInFeePercentage: percentageToBasisPoints(formData.boletoInFeePercentage) ?? 0,
-				creditCardInFeeMode: formData.creditCardInFeeMode,
-				creditCardInFeeFixed: formattedCurrencyToCents(formData.creditCardInFeeFixed) ?? 0,
-				creditCardInFeePercentage: percentageToBasisPoints(formData.creditCardInFeePercentage) ?? 0,
 				payoutFeeMode: formData.payoutFeeMode,
 				payoutFeeFixed: formattedCurrencyToCents(formData.payoutFeeFixed) ?? 0,
 				payoutFeePercentage: percentageToBasisPoints(formData.payoutFeePercentage) ?? 0,
 				payoutFeeHandling: formData.payoutFeeHandling,
 				pixFeeSplitHandling: formData.pixFeeSplitHandling,
-				boletoFeeSplitHandling: formData.boletoFeeSplitHandling,
-				creditCardFeeSplitHandling: formData.creditCardFeeSplitHandling,
 				minPixAmount: formattedCurrencyToCents(formData.minPixAmount) ?? 100,
 				maxPixAmount: formattedCurrencyToCents(formData.maxPixAmount) ?? 0,
-				minBoletoAmount: formattedCurrencyToCents(formData.minBoletoAmount) ?? 500,
-				maxBoletoAmount: formattedCurrencyToCents(formData.maxBoletoAmount) ?? 0,
-				minCreditCardAmount: formattedCurrencyToCents(formData.minCreditCardAmount) ?? 100,
-				maxCreditCardAmount: formattedCurrencyToCents(formData.maxCreditCardAmount) ?? 0,
 				minPayoutAmount: formattedCurrencyToCents(formData.minPayoutAmount) ?? 100,
 				maxPayoutAmount: formattedCurrencyToCents(formData.maxPayoutAmount) ?? 0,
 				syncToMerchantAcquirers: formData.syncToMerchantAcquirers,
@@ -489,20 +439,12 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 
 	const webhookAuthParse = webhookAuthModeParse[acquirer.webhookAuthMode];
 	const isPixEnabled = formData.pixEnabled;
-	const isBoletoEnabled = formData.boletoEnabled;
-	const isCreditCardEnabled = formData.creditCardEnabled;
-	const hasAnyEnabledPaymentMethod = isPixEnabled || isBoletoEnabled || isCreditCardEnabled;
+	const hasAnyEnabledPaymentMethod = isPixEnabled;
 	const isWithdrawalEnabled = formData.supportsWithdrawal;
 	const pixInFeeModeOption = getFeeChargeModeSelectOption(formData.pixInFeeMode as FeeChargeMode);
-	const boletoInFeeModeOption = getFeeChargeModeSelectOption(formData.boletoInFeeMode as FeeChargeMode);
-	const creditCardInFeeModeOption = getFeeChargeModeSelectOption(formData.creditCardInFeeMode as FeeChargeMode);
 	const payoutFeeModeOption = getFeeChargeModeSelectOption(formData.payoutFeeMode as FeeChargeMode);
 	const showPixFixedFeeInput = shouldShowFixedFeeInput(formData.pixInFeeMode as FeeChargeMode);
 	const showPixPercentageFeeInput = shouldShowPercentageFeeInput(formData.pixInFeeMode as FeeChargeMode);
-	const showBoletoFixedFeeInput = shouldShowFixedFeeInput(formData.boletoInFeeMode as FeeChargeMode);
-	const showBoletoPercentageFeeInput = shouldShowPercentageFeeInput(formData.boletoInFeeMode as FeeChargeMode);
-	const showCreditCardFixedFeeInput = shouldShowFixedFeeInput(formData.creditCardInFeeMode as FeeChargeMode);
-	const showCreditCardPercentageFeeInput = shouldShowPercentageFeeInput(formData.creditCardInFeeMode as FeeChargeMode);
 	const showPayoutFixedFeeInput = shouldShowFixedFeeInput(formData.payoutFeeMode as FeeChargeMode);
 	const showPayoutPercentageFeeInput = shouldShowPercentageFeeInput(formData.payoutFeeMode as FeeChargeMode);
 
@@ -603,7 +545,7 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 					</Accordion.Item>
 				</Accordion>
 
-				{(acquirer.pixEnabled || acquirer.boletoEnabled || acquirer.creditCardEnabled) && (
+				{(acquirer.pixEnabled) && (
 					<div className="flex flex-col gap-3">
 						{acquirer.pixEnabled && (
 							<SystemAccordion
@@ -661,121 +603,6 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 							</SystemAccordion>
 						)}
 
-						{acquirer.boletoEnabled && (
-							<SystemAccordion
-								id="boleto-compensation-read"
-								icon={BarCodeIcon}
-								title="Boleto"
-								color="warning"
-								summary={buildCompensationSummary(acquirer.boletoHasCompensation, acquirer.boletoCompensationDays)}
-							>
-								<div className="flex flex-col gap-4">
-									<div className="grid gap-4 md:grid-cols-2">
-										<div>
-											<label className="text-sm text-muted">Compensação em dias</label>
-											<p className="font-medium">{acquirer.boletoHasCompensation ? 'Ativa' : 'Inativa'}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Prazo</label>
-											<p className="font-medium">
-												{acquirer.boletoHasCompensation ? `${acquirer.boletoCompensationDays} dia(s)` : 'Liquidação imediata'}
-											</p>
-										</div>
-									</div>
-									<Separator />
-									<div className="grid gap-4 md:grid-cols-3">
-										<div>
-											<label className="text-sm text-muted">Modo da taxa</label>
-											<p className="font-medium">{acquirer.boletoInFeeMode ? feeChargeModeParse[acquirer.boletoInFeeMode].label : '—'}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Taxa fixa</label>
-											<p className="font-medium">{centsToFormattedCurrency(acquirer.boletoInFeeFixed)}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Taxa percentual</label>
-											<p className="font-medium">{basisPointsToPercentage(acquirer.boletoInFeePercentage)}%</p>
-										</div>
-									</div>
-									<div className="grid gap-4 md:grid-cols-2">
-										<div>
-											<label className="text-sm text-muted">Limite mínimo</label>
-											<p className="font-medium">{centsToFormattedCurrency(acquirer.minBoletoAmount)}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Limite máximo</label>
-											<p className="font-medium">
-												{acquirer.maxBoletoAmount > 0 ? centsToFormattedCurrency(acquirer.maxBoletoAmount) : 'Sem limite'}
-											</p>
-										</div>
-									</div>
-									<div>
-										<label className="text-sm text-muted">Split automático de taxa</label>
-										<p className="font-medium">{paymentFeeSplitHandlingParse[acquirer.boletoFeeSplitHandling].label}</p>
-									</div>
-								</div>
-							</SystemAccordion>
-						)}
-
-						{acquirer.creditCardEnabled && (
-							<SystemAccordion
-								id="credit-card-compensation-read"
-								icon={CreditCardIcon}
-								title="Cartão"
-								color="accent"
-								summary={buildCompensationSummary(acquirer.creditCardHasCompensation, acquirer.creditCardCompensationDays)}
-							>
-								<div className="flex flex-col gap-4">
-									<div className="grid gap-4 md:grid-cols-2">
-										<div>
-											<label className="text-sm text-muted">Compensação em dias</label>
-											<p className="font-medium">{acquirer.creditCardHasCompensation ? 'Ativa' : 'Inativa'}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Prazo</label>
-											<p className="font-medium">
-												{acquirer.creditCardHasCompensation
-													? `${acquirer.creditCardCompensationDays} dia(s)`
-													: 'Liquidação imediata'}
-											</p>
-										</div>
-									</div>
-									<Separator />
-									<div className="grid gap-4 md:grid-cols-2">
-										<div>
-											<label className="text-sm text-muted">Modo da taxa</label>
-											<p className="font-medium">{acquirer.creditCardInFeeMode ? feeChargeModeParse[acquirer.creditCardInFeeMode].label : '—'}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Taxa fixa</label>
-											<p className="font-medium">{centsToFormattedCurrency(acquirer.creditCardInFeeFixed)}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Taxa percentual</label>
-											<p className="font-medium">{basisPointsToPercentage(acquirer.creditCardInFeePercentage)}%</p>
-										</div>
-									</div>
-									<div className="grid gap-4 md:grid-cols-2">
-										<div>
-											<label className="text-sm text-muted">Limite mínimo</label>
-											<p className="font-medium">{centsToFormattedCurrency(acquirer.minCreditCardAmount)}</p>
-										</div>
-										<div>
-											<label className="text-sm text-muted">Limite máximo</label>
-											<p className="font-medium">
-												{acquirer.maxCreditCardAmount > 0
-													? centsToFormattedCurrency(acquirer.maxCreditCardAmount)
-													: 'Sem limite'}
-											</p>
-										</div>
-									</div>
-									<div>
-										<label className="text-sm text-muted">Split automático de taxa</label>
-										<p className="font-medium">{paymentFeeSplitHandlingParse[acquirer.creditCardFeeSplitHandling].label}</p>
-									</div>
-								</div>
-							</SystemAccordion>
-						)}
 					</div>
 				)}
 
@@ -1212,323 +1039,6 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 						</SystemAccordion>
 					)}
 
-					{isBoletoEnabled && (
-						<SystemAccordion
-							id="boleto-compensation-edit"
-							icon={BarCodeIcon}
-							title="Boleto"
-							color="warning"
-							summary={buildCompensationSummary(formData.boletoHasCompensation, formData.boletoCompensationDays)}
-						>
-							<div className="flex flex-col gap-4">
-								<div className="flex items-center justify-between rounded-lg border border-border bg-content1 p-2.5">
-									<div className="flex flex-col gap-0.5">
-										<span className="text-sm font-medium text-white">Compensação em dias</span>
-										<span className="text-xs text-muted">Liquidação D+X no boleto</span>
-									</div>
-									<Switch
-										isSelected={formData.boletoHasCompensation}
-										onChange={(isSelected) =>
-											setFormData((prev) => ({
-												...prev,
-												boletoHasCompensation: isSelected,
-												boletoCompensationDays: isSelected ? Math.max(1, prev.boletoCompensationDays || 1) : 0,
-											}))
-										}
-									>
-										<Switch.Control>
-											<Switch.Thumb />
-										</Switch.Control>
-									</Switch>
-								</div>
-								{formData.boletoHasCompensation && (
-									<div className="flex flex-col gap-2 md:max-w-48">
-										<Label htmlFor="boletoCompensationDays">Dias</Label>
-										<Input
-											variant="secondary"
-											id="boletoCompensationDays"
-											type="number"
-											min={1}
-											value={String(formData.boletoCompensationDays || 1)}
-											onChange={(e) =>
-												setFormData((prev) => ({
-													...prev,
-													boletoCompensationDays: Math.max(1, Number(e.target.value || 1)),
-												}))
-											}
-											placeholder="1"
-										/>
-									</div>
-								)}
-								<Separator />
-								<div className={getFeeInputGridClass(showBoletoFixedFeeInput, showBoletoPercentageFeeInput)}>
-									<Select
-										variant="secondary"
-										value={formData.boletoInFeeMode}
-										onChange={(key) => setFormData((prev) => ({ ...prev, boletoInFeeMode: key as FeeChargeMode }))}
-									>
-										<Label>Modo da taxa Boleto</Label>
-										<Select.Trigger>
-											<Select.Value>
-												<Chip
-													variant="soft"
-													color={boletoInFeeModeOption.color}
-													className="gap-1"
-												>
-													{boletoInFeeModeOption.icon}
-													{boletoInFeeModeOption.label}
-												</Chip>
-											</Select.Value>
-											<Select.Indicator />
-										</Select.Trigger>
-										<Select.Popover>
-											<ListBox>
-												{feeChargeModeSelectOptions.map((option) => (
-													<ListBox.Item key={option.key} id={option.key} textValue={option.label}>
-														<Chip variant="soft" color={option.color} className="gap-1">
-															{option.icon}
-															{option.label}
-														</Chip>
-														<ListBox.ItemIndicator />
-													</ListBox.Item>
-												))}
-											</ListBox>
-										</Select.Popover>
-									</Select>
-									{showBoletoFixedFeeInput && (
-										<TextField variant="secondary" name="boletoInFeeFixed" isDisabled={formData.boletoInFeeMode === 'PercentageOnly'}>
-											<Label>Taxa fixa (R$)</Label>
-											<CurrencyCentsInput
-												variant="secondary"
-												initialValueInCents={acquirer.boletoInFeeFixed ?? undefined}
-												placeholder="0,00"
-												disabled={formData.boletoInFeeMode === 'PercentageOnly'}
-												onValueChange={(v) => setFormData((prev) => ({ ...prev, boletoInFeeFixed: v }))}
-											/>
-										</TextField>
-									)}
-									{showBoletoPercentageFeeInput && (
-										<TextField variant="secondary" name="boletoInFeePercentage" isDisabled={formData.boletoInFeeMode === 'FixedOnly'}>
-											<Label>Taxa percentual (%)</Label>
-											<NumericFormat
-												customInput={Input}
-												{...percentageFormatProps}
-												value={formData.boletoInFeePercentage}
-												onValueChange={(values) => setFormData((prev) => ({ ...prev, boletoInFeePercentage: values.value }))}
-												placeholder="0,00"
-												disabled={formData.boletoInFeeMode === 'FixedOnly'}
-											/>
-										</TextField>
-									)}
-								</div>
-								<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-									<TextField variant="secondary" name="minBoletoAmount">
-										<Label>Limite mínimo (R$)</Label>
-										<CurrencyCentsInput
-											variant="secondary"
-											initialValueInCents={acquirer.minBoletoAmount ?? undefined}
-											placeholder="0,00"
-											onValueChange={(v) => setFormData((prev) => ({ ...prev, minBoletoAmount: v }))}
-										/>
-									</TextField>
-									<TextField variant="secondary" name="maxBoletoAmount">
-										<Label>Limite máximo (R$)</Label>
-										<CurrencyCentsInput
-											variant="secondary"
-											initialValueInCents={acquirer.maxBoletoAmount ?? undefined}
-											placeholder="0,00"
-											onValueChange={(v) => setFormData((prev) => ({ ...prev, maxBoletoAmount: v }))}
-										/>
-									</TextField>
-								</div>
-								<Select
-									variant="secondary"
-									value={formData.boletoFeeSplitHandling}
-									onChange={(key) => setFormData((prev) => ({ ...prev, boletoFeeSplitHandling: key as PaymentFeeSplitHandling }))}
-								>
-									<Label>Split automático da taxa Boleto</Label>
-									<Select.Trigger>
-										<Select.Value>{paymentFeeSplitHandlingParse[formData.boletoFeeSplitHandling as PaymentFeeSplitHandling]?.label}</Select.Value>
-										<Select.Indicator />
-									</Select.Trigger>
-									<Select.Popover>
-										<ListBox>
-											{Object.entries(paymentFeeSplitHandlingParse).map(([key, value]) => (
-												<ListBox.Item key={key} id={key} textValue={value.label}>
-													<Chip variant="soft" color={mapParseColorToChipColor(value.color)} className="gap-1">
-														{value.label}
-													</Chip>
-													<ListBox.ItemIndicator />
-												</ListBox.Item>
-											))}
-										</ListBox>
-									</Select.Popover>
-								</Select>
-							</div>
-						</SystemAccordion>
-					)}
-
-					{isCreditCardEnabled && (
-						<SystemAccordion
-							id="credit-card-compensation-edit"
-							icon={CreditCardIcon}
-							title="Cartão"
-							color="accent"
-							summary={buildCompensationSummary(formData.creditCardHasCompensation, formData.creditCardCompensationDays)}
-						>
-							<div className="flex flex-col gap-4">
-								<div className="flex items-center justify-between rounded-lg border border-border bg-content1 p-2.5">
-									<div className="flex flex-col gap-0.5">
-										<span className="text-sm font-medium text-white">Compensação em dias</span>
-										<span className="text-xs text-muted">Liquidação D+X no cartão</span>
-									</div>
-									<Switch
-										isSelected={formData.creditCardHasCompensation}
-										onChange={(isSelected) =>
-											setFormData((prev) => ({
-												...prev,
-												creditCardHasCompensation: isSelected,
-												creditCardCompensationDays: isSelected
-													? Math.max(1, prev.creditCardCompensationDays || 1)
-													: 0,
-											}))
-										}
-									>
-										<Switch.Control>
-											<Switch.Thumb />
-										</Switch.Control>
-									</Switch>
-								</div>
-								{formData.creditCardHasCompensation && (
-									<div className="flex flex-col gap-2 md:max-w-48">
-										<Label htmlFor="creditCardCompensationDays">Dias</Label>
-										<Input
-											variant="secondary"
-											id="creditCardCompensationDays"
-											type="number"
-											min={1}
-											value={String(formData.creditCardCompensationDays || 1)}
-											onChange={(e) =>
-												setFormData((prev) => ({
-													...prev,
-													creditCardCompensationDays: Math.max(1, Number(e.target.value || 1)),
-												}))
-											}
-											placeholder="1"
-										/>
-									</div>
-								)}
-								<Separator />
-								<div className={getFeeInputGridClass(showCreditCardFixedFeeInput, showCreditCardPercentageFeeInput)}>
-									<Select
-										variant="secondary"
-										value={formData.creditCardInFeeMode}
-										onChange={(key) => setFormData((prev) => ({ ...prev, creditCardInFeeMode: key as FeeChargeMode }))}
-									>
-										<Label>Modo da taxa Cartão</Label>
-										<Select.Trigger>
-											<Select.Value>
-												<Chip
-													variant="soft"
-													color={creditCardInFeeModeOption.color}
-													className="gap-1"
-												>
-													{creditCardInFeeModeOption.icon}
-													{creditCardInFeeModeOption.label}
-												</Chip>
-											</Select.Value>
-											<Select.Indicator />
-										</Select.Trigger>
-										<Select.Popover>
-											<ListBox>
-												{feeChargeModeSelectOptions.map((option) => (
-													<ListBox.Item key={option.key} id={option.key} textValue={option.label}>
-														<Chip variant="soft" color={option.color} className="gap-1">
-															{option.icon}
-															{option.label}
-														</Chip>
-														<ListBox.ItemIndicator />
-													</ListBox.Item>
-												))}
-											</ListBox>
-										</Select.Popover>
-									</Select>
-									{showCreditCardFixedFeeInput && (
-										<TextField variant="secondary" name="creditCardInFeeFixed" isDisabled={formData.creditCardInFeeMode === 'PercentageOnly'}>
-											<Label>Taxa fixa (R$)</Label>
-											<CurrencyCentsInput
-												variant="secondary"
-												initialValueInCents={acquirer.creditCardInFeeFixed ?? undefined}
-												placeholder="0,00"
-												disabled={formData.creditCardInFeeMode === 'PercentageOnly'}
-												onValueChange={(v) => setFormData((prev) => ({ ...prev, creditCardInFeeFixed: v }))}
-											/>
-										</TextField>
-									)}
-									{showCreditCardPercentageFeeInput && (
-										<TextField variant="secondary" name="creditCardInFeePercentage" isDisabled={formData.creditCardInFeeMode === 'FixedOnly'}>
-											<Label>Taxa percentual (%)</Label>
-											<NumericFormat
-												customInput={Input}
-												{...percentageFormatProps}
-												value={formData.creditCardInFeePercentage}
-												onValueChange={(values) => setFormData((prev) => ({ ...prev, creditCardInFeePercentage: values.value }))}
-												placeholder="0,00"
-												disabled={formData.creditCardInFeeMode === 'FixedOnly'}
-											/>
-										</TextField>
-									)}
-								</div>
-								<div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-									<TextField variant="secondary" name="minCreditCardAmount">
-										<Label>Limite mínimo (R$)</Label>
-										<CurrencyCentsInput
-											variant="secondary"
-											initialValueInCents={acquirer.minCreditCardAmount ?? undefined}
-											placeholder="0,00"
-											onValueChange={(v) => setFormData((prev) => ({ ...prev, minCreditCardAmount: v }))}
-										/>
-									</TextField>
-									<TextField variant="secondary" name="maxCreditCardAmount">
-										<Label>Limite máximo (R$)</Label>
-										<CurrencyCentsInput
-											variant="secondary"
-											initialValueInCents={acquirer.maxCreditCardAmount ?? undefined}
-											placeholder="0,00"
-											onValueChange={(v) => setFormData((prev) => ({ ...prev, maxCreditCardAmount: v }))}
-										/>
-									</TextField>
-								</div>
-								<Select
-									variant="secondary"
-									value={formData.creditCardFeeSplitHandling}
-									onChange={(key) =>
-										setFormData((prev) => ({ ...prev, creditCardFeeSplitHandling: key as PaymentFeeSplitHandling }))
-									}
-								>
-									<Label>Split automático da taxa Cartão</Label>
-									<Select.Trigger>
-										<Select.Value>
-											{paymentFeeSplitHandlingParse[formData.creditCardFeeSplitHandling as PaymentFeeSplitHandling]?.label}
-										</Select.Value>
-										<Select.Indicator />
-									</Select.Trigger>
-									<Select.Popover>
-										<ListBox>
-											{Object.entries(paymentFeeSplitHandlingParse).map(([key, value]) => (
-												<ListBox.Item key={key} id={key} textValue={value.label}>
-													<Chip variant="soft" color={mapParseColorToChipColor(value.color)} className="gap-1">
-														{value.label}
-													</Chip>
-													<ListBox.ItemIndicator />
-												</ListBox.Item>
-											))}
-										</ListBox>
-									</Select.Popover>
-								</Select>
-							</div>
-						</SystemAccordion>
-					)}
 				</div>
 			)}
 
@@ -1544,9 +1054,6 @@ export function ConfigTab({ acquirer, currentUserRole, onRefresh }: ConfigTabPro
 									<span className="font-medium">Configuração de Saque</span>
 									<span className="text-xs text-warning">
 										{buildFeeSummary({
-											creditCardPercentage: formData.creditCardInFeePercentage,
-											creditCardFixed: formData.creditCardInFeeFixed,
-											creditCardMode: formData.creditCardInFeeMode,
 											payoutPercentage: formData.payoutFeePercentage,
 											payoutFixed: formData.payoutFeeFixed,
 											payoutMode: formData.payoutFeeMode,

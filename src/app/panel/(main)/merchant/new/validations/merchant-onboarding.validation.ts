@@ -3,8 +3,7 @@ import { isValidCNPJ, isValidCPF, isValidPhone, isValidURL } from '@/utils/valid
 import type {
 	MerchantOnboardingAnswers,
 	MerchantOnboardingStepErrors,
-	MerchantOnboardingStepId,
-} from '../types/merchant-onboarding.types';
+	MerchantOnboardingStepId } from '../types/merchant-onboarding.types';
 import { INITIAL_STEP_ERRORS, UPLOAD_REQUIREMENTS } from '../constants/merchant-onboarding.constants';
 
 function hasValue(value: string | null | undefined): boolean {
@@ -105,8 +104,7 @@ export function validateAllSteps(answers: MerchantOnboardingAnswers): MerchantOn
 		address: validateStep('address', answers),
 		compliance: validateStep('compliance', answers),
 		documents: validateStep('documents', answers),
-		review: validateStep('review', answers),
-	};
+		review: validateStep('review', answers) };
 }
 
 export function hasStepErrors(errors: MerchantOnboardingStepErrors): boolean {
@@ -115,8 +113,4 @@ export function hasStepErrors(errors: MerchantOnboardingStepErrors): boolean {
 
 export function isStepValid(stepId: MerchantOnboardingStepId, answers: MerchantOnboardingAnswers): boolean {
 	return validateStep(stepId, answers) === null;
-}
-
-export function shouldShowCreditCardWarning(answers: MerchantOnboardingAnswers): boolean {
-	return answers.paymentMethods.includes(PaymentMethod.CreditCard);
 }

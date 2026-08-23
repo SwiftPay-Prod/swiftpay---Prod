@@ -2,7 +2,7 @@
 
 import { useState, useActionState } from 'react';
 import { Button, Chip, Avatar, Tooltip, Modal, ComboBox, Switch, Label, TextField, Input, ListBox, toast } from '@heroui/react';
-import { ServerStack01Icon, PencilEdit01Icon, QrCodeIcon, BarCodeIcon, CreditCardIcon, Building02Icon, Wallet01Icon, Add01Icon } from '@hugeicons/core-free-icons';
+import { ServerStack01Icon, PencilEdit01Icon, QrCodeIcon, Building02Icon, Wallet01Icon, Add01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { useRouter } from 'next/navigation';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
@@ -350,12 +350,8 @@ function renderMobileAcquirerCard(acquirer: AdminAcquirerData, _index: number, o
 											{acquirer.supportsPix && (
 						<span className="font-mono text-xs text-white/70">PIX</span>
 					)}
-					{acquirer.supportsBoleto && (
-						<span className="font-mono text-xs text-white/70">Boleto</span>
-					)}
-					{acquirer.supportsCreditCard && (
-						<span className="font-mono text-xs text-white/70">Cartão</span>
-					)}
+					
+					
 					{acquirer.supportsWithdrawal && (
 						<span className="font-mono text-xs text-white/70">Saque</span>
 					)}
@@ -412,8 +408,6 @@ export function AcquirersTable({ initialFilters, currentUserRole }: AcquirersTab
 				acquirerType: createFormData.acquirerType,
 				displayName: createFormData.displayName.trim(),
 				pixEnabled: true,
-				boletoEnabled: false,
-				creditCardEnabled: false,
 			});
 			if (response?.error) return { error: response.error.message };
 			toast('Processadora criada', { description: response?.message ?? 'A processadora foi criada com sucesso.', variant: 'success' });

@@ -57,35 +57,6 @@ export function merchantSettingsToFormData(
 		pixPaymentLinkFeePercentage: basisPointsToPercentage(settings?.pixPaymentLinkFeePercentage),
 		pixReservePercentage: basisPointsToPercentage(settings?.pixReservePercentage),
 		pixReserveCompensationDays: settings?.pixReserveCompensationDays?.toString() ?? '',
-		boletoMinTransactionAmount: centsToFormattedCurrency(settings?.boletoMinTransactionAmount),
-		boletoMaxTransactionAmount: centsToFormattedCurrency(settings?.boletoMaxTransactionAmount),
-		boletoEnabled: nullableBooleanToFeatureFlag(settings?.boletoEnabled, settings?.isBoletoEnabledInherited),
-		creditCardEnabled: nullableBooleanToFeatureFlag(settings?.creditCardEnabled, settings?.isCreditCardEnabledInherited),
-		boletoApiFeeMode: settings?.boletoApiFeeMode ?? 'default',
-		boletoApiFeeFixed: centsToFormattedCurrency(settings?.boletoApiFeeFixed),
-		boletoApiFeePercentage: basisPointsToPercentage(settings?.boletoApiFeePercentage),
-		boletoCheckoutFeeMode: settings?.boletoCheckoutFeeMode ?? 'default',
-		boletoCheckoutFeeFixed: centsToFormattedCurrency(settings?.boletoCheckoutFeeFixed),
-		boletoCheckoutFeePercentage: basisPointsToPercentage(settings?.boletoCheckoutFeePercentage),
-		boletoPaymentLinkFeeMode: settings?.boletoPaymentLinkFeeMode ?? 'default',
-		boletoPaymentLinkFeeFixed: centsToFormattedCurrency(settings?.boletoPaymentLinkFeeFixed),
-		boletoPaymentLinkFeePercentage: basisPointsToPercentage(settings?.boletoPaymentLinkFeePercentage),
-		boletoReservePercentage: basisPointsToPercentage(settings?.boletoReservePercentage),
-		boletoReserveCompensationDays: settings?.boletoReserveCompensationDays?.toString() ?? '',
-		creditCardApiFeeMode: settings?.creditCardApiFeeMode ?? 'default',
-		creditCardApiFeeFixed: centsToFormattedCurrency(settings?.creditCardApiFeeFixed),
-		creditCardApiFeePercentage: basisPointsToPercentage(settings?.creditCardApiFeePercentage),
-		creditCardApiInstallmentFeePercentage: basisPointsToPercentage(settings?.creditCardApiInstallmentFeePercentage),
-		creditCardCheckoutFeeMode: settings?.creditCardCheckoutFeeMode ?? 'default',
-		creditCardCheckoutFeeFixed: centsToFormattedCurrency(settings?.creditCardCheckoutFeeFixed),
-		creditCardCheckoutFeePercentage: basisPointsToPercentage(settings?.creditCardCheckoutFeePercentage),
-		creditCardCheckoutInstallmentFeePercentage: basisPointsToPercentage(settings?.creditCardCheckoutInstallmentFeePercentage),
-		creditCardPaymentLinkFeeMode: settings?.creditCardPaymentLinkFeeMode ?? 'default',
-		creditCardPaymentLinkFeeFixed: centsToFormattedCurrency(settings?.creditCardPaymentLinkFeeFixed),
-		creditCardPaymentLinkFeePercentage: basisPointsToPercentage(settings?.creditCardPaymentLinkFeePercentage),
-		creditCardPaymentLinkInstallmentFeePercentage: basisPointsToPercentage(settings?.creditCardPaymentLinkInstallmentFeePercentage),
-		creditCardReservePercentage: basisPointsToPercentage(settings?.creditCardReservePercentage),
-		creditCardReserveCompensationDays: settings?.creditCardReserveCompensationDays?.toString() ?? '',
 		withdrawalFeeMode: settings?.withdrawalFeeMode ?? 'default',
 		withdrawalFeeFixed: centsToFormattedCurrency(settings?.withdrawalFeeFixed),
 		withdrawalFeePercentage: basisPointsToPercentage(settings?.withdrawalFeePercentage),
@@ -96,8 +67,6 @@ export function merchantSettingsToFormData(
 		rateLimitPerHour: settings?.rateLimitPerHour?.toString() ?? '',
 		rateLimitPerDay: settings?.rateLimitPerDay?.toString() ?? '',
 		paymentLinkPixOptionId: settings?.paymentLinkDomainSelection?.pixOptionId ?? '',
-		paymentLinkBoletoOptionId: settings?.paymentLinkDomainSelection?.boletoOptionId ?? '',
-		paymentLinkCreditCardOptionId: settings?.paymentLinkDomainSelection?.creditCardOptionId ?? '',
 	};
 }
 
@@ -145,96 +114,6 @@ export function formDataToMerchantSettingsRequest(
 				: percentageToBasisPoints(formData.pixPaymentLinkFeePercentage),
 		pixReservePercentage: percentageToBasisPoints(formData.pixReservePercentage),
 		pixReserveCompensationDays: parseNullableInteger(formData.pixReserveCompensationDays),
-		boletoMinTransactionAmount: formattedCurrencyToCents(formData.boletoMinTransactionAmount),
-		boletoMaxTransactionAmount: formattedCurrencyToCents(formData.boletoMaxTransactionAmount),
-		boletoEnabled: featureFlagToNullableBoolean(formData.boletoEnabled),
-		creditCardEnabled: featureFlagToNullableBoolean(formData.creditCardEnabled),
-		boletoApiFeeMode:
-			formData.boletoApiFeeMode === 'default' ? null : (formData.boletoApiFeeMode as FeeChargeMode),
-		boletoApiFeeFixed:
-			formData.boletoApiFeeMode === 'default'
-				? null
-				: formattedCurrencyToCents(formData.boletoApiFeeFixed),
-		boletoApiFeePercentage:
-			formData.boletoApiFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.boletoApiFeePercentage),
-		boletoCheckoutFeeMode:
-			formData.boletoCheckoutFeeMode === 'default'
-				? null
-				: (formData.boletoCheckoutFeeMode as FeeChargeMode),
-		boletoCheckoutFeeFixed:
-			formData.boletoCheckoutFeeMode === 'default'
-				? null
-				: formattedCurrencyToCents(formData.boletoCheckoutFeeFixed),
-		boletoCheckoutFeePercentage:
-			formData.boletoCheckoutFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.boletoCheckoutFeePercentage),
-		boletoPaymentLinkFeeMode:
-			formData.boletoPaymentLinkFeeMode === 'default'
-				? null
-				: (formData.boletoPaymentLinkFeeMode as FeeChargeMode),
-		boletoPaymentLinkFeeFixed:
-			formData.boletoPaymentLinkFeeMode === 'default'
-				? null
-				: formattedCurrencyToCents(formData.boletoPaymentLinkFeeFixed),
-		boletoPaymentLinkFeePercentage:
-			formData.boletoPaymentLinkFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.boletoPaymentLinkFeePercentage),
-		boletoReservePercentage: percentageToBasisPoints(formData.boletoReservePercentage),
-		boletoReserveCompensationDays: parseNullableInteger(formData.boletoReserveCompensationDays),
-		creditCardApiFeeMode:
-			formData.creditCardApiFeeMode === 'default'
-				? null
-				: (formData.creditCardApiFeeMode as FeeChargeMode),
-		creditCardApiFeeFixed:
-			formData.creditCardApiFeeMode === 'default'
-				? null
-				: formattedCurrencyToCents(formData.creditCardApiFeeFixed),
-		creditCardApiFeePercentage:
-			formData.creditCardApiFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.creditCardApiFeePercentage),
-		creditCardApiInstallmentFeePercentage:
-			formData.creditCardApiFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.creditCardApiInstallmentFeePercentage),
-		creditCardCheckoutFeeMode:
-			formData.creditCardCheckoutFeeMode === 'default'
-				? null
-				: (formData.creditCardCheckoutFeeMode as FeeChargeMode),
-		creditCardCheckoutFeeFixed:
-			formData.creditCardCheckoutFeeMode === 'default'
-				? null
-				: formattedCurrencyToCents(formData.creditCardCheckoutFeeFixed),
-		creditCardCheckoutFeePercentage:
-			formData.creditCardCheckoutFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.creditCardCheckoutFeePercentage),
-		creditCardCheckoutInstallmentFeePercentage:
-			formData.creditCardCheckoutFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.creditCardCheckoutInstallmentFeePercentage),
-		creditCardPaymentLinkFeeMode:
-			formData.creditCardPaymentLinkFeeMode === 'default'
-				? null
-				: (formData.creditCardPaymentLinkFeeMode as FeeChargeMode),
-		creditCardPaymentLinkFeeFixed:
-			formData.creditCardPaymentLinkFeeMode === 'default'
-				? null
-				: formattedCurrencyToCents(formData.creditCardPaymentLinkFeeFixed),
-		creditCardPaymentLinkFeePercentage:
-			formData.creditCardPaymentLinkFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.creditCardPaymentLinkFeePercentage),
-		creditCardPaymentLinkInstallmentFeePercentage:
-			formData.creditCardPaymentLinkFeeMode === 'default'
-				? null
-				: percentageToBasisPoints(formData.creditCardPaymentLinkInstallmentFeePercentage),
-		creditCardReservePercentage: percentageToBasisPoints(formData.creditCardReservePercentage),
-		creditCardReserveCompensationDays: parseNullableInteger(formData.creditCardReserveCompensationDays),
 		withdrawalFeeMode:
 			formData.withdrawalFeeMode === 'default'
 				? null
@@ -256,16 +135,10 @@ export function formDataToMerchantSettingsRequest(
 		rateLimitPerMinute: formData.rateLimitPerMinute ? parseInt(formData.rateLimitPerMinute) : null,
 		rateLimitPerHour: formData.rateLimitPerHour ? parseInt(formData.rateLimitPerHour) : null,
 		rateLimitPerDay: formData.rateLimitPerDay ? parseInt(formData.rateLimitPerDay) : null,
-		paymentLinkDomainSelection:
-			formData.paymentLinkPixOptionId ||
-			formData.paymentLinkBoletoOptionId ||
-			formData.paymentLinkCreditCardOptionId
-				? {
-					pixOptionId: formData.paymentLinkPixOptionId || null,
-					boletoOptionId: formData.paymentLinkBoletoOptionId || null,
-					creditCardOptionId: formData.paymentLinkCreditCardOptionId || null,
-				}
-				: null,
+		paymentLinkDomainSelection: formData.paymentLinkPixOptionId
+			? {
+				pixOptionId: formData.paymentLinkPixOptionId || null,
+			}
+			: null,
 	};
 }
-

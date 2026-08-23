@@ -108,8 +108,6 @@ export function CreatePaymentLinkFormContent({
 }: CreatePaymentLinkPageProps) {
 	const availableMethods = [
 		feesData?.data?.pixEnabled ? PaymentMethod.Pix : null,
-		feesData?.data?.boletoEnabled ? PaymentMethod.Boleto : null,
-		feesData?.data?.creditCardEnabled ? PaymentMethod.CreditCard : null,
 	].filter((m): m is PaymentMethod => m !== null);
 	const router = useRouter();
 	const [isPending, startTransition] = useTransition();
@@ -119,15 +117,10 @@ export function CreatePaymentLinkFormContent({
     const reviewStepNumber = TOTAL_STEPS;
 
 	const initialMethods = initialEnabledMethods;
-	const hasBoleto = initialMethods?.includes(PaymentMethod.Boleto) ?? false;
-	const initialStep = paymentLinkId
-		? hasBoleto
-			? 2
-			: reviewStepNumber - 1
+		const initialStep = paymentLinkId
+		? reviewStepNumber - 1
 		: initialMethods
-			? hasBoleto
-				? 2
-				: TOTAL_STEPS
+			? TOTAL_STEPS
 			: undefined;
 
 	const {
@@ -337,8 +330,6 @@ export function CreatePaymentLinkFormContent({
 						pixExpirationMinutes: settings.pixExpirationMinutes
 							? parseInt(settings.pixExpirationMinutes, 10) || null
 							: null,
-						boletoDueDate: settings.boletoDueDate.trim() || null,
-						boletoInstructions: settings.boletoInstructions.trim() || null,
 						redirectUrl: redirectUrl || null,
 						requiredBuyerFields: settings.requiredBuyerFields.length > 0 ? settings.requiredBuyerFields : null,
 						showFees: settings.showFees,
@@ -362,8 +353,6 @@ export function CreatePaymentLinkFormContent({
 						pixExpirationMinutes: settings.pixExpirationMinutes
 							? parseInt(settings.pixExpirationMinutes, 10) || undefined
 							: undefined,
-						boletoDueDate: settings.boletoDueDate.trim() || undefined,
-						boletoInstructions: settings.boletoInstructions.trim() || undefined,
 						redirectUrl: redirectUrl || undefined,
 						requiredBuyerFields: settings.requiredBuyerFields.length > 0 ? settings.requiredBuyerFields : undefined,
 						showFees: settings.showFees,
@@ -404,8 +393,6 @@ export function CreatePaymentLinkFormContent({
 				settings: {
 					callbackUrl: settings.callbackUrl,
 					pixExpirationMinutes: settings.pixExpirationMinutes,
-					boletoDueDate: settings.boletoDueDate,
-					boletoInstructions: settings.boletoInstructions,
 					canExpire: settings.canExpire,
 					expirationPreset: settings.expirationPreset,
 					customExpiresAt: settings.customExpiresAt,
@@ -541,8 +528,6 @@ export function CreatePaymentLinkFormContent({
 							enabledMethods={enabledMethods}
 							callbackUrl={settings.callbackUrl ?? ''}
 							pixExpirationMinutes={settings.pixExpirationMinutes}
-							boletoDueDate={settings.boletoDueDate}
-							boletoInstructions={settings.boletoInstructions}
 							canExpire={settings.canExpire}
 							expirationPreset={settings.expirationPreset}
 							customExpiresAt={settings.customExpiresAt}
@@ -550,8 +535,6 @@ export function CreatePaymentLinkFormContent({
 							showFees={settings.showFees}
 							onCallbackUrlChange={(value) => setSettingsFieldWithModeGuard('callbackUrl', value)}
 							onPixExpirationChange={(value) => setSettingsFieldWithModeGuard('pixExpirationMinutes', value)}
-							onBoletoDueDateChange={(value) => setSettingsFieldWithModeGuard('boletoDueDate', value)}
-							onBoletoInstructionsChange={(value) => setSettingsFieldWithModeGuard('boletoInstructions', value)}
 							onCanExpireChange={(value) => setSettingsFieldWithModeGuard('canExpire', value)}
 							onExpirationPresetChange={(value) => setSettingsFieldWithModeGuard('expirationPreset', value)}
 							onCustomExpiresAtChange={(value) => setSettingsFieldWithModeGuard('customExpiresAt', value)}
@@ -602,8 +585,6 @@ export function CreatePaymentLinkFormContent({
 							expirationPreset={settings.expirationPreset}
 							customExpiresAt={settings.customExpiresAt}
 							pixExpirationMinutes={settings.pixExpirationMinutes}
-							boletoDueDate={settings.boletoDueDate}
-							boletoInstructions={settings.boletoInstructions}
 							requiredBuyerFields={settings.requiredBuyerFields}
 							showFees={settings.showFees}
 							passFeeToCustomer={settings.passFeeToCustomer}
@@ -926,8 +907,6 @@ interface Step3SettingsProps {
 	enabledMethods: PaymentMethod[];
 	callbackUrl: string;
 	pixExpirationMinutes: string;
-	boletoDueDate: string;
-	boletoInstructions: string;
 	canExpire: boolean;
 	expirationPreset: ExpirationPreset;
 	customExpiresAt: string;
@@ -935,8 +914,6 @@ interface Step3SettingsProps {
 	showFees: boolean;
 	onCallbackUrlChange: (v: string) => void;
 	onPixExpirationChange: (v: string) => void;
-	onBoletoDueDateChange: (v: string) => void;
-	onBoletoInstructionsChange: (v: string) => void;
 	onCanExpireChange: (v: boolean) => void;
 	onExpirationPresetChange: (v: ExpirationPreset) => void;
 	onCustomExpiresAtChange: (v: string) => void;
@@ -993,8 +970,6 @@ function Step3Settings({
 	enabledMethods,
 	callbackUrl,
 	pixExpirationMinutes,
-	boletoDueDate,
-	boletoInstructions,
 	canExpire,
 	expirationPreset,
 	customExpiresAt,
@@ -1002,8 +977,6 @@ function Step3Settings({
 	showFees,
 	onCallbackUrlChange,
 	onPixExpirationChange,
-	onBoletoDueDateChange,
-	onBoletoInstructionsChange,
 	onCanExpireChange,
 	onExpirationPresetChange,
 	onCustomExpiresAtChange,
@@ -1011,11 +984,8 @@ function Step3Settings({
 	onShowFeesChange,
 }: Step3SettingsProps) {
 	const hasPix = enabledMethods.includes(PaymentMethod.Pix);
-	const hasBoleto = enabledMethods.includes(PaymentMethod.Boleto);
-	const isBoletoDueDatePending = hasBoleto && !boletoDueDate.trim();
 	const isCustomExpirationPending = canExpire && expirationPreset === 'custom' && !customExpiresAt.trim();
 	const isPixConfigActive = pixExpirationMinutes.trim().length > 0;
-	const isBoletoConfigActive = boletoDueDate.trim().length > 0 || boletoInstructions.trim().length > 0;
 	const isExpirationConfigActive = canExpire;
 	const isBuyerConfigActive = requiredBuyerFields.length > 0;
 	const isWebhookConfigActive = callbackUrl.trim().length > 0;
@@ -1023,13 +993,6 @@ function Step3Settings({
 
 	const pixStatusLabel = isPixConfigActive ? 'Personalizada' : 'Padrão';
 	const pixStatusTone = isPixConfigActive ? 'success' : 'muted';
-
-	const boletoStatusLabel = isBoletoDueDatePending
-		? 'Obrigatório pendente'
-		: isBoletoConfigActive
-			? 'Configurado'
-			: 'Padrão';
-	const boletoStatusTone = isBoletoDueDatePending ? 'danger' : isBoletoConfigActive ? 'secondary' : 'muted';
 
 	const expirationStatusLabel = isCustomExpirationPending
 		? 'Data pendente'
@@ -1088,65 +1051,7 @@ function Step3Settings({
 					</SectionAccordion>
 				)}
 
-				{hasBoleto && (
-					<SectionAccordion
-						id="settings-boleto"
-						icon={Wallet01Icon}
-						title={
-							<SettingsAccordionTitle
-								label="Boleto Bancário"
-								statusLabel={boletoStatusLabel}
-								statusTone={boletoStatusTone}
-								labelTone="secondary"
-							/>
-						}
-						summary={
-							isBoletoDueDatePending
-								? 'Pendente: vencimento obrigatório'
-								: boletoDueDate.trim()
-									? `Vencimento em ${new Date(`${boletoDueDate}T00:00:00`).toLocaleDateString('pt-BR')}`
-									: 'Usa configuração padrão'
-						}
-						itemClassName={cn(
-							'rounded-xl border bg-surface',
-							isBoletoDueDatePending ? 'border-danger-soft-hover bg-danger-soft' : 'border-secondary/20'
-						)}
-						triggerClassName={cn(
-							'flex w-full items-center justify-between rounded-t-xl px-4 py-3',
-							isBoletoDueDatePending ? 'bg-danger-soft' : 'bg-content2'
-						)}
-						summaryClassName={cn('text-xs', isBoletoDueDatePending ? 'text-danger' : 'text-muted')}
-						iconContainerClassName="flex size-10 items-center justify-center rounded-lg bg-secondary/10"
-						iconClassName="icon-md text-secondary"
-						defaultExpanded={false}
-						bodyClassName="p-4"
-					>
-						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-							<TextField variant="secondary" aria-label="Vencimento do boleto" isRequired>
-								<Label>Vencimento do boleto</Label>
-								<Input
-									variant="secondary"
-									type="date"
-									min={getMinDateOnly()}
-									value={boletoDueDate}
-									onChange={(e) => onBoletoDueDateChange(e.target.value)}
-								/>
-							</TextField>
-
-							<TextField variant="secondary" aria-label="Instruções do boleto">
-								<Label>
-									Instruções <span className="text-xs font-normal text-muted">(opcional)</span>
-								</Label>
-								<Input
-									variant="secondary"
-									placeholder="Ex: Pagável até o vencimento"
-									value={boletoInstructions}
-									onChange={(e) => onBoletoInstructionsChange(e.target.value)}
-								/>
-							</TextField>
-						</div>
-					</SectionAccordion>
-				)}
+				
 
 				<SectionAccordion
 					id="settings-expiration"
@@ -1550,35 +1455,9 @@ function getFallbackPaymentPreview(
 		};
 	}
 
-	if (method === PaymentMethod.Boleto) {
-		const fee = calculatePaymentFee(
-			amountCents,
-			fees.boletoPaymentLinkFeeMode,
-			fees.boletoPaymentLinkFeeFixed,
-			fees.boletoPaymentLinkFeePercentage
-		);
+	
 
-		return {
-			amount: amountCents,
-			fee,
-			netAmount: amountCents - fee,
-		};
-	}
-
-	if (method === PaymentMethod.CreditCard) {
-		const fee = calculatePaymentFee(
-			amountCents,
-			fees.creditCardPaymentLinkFeeMode,
-			fees.creditCardPaymentLinkFeeFixed,
-			fees.creditCardPaymentLinkFeePercentage
-		);
-
-		return {
-			amount: amountCents,
-			fee,
-			netAmount: amountCents - fee,
-		};
-	}
+	
 
 	return null;
 }
@@ -1595,8 +1474,6 @@ interface Step4ReviewProps {
 	expirationPreset: ExpirationPreset;
 	customExpiresAt: string;
 	pixExpirationMinutes: string;
-	boletoDueDate: string;
-	boletoInstructions: string;
 	requiredBuyerFields: string[];
 	showFees: boolean;
 	passFeeToCustomer: boolean;
@@ -1623,8 +1500,6 @@ function Step4Review({
 	expirationPreset,
 	customExpiresAt,
 	pixExpirationMinutes,
-	boletoDueDate,
-	boletoInstructions,
 	requiredBuyerFields,
 	showFees,
 	passFeeToCustomer,

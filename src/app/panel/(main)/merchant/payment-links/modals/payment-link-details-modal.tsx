@@ -3,12 +3,12 @@
 import { Suspense, use } from 'react';
 import { Modal, Chip, Skeleton, Button } from '@heroui/react';
 import {
-  CreditCard,
-  ExternalLink,
+    ExternalLink,
   InformationCircleIcon,
   Link01Icon,
   Settings01Icon,
   UserCheck01Icon,
+  QrCodeIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { DetailRow, CopyableValue, SectionTitle } from '@/components/ui/detail-components';
@@ -92,7 +92,7 @@ function DetailsContent({ paymentLinkPromise }: { paymentLinkPromise: PaymentLin
       </div>
 
       <div className="rounded-lg bg-surface-secondary p-4">
-        <SectionTitle icon={<Icon icon={CreditCard} className="icon-sm" />} title="Métodos de pagamento" />
+        <SectionTitle icon={<Icon icon={QrCodeIcon} className="icon-sm" />} title="Métodos de pagamento" />
         <div className="flex flex-wrap gap-2">
           {link.enabledMethods.map((method) => {
             const methodParse = paymentMethodParse[method];
@@ -192,8 +192,6 @@ function DetailsContent({ paymentLinkPromise }: { paymentLinkPromise: PaymentLin
           <DetailRow label="Cor primária" value={link.primaryColor || '-'} />
           <DetailRow label="Cor secundária" value={link.secondaryColor || '-'} />
           <DetailRow label="Expiração PIX" value={hasPix && link.pixExpirationMinutes != null ? `${link.pixExpirationMinutes} minutos` : '-'} />
-          <DetailRow label="Vencimento do boleto" value={hasBoleto && link.boletoDueDate ? link.boletoDueDate : '-'} />
-          <DetailRow label="Instruções do boleto" value={hasBoleto && link.boletoInstructions ? link.boletoInstructions : '-'} />
         </div>
         <div className="mt-4 flex flex-col gap-2">
           <span className="text-xs text-foreground/60">Campos obrigatórios do comprador</span>

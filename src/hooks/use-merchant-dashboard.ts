@@ -9,8 +9,7 @@ import {
 	DASHBOARD_CUSTOM_END_STORAGE_KEY,
 	DASHBOARD_CUSTOM_START_STORAGE_KEY,
 	DASHBOARD_PERIOD_OPTIONS,
-	DASHBOARD_PERIOD_STORAGE_KEY,
-} from './merchant-dashboard.constants';
+	DASHBOARD_PERIOD_STORAGE_KEY } from './merchant-dashboard.constants';
 
 export const PERIOD_OPTIONS: { key: DashboardPeriod; label: string }[] = [
 	{ key: 'today', label: 'Hoje' },
@@ -51,8 +50,7 @@ function getDefaultCustomRange(): { startDate: string; endDate: string } {
 
 	return {
 		startDate: formatIsoDate(startDate),
-		endDate: formatIsoDate(endDate),
-	};
+		endDate: formatIsoDate(endDate) };
 }
 
 function getStoredCustomRange(): { startDate: string; endDate: string } {
@@ -73,8 +71,6 @@ interface UseMerchantDashboardProps {
 
 interface MerchantReserveConfig {
 	pixReservePercentage: number;
-	boletoReservePercentage: number;
-	creditCardReservePercentage: number;
 }
 
 export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) {
@@ -94,20 +90,15 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 			selectedPeriod === 'custom'
 				? {
 						startDate: customRange.startDate,
-						endDate: customRange.endDate,
-					}
+						endDate: customRange.endDate }
 				: {
-						period: selectedPeriod,
-					},
+						period: selectedPeriod },
 		[selectedPeriod, customRange]
 	);
 
 	const filtersKey = JSON.stringify(currentFilters);
 	const isLoading = data === null && error === null;
-	const hasReserveEnabled =
-		(reserveConfig?.pixReservePercentage ?? 0) > 0 ||
-		(reserveConfig?.boletoReservePercentage ?? 0) > 0 ||
-		(reserveConfig?.creditCardReservePercentage ?? 0) > 0;
+	const hasReserveEnabled = (reserveConfig?.pixReservePercentage ?? 0) > 0;
 	const isRefreshing =
 		data !== null &&
 		fetchedKey !== null &&
@@ -125,10 +116,7 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 			}
 
 			setReserveConfig({
-				pixReservePercentage: response.data.pixReservePercentage,
-				boletoReservePercentage: response.data.boletoReservePercentage,
-				creditCardReservePercentage: response.data.creditCardReservePercentage,
-			});
+				pixReservePercentage: response.data.pixReservePercentage });
 		});
 
 		return () => {
@@ -192,17 +180,13 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 			hasReserveEnabled,
 			isLoading,
 			isRefreshing,
-			error,
-		},
+			error },
 		period: {
 			selected: selectedPeriod,
 			options: DASHBOARD_PERIOD_OPTIONS,
 			change: handlePeriodChange,
 			customRange,
-			setCustomRange: handleCustomRangeChange,
-		},
+			setCustomRange: handleCustomRangeChange },
 		actions: {
-			refresh: handleRefresh,
-		},
-	};
+			refresh: handleRefresh } };
 }

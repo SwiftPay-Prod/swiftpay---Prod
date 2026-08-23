@@ -42,7 +42,6 @@ import {
 } from '@/app/actions/admin/transactions';
 import { EmailLink, DocumentDisplay, ExternalLink } from '@/components/ui/data-links';
 import { DetailRow, CopyableValue, SectionTitle } from '@/components/ui/detail-components';
-import { BoletoBarcodeImage } from '@/components/ui/boleto-barcode-image';
 import type { ApiResponse } from '@/types/common';
 import { AdminMerchantLink } from '@/components/admin/admin-merchant-link';
 import { AdminReprocessConfirmModal } from '@/components/admin/admin-reprocess-confirm-modal';
@@ -512,37 +511,6 @@ function DetailsContent({ transaction }: { transaction: AdminTransactionDetails 
 							/>
 						</div>
 					)}
-				</div>
-			)}
-
-			{transaction.boleto && (
-				<div className="rounded-xl border border-white/12 bg-[#0a0a0a] p-4">
-					<SectionTitle icon={<Icon icon={File01Icon} className="icon-xs" />} title="Dados do Boleto" />
-					<BoletoBarcodeImage
-						barcode={transaction.boleto.barcode}
-						digitableLine={transaction.boleto.digitableLine}
-						className="mb-4"
-					/>
-					<div className="grid grid-cols-2 gap-4">
-						<div className="col-span-2">
-							<DetailRow
-								label="Link de visualização"
-								value={<ExternalLink url={transaction.transactionVisualizationUrl} fallback="Não configurado" />}
-								mono
-							/>
-						</div>
-						<DetailRow
-							label="Código de Barras"
-							value={<CopyableValue value={transaction.boleto.barcode} label="Código de Barras" />}
-							mono
-						/>
-						<DetailRow
-							label="Linha Digitável"
-							value={<CopyableValue value={transaction.boleto.digitableLine} label="Linha Digitável" />}
-							mono
-						/>
-						<DetailRow label="Vencimento" value={transaction.boleto.dueDate ? <span className="font-mono text-white tabular-nums">{formatDate(transaction.boleto.dueDate)}</span> : '-'} />
-					</div>
 				</div>
 			)}
 

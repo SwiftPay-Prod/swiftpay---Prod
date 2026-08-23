@@ -2,14 +2,12 @@ import type { PaginationParams } from '../common';
 import type { PaymentEnvironment, PaymentLinkLifetimeStatus, PaymentMethod, PaymentStatus } from '../enums';
 
 export interface CreatePaymentLinkRequest {
-  enabledMethods: PaymentMethod[];
+  enabledMethods: Extract<PaymentMethod, 'Pix'>[];
   amount: number;
   description?: string;
   customerId?: string;
   callbackUrl?: string;
   pixExpirationMinutes?: number;
-  boletoDueDate?: string;
-  boletoInstructions?: string;
   environment?: PaymentEnvironment;
   redirectUrl?: string;
   requiredBuyerFields?: string[];
@@ -32,17 +30,10 @@ export interface CreatePaymentLinkPixData {
   expiresAt: string | null;
 }
 
-export interface CreatePaymentLinkBoletoData {
-  barcode: string | null;
-  digitableLine: string | null;
-  pdfUrl: string | null;
-  dueDate: string | null;
-}
-
 export interface CreatePaymentLinkData {
   paymentLinkId: string;
   paymentLinkUrl: string;
-  enabledMethods: PaymentMethod[];
+  enabledMethods: Extract<PaymentMethod, 'Pix'>[];
   amount: number;
   environment: PaymentEnvironment;
   description: string | null;
@@ -67,7 +58,7 @@ export interface MinimalPaymentLink {
   paymentLinkUrl: string;
   amount: number;
   method: PaymentMethod;
-  enabledMethods: PaymentMethod[];
+  enabledMethods: Extract<PaymentMethod, 'Pix'>[];
   status: PaymentStatus;
   description: string | null;
   createdAt: string;
@@ -82,7 +73,7 @@ export interface PaymentLinkDetails {
   paymentId: string | null;
   paymentLinkUrl: string;
   amount: number;
-  enabledMethods: PaymentMethod[];
+  enabledMethods: Extract<PaymentMethod, 'Pix'>[];
   status: PaymentStatus;
   description: string | null;
   createdAt: string;
@@ -96,8 +87,6 @@ export interface PaymentLinkDetails {
   redirectUrl: string | null;
   callbackUrl: string | null;
   pixExpirationMinutes: number | null;
-  boletoDueDate: string | null;
-  boletoInstructions: string | null;
   primaryColor: string | null;
   secondaryColor: string | null;
   logoUrl: string | null;
@@ -109,13 +98,11 @@ export interface PaymentLinkDetails {
 }
 
 export interface UpdatePaymentLinkRequest {
-  enabledMethods: PaymentMethod[];
+  enabledMethods: Extract<PaymentMethod, 'Pix'>[];
   amount: number;
   description: string | null;
   callbackUrl: string | null;
   pixExpirationMinutes: number | null;
-  boletoDueDate: string | null;
-  boletoInstructions: string | null;
   redirectUrl: string | null;
   requiredBuyerFields: string[] | null;
   showFees: boolean;

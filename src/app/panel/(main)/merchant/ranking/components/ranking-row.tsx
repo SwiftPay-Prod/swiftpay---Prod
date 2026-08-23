@@ -17,7 +17,7 @@ interface RankingRowProps {
 	leaderVolume?: number;
 }
 
-export function RankingRow({ entry, type, isCurrentUser, leaderVolume = 184592000 }: RankingRowProps) {
+export function RankingRow({ entry, type, isCurrentUser, leaderVolume = 0 }: RankingRowProps) {
 	const isReferralRanking = type === 'Referral';
 	const displayName = entry.userPublicProfile?.name ?? entry.userName ?? 'Usuário';
 	const displayProfileImageUrl = entry.userPublicProfile?.profileImageUrl ?? entry.profileImageUrl ?? null;
@@ -25,7 +25,7 @@ export function RankingRow({ entry, type, isCurrentUser, leaderVolume = 18459200
 	const socialLinks = parseSocialLinks(entry.userPublicProfile?.socialLinks ?? null);
 
 	const percentOfLeader = Math.min(100, Math.max(2, Math.round((entry.volume / (leaderVolume || 1)) * 100)));
-	const avgTicket = entry.volume > 0 ? Math.round(entry.volume / Math.max(1, entry.totalReferrals || 42)) : 0;
+	const avgTicket = entry.volume > 0 ? Math.round(entry.volume / Math.max(1, entry.totalReferrals ?? 0)) : 0;
 
 	return (
 		<UserProfilePopover userId={entry.userId} userPublicProfile={entry.userPublicProfile} placement="top left">

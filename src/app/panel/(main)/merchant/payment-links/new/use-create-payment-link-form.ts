@@ -56,7 +56,7 @@ export function useCreatePaymentLinkForm({
     () => ({
       enabledMethods: (initialMethods ?? [PaymentMethod.Pix]).filter(
         (method): method is SupportedPaymentMethod =>
-          method === PaymentMethod.Pix || method === PaymentMethod.Boleto || method === PaymentMethod.CreditCard
+          method === PaymentMethod.Pix
       ),
       billing: {
         amountFormatted: initialAmountFormatted ?? '',
@@ -72,8 +72,6 @@ export function useCreatePaymentLinkForm({
       settings: {
         callbackUrl: '',
         pixExpirationMinutes: '',
-        boletoDueDate: '',
-        boletoInstructions: '',
         canExpire: false,
         expirationPreset: '1d',
         customExpiresAt: '',

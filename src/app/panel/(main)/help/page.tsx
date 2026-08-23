@@ -199,7 +199,7 @@ export default function HelpPage() {
 									<span className="text-muted group-open:rotate-180 transition-transform">▼</span>
 								</summary>
 								<p className="mt-3 text-sm text-muted">
-									Atualmente suportamos PIX e Boleto Bancário como métodos de pagamento. Caso algum desses
+									Atualmente suportamos PIX como métodos de pagamento. Caso algum desses
 									métodos não esteja habilitado na sua conta e você deseje utilizá-lo, entre em contato com nosso suporte.
 								</p>
 							</details>

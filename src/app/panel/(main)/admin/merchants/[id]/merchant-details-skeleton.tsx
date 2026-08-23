@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Card, Skeleton, Separator, Tabs } from '@heroui/react';
-import { ArrowLeft01Icon, Building02Icon, CheckListIcon, CreditCardIcon, RepeatIcon, Settings02Icon, UserGroupIcon, Wallet01Icon, Wallet03Icon } from '@hugeicons/core-free-icons';
+import { ArrowLeft01Icon, Building02Icon, CheckListIcon, RepeatIcon, Settings02Icon, UserGroupIcon, Wallet01Icon, Wallet03Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { useRouter } from 'next/navigation';
 import { Routes } from '@/router/routes';
@@ -70,7 +70,7 @@ export function MerchantDetailsSkeleton() {
 						</Tabs.Tab>
 						<Tabs.Tab id="transactions">
 							<div className="flex items-center gap-2">
-								<Icon icon={CreditCardIcon} className="icon-sm" />
+								<Icon icon={Wallet01Icon} className="icon-sm" />
 								<span>Transações</span>
 							</div>
 							<Tabs.Indicator />
