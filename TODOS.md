@@ -478,18 +478,17 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - `src/app/panel/(main)/merchant/services/components/services-table.tsx`
     - `TODOS.md`
 
-## Hotfix pós-deploy — Logo atualizada e NaN em KPIs — 2026-08-23
-
-- `DONE` Issue: #109 — substituição do asset de logo oficial e correção de NaN em cálculos de KPI.
-  - **1. Logo Oficial Atualizada**:
-    - Substituído `public/swiftpay-obsidian-logo.png` e `swiftpay-web-checkout/public/swiftpay-obsidian-logo.png` pelo novo asset fornecido (`swiftpay logo atualizada.png`), referenciado globalmente pelo `SwiftPayBrandLogo`.
-  - **2. Correção de NaN em KPIs de tabelas administrativas**:
-    - `cashouts-table.tsx`: `c.swiftpayProfitAmount ?? 0` e `c.amount ?? 0` no reduce.
-    - `platform-payouts-table.tsx`: `p.totalNetAmount ?? 0` no reduce.
-    - `transactions-table.tsx`: `t.amount ?? 0` e `t.profit ?? 0` no reduce.
-    - `financial-tab.tsx`: `item.volume ?? 0`, `item.fees ?? 0`, `item.payoutFees ?? 0`, `item.acquirerFees ?? 0`, `item.payoutAcquirerFees ?? 0` no reduce.
+- `DONE` Issue: #109 — padronização da logo oficial SwiftPay e correção de NaN em cálculos de KPI.
+  - **1. Logo Oficial Unificada (`logo att.png`)**:
+    - `public/swiftpay-obsidian-logo.png` e `swiftpay-web-checkout/public/swiftpay-obsidian-logo.png` substituídos pelo asset oficial `logo att.png` (origem: usuário), referenciado globalmente pelo `SwiftPayBrandLogo`.
+  - **2. Correção de NaN em KPIs**:
+    - `cashouts-table.tsx`: `c.swiftpayProfitAmount ?? 0` e `c.amount ?? 0`.
+    - `platform-payouts-table.tsx`: `p.totalNetAmount ?? 0`.
+    - `transactions-table.tsx`: `t.amount ?? 0` e `t.profit ?? 0`.
+    - `financial-tab.tsx`: todos os campos financeiros com `?? 0`.
   - **3. Verificação**:
-    - `bun run build`: 68/68 rotas compiladas com sucesso.
+    - `./scripts/verify-matt-workflow.sh`: código 0.
+    - `bun run build`: 68/68 rotas compiladas.
   - Arquivos alterados:
     - `public/swiftpay-obsidian-logo.png`
     - `swiftpay-web-checkout/public/swiftpay-obsidian-logo.png`
