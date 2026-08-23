@@ -201,7 +201,7 @@ export function PlatformPayoutsTable() {
 	const itemsList = data.items.items;
 	const totalItemsCount = data.items.totalItems;
 	const completedCount = itemsList.filter((p) => p.status === 'Completed').length;
-	const totalNetAmountSum = itemsList.reduce((sum, p) => sum + p.totalNetAmount, 0);
+	const totalNetAmountSum = itemsList.reduce((sum, p) => sum + (p.totalNetAmount ?? 0), 0);
 
 	return (
 		<div className="flex flex-col gap-6 text-white">

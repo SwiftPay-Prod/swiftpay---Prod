@@ -401,9 +401,9 @@ export function CashoutsTable({ canReprocess }: CashoutsTableProps) {
 	);
 
 	const itemsList = data.items.items;
-	const totalVolume = itemsList.reduce((sum, c) => sum + c.amount, 0);
+	const totalVolume = itemsList.reduce((sum, c) => sum + (c.amount ?? 0), 0);
 	const completedCount = itemsList.filter((c) => c.status === 'Completed').length;
-	const totalProfit = itemsList.reduce((sum, c) => sum + c.swiftpayProfitAmount, 0);
+	const totalProfit = itemsList.reduce((sum, c) => sum + (c.swiftpayProfitAmount ?? 0), 0);
 
 	return (
 		<div className="flex flex-col gap-6 text-white">

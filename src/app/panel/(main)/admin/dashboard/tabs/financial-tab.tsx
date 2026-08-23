@@ -128,9 +128,9 @@ function VolumeVsProfitChart({ data, periodLabel }: { data: AdminDailyVolumeData
 		netProfit: item.fees + item.payoutFees - item.acquirerFees - item.payoutAcquirerFees,
 	}));
 
-	const totalVolume = data.reduce((sum, item) => sum + item.volume, 0);
+	const totalVolume = data.reduce((sum, item) => sum + (item.volume ?? 0), 0);
 	const totalNetProfit = data.reduce(
-		(sum, item) => sum + (item.fees + item.payoutFees - item.acquirerFees - item.payoutAcquirerFees),
+		(sum, item) => sum + ((item.fees ?? 0) + (item.payoutFees ?? 0) - (item.acquirerFees ?? 0) - (item.payoutAcquirerFees ?? 0)),
 		0
 	);
 	const marginPercentage = totalVolume > 0 ? (totalNetProfit / totalVolume) * 100 : 0;

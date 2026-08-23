@@ -479,9 +479,9 @@ export function TransactionsTable({ canReprocess }: TransactionsTableProps) {
 	);
 
 	const itemsList = data.items.items;
-	const totalVolume = itemsList.reduce((sum, t) => sum + t.amount, 0);
+	const totalVolume = itemsList.reduce((sum, t) => sum + (t.amount ?? 0), 0);
 	const completedCount = itemsList.filter((t) => t.status === 'Completed').length;
-	const totalProfit = itemsList.reduce((sum, t) => sum + t.profit, 0);
+	const totalProfit = itemsList.reduce((sum, t) => sum + (t.profit ?? 0), 0);
 	const conversionRate = itemsList.length > 0 ? (completedCount / itemsList.length) * 100 : 0;
 
 	return (
