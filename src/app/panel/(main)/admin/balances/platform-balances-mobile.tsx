@@ -254,7 +254,7 @@ export function PlatformBalancesMobile({
 		<>
 			<div className="flex flex-col gap-3 pb-24 text-white">
 				{/* Hero balance card */}
-				<div className="relative overflow-hidden rounded-[24px] border border-white/12 bg-[#16181a] p-5">
+				<div className="relative overflow-hidden rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 					{/* Card header: label + actions */}
 					<div className="relative z-10 mb-4 flex items-center justify-between">
 						<div className="flex items-center gap-2">
@@ -548,7 +548,7 @@ export function PlatformBalancesMobile({
 
 				{/* Saldos por Adquirente */}
 				{balanceData.acquirerBalances.length > 0 && (
-					<div className="space-y-3 rounded-[24px] border border-white/12 bg-[#16181a] p-4">
+					<div className="space-y-3 rounded-[20px] border border-white/12 bg-[#16181a] p-4">
 						<div className="flex items-center justify-between border-b border-white/8 pb-3">
 							<span className="text-xs font-bold text-white">Saldos por Adquirente</span>
 							<span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-mono text-white/60">

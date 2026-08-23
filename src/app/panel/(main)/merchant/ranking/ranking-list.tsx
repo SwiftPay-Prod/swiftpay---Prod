@@ -179,7 +179,7 @@ export function RankingList({ fetchPromise, myProfilePromise, period, type }: Ra
 
 			{/* Top-3 Podium */}
 			{podiumEntries.length > 0 && (
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 					<TopThreePodium entries={podiumEntries} currentUserId={currentUserId} type={type} />
 				</div>
 			)}

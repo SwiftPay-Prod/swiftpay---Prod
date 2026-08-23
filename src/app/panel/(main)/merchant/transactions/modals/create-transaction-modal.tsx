@@ -338,7 +338,7 @@ export function CreateTransactionModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-2xl bg-[#16181a] border border-white/12 text-white rounded-[24px] p-6 shadow-2xl">
+				<Modal.Dialog className="max-w-2xl bg-[#16181a] border border-white/12 text-white rounded-[20px] p-6 shadow-2xl">
 					<Modal.CloseTrigger />
 					<Modal.Header className="border-b border-white/10 pb-4 mb-5">
 						<div className="flex items-center gap-3">

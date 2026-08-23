@@ -224,7 +224,7 @@ function QuickActions() {
 	];
 
 	return (
-		<div className="flex flex-col gap-5 rounded-[24px] border border-white/12 bg-[#16181a] p-6 sm:p-7">
+		<div className="flex flex-col gap-5 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7">
 			<div>
 				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">
 					Ações Rápidas

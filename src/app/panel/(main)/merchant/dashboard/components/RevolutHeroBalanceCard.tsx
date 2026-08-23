@@ -49,7 +49,7 @@ export function RevolutHeroBalanceCard({
 
 	return (
 		<div
-			className={`relative overflow-hidden rounded-[24px] bg-[#16181a] border border-white/12 p-6 sm:p-7 transition-all ${className}`}
+			className={`relative overflow-hidden rounded-[20px] bg-[#16181a] border border-white/12 p-6 sm:p-7 transition-all ${className}`}
 		>
 			{/* Ambient Cobalt Glow */}
 			<div

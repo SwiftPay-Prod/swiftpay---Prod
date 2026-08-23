@@ -177,7 +177,7 @@ export function ReferralsContent({
 				</div>
 			</div>
 			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
 					<div className="flex items-center gap-3 border-b border-white/8 pb-4">
 						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
 							<Icon icon={Link01Icon} className="icon-md" />
@@ -270,7 +270,7 @@ export function ReferralsContent({
 					</div>
 				</div>
 
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col gap-4">
 					<div className="flex items-center gap-3 border-b border-white/8 pb-4">
 						<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
 							<Icon icon={Analytics01Icon} className="icon-md" />
@@ -314,7 +314,7 @@ export function ReferralsContent({
 				</div>
 			</div>
 
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6">
 				<div className="flex flex-col gap-1 border-b border-white/8 pb-4 mb-4">
 					<h3 className="text-sm font-bold text-white">Indicados e Comissões</h3>
 					<p className="text-xs text-white/50">Acompanhe usuários indicados, histórico de repasses e solicitações de saque.</p>

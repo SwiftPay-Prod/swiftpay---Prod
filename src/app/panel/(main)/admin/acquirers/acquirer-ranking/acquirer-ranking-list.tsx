@@ -369,7 +369,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 			</div>
 
 			{/* Ranking List */}
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
 					<div className="flex items-center gap-2">
 						<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">

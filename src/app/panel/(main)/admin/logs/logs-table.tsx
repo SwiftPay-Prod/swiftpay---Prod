@@ -1300,7 +1300,7 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 						</p>
 					</div>
 				</div>
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] overflow-hidden">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] overflow-hidden">
 					<div className="border-b border-content2 px-4 pt-4 pb-0">
 						<InternalTabs
 							ariaLabel="Tipos de logs"
@@ -1489,7 +1489,7 @@ export function LogsTable({ fetchPromise, filters }: LogsTableProps) {
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<Suspense
 					fallback={
 						<LogsTableFallback

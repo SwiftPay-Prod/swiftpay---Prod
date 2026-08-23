@@ -35,7 +35,7 @@ export function PaymentMethodBreakdown({
 
 	return (
 		<div
-			className={`flex flex-col justify-between gap-5 rounded-[24px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${className}`}
+			className={`flex flex-col justify-between gap-5 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${className}`}
 		>
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex flex-col gap-1">

@@ -26,7 +26,7 @@ export function UsersTableSkeleton({ pageSize = 10 }: { pageSize?: number }) {
 				))}
 			</div>
 
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<div className="flex flex-row flex-wrap items-center gap-3 pb-4 border-b border-white/8">
 					<Skeleton className="h-10 w-48 rounded-lg bg-white/5" />
 					<Skeleton className="h-10 w-40 rounded-lg bg-white/5" />

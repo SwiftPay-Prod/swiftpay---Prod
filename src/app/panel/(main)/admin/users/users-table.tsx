@@ -500,7 +500,7 @@ export function UsersTable({ fetchPromise, filters, currentUserRole, currentUser
 			</div>
 
 			{/* Main Data Table */}
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<DataTable
 					columns={columns}
 					data={data.items.items}

@@ -133,8 +133,8 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
     - `src/app/panel/(main)/user-settings/page.tsx`
     - `TODOS.md`
 - `DONE` Auditoria Revolut 10 / Ultra completa — inventário de rotas/superfícies, regras R1-R11, tokens e gaps priorizados. Entregáveis: `revolut-audit-findings.md` e `revolut-audit-final-report.md`; `next build` 68 rotas OK.
-- `IN_PROGRESS` Token standardization — cores hardcoded e sombras removidas em `admin-revenue-card.tsx`, `merchant-balance-card.tsx`, `merchant-actions-dropdown.tsx`.
-  - `BLOCKED` `mockup-*` em `globals.css` e padronização de pills/botões/radius — exige migração dedicada.
+- `DONE` Spec: #106 / Issue: #107 — Token standardization (pills/botões/radius): 60 arquivos com `rounded-[24px]` → `rounded-[20px]` alinhados ao `.revolut-card` (20px); pills primários (`button-primary` / `button-outline-dark` / `rounded-full`) verificados em admin/merchant/landing; sombras removidas e `next build` 68 rotas OK.
+  - `BLOCKED` `mockup-*` em `globals.css` — exige migração dedicada de componentes co-localizados.
   - `BLOCKED` PIX-only gate em `payment-links/new`, `checkouts/upsert`, `merchant/new`, `platform-settings`, `acquirers/types` — depende de backend/contratos compartilhados.
 ## Governança universal de contexto
 

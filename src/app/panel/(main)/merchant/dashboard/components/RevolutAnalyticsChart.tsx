@@ -51,7 +51,7 @@ export function RevolutAnalyticsChart({
 
 	return (
 		<div
-			className={`flex flex-col gap-6 rounded-[24px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${
+			className={`flex flex-col gap-6 rounded-[20px] border border-white/12 bg-[#16181a] p-6 sm:p-7 transition-all ${
 				isProcessing ? 'opacity-70' : ''
 			} ${className}`}
 		>

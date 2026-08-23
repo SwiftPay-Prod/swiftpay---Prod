@@ -728,7 +728,7 @@ export function AdminTransactionDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-4xl bg-[#16181a] border border-white/12 rounded-[24px]">
+				<Modal.Dialog className="max-w-4xl bg-[#16181a] border border-white/12 rounded-[20px]">
 					<Modal.CloseTrigger />
 					{transactionPromise && (
 						<Suspense

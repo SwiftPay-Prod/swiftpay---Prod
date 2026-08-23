@@ -16,7 +16,7 @@ export function BulletinsSkeleton() {
 				</div>
 			</div>
 
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-0 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-0 overflow-hidden">
 				<div className="flex flex-col">
 					{Array.from({ length: 5 }).map((_, i) => (
 						<div key={i} className="flex items-center gap-3 px-4 py-4 border-b border-white/8 last:border-b-0">

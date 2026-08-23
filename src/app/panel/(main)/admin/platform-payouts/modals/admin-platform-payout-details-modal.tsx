@@ -432,7 +432,7 @@ export function AdminPlatformPayoutDetailsModal({
 	return (
 		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
 			<Modal.Container size="lg" placement="center" scroll="outside">
-				<Modal.Dialog className="max-w-4xl rounded-[24px] border border-white/12 bg-[#16181a]">
+				<Modal.Dialog className="max-w-4xl rounded-[20px] border border-white/12 bg-[#16181a]">
 					<Modal.CloseTrigger />
 					{payoutPromise && (
 						<Suspense

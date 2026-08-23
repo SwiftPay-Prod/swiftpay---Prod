@@ -581,7 +581,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 			{/* Cards de resumo */}
 			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 				{/* Resumo do Lucro */}
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between">
 					<div className="flex items-center justify-between pb-4 border-b border-white/8">
 						<div className="flex items-center gap-2">
 							<div className={`flex h-7 w-7 items-center justify-center rounded-lg ${isTotalSwiftPayProfitNegative ? 'bg-[#e23b4a]/15 text-[#e23b4a] border border-[#e23b4a]/30' : 'bg-[#00a87e]/15 text-[#00a87e] border border-[#00a87e]/30'}`}>
@@ -679,7 +679,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 				</div>
 
 				{/* Resumo dos Saques */}
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 flex flex-col justify-between">
 					<div className="flex items-center justify-between pb-4 border-b border-white/8">
 						<div className="flex items-center gap-2">
 							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
@@ -839,7 +839,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 
 			{/* Saldos por Adquirente */}
 			{balanceData.acquirerBalances.length > 0 ? (
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 space-y-5">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
 						<div className="flex items-center gap-2">
 							<div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#494fdf]/15 text-[#4f55f1] border border-[#494fdf]/30">
@@ -1180,7 +1180,7 @@ export function PlatformBalances({ balancePromise, currentUserRole }: PlatformBa
 					</div>
 				</div>
 			) : (
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-12 text-center">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-12 text-center">
 					<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-white/40 mx-auto mb-3 border border-white/10">
 						<Icon icon={BankIcon} className="icon-md" />
 					</div>

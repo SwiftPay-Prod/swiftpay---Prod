@@ -15,7 +15,7 @@ export function AchievementsPageSkeleton() {
 					<h1 className="text-xl font-bold tracking-tight text-white">Conquistas</h1>
 				</div>
 			</div>
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 				<div className="flex items-center gap-4">
 					<Skeleton className="w-16 h-16 rounded-full bg-white/10 shrink-0" />
 					<div className="flex flex-col gap-2 flex-1 min-w-0">

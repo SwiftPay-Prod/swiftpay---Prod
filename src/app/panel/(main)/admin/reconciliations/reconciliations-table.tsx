@@ -160,7 +160,7 @@ export function ReconciliationsTableSkeleton({ pageSize = 20 }: { pageSize?: num
 				<Skeleton className="h-9 w-36 rounded-xl bg-white/5" />
 				<Skeleton className="h-9 w-44 rounded-xl bg-white/5" />
 			</div>
-			<div className="flex flex-col gap-3 rounded-[24px] border border-white/12 bg-[#16181a] p-5">
+			<div className="flex flex-col gap-3 rounded-[20px] border border-white/12 bg-[#16181a] p-5">
 				{Array.from({ length: pageSize > 10 ? 10 : pageSize }).map((_, i) => (
 					<Skeleton key={i} className="h-14 w-full rounded-xl bg-white/5" />
 				))}
@@ -344,9 +344,9 @@ export function ReconciliationsTable({ fetchPromise, filters }: ReconciliationsT
 				</div>
 
 				{/* Main Data Table */}
-				<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+				<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 					<DataTable
-						className="rounded-[24px] border border-white/12 bg-[#16181a]"
+						className="rounded-[20px] border border-white/12 bg-[#16181a]"
 						columns={columns}
 						data={items.items}
 						keyExtractor={(item) => item.id}

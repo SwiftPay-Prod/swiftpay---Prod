@@ -168,7 +168,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 			</div>
 
 			{/* User Progress Card */}
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<UserProfileProgressCard
 					name={userName}
 					profileImageUrl={userProfileImageUrl}
@@ -191,7 +191,7 @@ export function AchievementsPage({ fetchPromise, merchantId, userName, userProfi
 			<Separator className="bg-white/10" />
 
 			{/* Tabs */}
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 				<InternalTabs ariaLabel="Seções de conquistas" items={ACHIEVEMENT_TAB_ITEMS} defaultSelectedKey="achievements">
 					<Tabs.Panel id="achievements" className="pt-4">
 						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">

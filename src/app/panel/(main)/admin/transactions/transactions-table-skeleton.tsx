@@ -32,7 +32,7 @@ export function TransactionsTableSkeleton({ pageSize = 10 }: TransactionsTableSk
 				))}
 			</div>
 
-			<div className="rounded-[24px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
+			<div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6 overflow-hidden">
 					<div className="flex flex-wrap items-center gap-3">
 						<Skeleton className="h-10 w-full sm:grow rounded-lg" />
 						<Skeleton className="h-10 w-full sm:grow rounded-lg" />
