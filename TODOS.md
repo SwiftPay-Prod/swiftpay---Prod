@@ -538,4 +538,4 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - `npx tsc --noEmit --skipLibCheck | grep -v CalendarDate | grep -v RangeValue` → só 2 erros pré-existentes (RevolutAnalyticsChart, DateValue)
     - `npm run build` → ✓ Compiled successfully in 2.7min, 66 rotas (68→66, 4 rotas boleto/credit-card removidas), Skipping validation of types
   - **Arquivos alterados**: 38 `M/D` (tipos, parse, router, painel merchant/admin, converters, proxy, docs) + `src/components/ui/boleto-barcode-image.tsx` deletado
-
+  - **Fixup 2026-08-23 (Spec: #110)**: removido import órfão `BarCodeIcon` em `src/app/panel/(main)/admin/merchants/[id]/evaluate/merchant-evaluate.tsx` (purge R11 residual) — `grep -rn BarCodeIcon|CreditCardIcon src` →0, `npm run build` 66 rotas OK, `npx tsc --noEmit` 10 erros pré-existentes (CalendarDate/RangeValue) inalterados

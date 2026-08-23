@@ -20,7 +20,6 @@ import {
 	ServerStack01Icon,
 	Search01Icon,
 	QrCodeIcon,
-	BarCodeIcon,
 	Wallet01Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
