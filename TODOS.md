@@ -707,3 +707,11 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`; `npm run build` `BUILD_EXIT:0` 66 rotas; zero refs órfãs a Mobile*.
   - **Arquivos**: `merchant-dashboard.tsx`, deletados 6 arquivos Mobile*, `sidebar-mobile-navbar.tsx`
   - **Próxima**: commit + push + deploy; visual 390px validado em prod.
+
+- `DONE` feat(settings) T5 #109 Spec: #104 — aba configurações de notificações — 2026-08-24
+  - **Contexto**: Spec #104 T5. UI de notificações já existia em `/panel/user-settings`: toggle push com status device (iOS PWA chip, permission denied, erros mapeados p/ mensagem clara), matriz de toggles por evento (Pagamentos 5, Saques 7, Tipos 8), toggle-all, persistência via `updateNotificationPreferences`.
+  - **Gap único encontrado e corrigido**: primeiro opt-in não tinha confirmação (Q6 do acordo: default tudo ligado COM confirmação listando eventos antes do prompt do browser).
+  - **Fix**: `handleTogglePush` ao ativar abre `ConfirmationModal` listando eventos (pagamento aprovado/recusado/reembolsado, saque concluído/falho/rejeitado, avisos) com nota de ajuste individual pós-ativação; desativar continua direto. Cards já herdam `rounded-[20px] bg-card border-white/12` do Card base (R1).
+  - **Verify**: `tsc 0`; `npm run build` `BUILD_EXIT:0` 66 rotas.
+  - **Arquivos**: `src/app/panel/(main)/user-settings/page.tsx`
+  - **Próxima**: commit + push + deploy; validação de token FCM real em device fica pós-deploy com o usuário.

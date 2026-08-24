@@ -3,6 +3,7 @@
 import { useState, useEffect, useTransition, useMemo } from 'react';
 import { Card, Description, Label, Switch, Chip, Skeleton, Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
+import { ConfirmationModal } from '@/components/ui/confirmation-modal';
 import {
 	Alert01Icon,
 	CancelCircleIcon,
@@ -148,12 +149,20 @@ export default function UserSettingsPage() {
 		});
 	}
 
-	async function handleTogglePush() {
+	const [isOptInModalOpen, setIsOptInModalOpen] = useState(false);
+
+	function handleTogglePush() {
 		if (isEnabled) {
-			await disablePushNotifications();
-		} else {
-			await enablePushNotifications();
+			void disablePushNotifications();
+			return;
 		}
+		// Primeiro opt-in: confirmação listando os eventos ativos antes do prompt do browser (Q6)
+		setIsOptInModalOpen(true);
+	}
+
+	async function handleConfirmOptIn() {
+		setIsOptInModalOpen(false);
+		await enablePushNotifications();
 	}
 
 	function getPushStatusMessage(): string {
@@ -528,6 +537,27 @@ export default function UserSettingsPage() {
 					)}
 				</Card.Content>
 			</Card>
+
+			<ConfirmationModal
+				isOpen={isOptInModalOpen}
+				onOpenChange={setIsOptInModalOpen}
+				title="Ativar notificações push"
+				description="Você será notificado no seu dispositivo sobre os seguintes eventos:"
+				confirmLabel="Ativar notificações"
+				status="accent"
+				onConfirm={() => handleConfirmOptIn()}
+			>
+				<ul className="flex flex-col gap-1.5 text-sm text-white/70">
+					<li>• Pagamento aprovado</li>
+					<li>• Pagamento recusado</li>
+					<li>• Pagamento reembolsado</li>
+					<li>• Saque concluído, falho ou rejeitado</li>
+					<li>• Avisos importantes da conta</li>
+				</ul>
+				<p className="mt-2 text-xs text-white/50">
+					Você pode ajustar cada evento individualmente nesta tela após ativar.
+				</p>
+			</ConfirmationModal>
 		</div>
 	);
 }
