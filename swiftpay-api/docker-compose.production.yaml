@@ -149,10 +149,10 @@ services:
       EmailPlatformSettings__FirebaseProjectId: swiftpay-878c0
       FirebaseSettings__Enabled: "true"
       FirebaseSettings__ProjectId: swiftpay-878c0
-      FirebaseSettings__ClientEmail: ""
-      FirebaseSettings__ClientId: ""
-      FirebaseSettings__PrivateKeyId: ""
-      FirebaseSettings__PrivateKey: ""
+      FirebaseSettings__ClientEmail: ${FirebaseSettings__ClientEmail:-""}
+      FirebaseSettings__ClientId: ${FirebaseSettings__ClientId:-""}
+      FirebaseSettings__PrivateKeyId: ${FirebaseSettings__PrivateKeyId:-""}
+      FirebaseSettings__PrivateKey: ${FirebaseSettings__PrivateKey:-""}
       GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/firebase-email-worker.json
     volumes:
       - /run/secrets/firebase-email-worker.json:/run/secrets/firebase-email-worker.json:ro

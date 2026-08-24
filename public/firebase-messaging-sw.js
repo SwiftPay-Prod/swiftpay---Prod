@@ -2,12 +2,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: 'AIzaSyAsu8suCX_tCN5CB_DgtyPDjz6jIX7q1x0',
-  authDomain: 'swiftpaya405c.firebaseapp.com',
-  projectId: 'swiftpaya405c',
-  storageBucket: 'swiftpaya405c.firebasestorage.app',
-  messagingSenderId: '741958846185',
-  appId: '1:741958846185:web:8348a6128a085dc29a9278',
+  apiKey: 'AIzaSyBicwCGRORVFOoOTbmbmJec3TjQq0OwMOA',
+  authDomain: 'swiftpay-878c0.firebaseapp.com',
+  projectId: 'swiftpay-878c0',
+  storageBucket: 'swiftpay-878c0.firebasestorage.app',
+  messagingSenderId: '625641817795',
+  appId: '1:625641817795:web:30df453ffcb1f852e6c476',
 });
 
 const messaging = firebase.messaging();

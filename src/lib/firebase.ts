@@ -2,12 +2,12 @@ import { initializeApp, getApps, type FirebaseApp, type FirebaseOptions } from '
  import { getMessaging, getToken, onMessage, type Messaging } from 'firebase/messaging';
 
 const messagingFirebaseConfig = {
-  apiKey: "AIzaSyAsu8suCX_tCN5CB_DgtyPDjz6jIX7q1x0",
-  authDomain: "swiftpaya405c.firebaseapp.com",
-  projectId: "swiftpaya405c",
-  storageBucket: "swiftpaya405c.firebasestorage.app",
-  messagingSenderId: "741958846185",
-  appId: "1:741958846185:web:8348a6128a085dc29a9278"
+  apiKey: "AIzaSyBicwCGRORVFOoOTbmbmJec3TjQq0OwMOA",
+  authDomain: "swiftpay-878c0.firebaseapp.com",
+  projectId: "swiftpay-878c0",
+  storageBucket: "swiftpay-878c0.firebasestorage.app",
+  messagingSenderId: "625641817795",
+  appId: "1:625641817795:web:30df453ffcb1f852e6c476"
 };
 
 const messagingFirebaseConfigOptions: FirebaseOptions = messagingFirebaseConfig;
@@ -135,7 +135,7 @@ export async function getFCMToken(): Promise<FCMTokenResult> {
 
     try {
       const token = await getToken(fcmMessaging, {
-        vapidKey: 'BL-IzwALoxd1M5gdjtOAjeRnzF4vGeHtJfW3JM1--iXKy-epCd77KHW5rJTBdQ4FnSk1K7onWM5gu9rQ71ePxyI',
+        vapidKey: 'BA5eHx76gYOQwdx6NE1tOf8Ky_LHHqsHbIH34-2YaSavkW8FkTXRdJwCQsDaAShyQ5hVKP5ceA1Tq-IiA4hUUQQ',
         serviceWorkerRegistration: registration,
       });
 

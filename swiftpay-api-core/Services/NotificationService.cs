@@ -155,7 +155,7 @@ public class NotificationService(
         var messagePublisher = scope.ServiceProvider.GetService<IMessagePublisher>();
         if (messagePublisher == null || !messagePublisher.IsEnabled)
         {
-            await SendPushNotificationDirectAsync(scope, merchantId, type, priority, title, message, actionUrl, environment);
+            await SendPushNotificationDirectAsync(scope, merchantId, type, statusType, priority, title, message, actionUrl, environment);
             return;
         }
 
@@ -200,6 +200,7 @@ public class NotificationService(
         IServiceScope scope,
         Guid merchantId,
         NotificationType type,
+        NotificationStatusType? statusType,
         NotificationPriority priority,
         string title,
         string message,
@@ -213,11 +214,25 @@ public class NotificationService(
         }
 
         var dbContext = scope.ServiceProvider.GetRequiredService<PrimaryDbContext>();
+
+        var userId = await dbContext.Merchants
+            .AsNoTracking()
+            .Where(m => m.Id == merchantId)
+            .OrderBy(m => m.Id)
+            .Select(m => m.UserId)
+            .FirstOrDefaultAsync();
+
+        if (userId == Guid.Empty || !await ShouldSendPushAsync(dbContext, userId, type, statusType))
+        {
+            return;
+        }
+
         var merchant = await dbContext.Set<Merchant>().AsNoTracking()
             .Where(m => m.Id == merchantId)
             .OrderBy(m => m.Id)
             .Select(m => new { m.Name })
             .FirstOrDefaultAsync();
+
 
         var data = new Dictionary<string, string>
         {
@@ -458,5 +473,59 @@ public class NotificationService(
         }
 
         await pushService.SendPushNotificationAsync(userId, title, message, data);
+    }
+
+    private static async Task<bool> ShouldSendPushAsync(
+        PrimaryDbContext dbContext,
+        Guid userId,
+        NotificationType type,
+        NotificationStatusType? statusType)
+    {
+        var prefs = await dbContext.UserNotificationPreferences
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.UserId == userId);
+
+        if (prefs == null)
+        {
+            return true;
+        }
+
+        if (!prefs.PushNotificationsEnabled)
+        {
+            return false;
+        }
+
+        if (statusType.HasValue)
+        {
+            return statusType.Value switch
+            {
+                NotificationStatusType.PaymentPending => prefs.NotifyPaymentPending,
+                NotificationStatusType.PaymentCompleted => prefs.NotifyPaymentCompleted,
+                NotificationStatusType.PaymentExpired => prefs.NotifyPaymentExpired,
+                NotificationStatusType.PaymentFailed => prefs.NotifyPaymentFailed,
+                NotificationStatusType.PaymentRefunded => prefs.NotifyPaymentRefunded,
+                NotificationStatusType.PayoutPending => prefs.NotifyPayoutPending,
+                NotificationStatusType.PayoutProcessing => prefs.NotifyPayoutProcessing,
+                NotificationStatusType.PayoutCompleted => prefs.NotifyPayoutCompleted,
+                NotificationStatusType.PayoutFailed => prefs.NotifyPayoutFailed,
+                NotificationStatusType.PayoutRejected => prefs.NotifyPayoutRejected,
+                NotificationStatusType.PayoutCancelled => prefs.NotifyPayoutCancelled,
+                _ => true
+            };
+        }
+
+        return type switch
+        {
+            NotificationType.Info => prefs.NotifyInfo,
+            NotificationType.Success => prefs.NotifySuccess,
+            NotificationType.Warning => prefs.NotifyWarning,
+            NotificationType.Error => prefs.NotifyError,
+            NotificationType.Security => prefs.NotifySecurity,
+            NotificationType.System => prefs.NotifySystem,
+            NotificationType.Chargeback => prefs.NotifyChargeback,
+            NotificationType.Payment => prefs.NotifyPaymentCompleted,
+            NotificationType.Payout => prefs.NotifyPayoutCompleted,
+            _ => true
+        };
     }
 }

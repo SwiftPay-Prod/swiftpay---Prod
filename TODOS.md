@@ -670,3 +670,22 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`; `npm run build` `BUILD_EXIT:0` 66 rotas; ícones gerados e verificados via PIL (tamanhos/modos corretos).
   - **Arquivos**: `public/manifest.json`, `public/firebase-messaging-sw.js`, `public/favicon.png`, `public/apple-touch-icon.png`, `public/logos/pwa-icon-*`, `public/logos/favicon-32.png`, `public/logos/notification-small.png`, `public/logos/apple-touch-icon.png`
   - **Próxima**: commit + push + Deploy; instalação Android/iOS validada em prod pós-deploy (critério do ticket).
+
+- `IN_PROGRESS` feat(push) T2 #106 Spec: #104 — push ponta a ponta Payment Completed (FCM 878c0) — 2026-08-24
+  - **Contexto**: Spec #104 T2. Frontend gerava tokens FCM no projeto `swiftpaya405c` (inacessível pela conta), backend só tinha service account do `swiftpay-878c0` (email). Decisão do usuário: migrar push para o 878c0.
+  - **Executado**:
+    - Firebase CLI login (`app.swiftpay.com@gmail.com`) — só tem acesso ao 878c0 (a405c nem aparece).
+    - Web App `1:625641817795:web:30df453ffcb1f852e6c476` já existia no 878c0; config extraída via `firebase apps:sdkconfig`.
+    - FCM API v1 já ENABLED no 878c0 (verificado via Service Usage API).
+    - VAPID key gerada pelo usuário no Console; aplicada em `src/lib/firebase.ts`.
+    - Service account `firebase-adminsdk-fbsvc@swiftpay-878c0` (role `sdkAdminServiceAgent`) — key JSON criada via IAM API e instalada na VPS (`/root/.config/swiftpay/firebase-push-adminsdk.json`, 600).
+    - **Secret quebrado corrigido**: `/run/secrets/firebase-email-worker.json` era diretório vazio (mount apontava p/ path que virou dir); arquivo real copiado da `/root/.config/swiftpay/`; container recriado.
+    - **Compose corrigido na VPS**: `environment:` tinha `FirebaseSettings__*` hardcoded vazios que sobrescreviam o env-file — interpolado para `${VAR:-""}` (fix local pendente de commit).
+    - **Credencial validada ao vivo**: JWT RS256 → OAuth token OK → FCM `messages:send` respondeu `400 INVALID_ARGUMENT` para token fake (prova credencial+projeto corretos).
+    - Frontend migrado: `lib/firebase.ts` (config 878c0 + VAPID nova) e `firebase-messaging-sw.js` (config 878c0).
+    - **BUG REAL encontrado e corrigido**: `SendPushNotificationDirectAsync` (fallback sem RabbitMQ) não checava preferências — push ignorava settings do usuário no caminho direto. Adicionado `ShouldSendPushAsync` (matriz por statusType/type) + checagem no caminho direto; `statusType` agora propagado.
+    - 5 testes xUnit criados (`NotificationServicePushTests`, Testcontainers Postgres + fake IPushNotificationService): **5/5 Passed na VPS** (docker real; local podman sem /dev/net/tun não roda Testcontainers).
+  - **Verify**: `dotnet test` VPS `Failed: 0, Passed: 5`; build tests EXIT:0; OAuth+FCM live test OK.
+  - **Pendente**: commit + push + deploy (compose fix local + NotificationService fix + testes + frontend FCM); validação de token FCM real em device pós-deploy.
+  - **Arquivos**: `src/lib/firebase.ts`, `public/firebase-messaging-sw.js`, `swiftpay-api-core/Services/NotificationService.cs`, `swiftpay-api/Tests/Unit/Notification/NotificationServicePushTests.cs`, `swiftpay-api/docker-compose.production.yaml`
+  - **Próxima**: commit (TODOS staged) + push + deploy + validação device.
