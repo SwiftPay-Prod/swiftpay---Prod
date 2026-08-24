@@ -16,7 +16,7 @@ const ACCORDION_COLOR_MAP: Record<string, string> = {
 	warning: 'var(--warning)',
 	danger: 'var(--danger)',
 	rose: 'var(--danger)',
-	secondary: 'var(--secondary)',
+	secondary: 'rgba(255,255,255,0.65)',
 	muted: 'rgba(255,255,255,0.45)',
 };
 

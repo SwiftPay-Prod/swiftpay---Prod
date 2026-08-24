@@ -410,7 +410,7 @@ export function DataTable<T>({
 
 			<div className="hidden md:block">
 				<Table className="w-full">
-					<Table.ScrollContainer>
+					<Table.ScrollContainer className="overflow-x-auto scrollbar-thin scrollbar-gutter-stable [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-track]:bg-white/5 hover:[&::-webkit-scrollbar-thumb]:bg-white/30">
 						<Table.Content aria-label="Tabela de dados" className={`${minWidth}`}>
 							<Table.Header>
 								{columns.map((column, index) => {

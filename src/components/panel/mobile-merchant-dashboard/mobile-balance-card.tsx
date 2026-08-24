@@ -30,67 +30,70 @@ export function MobileBalanceCard({
 	const statusParse = merchantStatus ? merchantStatusParse[merchantStatus as keyof typeof merchantStatusParse] : null;
 
 	return (
-		<div className="relative overflow-hidden rounded-lg border border-border/80 bg-card p-4 shadow-2xs">
-			<div className="relative flex items-start justify-between gap-3 mb-4">
-				<div className="flex items-center gap-2">
-					<p className="truncate text-sm font-bold text-foreground">{merchantName ?? '-'}</p>
-					{statusParse && (
-						<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="sm">
-							{statusParse.label}
-						</Chip>
-					)}
+		<div className="relative overflow-hidden rounded-[20px] border border-white/12 bg-card p-6">
+			<div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand/10 blur-3xl" />
+			<div className="relative z-10 flex flex-col gap-4">
+				<div className="flex items-start justify-between gap-3">
+					<div className="flex items-center gap-2">
+						<p className="truncate text-sm font-bold tracking-tight text-white">{merchantName ?? '-'}</p>
+						{statusParse && (
+							<Chip variant="soft" color={mapParseColorToChipColor(statusParse.color)} size="sm">
+								{statusParse.label}
+							</Chip>
+						)}
+					</div>
+					<Button
+						variant="tertiary"
+						size="sm"
+						isIconOnly
+						aria-label={isVisible ? 'Ocultar valores' : 'Mostrar valores'}
+						onPress={onToggleVisibility}
+						className="border border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white rounded-full"
+					>
+						<Icon icon={isVisible ? ViewOffSlashIcon : ViewIcon} className="icon-xs" />
+					</Button>
 				</div>
-				<Button
-					variant="tertiary"
-					size="sm"
-					isIconOnly
-					aria-label={isVisible ? 'Ocultar valores' : 'Mostrar valores'}
-					onPress={onToggleVisibility}
-					className="border border-border bg-surface-secondary text-muted-foreground hover:text-foreground"
-				>
-					<Icon icon={isVisible ? ViewOffSlashIcon : ViewIcon} className="icon-xs" />
-				</Button>
-			</div>
-			<div className="mb-5">
-				<p className="mb-1 text-\[0.6875rem\] font-bold uppercase tracking-[0.14em] text-accent">Disponível agora</p>
-				{available !== null ? (
-					<AnimatedCurrency
-						value={available}
-						className={`text-3xl sm:text-4xl font-extrabold tabular-nums text-foreground tracking-tight ${isVisible ? '' : 'visual-blur'}`}
-					/>
-				) : (
-					<span className="text-3xl font-extrabold text-foreground">-</span>
-				)}
-			</div>
-
-			<div className={`relative z-10 grid gap-2.5 ${hasReserveEnabled ? 'grid-cols-2' : 'grid-cols-1'}`}>
-				<div className="rounded-md bg-surface border border-border/80 px-3 py-2.5">
-					<p className="mb-1 text-\[0.625rem\] font-bold uppercase tracking-[0.14em] text-warning">Pendente</p>
-					{pending !== null ? (
+				<div>
+					<p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-white/60">Disponível agora</p>
+					{available !== null ? (
 						<AnimatedCurrency
-							value={pending}
-							className={`text-base font-bold tabular-nums text-foreground ${isVisible ? '' : 'visual-blur'}`}
+							value={available}
+							className={`font-mono text-3xl font-extrabold tabular-nums tracking-tight text-white ${isVisible ? '' : 'visual-blur'}`}
 						/>
 					) : (
-						<span className="text-base font-bold text-foreground">-</span>
+						<span className="font-mono text-3xl font-extrabold tabular-nums text-white">-</span>
 					)}
-					<p className="mt-1 text-\[0.6875rem\] text-muted-foreground leading-snug">Valores aguardando compensação.</p>
 				</div>
 
-				{hasReserveEnabled && (
-					<div className="rounded-md bg-surface border border-border/80 px-3 py-2.5">
-						<p className="mb-1 text-\[0.625rem\] font-bold uppercase tracking-[0.14em] text-info">Reservado</p>
-						{reserved !== null ? (
+				<div className={`grid gap-3 ${hasReserveEnabled ? 'grid-cols-2' : 'grid-cols-1'}`}>
+					<div className="rounded-[12px] bg-surface-deep border border-white/8 px-3 py-3">
+						<p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-white/60">Pendente</p>
+						{pending !== null ? (
 							<AnimatedCurrency
-								value={reserved}
-								className={`text-base font-bold tabular-nums text-foreground ${isVisible ? '' : 'visual-blur'}`}
+								value={pending}
+								className={`font-mono text-base font-bold tabular-nums text-white/80 ${isVisible ? '' : 'visual-blur'}`}
 							/>
 						) : (
-							<span className="text-base font-bold text-foreground">-</span>
+							<span className="font-mono text-base font-bold tabular-nums text-white/80">-</span>
 						)}
-						<p className="mt-1 text-\[0.6875rem\] text-muted-foreground leading-snug">Saldo retido por reserva financeira.</p>
+						<p className="mt-1 text-[11px] text-white/50 leading-snug">Valores aguardando compensação.</p>
 					</div>
-				)}
+
+					{hasReserveEnabled && (
+						<div className="rounded-[12px] bg-surface-deep border border-white/8 px-3 py-3">
+							<p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-white/60">Reservado</p>
+							{reserved !== null ? (
+								<AnimatedCurrency
+									value={reserved}
+									className={`font-mono text-base font-bold tabular-nums text-white/80 ${isVisible ? '' : 'visual-blur'}`}
+								/>
+							) : (
+								<span className="font-mono text-base font-bold tabular-nums text-white/80">-</span>
+							)}
+							<p className="mt-1 text-[11px] text-white/50 leading-snug">Saldo retido por reserva financeira.</p>
+						</div>
+					)}
+				</div>
 			</div>
 		</div>
 	);

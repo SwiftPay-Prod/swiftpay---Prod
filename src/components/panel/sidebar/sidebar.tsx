@@ -41,7 +41,7 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
 
       {/* Nav */}
-      <div className="flex-1 overflow-y-auto min-h-0 scrollbar-hide py-2">
+      <div className="flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-gutter-stable py-3">
         <div className={showFull ? 'px-2' : 'px-2'}>
           <SidebarMenu sections={menuSections} />
         </div>
