@@ -193,7 +193,7 @@ export default function PublicDocsPage() {
               <button
                 onClick={() =>
                   copyToClipboard(
-                    `curl --location 'https://swiftpayment.info/v1/auth/token' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n    "grant_type": "client_credentials",\n    "publicKey": "sua_public_key_aqui",\n    "secretKey": "sua_secret_key_aqui"\n  }'`,
+                    `curl --location 'https://swiftpayment.info/api/payment/v1/auth/token' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n    "grant_type": "client_credentials",\n    "publicKey": "sua_public_key_aqui",\n    "secretKey": "sua_secret_key_aqui"\n  }'`,
                     'auth-curl'
                   )
                 }
@@ -215,7 +215,7 @@ export default function PublicDocsPage() {
 
             <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
 {`# 1. Gerar Token Bearer (Client Credentials)
-curl --location 'https://swiftpayment.info/v1/auth/token' \\
+curl --location 'https://swiftpayment.info/api/payment/v1/auth/token' \\
   --header 'Content-Type: application/json' \\
   --data '{
     "grant_type": "client_credentials",
@@ -269,7 +269,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   <tr>
                     <td className="p-3 font-mono text-success">method</td>
                     <td className="p-3 text-success font-semibold">Sim</td>
-                    <td className="p-3">Método de pagamento (usar &quot;PIX&quot;)</td>
+                    <td className="p-3">Método de pagamento — usar <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded">&quot;Pix&quot;</code> (gateway exclusivamente PIX)</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono text-success">amount</td>
@@ -377,7 +377,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
           </p>
 
           <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
-{`curl --location 'https://swiftpayment.info/v1/transactions/019fc9e7-6ef3-7a91-98ec-baef52f1fc0c' \\
+{`curl --location 'https://swiftpayment.info/api/payment/v1/transactions/019fc9e7-6ef3-7a91-98ec-baef52f1fc0c' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'`}
           </pre>
 
@@ -392,7 +392,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
             Lista as transações da sua conta com paginação e filtros opcionais por status, método, período ou ID externo.
           </p>
           <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
-{`curl --location 'https://swiftpayment.info/v1/transactions?page=1&pageSize=20&status=Paid&startDate=2026-08-01&endDate=2026-08-31' \\
+{`curl --location 'https://swiftpayment.info/api/payment/v1/transactions?page=1&pageSize=20&status=Paid&startDate=2026-08-01&endDate=2026-08-31' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'
 
 # Resposta (200 OK)
@@ -423,7 +423,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
             Retorna o saldo disponível, pendente e reservado da sua conta, além do volume movimentado no período.
           </p>
           <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
-{`curl --location 'https://swiftpayment.info/v1/balance' \\
+{`curl --location 'https://swiftpayment.info/api/payment/v1/balance' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...'
 
 # Resposta (200 OK)
@@ -521,7 +521,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
           </div>
 
           <pre className="bg-[#000000] text-white p-4 rounded-xl font-mono text-xs overflow-x-auto border border-white/12 leading-relaxed">
-{`curl --location 'https://swiftpayment.info/v1/cashouts' \\
+{`curl --location 'https://swiftpayment.info/api/payment/v1/cashouts' \\
   --header 'Authorization: Bearer eyJhbGciOiJIUzI1Ni...' \\
   --header 'Content-Type: application/json' \\
   --data '{
@@ -714,7 +714,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
             <button
               onClick={() =>
                 copyToClipboard(
-                  `Você é um desenvolvedor sênior especialista na API REST da SwiftPay.\nImplemente uma integração completa com a API SwiftPay no domínio https://swiftpayment.info.\nUse a OpenAPI Spec oficial como fonte da verdade: https://swiftpayment.info/api/payment/openapi/v1.json\nFluxo básico:\n1. POST /v1/auth/token para obter token Bearer OAuth2 client_credentials com publicKey e secretKey.\n2. POST /v1/transactions para criar cobrança PIX com amount em centavos, customerName, customerDocument, customerEmail.\n3. Consulte status em GET /v1/transactions/{id} e saldo em GET /v1/balance.\n4. Configure a URL de webhook da aplicação no portal para receber eventos em tempo real.`,
+                  `Você é um desenvolvedor sênior especialista na API REST da SwiftPay (gateway 100% PIX).\nImplemente uma integração completa com a API SwiftPay.\nBase URL: https://swiftpayment.info/api/payment\nUse a OpenAPI Spec oficial como fonte da verdade: https://swiftpayment.info/api/payment/openapi/v1.json\nFluxo básico:\n1. POST /v1/auth/token para obter token Bearer (OAuth2 client_credentials) com publicKey e secretKey. O token expira em 1 hora (3600s).\n2. POST /v1/transactions para criar cobrança PIX SEMPRE com method: "Pix" (a SwiftPay é exclusivamente PIX — não use CreditCard/Boleto), amount em centavos, customerName, customerDocument, customerEmail.\n3. Consulte status em GET /v1/transactions/{transactionId} e saldo em GET /v1/balance.\n4. Configure a URL de webhook da sua aplicação no portal (aba "Configurações e API") ou informe callbackUrl por transação para receber eventos em tempo real.`,
                   'ai-prompt'
                 )
               }

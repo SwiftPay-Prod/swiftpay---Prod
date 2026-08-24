@@ -655,3 +655,11 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`, `dev GET / 200` com `py-3` no `HTML`, hot-reload `localhost:3000`.
   - **Arquivos**: `sidebar-menu.tsx`
   - **Próxima**: `commit + push + Deploy` junto com lote `12581d5`.
+
+- `DONE` fix(docs) Spec: #100 — prompt IA + cURLs Base URL correta + R11 PIX-only — 2026-08-24
+  - **Contexto**: Prompt "Integrar via IA" apontava domínio raiz `https://swiftpayment.info` sem prefixo `/api/payment`; cURLs de exemplo usavam `/v1/*` direto; tabela de params não fixava `method: Pix` (enum real `Pix/CreditCard/Boleto` violava R11 se usado por IA).
+  - **Verify ao vivo**: `POST /api/payment/v1/auth/token` → `400 O Public Key é obrigatório` (rota viva); `/v1/auth/token` raiz → `401 Credenciais inválidas` (nginx `location /v1/ → 5166` payment-api direto); OpenAPI real em `/api/payment/openapi/v1.json` com `PaymentMethod enum [Pix, CreditCard, Boleto]` e `CreateTransactionRequest` sem required.
+  - **Fix**: prompt IA reescrito com Base URL `/api/payment`, `method: "Pix"` obrigatório, expiração 1h; 5 cURLs (`auth/token`, `transactions/{id}`, `transactions list`, `balance`, `cashouts`) → `/api/payment/v1/...`; tabela `method` documenta `"Pix"` exclusivo.
+  - **Dívida backend**: `openapi/v1.json` `servers: [{url: http://swiftpayment.info/}]` aponta raiz sem prefixo — bug FastEndpoints Swagger config no `swiftpay-api` (não bloqueia; spec é consumida por path absoluto).
+  - **Arquivos**: `src/app/docs/page.tsx`
+  - **Próxima**: `commit + push + deploy`.
