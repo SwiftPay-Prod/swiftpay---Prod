@@ -3,7 +3,6 @@
 import client from "@/clients/client";
 import type { ReadMerchantDashboardData, DashboardPeriod } from "@/types/merchant/dashboard";
 import type { ApiResponse } from "@/types/common";
-import type { AxiosError } from "axios";
 
 export interface DashboardFilters {
   period?: DashboardPeriod;
@@ -24,7 +23,7 @@ export async function getMerchantDashboard(
       return { data: null, message: null, error: { message: "Resposta vazia do backend" } };
     }
     return response.data;
-  } catch (error) {
+  } catch {
     console.warn(`[getMerchantDashboard] Falha ao conectar ao backend.`);
     return { data: null, message: null, error: { message: "Não foi possível carregar o dashboard no momento." } };
   }

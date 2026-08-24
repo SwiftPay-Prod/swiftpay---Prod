@@ -1,6 +1,5 @@
 'use client';
 
-import { Chip } from '@heroui/react';
 import { AvatarUser } from '@/components/ui/avatar-user';
 import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { UserProfilePopover } from './user-profile-popover';

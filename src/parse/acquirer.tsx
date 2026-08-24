@@ -12,7 +12,6 @@ import {
 	AnonymousIcon,
 	Shield01Icon,
 	CancelCircleIcon,
-	SafeDelivery01Icon,
 	BankIcon,
 	HourglassIcon,
 	Search01Icon,

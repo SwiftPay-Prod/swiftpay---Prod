@@ -25,7 +25,7 @@ export function CreateCheckoutModal({
 	isOpen,
 	onOpenChange,
 	merchantId,
-	environment,
+	environment: _environment,
 	onSuccess,
 }: CreateCheckoutModalProps) {
 	const [state, formAction, isPending] = useActionState(

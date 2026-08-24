@@ -1,14 +1,13 @@
 'use client';
 
-import { Button, InputGroup, Label, Link, TextField } from '@heroui/react';
-import { useState, useEffect } from 'react';
+import { Button, InputGroup, Label, TextField } from '@heroui/react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Routes } from '@/router/routes';
 import { getOrCreateDeviceId } from '@/utils/device';
 import { Icon } from '@/components/ui/icon';
-import { ViewIcon, ViewOffIcon, GoogleIcon } from '@hugeicons/core-free-icons';
-import { Separator } from '@/components/ui/separator';
-import { sendEmailConfirmation, signIn } from '@/app/actions/auth';
+import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
+import { signIn } from '@/app/actions/auth';
 
 interface SignInFormProps {
 	onSwitchToSignUp: () => void;
@@ -23,13 +22,12 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [deviceId, setDeviceId] = useState<string>('');
+	const [deviceId] = useState<string>(() => {
+		if (typeof window === 'undefined') return '';
+		return getOrCreateDeviceId();
+	});
 	const [requiresEmailVerification, setRequiresEmailVerification] = useState(false);
 	const [createdEmail, setCreatedEmail] = useState<string>('');
-
-	useEffect(() => {
-		setDeviceId(getOrCreateDeviceId());
-	}, []);
 
 	async function handleEmailSubmit(e: React.FormEvent) {
 		e.preventDefault();

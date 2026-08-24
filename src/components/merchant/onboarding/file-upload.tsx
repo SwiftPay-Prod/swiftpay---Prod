@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect, useTransition } from 'react';
+import { useState, useRef, useCallback, useTransition } from 'react';
 import { Button, AlertDialog, FieldError, Modal, Spinner } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { AsyncButton } from '@/components/ui/async-button';
@@ -60,10 +60,11 @@ export function FileUpload({
 	const [isPreviewLoading, setIsPreviewLoading] = useState(true);
 	const [isDeleting, startDeleteTransition] = useTransition();
 	const inputRef = useRef<HTMLInputElement>(null);
-
-	useEffect(() => {
+	const [lastCurrentFile, setLastCurrentFile] = useState<FileData | null | undefined>(currentFile);
+	if (currentFile !== lastCurrentFile) {
+		setLastCurrentFile(currentFile);
 		setFileInfo(currentFile ?? null);
-	}, [currentFile]);
+	}
 
 	const handleFileSelect = useCallback(
 		async (event: React.ChangeEvent<HTMLInputElement>) => {

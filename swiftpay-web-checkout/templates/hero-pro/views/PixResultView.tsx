@@ -59,10 +59,10 @@ export function PixResultView({
 		let isMounted = true;
 
 		if (!pixCode) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect -- reset QR code when pixCode becomes empty is intentional
 			setQrCodeDataUrl(null);
 			return;
 		}
-
 		QRCode.toDataURL(pixCode, {
 			width: 200,
 			margin: 2,
@@ -136,6 +136,7 @@ export function PixResultView({
 				{/* QR Code generated from Pix copy-and-paste code */}
 				<div className="bg-white p-4 rounded-xl inline-block mb-4 shadow-sm mx-auto">
 					{qrCodeDataUrl ? (
+						// eslint-disable-next-line @next/next/no-img-element -- QR code is base64 data URL generated at runtime; next/image não otimiza data URLs e src é dinâmico
 						<img
 							src={qrCodeDataUrl}
 							alt="QR Code PIX"

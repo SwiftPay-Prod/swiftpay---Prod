@@ -108,6 +108,7 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 
 	useEffect(() => {
 		let cancelled = false;
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- reset config synchronously on merchant change before async fetch is intentional
 		setReserveConfig(null);
 
 		getMerchantFees(merchantId).then((response) => {
@@ -133,7 +134,7 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 
 		if (!shouldRefetch) return;
 
-		let cancelled = false;
+		let _cancelled = false;
 
 		getMerchantDashboard(merchantId, currentFilters)
 			.then((response) => {
@@ -154,7 +155,7 @@ export function useMerchantDashboard({ merchantId }: UseMerchantDashboardProps) 
 			});
 
 		return () => {
-			cancelled = true;
+			_cancelled = true;
 		};
 	}, [dashboardRefreshKey, merchantId, fetchedKey, filtersKey, currentFilters]);
 

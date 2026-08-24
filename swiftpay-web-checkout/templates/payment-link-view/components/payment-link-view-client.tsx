@@ -262,7 +262,7 @@ export default function PaymentLinkViewTemplate({
 	const [status, setStatus] = useState<PaymentLinkData['status']>(paymentLink.status);
 	const [copiedField, setCopiedField] = useState<'pix' | 'boleto' | null>(null);
 	const [nowMs, setNowMs] = useState<number>(() => Date.now());
-	const [preferredMethod, setPreferredMethod] = useState<DisplayMethod | null>(null);
+	const [preferredMethod, _setPreferredMethod] = useState<DisplayMethod | null>(null);
 	const [isPrintingInvoice, setIsPrintingInvoice] = useState(false);
 
 	const availableMethods = useMemo(() => resolveDisplayMethods(paymentLink), [paymentLink]);
@@ -305,7 +305,7 @@ export default function PaymentLinkViewTemplate({
 	const hasBoletoPixFallback = Boolean(paymentLink.boleto?.pixCopyAndPaste || paymentLink.boleto?.pixQrCode);
 	const hasPixData = availableMethods.includes('Pix') || hasBoletoPixFallback;
 	const hasBoletoData = availableMethods.includes('Boleto');
-	const hasBothMethods = hasPixData && hasBoletoData;
+	const _hasBothMethods = hasPixData && hasBoletoData;
 	const boletoBarcodeValue = getBoletoBarcodePayload(paymentLink);
 	const boletoRecipientName = normalizeText(paymentLink.boleto?.recipientName);
 	const boletoRecipientDocument = maskDocument(paymentLink.boleto?.recipientDocument);

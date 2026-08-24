@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Label } from '@heroui/react';
-import { Icon } from '@/components/ui/icon';
 import { SectionAccordion } from '@/components/ui/system-accordion';
 import {
 	UserIcon,

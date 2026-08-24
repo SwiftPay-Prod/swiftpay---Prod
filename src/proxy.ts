@@ -15,7 +15,7 @@ import { listMerchants } from './app/actions/merchant/crud';
 import type { MinimalMerchant } from './types/merchant/crud';
 import { isMerchantDraftOrComplement } from './utils/merchant-utils';
 
-const UUID_REGEX = /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const _UUID_REGEX = /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function continueRequest(pathname: string, selectedMerchant?: MinimalMerchant) {
 	const response = NextResponse.next();
@@ -39,7 +39,7 @@ function redirectTo(request: NextRequest, pathname: string) {
 
 export async function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-	const hostname = request.headers.get('host')?.split(':')[0] ?? '';
+	const _hostname = request.headers.get('host')?.split(':')[0] ?? '';
 	const accessToken = request.cookies.get(BaseCookie.accessToken)?.value;
 
 	if (isOpenRoute(pathname)) {

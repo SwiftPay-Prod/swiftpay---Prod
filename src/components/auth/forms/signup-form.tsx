@@ -1,15 +1,13 @@
 'use client';
 
-import { Button, InputGroup, Label, Link, TextField } from '@heroui/react';
+import { Button, InputGroup, Label, TextField } from '@heroui/react';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from '@heroui/react';
 import { Routes } from '@/router/routes';
-import { AsyncButton } from '@/components/ui/async-button';
 import { getOrCreateDeviceId } from '@/utils/device';
 import { Icon } from '@/components/ui/icon';
 import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
-import { Separator } from '@/components/ui/separator';
 import { InternationalPhoneInput } from '@/components/ui/international-phone-input';
 import { isValidPhone } from '@/utils/validations';
 import { signUp as signUpAction } from '@/app/actions/auth';
@@ -31,33 +29,42 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 	const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [deviceId, setDeviceId] = useState<string>('');
-	const [refCode, setRefCode] = useState<string>('');
+	const [deviceId] = useState<string>(() => {
+		if (typeof window === 'undefined') return '';
+		return getOrCreateDeviceId();
+	});
+	const [refCode, setRefCode] = useState<string>(() => {
+		if (typeof window === 'undefined') return '';
+		return (searchParams.get('refCode')?.trim().toUpperCase() ?? '');
+	});
 	const [isReferralValid, setIsReferralValid] = useState(false);
 	const [isReferralLoading, setIsReferralLoading] = useState(false);
 	const [referralError, setReferralError] = useState<string | null>(null);
 	const [referralOwnerName, setReferralOwnerName] = useState<string>('');
 	const [requiresEmailVerification, setRequiresEmailVerification] = useState(false);
 	const [createdEmail, setCreatedEmail] = useState<string>('');
+	const [lastRefCodeParam, setLastRefCodeParam] = useState<string>(() => searchParams.get('refCode') ?? '');
 
-	useEffect(() => {
-		setDeviceId(getOrCreateDeviceId());
-	}, []);
-
-	useEffect(() => {
-		const rawCode = searchParams.get('refCode')?.trim();
-		const code = rawCode?.toUpperCase() ?? '';
-
+	// Ajuste durante render: sincroniza refCode quando searchParams muda (evita setState em effect)
+	const currentRefCodeParam = searchParams.get('refCode') ?? '';
+	if (currentRefCodeParam !== lastRefCodeParam) {
+		setLastRefCodeParam(currentRefCodeParam);
+		const code = currentRefCodeParam.trim().toUpperCase() ?? '';
 		setRefCode(code);
 		setIsReferralValid(false);
 		setReferralError(null);
 		setReferralOwnerName('');
+	}
 
+	useEffect(() => {
+		const code = refCode.trim().toUpperCase();
 		if (!code) {
 			return;
 		}
-
+		// Evita refetch se já validado para o mesmo código (derivado do param já sincronizado acima)
+		// Mantém fetch apenas quando refCode tem valor; loading é gerenciado aqui sem setState síncrono extra fora de callback
 		let cancelled = false;
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- loading flag for referral fetch is intentional synchronous setState within effect
 		setIsReferralLoading(true);
 
 		fetch(`/api/auth/referrals/${encodeURIComponent(code)}`)
@@ -89,7 +96,7 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 		return () => {
 			cancelled = true;
 		};
-	}, [searchParams]);
+	}, [refCode]);
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();

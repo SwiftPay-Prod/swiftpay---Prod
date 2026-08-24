@@ -60,6 +60,7 @@ export function PrintableBoletoDocument({
 					<section className="print-boleto-box">
 						<div className={`print-header-grid${hasLogo && hasLineDigitable ? '' : ' print-header-grid-single'}`}>
 							<div className="print-header-cell print-logo-cell">
+								{/* eslint-disable-next-line @next/next/no-img-element -- logoUrl is merchant/bank external URL not known at build time; next/image would require remotePatterns */}
 								{hasLogo && <img src={logoUrl} alt="Logo" className="print-swiftpay-logo" />}
 							</div>
 							{hasLineDigitable && <div className="print-header-cell print-line-digitable">{lineDigitable}</div>}
@@ -132,6 +133,7 @@ export function PrintableBoletoDocument({
 								<div className="print-mechanical-label">Autenticação Mecânica</div>
 								<div className="print-barcode-wrapper">
 									{barcodeDataUrl ? (
+										// eslint-disable-next-line @next/next/no-img-element -- barcodeDataUrl is base64 data URL generated at runtime; next/image não otimiza data URLs
 										<img src={barcodeDataUrl} alt="Código de barras do boleto" className="print-barcode-image" />
 									) : (
 										<div className="print-barcode-fallback">Código de barras indisponível</div>

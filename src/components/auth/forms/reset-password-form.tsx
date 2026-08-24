@@ -4,7 +4,6 @@ import { Button, InputGroup, Label, TextField } from '@heroui/react';
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from '@heroui/react';
-import { AsyncButton } from '@/components/ui/async-button';
 import { Icon } from '@/components/ui/icon';
 import { ViewIcon, ViewOffIcon } from '@hugeicons/core-free-icons';
 import { resetPassword } from '@/app/actions/auth';

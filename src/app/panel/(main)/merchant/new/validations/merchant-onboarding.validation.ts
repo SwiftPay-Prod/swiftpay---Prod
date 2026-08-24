@@ -1,4 +1,4 @@
-import { MerchantKycDocumentType, PaymentMethod } from '@/types/enums';
+import { MerchantKycDocumentType } from '@/types/enums';
 import { isValidCNPJ, isValidCPF, isValidPhone, isValidURL } from '@/utils/validations';
 import type {
 	MerchantOnboardingAnswers,

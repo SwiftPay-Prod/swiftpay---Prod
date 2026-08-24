@@ -72,7 +72,7 @@ export function Loader({
 }
 
 export function FullPageLoader() {
-  const isDark = useSystemTheme();
+  const _isDark = useSystemTheme();
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background">

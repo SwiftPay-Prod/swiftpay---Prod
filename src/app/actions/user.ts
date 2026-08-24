@@ -22,7 +22,7 @@ import type {
   UpdateUserOnboardingRequest,
   UpdateUserOnboardingData,
 } from '@/types/user/onboarding';
-import type { RankingResponse, GetRankingRequest, RankingEntry } from "@/types/ranking";
+import type { RankingResponse, GetRankingRequest } from "@/types/ranking";
 import type { UserReferralsData } from "@/types/user/referrals";
 import type { GenerateReferralLinkData } from "@/types/user/referrals";
 import type { UserReferralReferredUserMovementsData } from "@/types/user/referrals";

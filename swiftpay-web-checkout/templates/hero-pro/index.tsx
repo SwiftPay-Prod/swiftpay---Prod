@@ -126,6 +126,36 @@ export function HeroProTemplate({ checkout, isSandbox = false, initialCalculatio
 		orderDataRef.current = orderData;
 	}, [orderData]);
 
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [cpf, setCpf] = useState('');
+	const [phone, setPhone] = useState('');
+
+	const [cep, setCep] = useState('');
+	const [street, setStreet] = useState('');
+	const [number, setNumber] = useState('');
+	const [complement, setComplement] = useState('');
+	const [neighborhood, setNeighborhood] = useState('');
+	const [city, setCity] = useState('');
+	const [state, setState] = useState('');
+
+	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(firstActivePaymentMethod);
+	const [cardNumber, setCardNumber] = useState('');
+	const [cardName, setCardName] = useState('');
+	const [cardExpiry, setCardExpiry] = useState('');
+	const [cardCvc, setCardCvc] = useState('');
+	const [installments, setInstallments] = useState('1');
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [errors, setErrors] = useState<FormErrors>({});
+	const [submitError, setSubmitError] = useState<string | null>(null);
+
+	// Coupon state
+	const couponEnabled = config.couponEnabled ?? false;
+	const [couponCode, setCouponCode] = useState('');
+	const [appliedCoupon, setAppliedCoupon] = useState<ValidatedCoupon | null>(null);
+	const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+	const [couponError, setCouponError] = useState<string | null>(null);
 	const handleCancel = useCallback(() => {
 		if (config.cancelUrl) {
 			window.location.assign(config.cancelUrl);
@@ -224,6 +254,7 @@ export function HeroProTemplate({ checkout, isSandbox = false, initialCalculatio
 	// Auto-detect system theme preference
 	useEffect(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- syncing external media query to React state on mount is intentional (external system subscription)
 		setTheme(mediaQuery.matches ? 'dark' : 'light');
 
 		const handleChange = (e: MediaQueryListEvent) => {
@@ -259,37 +290,6 @@ export function HeroProTemplate({ checkout, isSandbox = false, initialCalculatio
 		onStatusChanged: handlePaymentStatusChanged,
 	});
 
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [cpf, setCpf] = useState('');
-	const [phone, setPhone] = useState('');
-
-	const [cep, setCep] = useState('');
-	const [street, setStreet] = useState('');
-	const [number, setNumber] = useState('');
-	const [complement, setComplement] = useState('');
-	const [neighborhood, setNeighborhood] = useState('');
-	const [city, setCity] = useState('');
-	const [state, setState] = useState('');
-
-	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(firstActivePaymentMethod);
-	const [cardNumber, setCardNumber] = useState('');
-	const [cardName, setCardName] = useState('');
-	const [cardExpiry, setCardExpiry] = useState('');
-	const [cardCvc, setCardCvc] = useState('');
-	const [installments, setInstallments] = useState('1');
-
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [errors, setErrors] = useState<FormErrors>({});
-	const [submitError, setSubmitError] = useState<string | null>(null);
-
-	// Coupon state
-	const couponEnabled = config.couponEnabled ?? false;
-	const [couponCode, setCouponCode] = useState('');
-	const [appliedCoupon, setAppliedCoupon] = useState<ValidatedCoupon | null>(null);
-	const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
-	const [couponError, setCouponError] = useState<string | null>(null);
-
 	useEffect(() => {
 		if (paymentMethod === 'Pix' && pixEnabled) {
 			return;
@@ -303,6 +303,7 @@ export function HeroProTemplate({ checkout, isSandbox = false, initialCalculatio
 			return;
 		}
 
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- fallback to first available payment method when current becomes disabled
 		setPaymentMethod(firstActivePaymentMethod);
 	}, [paymentMethod, pixEnabled, creditCardEnabled, boletoEnabled, firstActivePaymentMethod]);
 

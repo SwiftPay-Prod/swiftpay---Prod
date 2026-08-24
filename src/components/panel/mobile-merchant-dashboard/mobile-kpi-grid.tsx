@@ -3,7 +3,6 @@
 import {
 	Analytics02Icon,
 	CheckmarkCircle02Icon,
-	CancelCircleIcon,
 	MoneyExchange01Icon,
 	MoneyReceiveSquareIcon,
 	Alert01Icon,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { MailOpen01Icon, Refresh03Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
@@ -10,18 +10,14 @@ import { Routes } from '@/router/routes';
 
 export default function PublicVerifyEmailPage() {
 	const router = useRouter();
-	const [email, setEmail] = useState<string>('');
+	const [email] = useState<string>(() => {
+		if (typeof window === 'undefined') return '';
+		return new URLSearchParams(window.location.search).get('email') ?? '';
+	});
 	const [isResending, setIsResending] = useState(false);
 	const [isChecking, setIsChecking] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState(false);
-
-	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const emailParam = params.get('email') ?? '';
-		if (emailParam) setEmail(emailParam);
-	}, []);
-
 	async function handleResend() {
 		if (!email) return;
 		setIsResending(true);

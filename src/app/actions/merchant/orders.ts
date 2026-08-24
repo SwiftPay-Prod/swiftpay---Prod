@@ -10,13 +10,7 @@ import type {
   CreateOrderResult,
 } from "@/types/merchant/orders";
 import type { ApiResponse, Paginated } from "@/types/common";
-import {
-  OrderFulfillmentStatus,
-  OrderStatus,
-  PaymentMethod,
-  PaymentStatus,
-  PaymentEnvironment,
-} from "@/types/enums";
+import { OrderFulfillmentStatus } from "@/types/enums";
 
 export async function createMerchantOrder(
   merchantId: string,

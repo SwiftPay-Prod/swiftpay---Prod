@@ -1,7 +1,5 @@
 'use client';
 
-import { Wallet01Icon } from '@hugeicons/core-free-icons';
-import { Icon } from '@/components/ui/icon';
 import type { ApiResponse } from '@/types/common';
 import type { AdminMinimalReferralCommissionWithdrawalRequest } from '@/types/admin/referrals';
 import type { WithdrawalFilters } from './page';

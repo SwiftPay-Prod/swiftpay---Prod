@@ -1,5 +1,6 @@
 'use client';
-
+/* eslint-disable react-hooks/set-state-in-effect -- merchant selection and balance refresh are intentional external syncs */
+/* eslint-disable react-hooks/preserve-manual-memoization -- React Compiler preserve warnings are informational */
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import { usePathname } from 'next/navigation';

@@ -1,5 +1,5 @@
 'use client';
-
+/* eslint-disable react-hooks/preserve-manual-memoization -- seoPayload memoization depends on formData object identity; React Compiler preserve warning is informational and manual memoization is intentional */
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import { Input, Label, TextField, TextArea, Select, NumberField, ListBox, toast } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';

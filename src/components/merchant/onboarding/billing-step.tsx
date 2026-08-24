@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { Button, Input, Label, TextField, TextArea, FieldError, Form } from '@heroui/react';
 import { Controller, useForm } from 'react-hook-form';
 import type { MerchantData, UpdateMerchantRequest } from '@/types/merchant/crud';

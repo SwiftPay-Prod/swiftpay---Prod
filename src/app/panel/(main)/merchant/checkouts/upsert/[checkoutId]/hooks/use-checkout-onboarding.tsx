@@ -346,6 +346,7 @@ function sanitizeUrl(url: string | null | undefined): string | undefined {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function validateStepValues(stepKey: CheckoutStepSaveKey, values: any): string | null {
 	switch (stepKey) {
 		case 'payments': {
@@ -651,14 +652,13 @@ export function useCheckoutOnboarding({
 		const storageKey = `checkout-active-guide-seen:${checkout.id}`;
 		const alreadySeen =
 			typeof window !== 'undefined' && window.localStorage.getItem(storageKey) === 'true';
-
 		if (!alreadySeen) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect -- activation guide modal should open when checkout becomes Active and not yet seen
 			setIsActivationGuideModalOpen(true);
 		}
 
 		setActivationGuidePending(false);
 	}, [activationGuidePending, checkout?.id, checkout?.status]);
-
 	useEffect(() => {
 		if (!isFinalizingActivationTransition) {
 			return;
@@ -1006,7 +1006,7 @@ export function useCheckoutOnboarding({
 		} finally {
 			setSavingStepKey(null);
 		}
-	}, [checkout, formValues, merchantId, onboardingForm, onRefresh, productsDraft, messagesDraft, trackingDraft, seoDraft]);
+	}, [checkout, formValues, merchantId, onboardingForm, onRefresh, productsDraft, messagesDraft, trackingDraft, seoDraft, setOnboardingFormValues]);
 	const livePreviewUrl = (() => {
 		if (!checkout?.checkoutUrl) {
 			return null;

@@ -19,7 +19,6 @@ import {
 	BankIcon,
 	CheckmarkCircle02Icon,
 	MinusSignSquareIcon,
-	Wallet02Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { AsyncButton } from '@/components/ui/async-button';
@@ -92,7 +91,7 @@ function ModalContent({
 	const acquirersResponse = use(acquirersPromise);
 	const acquirers = acquirersResponse?.data?.items ?? [];
 
-	const [selectedScope, setSelectedScope] = useState<'Acquirer'>('Acquirer');
+	const [selectedScope, _setSelectedScope] = useState<'Acquirer'>('Acquirer');
 	const [selectedAcquirerId, setSelectedAcquirerId] = useState<string>('');
 	const [selectedAcquirerTarget, setSelectedAcquirerTarget] = useState<AcquirerAdjustmentTarget>('MerchantBalance');
 	const [amount, setAmount] = useState<string>('');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { createMerchant, respondKycPendingItem, submitOnboarding, updateMerchant } from '@/app/actions/merchant/crud';
 import {
@@ -188,17 +188,18 @@ export function useMerchantOnboardingForm({
 	);
 
 	const [merchant, setMerchant] = useState(initialMerchant);
-	const [activeStepIndex, setActiveStepIndex] = useState(0);
+	const [activeStepIndex, setActiveStepIndex] = useState(() => getStepIndexFromMerchant(initialMerchant));
 	const [stepErrors, setStepErrors] = useState(INITIAL_STEP_ERRORS);
 	const [isSavingStep, startSavingStep] = useTransition();
 	const [isSubmitting, startSubmitting] = useTransition();
-
-	useEffect(() => {
+	const [lastInitialMerchant, setLastInitialMerchant] = useState(initialMerchant);
+	if (initialMerchant !== lastInitialMerchant) {
+		setLastInitialMerchant(initialMerchant);
 		form.reset(defaultAnswers);
 		setMerchant(initialMerchant);
 		setActiveStepIndex(getStepIndexFromMerchant(initialMerchant));
 		setStepErrors(INITIAL_STEP_ERRORS);
-	}, [defaultAnswers, form, initialMerchant]);
+	}
 
 	const completedByStep = useMemo(
 		() => ({

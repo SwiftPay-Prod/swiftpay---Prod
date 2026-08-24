@@ -29,7 +29,7 @@ export function UserMetaCard({
 	isBalanceVisible = true,
 	size = 'compact',
 }: UserMetaCardProps) {
-	const parse = level ? merchantLevelParse[level] : null;
+	const _parse = level ? merchantLevelParse[level] : null;
 	const isMaxLevel = !nextLevelDisplayName;
 	const remaining = maxThreshold && totalVolume != null ? maxThreshold - totalVolume : null;
 	const isLoaded = level != null;

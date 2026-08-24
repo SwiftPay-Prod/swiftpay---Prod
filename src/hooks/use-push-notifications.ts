@@ -40,6 +40,7 @@ export function usePushNotifications() {
 		const storedToken = window.localStorage.getItem(BaseLocalStorage.fcmToken);
 		const locallyEnabled = window.localStorage.getItem(BaseLocalStorage.pushEnabled) === 'true';
 
+		// eslint-disable-next-line react-hooks/set-state-in-effect -- initial sync of external notification state to React state on mount
 		setState((current) => ({
 			...current,
 			isSupported,
@@ -48,7 +49,6 @@ export function usePushNotifications() {
 			isIOSBrowser: isIOS && !iosPwa,
 			isIOSPWA: iosPwa,
 		}));
-
 		if (isSupported && permission === 'granted' && storedToken && locallyEnabled) {
 			void registerPushToken({ token: storedToken, platform: 'web', deviceName: getDeviceName() }).then(
 				(response) => {

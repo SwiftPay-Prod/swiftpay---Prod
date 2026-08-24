@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode } from 'react';
 import { SidebarProvider } from '@/contexts/sidebar-context';
 import { MerchantProvider } from '@/contexts/merchant-context';
 import { AdminProvider } from '@/contexts/admin-context';

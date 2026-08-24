@@ -48,7 +48,7 @@ function UserListSkeleton() {
 }
 
 export function DevToolsContent() {
-	const [permission, setPermission] = useState<string>('default');
+	const [permission, _setPermission] = useState<string>('default');
 	const [isPending, startTransition] = useTransition();
 	const [isSearching, startSearchTransition] = useTransition();
 	const [title, setTitle] = useState('🧪 Teste de Notificação');

@@ -16,6 +16,7 @@ import type { ApiResponse, BaseResponse, Paginated } from "@/types/common";
 
 export async function adminGetDashboard(filters?: AdminDashboardFilters): Promise<ApiResponse<AdminDashboardData>> {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await client.get<any>("/v1/admin/dashboard", { params: filters });
     const raw = response?.data;
     if (!raw || raw.error) return { data: null, message: null, error: { message: "Não foi possível carregar o dashboard admin." } };
@@ -33,6 +34,7 @@ export async function adminGetDashboard(filters?: AdminDashboardFilters): Promis
 
 export async function adminGetPlatformBalance(): Promise<ApiResponse<AdminPlatformBalanceData>> {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await client.get<any>("/v1/admin/balance");
     const raw = response?.data;
     if (!raw || raw.error) return { data: null, message: null, error: { message: "Não foi possível carregar o balanço." } };
@@ -93,6 +95,7 @@ export async function adminGetPlatformBalanceAcquirerMerchantAvailability(
 
 export async function adminGetPlatformRevenue(params?: { maxAcquirers?: number }): Promise<ApiResponse<AdminPlatformRevenueData>> {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await client.get<any>("/v1/admin/revenue", { params });
     const raw = response?.data;
     if (!raw || raw.error) return { data: null, message: null, error: { message: "Não foi possível carregar a receita." } };

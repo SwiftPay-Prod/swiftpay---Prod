@@ -71,6 +71,7 @@ export function useOrderReservation({
 			const expiresAt = new Date(initialReservation.displayExpiresAt).getTime();
 			const now = Date.now();
 			const remaining = Math.max(0, Math.floor((expiresAt - now) / 1000));
+			// eslint-disable-next-line react-hooks/set-state-in-effect -- initialize timer from initialReservation is intentional sync
 			setRemainingSeconds(remaining);
 
 			if (remaining <= 0) {
@@ -84,12 +85,14 @@ export function useOrderReservation({
 	const documentRef = useRef(document);
 	const productsRef = useRef(products);
 	const couponCodeRef = useRef(couponCode);
+	// Update refs when values change (in effect to avoid React Compiler "refs during render" error)
+	useEffect(() => {
+		emailRef.current = email;
+		documentRef.current = document;
+		productsRef.current = products;
+		couponCodeRef.current = couponCode;
+	}, [email, document, products, couponCode]);
 
-	// Update refs when values change
-	emailRef.current = email;
-	documentRef.current = document;
-	productsRef.current = products;
-	couponCodeRef.current = couponCode;
 
 	const isFormReady = useMemo(() => {
 		if (!enabled) return false;

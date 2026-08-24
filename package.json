@@ -78,10 +78,5 @@
     "prettier": "^3.9.6",
     "tailwindcss": "^4.1.18",
     "typescript": "5.9.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "@internationalized/date": "3.12.3"
-    }
   }
 }

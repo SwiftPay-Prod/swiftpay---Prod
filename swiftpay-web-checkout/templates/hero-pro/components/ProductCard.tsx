@@ -28,7 +28,7 @@ export function ProductCard({
 	appliedCoupon,
 	discountedProduct,
 	discountAmount,
-	calculationItems,
+	calculationItems: _calculationItems,
 	reservationItems,
 	onSelectVariant,
 	variant = 'default',

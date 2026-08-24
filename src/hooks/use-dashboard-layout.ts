@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export type DashboardLayoutId = 'standard' | 'focus-charts' | 'focus-kpis' | 'compact';
 
@@ -20,14 +20,14 @@ export const DASHBOARD_LAYOUT_OPTIONS: DashboardLayoutOption[] = [
 const STORAGE_KEY = 'swiftpay_dashboard_layout';
 
 export function useDashboardLayout() {
-	const [layout, setLayout] = useState<DashboardLayoutId>('standard');
-
-	useEffect(() => {
+	const [layout, setLayout] = useState<DashboardLayoutId>(() => {
+		if (typeof window === 'undefined') return 'standard';
 		const saved = localStorage.getItem(STORAGE_KEY) as DashboardLayoutId | null;
 		if (saved && DASHBOARD_LAYOUT_OPTIONS.some((o) => o.id === saved)) {
-			setLayout(saved);
+			return saved;
 		}
-	}, []);
+		return 'standard';
+	});
 
 	function changeLayout(next: DashboardLayoutId) {
 		setLayout(next);

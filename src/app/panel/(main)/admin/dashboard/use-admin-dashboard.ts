@@ -163,8 +163,8 @@ export function useAdminDashboard() {
 		return () => {
 			cancelled = true;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- currentFilters is derived from selectedPeriod/customRange and represented by filtersKey; including the object would cause infinite loop
 	}, [dashboardRefreshKey, fetchedKey, filtersKey, selectedPeriod, customRange.startDate, customRange.endDate]);
-
 	function handleRefresh() {
 		triggerDashboardRefresh();
 	}

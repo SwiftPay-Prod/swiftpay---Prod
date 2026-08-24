@@ -7,7 +7,7 @@ import type { SessionData } from '@/types/session';
 import { UserStatus, PaymentEnvironment } from '@/types/enums';
 import { BaseCookie } from '@/constants/base';
 import { getSession } from '@/app/actions/session';
-import { deleteCookie, readCookie, readParsedCookie, setCookie } from '@/lib/server-cookies';
+import { readCookie, readParsedCookie } from '@/lib/server-cookies';
 
 export async function setAuthCookies(tokens: AuthTokens): Promise<void> {
 	const cookieStore = await cookies();

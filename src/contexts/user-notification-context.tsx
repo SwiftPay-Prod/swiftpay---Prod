@@ -46,7 +46,7 @@ export function UserNotificationProvider({
 }: UserNotificationProviderProps) {
 	const pathname = usePathname();
 	const router = useRouter();
-	const { isConnected, subscribe } = useSignalR();
+	const { isConnected: _isConnected, subscribe } = useSignalR();
 	const { playDefaultSound } = useNotificationSound();
 
 	const [unreadCount, setUnreadCount] = useState(initialUnreadCount);

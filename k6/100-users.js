@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import ws from 'k6/experimental/websockets';
-import { Counter, Rate, Trend } from 'k6/metrics';
+import { Rate, Trend } from 'k6/metrics';
 
 export const options = {
   scenarios: {
@@ -275,7 +276,7 @@ export function websocketJourney() {
   sleep(Math.random() * 10 + 10);
 }
 
-export function teardown(data) {
+export function teardown(_data) {
   console.log('load run finished');
 }
 

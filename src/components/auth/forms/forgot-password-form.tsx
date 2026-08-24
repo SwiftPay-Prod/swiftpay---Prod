@@ -3,7 +3,6 @@
 import { Button, InputGroup, Label, TextField } from '@heroui/react';
 import { useState } from 'react';
 import { toast } from '@heroui/react';
-import { AsyncButton } from '@/components/ui/async-button';
 import { forgotPassword } from '@/app/actions/auth';
 
 interface ForgotPasswordFormProps {

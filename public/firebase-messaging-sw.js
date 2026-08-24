@@ -12,7 +12,7 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
+messaging.onBackgroundMessage((_payload) => {
   self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     event.waitUntil(self.clients.openWindow('/'));
