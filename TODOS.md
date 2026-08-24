@@ -663,3 +663,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Dívida backend**: `openapi/v1.json` `servers: [{url: http://swiftpayment.info/}]` aponta raiz sem prefixo — bug FastEndpoints Swagger config no `swiftpay-api` (não bloqueia; spec é consumida por path absoluto).
   - **Arquivos**: `src/app/docs/page.tsx`
   - **Próxima**: `commit + push + deploy`.
+
+- `DONE` feat(pwa) T1 #105 — PWA instalável com logo oficial e tema Revolut — 2026-08-24
+  - **Contexto**: Spec #104 T1. Manifest antigo com tema `#0B0E14` e logo antiga (`swiftpay-icon-logo.png`); sem ícones maskable; SW Firebase com handler vazio.
+  - **Fix**: ícones derivados de `logo-swiftpay-oficial.png` (1254×1254 RGBA): `pwa-icon-192/512.png` (any, 90% canvas), `pwa-icon-192/512-maskable.png` (fundo `#000000`, safe zone 72%), `favicon-32.png`, `apple-touch-icon.png` (180, fundo preto), `notification-small.png` (96, monocromático branco). `manifest.json` tema/background `#000000` (R1) + 4 ícones com purpose `any`/`maskable` separados. `public/favicon.png` e `public/apple-touch-icon.png` substituídos pela logo oficial. `firebase-messaging-sw.js` com SW base: install (precache shell + manifest + ícones), activate (cleanup versões antigas), fetch navigate fallback offline, `onBackgroundMessage` renderizando notificação com `icon`/`badge`/`data.url`, `notificationclick` com focus-or-open deep-link (contrato `actionUrl` pronto para T2).
+  - **Verify**: `tsc 0`; `npm run build` `BUILD_EXIT:0` 66 rotas; ícones gerados e verificados via PIL (tamanhos/modos corretos).
+  - **Arquivos**: `public/manifest.json`, `public/firebase-messaging-sw.js`, `public/favicon.png`, `public/apple-touch-icon.png`, `public/logos/pwa-icon-*`, `public/logos/favicon-32.png`, `public/logos/notification-small.png`, `public/logos/apple-touch-icon.png`
+  - **Próxima**: commit + push + Deploy; instalação Android/iOS validada em prod pós-deploy (critério do ticket).
