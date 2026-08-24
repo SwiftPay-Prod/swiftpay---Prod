@@ -136,7 +136,7 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 		</Chip>
 	) : null;
 	const buttonClassName = [
-		showFull ? 'w-full justify-start gap-3' : 'w-8 h-8',
+		showFull ? 'w-full flex items-center justify-start gap-3' : 'w-8 h-8 flex items-center justify-center',
 		active
 			? 'bg-brand/15 text-link border-l-2 border-link rounded-r-lg'
 			: 'text-white/60 hover:text-white hover:bg-white/10 rounded-lg',

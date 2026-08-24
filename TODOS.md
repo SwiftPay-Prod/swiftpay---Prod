@@ -570,3 +570,11 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - `npm run build` → **0** (prerender OK).
     - `pnpm install` → **0** (overrides aplicado).
   - **Arquivos alterados**: 69 no follow-up (eslint cleanup + overrides + lockfile).
+
+- `DONE` Spec: #111 — follow-up 2: correções visuais header/sidebar — 2026-08-24
+  - **Contexto**: screenshots do operador mostraram header da landing com logo duplicado + nav fora do container flex e sidebar MenuItem com texto centralizado (sem `flex` no botão).
+  - **Correções**:
+    - `landing-page.tsx:71-86` — removido logo duplicado (`<SwiftPayBrandLogo>` sem `showText`), movido `<nav>` para dentro do `div flex justify-between` — header agora 1 logo + nav alinhada à direita; verificado `logoCount:1`, `navInsideHeader:true`, hero grid `md:col-span-7 left:131 / md:col-span-5 left:803`.
+    - `sidebar-menu.tsx:138-139` — `buttonClassName` com `flex items-center justify-start` (expandido) e `flex items-center justify-center` (recolhido) — texto do menu agora alinhado à esquerda com ícone, verificado `w-full flex items-center justify-start gap-3`.
+  - **Gates**: `npx tsc --noEmit --skipLibCheck` → 0; `npm run build` → 0; browser `localhost:3000` header/hero verificados.
+  - **Arquivos alterados**: 2 (`landing-page.tsx`, `sidebar-menu.tsx`) + ledger.

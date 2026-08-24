@@ -70,10 +70,8 @@ export function LandingPage({ initialAuthMode = null }: LandingPageProps) {
 		<div className="relative min-h-screen bg-background text-foreground">
 			<header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
 				<div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-6">
-					<SwiftPayBrandLogo iconSize={32} />
 					<SwiftPayBrandLogo iconSize={32} showText />
-				</div>
-				<nav className="flex items-center gap-2 sm:gap-3" aria-label="Navegação principal">
+					<nav className="flex items-center gap-2 sm:gap-3" aria-label="Navegação principal">
 						<a href="#como-funciona" className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:block">
 							Como funciona
 						</a>
@@ -84,6 +82,7 @@ export function LandingPage({ initialAuthMode = null }: LandingPageProps) {
 							Criar conta
 						</button>
 					</nav>
+				</div>
 			</header>
 
 			<main>
