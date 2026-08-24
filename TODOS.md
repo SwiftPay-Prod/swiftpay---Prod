@@ -696,3 +696,14 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `dotnet test` VPS (docker real) → **11/11 Passed** (5 do T2 + 6 do T3), 1m02s.
   - **Arquivos**: `swiftpay-api/Tests/Unit/Notification/NotificationServicePushTests.cs`
   - **Próxima**: commit + push; issue #107 fechada.
+
+- `DONE` feat(mobile) T6 #110 Spec: #104 — unificar painel mobile com desktop — 2026-08-24
+  - **Contexto**: Spec #104 T6. Dashboard merchant tinha branch `useIsMobile()` renderizando `MobileMerchantDashboard` (componentes paralelos sem tokens Revolut).
+  - **Executado**:
+    - Branch `isMobile` removido do `merchant-dashboard.tsx` — `DashboardContent` Revolut único responsivo (grid `lg:grid-cols-3` colapsa para 1 col naturalmente).
+    - Deletados: `mobile-merchant-dashboard.tsx`, subpasta `mobile-merchant-dashboard/` (4 componentes), `mobile-menu-page.tsx` (órfã, sem imports).
+    - Bottom-nav (`sidebar-mobile-navbar.tsx`) já existia e foi mantida — polish Revolut: `rounded-2xl border-border bg-background/80 backdrop-blur-xl2xl` → `rounded-full border-white/12 bg-card/80 shadow-2xl backdrop-blur-xl` (R1/R12).
+    - `platform-balances.tsx` mantém `useIsMobile` (tabela vs cards — responsividade legítima, fora do escopo).
+  - **Verify**: `tsc 0`; `npm run build` `BUILD_EXIT:0` 66 rotas; zero refs órfãs a Mobile*.
+  - **Arquivos**: `merchant-dashboard.tsx`, deletados 6 arquivos Mobile*, `sidebar-mobile-navbar.tsx`
+  - **Próxima**: commit + push + deploy; visual 390px validado em prod.

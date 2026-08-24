@@ -7,8 +7,6 @@ import { useBalanceVisibility } from '@/hooks/use-balance-visibility';
 import type { ReadMerchantDashboardData, DashboardPeriod } from '@/types/merchant/dashboard';
 import { formatRelativeTime } from '@/utils/datetime';
 import { DashboardSkeleton } from './DashboardSkeleton';
-import { MobileMerchantDashboard } from '@/components/panel/mobile-merchant-dashboard';
-import { useIsMobile } from '@/hooks/use-is-mobile';
 import { RevolutHeroBalanceCard, type MerchantReserveConfig } from './components/RevolutHeroBalanceCard';
 import { RevolutPeriodSelector } from './components/RevolutPeriodSelector';
 import { RevolutFinancialMetricsGrid } from './components/RevolutFinancialMetricsGrid';
@@ -293,8 +291,6 @@ export interface MerchantDashboardProps {
 }
 
 export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
-	const isMobile = useIsMobile();
-	const router = useRouter();
 	const { data: hookData, period, actions } = useMerchantDashboard({ merchantId });
 	const { isVisible: isBalanceVisible, toggle: toggleBalanceVisibility } = useBalanceVisibility();
 
@@ -331,18 +327,6 @@ export function MerchantDashboard({ merchantId }: MerchantDashboardProps) {
 					Atualizar
 				</button>
 			</div>
-		);
-	}
-
-	if (isMobile) {
-		return (
-			<MobileMerchantDashboard
-				merchantId={merchantId}
-				onOpenLiveScreen={() => router.push(Routes.panel.merchant.liveBalance)}
-				isBalanceVisible={isBalanceVisible}
-				onToggleBalanceVisibility={toggleBalanceVisibility}
-				hasReserveEnabled={hookData.hasReserveEnabled}
-			/>
 		);
 	}
 

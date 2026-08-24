@@ -67,7 +67,7 @@ export function SidebarMobileNavbar({ user }: SidebarMobileNavbarProps) {
 
 	return (
 		<nav className="fixed bottom-4 left-4 right-4 z-40 md:hidden">
-			<div className="relative overflow-hidden rounded-2xl border border-border bg-background/80 px-2 py-2 backdrop-blur-xl2xl">
+			<div className="relative overflow-hidden rounded-full border border-white/12 bg-card/80 px-2 py-2 shadow-2xl backdrop-blur-xl">
 				<div className="relative z-10 flex items-center">
 					{mainItems.map((item) => {
 						const active = isRouteActive(pathname, item.path);
