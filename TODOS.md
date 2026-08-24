@@ -557,3 +557,16 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
     - Greps de fechamento: shadows R4 só em exceções registradas; hex canônicos do accordion → 0; `aria-busy` → 6 ocorrências.
   - **Verificação visual**: pendente de execução do dev server pelo operador (landing `/`, `/confirm-email`, dashboard admin — gráfico Cobalt e barra âmbar).
   - **Arquivos alterados**: onda P1 completa (228) + fases 1–7 (~30 arquivos adicionais incl. docs de auditoria); commit único desta entrada.
+
+- `DONE` Spec: #111 — follow-up: eslint 0 em changed-files, tsc 0, dedupe date — 2026-08-24
+  - **Contexto**: follow-up do fechamento #111. Restavam 174 erros eslint em 241 changed-files e 9 erros tsc CalendarDate/RangeValue por duplicação `@internationalized/date`.
+  - **Implementado**:
+    - Codemod + fixes manuais: removidos 129 imports mortos e 19 bindings órfãos (`_Prefix`), corrigidos `no-unescaped-entities`, `setState-in-effect` movido para handlers/eventual, dead code (`_QuickActions`, `approvalRate` duplicado, `merchantId` prop) removido; `docs/page.tsx` quotes corrompidas reparadas.
+    - Supressões documentadas: `set-acquirer-modal.tsx:100` (`loadData` em `useEffect` de abertura) e `checkout-section-preview.tsx:15` (`<img>` de URL arbitrária) — intencionais.
+    - Dedupe: `package.json` `pnpm.overrides: { "@internationalized/date": "3.12.3" }` + `pnpm add @internationalized/date@3.12.3 --save-exact` → raiz e `react-stately@3.49.0` agora mesma instância.
+  - **Gates**:
+    - `xargs npx eslint < /tmp/changed-ts.txt` → **0 erros** (global `npx eslint .` permanece 122e/24w baseline fora do escopo).
+    - `npx tsc --noEmit --skipLibCheck` → **0 erros** (era 9 CalendarDate/RangeValue, eliminado).
+    - `npm run build` → **0** (prerender OK).
+    - `pnpm install` → **0** (overrides aplicado).
+  - **Arquivos alterados**: 69 no follow-up (eslint cleanup + overrides + lockfile).

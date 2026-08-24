@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@heroui/react';
-import { Cancel01Icon, LiveStreaming02Icon, Moon02Icon, Settings02Icon, Sun02Icon } from '@hugeicons/core-free-icons';
+import { Cancel01Icon, Moon02Icon, Settings02Icon, Sun02Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { NumberTicket } from '@/components/ui/number-ticket';
 import { useTheme } from 'next-themes';

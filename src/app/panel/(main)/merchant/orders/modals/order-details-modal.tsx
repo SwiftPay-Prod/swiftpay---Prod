@@ -2,7 +2,7 @@
 
 import { Suspense, use, useState } from 'react';
 import Image from 'next/image';
-import { Modal, Chip, Skeleton, Button, Tabs } from '@heroui/react';
+import { Modal, Skeleton, Tabs } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
 	DollarCircleIcon,
@@ -20,9 +20,6 @@ import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	orderStatusParse,
 	orderFulfillmentStatusParse,
-	paymentStatusParse,
-	paymentMethodParse,
-	mapParseColorToChipColor,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';

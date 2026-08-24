@@ -1,6 +1,5 @@
 'use client';
 
-import { Chip } from '@heroui/react';
 import { PlusSignIcon, UserCheck01Icon, ViewOffIcon, ViewIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { DataTable } from '@/components/ui/data-table';

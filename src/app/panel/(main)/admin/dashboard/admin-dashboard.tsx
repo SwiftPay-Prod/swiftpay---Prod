@@ -7,10 +7,6 @@ import {
 	Wallet01Icon,
 	ArrowDataTransferHorizontalIcon,
 	Analytics02Icon,
-	Wallet03Icon,
-	BankIcon,
-	CheckmarkCircle02Icon,
-	CancelCircleIcon,
 	HelpCircleIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
@@ -28,7 +24,7 @@ import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import { GrowthIndicator } from './components/growth-indicator';
 
-const DASHBOARD_SECTIONS: InternalTabItem[] = [
+const _DASHBOARD_SECTIONS: InternalTabItem[] = [
 	{ id: 'overview', label: 'Visão Geral', icon: <Icon icon={Analytics02Icon} className="icon-sm" /> },
 	{ id: 'financial', label: 'Financeiro', icon: <Icon icon={Wallet01Icon} className="icon-sm" /> },
 	{
@@ -42,7 +38,7 @@ const DASHBOARD_SECTIONS: InternalTabItem[] = [
 
 type DashboardSectionId = 'overview' | 'financial' | 'transactions' | 'users-orgs' | 'growth';
 
-const DASHBOARD_SECTION_HEADERS: Record<
+const _DASHBOARD_SECTION_HEADERS: Record<
 	DashboardSectionId,
 	{ icon: React.ReactNode; title: string; description: string }
 > = {

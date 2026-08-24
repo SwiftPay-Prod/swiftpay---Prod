@@ -72,14 +72,13 @@ function PlatformDefault({ label, value }: { label: string; value: string }) {
 interface EditableFieldWithResetProps {
 	label: string;
 	value: string;
-	onChange: (value: string) => void;
 	onReset: () => void;
 	error: string | null;
 	children: React.ReactNode;
 	platformDefault: string;
 }
 
-function EditableFieldWithReset({ label, value, onChange, onReset, error, children, platformDefault }: EditableFieldWithResetProps) {
+function EditableFieldWithReset({ label, value, onReset, error, children, platformDefault }: EditableFieldWithResetProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			<TextField variant="secondary" className="w-full" validate={() => error}>
@@ -314,7 +313,6 @@ export function ReferralSettingsTab({
 								<EditableFieldWithReset
 									label="Duração da indicação (meses)"
 									value={durationMonths}
-									onChange={setDurationMonths}
 									onReset={() => setDurationMonths('')}
 									error={durationError}
 									platformDefault={`${platformSettings.referralDurationMonths} ${platformSettings.referralDurationMonths === 1 ? 'mês' : 'meses'}`}
@@ -325,7 +323,6 @@ export function ReferralSettingsTab({
 								<EditableFieldWithReset
 									label="Intervalo para novo saque (valor)"
 									value={withdrawalIntervalValue}
-									onChange={setWithdrawalIntervalValue}
 									onReset={() => setWithdrawalIntervalValue('')}
 									error={withdrawalIntervalValueError}
 									platformDefault={`${platformSettings.referralCommissionWithdrawalIntervalValue} ${intervalUnitLabel(platformSettings.referralCommissionWithdrawalIntervalUnit)}`}
@@ -339,7 +336,6 @@ export function ReferralSettingsTab({
 										className="w-full"
 										aria-label="Unidade do intervalo para novo saque"
 										value={withdrawalIntervalUnit}
-										onChange={(key) => setWithdrawalIntervalUnit((key as ReferralWithdrawalIntervalUnit | null) ?? '')}
 									>
 										<Label>Intervalo para novo saque (unidade)</Label>
 										<Select.Trigger className="w-full">
@@ -363,7 +359,6 @@ export function ReferralSettingsTab({
 								<EditableFieldWithReset
 									label="Comissão da indicação (%)"
 									value={commissionPercentage}
-									onChange={setCommissionPercentage}
 									onReset={() => setCommissionPercentage('')}
 									error={commissionError}
 									platformDefault={`${(platformSettings.referralCommissionPercentage / 100).toFixed(2).replace('.', ',')}%`}
@@ -383,7 +378,6 @@ export function ReferralSettingsTab({
 								<EditableFieldWithReset
 									label="Valor mínimo de saque da comissão (R$)"
 									value={minWithdrawalAmount}
-									onChange={setMinWithdrawalAmount}
 									onReset={() => minWithdrawalAmountRef.current?.setValueInCents(0)}
 									error={minWithdrawalAmountError}
 									platformDefault={centsToFormattedCurrency(platformSettings.referralCommissionMinWithdrawalAmount)}
@@ -401,7 +395,6 @@ export function ReferralSettingsTab({
 								<EditableFieldWithReset
 									label="Taxa fixa de saque da comissão (R$)"
 									value={withdrawalFeeFixed}
-									onChange={setWithdrawalFeeFixed}
 									onReset={() => withdrawalFeeFixedRef.current?.setValueInCents(0)}
 									error={withdrawalFeeFixedError}
 									platformDefault={centsToFormattedCurrency(platformSettings.referralCommissionWithdrawalFeeFixed)}

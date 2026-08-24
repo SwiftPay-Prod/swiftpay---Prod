@@ -59,7 +59,7 @@ interface OrganizationOption {
 	merchant?: MinimalMerchant;
 }
 
-const FALLBACK_ORGANIZATIONS: OrganizationOption[] = [];
+const _FALLBACK_ORGANIZATIONS: OrganizationOption[] = [];
 
 interface MerchantTriggerContentProps {
 	isCreatingNewMerchant: boolean;

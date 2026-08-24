@@ -11,7 +11,6 @@ import {
 	Checkbox,
 } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import { CurrencyCentsInput } from '@/components/ui/currency-cents-input';
 import { JsonEditorInput } from '@/components/ui/json-editor-input';
 import {
 	Alert01Icon,
@@ -24,10 +23,8 @@ import { AsyncButton } from '@/components/ui/async-button';
 import { AsyncAutocomplete } from '@/components/ui/async-autocomplete';
 import { maskDocument } from '@/utils/input-masks';
 import {
-	METADATA_TEMPLATES,
 	useCreateTransactionForm,
 	type FeesPromise,
-	type MetadataTemplateKey,
 } from './use-create-transaction-form';
 
 export type { FeesPromise };

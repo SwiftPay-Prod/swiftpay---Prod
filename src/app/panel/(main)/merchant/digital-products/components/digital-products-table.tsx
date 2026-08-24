@@ -3,7 +3,6 @@
 import { Button, Avatar, Tooltip, Dropdown } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
-	AddCircleIcon,
 	Archive01Icon,
 	CancelCircleIcon,
 	Delete02Icon,

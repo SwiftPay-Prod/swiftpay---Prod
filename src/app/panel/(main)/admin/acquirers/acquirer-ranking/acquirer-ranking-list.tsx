@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Avatar, Button, Card, Chip, Modal, Tooltip, toast } from '@heroui/react';
+import { Avatar, Modal, toast } from '@heroui/react';
 import { Award05Icon, HelpCircleIcon, Loading03Icon, RefreshIcon, SearchVisualIcon, ServerStack01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { MultiSelectChips } from '@/components/ui/multi-select-chips';
@@ -260,10 +260,10 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 	}
 
 	const scoreBreakdown = scoreDetailsEntry ? calculateScoreBreakdown(scoreDetailsEntry, sampleSize) : null;
-	const approvalBreakdownLevel = scoreBreakdown ? getApprovalGaugeLevel(scoreBreakdown.approvalRate) : null;
-	const analyzedBreakdownLevel = scoreBreakdown ? getWeightedComponentGaugeLevel(scoreBreakdown.analyzedComponent, SCORE_ANALYZED_WEIGHT) : null;
-	const failureBreakdownLevel = scoreBreakdown ? getWeightedComponentGaugeLevel(scoreBreakdown.inverseFailureComponent, SCORE_FAILURE_WEIGHT) : null;
-	const finalScoreBreakdownLevel = scoreBreakdown ? getScoreGaugeLevel(scoreBreakdown.calculatedScore) : null;
+	const _approvalBreakdownLevel = scoreBreakdown ? getApprovalGaugeLevel(scoreBreakdown.approvalRate) : null;
+	const _analyzedBreakdownLevel = scoreBreakdown ? getWeightedComponentGaugeLevel(scoreBreakdown.analyzedComponent, SCORE_ANALYZED_WEIGHT) : null;
+	const _failureBreakdownLevel = scoreBreakdown ? getWeightedComponentGaugeLevel(scoreBreakdown.inverseFailureComponent, SCORE_FAILURE_WEIGHT) : null;
+	const _finalScoreBreakdownLevel = scoreBreakdown ? getScoreGaugeLevel(scoreBreakdown.calculatedScore) : null;
 
 	const top1 = items[0] ?? null;
 	const avgApprovalRate = items.length > 0
@@ -400,7 +400,7 @@ export function AcquirerRankingList({ fetchPromise, selectedOperationTypes }: Ac
 				) : (
 					<div className="flex flex-col gap-2.5">
 						{items.map((entry) => {
-							const approvalGaugeLevel = getApprovalGaugeLevel(entry.approvalRate);
+							const _approvalGaugeLevel = getApprovalGaugeLevel(entry.approvalRate);
 
 							return (
 								<div

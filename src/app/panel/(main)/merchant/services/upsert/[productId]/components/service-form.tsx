@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState, useTransition } from 'react';
+import { use, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -109,6 +109,9 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 	const [isStatusPending, setIsStatusPending] = useState(false);
 
 	const [selectedTab, setSelectedTab] = useState('basic');
+	const selectTab = (tab: string) => {
+		setSelectedTab(isEditMode && tab === 'review' ? 'basic' : tab);
+	};
 	const [categories, setCategories] = useState<MinimalCategoryData[]>(
 		resolvedProduct?.categories?.map((c) => ({
 			id: c.id,
@@ -506,11 +509,6 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 		return step;
 	});
 
-	useEffect(() => {
-		if (isEditMode && selectedTab === 'review') {
-			setSelectedTab('basic');
-		}
-	}, [isEditMode, selectedTab]);
 	const basicSummary = name.trim().length > 0
 		? name.trim()
 		: 'Nome não informado';
@@ -567,18 +565,18 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 
 	function handleWizardBack() {
 		if (currentWizardStepIndex <= 0) return;
-		setSelectedTab(wizardStepOrder[currentWizardStepIndex - 1] ?? 'basic');
+		selectTab(wizardStepOrder[currentWizardStepIndex - 1] ?? 'basic');
 	}
 
 	async function goToStep(targetStep: string) {
 		if (isEditMode || targetStep !== 'review') {
-			setSelectedTab(targetStep);
+			selectTab(targetStep);
 			return;
 		}
 
 		setHasValidatedReview(true);
 		await form.trigger();
-		setSelectedTab('review');
+		selectTab('review');
 	}
 
 	function handleWizardNext() {
@@ -622,7 +620,7 @@ export function ServiceForm({ merchantId, environment, product, productPromise }
 				ariaLabel="Abas de cadastro do serviço"
 				items={visibleTabItems}
 				selectedKey={selectedTab}
-				onSelectionChange={(key) => setSelectedTab(key as string)}
+				onSelectionChange={(key) => selectTab(key as string)}
 			>
 
 				<Tabs.Panel id="basic" className="p-0">

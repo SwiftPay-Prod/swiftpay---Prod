@@ -221,12 +221,11 @@ function CouponsSection({ coupons }: CouponsSectionProps) {
 interface DigitalItemsInlineListProps {
 	merchantId: string;
 	productId: string;
-	itemCount: number;
 }
 
 const PREVIEW_LIMIT = 5;
 
-function DigitalItemsInlineList({ merchantId, productId, itemCount }: DigitalItemsInlineListProps) {
+function DigitalItemsInlineList({ merchantId, productId }: DigitalItemsInlineListProps) {
 	const [items, setItems] = useState<MinimalDigitalItem[]>([]);
 	const [visibleValues, setVisibleValues] = useState<Set<string>>(new Set());
 
@@ -514,7 +513,6 @@ function DetailsContent({ productPromise, merchantId }: DetailsContentProps) {
 						<DigitalItemsInlineList
 							merchantId={merchantId}
 							productId={product.id}
-							itemCount={product.digitalItemsCount ?? 0}
 						/>
 					</div>
 				</>

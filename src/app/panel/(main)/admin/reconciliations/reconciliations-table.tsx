@@ -2,7 +2,7 @@
 
 import { use, useState, useTransition } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { Button, Chip, Skeleton, Tooltip, Switch, Label, toast } from '@heroui/react';
+import { Button, Skeleton, Tooltip, Switch, Label, toast } from '@heroui/react';
 import {
 	Alert01Icon,
 	ViewIcon,
@@ -21,7 +21,6 @@ import type { BankReconciliationStatus, PaymentEnvironment } from '@/types/enums
 import {
 	bankReconciliationStatusParse,
 	paymentEnvironmentParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 } from '@/parse';
 import { formatRelativeTime } from '@/utils/datetime';

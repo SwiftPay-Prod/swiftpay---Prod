@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Button, FieldError, Spinner, Modal } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { Delete02Icon, UploadCircle01Icon, ViewIcon, Alert01Icon, CancelCircleIcon, CheckmarkCircle02Icon, File01Icon } from '@hugeicons/core-free-icons';
@@ -82,15 +82,14 @@ export function ImageUploader({
 	const [isSensitiveVisible, setIsSensitiveVisible] = useState(false);
 	const [uploadedUrls, setUploadedUrls] = useState<string[]>(value);
 	const [uploadedFiles, setUploadedFiles] = useState<FileData[]>(fileValue ?? []);
+	const [lastProps, setLastProps] = useState({ value, fileValue });
 	const isFileMode = typeof onFileValueChange === 'function';
 
-	useEffect(() => {
+	if (value !== lastProps.value || fileValue !== lastProps.fileValue) {
+		setLastProps({ value, fileValue });
 		setUploadedUrls(value);
-	}, [value]);
-
-	useEffect(() => {
 		setUploadedFiles(fileValue ?? []);
-	}, [fileValue]);
+	}
 
 	const acceptedFilesLabel = accept
 		.split(',')

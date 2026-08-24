@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Card } from '@heroui/react';
 import { UserGroupIcon, Link01Icon, Analytics01Icon, InformationCircleIcon, Wallet01Icon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { AnimatedNumber } from '@/components/ui/animated-number';
@@ -60,7 +59,7 @@ export function ReferralsContent({
 		})
 		: 'Liberado';
 
-	const stats = useMemo(
+	const _stats = useMemo(
 		() => [
 			{
 				label: 'Saldo disponível',

@@ -12,6 +12,7 @@ export function CheckoutSectionPreview({ src, title, description }: CheckoutSect
 				{description && <span className="text-xs text-muted-foreground">{description}</span>}
 			</div>
 			<div className="relative overflow-hidden rounded-lg border border-bordersm">
+				{/* eslint-disable-next-line @next/next/no-img-element -- preview de URL arbitrária do lojista; sem domínio fixo para next/image */}
 				<img
 					src={src}
 					alt={title}

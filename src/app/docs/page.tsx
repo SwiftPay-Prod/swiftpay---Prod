@@ -148,7 +148,7 @@ export default function PublicDocsPage() {
                 2
               </span>
               <div>
-                <strong className="font-semibold text-white">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba "Configurações e API" e copie sua Chave Secreta (<code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">secretKey</code>).
+                <strong className="font-semibold text-white">Obtenha sua Chave Secreta:</strong> Faça login no seu portal, vá para a aba &quot;Configurações e API&quot; e copie sua Chave Secreta (<code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">publicKey</code> e <code className="text-xs bg-white/5 text-success px-1.5 py-0.5 rounded font-mono">secretKey</code>).
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -269,7 +269,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   <tr>
                     <td className="p-3 font-mono text-success">method</td>
                     <td className="p-3 text-success font-semibold">Sim</td>
-                    <td className="p-3">Método de pagamento (usar "PIX")</td>
+                    <td className="p-3">Método de pagamento (usar &quot;PIX&quot;)</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono text-success">amount</td>
@@ -279,7 +279,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   <tr>
                     <td className="p-3 font-mono text-success">currency</td>
                     <td className="p-3 text-white/60">Opcional</td>
-                    <td className="p-3">Moeda (Padrão: "BRL")</td>
+                    <td className="p-3">Moeda (Padrão: &quot;BRL&quot;)</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono text-success">description</td>
@@ -495,7 +495,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
                   <tr>
                     <td className="p-3 font-mono text-success">pixKeyType</td>
                     <td className="p-3 text-white/60">Opcional*</td>
-                    <td className="p-3">Tipo da chave: "CPF", "CNPJ", "Email", "Phone" ou "Random"</td>
+                    <td className="p-3">Tipo da chave: &quot;CPF&quot;, &quot;CNPJ&quot;, &quot;Email&quot;, &quot;Phone&quot; ou &quot;Random&quot;</td>
                   </tr>
                   <tr>
                     <td className="p-3 font-mono text-success">payoutAccountId</td>
@@ -569,7 +569,7 @@ curl --location 'https://swiftpayment.info/v1/auth/token' \\
           <div>
             <h2 className="text-xl font-bold text-white tracking-tight">Webhooks & Eventos</h2>
             <p className="text-sm text-white/60 mt-1">
-              Configure a URL de webhook da <strong className="text-white">sua aplicação</strong> no portal (aba "Configurações e API") e a SwiftPay enviará notificações em tempo real (HTTP POST) sempre que uma transação ou saque mudar de status. Você também pode informar um <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded text-xs">callbackUrl</code> por chamada para sobrescrever a URL padrão.
+              Configure a URL de webhook da <strong className="text-white">sua aplicação</strong> no portal (aba &quot;Configurações e API&quot;) e a SwiftPay enviará notificações em tempo real (HTTP POST) sempre que uma transação ou saque mudar de status. Você também pode informar um <code className="font-mono bg-white/5 text-success px-1 py-0.5 rounded text-xs">callbackUrl</code> por chamada para sobrescrever a URL padrão.
             </p>
           </div>
 

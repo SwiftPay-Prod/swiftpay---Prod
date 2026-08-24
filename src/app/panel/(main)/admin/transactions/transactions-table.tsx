@@ -29,7 +29,6 @@ import {
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
-import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import type { AdminReprocessTransactionTargetStatus } from '@/types/admin/transactions';

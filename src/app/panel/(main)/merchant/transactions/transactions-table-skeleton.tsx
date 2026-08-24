@@ -1,7 +1,7 @@
 'use client';
 
 import { Skeleton } from '@heroui/react';
-import { QrCodeIcon, Wallet01Icon } from '@hugeicons/core-free-icons';
+import { QrCodeIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 
 interface TransactionsTableSkeletonProps {

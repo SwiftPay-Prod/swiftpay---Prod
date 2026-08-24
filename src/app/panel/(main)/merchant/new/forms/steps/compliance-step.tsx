@@ -1,5 +1,4 @@
 import {
-  Alert,
   Checkbox,
   FieldError,
   Input,
@@ -9,7 +8,6 @@ import {
   TextArea,
   TextField } from '@heroui/react';
 import { PatternFormat } from 'react-number-format';
-import { Icon } from '@/components/ui/icon';
 import { CurrencyCentsInput } from '@/components/ui/currency-cents-input';
 import {
   DOCUMENT_TYPE_OPTIONS,

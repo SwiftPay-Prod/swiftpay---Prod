@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState, useTransition } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Button, Tooltip } from '@heroui/react';
+import { Tooltip } from '@heroui/react';
 import { Wallet01Icon, ArrowReloadHorizontalIcon, MoneyExchange01Icon, HourglassIcon } from '@hugeicons/core-free-icons';
 import { DataTable } from '@/components/ui/data-table';
 import type { DataTableColumn } from '@/components/ui/data-table';
@@ -44,7 +44,7 @@ const statusOptions = [
   { value: ReferralCommissionWithdrawalRequestStatus.Cancelled, label: 'Cancelado' },
 ];
 
-function getStatusMeta(status: ReferralCommissionWithdrawalRequestStatus) {
+function _getStatusMeta(status: ReferralCommissionWithdrawalRequestStatus) {
   switch (status) {
     case ReferralCommissionWithdrawalRequestStatus.Requested:
       return { label: 'Solicitado', color: 'warning' as const };

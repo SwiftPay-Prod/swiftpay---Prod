@@ -6,7 +6,6 @@ import { AnimatedNumber } from '@/components/ui/animated-number';
 import {
 	RevolutAlertIcon,
 	RevolutRefundIcon,
-	RevolutCheckIcon,
 	RevolutLockIcon,
 } from '@/components/ui/revolut-icons';
 import type { MerchantKpiData } from '@/types/merchant/dashboard';
@@ -28,7 +27,6 @@ export function RiskDisputesControl({
 	const chargebackRate = typeof kpis?.chargebackRate === 'number' ? kpis.chargebackRate : 0;
 	const refundedAmount = typeof kpis?.refundedAmount === 'number' ? kpis.refundedAmount : 0;
 	const failedTransactions = typeof kpis?.failedTransactions === 'number' ? kpis.failedTransactions : 0;
-	const completedTransactions = typeof kpis?.completedTransactions === 'number' ? kpis.completedTransactions : 0;
 
 	const isHealthyRisk = chargebackRate < 1.0;
 	const hasActiveDisputes = chargebackCount > 0;

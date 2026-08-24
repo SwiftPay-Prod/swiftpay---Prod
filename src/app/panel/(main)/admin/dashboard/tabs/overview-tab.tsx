@@ -2,23 +2,10 @@
 
 import { Tooltip } from '@heroui/react';
 import {
-	Analytics02Icon,
 	Wallet01Icon,
-	Wallet03Icon,
-	BankIcon,
-	AnalyticsUpIcon,
-	ArrowDataTransferHorizontalIcon,
-	CheckmarkCircle02Icon,
-	CancelCircleIcon,
 	HelpCircleIcon,
-	UserGroupIcon,
-	Building02Icon,
-	Time02Icon,
-	Settings01Icon,
-	UserAdd01Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutWalletIcon,
 	RevolutCheckIcon,
@@ -34,8 +21,6 @@ import type {
 import { AnimatedCurrency } from '@/components/ui/animated-currency';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import { GrowthIndicator } from '../components/growth-indicator';
-import { useRouter } from 'next/navigation';
-import { Routes } from '@/router/routes';
 
 function getFinancialForPeriod(financial: AdminFinancialKpis, period: AdminDashboardPeriod) {
 	switch (period) {
@@ -109,35 +94,6 @@ export function OverviewTab({
 	);
 }
 
-function QuickActions() {
-	const router = useRouter();
-
-	return (
-		<div className="rounded-[20px] border border-white/12 bg-card p-5">
-			<div className="flex flex-col gap-3">
-				<span className="text-[11px] font-semibold uppercase tracking-widest text-white/50">Ações Rápidas</span>
-				<div className="flex flex-col gap-2">
-					<button
-						type="button"
-						onClick={() => router.push(Routes.panel.admin.users)}
-						className="flex items-center gap-2 rounded-lg border border-white/10 bg-surface-deep px-3 py-2 text-left text-xs text-white/70 transition-colors hover:text-white hover:border-white/20 hover:bg-white/10"
-					>
-						<Icon icon={UserAdd01Icon} className="icon-xs shrink-0" />
-						<span>Revisar cadastros pendentes</span>
-					</button>
-					<button
-						type="button"
-						onClick={() => router.push(Routes.panel.admin.merchants)}
-						className="flex items-center gap-2 rounded-lg border border-white/10 bg-surface-deep px-3 py-2 text-left text-xs text-white/70 transition-colors hover:text-white hover:border-white/20 hover:bg-white/10"
-					>
-						<Icon icon={Settings01Icon} className="icon-xs shrink-0" />
-						<span>Aprovar novas organizações</span>
-					</button>
-				</div>
-			</div>
-		</div>
-	);
-}
 
 function OperationalContextCard({
 	users,
@@ -258,7 +214,6 @@ function FinancialOverviewCards({
 }
 
 function buildOverviewAlerts(financial: AdminFinancialKpis, growth: AdminDashboardGrowthKpis) {
-	const approvalRate = financial.totalTransactions > 0 ? (financial.completedTransactions / financial.totalTransactions) * 100 : 0;
 	const feeMargin = financial.totalVolume > 0 ? ((financial.totalFees - financial.totalAcquirerFees) / financial.totalVolume) * 100 : 0;
 	const declineCount = financial.totalTransactions - financial.completedTransactions;
 	const volumeGrowth = growth.volumeGrowth ?? 0;

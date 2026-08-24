@@ -1,9 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Button, Tooltip } from '@heroui/react';
+import { Tooltip } from '@heroui/react';
 import {
-	Clock04Icon,
 	ViewIcon,
 	CheckmarkCircle02Icon,
 	Alert01Icon,
@@ -27,9 +25,6 @@ import type { MinimalBalanceHistory } from '@/types/merchant/balance-history';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutStatementIcon,
-	RevolutTrendingUpIcon,
-	RevolutTrendingDownIcon,
-	RevolutInfoIcon,
 } from '@/components/ui/revolut-icons';
 
 interface BalanceHistoryTableProps {

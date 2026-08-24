@@ -10,7 +10,6 @@ import {
 	StarIcon,
 	ViewIcon,
 	CheckmarkCircle02Icon,
-	ArrowReloadHorizontalIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import type { AdminPlatformPayoutAccountData } from '@/types/admin/platform-payouts';
@@ -19,7 +18,6 @@ import { pixKeyTypeParse, mapParseColorToChipColor, pageSizeFilterOptions } from
 import { formatDate } from '@/utils/datetime';
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table';
 import { SelectFilter } from '@/components/ui/select-filter';
-import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import { AdminUpsertPlatformPayoutAccountModal } from './modals/admin-upsert-platform-payout-account-modal';
 import { AdminDeletePlatformPayoutAccountModal } from './modals/admin-delete-platform-payout-account-modal';

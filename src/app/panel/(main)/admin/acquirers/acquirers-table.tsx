@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useActionState } from 'react';
-import { Button, Chip, Avatar, Tooltip, Modal, ComboBox, Switch, Label, TextField, Input, ListBox, toast } from '@heroui/react';
+import { Button, Chip, Avatar, Tooltip, Modal, ComboBox, Label, TextField, Input, ListBox, toast } from '@heroui/react';
 import { ServerStack01Icon, PencilEdit01Icon, QrCodeIcon, Building02Icon, Wallet01Icon, Add01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { useRouter } from 'next/navigation';
@@ -29,7 +29,6 @@ import { SearchFilter } from '@/components/ui/search-filter';
 import { SelectFilter } from '@/components/ui/select-filter';
 import { InternalTagTabs } from '@/components/ui/internal-tag-tabs';
 import { useAcquirersTable, type AcquirersTableFilters } from './use-acquirers-table';
-import { AsyncButton } from '@/components/ui/async-button';
 import { Routes } from '@/router/routes';
 import { getAcquirerDisplayTitle, getAcquirerDisplaySubtitle } from '@/utils/acquirer-display';
 import { ProviderCategory } from '@/types/enums';

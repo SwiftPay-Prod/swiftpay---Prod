@@ -5,7 +5,6 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Button, Card, Tabs } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { EmptyState } from '@/components/ui/empty-state';
-import { PageHeader } from '@/components/ui/page-header';
 import { SelectFilter } from '@/components/ui/select-filter';
 import { SearchFilter } from '@/components/ui/search-filter';
 import { AsyncButton } from '@/components/ui/async-button';

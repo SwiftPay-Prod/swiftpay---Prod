@@ -21,7 +21,6 @@ export default async function Page() {
 		<Suspense fallback={<AchievementsPageSkeleton />}>
 			<AchievementsPage
 				fetchPromise={achievementsPromise}
-				merchantId={merchant.id}
 				userName={userResponse?.data?.name ?? null}
 				userProfileImageUrl={userResponse?.data?.profileImageUrl ?? null}
 			/>

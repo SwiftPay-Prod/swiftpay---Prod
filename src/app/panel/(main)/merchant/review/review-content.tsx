@@ -8,9 +8,8 @@ import {
 	Building02Icon,
 } from '@hugeicons/core-free-icons';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { Icon } from '@/components/ui/icon';
-import { AsyncButton } from '@/components/ui/async-button';
 import {
 	MerchantAddressAccordion,
 	MerchantBusinessAccordion,
@@ -38,14 +37,15 @@ export function ReviewContent({ merchant }: ReviewContentProps) {
 	const { updateMerchantInList } = useMerchant();
 	const [isPending, startTransition] = useTransition();
 	const [currentMerchant, setCurrentMerchant] = useState<MerchantData>(merchant);
-
-	useEffect(() => {
+	const [lastMerchant, setLastMerchant] = useState<MerchantData>(merchant);
+	if (merchant !== lastMerchant) {
+		setLastMerchant(merchant);
 		setCurrentMerchant(merchant);
-	}, [merchant]);
+	}
 
 	const kycStatus = currentMerchant.kycStatus as MerchantKycStatus;
 	const status = currentMerchant.status as MerchantStatus;
-	const isComplement = kycStatus === MerchantKycStatus.Complement;
+	const _isComplement = kycStatus === MerchantKycStatus.Complement;
 	const isSuspended = status === MerchantStatus.Suspended;
 	const isInactive = status === MerchantStatus.Inactive;
 	const isSuspendedOrInactive = isSuspended || isInactive;

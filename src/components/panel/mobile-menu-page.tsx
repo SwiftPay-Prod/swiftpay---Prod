@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Icon } from '@/components/ui/icon';
 import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
 import { SidebarMerchantSelector } from '@/components/panel/sidebar/sidebar-merchant-selector';
 import { SidebarKbar } from '@/components/panel/sidebar/sidebar-kbar';

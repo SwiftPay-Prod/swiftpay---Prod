@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Alert, Button, FieldError } from '@heroui/react';
+import { Alert } from '@heroui/react';
 import {
 	Building02Icon,
 	MapPinIcon,
@@ -169,7 +169,7 @@ export function MerchantOnboardingForm({ controller }: MerchantOnboardingFormPro
 	const accordionConfig = STEP_ACCORDION_CONFIG[activeStep.id];
 	const isComplementMode = merchant?.kycStatus === MerchantKycStatus.Complement;
 
-	const shouldShowGenericStepError = Boolean(activeStepError);
+	const _shouldShowGenericStepError = Boolean(activeStepError);
 
 	async function handlePostalCodeChange(value: string) {
 		const cleanCep = value.replace(/\D/g, '');

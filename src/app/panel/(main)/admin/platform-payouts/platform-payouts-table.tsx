@@ -8,7 +8,6 @@ import {
 	ServerStack01Icon,
 	Settings02Icon,
 	CheckmarkCircle02Icon,
-	ArrowReloadHorizontalIcon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
@@ -17,7 +16,6 @@ import { AnimatedNumber } from '@/components/ui/animated-number';
 import type { AdminPlatformPayoutData } from '@/types/admin/platform-payouts';
 import {
 	platformPayoutStatusParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
@@ -174,7 +172,7 @@ function renderMobilePlatformPayoutCard(payout: AdminPlatformPayoutData, _index:
 }
 
 export function PlatformPayoutsTable() {
-	const { data, automaticCashout, filters, modals, actions } = usePlatformPayoutsTable();
+	const { data, filters, modals, actions } = usePlatformPayoutsTable();
 
 	const columns = getColumns(actions.openDetails);
 

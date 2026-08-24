@@ -16,7 +16,6 @@ import {
 } from '@hugeicons/core-free-icons';
 import {
 	paymentStatusParse,
-	mapParseColorToChipColor,
 	parseToFilterOptions,
 	pageSizeFilterOptions,
 } from '@/parse';
@@ -48,7 +47,7 @@ interface TransactionsTableProps {
 
 const statusOptions = parseToFilterOptions(paymentStatusParse, 'Todos os status');
 
-const originFilterOptions = [
+const _originFilterOptions = [
 	{ key: '', label: 'Todas as origens' },
 	{ key: 'checkout', label: 'Checkout' },
 	{ key: 'link', label: 'Link de Pagamento' },

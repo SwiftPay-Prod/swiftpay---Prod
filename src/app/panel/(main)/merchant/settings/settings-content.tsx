@@ -32,7 +32,6 @@ import {
   Crown03Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { MerchantDeleteModal } from '@/components/merchant/merchant-delete';
-import { PageHeader } from '@/components/ui/page-header';
 import { AsyncButton } from '@/components/ui/async-button';
 import { InternalTabs, type InternalTabItem } from '@/components/ui/internal-tabs';
 import { SectionAccordion } from '@/components/ui/system-accordion';

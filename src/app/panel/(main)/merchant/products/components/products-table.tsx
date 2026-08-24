@@ -3,12 +3,10 @@
 import { Avatar, Tooltip, Dropdown, Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import {
-	AddCircleIcon,
 	Archive01Icon,
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
 	Delete02Icon,
-	Mail01Icon,
 	PackageIcon,
 	PencilEdit01Icon,
 	Tag01Icon,
@@ -42,7 +40,6 @@ import {
 	RevolutWalletIcon,
 	RevolutPlusIcon,
 	RevolutCheckIcon,
-	RevolutTrendingUpIcon,
 } from '@/components/ui/revolut-icons';
 
 type ProductsPromise = Promise<ApiResponse<Paginated<MinimalProductData>>>;

@@ -5,7 +5,6 @@ import {
 	CancelCircleIcon,
 	CheckmarkCircle02Icon,
 	Edit02Icon,
-	Image01Icon,
 	PaintBoardIcon,
 	ViewIcon,
 	Add01Icon,
@@ -14,7 +13,6 @@ import { Icon } from '@/components/ui/icon';
 import type { AdminMinimalTemplate } from '@/types/admin/templates';
 import {
 	checkoutTemplateTypeParse,
-	templateActiveStatusParse,
 	templateFreeParse,
 	templateFreeOptions,
 	templateActiveStatusOptions,

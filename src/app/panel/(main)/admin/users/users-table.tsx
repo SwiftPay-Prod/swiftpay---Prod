@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Chip, Avatar, Tooltip } from '@heroui/react';
+import { Button, Avatar, Tooltip } from '@heroui/react';
 import { Building02Icon, UserGroupIcon, ViewIcon, ChampionIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import type { AdminMinimalUser, AdminUserDetails } from '@/types/admin/users';
@@ -31,7 +31,6 @@ import { useUsersTable } from './use-users-table';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutWalletIcon,
-	RevolutPlusIcon,
 	RevolutCheckIcon,
 	RevolutTrendingUpIcon,
 } from '@/components/ui/revolut-icons';

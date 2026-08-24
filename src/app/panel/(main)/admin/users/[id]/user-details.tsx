@@ -107,8 +107,8 @@ export function UserDetails({
 	currentUserId,
 }: UserDetailsProps) {
 	const router = useRouter();
-	const [isPending, startTransition] = useTransition();
-	const [isWaynePending, startWayneTransition] = useTransition();
+	const [isPending, _startTransition] = useTransition();
+	const [isWaynePending, _startWayneTransition] = useTransition();
 	const [selectedTab, setSelectedTab] = useState<string>(initialTab);
 	const [activateModal, setActivateModal] = useState<boolean>(false);
 	const [suspendModal, setSuspendModal] = useState<boolean>(false);

@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useState, useTransition } from 'react';
-import { Card, Tabs, Separator } from '@heroui/react';
+import { Tabs, Separator } from '@heroui/react';
 import { InternalTabs } from '@/components/ui/internal-tabs';
 import { UserProfileProgressCard } from '@/components/user/user-profile-progress-card';
 import {
@@ -43,12 +43,11 @@ const LEVELS_ORDER: MerchantLevel[] = [
 
 interface AchievementsPageProps {
 	fetchPromise: AchievementsPromise;
-	merchantId: string;
 	userName?: string | null;
 	userProfileImageUrl?: string | null;
 }
 
-export function AchievementsPage({ fetchPromise, merchantId, userName, userProfileImageUrl }: AchievementsPageProps) {
+export function AchievementsPage({ fetchPromise, userName, userProfileImageUrl }: AchievementsPageProps) {
 	const response = use(fetchPromise);
 	const data = response?.data;
 

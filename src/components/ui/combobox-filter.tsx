@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, useDeferredValue } from 'react';
+import { useMemo, useState, useDeferredValue } from 'react';
 import { SearchField, Label, ListBox } from '@heroui/react';
 
 interface ComboboxFilterItem {
@@ -40,9 +40,12 @@ export function ComboboxFilter({
 		return items.find((item) => item.value === value)?.label ?? '';
 	}, [value, allValue, items]);
 
-	useEffect(() => {
+	const [lastSelectedLabel, setLastSelectedLabel] = useState(selectedLabel);
+
+	if (selectedLabel !== lastSelectedLabel) {
+		setLastSelectedLabel(selectedLabel);
 		setInputValue(selectedLabel);
-	}, [selectedLabel]);
+	}
 
 	const filteredItems = useMemo(() => {
 		if (deferredInputValue.trim().length < minSearchLength) return [];

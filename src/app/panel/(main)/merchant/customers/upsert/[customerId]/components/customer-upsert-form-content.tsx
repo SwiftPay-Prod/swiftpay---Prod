@@ -144,7 +144,7 @@ export function CustomerUpsertFormContent({ merchantId, environment, customer }:
     if (errors.name?.message) reviewErrors.push(String(errors.name.message));
     if (errors.email?.message) reviewErrors.push(String(errors.email.message));
     return [...new Set(reviewErrors)];
-  }, [errors.email?.message, errors.name?.message]);
+  }, [errors.email, errors.name]);
 
   const wizardSteps = useMemo(
     () =>

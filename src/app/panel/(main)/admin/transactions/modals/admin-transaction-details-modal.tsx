@@ -16,7 +16,6 @@ import {
 	ArrowRight01Icon,
 	WalletRemove01Icon,
 	Analytics01Icon,
-	File01Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';

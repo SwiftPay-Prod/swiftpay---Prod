@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button, Chip, Avatar, Tooltip } from '@heroui/react';
 import Image from 'next/image';
 import { Building02Icon, ServerStack01Icon, ViewIcon, Tag01Icon } from '@hugeicons/core-free-icons';
@@ -30,9 +29,7 @@ import type { Filters } from './page';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutWalletIcon,
-	RevolutPlusIcon,
 	RevolutCheckIcon,
-	RevolutTrendingUpIcon,
 } from '@/components/ui/revolut-icons';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 

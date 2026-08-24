@@ -22,7 +22,6 @@ import {
 	SortingUpIcon,
 	ViewIcon,
 } from '@hugeicons/core-free-icons';
-import { PageHeader } from '@/components/ui/page-header';
 import { usePublicConfig } from '@/contexts/public-config-context';
 import type { ApiCredentialListData } from '@/types/merchant/api-credentials';
 import type { Filters } from './page';

@@ -1,16 +1,10 @@
 'use client';
 
-import { Suspense, use, useState, useTransition } from 'react';
-import { Modal, Skeleton, Button, Accordion } from '@heroui/react';
+import { Suspense, use, useTransition } from 'react';
+import { Modal, Skeleton } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
-import Image from 'next/image';
 import {
-	ArrowExpand01Icon,
-	DollarCircleIcon,
 	InformationCircleIcon,
-	Link01Icon,
-	ShoppingCart01Icon,
-	UserIcon,
 	SentIcon,
 	CheckmarkCircle02Icon,
 	CancelCircleIcon,
@@ -21,26 +15,18 @@ import {
 import { QRCodeSVG } from 'qrcode.react';
 import {
 	paymentStatusParse,
-	callbackStatusParse,
-	orderStatusParse,
-	orderFulfillmentStatusParse,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
 import { formatCurrency } from '@/utils/currency';
-import { EmailLink, DocumentDisplay, ExternalLink, PhoneLink } from '@/components/ui/data-links';
-import { DetailRow, CopyableValue, SectionTitle } from '@/components/ui/detail-components';
 import { resendWebhook } from '@/app/actions/merchant/payments';
 import { toast } from '@heroui/react';
-import { PaymentRequestSource, PaymentStatus } from '@/types/enums';
+import { PaymentStatus } from '@/types/enums';
 import type { PaymentDetails } from '@/types/merchant/payments';
 import type { ApiResponse } from '@/types/common';
 import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutPixIcon,
-	RevolutWalletIcon,
 	RevolutCheckIcon,
-	RevolutAlertIcon,
-	RevolutRefreshIcon,
 } from '@/components/ui/revolut-icons';
 
 type PaymentPromise = Promise<ApiResponse<PaymentDetails>>;
@@ -55,7 +41,6 @@ interface TransactionDetailsModalProps {
 
 interface DetailsContentProps {
 	paymentPromise: PaymentPromise;
-	onOpenQrModal?: (copyAndPaste: string) => void;
 	onNavigateToOrder?: (orderId: string) => void;
 	onResendWebhook?: (paymentId: string) => void;
 	isResendingWebhook?: boolean;
@@ -172,7 +157,7 @@ function DetailsContentSkeleton() {
 	);
 }
 
-function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isResendingWebhook }: DetailsContentProps) {
+function DetailsContent({ paymentPromise, onResendWebhook, isResendingWebhook }: DetailsContentProps) {
 	const response = use(paymentPromise);
 	const payment = response?.data;
 
@@ -188,7 +173,7 @@ function DetailsContent({ paymentPromise, onOpenQrModal, onResendWebhook, isRese
 		);
 	}
 
-	const hasCheckoutInfo = !!payment.checkoutId || !!payment.checkoutName;
+	const _hasCheckoutInfo = !!payment.checkoutId || !!payment.checkoutName;
 
 	return (
 		<div className="flex flex-col gap-5 text-white">

@@ -18,7 +18,6 @@ import {
 	WalletAdd01Icon,
 } from '@hugeicons/core-free-icons';
 import Link from 'next/link';
-import { PageHeader } from '@/components/ui/page-header';
 import { useNotificationSound } from '@/hooks/use-notification-sound';
 import { usePublicConfig } from '@/contexts/public-config-context';
 import { AsyncButton } from '@/components/ui/async-button';

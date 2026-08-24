@@ -9,7 +9,6 @@ import {
 	SortingDownIcon,
 	SortingUpIcon,
 } from '@hugeicons/core-free-icons';
-import { AsyncButton } from './async-button';
 import { MobileBottomSheet } from './mobile-bottom-sheet';
 
 export interface DataTableColumn<T> {

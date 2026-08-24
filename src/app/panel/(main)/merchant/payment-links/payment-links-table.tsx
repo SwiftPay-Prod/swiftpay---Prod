@@ -36,7 +36,6 @@ import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutPixIcon,
 	RevolutPlusIcon,
-	RevolutWalletIcon,
 	RevolutCheckIcon,
 	RevolutTrendingUpIcon,
 } from '@/components/ui/revolut-icons';

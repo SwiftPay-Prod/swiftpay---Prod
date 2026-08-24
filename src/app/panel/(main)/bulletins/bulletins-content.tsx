@@ -2,7 +2,7 @@
 
 import { use, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Chip } from '@heroui/react';
+import { Chip } from '@heroui/react';
 import {
 	ArrowReloadHorizontalIcon,
 	Calendar03Icon,

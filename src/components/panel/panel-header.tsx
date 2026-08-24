@@ -20,7 +20,7 @@ export function PanelHeader({ title, user }: PanelHeaderProps) {
 	const isBalanceVisible = balance.isVisible;
 	const toggleBalanceVisibility = balance.toggleVisibility;
 
-	const initials = selectedMerchant?.name
+	const _initials = selectedMerchant?.name
 		? selectedMerchant.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
 		: '??';
 

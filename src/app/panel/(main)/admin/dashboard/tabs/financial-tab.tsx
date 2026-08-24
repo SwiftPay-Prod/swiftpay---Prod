@@ -1,17 +1,12 @@
 'use client';
 
-import { Tooltip } from '@heroui/react';
 import {
 	AnalyticsUpIcon,
 	Wallet01Icon,
 	Wallet03Icon,
 } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
-import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
-	RevolutWalletIcon,
-	RevolutCheckIcon,
-	RevolutTrendingUpIcon,
 } from '@/components/ui/revolut-icons';
 import type { AdminDailyVolumeData, AdminDashboardGrowthKpis, AdminFinancialKpis } from '@/types/admin/dashboard';
 import { AnimatedCurrency } from '@/components/ui/animated-currency';

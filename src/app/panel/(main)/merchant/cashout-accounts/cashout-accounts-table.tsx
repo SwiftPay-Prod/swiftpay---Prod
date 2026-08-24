@@ -2,7 +2,6 @@
 
 import { Button, Tooltip, Dropdown } from '@heroui/react';
 import {
-	BankIcon,
 	CheckmarkCircle02Icon,
 	Copy01Icon,
 	Delete02Icon,
@@ -35,7 +34,6 @@ import { RevolutStatusBadge } from '@/components/ui/revolut-status-badge';
 import {
 	RevolutPixIcon,
 	RevolutPlusIcon,
-	RevolutLockIcon,
 } from '@/components/ui/revolut-icons';
 
 type AccountsPromise = Promise<ApiResponse<ListCashoutAccountsData>>;

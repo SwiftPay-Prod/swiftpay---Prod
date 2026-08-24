@@ -123,7 +123,7 @@ export function FeaturesTab({
 		config?.socialProofSettings?.notifications
 	);
 
-	const formData: FormData = {
+	const formData: FormData = useMemo(() => ({
 		couponEnabled: values.couponEnabled ?? (config?.couponEnabled ?? false),
 		shippingEnabled: values.shippingEnabled ?? (config?.shippingEnabled ?? false),
 		fixedShippingAmount: values.fixedShippingAmount ?? (config?.fixedShippingAmount ?? null),
@@ -137,7 +137,7 @@ export function FeaturesTab({
 		socialProofDurationSeconds: values.socialProofDurationSeconds ?? (config?.socialProofSettings?.durationSeconds ?? 4),
 		socialProofPosition: values.socialProofPosition ?? (config?.socialProofSettings?.position ?? 'BottomLeft'),
 		socialProofNotifications,
-	};
+	}), [values, config, socialProofNotifications]);
 
 	const hasChanges = useMemo(
 		() =>

@@ -1790,7 +1790,7 @@ function computeExpiresAt(preset: ExpirationPreset, customValue: string): string
 	return date.toISOString();
 }
 
-function getMinDateOnly(): string {
+function _getMinDateOnly(): string {
 	const tomorrow = new Date();
 	tomorrow.setDate(tomorrow.getDate() + 1);
 	return tomorrow.toISOString().slice(0, 10);

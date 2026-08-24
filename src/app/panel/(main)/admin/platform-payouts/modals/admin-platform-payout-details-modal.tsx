@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, use, useState } from 'react';
-import { Modal, Chip, Skeleton, Button, toast } from '@heroui/react';
+import { Modal, Skeleton, Button, toast } from '@heroui/react';
 import {
 	Wallet01Icon,
 	InformationCircleIcon,
@@ -24,7 +24,6 @@ import { AdminReprocessConfirmModal } from '@/components/admin/admin-reprocess-c
 import {
 	platformPayoutStatusParse,
 	platformPayoutItemStatusParse,
-	mapParseColorToChipColor,
 	pixKeyTypeParse,
 } from '@/parse';
 import { formatDate } from '@/utils/datetime';
@@ -41,7 +40,7 @@ interface AdminPlatformPayoutDetailsModalProps {
 	onReprocessed?: () => void;
 }
 
-function ItemStatusIcon({ status }: { status: AdminPlatformPayoutItemData['status'] }) {
+function _ItemStatusIcon({ status }: { status: AdminPlatformPayoutItemData['status'] }) {
 	switch (status) {
 		case 'Processing':
 			return <Icon icon={HourglassIcon} className="icon-xs" />;

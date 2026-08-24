@@ -39,7 +39,6 @@ import {
 	StarAward02Icon,
 } from '@hugeicons/core-free-icons';
 import { toast } from '@heroui/react';
-import { PageHeader } from '@/components/ui/page-header';
 import { FormSaveFooter } from '@/components/ui/form-save-footer';
 import { deleteMyAvatar, updateMyProfile, uploadMyAvatar } from '@/app/actions/user';
 import { useUser } from '@/contexts/user-context';

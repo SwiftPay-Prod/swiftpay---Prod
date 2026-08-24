@@ -84,26 +84,22 @@ export function SetAcquirerModal({
 
 	const loadData = useCallback(async () => {
 		setIsLoading(true);
-		setSelectedAcquirer(null);
-		setStep('select');
-		setReason('');
-		setReasonError(null);
-		setReasonPreset('custom');
-		setSearchQuery('');
-		setProviderFilter('all');
 		try {
 			const acquirersResponse = await adminListAcquirers({ isActive: true, pageSize: 50 });
-			
+
 			if (acquirersResponse?.data?.items) {
 				setAcquirers(acquirersResponse.data.items);
 			}
 		} finally {
 			setIsLoading(false);
 		}
-	}, [merchantId]);
+	}, []);
 
 	useEffect(() => {
 		if (isOpen) {
+			// Intencional: carrega adquirentes quando o modal abre (abertura via prop do pai
+			// não passa por handleOpenChange). Reset de estado fica em handleOpenChange.
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			loadData();
 		}
 	}, [isOpen, loadData]);
@@ -172,8 +168,21 @@ export function SetAcquirerModal({
 	const hasCurrentAcquirer = !!(currentAcquirerId || currentAcquirerName);
 	const isChangingAcquirer = hasCurrentAcquirer;
 
+	const handleOpenChange = (next: boolean) => {
+		if (next) {
+			setSelectedAcquirer(null);
+			setStep('select');
+			setReason('');
+			setReasonError(null);
+			setReasonPreset('custom');
+			setSearchQuery('');
+			setProviderFilter('all');
+		}
+		onOpenChange(next);
+	};
+
 	return (
-		<Modal.Backdrop isOpen={isOpen} onOpenChange={onOpenChange}>
+		<Modal.Backdrop isOpen={isOpen} onOpenChange={handleOpenChange}>
 			<Modal.Container size="lg" scroll="outside">
 				<Modal.Dialog>
 					<Modal.Header>

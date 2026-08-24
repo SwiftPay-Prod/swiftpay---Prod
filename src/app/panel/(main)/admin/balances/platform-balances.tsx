@@ -9,7 +9,6 @@ import {
 	Avatar,
 	Button,
 	Card,
-	Chip,
 	Disclosure,
 	SearchField,
 	Skeleton,
