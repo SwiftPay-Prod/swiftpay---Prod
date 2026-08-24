@@ -671,7 +671,7 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Arquivos**: `public/manifest.json`, `public/firebase-messaging-sw.js`, `public/favicon.png`, `public/apple-touch-icon.png`, `public/logos/pwa-icon-*`, `public/logos/favicon-32.png`, `public/logos/notification-small.png`, `public/logos/apple-touch-icon.png`
   - **Próxima**: commit + push + Deploy; instalação Android/iOS validada em prod pós-deploy (critério do ticket).
 
-- `IN_PROGRESS` feat(push) T2 #106 Spec: #104 — push ponta a ponta Payment Completed (FCM 878c0) — 2026-08-24
+- `DONE` feat(push) T2 #106 Spec: #104 — push ponta a ponta Payment Completed (FCM 878c0) — 2026-08-24 — commit `263fa60`, Deploy `32782211163` success
   - **Contexto**: Spec #104 T2. Frontend gerava tokens FCM no projeto `swiftpaya405c` (inacessível pela conta), backend só tinha service account do `swiftpay-878c0` (email). Decisão do usuário: migrar push para o 878c0.
   - **Executado**:
     - Firebase CLI login (`app.swiftpay.com@gmail.com`) — só tem acesso ao 878c0 (a405c nem aparece).
