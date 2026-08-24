@@ -171,6 +171,15 @@ body {
 	font-display: swap;
 	font-weight: 100 900;
 }
+@font-face {
+	font-family: 'Aeonik Pro';
+	src: local('Aeonik Pro'), local('Inter Display'), local('General Sans'), local('Söhne');
+	font-display: swap;
+	font-weight: 500;
+	/* Fallback chain: Aeonik Pro → Inter Display → General Sans → Söhne → Geist */
+	/* When Aeonik Pro cannot be licensed, Inter Display/General Sans/Söhne are credible substitutes (design.md L418). */
+}
+
 
 @layer base {
 	:root,
@@ -197,9 +206,19 @@ body {
 		--muted-foreground: #666666;
 
 		/* ── Borders ── */
-		--border: #e5e5e5;
-		--separator: #e5e5e5;
-		--input: #e5e5e5;
+		--border: #e2e2e7;
+		--hairline-light: #e2e2e7;
+		--separator: #e2e2e7;
+		--input: #e2e2e7;
+
+		/* ── Text ink scale (design.md L19-24) ── */
+		--text-ink: #191c1f;
+		--text-body: #1f2226;
+		--text-charcoal: #3a3d40;
+		--text-mute: #505a63;
+		--text-ash: #5c5e60;
+		--text-stone: #8d969e;
+		--text-faint: #c9c9cd;
 
 		/* ── Brand ── */
 		--brand: #494fdf;
@@ -227,10 +246,24 @@ body {
 		--destructive: #e23b4a;
 		--destructive-foreground: #ffffff;
 
+		/* ── Extended accent palette (design.md L39-49 — 6 accents missing pre-fix) ── */
+		--accent-teal: #00a87e;
+		--accent-light-blue: #007bc2;
+		--accent-blue-link: #376cd5;
+		--accent-light-green: #428619;
+		--accent-green-text: #006400;
+		--accent-yellow: #b09000;
+		--accent-warning: #ec7e00;
+		--accent-pink: #e61e49;
+		--accent-danger: #e23b4a;
+		--accent-deep-red: #8b0000;
+		--accent-brown: #936d62;
+		--link: #376cd5;
+		--accent-deep: #3a40c4;
+
 		/* ── Focus ── */
 		--focus: #494fdf;
 		--ring: rgba(73, 79, 223, 0.3);
-		--link: #494fdf;
 		/* ── Fields ── */
 		--field-background: #ffffff;
 		--field-foreground: #111111;
@@ -274,7 +307,7 @@ body {
 		--sidebar-primary-foreground: #ffffff;
 		--sidebar-accent: #eeeeee;
 		--sidebar-accent-foreground: #494fdf;
-		--sidebar-border: #e5e5e5;
+		--sidebar-border: #e2e2e7;
 		--sidebar-ring: rgba(73, 79, 223, 0.3);
 
 		/* ── Charts ── */
@@ -284,9 +317,13 @@ body {
 		--chart-4: #ec7e00;
 		--chart-5: #e23b4a;
 		--radius: 0.375rem;
+		--radius-sm: 0.375rem;
+		--radius-lg: 20px;
+		--radius-xl: 28px;
 		--field-radius: 0.375rem;
 
 		--font-sans: 'Geist', system-ui, sans-serif;
+		--font-display: 'Aeonik Pro', 'Inter Display', 'Geist', system-ui, sans-serif;
 	}
 
 	.dark,
@@ -409,6 +446,9 @@ body {
 		--chart-4: #ec7e00;
 		--chart-5: #e23b4a;
 		--radius: 0.5rem;
+		--radius-sm: 0.375rem;
+		--radius-lg: 20px;
+		--radius-xl: 28px;
 	}
 	* {
 		scrollbar-width: thin;
@@ -730,8 +770,9 @@ body {
 	--accent: #494fdf;
 	--accent-foreground: #ffffff;
 	--destructive: #e23b4a;
-	--border: #e5e5e5;
-	--input: #e5e5e5;
+	--border: #e2e2e7;
+	--hairline-light: #e2e2e7;
+	--input: #e2e2e7;
 	--ring: rgba(73, 79, 223, 0.3);
 	--chart-1: #494fdf;
 	--chart-2: #00a87e;
@@ -739,13 +780,16 @@ body {
 	--chart-4: #ec7e00;
 	--chart-5: #e23b4a;
 	--radius: 0.375rem;
+	--radius-sm: 0.375rem;
+	--radius-lg: 20px;
+	--radius-xl: 28px;
 	--sidebar: #f5f5f5;
 	--sidebar-foreground: #111111;
 	--sidebar-primary: #494fdf;
 	--sidebar-primary-foreground: #ffffff;
 	--sidebar-accent: #eeeeee;
 	--sidebar-accent-foreground: #494fdf;
-	--sidebar-border: #e5e5e5;
+	--sidebar-border: #e2e2e7;
 	--sidebar-ring: rgba(73, 79, 223, 0.3);
 }
 
@@ -773,6 +817,10 @@ body {
 	--chart-3: #4f55f1;
 	--chart-4: #ec7e00;
 	--chart-5: #e23b4a;
+	--radius: 0.5rem;
+	--radius-sm: 0.375rem;
+	--radius-lg: 20px;
+	--radius-xl: 28px;
 	--sidebar: #000000;
 	--sidebar-foreground: #ffffff;
 	--sidebar-primary: #ffffff;

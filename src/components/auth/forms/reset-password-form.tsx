@@ -80,14 +80,14 @@ export function ResetPasswordForm({ onSwitchToSignIn }: ResetPasswordFormProps) 
 
 				<TextField variant="secondary" isRequired value={email} onChange={setEmail} name="email" type="email">
 					<Label>Email</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="seu@email.com" />
 					</InputGroup>
 				</TextField>
 
 				<TextField variant="secondary" isRequired value={code} onChange={setCode} name="code" inputMode="numeric">
 					<Label>Código de verificação</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="6 dígitos enviados por e-mail" />
 					</InputGroup>
 				</TextField>
@@ -101,7 +101,7 @@ export function ResetPasswordForm({ onSwitchToSignIn }: ResetPasswordFormProps) 
 					type={isPasswordVisible ? 'text' : 'password'}
 				>
 					<Label>Nova senha</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Mínimo 8 caracteres" autoComplete="new-password" />
 						<InputGroup.Suffix>
 							<Button isIconOnly size="sm" variant="ghost" onPress={() => setIsPasswordVisible((prev) => !prev)} aria-label={isPasswordVisible ? 'Ocultar senha' : 'Mostrar senha'}>
@@ -120,7 +120,7 @@ export function ResetPasswordForm({ onSwitchToSignIn }: ResetPasswordFormProps) 
 					type={isPasswordVisible ? 'text' : 'password'}
 				>
 					<Label>Confirmar nova senha</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Repita a nova senha" autoComplete="new-password" />
 					</InputGroup>
 				</TextField>

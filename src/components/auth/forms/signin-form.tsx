@@ -98,14 +98,14 @@ export function SignInForm({ onSwitchToSignUp, onSwitchToForgotPassword }: SignI
 
 				<TextField variant="secondary" isRequired value={email} onChange={setEmail} name="email" type="email">
 					<Label>Endereço de Email</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Digite seu email" />
 					</InputGroup>
 				</TextField>
 
 				<TextField variant="secondary" isRequired value={password} onChange={setPassword} name="password" type={isPasswordVisible ? 'text' : 'password'}>
 					<Label>Senha</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Digite sua senha" autoComplete="current-password" />
 						<InputGroup.Suffix>
 							<Button isIconOnly size="sm" variant="ghost" onPress={() => setIsPasswordVisible((prev) => !prev)} aria-label={isPasswordVisible ? 'Ocultar senha' : 'Mostrar senha'}>

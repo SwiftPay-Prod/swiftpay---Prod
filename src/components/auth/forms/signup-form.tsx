@@ -186,14 +186,14 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 
 				<TextField variant="secondary" isRequired value={name} onChange={setName} name="name">
 					<Label>Nome</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Seu nome" />
 					</InputGroup>
 				</TextField>
 
 				<TextField variant="secondary" isRequired value={email} onChange={setEmail} name="email" type="email">
 					<Label>Email</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="seu@email.com" />
 					</InputGroup>
 				</TextField>
@@ -219,7 +219,7 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 					type={isPasswordVisible ? 'text' : 'password'}
 				>
 					<Label>Senha</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Digite sua senha" autoComplete="new-password" />
 						<InputGroup.Suffix>
 							<Button isIconOnly size="sm" variant="ghost" onPress={() => setIsPasswordVisible((prev) => !prev)} aria-label={isPasswordVisible ? 'Ocultar senha' : 'Mostrar senha'}>
@@ -238,7 +238,7 @@ export function SignUpForm({ onSwitchToSignIn }: SignUpFormProps) {
 					type={isConfirmPasswordVisible ? 'text' : 'password'}
 				>
 					<Label>Confirmar Senha</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="Confirme sua senha" autoComplete="new-password" />
 						<InputGroup.Suffix>
 							<Button isIconOnly size="sm" variant="ghost" onPress={() => setIsConfirmPasswordVisible((prev) => !prev)} aria-label={isConfirmPasswordVisible ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}>

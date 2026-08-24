@@ -3,13 +3,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// Tradeoff: default now uses adaptive bg-primary (cobalt on light #494fdf, white on dark #ffffff per DESIGN.md R3).
+// This keeps existing callers working (grep variant.*default still valid) while aligning dark app surfaces to
+// Revolut spec: button-primary is bg-white text-black h48 on dark canvas. For explicit marketing hero (always white
+// even on light) use variant "marketing-primary". lsp references pre-check: no caller relied on cobalt-in-dark explicitly.
 const buttonVariants = cva(
   "group/button inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-all duration-150 outline-none select-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-2xs",
-        primary: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-2xs",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xs",
+        primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-2xs",
+        "marketing-primary": "bg-white text-black hover:bg-white/90 shadow-2xs border border-transparent dark:bg-white dark:text-black",
         outline:
           "border-border/80 bg-transparent text-foreground hover:bg-surface hover:border-border",
         secondary:

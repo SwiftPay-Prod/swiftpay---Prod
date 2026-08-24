@@ -25,7 +25,7 @@ export function PanelHeader({ title, user }: PanelHeaderProps) {
 		: '??';
 
 	return (
-		<div className="sticky top-0 z-30 shrink-0 bg-[#000000]/80 backdrop-blur-md border-b border-white/10 h-13 flex items-center">
+		<div className="sticky top-0 z-30 shrink-0 bg-[#000000]/80 backdrop-blur-md border-b border-white/10 h-16 flex items-center">
 			<header className="flex items-center justify-between px-4 sm:px-6 w-full gap-3">
 				<div className="flex items-center gap-3 min-w-0">
 					{title && (

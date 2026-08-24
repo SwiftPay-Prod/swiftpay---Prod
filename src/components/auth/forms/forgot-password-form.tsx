@@ -66,7 +66,7 @@ export function ForgotPasswordForm({ onSwitchToSignIn }: ForgotPasswordFormProps
 
 				<TextField variant="secondary" isRequired value={email} onChange={setEmail} name="email" type="email">
 					<Label>Endereço de Email</Label>
-					<InputGroup>
+					<InputGroup className="h-14 rounded-[12px]">
 						<InputGroup.Input placeholder="seu@email.com" />
 					</InputGroup>
 				</TextField>

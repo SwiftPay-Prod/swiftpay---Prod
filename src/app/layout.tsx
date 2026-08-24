@@ -8,7 +8,7 @@ const appUrl =
 const ogImageUrl = new URL("/opengraph.png", appUrl).toString();
 
 export const viewport: Viewport = {
-  themeColor: "#0b0d11",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

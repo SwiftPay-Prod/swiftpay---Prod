@@ -52,7 +52,7 @@ const commonVariables: VariableInfo[] = [
 	{ name: 'order_subtotal', description: 'Subtotal do pedido', source: 'Soma dos valores dos itens do pedido', example: 'R$ 179,90', category: 'order' },
 	{ name: 'order_shipping', description: 'Valor do frete', source: 'Calculado pelo frete selecionado ou informado manualmente', example: 'R$ 25,00', category: 'order' },
 	{ name: 'order_discount', description: 'Desconto aplicado', source: 'Cupom de desconto aplicado no checkout', example: 'R$ 5,00', category: 'order' },
-	{ name: 'payment_method', description: 'Método de pagamento', source: 'Método escolhido pelo cliente (PIX, Cartão, etc)', example: 'PIX', category: 'order' },
+	{ name: 'payment_method', description: 'Método de pagamento', source: 'Método escolhido pelo cliente (PIX)', example: 'PIX', category: 'order' },
 ];
 
 const trackingVariables: VariableInfo[] = [

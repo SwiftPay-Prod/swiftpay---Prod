@@ -1,6 +1,7 @@
 ---
-version: alpha
+version: v1.0
 name: Revolut-design-analysis
+scope: marketing + app
 description: |
   Revolut's marketing surfaces pair a stark black canvas with the brand's
   cobalt-violet (`#494fdf`) and a wide accent palette of deep, fully-saturated
@@ -619,18 +620,24 @@ The system has **no traditional drop-shadow language**. Surfaces register depth 
 - Phone and card mockups are served at 1.5× and 2× DPR; below 768px the system swaps to a smaller hero crop.
 - Product photography retains its own atmospheric lighting at every breakpoint — no responsive variant assets.
 
+## Known Gaps
+
+- Pressed/active visual states are documented for `button-primary-pressed` only; other components rely on focus-ring (browser default) for interactive feedback.
+- Logged-in app surfaces now scoped in DESIGN.md App Surfaces — see `DESIGN.md` `## App Surfaces` and rules `R12`–`R15` (Shell, Data, Forms, Checkout, Auth). Marketing surfaces remain canonical here.
+- The wide accent palette (`{colors.accent-teal}` through `{colors.accent-brown}`) is captured from the extracted token set, but exact usage inside product illustrations varies per market and product line; document per-illustration rather than as system buttons.
+- Mobile-app screenshot art direction (phone bezels, status bars) is product-photography territory and not standardised as design tokens.
+
+## App Bridge
+
+App surfaces são normatizadas em `DESIGN.md` `R12`–`R15`; `design.md` permanece canonical para marketing primitives; audit cruza ambos via `npx @google/design.md lint`.
+Do not duplicate tokens between files — `design.md` owns marketing bands and primitives; `DESIGN.md` owns App shell/data/forms/checkout/auth and references marketing tokens literally.
+Known Gaps entry anterior superseded — now scoped in `DESIGN.md` `## App Surfaces`.
+
 ## Iteration Guide
 
 1. Focus on ONE component at a time. Most surfaces share the `{colors.canvas-dark}` / `{colors.canvas-light}` pair with `{rounded.full}` for buttons and `{rounded.lg}` for cards.
 2. Reference component names and tokens directly (`{colors.primary}`, `{component.plan-card-featured}`, `{rounded.lg}`) — do not paraphrase.
-3. Run `npx @google/design.md lint DESIGN.md` after edits; orphaned-tokens warnings will catch unused entries.
+3. Run `npx @google/design.md lint design.md DESIGN.md` after edits; orphaned-tokens warnings will catch unused entries.
 4. Add new variants as separate entries (`-pressed`, `-featured`, `-disabled`) — do not bury them in prose.
 5. Default body type to `{typography.body-md}` (Inter 400 with positive tracking); reach for `{typography.body-md-bold}` only on emphasis.
 6. Keep `{colors.primary}` scarce — if more than one cobalt-violet element appears per viewport, ask whether one should drop to `{component.plan-card}` (`{colors.surface-elevated}`) instead.
-
-## Known Gaps
-
-- Pressed/active visual states are documented for `button-primary-pressed` only; other components rely on focus-ring (browser default) for interactive feedback.
-- Logged-in app surfaces (transactions, transfers, account settings) are out of scope — only the public marketing canvas is documented.
-- The wide accent palette (`{colors.accent-teal}` through `{colors.accent-brown}`) is captured from the extracted token set, but exact usage inside product illustrations varies per market and product line; document per-illustration rather than as system buttons.
-- Mobile-app screenshot art direction (phone bezels, status bars) is product-photography territory and not standardised as design tokens.
