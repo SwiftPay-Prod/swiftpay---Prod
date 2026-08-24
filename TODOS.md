@@ -720,3 +720,11 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **ADR 0008** (`docs/adr/0008-push-notifications-fcm-preference-matrix.md`): push via FCM com matriz de preferências; in-app sempre on; projeto único 878c0; push na transição interna; caminho direto respeita prefs (bug fix documentado); alternativas rejeitadas; evidências dos 5 deploys e 11/11 testes. Referencia ADRs 0004 e 0007.
   - **CONTEXT.md**: seção `## Notifications` com `Push Token`, `Notification Preference` (governa push apenas; in-app sempre), `Channel` (Push/In-App/Email — Email modelado não enviado).
   - **Próxima**: fechar #104; commit + push.
+
+- `DONE` fix(mobile) Spec: #104 follow-up — tabs de escopo rolam no mobile + atalho Configurar — 2026-08-24
+  - **Contexto**: Usuário reportou: (1) tabs Todas/Organização/Minhas da tela de Notificações não rolavam no mobile; (2) settings de notificação (push prefs) não encontradas no mobile.
+  - **Causas**: (1) `Tabs className="w-fit"` travava a largura do container impedindo o scroll horizontal do `[data-slot='tab-list-container']`; (2) `/panel/user-settings` só acessível via sidebar desktop (Menu → user info → Ajustes) — sem entrada na bottom-nav.
+  - **Fix**: `notifications-content.tsx:302` `w-fit` → `w-full max-w-full overflow-x-auto`; header de Notificações ganha botão "Configurar" → `/panel/user-settings`.
+  - **Verify**: `tsc 0`, `npm run build` `BUILD_EXIT:0` 66 rotas.
+  - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
+  - **Próxima**: commit + push + deploy.

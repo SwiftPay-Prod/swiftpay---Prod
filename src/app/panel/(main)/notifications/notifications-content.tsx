@@ -23,6 +23,7 @@ import type { UnifiedNotificationData, ReadUserNotificationCountData } from '@/t
 import type { ApiResponse, Paginated } from '@/types/common';
 import {
 	CheckmarkCircle02Icon,
+	Settings05Icon,
 	ArrowRight02Icon,
 	ArrowLeft02Icon,
 	ArrowReloadHorizontalIcon,
@@ -279,17 +280,28 @@ export function NotificationsContent({
 					</p>
 				</div>
 
-				{unreadCount > 0 && (
+				<div className="flex items-center gap-2">
 					<button
 						type="button"
-						onClick={handleMarkAllAsRead}
-						disabled={isPending}
+						onClick={() => router.push(Routes.panel.userSettings)}
+						title="Configurar notificações"
 						className="button-outline-dark cursor-pointer text-xs"
 					>
-						<Icon icon={CheckmarkCircle02Icon} className="icon-xs" />
-						<span>Marcar todas como lidas</span>
+						<Icon icon={Settings05Icon} className="icon-xs" />
+						<span>Configurar</span>
 					</button>
-				)}
+					{unreadCount > 0 && (
+						<button
+							type="button"
+							onClick={handleMarkAllAsRead}
+							disabled={isPending}
+							className="button-outline-dark cursor-pointer text-xs"
+						>
+							<Icon icon={CheckmarkCircle02Icon} className="icon-xs" />
+							<span>Marcar lidas</span>
+						</button>
+					)}
+				</div>
 			</div>
 
 			{/* Tabs de escopo */}
@@ -299,7 +311,7 @@ export function NotificationsContent({
 					onSelectionChange={(key) => {
 						navigate({ scope: key === 'all' ? undefined : key });
 					}}
-					className="w-fit"
+					className="w-full max-w-full overflow-x-auto"
 				>
 					<Tabs.ListContainer>
 						<Tabs.List aria-label="Escopo das notificações" className="gap-1">
