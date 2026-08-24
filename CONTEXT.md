@@ -73,3 +73,17 @@ _Avoid_: API token, app key
 **Webhook**:
 An HTTP notification dispatched to a Merchant or received from an Acquirer upon payment state transitions.
 _Avoid_: Callback, push event
+
+## Notifications
+
+**Push Token**:
+A device-specific FCM registration bound to a User, enabling push delivery to that device. Deactivated on logout or device revocation.
+_Avoid_: Device key, FCM ID, subscription
+
+**Notification Preference**:
+A User's per-event configuration matrix that governs push delivery. Controls push only — in-app notifications are always delivered regardless of preferences.
+_Avoid_: Notification settings, alert config
+
+**Channel**:
+The delivery medium of a notification: Push (device), In-App (SignalR/bell, always on), or Email (modeled, not yet sent).
+_Avoid_: Medium, transport, method

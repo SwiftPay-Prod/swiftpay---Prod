@@ -715,3 +715,8 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`; `npm run build` `BUILD_EXIT:0` 66 rotas.
   - **Arquivos**: `src/app/panel/(main)/user-settings/page.tsx`
   - **Próxima**: commit + push + deploy; validação de token FCM real em device fica pós-deploy com o usuário.
+
+- `DONE` docs(dom) T7 #111 Spec: #104 — ADR 0008 + CONTEXT.md notificações — 2026-08-24
+  - **ADR 0008** (`docs/adr/0008-push-notifications-fcm-preference-matrix.md`): push via FCM com matriz de preferências; in-app sempre on; projeto único 878c0; push na transição interna; caminho direto respeita prefs (bug fix documentado); alternativas rejeitadas; evidências dos 5 deploys e 11/11 testes. Referencia ADRs 0004 e 0007.
+  - **CONTEXT.md**: seção `## Notifications` com `Push Token`, `Notification Preference` (governa push apenas; in-app sempre), `Channel` (Push/In-App/Email — Email modelado não enviado).
+  - **Próxima**: fechar #104; commit + push.
