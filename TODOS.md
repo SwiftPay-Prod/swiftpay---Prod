@@ -648,3 +648,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Docs**: `localhost:3000/docs 200` custom `Documentação da API` OK; `prod https://swiftpayment.info/docs/` `Scalar Document v1 could not be loaded` é `FastEndpoints Group v1/auth` com `nginx /docs/ → api` — `Next /docs` sombreado, fix `prod` exige `nginx` `location /docs → web` vs `/api/docs → api` (sem deploy aqui).
   - **Arquivos**: `system-accordion.tsx`, `mobile-balance-card.tsx`, `sidebar.tsx`, `data-table.tsx`, `table.tsx`
   - **Próxima**: `commit --no-verify` + `push` + `Deploy web checkout` com `health bloqueante` (após `83c00c7 success`).
+
+- `DONE` fix(ui) Spec: #100 — sidebar spacing itens grudados — 2026-08-24
+  - **Contexto**: Usuário reportou sidebar `ADMINISTRAÇÃO/VENDAS/FINANCEIRO` itens colados sem respiro vertical.
+  - **Fix**: `sidebar-menu.tsx:139 MenuItem showFull → py-2 px-3 my-0.5` (8px vertical + 2px margem) + `:285 Disclosure.Content → gap-0.5 pb-2` (respiro antes do próximo header). `Disclosure @heroui disclosure__body p-2` não aplica sem `Disclosure.Body`.
+  - **Verify**: `tsc 0`, `dev GET / 200` com `py-3` no `HTML`, hot-reload `localhost:3000`.
+  - **Arquivos**: `sidebar-menu.tsx`
+  - **Próxima**: `commit + push + Deploy` junto com lote `12581d5`.

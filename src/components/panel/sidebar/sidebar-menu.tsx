@@ -136,7 +136,9 @@ function MenuItem({ item, showFull }: MenuItemProps) {
 		</Chip>
 	) : null;
 	const buttonClassName = [
-		showFull ? 'w-full flex items-center justify-start gap-3' : 'w-8 h-8 flex items-center justify-center',
+		showFull
+			? 'w-full flex items-center justify-start gap-3 py-2 px-3 my-0.5'
+			: 'w-8 h-8 flex items-center justify-center my-0.5',
 		active
 			? 'bg-brand/15 text-link border-l-2 border-link rounded-r-lg'
 			: 'text-white/60 hover:text-white hover:bg-white/10 rounded-lg',
@@ -280,7 +282,7 @@ function MenuSectionComponent({ section, showFull }: MenuSectionComponentProps) 
 				/>
 			</Disclosure.Trigger>
 			<Disclosure.Content>
-				<div className="ml-3 flex flex-col pl-3">
+				<div className="ml-3 flex flex-col pl-3 gap-0.5 pb-2">
 					{section.items.map((item) => (
 						<MenuItem key={item.path} item={item} showFull={showFull} />
 					))}
