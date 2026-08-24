@@ -251,4 +251,88 @@ public sealed class NotificationServicePushTests : IAsyncLifetime
             .ToListAsync();
         inApp.Should().HaveCount(1);
     }
+
+    [Fact]
+    public async Task PaymentRefunded_WithEventOn_ShouldSendPushWithActionUrl()
+    {
+        var merchantId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        await using var context = new PrimaryDbContext(_options);
+        await SeedMerchantAsync(context, merchantId, userId);
+
+        context.Set<UserNotificationPreference>().Add(new UserNotificationPreference
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            PushNotificationsEnabled = true,
+            NotifyPaymentRefunded = true,
+            NotifyPaymentCompleted = false
+        });
+        await context.SaveChangesAsync();
+        _push.MerchantCalls.Clear();
+
+        var service = BuildService();
+        await service.CreatePaymentNotificationAsync(
+            merchantId, "Pagamento reembolsado", "R$ 50,00 devolvidos",
+            NotificationStatusType.PaymentRefunded, ApiEnvironment.Production, "/panel/merchant/transactions");
+
+        _push.MerchantCalls.Should().HaveCount(1);
+        _push.MerchantCalls[0].Data!["actionUrl"].Should().Be("/panel/merchant/transactions");
+    }
+
+    [Theory]
+    [InlineData(NotificationStatusType.PayoutCompleted, "/payouts/payout-1")]
+    [InlineData(NotificationStatusType.PayoutFailed, "/payouts/payout-2")]
+    [InlineData(NotificationStatusType.PayoutRejected, "/panel/merchant/cashouts")]
+    [InlineData(NotificationStatusType.PayoutProcessing, "/payouts/payout-4")]
+    public async Task PayoutTransitions_WithEventOn_ShouldSendPushWithActionUrl(NotificationStatusType statusType, string actionUrl)
+    {
+        var merchantId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        await using var context = new PrimaryDbContext(_options);
+        await SeedMerchantAsync(context, merchantId, userId);
+
+        context.Set<UserNotificationPreference>().Add(new UserNotificationPreference
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            PushNotificationsEnabled = true
+        });
+        await context.SaveChangesAsync();
+        _push.MerchantCalls.Clear();
+
+        var service = BuildService();
+        await service.CreatePayoutNotificationAsync(
+            merchantId, $"Payout {statusType}", "Seu saque foi atualizado",
+            statusType, ApiEnvironment.Production, actionUrl);
+
+        _push.MerchantCalls.Should().HaveCount(1);
+        _push.MerchantCalls[0].Data!["actionUrl"].Should().Be(actionUrl);
+    }
+
+    [Fact]
+    public async Task PayoutCompleted_WithEventOff_ShouldNotSendPush()
+    {
+        var merchantId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        await using var context = new PrimaryDbContext(_options);
+        await SeedMerchantAsync(context, merchantId, userId);
+
+        context.Set<UserNotificationPreference>().Add(new UserNotificationPreference
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            PushNotificationsEnabled = true,
+            NotifyPayoutCompleted = false
+        });
+        await context.SaveChangesAsync();
+        _push.MerchantCalls.Clear();
+
+        var service = BuildService();
+        await service.CreatePayoutNotificationAsync(
+            merchantId, "Saque concluído", "R$ 500,00",
+            NotificationStatusType.PayoutCompleted, ApiEnvironment.Production, "/payouts/payout-1");
+
+        _push.MerchantCalls.Should().BeEmpty();
+    }
 }

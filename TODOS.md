@@ -689,3 +689,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Pendente**: commit + push + deploy (compose fix local + NotificationService fix + testes + frontend FCM); validação de token FCM real em device pós-deploy.
   - **Arquivos**: `src/lib/firebase.ts`, `public/firebase-messaging-sw.js`, `swiftpay-api-core/Services/NotificationService.cs`, `swiftpay-api/Tests/Unit/Notification/NotificationServicePushTests.cs`, `swiftpay-api/docker-compose.production.yaml`
   - **Próxima**: commit (TODOS staged) + push + deploy + validação device.
+
+- `DONE` test(push) T3 #107 Spec: #104 — push estendido para Refunded + Cashout — 2026-08-24
+  - **Contexto**: Spec #104 T3. Mapeamento provou que Failed/Refunded/Expired/Cancelled (Payment) e Completed/Processing/Failed/Rejected (Cashout) JÁ disparam `CreatePaymentNotificationAsync`/`CreatePayoutNotificationAsync` com `actionUrl` — push flui via `EnqueuePush` → `SendPushNotificationConsumer` → `ShouldSendPushAsync`. Nenhum código de produção novo necessário.
+  - **Trabalho real**: 6 testes xUnit novos — `PaymentRefunded` com evento on (actionUrl), theory `PayoutCompleted/Failed/Rejected/Processing` com actionUrl próprio, `PayoutCompleted` com evento off (sem push).
+  - **Verify**: `dotnet test` VPS (docker real) → **11/11 Passed** (5 do T2 + 6 do T3), 1m02s.
+  - **Arquivos**: `swiftpay-api/Tests/Unit/Notification/NotificationServicePushTests.cs`
+  - **Próxima**: commit + push; issue #107 fechada.
