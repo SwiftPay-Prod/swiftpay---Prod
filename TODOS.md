@@ -744,3 +744,11 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
   - **Dívida registrada**: remover `ignoreBuildErrors` do next.config (mascara erros de tipo em build).
   - **Próxima**: commit + push + deploy.
+
+- `DONE` fix(notifications) Spec: #104 follow-up 4 — promises catch-safe — 2026-08-24
+  - **Contexto**: Usuário reportou "aconteceu um erro inesperado" ao abrir Notificações via sino (mobile). Página usa `use(notificationsPromise)` com promises de Server Actions SEM `.catch` — qualquer falha de rede/500 da API no SSR rejeitava a promise e derrubava a página inteira para o error boundary.
+  - **Fix**: `page.tsx` com wrapper `safe(promise)` → `.catch` loga e retorna `null`; `NotificationsContent` já trata null com fallback (`?? { items: [], ... }`).
+  - **Nota**: string exata do erro não existe no front — vem de toast da API ou error boundary; com o fix, falha de API mostra página com empty state em vez de crash.
+  - **Verify**: `tsc 0`.
+  - **Arquivos**: `src/app/panel/(main)/notifications/page.tsx`
+  - **Próxima**: commit + push + deploy; se persistir, pedir stack do console do browser.

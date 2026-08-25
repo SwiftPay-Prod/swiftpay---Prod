@@ -49,23 +49,32 @@ export default async function NotificationsPage({ searchParams }: PageProps) {
 		environment,
 	};
 
-	// Promise para a lista unificada com todos os filtros
-	const notificationsPromise = listAllNotifications(merchant.id, {
-		scope: filters.scope === 'all' ? undefined : filters.scope,
-		page: filters.page,
-		pageSize: filters.pageSize,
-		isRead: filters.isRead,
-		type: filters.type,
-		statusType: filters.statusType,
-		priority: filters.priority,
-		search: filters.search,
-		startDate: filters.startDate,
-		endDate: filters.endDate,
-	});
+	// Promises com catch-safe: falha da API vira resposta vazia em vez de rejeitar
+	// use() no cliente e derrubar a página inteira para o error boundary.
+	const safe = <T,>(promise: Promise<T>) =>
+		promise.catch((error) => {
+			console.error('[notifications] API call failed:', error);
+			return null;
+		});
+
+	const notificationsPromise = safe(
+		listAllNotifications(merchant.id, {
+			scope: filters.scope === 'all' ? undefined : filters.scope,
+			page: filters.page,
+			pageSize: filters.pageSize,
+			isRead: filters.isRead,
+			type: filters.type,
+			statusType: filters.statusType,
+			priority: filters.priority,
+			search: filters.search,
+			startDate: filters.startDate,
+			endDate: filters.endDate,
+		})
+	);
 
 	// Promises para obter os counts de cada scope (para as tabs)
-	const merchantCountPromise = getMerchantNotificationCount(merchant.id);
-	const userCountPromise = getUserNotificationCount();
+	const merchantCountPromise = safe(getMerchantNotificationCount(merchant.id));
+	const userCountPromise = safe(getUserNotificationCount());
 
 	return (
 		<Suspense fallback={<NotificationsSkeleton filters={filters} />}>
