@@ -752,3 +752,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`.
   - **Arquivos**: `src/app/panel/(main)/notifications/page.tsx`
   - **Próxima**: commit + push + deploy; se persistir, pedir stack do console do browser.
+
+- `DONE` fix(notifications) Spec: #104 follow-up 5 — error boundary local no segmento — 2026-08-24
+  - **Contexto**: Crash persistia mesmo com promises catch-safe — erro é client-side durante render/hidratação do NotificationsContent, sem stack disponível (usuário sem console aberto).
+  - **Fix**: `error.tsx` local no segmento notifications — isola o crash (não derruba o app inteiro para o error boundary raiz), mostra "Notificações indisponíveis" com botão retry, e loga o stack real no console com prefixo `[notifications] segment error:`.
+  - **Verify**: `tsc 0`.
+  - **Arquivos**: `src/app/panel/(main)/notifications/error.tsx`
+  - **Próxima**: commit + push + deploy; com o boundary local, o console do usuário mostrará o erro real para diagnóstico definitivo.
