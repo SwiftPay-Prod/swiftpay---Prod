@@ -728,3 +728,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`, `npm run build` `BUILD_EXIT:0` 66 rotas.
   - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
   - **Próxima**: commit + push + deploy.
+
+- `DONE` fix(mobile) Spec: #104 follow-up 2 — botão Configurar vira Link nativo — 2026-08-24
+  - **Contexto**: Usuário clicou em "Configurar" e nada aconteceu (deploy anterior). `button + onClick router.push` pode falhar silenciosamente com hidratação incompleta ou overlay capturando o click.
+  - **Fix**: trocado por `<Link href={Routes.panel.userSettings}>` — navegação nativa do Next, funciona mesmo sem hidratação perfeita.
+  - **Verify**: `tsc 0`.
+  - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
+  - **Próxima**: commit + push + deploy.

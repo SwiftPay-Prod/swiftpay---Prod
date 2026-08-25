@@ -281,15 +281,14 @@ export function NotificationsContent({
 				</div>
 
 				<div className="flex items-center gap-2">
-					<button
-						type="button"
-						onClick={() => router.push(Routes.panel.userSettings)}
+					<Link
+						href={Routes.panel.userSettings}
 						title="Configurar notificações"
 						className="button-outline-dark cursor-pointer text-xs"
 					>
 						<Icon icon={Settings05Icon} className="icon-xs" />
 						<span>Configurar</span>
-					</button>
+				</Link>
 					{unreadCount > 0 && (
 						<button
 							type="button"
