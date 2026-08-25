@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useTransition, useCallback } from 'react';
+import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Button, Card, Tabs } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';

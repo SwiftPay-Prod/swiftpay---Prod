@@ -735,3 +735,12 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`.
   - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
   - **Próxima**: commit + push + deploy.
+
+- `DONE` hotfix(notifications) Spec: #104 follow-up 3 — import Link faltante — 2026-08-24
+  - **Contexto**: Usuário reportou "Algo deu errado: Ocorreu uma falha inesperada" ao abrir Notificações. Logs do container: `ReferenceError: Link is not defined` — o fix anterior trocou button por `<Link>` sem importar (next/link).
+  - **Causa raiz do escape**: `next.config.ts ignoreBuildErrors: true` mascarou o erro no build; `tsc --noEmit` local passou porque o erro é runtime (SSR), não de tipo.
+  - **Fix**: `import Link from 'next/link'`.
+  - **Verify**: `tsc 0`; logs do container limpos pós-deploy.
+  - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
+  - **Dívida registrada**: remover `ignoreBuildErrors` do next.config (mascara erros de tipo em build).
+  - **Próxima**: commit + push + deploy.
