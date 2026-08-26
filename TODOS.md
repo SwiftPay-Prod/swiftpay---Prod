@@ -759,3 +759,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0`.
   - **Arquivos**: `src/app/panel/(main)/notifications/error.tsx`
   - **Próxima**: commit + push + deploy; com o boundary local, o console do usuário mostrará o erro real para diagnóstico definitivo.
+
+- `DONE` hotfix(notifications) Spec: #104 follow-up 6 — import Routes faltante (ReferenceError) — 2026-08-24
+  - **Contexto**: Console logou `[notifications] segment error: ReferenceError: Routes is not defined` em `src/app/panel/(main)/notifications/notifications-content.tsx:286` — `<Link href={Routes.panel.userSettings}>` usado sem import após troca de `button+onClick` para `Link`.
+  - **Fix**: `import { Routes } from '@/router/routes'` + `import Link from 'next/link'` (HeroUI `Link` não é o correto aqui); `tsc` não pegou porque `next.config ignoreBuildErrors: true`.
+  - **Verify**: `tsc 0` com import correto; `git diff` confirma.
+  - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
+  - **Próxima**: commit + push + deploy.
