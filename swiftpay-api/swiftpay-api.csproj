@@ -20,6 +20,9 @@
   <ItemGroup Condition="Exists('..\swiftpay-api-core\swiftpay-api-core.csproj')">
     <ProjectReference Include="..\swiftpay-api-core\swiftpay-api-core.csproj" />
   </ItemGroup>
+  <ItemGroup Condition="!Exists('..\swiftpay-api-core\swiftpay-api-core.csproj')">
+    <PackageReference Include="swiftpay-api-core" Version="2.15.1" />
+  </ItemGroup>
 
   <ItemGroup Condition="!Exists('..\swiftpay-api-core\swiftpay-api-core.csproj')">
     <PackageReference Include="swiftpay-api-core" Version="2.15.1" />

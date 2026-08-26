@@ -783,3 +783,19 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Arquivos U2**: `swiftpay-api-payment/Services/OrderService.cs`; `swiftpay-api-payment/Tests/Unit/Orders/CheckoutPaymentNotificationTests.cs`; `swiftpay-api-payment/Tests/swiftpay-api-payment.Tests.csproj`; `swiftpay-api-payment/.github/instructions/swiftpay-api-payment/foundations-transactions-and-cashouts.instructions.md`; `docs/architecture/payment-lifecycle.md`; `TODOS.md`.
   - **Escopo preservado**: nenhum arquivo de PaymentLink, template/UI, commit, push, deploy ou produção alterado.
   - **Próxima ação única**: em ambiente central com Docker funcional, executar `/home/matspectrum-ai/.dotnet/dotnet test swiftpay-api-payment/Tests/swiftpay-api-payment.Tests.csproj --filter "FullyQualifiedName~CheckoutPaymentNotificationTests" --no-restore --nologo -v minimal`; se 4/4 passarem, registrar a evidência e marcar #114 `DONE`.
+
+- `DONE` feat(push) U4 #116 Spec: #112 — templates customizáveis + UI user-settings — 2026-08-26
+  - **Contexto**: U1 criou `UserNotificationTemplate`; NotificationService já fazia fallback; faltava UI e endpoint de templates.
+  - **Implementação**: endpoints `List/Upsert/Delete` em `swiftpay-api/Endpoints/Users/NotificationTemplates`; componente `NotificationTemplatesSettings` em `src/components/panel/notification-templates-settings.tsx` integrado em `user-settings/page.tsx`; renderização com allowlist de placeholders e preview; validação inline; indicador custom/default.
+  - **Testes**: `NotificationTemplateTests` movido para `swiftpay-api-payment/Tests/Unit/Services` (Testcontainers Postgres); cobre custom render, placeholder desconhecido rejeitado e fallback.
+  - **Verify**: `dotnet build swiftpay-api-core` CORE_EXIT:0; `dotnet build swiftpay-api` API_EXIT:0; `dotnet build swiftpay-api-payment` PAYMENT_EXIT:0; `npm run build` WEB_BUILD_EXIT:0; `/panel/user-settings` inclui `<NotificationTemplatesSettings />`.
+  - **Arquivos**: `swiftpay-api-core/Services/NotificationTemplateRenderer.cs`; `src/components/panel/notification-templates-settings.tsx`; `swiftpay-api/Endpoints/Users/NotificationTemplates/*`; `swiftpay-api-payment/Tests/Unit/Services/NotificationTemplateTests.cs`.
+  - **Próxima**: commit + push + deploy.
+
+- `IN_PROGRESS` feat(admin) U5 #117 Spec: #112 — broadcast admin com fan-out + audit — 2026-08-26
+  - **Contexto**: God admin precisa disparar broadcast customizado por audiência com auditoria.
+  - **Implementação**: endpoint `POST /v1/admin/notifications/broadcast` (God only) com audience `all/merchant/user`; fan-out respeita `UserNotificationPreference` (`PushNotificationsEnabled` e `NotifyInfo`); `BroadcastAudit` registra totals/processed/success/failure; migration `20260826234416_AddBroadcastAudit`.
+  - **Testes**: `BroadcastNotificationTests` cobre validação de audience, merchant sem `MerchantId`, user sem `UserId/UserEmail`.
+  - **Verify**: `dotnet build swiftpay-api` API_EXIT:0; `dotnet build swiftpay-api/Tests` TEST_EXIT:0.
+  - **Arquivos**: `swiftpay-api/Endpoints/Admin/Notifications/BroadcastNotification/*`; `swiftpay-api-core/Models/Database/Primary/BroadcastAudit.cs`; `PrimaryDbContext.cs`; migration.
+  - **Próxima**: commit + push + deploy.

@@ -82,6 +82,7 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
     public DbSet<PushToken> PushTokens { get; set; }
     public DbSet<UserNotificationPreference> UserNotificationPreferences { get; set; }
     public DbSet<UserNotificationTemplate> UserNotificationTemplates { get; set; }
+    public DbSet<BroadcastAudit> BroadcastAudits { get; set; }
     public DbSet<BankReconciliation> BankReconciliations { get; set; }
     public DbSet<BankReconciliationDiscrepancy> BankReconciliationDiscrepancies { get; set; }
     public DbSet<MerchantAcquirerChangeHistory> MerchantAcquirerChangeHistories { get; set; }
