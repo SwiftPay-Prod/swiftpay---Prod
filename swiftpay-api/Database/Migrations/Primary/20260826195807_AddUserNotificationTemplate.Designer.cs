@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using swiftpay_api_core.Database;
@@ -14,9 +15,11 @@ using swiftpay_api_core.Models.Email;
 namespace swiftpay_api.Database.Migrations.Primary
 {
     [DbContext(typeof(PrimaryDbContext))]
-    partial class PrimaryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260826195807_AddUserNotificationTemplate")]
+    partial class AddUserNotificationTemplate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

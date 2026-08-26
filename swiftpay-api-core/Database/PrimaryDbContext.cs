@@ -81,6 +81,7 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
     public DbSet<DeviceVerificationCode> DeviceVerificationCodes { get; set; }
     public DbSet<PushToken> PushTokens { get; set; }
     public DbSet<UserNotificationPreference> UserNotificationPreferences { get; set; }
+    public DbSet<UserNotificationTemplate> UserNotificationTemplates { get; set; }
     public DbSet<BankReconciliation> BankReconciliations { get; set; }
     public DbSet<BankReconciliationDiscrepancy> BankReconciliationDiscrepancies { get; set; }
     public DbSet<MerchantAcquirerChangeHistory> MerchantAcquirerChangeHistories { get; set; }
@@ -1216,6 +1217,19 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
 
         modelBuilder.Entity<UserNotificationPreference>()
             .HasIndex(unp => unp.UserId)
+            .IsUnique();
+
+        // UserNotificationTemplate - texto customizável por usuário × evento
+        modelBuilder.Entity<UserNotificationTemplate>().HasKey(unt => unt.Id);
+
+        modelBuilder.Entity<UserNotificationTemplate>()
+            .HasOne(unt => unt.User)
+            .WithMany()
+            .HasForeignKey(unt => unt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<UserNotificationTemplate>()
+            .HasIndex(unt => new { unt.UserId, unt.Type, unt.StatusType })
             .IsUnique();
 
         // BankReconciliation

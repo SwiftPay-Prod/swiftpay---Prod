@@ -766,3 +766,10 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `tsc 0` com import correto; `git diff` confirma.
   - **Arquivos**: `src/app/panel/(main)/notifications/notifications-content.tsx`
   - **Próxima**: commit + push + deploy.
+
+- `DONE` feat(push) U1 #113 Spec: #112 — expandir tabela UserNotificationTemplate — 2026-08-26
+  - **Prefactor**: nova tabela `UserNotificationTemplates` (UserId FK Users, Type, StatusType nullable, TitleTemplate 80, BodyTemplate 240, UpdatedAt) com índice único `(UserId, Type, StatusType)` e `OnDelete Cascade`; `DbSet<UserNotificationTemplate>` + `OnModelCreating` em `PrimaryDbContext`.
+  - **Migration**: `20260826195807_AddUserNotificationTemplate` (`CreateTable` + `FK_Users` + `IX_UserId_Type_StatusType`).
+  - **Verify**: `dotnet build swiftpay-api-core` CORE_EXIT:0 (27 warnings), `dotnet build swiftpay-api` API_EXIT:0 (29 warnings), `tsc` pendente para web (separado).
+  - **Arquivos**: `UserNotificationTemplate.cs`, `PrimaryDbContext.cs`, `Migrations/Primary/*`
+  - **Próxima**: commit + push.
