@@ -17,19 +17,22 @@ public class OrderService(
     PrimaryDbContext dbContext,
     IPaymentMethodServiceFactory paymentMethodServiceFactory,
     IMessagePublisher messagePublisher,
+    INotificationService notificationService,
     ILogger<OrderService> logger
 ) : IOrderService
 {
     public async Task<OrderResult> CreateFromCheckoutAsync(CreateOrderInput input, CancellationToken ct = default)
     {
-        input.CheckoutId ??= null;
+        var result = input.ExistingOrderId.HasValue
+            ? await CreateFromExistingReservationAsync(input, ct)
+            : await CreateAsync(input, ct);
 
-        if (input.ExistingOrderId.HasValue)
+        if (result.Success && result.Payment != null)
         {
-            return await CreateFromExistingReservationAsync(input, ct);
+            await SendOrderPaymentPendingNotificationAsync(result.Payment);
         }
 
-        return await CreateAsync(input, ct);
+        return result;
     }
 
     private async Task<OrderResult> CreateFromExistingReservationAsync(CreateOrderInput input, CancellationToken ct)
@@ -123,11 +126,9 @@ public class OrderService(
                     paymentResult.ErrorCode,
                     paymentResult.StatusCode);
             }
-
             paymentResult.Payment!.OrderId = order.Id;
 
             await dbContext.SaveChangesAsync(ct);
-
             return OrderResult.Ok(order, paymentResult.Payment, paymentResult.PaymentPix, paymentResult.Payment?.PaymentBoleto);
         }
         catch (Exception ex)
@@ -299,7 +300,6 @@ public class OrderService(
                     paymentResult.ErrorCode,
                     paymentResult.StatusCode);
             }
-
             paymentResult.Payment!.OrderId = order.Id;
 
             await dbContext.SaveChangesAsync(ct);
@@ -643,6 +643,34 @@ public class OrderService(
 
         var randomSuffix = Random.Shared.Next(10, 99);
         return $"ORD-{dateStr}-{sequence:D4}-{randomSuffix}";
+    }
+
+    private async Task SendOrderPaymentPendingNotificationAsync(Payment payment)
+    {
+        try
+        {
+            if (payment.SuppressWebhookAndNotification)
+                return;
+
+            var methodLabel = FormatUtils.FormatPaymentMethod(payment.Method.ToString());
+            var netAmount = FeeCalculator.CalculateNetAmount(
+                payment.Amount,
+                payment.PlatformFee,
+                payment.CheckoutTemplateFee);
+            var message = NotificationTemplates.Payment.Pending.Message(netAmount, methodLabel);
+
+            await notificationService.CreatePaymentNotificationAsync(
+                payment.MerchantId,
+                NotificationTemplates.Payment.Pending.Title,
+                message,
+                NotificationStatusType.PaymentPending,
+                payment.Environment,
+                NotificationTemplates.Routes.Transactions);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error sending checkout payment pending notification: PaymentId={PaymentId}", payment.Id);
+        }
     }
 
     private sealed class ResolvedOrderItem

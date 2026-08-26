@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition, useMemo } from 'react';
 import { Card, Description, Label, Switch, Chip, Skeleton, Button } from '@heroui/react';
 import { Icon } from '@/components/ui/icon';
 import { ConfirmationModal } from '@/components/ui/confirmation-modal';
+import { NotificationTemplatesSettings } from '@/components/panel/notification-templates-settings';
 import {
 	Alert01Icon,
 	CancelCircleIcon,
@@ -537,6 +538,8 @@ export default function UserSettingsPage() {
 					)}
 				</Card.Content>
 			</Card>
+
+			<NotificationTemplatesSettings />
 
 			<ConfirmationModal
 				isOpen={isOptInModalOpen}

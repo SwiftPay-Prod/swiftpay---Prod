@@ -58,7 +58,12 @@ CreateTransactionEndpoint
 |----------|--------|
 | `Payment` | Id, MerchantId, Amount=10000, PlatformFee=200, AcquirerFee=100, NetAmount=9800, MerchantSettlementAmount=9604, AcquirerNetAmount=9900, Status=Pending, Method=Pix, ExternalId, Environment |
 | `PaymentPix` | Id, PaymentId, TxId, QrCode, CopyAndPaste, ExpiresAt (UTC+30min) |
+
 | `Customer` (opcional) | Se CustomerName informado sem CustomerId |
+
+### Criação via Checkout
+
+No fluxo `CreateOrderHandler → OrderService.CreateFromCheckoutAsync`, o `Payment` é criado pelo `IPaymentMethodService` sem passar por `TransactionService`. Depois de persistir o vínculo `Payment.OrderId`, `CreateFromCheckoutAsync` aguarda uma única chamada a `NotificationService.CreatePaymentNotificationAsync` com `PaymentPending` e `NotificationTemplates.Routes.Transactions`. A preferência do usuário filtra somente o push; o registro in-app é sempre criado.
 
 ### RabbitMQ Publicado: `swiftpay.ledger.pending`
 

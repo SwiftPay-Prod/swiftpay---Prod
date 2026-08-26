@@ -41,6 +41,9 @@ import type {
   ReadUserNotificationCountData,
   UnifiedNotificationData,
   ReadListAllNotificationsRequest,
+  NotificationTemplateData,
+  NotificationTemplatesData,
+  UpsertNotificationTemplateRequest,
 } from "@/types/user/notifications";
 import type {
   UnreadBulletin,
@@ -457,4 +460,27 @@ export async function getRanking(
     message: null,
     error: { message: "Não foi possível carregar o ranking no momento." },
   };
+}
+
+export async function getNotificationTemplates(): Promise<ApiResponse<NotificationTemplatesData>> {
+  noStore();
+  const response = await client.get<ApiResponse<NotificationTemplatesData>>("/v1/users/notification-templates");
+  return response?.data as ApiResponse<NotificationTemplatesData>;
+}
+
+export async function upsertNotificationTemplate(
+  data: UpsertNotificationTemplateRequest
+): Promise<ApiResponse<NotificationTemplateData>> {
+  const response = await client.put<ApiResponse<NotificationTemplateData>>("/v1/users/notification-templates", data);
+  return response?.data as ApiResponse<NotificationTemplateData>;
+}
+
+export async function deleteNotificationTemplate(
+  type: NotificationTemplateData["type"],
+  statusType: NotificationTemplateData["statusType"]
+): Promise<ApiResponse<boolean>> {
+  const response = await client.delete<ApiResponse<boolean>>(
+    `/v1/users/notification-templates/${type}/${statusType}`
+  );
+  return response?.data as ApiResponse<boolean>;
 }

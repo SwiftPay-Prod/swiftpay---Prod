@@ -41,9 +41,9 @@ import { markUserNotificationRead, markAllUserNotificationsRead, deleteUserNotif
 import { toast } from '@heroui/react';
 import { CancelCircleIcon } from '@hugeicons/core-free-icons';
 
-type NotificationsPromise = Promise<ApiResponse<Paginated<UnifiedNotificationData>>>;
-type MerchantCountPromise = Promise<ApiResponse<ReadNotificationCountData>>;
-type UserCountPromise = Promise<ApiResponse<ReadUserNotificationCountData>>;
+type NotificationsPromise = Promise<ApiResponse<Paginated<UnifiedNotificationData>> | null>;
+type MerchantCountPromise = Promise<ApiResponse<ReadNotificationCountData> | null>;
+type UserCountPromise = Promise<ApiResponse<ReadUserNotificationCountData> | null>;
 
 interface NotificationsContentProps {
 	notificationsPromise: NotificationsPromise;

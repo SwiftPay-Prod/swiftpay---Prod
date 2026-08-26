@@ -7,6 +7,7 @@ public interface INotificationService
 {
     // Merchant-scoped notifications
     Task CreateAsync(Guid merchantId, NotificationType type, string title, string message, NotificationPriority priority = NotificationPriority.Normal, string? actionUrl = null, string? actionLabel = null, bool requiresMerchantRefresh = false, ApiEnvironment environment = ApiEnvironment.Production, NotificationStatusType? statusType = null);
+    Task CreateWithTemplateAsync(Guid merchantId, NotificationType type, string title, string message, NotificationPriority priority = NotificationPriority.Normal, string? actionUrl = null, string? actionLabel = null, bool requiresMerchantRefresh = false, ApiEnvironment environment = ApiEnvironment.Production, NotificationStatusType? statusType = null, IReadOnlyDictionary<string, string>? templateData = null);
     Task CreateAsync(Guid merchantId, NotificationType type, string title, string message, ApiEnvironment environment);
     Task CreateSecurityNotificationAsync(Guid merchantId, string title, string message, NotificationPriority priority = NotificationPriority.High, bool requiresMerchantRefresh = false);
     Task CreatePaymentNotificationAsync(Guid merchantId, string title, string message, NotificationStatusType statusType, ApiEnvironment environment, string? actionUrl = null);

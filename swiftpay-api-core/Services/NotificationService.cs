@@ -16,18 +16,23 @@ public class NotificationService(
     ILogger<NotificationService> logger
 ) : INotificationService
 {
-    public async Task CreateAsync(Guid merchantId, NotificationType type, string title, string message, NotificationPriority priority = NotificationPriority.Normal, string? actionUrl = null, string? actionLabel = null, bool requiresMerchantRefresh = false, ApiEnvironment environment = ApiEnvironment.Production, NotificationStatusType? statusType = null)
+    private static readonly IReadOnlyDictionary<string, string> EmptyTemplateValues =
+        new Dictionary<string, string>();
+
+    public Task CreateAsync(Guid merchantId, NotificationType type, string title, string message, NotificationPriority priority = NotificationPriority.Normal, string? actionUrl = null, string? actionLabel = null, bool requiresMerchantRefresh = false, ApiEnvironment environment = ApiEnvironment.Production, NotificationStatusType? statusType = null)
+        => CreateWithTemplateAsync(merchantId, type, title, message, priority, actionUrl, actionLabel, requiresMerchantRefresh, environment, statusType, null);
+
+    public async Task CreateWithTemplateAsync(Guid merchantId, NotificationType type, string title, string message, NotificationPriority priority = NotificationPriority.Normal, string? actionUrl = null, string? actionLabel = null, bool requiresMerchantRefresh = false, ApiEnvironment environment = ApiEnvironment.Production, NotificationStatusType? statusType = null, IReadOnlyDictionary<string, string>? templateData = null)
     {
         try
         {
             using var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<PrimaryDbContext>();
-            
+
             var userId = await dbContext.Merchants
                 .AsNoTracking()
-                .Where(m => m.Id == merchantId)
-                .OrderBy(m => m.Id)
-                .Select(m => m.UserId)
+                .Where(merchant => merchant.Id == merchantId)
+                .Select(merchant => merchant.UserId)
                 .FirstOrDefaultAsync();
 
             if (userId == Guid.Empty)
@@ -36,48 +41,61 @@ public class NotificationService(
                 return;
             }
 
-            var shouldSendInApp = await ShouldSendInAppNotificationAsync(dbContext, userId, type, statusType);
-            
-            if (shouldSendInApp)
+            var notification = new Notification
             {
-                var notification = new Notification
-                {
-                    Id = Guid.CreateVersion7(),
-                    Scope = NotificationScope.Merchant,
-                    MerchantId = merchantId,
-                    UserId = null,
-                    Environment = environment,
-                    Type = type,
-                    StatusType = statusType,
-                    Priority = priority,
-                    Title = title,
-                    Message = message,
-                    ActionUrl = actionUrl,
-                    ActionLabel = actionLabel,
-                    IsRead = false
-                };
+                Id = Guid.CreateVersion7(),
+                Scope = NotificationScope.Merchant,
+                MerchantId = merchantId,
+                UserId = null,
+                Environment = environment,
+                Type = type,
+                StatusType = statusType,
+                Priority = priority,
+                Title = title,
+                Message = message,
+                ActionUrl = actionUrl,
+                ActionLabel = actionLabel,
+                IsRead = false
+            };
 
-                await dbContext.Set<Notification>().AddAsync(notification);
-                await dbContext.SaveChangesAsync();
+            await dbContext.Set<Notification>().AddAsync(notification);
+            await dbContext.SaveChangesAsync();
 
-                var hubService = scope.ServiceProvider.GetService<INotificationHubService>();
-                if (hubService != null)
+            var hubService = scope.ServiceProvider.GetService<INotificationHubService>();
+            if (hubService != null)
+            {
+                await hubService.SendToMerchantAsync(merchantId, notification.ToDto(requiresMerchantRefresh));
+            }
+            else
+            {
+                var messagePublisher = scope.ServiceProvider.GetService<IMessagePublisher>();
+                if (messagePublisher != null && messagePublisher.IsEnabled)
                 {
-                    await hubService.SendToMerchantAsync(merchantId, notification.ToDto(requiresMerchantRefresh));
-                }
-                else
-                {
-                    var messagePublisher = scope.ServiceProvider.GetService<IMessagePublisher>();
-                    if (messagePublisher != null && messagePublisher.IsEnabled)
-                    {
-                        await messagePublisher.PublishAsync(
-                            RabbitMQQueues.NotificationCreated,
-                            notification.ToMessage(requiresMerchantRefresh));
-                    }
+                    await messagePublisher.PublishAsync(
+                        RabbitMQQueues.NotificationCreated,
+                        notification.ToMessage(requiresMerchantRefresh));
                 }
             }
 
-            await EnqueuePushNotificationAsync(scope, merchantId, type, statusType, priority, title, message, actionUrl, environment);
+            var (pushTitle, pushMessage) = await ResolvePushContentAsync(
+                dbContext,
+                userId,
+                type,
+                statusType,
+                templateData,
+                title,
+                message);
+
+            await EnqueuePushNotificationAsync(
+                scope,
+                merchantId,
+                type,
+                statusType,
+                priority,
+                pushTitle,
+                pushMessage,
+                actionUrl,
+                environment);
         }
         catch (Exception ex)
         {
@@ -85,61 +103,59 @@ public class NotificationService(
         }
     }
 
-    private static async Task<bool> ShouldSendInAppNotificationAsync(
+    private async Task<(string title, string message)> ResolvePushContentAsync(
         PrimaryDbContext dbContext,
         Guid userId,
         NotificationType type,
-        NotificationStatusType? statusType)
+        NotificationStatusType? statusType,
+        IReadOnlyDictionary<string, string>? templateData,
+        string fallbackTitle,
+        string fallbackMessage)
     {
-        var prefs = await dbContext.UserNotificationPreferences
+        var customTemplate = await dbContext.UserNotificationTemplates
             .AsNoTracking()
-            .Where(p => p.UserId == userId)
-            .OrderBy(p => p.Id)
+            .Where(template =>
+                template.UserId == userId &&
+                template.Type == type &&
+                (template.StatusType == statusType || template.StatusType == null))
+            .OrderByDescending(template => template.StatusType == statusType)
             .FirstOrDefaultAsync();
 
-        if (prefs == null)
+        if (customTemplate == null)
         {
-            return true;
+            return (fallbackTitle, fallbackMessage);
         }
 
-        if (!prefs.InAppNotificationsEnabled)
+        try
         {
-            return false;
+            var values = templateData ?? EmptyTemplateValues;
+            return (
+                RenderTemplateOrFallback(customTemplate.TitleTemplate, values, fallbackTitle),
+                RenderTemplateOrFallback(customTemplate.BodyTemplate, values, fallbackMessage));
         }
-
-        if (statusType.HasValue)
+        catch (NotificationTemplateRenderException exception)
         {
-            return statusType.Value switch
-            {
-                NotificationStatusType.PaymentPending => prefs.NotifyPaymentPending,
-                NotificationStatusType.PaymentCompleted => prefs.NotifyPaymentCompleted,
-                NotificationStatusType.PaymentExpired => prefs.NotifyPaymentExpired,
-                NotificationStatusType.PaymentFailed => prefs.NotifyPaymentFailed,
-                NotificationStatusType.PaymentRefunded => prefs.NotifyPaymentRefunded,
-                NotificationStatusType.PayoutPending => prefs.NotifyPayoutPending,
-                NotificationStatusType.PayoutProcessing => prefs.NotifyPayoutProcessing,
-                NotificationStatusType.PayoutCompleted => prefs.NotifyPayoutCompleted,
-                NotificationStatusType.PayoutFailed => prefs.NotifyPayoutFailed,
-                NotificationStatusType.PayoutRejected => prefs.NotifyPayoutRejected,
-                NotificationStatusType.PayoutCancelled => prefs.NotifyPayoutCancelled,
-                _ => true
-            };
+            logger.LogWarning(
+                exception,
+                "Invalid notification template ignored: UserId={UserId}, Type={Type}, StatusType={StatusType}, Error={Error}, Placeholder={Placeholder}",
+                userId,
+                type,
+                statusType,
+                exception.Error,
+                exception.PlaceholderName);
+            return (fallbackTitle, fallbackMessage);
         }
-
-        return type switch
-        {
-            NotificationType.Info => prefs.NotifyInfo,
-            NotificationType.Success => prefs.NotifySuccess,
-            NotificationType.Warning => prefs.NotifyWarning,
-            NotificationType.Error => prefs.NotifyError,
-            NotificationType.Security => prefs.NotifySecurity,
-            NotificationType.System => prefs.NotifySystem,
-            NotificationType.Chargeback => prefs.NotifyChargeback,
-            NotificationType.Payment => prefs.NotifyPaymentCompleted,
-            NotificationType.Payout => prefs.NotifyPayoutCompleted,
-            _ => true
-        };
     }
+
+    private static string RenderTemplateOrFallback(
+        string? template,
+        IReadOnlyDictionary<string, string> values,
+        string fallback) =>
+        string.IsNullOrWhiteSpace(template)
+            ? fallback
+            : NotificationTemplateRenderer.Render(template, values);
+
+
 
     private static async Task EnqueuePushNotificationAsync(
         IServiceScope scope,
@@ -317,16 +333,6 @@ public class NotificationService(
             using var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<PrimaryDbContext>();
 
-            var prefs = await dbContext.UserNotificationPreferences
-                .AsNoTracking()
-                .Where(p => p.UserId == userId)
-                .OrderBy(p => p.Id)
-                .FirstOrDefaultAsync();
-
-            if (prefs != null && !prefs.InAppNotificationsEnabled)
-            {
-                return;
-            }
 
             var notification = new Notification
             {

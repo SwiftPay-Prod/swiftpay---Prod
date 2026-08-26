@@ -138,6 +138,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPaymentProcessingService, PaymentProcessingService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IPaymentLinkService, PaymentLinkService>();
         services.AddScoped<IDigitalDeliveryService, DigitalDeliveryService>();
         services.AddScoped<IAcquirerNominalTrackingService, AcquirerNominalTrackingService>();
 

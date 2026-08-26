@@ -22,7 +22,6 @@ public class UserNotificationTemplate : BaseEntity
     [MaxLength(240)]
     public string? BodyTemplate { get; set; }
 
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public User User { get; set; } = null!;
 }

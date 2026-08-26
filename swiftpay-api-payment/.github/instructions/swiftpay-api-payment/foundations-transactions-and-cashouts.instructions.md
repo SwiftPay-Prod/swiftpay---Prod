@@ -183,6 +183,13 @@ A API utiliza uma arquitetura unificada de transações:
     - Itens com estoque controlado devem ser validados antes de criar pagamento.
     - Em estoque insuficiente, retornar erro de negocio para o checkout exibir ao usuario.
 
+### Notificação PaymentPending no Checkout
+
+- O endpoint público de Checkout deve entrar por `OrderService.CreateFromCheckoutAsync`; endpoints de Order que chamam `CreateAsync` diretamente não herdam esse efeito colateral.
+- Após o `Payment` ser criado e o vínculo `Payment.OrderId` ser persistido, `CreateFromCheckoutAsync` deve aguardar uma única chamada a `INotificationService.CreatePaymentNotificationAsync` com `PaymentPending` e `NotificationTemplates.Routes.Transactions`.
+- O Checkout usa `IPaymentMethodService` diretamente e não passa por `TransactionService`; portanto, não deve adicionar uma segunda notificação ao seam já usado pela API de transações.
+- Preferências governam somente o push (`PushNotificationsEnabled` e `NotifyPaymentPending`); a notificação in-app continua sendo persistida.
+
 **Autenticação Interna:**
 - Header: `X-Internal-Api-Key`
 - Configuração: `PlatformSettings:InternalApiKey` no appsettings

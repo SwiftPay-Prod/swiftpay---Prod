@@ -61,3 +61,26 @@ export interface ReadUserNotificationCountData {
   totalCount: number;
 }
 
+export interface NotificationTemplatesData {
+  allowedPlaceholders: string[];
+  items: NotificationTemplateData[];
+}
+
+export interface NotificationTemplateData {
+  type: NotificationType;
+  statusType: NotificationStatusType;
+  label: string;
+  defaultTitle: string;
+  defaultBody: string;
+  titleTemplate: string | null;
+  bodyTemplate: string | null;
+  updatedAt: string | null;
+  isCustom: boolean;
+}
+
+export interface UpsertNotificationTemplateRequest {
+  type: NotificationType;
+  statusType: NotificationStatusType;
+  titleTemplate?: string | null;
+  bodyTemplate?: string | null;
+}

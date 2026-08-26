@@ -1,6 +1,15 @@
 using swiftpay_api_core.Utils;
+using swiftpay_api_core.Models.Database;
+
 
 namespace swiftpay_api_core.Constants;
+
+public sealed record NotificationTemplateDefinition(
+    NotificationType Type,
+    NotificationStatusType StatusType,
+    string Label,
+    string DefaultTitle,
+    string DefaultBody);
 
 public static class NotificationTemplates
 {
@@ -17,6 +26,25 @@ public static class NotificationTemplates
     #region Common
 
     public const string DefaultActionLabel = "Ver Detalhes";
+    public static IReadOnlyList<NotificationTemplateDefinition> SupportedTemplates { get; } =
+    [
+        new(NotificationType.Payment, NotificationStatusType.PaymentPending, "Pagamento pendente", Payment.Pending.Title, "Valor líquido: {netAmount}."),
+        new(NotificationType.Payment, NotificationStatusType.PaymentCompleted, "Venda aprovada", Payment.Completed.Title, "Líquido recebido: {netAmount}."),
+        new(NotificationType.Payment, NotificationStatusType.PaymentExpired, "Venda expirada", Payment.Expired.Title, "Venda de {netAmount} expirou."),
+        new(NotificationType.Payment, NotificationStatusType.PaymentFailed, "Venda falhou", Payment.Failed.Title, "Erro na venda de {netAmount}."),
+        new(NotificationType.Payment, NotificationStatusType.PaymentRefunded, "Estorno realizado", Payment.Refunded.Title, "Estornado: {netAmount}."),
+        new(NotificationType.Payout, NotificationStatusType.PayoutPending, "Saque solicitado", Payout.Pending.Title, "Saque líquido: {netAmount}."),
+        new(NotificationType.Payout, NotificationStatusType.PayoutProcessing, "Saque em processamento", Payout.Processing.Title, "Processando líquido de {netAmount}."),
+        new(NotificationType.Payout, NotificationStatusType.PayoutCompleted, "Saque concluído", Payout.Completed.Title, "Líquido de {netAmount} enviado para {pixKey}."),
+        new(NotificationType.Payout, NotificationStatusType.PayoutFailed, "Falha no saque", Payout.Failed.Title, "Erro no saque ({netAmount}). Saldo devolvido."),
+        new(NotificationType.Payout, NotificationStatusType.PayoutRejected, "Saque rejeitado", Payout.Rejected.Title, "Saque de {netAmount} rejeitado. Saldo devolvido."),
+        new(NotificationType.Payout, NotificationStatusType.PayoutCancelled, "Saque cancelado", Payout.Cancelled.Title, "Cancelado: {netAmount}. Saldo devolvido.")
+    ];
+
+    public static bool IsSupported(NotificationType type, NotificationStatusType? statusType) =>
+        statusType.HasValue &&
+        SupportedTemplates.Any(template => template.Type == type && template.StatusType == statusType.Value);
+
 
     #endregion
 
