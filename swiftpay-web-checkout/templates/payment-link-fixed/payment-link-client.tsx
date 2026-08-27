@@ -138,7 +138,7 @@ function ShieldIcon({ className }: { className?: string }) {
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			className={className ?? 'hero-text'}
+			className={className ?? 'text-white'}
 		>
 			<path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" fill="currentColor" opacity="0.2" />
 			<path
@@ -155,9 +155,9 @@ function ShieldIcon({ className }: { className?: string }) {
 function CheckCircleIcon() {
 	return (
 		<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<circle cx="12" cy="12" r="10" fill="#171717" opacity="0.15" />
-			<circle cx="12" cy="12" r="10" stroke="#171717" strokeWidth="1.5" />
-			<path d="M8 12l3 3 5-5" stroke="#171717" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+			<circle cx="12" cy="12" r="10" fill="#494fdf" opacity="0.15" />
+			<circle cx="12" cy="12" r="10" stroke="#494fdf" strokeWidth="1.5" />
+			<path d="M8 12l3 3 5-5" stroke="#494fdf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 		</svg>
 	);
 }
@@ -203,10 +203,10 @@ function BuyerInfoForm({
 
 	return (
 		<div className="flex flex-col gap-3">
-			<h3 className="text-sm font-semibold hero-text">Seus dados</h3>
+			<h3 className="text-sm font-semibold text-white">Seus dados</h3>
 			{requiresName && (
 				<div>
-					<label className="text-xs hero-text-muted mb-1 block">
+					<label className="text-xs text-white/60 mb-1 block">
 						Nome completo <span className="text-red-400">*</span>
 					</label>
 					<input
@@ -214,13 +214,13 @@ function BuyerInfoForm({
 						value={buyerName}
 						onChange={(e) => onNameChange(e.target.value)}
 						placeholder="Digite seu nome"
-						className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					/>
 				</div>
 			)}
 			{requiresEmail && (
 				<div>
-					<label className="text-xs hero-text-muted mb-1 block">
+					<label className="text-xs text-white/60 mb-1 block">
 						E-mail <span className="text-red-400">*</span>
 					</label>
 					<input
@@ -228,13 +228,13 @@ function BuyerInfoForm({
 						value={buyerEmail}
 						onChange={(e) => onEmailChange(e.target.value)}
 						placeholder="seu@email.com"
-						className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					/>
 				</div>
 			)}
 			{requiresPhone && (
 				<div>
-					<label className="text-xs hero-text-muted mb-1 block">
+					<label className="text-xs text-white/60 mb-1 block">
 						Telefone <span className="text-red-400">*</span>
 					</label>
 					<input
@@ -243,7 +243,7 @@ function BuyerInfoForm({
 						onChange={(e) => onPhoneChange(maskPhone(e.target.value))}
 						placeholder="(00) 00000-0000"
 						inputMode="numeric"
-						className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					/>
 				</div>
 			)}
@@ -281,9 +281,9 @@ function CreditCardForm({
 
 	return (
 		<div className="flex flex-col gap-3">
-			<h3 className="text-sm font-semibold hero-text">Dados do cartão</h3>
+			<h3 className="text-sm font-semibold text-white">Dados do cartão</h3>
 			<div>
-				<label className="text-xs hero-text-muted mb-1 block">
+				<label className="text-xs text-white/60 mb-1 block">
 					Número do cartão <span className="text-red-400">*</span>
 				</label>
 				<div className="relative">
@@ -293,7 +293,7 @@ function CreditCardForm({
 						onChange={(e) => onCardNumberChange(e.target.value)}
 						placeholder="0000 0000 0000 0000"
 						inputMode="numeric"
-						className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					/>
 					{cardBrand !== 'unknown' && cardBrand !== 'default' && CARD_BRAND_LOGOS[cardBrand] && (
 						<NextImage
@@ -309,7 +309,7 @@ function CreditCardForm({
 			</div>
 
 			<div>
-				<label className="text-xs hero-text-muted mb-1 block">
+				<label className="text-xs text-white/60 mb-1 block">
 					Nome impresso no cartão <span className="text-red-400">*</span>
 				</label>
 				<input
@@ -317,13 +317,13 @@ function CreditCardForm({
 					value={cardHolderName}
 					onChange={(e) => onCardHolderNameChange(e.target.value)}
 					placeholder="Nome como no cartão"
-					className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+					className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 				/>
 			</div>
 
 			<div className="grid grid-cols-3 gap-2">
 				<div className="col-span-1">
-					<label className="text-xs hero-text-muted mb-1 block">
+					<label className="text-xs text-white/60 mb-1 block">
 						Validade <span className="text-red-400">*</span>
 					</label>
 					<input
@@ -332,11 +332,11 @@ function CreditCardForm({
 						onChange={(e) => onCardExpiryChange(e.target.value)}
 						placeholder="MM/AA"
 						inputMode="numeric"
-						className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					/>
 				</div>
 				<div className="col-span-1">
-					<label className="text-xs hero-text-muted mb-1 block">
+					<label className="text-xs text-white/60 mb-1 block">
 						CVV <span className="text-red-400">*</span>
 					</label>
 					<input
@@ -345,17 +345,17 @@ function CreditCardForm({
 						onChange={(e) => onCardCvvChange(e.target.value)}
 						placeholder="000"
 						inputMode="numeric"
-						className="w-full px-4 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-4 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					/>
 				</div>
 				<div className="col-span-1">
-					<label className="text-xs hero-text-muted mb-1 block">
+					<label className="text-xs text-white/60 mb-1 block">
 						Parcelas <span className="text-red-400">*</span>
 					</label>
 					<select
 						value={installments}
 						onChange={(e) => onInstallmentsChange(e.target.value)}
-						className="w-full px-3 py-2.5 rounded-xl border text-sm hero-input border-(--hero-border) focus:border-blue-500 outline-none"
+						className="w-full px-3 py-2.5 rounded-[12px] border text-sm bg-[#0a0a0a] border-white/12 text-white placeholder:text-white/40 focus:border-[#494fdf] outline-none transition-colors"
 					>
 						<option value="">Selecionar</option>
 						{installmentOptions.map((option) => (
@@ -386,10 +386,10 @@ function FeeInfoSection({
 	if (passFeeToCustomer) {
 		const methodsToShow = selectedMethod ? [selectedMethod] : enabledMethods;
 		return (
-			<div className="rounded-xl hero-surface p-4 flex flex-col gap-3">
+			<div className="rounded-xl bg-[#16181a] border border-white/12 p-4 flex flex-col gap-3">
 				<div className="flex items-center gap-2">
-					<ShieldIcon className="hero-text" />
-					<span className="text-xs font-semibold hero-text">Resumo do pagamento</span>
+					<ShieldIcon className="text-white" />
+					<span className="text-xs font-semibold text-white">Resumo do pagamento</span>
 				</div>
 				<div className="flex flex-col gap-3">
 					{methodsToShow.map((method) => {
@@ -397,24 +397,24 @@ function FeeInfoSection({
 						const total = amount + fee;
 						return (
 							<div key={method} className="flex flex-col gap-1">
-								{!selectedMethod && <p className="text-xs font-medium hero-text">{methodLabel(method)}</p>}
+								{!selectedMethod && <p className="text-xs font-medium text-white">{methodLabel(method)}</p>}
 								<div className="flex justify-between items-center text-xs">
-									<span className="hero-text-muted">Valor base</span>
-									<span className="hero-text">{formatCurrency(amount)}</span>
+									<span className="text-white/60">Valor base</span>
+									<span className="font-mono tabular-nums text-white">{formatCurrency(amount)}</span>
 								</div>
 								<div className="flex justify-between items-center text-xs">
-									<span className="hero-text-muted">Taxa de processamento</span>
-									<span className="hero-text">+ {formatCurrency(fee)}</span>
+									<span className="text-white/60">Taxa de processamento</span>
+									<span className="font-mono tabular-nums text-white">+ {formatCurrency(fee)}</span>
 								</div>
-								<div className="flex justify-between items-center text-xs pt-1 border-t border-(--hero-border)">
-									<span className="font-semibold hero-text">Total a pagar</span>
-									<span className="font-bold hero-text">{formatCurrency(total)}</span>
+								<div className="flex justify-between items-center text-xs pt-1 border-t border-white/12">
+									<span className="font-semibold text-white">Total a pagar</span>
+									<span className="font-mono tabular-nums font-bold text-white">{formatCurrency(total)}</span>
 								</div>
 							</div>
 						);
 					})}
 				</div>
-				<p className="text-xs hero-text-subtle">A taxa de processamento está incluída no valor total cobrado.</p>
+				<p className="text-xs text-white/40">A taxa de processamento está incluída no valor total cobrado.</p>
 			</div>
 		);
 	}
@@ -426,10 +426,10 @@ function FeeInfoSection({
 	};
 
 	return (
-		<div className="rounded-xl hero-surface p-4 flex flex-col gap-3">
+		<div className="rounded-xl bg-[#16181a] border border-white/12 p-4 flex flex-col gap-3">
 			<div className="flex items-center gap-2">
-				<ShieldIcon className="hero-text" />
-				<span className="text-xs font-semibold hero-text">Resumo do pagamento</span>
+				<ShieldIcon className="text-white" />
+				<span className="text-xs font-semibold text-white">Resumo do pagamento</span>
 			</div>
 			<div className="flex flex-col gap-2">
 				{enabledMethods.map((method) => {
@@ -437,24 +437,24 @@ function FeeInfoSection({
 					return (
 						<div key={method} className="flex flex-col gap-0.5">
 							<div className="flex justify-between items-center text-xs">
-								<span className="hero-text-muted">{methodFeeHints[method] ?? method}</span>
-								<span className="font-semibold hero-text">{formatCurrency(amount)}</span>
+								<span className="text-white/60">{methodFeeHints[method] ?? method}</span>
+								<span className="font-semibold text-white">{formatCurrency(amount)}</span>
 							</div>
 							{fee > 0 && (
 								<div className="flex justify-between items-center text-xs">
-									<span className="hero-text-subtle">Taxa inclusa</span>
-									<span className="hero-text-subtle">{formatCurrency(fee)}</span>
+									<span className="text-white/40">Taxa inclusa</span>
+									<span className="text-white/40">{formatCurrency(fee)}</span>
 								</div>
 							)}
 						</div>
 					);
 				})}
 			</div>
-			<div className="pt-1 border-t border-(--hero-border) flex justify-between items-center">
-				<span className="text-xs font-semibold hero-text">Total a pagar</span>
-				<span className="font-bold hero-text">{formatCurrency(amount)}</span>
+			<div className="pt-1 border-t border-white/12 flex justify-between items-center">
+				<span className="text-xs font-semibold text-white">Total a pagar</span>
+				<span className="font-mono tabular-nums font-bold text-white">{formatCurrency(amount)}</span>
 			</div>
-			<p className="text-xs hero-text-subtle">As taxas de processamento estão inclusas no valor total.</p>
+			<p className="text-xs text-white/40">As taxas de processamento estão inclusas no valor total.</p>
 		</div>
 	);
 }
@@ -483,12 +483,12 @@ function PixView({
 
 	return (
 		<div className="flex flex-col items-center">
-			<div className="w-full mb-4 px-4 py-3 rounded-xl hero-surface flex justify-between items-center">
-				<span className="text-sm hero-text-muted">{amountLabel}</span>
-				<span className="font-bold text-lg hero-text">{formattedAmount}</span>
+			<div className="w-full mb-4 px-4 py-3 rounded-xl bg-[#16181a] border border-white/12 flex justify-between items-center">
+				<span className="text-sm text-white/60">{amountLabel}</span>
+				<span className="font-mono tabular-nums font-bold text-lg text-white">{formattedAmount}</span>
 			</div>
 
-			<div className="bg-white p-4 rounded-2xl mb-4 shadow-sm">
+			<div className="bg-white p-4 rounded-[16px] mb-4 shadow-sm">
 				{pixCode ? (
 					<QRCode
 						value={pixCode}
@@ -507,11 +507,11 @@ function PixView({
 			</div>
 
 			{(countdown.isExpired || paymentLink.pix?.expiresAt) && (
-				<div className="mb-4 px-4 py-2 rounded-xl inline-flex items-center gap-2 hero-surface">
+				<div className="mb-4 px-4 py-2 rounded-xl inline-flex items-center gap-2 bg-[#16181a] border border-white/12">
 					{countdown.isExpired ? (
-						<span className="text-sm hero-text-danger font-medium">Código expirado</span>
+						<span className="text-sm text-red-400 font-medium">Código expirado</span>
 					) : (
-						<span className="text-sm hero-text-secondary">
+						<span className="text-sm text-white/60">
 							Expira em{' '}
 							<span className="font-mono font-bold">
 								{String(countdown.minutes).padStart(2, '0')}:{String(countdown.seconds).padStart(2, '0')}
@@ -523,8 +523,8 @@ function PixView({
 
 			{pixCode && (
 				<div className="w-full mb-4">
-					<p className="text-xs mb-2 hero-text-muted">Código PIX Copia e Cola:</p>
-					<div className="p-3 rounded-xl text-xs font-mono break-all hero-surface hero-text-secondary select-all cursor-text">
+					<p className="text-xs mb-2 text-white/60">Código PIX Copia e Cola:</p>
+					<div className="p-3 rounded-xl text-xs font-mono break-all bg-[#0a0a0a] border border-white/8 text-white/70 select-all cursor-text">
 						{pixCode.length > 80 ? `${pixCode.slice(0, 80)}...` : pixCode}
 					</div>
 				</div>
@@ -534,8 +534,8 @@ function PixView({
 				type="button"
 				onClick={() => onCopy(pixCode)}
 				disabled={countdown.isExpired || !pixCode}
-				className={`w-full py-3 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-					countdown.isExpired || !pixCode ? 'hero-btn-disabled cursor-not-allowed' : 'hero-btn-accent cursor-pointer'
+				className={`w-full py-3 rounded-[12px] font-semibold text-white transition-all flex items-center justify-center gap-2 ${
+					countdown.isExpired || !pixCode ? 'bg-white/10 text-white/40 cursor-not-allowed' : 'bg-[#494fdf] hover:bg-[#4f55f1] text-white cursor-pointer'
 				}`}
 			>
 				{copied ? (
@@ -568,10 +568,10 @@ function PixView({
 						type="button"
 						onClick={onGenerateNewTransaction}
 						disabled={isGeneratingNewTransaction}
-						className={`w-full py-3 rounded-xl font-semibold text-white transition-all ${
+						className={`w-full py-3 rounded-[12px] font-semibold text-white transition-all ${
 							isGeneratingNewTransaction
-								? 'hero-btn-disabled cursor-not-allowed'
-								: 'hero-btn-accent cursor-pointer'
+								? 'bg-white/10 text-white/40 cursor-not-allowed'
+								: 'bg-[#494fdf] hover:bg-[#4f55f1] text-white cursor-pointer'
 						}`}
 					>
 						{isGeneratingNewTransaction ? 'Gerando nova transação...' : 'Gerar nova transação'}
@@ -579,7 +579,7 @@ function PixView({
 					<button
 						type="button"
 						onClick={onBackToStart}
-						className="w-full py-3 rounded-xl font-medium text-center transition-colors cursor-pointer hero-button-secondary"
+						className="w-full py-3 rounded-[12px] font-medium text-center transition-colors cursor-pointer bg-white/10 hover:bg-white/[0.15] text-white border border-white/12"
 					>
 						Voltar ao início
 					</button>
@@ -609,14 +609,14 @@ function BoletoView({
 
 	return (
 		<div className="flex flex-col">
-			<div className="w-full mb-4 px-4 py-3 rounded-xl hero-surface flex justify-between items-center">
-				<span className="text-sm hero-text-muted">{amountLabel}</span>
-				<span className="font-bold text-lg hero-text">{formattedAmount}</span>
+			<div className="w-full mb-4 px-4 py-3 rounded-xl bg-[#16181a] border border-white/12 flex justify-between items-center">
+				<span className="text-sm text-white/60">{amountLabel}</span>
+				<span className="font-mono tabular-nums font-bold text-lg text-white">{formattedAmount}</span>
 			</div>
 
 			{dueDate && (
-				<div className="mb-4 px-4 py-2 rounded-xl inline-flex items-center gap-2 hero-surface">
-					<span className="text-sm hero-text-secondary">
+				<div className="mb-4 px-4 py-2 rounded-xl inline-flex items-center gap-2 bg-[#16181a] border border-white/12">
+					<span className="text-sm text-white/60">
 						Vencimento: <span className="font-semibold">{dueDate}</span>
 					</span>
 				</div>
@@ -624,8 +624,8 @@ function BoletoView({
 
 			{digitableLine && (
 				<div className="mb-4">
-					<p className="text-xs mb-2 hero-text-muted">Linha digitável:</p>
-					<div className="p-3 rounded-xl text-xs font-mono break-all hero-surface hero-text-secondary select-all cursor-text">
+					<p className="text-xs mb-2 text-white/60">Linha digitável:</p>
+					<div className="p-3 rounded-xl text-xs font-mono break-all bg-[#0a0a0a] border border-white/8 text-white/70 select-all cursor-text">
 						{digitableLine}
 					</div>
 				</div>
@@ -635,7 +635,7 @@ function BoletoView({
 				<button
 					type="button"
 					onClick={() => onCopy(digitableLine)}
-					className="w-full py-3 mb-3 rounded-xl font-semibold text-white transition-all cursor-pointer hero-btn-accent"
+					className="w-full py-3 mb-3 rounded-[12px] font-semibold text-white transition-all cursor-pointer bg-[#494fdf] hover:bg-[#4f55f1] text-white"
 				>
 					{copied ? 'Código copiado!' : 'Copiar código do boleto'}
 				</button>
@@ -646,7 +646,7 @@ function BoletoView({
 					href={boleto.pdfUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="w-full py-3 rounded-xl font-medium text-center transition-colors cursor-pointer hero-button-secondary"
+					className="w-full py-3 rounded-[12px] font-medium text-center transition-colors cursor-pointer bg-white/10 hover:bg-white/[0.15] text-white border border-white/12"
 				>
 					Baixar boleto PDF
 				</a>
@@ -675,23 +675,23 @@ function CompletedView({
 	return (
 		<div className="flex flex-col items-center text-center py-4">
 			<CheckCircleIcon />
-			<h3 className="mt-4 text-xl font-bold hero-text">Pagamento confirmado!</h3>
-			<p className="mt-2 text-sm hero-text-muted">
-				Seu pagamento de <span className="font-semibold hero-text">{formattedAmount}</span>
+			<h3 className="mt-4 text-xl font-bold text-white">Pagamento confirmado!</h3>
+			<p className="mt-2 text-sm text-white/60">
+				Seu pagamento de <span className="font-semibold text-white">{formattedAmount}</span>
 				{description ? (
 					<>
 						{' '}
-						para <span className="font-semibold hero-text">{description}</span>
+						para <span className="font-semibold text-white">{description}</span>
 					</>
 				) : null}{' '}
 				foi confirmado com sucesso.
 			</p>
 			{redirectUrl && (
 				<>
-					<p className="mt-4 text-xs hero-text-subtle">Você será redirecionado automaticamente em instantes...</p>
+					<p className="mt-4 text-xs text-white/40">Você será redirecionado automaticamente em instantes...</p>
 					<a
 						href={redirectUrl}
-						className="mt-3 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-opacity hover:opacity-90 hero-btn-accent"
+						className="mt-3 inline-flex items-center gap-2 px-6 py-2.5 rounded-[12px] text-sm font-semibold text-white cursor-pointer transition-opacity hover:opacity-90 bg-[#494fdf] hover:bg-[#4f55f1] text-white"
 					>
 						Continuar
 						<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -734,9 +734,9 @@ function ProductHeader({ productName, productImageUrl, description }: {
 				/>
 			)}
 			<div className="flex flex-col min-w-0 flex-1">
-				<span className="text-xs hero-text-muted">Produto</span>
-				<span className="text-sm font-semibold hero-text truncate">{productName}</span>
-				{description && <span className="text-xs hero-text-subtle mt-0.5 truncate">{description}</span>}
+				<span className="text-xs text-white/60">Produto</span>
+				<span className="text-sm font-semibold text-white truncate">{productName}</span>
+				{description && <span className="text-xs text-white/40 mt-0.5 truncate">{description}</span>}
 			</div>
 		</div>
 	);
@@ -1045,7 +1045,7 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 		return (
 			<>
 				<div className="max-w-lg w-full mx-auto">
-					<div className="rounded-2xl p-8 hero-card" style={{ borderRadius: '1rem' }}>
+					<div className="bg-[#16181a] border border-white/12 rounded-[20px] p-8">
 						<CompletedView
 							formattedAmount={formattedAmount}
 							description={currentPaymentLink.description}
@@ -1061,10 +1061,10 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 		return (
 			<>
 				<div className="max-w-lg w-full mx-auto">
-					<div className="rounded-2xl p-8 hero-card text-center" style={{ borderRadius: '1rem' }}>
+					<div className="bg-[#16181a] border border-white/12 rounded-[20px] p-8 text-center">
 						<div className="text-4xl mb-4">{statusIcon(status)}</div>
-						<h3 className="text-xl font-bold hero-text">{statusText(status)}</h3>
-						<p className="mt-2 text-sm hero-text-muted">
+						<h3 className="text-xl font-bold text-white">{statusText(status)}</h3>
+						<p className="mt-2 text-sm text-white/60">
 							O valor de <span className="font-semibold">{formattedAmount}</span>
 							{currentPaymentLink.description ? (
 								<>
@@ -1084,16 +1084,16 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 		return (
 			<>
 				<div className="max-w-lg w-full mx-auto">
-					<div className="rounded-2xl p-8 hero-card text-center" style={{ borderRadius: '1rem' }}>
+					<div className="bg-[#16181a] border border-white/12 rounded-[20px] p-8 text-center">
 						<div className="text-4xl mb-4">{statusIcon(status)}</div>
-						<h3 className="text-xl font-bold hero-text">{statusText(status)}</h3>
-						<p className="mt-2 text-sm hero-text-muted">
+						<h3 className="text-xl font-bold text-white">{statusText(status)}</h3>
+						<p className="mt-2 text-sm text-white/60">
 							Esta cobrança foi finalizada. Você pode gerar uma nova cobrança neste mesmo link.
 						</p>
 						<button
 							type="button"
 							onClick={handleNewCharge}
-							className="mt-5 w-full py-3 rounded-xl font-semibold text-white transition-all cursor-pointer hero-btn-accent"
+							className="mt-5 w-full py-3 rounded-[12px] font-semibold text-white transition-all cursor-pointer bg-[#494fdf] hover:bg-[#4f55f1] text-white"
 						>
 							Gerar nova cobrança
 						</button>
@@ -1106,7 +1106,7 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 	return (
 		<>
 			<div className="max-w-lg w-full mx-auto">
-				<div className="rounded-2xl hero-card overflow-hidden" style={{ borderRadius: '1rem' }}>
+				<div className="bg-[#16181a] border border-white/12 rounded-[20px] overflow-hidden">
 					<ProductHeader
 						productName={currentPaymentLink.productName}
 						productImageUrl={currentPaymentLink.productImageUrl}
@@ -1120,14 +1120,14 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 					>
 						<div className="p-6 flex flex-col gap-5">
 							<div>
-								<h2 className="text-xl font-bold hero-text">Pagamento</h2>
-								<p className="mt-1 text-sm hero-text-muted">Selecione a forma de pagamento para continuar.</p>
+								<h2 className="text-xl font-bold text-white">Pagamento</h2>
+								<p className="mt-1 text-sm text-white/60">Selecione a forma de pagamento para continuar.</p>
 							</div>
 
 							{/* Amount bar */}
-							<div className="px-4 py-3 rounded-xl hero-surface flex justify-between items-center">
-								<span className="text-xs hero-text-subtle">Valor a pagar</span>
-								<span className="font-bold text-xl hero-text">{effectiveFormattedAmount}</span>
+							<div className="px-4 py-3 rounded-xl bg-[#16181a] border border-white/12 flex justify-between items-center">
+								<span className="text-xs text-white/40">Valor a pagar</span>
+								<span className="font-mono tabular-nums font-bold text-xl text-white">{effectiveFormattedAmount}</span>
 							</div>
 
 							{/* Fee Info */}
@@ -1143,7 +1143,7 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 
 							{/* Method Selection */}
 							<div className="flex flex-col gap-2">
-								<h3 className="text-sm font-semibold hero-text">Forma de pagamento</h3>
+								<h3 className="text-sm font-semibold text-white">Forma de pagamento</h3>
 								{currentPaymentLink.enabledMethods.map((method) => {
 									const isSelected = selectedMethod === method;
 									return (
@@ -1153,28 +1153,28 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 											onClick={() => setSelectedMethod(method)}
 											className={`w-full rounded-xl border px-4 py-3 text-left transition-all cursor-pointer ${
 												isSelected
-													? 'hero-method-selected'
-													: 'border-(--hero-border) hover:border-(--hero-border-muted)'
+													? 'border-[#494fdf] bg-[#494fdf]/10'
+													: 'border-white/12 hover:border-white/8'
 											}`}
 										>
 											<div className="flex items-center gap-3">
 												<div
 													className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-														isSelected ? 'hero-method-icon-selected' : 'hero-surface hero-text-muted'
+														isSelected ? 'bg-[#494fdf] text-white' : 'bg-[#16181a] border border-white/12 text-white/60'
 													}`}
 												>
 													<MethodIcon method={method} />
 												</div>
 												<div className="flex-1 min-w-0">
-													<p className="font-semibold text-sm hero-text">{methodLabel(method)}</p>
-													<p className="text-xs hero-text-muted">{methodDescription(method)}</p>
+													<p className="font-semibold text-sm text-white">{methodLabel(method)}</p>
+													<p className="text-xs text-white/60">{methodDescription(method)}</p>
 												</div>
 												<div
 													className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-														isSelected ? 'hero-radio-selected' : 'border-(--hero-border-muted)'
+														isSelected ? 'border-[#494fdf]' : 'border-white/8'
 													}`}
 												>
-													{isSelected && <div className="w-2.5 h-2.5 rounded-full hero-radio-dot" />}
+													{isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#494fdf]" />}
 												</div>
 											</div>
 										</button>
@@ -1211,18 +1211,18 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 								/>
 							)}
 
-							{startError && <div className="rounded-xl px-4 py-3 hero-alert-danger text-sm">{startError}</div>}
+							{startError && <div className="rounded-xl px-4 py-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{startError}</div>}
 
 							<button
 								type="button"
 								onClick={handleStartPayment}
 								disabled={!canSubmitPayment}
-								className={`w-full py-3.5 rounded-xl font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 ${
-									canSubmitPayment ? 'hero-btn-accent cursor-pointer' : 'hero-btn-disabled cursor-not-allowed'
+								className={`w-full py-3.5 rounded-[12px] font-semibold text-white text-sm transition-all flex items-center justify-center gap-2 ${
+									canSubmitPayment ? 'bg-[#494fdf] hover:bg-[#4f55f1] text-white cursor-pointer' : 'bg-white/10 text-white/40 cursor-not-allowed'
 								}`}
 							>
 								<ShieldIcon className="text-white" />
-								Pagar {effectiveFormattedAmount}
+								Pagar <span className="font-mono tabular-nums">{effectiveFormattedAmount}</span>
 							</button>
 						</div>
 					</div>
@@ -1234,9 +1234,9 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 						}`}
 					>
 						<div className="p-10 flex flex-col items-center gap-4 min-h-60 justify-center">
-							<div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin hero-spinner" />
-							<p className="text-sm hero-text-muted">Gerando cobrança, aguarde...</p>
-							<p className="text-xs hero-text-subtle">
+							<div className="w-10 h-10 border-[3px] border-white/15 border-t-[#494fdf] rounded-full animate-spin" />
+							<p className="text-sm text-white/60">Gerando cobrança, aguarde...</p>
+							<p className="text-xs text-white/40">
 								{formattedAmount} via {selectedMethod ? methodLabel(selectedMethod) : ''}
 							</p>
 						</div>
@@ -1250,14 +1250,14 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 					>
 						<div className="p-6 flex flex-col gap-4">
 							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 hero-method-icon-selected">
+								<div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-[#494fdf] text-white">
 									<MethodIcon method={currentPaymentLink.method ?? 'Pix'} />
 								</div>
 								<div className="flex flex-col">
-									<h3 className="text-lg font-bold hero-text">
+									<h3 className="text-lg font-bold text-white">
 										{currentPaymentLink.method ? methodLabel(currentPaymentLink.method) : 'Cobrança gerada'}
 									</h3>
-									<p className="text-sm hero-text-muted">{statusText(status)}</p>
+									<p className="text-sm text-white/60">{statusText(status)}</p>
 								</div>
 							</div>
 
@@ -1284,39 +1284,39 @@ export function PaymentLinkClient({ paymentLink, token }: PaymentLinkClientProps
 							)}
 
 							{currentPaymentLink.method === 'CreditCard' && (
-								<div className="rounded-xl border border-(--hero-border) hero-surface p-4 text-sm">
-									<p className="font-semibold hero-text">Pagamento com cartão iniciado</p>
-									<p className="mt-1 hero-text-muted">
+								<div className="rounded-xl bg-[#16181a] border border-white/12 p-4 text-sm">
+									<p className="font-semibold text-white">Pagamento com cartão iniciado</p>
+									<p className="mt-1 text-white/60">
 										Seu pagamento está em processamento e o status será atualizado automaticamente nesta tela.
 									</p>
 									<div className="mt-3 flex items-center justify-between text-xs">
-										<span className="hero-text-subtle">Valor</span>
-										<span className="font-semibold hero-text">{formattedAmount}</span>
+										<span className="text-white/40">Valor</span>
+										<span className="font-mono tabular-nums font-semibold text-white">{formattedAmount}</span>
 									</div>
 								</div>
 							)}
 
-							{startError && <div className="rounded-xl px-4 py-3 hero-alert-danger text-sm">{startError}</div>}
+							{startError && <div className="rounded-xl px-4 py-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{startError}</div>}
 
 						</div>
 					</div>
 				</div>
 				{currentPaymentLink.showSwiftPayBranding && (
 					<div className="mt-4 flex flex-col items-center gap-2 pb-4">
-						<p className="text-xs hero-text-subtle">Pagamento processado com segurança pela SwiftPay Pay</p>
+						<p className="text-xs text-white/40">Pagamento processado com segurança pela SwiftPay Pay</p>
 						<div className="flex items-center justify-center gap-4">
-							<div className="flex items-center gap-1.5 hero-text-subtle">
+							<div className="flex items-center gap-1.5 text-white/40">
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
 									<rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="1.5" />
 									<path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
 								</svg>
 								<span className="text-xs">SSL</span>
 							</div>
-							<div className="flex items-center gap-1.5 hero-text-subtle">
-								<ShieldIcon className="hero-text-subtle" />
+							<div className="flex items-center gap-1.5 text-white/40">
+								<ShieldIcon className="text-white/40" />
 								<span className="text-xs">Seguro</span>
 							</div>
-							<div className="flex items-center gap-1.5 hero-text-subtle">
+							<div className="flex items-center gap-1.5 text-white/40">
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
 									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 								</svg>
