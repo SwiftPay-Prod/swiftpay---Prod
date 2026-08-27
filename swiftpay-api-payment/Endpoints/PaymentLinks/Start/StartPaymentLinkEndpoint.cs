@@ -352,9 +352,8 @@ public sealed class StartPaymentLinkEndpoint(
         return new PixTransactionData
         {
             QrCode = paymentPix.QrCode,
-            CopyAndPaste = paymentPix.PixCopyAndPaste,
-            ExpiresAt = paymentPix.ExpiresAt,
-            Status = paymentPix.Status
+            CopyAndPaste = paymentPix.CopyAndPaste,
+            ExpiresAt = paymentPix.ExpiresAt
         };
     }
 
@@ -362,10 +361,9 @@ public sealed class StartPaymentLinkEndpoint(
     {
         return new PixTransactionData
         {
-            QrCode = paymentBoleto.PixQrCode,
+            QrCode = paymentBoleto.PixCopyAndPaste,
             CopyAndPaste = paymentBoleto.PixCopyAndPaste,
-            ExpiresAt = paymentBoleto.PixExpiresAt,
-            Status = paymentBoleto.Status
+            ExpiresAt = paymentBoleto.PixExpiresAt
         };
     }
 
@@ -373,11 +371,9 @@ public sealed class StartPaymentLinkEndpoint(
     {
         return new BoletoTransactionData
         {
-            Id = payment.Id,
             Barcode = paymentBoleto.Barcode,
             PdfUrl = paymentBoleto.PdfUrl,
-            ExpiresAt = paymentBoleto.DueDate,
-            Status = paymentBoleto.Status
+            ExpiresAt = paymentBoleto.DueDate
         };
     }
 

@@ -10,8 +10,8 @@ public sealed class CreatePaymentLinkInternalRequest
     public Guid MerchantId { get; set; }
     public Guid UserId { get; set; }
     public ApiEnvironment Environment { get; set; }
-    public List<PaymentMethod> EnabledMethods { get; set; } = [];
     public long? Amount { get; set; }
+    public string? Currency { get; set; } = "BRL";
     public string? Description { get; set; }
     public string? ExternalId { get; set; }
     public Guid? CustomerId { get; set; }
