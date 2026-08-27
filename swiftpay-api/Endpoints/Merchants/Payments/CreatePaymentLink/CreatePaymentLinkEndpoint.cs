@@ -181,7 +181,7 @@ public sealed class CreatePaymentLinkEndpoint(
                 PaymentLinkId = result.PaymentLinkId.Value,
                 PaymentLinkUrl = result.PaymentLinkUrl,
                 EnabledMethods = result.EnabledMethods.Count > 0 ? result.EnabledMethods : req.EnabledMethods,
-                Amount = result.Amount ?? req.Amount,
+                Amount = (result.Amount ?? req.Amount) ?? 0,
                 Currency = result.Currency ?? CurrencyType.BRL,
                 Description = result.Description,
                 Environment = result.Environment ?? environmentProvider.CurrentEnvironment,
