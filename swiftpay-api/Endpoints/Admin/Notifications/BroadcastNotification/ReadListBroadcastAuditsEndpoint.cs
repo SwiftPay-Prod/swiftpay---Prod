@@ -101,7 +101,7 @@ public sealed class ReadListBroadcastAuditsEndpoint(
             Data = new Paginated<BroadcastAuditItem>
             {
                 Items = items,
-                Total = total,
+                TotalItems = total,
                 Page = page,
                 PageSize = pageSize
             }

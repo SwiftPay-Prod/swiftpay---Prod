@@ -840,3 +840,4 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
 
 - `BLOCKED` Validar E2E Pix Estático na VPS com cliente Pix real.
   - Bloqueio: deploy manual necessário na VPS para atualizar `swiftpayapi`/frontend com o branch `tmp/pix-estatico-e2e-deploy`.
+# Pix Estático E2E validation in progress. Issue: #121
