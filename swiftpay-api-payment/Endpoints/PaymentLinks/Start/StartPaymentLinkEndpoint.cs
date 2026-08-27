@@ -12,6 +12,7 @@ using swiftpay_api_payment.Endpoints.Utils;
 using swiftpay_api_payment.EndpointsGroups;
 using swiftpay_api_payment.Interfaces;
 using swiftpay_api_payment.Models.Transactions;
+using swiftpay_api_payment.Utils;
 
 namespace swiftpay_api_payment.Endpoints.PaymentLinks.Start;
 
@@ -85,6 +86,59 @@ public sealed class StartPaymentLinkEndpoint(
         {
             var data = await BuildResponseDataAsync(paymentLink, enabledMethods, ct);
             await Send.OkAsync(new StartPaymentLinkResponse { Data = data }, ct);
+            return;
+        }
+
+        if (paymentLink.PixLinkMode != PixLinkMode.Dynamic)
+        {
+            var merchantPayoutAccount = await dbContext.MerchantPayoutAccounts
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(x => x.MerchantId == paymentLink.MerchantId && x.IsDefault && x.Status == PayoutAccountStatus.Active, ct);
+
+            if (merchantPayoutAccount == null)
+            {
+                await Send.ResponseAsync(new StartPaymentLinkResponse
+                {
+                    Error = new("Conta PIX do merchant não encontrada ou inativa.")
+                }, 400, ct);
+                return;
+            }
+
+            var staticPix = PixStaticBrCodeGenerator.Generate(paymentLink, merchantPayoutAccount);
+            var now = DateTime.UtcNow;
+
+            var staticData = new PaymentLinkData
+            {
+                Id = paymentLink.Id,
+                PaymentLinkId = paymentLink.Id,
+                PaymentId = null,
+                EnabledMethods = enabledMethods,
+                Method = PaymentMethod.Pix,
+                Amount = paymentLink.Amount,
+                Currency = paymentLink.Currency,
+                Status = PaymentStatus.Pending,
+                Description = paymentLink.Description,
+                Environment = paymentLink.Environment,
+                ExpiresAt = null,
+                CreatedAt = now,
+                CompletedAt = null,
+                IsPaymentStarted = false,
+                IsUnlimitedLink = true,
+                RedirectUrl = paymentLink.RedirectUrl,
+                RequiredBuyerFields = ParseRequiredBuyerFields(paymentLink.RequiredBuyerFields),
+                ShowFees = paymentLink.ShowFees,
+                FeeAmounts = new Dictionary<string, long>(),
+                PassFeeToCustomer = paymentLink.PassFeeToCustomer,
+                ShowSwiftPayBranding = true,
+                ThemeMode = paymentLink.ThemeMode,
+                LogoUrl = paymentLink.LogoUrl,
+                ProductName = paymentLink.ProductName,
+                ProductImageUrl = paymentLink.ProductImageUrl,
+                Pix = staticPix,
+                Boleto = null
+            };
+
+            await Send.OkAsync(new StartPaymentLinkResponse { Data = staticData }, ct);
             return;
         }
 
@@ -183,18 +237,12 @@ public sealed class StartPaymentLinkEndpoint(
                 "Name" => string.IsNullOrWhiteSpace(req.BuyerName),
                 "Email" => string.IsNullOrWhiteSpace(req.BuyerEmail),
                 "Phone" => string.IsNullOrWhiteSpace(req.BuyerPhone),
-                _ => false
+                _ => true
             };
 
             if (isEmpty)
             {
-                return field switch
-                {
-                    "Name" => "Nome",
-                    "Email" => "E-mail",
-                    "Phone" => "Telefone",
-                    _ => field
-                };
+                return field;
             }
         }
 
@@ -205,14 +253,12 @@ public sealed class StartPaymentLinkEndpoint(
     {
         if (string.IsNullOrWhiteSpace(enabledMethods))
         {
-            return [PaymentMethod.Pix];
+            return [];
         }
 
         return enabledMethods
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(value => Enum.TryParse<PaymentMethod>(value, true, out var method) ? method : (PaymentMethod?)null)
-            .Where(method => method.HasValue)
-            .Select(method => method!.Value)
+            .Select(method => Enum.TryParse<PaymentMethod>(method, true, out var parsed) ? parsed : PaymentMethod.Pix)
             .Distinct()
             .ToList();
     }
@@ -296,58 +342,47 @@ public sealed class StartPaymentLinkEndpoint(
         return data;
     }
 
-    private static bool HasBoletoPixData(swiftpay_api_core.Models.Database.PaymentBoleto paymentBoleto)
+    private static bool HasBoletoPixData(PaymentBoleto paymentBoleto)
     {
         return !string.IsNullOrWhiteSpace(paymentBoleto.PixCopyAndPaste);
     }
 
-    private static PixTransactionData ToPixData(swiftpay_api_core.Models.Database.PaymentPix paymentPix)
+    private static PixTransactionData ToPixData(PaymentPix paymentPix)
     {
         return new PixTransactionData
         {
-            TxId = paymentPix.TxId,
             QrCode = paymentPix.QrCode,
-            CopyAndPaste = paymentPix.CopyAndPaste,
-            ExpiresAt = paymentPix.ExpiresAt
+            CopyAndPaste = paymentPix.PixCopyAndPaste,
+            ExpiresAt = paymentPix.ExpiresAt,
+            Status = paymentPix.Status
         };
     }
 
-    private static PixTransactionData ToPixData(swiftpay_api_core.Models.Database.PaymentBoleto paymentBoleto)
+    private static PixTransactionData ToPixData(PaymentBoleto paymentBoleto)
     {
         return new PixTransactionData
         {
-            TxId = null,
-            QrCode = null,
+            QrCode = paymentBoleto.PixQrCode,
             CopyAndPaste = paymentBoleto.PixCopyAndPaste,
-            ExpiresAt = paymentBoleto.PixExpiresAt ?? paymentBoleto.DueDate
+            ExpiresAt = paymentBoleto.PixExpiresAt,
+            Status = paymentBoleto.Status
         };
     }
 
-    private static BoletoTransactionData ToBoletoData(Payment payment, swiftpay_api_core.Models.Database.PaymentBoleto paymentBoleto)
+    private static BoletoTransactionData ToBoletoData(Payment payment, PaymentBoleto paymentBoleto)
     {
         return new BoletoTransactionData
         {
+            Id = payment.Id,
             Barcode = paymentBoleto.Barcode,
-            DigitableLine = paymentBoleto.DigitableLine,
             PdfUrl = paymentBoleto.PdfUrl,
-            RecipientName = paymentBoleto.RecipientName,
-            RecipientDocument = MaskDocumentOrNull(paymentBoleto.RecipientDocument),
-            PayerName = payment.Customer?.Name,
-            PayerDocument = MaskDocumentOrNull(payment.Customer?.Document),
-            PixCopyAndPaste = paymentBoleto.PixCopyAndPaste,
-            PixExpiresAt = paymentBoleto.PixExpiresAt,
-            DueDate = paymentBoleto.DueDate
+            ExpiresAt = paymentBoleto.DueDate,
+            Status = paymentBoleto.Status
         };
     }
 
     private static string? MaskDocumentOrNull(string? document)
     {
-        var trimmed = document?.Trim();
-        if (string.IsNullOrWhiteSpace(trimmed))
-        {
-            return null;
-        }
-
-        return MaskUtils.MaskDocument(trimmed);
+        return string.IsNullOrWhiteSpace(document) ? null : document;
     }
 }

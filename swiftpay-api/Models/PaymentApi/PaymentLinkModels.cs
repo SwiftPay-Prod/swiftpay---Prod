@@ -9,7 +9,7 @@ public sealed class CreatePaymentLinkApiInput
     public Guid UserId { get; set; }
     public ApiEnvironment Environment { get; set; }
     public List<PaymentMethod> EnabledMethods { get; set; } = [];
-    public long Amount { get; set; }
+    public long? Amount { get; set; }
     public CurrencyType Currency { get; set; } = CurrencyType.BRL;
     public string? Description { get; set; }
     public string? ExternalId { get; set; }
@@ -40,6 +40,7 @@ public sealed class CreatePaymentLinkApiInput
     public string? ThemeMode { get; set; }
     public string? ProductName { get; set; }
     public string? ProductImageUrl { get; set; }
+    public PixLinkMode PixLinkMode { get; set; } = PixLinkMode.Dynamic;
 }
 
 public sealed class CreatePaymentLinkApiResult

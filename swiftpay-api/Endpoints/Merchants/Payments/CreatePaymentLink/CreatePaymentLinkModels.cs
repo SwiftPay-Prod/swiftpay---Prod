@@ -9,8 +9,7 @@ namespace swiftpay_api.Endpoints.Merchants.Payments.CreatePaymentLink;
 public sealed class CreatePaymentLinkRequest
 {
     public Guid MerchantId { get; set; }
-    public List<swiftpay_api_core.Models.Database.PaymentMethod> EnabledMethods { get; set; } = [swiftpay_api_core.Models.Database.PaymentMethod.Pix];
-    public long Amount { get; set; }
+    public long? Amount { get; set; }
     public string? Description { get; set; }
     public Guid? CustomerId { get; set; }
     public string? CallbackUrl { get; set; }
@@ -29,6 +28,7 @@ public sealed class CreatePaymentLinkRequest
     public string? ThemeMode { get; set; }
     public string? ProductName { get; set; }
     public string? ProductImageUrl { get; set; }
+    public PixLinkMode PixLinkMode { get; set; } = PixLinkMode.Dynamic;
 }
 
 public sealed class CreatePaymentLinkRequestValidator : Validator<CreatePaymentLinkRequest>
@@ -41,7 +41,9 @@ public sealed class CreatePaymentLinkRequestValidator : Validator<CreatePaymentL
 
         RuleFor(x => x.Amount)
             .GreaterThan(0)
+            .When(x => x.PixLinkMode == PixLinkMode.Dynamic)
             .WithMessage("O valor da transação deve ser maior que zero.");
+
 
         RuleFor(x => x.EnabledMethods)
             .NotEmpty()
@@ -51,10 +53,6 @@ public sealed class CreatePaymentLinkRequestValidator : Validator<CreatePaymentL
             .Must(method => method == swiftpay_api_core.Models.Database.PaymentMethod.Pix || method == swiftpay_api_core.Models.Database.PaymentMethod.Boleto)
             .WithMessage("O método de pagamento é inválido para link de pagamento.");
 
-        RuleFor(x => x.PixExpirationMinutes)
-            .InclusiveBetween(5, 1440)
-            .When(x => x.PixExpirationMinutes.HasValue)
-            .WithMessage("O tempo de expiração do PIX deve ser entre 5 minutos e 24 horas.");
 
         RuleFor(x => x.BoletoDueDate)
             .NotNull()

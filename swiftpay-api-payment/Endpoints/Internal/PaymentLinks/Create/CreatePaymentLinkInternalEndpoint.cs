@@ -54,7 +54,8 @@ public sealed class CreatePaymentLinkInternalEndpoint(
         var effectiveMinAmount = enabledMins.Count > 0 ? enabledMins.Max() : platformDbSettings.PixMinTransactionAmount;
         var effectiveMaxAmount = enabledMaxes.Count > 0 ? enabledMaxes.Min() : platformDbSettings.PixMaxTransactionAmount;
 
-        if (req.Amount < effectiveMinAmount)
+        // Estático aberto/portável não exige valor mínimo/máximo
+        if (req.PixLinkMode is PixLinkMode.Dynamic && req.Amount < effectiveMinAmount)
         {
             await Send.ResponseAsync(new CreatePaymentLinkInternalResponse
             {
@@ -65,7 +66,7 @@ public sealed class CreatePaymentLinkInternalEndpoint(
             return;
         }
 
-        if (effectiveMaxAmount > 0 && req.Amount > effectiveMaxAmount)
+        if (req.PixLinkMode is PixLinkMode.Dynamic && effectiveMaxAmount > 0 && req.Amount > effectiveMaxAmount)
         {
             await Send.ResponseAsync(new CreatePaymentLinkInternalResponse
             {
@@ -79,39 +80,41 @@ public sealed class CreatePaymentLinkInternalEndpoint(
         var token = $"pay_{CryptoUtils.GenerateToken()}";
         var boletoDueDateUtc = ToUtcDateTime(req.BoletoDueDate);
         var expiresAtUtc = ToUtcDateTime(req.ExpiresAt);
-        var resolvedDomain = PlatformLinkResolver.ResolvePaymentLinkDomain(
-            platformDbSettings,
-            merchantSettings,
-            method: null,
-            enabledMethods: req.EnabledMethods);
-
-        var paymentLink = new PaymentLink
+        // Estático não usa expiração
+        if (req.PixLinkMode != PixLinkMode.Dynamic)
         {
-            MerchantId = req.MerchantId,
-            Token = token,
-            Amount = req.Amount,
-            Currency = req.Currency.ToString(),
-            Description = req.Description,
-            CustomerId = req.CustomerId,
-            CallbackUrl = req.CallbackUrl,
-            EnabledMethods = string.Join(',', req.EnabledMethods.Select(method => method.ToString())),
-            PixExpirationMinutes = req.PixExpirationMinutes,
-            BoletoDueDate = boletoDueDateUtc,
-            BoletoInstructions = req.BoletoInstructions,
-            Environment = req.Environment,
-            ExpiresAt = expiresAtUtc,
-            RedirectUrl = req.RedirectUrl,
-            RequiredBuyerFields = req.RequiredBuyerFields,
-            ShowFees = req.ShowFees,
-            PassFeeToCustomer = req.PassFeeToCustomer,
-            PrimaryColor = NullIfWhiteSpace(req.PrimaryColor),
-            SecondaryColor = NullIfWhiteSpace(req.SecondaryColor),
-            LogoUrl = NullIfWhiteSpace(req.LogoUrl),
-            ColorMode = NullIfWhiteSpace(req.ColorMode),
-            ThemeMode = NullIfWhiteSpace(req.ThemeMode),
-            ProductName = req.ProductName,
-            ProductImageUrl = req.ProductImageUrl
-        };
+            expiresAtUtc = null;
+        }
+
+       var paymentLink = new PaymentLink
+       {
+           MerchantId = req.MerchantId,
+           Token = token,
+           Amount = req.Amount ?? 0,
+           Currency = req.Currency.ToString(),
+           Description = req.Description,
+           CustomerId = req.CustomerId,
+           CallbackUrl = req.CallbackUrl,
+           EnabledMethods = string.Join(',', req.EnabledMethods.Select(method => method.ToString())),
+           PixExpirationMinutes = req.PixExpirationMinutes,
+           BoletoDueDate = boletoDueDateUtc,
+           BoletoInstructions = req.BoletoInstructions,
+           Environment = req.Environment,
+           ExpiresAt = expiresAtUtc,
+           RedirectUrl = req.RedirectUrl,
+           RequiredBuyerFields = req.RequiredBuyerFields,
+           ShowFees = req.ShowFees,
+           PassFeeToCustomer = req.PassFeeToCustomer,
+           PrimaryColor = NullIfWhiteSpace(req.PrimaryColor),
+           SecondaryColor = NullIfWhiteSpace(req.SecondaryColor),
+           LogoUrl = NullIfWhiteSpace(req.LogoUrl),
+           ColorMode = NullIfWhiteSpace(req.ColorMode),
+           ThemeMode = NullIfWhiteSpace(req.ThemeMode),
+           ProductName = req.ProductName,
+           ProductImageUrl = req.ProductImageUrl,
+           PixLinkMode = req.PixLinkMode
+       };
+
 
         dbContext.PaymentLinks.Add(paymentLink);
         await dbContext.SaveChangesAsync(ct);

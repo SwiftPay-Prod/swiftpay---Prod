@@ -35,6 +35,8 @@ public class PaymentLink : BaseEntity
     public string? ThemeMode { get; set; }
     public string? ProductName { get; set; }
     public string? ProductImageUrl { get; set; }
+    // Modo do Pix Link — define estático vs dinâmico (sem expiração, reutilizável)
+    public PixLinkMode PixLinkMode { get; set; } = PixLinkMode.Dynamic;
 
     public Merchant Merchant { get; set; } = null!;
     public Payment? Payment { get; set; }

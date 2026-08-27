@@ -254,6 +254,22 @@ const MERCHANT_ROUTES: RouteConfig[] = [
 		badgeText: 'Novo',
 	},
 	{
+		path: Routes.panel.merchant.pixEstatico,
+		title: 'Pix Estático',
+		type: RouteType.Private,
+		access: {
+			requiresMerchant: true,
+			merchantStatus: [MerchantStatus.Active],
+			merchantKycStatus: [MerchantKycStatus.Approved],
+		},
+		iconName: 'QrCode',
+		menuSection: 'Financeiro',
+		menuOrder: 3,
+		showInMenu: true,
+		badgeColor: 'warning',
+		badgeText: 'Novo',
+	},
+	{
 		path: Routes.panel.merchant.cashouts,
 		title: 'Saques',
 		type: RouteType.Private,

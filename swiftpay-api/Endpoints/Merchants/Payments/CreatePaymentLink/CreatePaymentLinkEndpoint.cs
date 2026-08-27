@@ -131,7 +131,7 @@ public sealed class CreatePaymentLinkEndpoint(
             UserId = userId.Value,
             Environment = environmentProvider.CurrentEnvironment,
             EnabledMethods = req.EnabledMethods,
-            Amount = req.Amount,
+            Amount = req.Amount ?? 0,
             Currency = CurrencyType.BRL,
             Description = req.Description,
             CustomerId = req.CustomerId,
@@ -152,7 +152,8 @@ public sealed class CreatePaymentLinkEndpoint(
             ColorMode = req.ColorMode,
             ThemeMode = req.ThemeMode,
             ProductName = req.ProductName,
-            ProductImageUrl = req.ProductImageUrl
+            ProductImageUrl = req.ProductImageUrl,
+            PixLinkMode = req.PixLinkMode
         }, ct);
 
         if (!result.Success)

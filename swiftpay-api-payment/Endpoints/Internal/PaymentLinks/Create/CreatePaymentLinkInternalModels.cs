@@ -42,6 +42,8 @@ public sealed class CreatePaymentLinkInternalRequest
     public string? ThemeMode { get; set; }
     public string? ProductName { get; set; }
     public string? ProductImageUrl { get; set; }
+    public PixLinkMode PixLinkMode { get; set; } = PixLinkMode.Dynamic;
+    public long? Amount { get; set; }
 }
 
 public sealed class CreatePaymentLinkInternalRequestValidator : Validator<CreatePaymentLinkInternalRequest>
@@ -50,7 +52,11 @@ public sealed class CreatePaymentLinkInternalRequestValidator : Validator<Create
     {
         RuleFor(x => x.MerchantId).NotEmpty();
         RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.Amount).GreaterThan(0);
+        // Dinâmico exige valor; estático aberto/portável pode ter valor opcional
+        When(x => x.PixLinkMode is PixLinkMode.Dynamic, () =>
+        {
+            RuleFor(x => x.Amount).GreaterThan(0);
+        });
         RuleFor(x => x.Description).MaximumLength(500);
 
         RuleFor(x => x.EnabledMethods)

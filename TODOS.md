@@ -1,25 +1,40 @@
 # SwiftPay — ledger canônico de trabalho
 
-Atualizado em: 2026-08-22
+Atualizado em: 2026-08-27
 
 Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para todos os agentes. As regras completas estão em [`AGENTS.md`](AGENTS.md) e [`docs/agent-context-governance.md`](docs/agent-context-governance.md).
+
+## Prioridade atual
+
+- `IN_PROGRESS` Pix Estático E2E — prioridade máxima; toda outra issue só avança após este item ser fechado com evidência.
 
 ## Estados
 
 - `PENDING`: conhecido, não iniciado
 - `IN_PROGRESS`: execução ativa
 - `BLOCKED`: depende de ação externa
-- `DONE`: aceite observado e evidência registrada
+- `DONE`: aceite observado e evidência registrado
 - `DROPPED`: removido deliberadamente, com justificativa
 - `SUPERSEDED`: substituído por decisão posterior
 
+## Pix Estático — E2E e fechamento
+
+- `IN_PROGRESS` Validar E2E do Pix Estático na VPS.
+  - Implementado: `PixLinkMode`, branch offline em `StartPaymentLinkEndpoint`, `PixStaticBrCodeGenerator`, UI `/panel/merchant/pix-estatico`.
+  - Verificação parcial: code review Matt Pocock Standards/Spec sem hard violations; `npx tsc --noEmit` passou; issues #120–125 fechadas no GitHub.
+  - Bloqueio removido: deploy será executado agora a partir do branch `tmp/pix-estatico-e2e-deploy`.
+
+## Push notifications
+
+- `PENDING` Spec: #112 / Issue: #117 — broadcast admin de push com seleção de audiência.
+  - Implementado: `BroadcastNotificationEndpoint` com audiências `all`/`merchant`/`user`, preview paginado e fan-out em batch de 500; log `BroadcastAudit` + listagem dedicada.
+  - Pendência: testes `.NET` e deploy/verificação na VPS; travado até fechamento do Pix Estático.
+
+- `PENDING` Spec: #112 / Issue: #116 — templates customizáveis de push.
+  - Próxima: validar se o catálogo/admin de templates global está exposto; caso contrário, implementar; travado até fechamento do Pix Estático.
+
 ## Estabilização ativa — PixHub, checkout e workflow
 
-- `DONE` Spec: #88 / Issue: #93 — cutover operacional PixHub.
-  - Diagnóstico: API principal antiga não reconhecia `AcquirerType.PixHub`; consultas de processadoras, receita e saldo falhavam com HTTP 500.
-  - Evidência: PixHub ativo no PostgreSQL; autenticação HTTP 200; QR real de R$ 10,00 gerado no checkout público (`https://swiftpayment.info/checkout/7fgoulzmbl`) para o Pedido `#ORD-20260822-0001-20` com payload EMV `00020101021226830014br.gov.bcb.pix2561qrcode.owem.com.br/v2/...` e nominal `BRASIL COMPRAS ONLINE LTD (owem)`.
-  - Implementado: seed/backfill versionado, metadata, schema de credenciais, HMAC com janela de cinco minutos via `AcquirerWebhookAuthPreProcessor` e verificação Span em tempo constante.
-- `DONE` Spec: #94 / Issue: #95 — persistência da identidade visual do checkout.
   - Reprodução E2E no browser: checkout editado no painel do merchant com tema roxo `#8B5CF6`.
   - Causa eliminada: `triggerActiveStepSave` escopado ao step ativo (`[data-active-step="true"]`) e `applyVisualDraft` protegido contra sobrescrita com fallback antigo.
   - Evidência de confirmação: cor `#8B5CF6` persistida no PostgreSQL em `CheckoutConfigs` e renderizada em produção na página pública de checkout (`https://swiftpayment.info/checkout/7fgoulzmbl`).
@@ -820,3 +835,7 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Fix**: `Replace("\\n","")` antes de `"\n"/"\r"` + `Replace(" ","")` para tolerar ambos formatos.
   - **Verify**: `docker logs swiftpayapi --since 10m | grep -i "push-diag\|Failed to get Firebase"` antes mostrava `Error getting Firebase access token`; após deploy deve sumir e push de `nkvp27wl4l` 10:14 deve entregar.
   - **Próxima**: deploy + gerar novo PIX teste + `grep push-diag`
+  - Próxima: integrar catálogo/admin se ainda não estiver exposto para templates globais; caso contrário, validar frontend/UX e testes.
+
+- `BLOCKED` Validar E2E Pix Estático na VPS com cliente Pix real.
+  - Bloqueio: deploy manual necessário na VPS para atualizar `swiftpayapi`/frontend com o branch `tmp/pix-estatico-e2e-deploy`.

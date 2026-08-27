@@ -34,8 +34,7 @@ const ROUTE_KEYWORDS: Record<string, string> = {
 	[Routes.panel.merchant.physicalProducts]: 'organizacao organização produtos fisicos estoque frete peso dimensoes',
 	[Routes.panel.merchant.digitalProducts]: 'organizacao organização produtos digitais arquivo entrega email automatico download',
 	[Routes.panel.merchant.services]: 'organizacao organização servicos agenda atendimento prestacao',
-	[Routes.panel.merchant.transactions]: 'organizacao organização transacoes pagamentos pix conciliação',
-	[Routes.panel.merchant.paymentLinks]: 'organizacao organização link de pagamento links de pagamento cobrança cobrança rápida pix',
+	[Routes.panel.merchant.pixEstatico]: 'pix estatico qr reutilizavel sem expiracao cobranca',
 	[Routes.panel.merchant.cashouts]: 'organizacao organização saques retirada extrato saldo contas bancarias',
 	[Routes.panel.merchant.cashoutAccounts]: 'organizacao organização contas de saque pix banco chave titularidade',
 	[Routes.panel.merchant.balanceHistory]: 'organizacao organização historico de saldo ledger movimentacoes creditos debitos',
@@ -70,9 +69,7 @@ const ROUTE_KEYWORDS: Record<string, string> = {
 	[Routes.panel.referrals]: 'indique e ganhe referral comissão convites' };
 
 const ROUTE_SHORTCUTS: Record<string, string[]> = {
-	[Routes.panel.merchant.dashboard]: ['m', 'd'],
-	[Routes.panel.merchant.transactions]: ['m', 't'],
-	[Routes.panel.merchant.paymentLinks]: ['m', 'l'],
+	[Routes.panel.merchant.pixEstatico]: ['m', 'x'],
 	[Routes.panel.merchant.orders]: ['m', 'o'],
 	[Routes.panel.merchant.products]: ['m', 'p'],
 	[Routes.panel.merchant.customers]: ['m', 'c'],
@@ -201,17 +198,19 @@ const EXTRA_ACTIONS: ExtraActionDefinition[] = [
 		keywords: 'criar checkout pagina pagamento template novo',
 		shortcut: ['n', 'k'],
 		iconName: 'WidgetAdd',
-		requiresMerchant: true },
+		requiresMerchant: true
+	},
 	{
-		id: 'merchant-new-payment-link',
-		name: 'Novo link de pagamento',
-		path: Routes.panel.merchant.paymentLinks,
+		id: 'merchant-new-pix-estatico',
+		name: 'Novo Pix Estático',
+		path: Routes.panel.merchant.pixEstatico,
 		section: 'Atalhos • Organização',
 		subtitle: 'Financeiro',
-		keywords: 'criar link de pagamento novo link de pagamento cobrança',
-		shortcut: ['n', 'l'],
+		keywords: 'criar pix estatico qr codigo copia e cola',
+		shortcut: ['n', 'x'],
 		iconName: 'QrCode',
-		requiresMerchant: true },
+		requiresMerchant: true
+	},
 	{
 		id: 'admin-new-template',
 		name: 'Novo Template de Checkout',

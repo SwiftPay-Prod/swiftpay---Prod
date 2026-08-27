@@ -2,8 +2,8 @@ import type { PaginationParams } from '../common';
 import type { PaymentEnvironment, PaymentLinkLifetimeStatus, PaymentMethod, PaymentStatus } from '../enums';
 
 export interface CreatePaymentLinkRequest {
-  enabledMethods: Extract<PaymentMethod, 'Pix'>[];
-  amount: number;
+  enabledMethods?: Extract<PaymentMethod, 'Pix'>[];
+  amount?: number;
   description?: string;
   customerId?: string;
   callbackUrl?: string;
@@ -21,6 +21,26 @@ export interface CreatePaymentLinkRequest {
   themeMode?: string;
   productName?: string;
   productImageUrl?: string;
+  pixLinkMode?: string;
+}
+export interface PixLinkStaticResponse {
+  data?: {
+    qr?: string | null;
+    copyAndPaste?: string | null;
+    pix?: {
+      qrCode?: string | null;
+      copyAndPaste?: string | null;
+    };
+  };
+}
+
+export interface CreatePaymentLinkDataWithPix extends CreatePaymentLinkData {
+  qr?: string | null;
+  copyAndPaste?: string | null;
+  pix?: {
+    qrCode?: string | null;
+    copyAndPaste?: string | null;
+  };
 }
 
 export interface CreatePaymentLinkPixData {

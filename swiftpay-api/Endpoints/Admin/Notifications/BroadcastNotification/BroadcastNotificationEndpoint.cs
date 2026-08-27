@@ -108,45 +108,54 @@ public sealed class BroadcastNotificationEndpoint(
         var targetUserId = req.UserId;
         var userEmail = req.UserEmail;
 
+        const int BatchSize = 500;
+        var processed = 0;
+        var success = 0;
+        var failure = 0;
+
         _ = Task.Run(async () =>
         {
-            var processed = 0;
-            var success = 0;
-            var failure = 0;
-
-            await foreach (var user in query.AsAsyncEnumerable().WithCancellation(ct))
+            for (var skip = 0; skip < total; skip += BatchSize)
             {
-                try
+                var batch = await query
+                    .Skip(skip)
+                    .Take(BatchSize)
+                    .ToListAsync(ct);
+
+                foreach (var user in batch)
                 {
-                    var prefs = await dbContext.UserNotificationPreferences
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(p => p.UserId == user.Id, ct);
-
-                    var pushEnabled = prefs == null || prefs.PushNotificationsEnabled;
-                    var infoEnabled = prefs == null || prefs.NotifyInfo;
-
-                    if (pushEnabled && infoEnabled)
+                    try
                     {
-                        await notificationService.CreateWithTemplateAsync(
-                            merchantId: Guid.Empty,
-                            type: NotificationType.Info,
-                            title: title,
-                            message: body,
-                            priority: priority,
-                            actionUrl: actionUrl,
-                            requiresMerchantRefresh: false,
-                            environment: ApiEnvironment.Production,
-                            templateData: null);
+                        var prefs = await dbContext.UserNotificationPreferences
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(p => p.UserId == user.Id, ct);
+
+                        var pushEnabled = prefs == null || prefs.PushNotificationsEnabled;
+                        var infoEnabled = prefs == null || prefs.NotifyInfo;
+
+                        if (pushEnabled && infoEnabled)
+                        {
+                            await notificationService.CreateWithTemplateAsync(
+                                merchantId: Guid.Empty,
+                                type: NotificationType.Info,
+                                title: title,
+                                message: body,
+                                priority: priority,
+                                actionUrl: actionUrl,
+                                requiresMerchantRefresh: false,
+                                environment: ApiEnvironment.Production,
+                                templateData: null);
+                        }
+
+                        success++;
+                    }
+                    catch
+                    {
+                        failure++;
                     }
 
-                    success++;
+                    processed++;
                 }
-                catch
-                {
-                    failure++;
-                }
-
-                processed++;
             }
 
             var audit = new BroadcastAudit

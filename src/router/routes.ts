@@ -35,6 +35,7 @@ export const Routes = {
       paymentLinks: '/panel/merchant/payment-links',
       paymentLinksNew: '/panel/merchant/payment-links/new',
       paymentLinksEdit: (id: string) => `/panel/merchant/payment-links/${id}/edit`,
+      pixEstatico: '/panel/merchant/pix-estatico',
       orders: '/panel/merchant/orders',
       ordersUpsert: (id: string = 'new') => `/panel/merchant/orders/upsert/${id}`,
       customers: '/panel/merchant/customers',
