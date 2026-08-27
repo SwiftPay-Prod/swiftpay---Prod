@@ -373,7 +373,6 @@ public sealed class StartPaymentLinkEndpoint(
         {
             Barcode = paymentBoleto.Barcode,
             PdfUrl = paymentBoleto.PdfUrl,
-            ExpiresAt = paymentBoleto.DueDate
         };
     }
 

@@ -2,6 +2,7 @@ using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Models.Database;
+using swiftpay_api_core.Models.Enum;
 using swiftpay_api_core.Utils;
 using swiftpay_api_payment.EndpointsGroups;
 

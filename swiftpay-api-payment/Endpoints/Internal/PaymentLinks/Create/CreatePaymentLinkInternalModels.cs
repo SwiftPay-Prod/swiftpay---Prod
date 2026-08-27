@@ -41,6 +41,7 @@ public sealed class CreatePaymentLinkInternalRequest
     public string? ThemeMode { get; set; }
     public string? ProductName { get; set; }
     public string? ProductImageUrl { get; set; }
+    public List<PaymentMethod> EnabledMethods { get; set; } = [];
     public PixLinkMode PixLinkMode { get; set; } = PixLinkMode.Dynamic;
 }
 

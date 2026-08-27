@@ -35,7 +35,6 @@ public static class PixStaticBrCodeGenerator
             QrCode = payload + crc,
             CopyAndPaste = payload + crc,
             ExpiresAt = null,
-            Status = PaymentStatus.Pending
         };
     }
 
