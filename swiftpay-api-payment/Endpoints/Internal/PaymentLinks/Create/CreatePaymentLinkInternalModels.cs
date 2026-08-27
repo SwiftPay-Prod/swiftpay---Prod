@@ -42,7 +42,6 @@ public sealed class CreatePaymentLinkInternalRequest
     public string? ProductName { get; set; }
     public string? ProductImageUrl { get; set; }
     public PixLinkMode PixLinkMode { get; set; } = PixLinkMode.Dynamic;
-    public long? Amount { get; set; }
 }
 
 public sealed class CreatePaymentLinkInternalRequestValidator : Validator<CreatePaymentLinkInternalRequest>
