@@ -810,3 +810,7 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Contexto**: Novo PIX `R$ 10,00 br / 8,80 liq` Pendente via checkout 09:38 in-app ok mas push não. Deploy diag 33071810232 já no ar.
   - **Ação**: Workflow `diag-push.yml` roda `docker logs --grep push-diag` + `PushTokens` + prefs do dono do checkout + last Payments/Notifications via SSH do runner IP liberado (169.58.70.201).
   - **Próxima**: dispatch workflow, coletar output e corrigir `ShouldSendPush`.
+
+- `IN_PROGRESS` chore(diag) enqueue log — 2026-08-27 12:53
+  - **Motivo**: `push-diag` só no caminho direto não apareceu para PIX 09:48 (fila Rabbit). Adicionado log em `EnqueuePushNotificationAsync`.
+  - **Próxima**: deploy + novo PIX teste

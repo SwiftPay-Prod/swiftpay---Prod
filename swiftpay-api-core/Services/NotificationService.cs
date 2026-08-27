@@ -168,9 +168,12 @@ public class NotificationService(
         string? actionUrl,
         ApiEnvironment environment)
     {
+        var diagLogger2 = scope.ServiceProvider.GetService<ILogger<NotificationService>>();
+        diagLogger2?.LogWarning("[push-diag] enqueue merchantId={MerchantId} type={Type} statusType={StatusType} title={Title}", merchantId, type, statusType, title);
         var messagePublisher = scope.ServiceProvider.GetService<IMessagePublisher>();
         if (messagePublisher == null || !messagePublisher.IsEnabled)
         {
+            diagLogger2?.LogWarning("[push-diag] direct-fallback merchantId={MerchantId}", merchantId);
             await SendPushNotificationDirectAsync(scope, merchantId, type, statusType, priority, title, message, actionUrl, environment);
             return;
         }
@@ -210,6 +213,7 @@ public class NotificationService(
                 Priority: priority,
                 Data: data
             ));
+        diagLogger2?.LogWarning("[push-diag] published merchantId={MerchantId} statusType={StatusType}", merchantId, statusType);
     }
 
     private static async Task SendPushNotificationDirectAsync(
