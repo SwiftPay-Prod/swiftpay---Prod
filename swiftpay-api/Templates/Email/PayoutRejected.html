@@ -1,107 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-BR" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saque Rejeitado - SwiftPay</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Saque Rejeitado - SwiftPay</title>
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 40px 0; background-color: #f3f4f6;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
-        <div style="padding: 32px 40px;">
-            <h1 style="font-size: 24px; font-weight: bold; color: #1f2937; text-align: center; margin: 0 0 24px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
-                    <path d="M12 9V11M12 15H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-                <span>Saque Rejeitado</span>
-            </h1>
-            
-            <p style="font-size: 16px; color: #4b5563; margin: 0 0 16px 0;">
-                Olá, [[NAME]]!
-            </p>
-            
-            <p style="font-size: 16px; color: #4b5563; margin: 0 0 24px 0;">
-                Seu saque para <strong>[[MERCHANT_NAME]]</strong> foi rejeitado pela nossa equipe de análise.
-            </p>
+<body style="font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 40px 20px; background-color: #000000;">
+ <div style="max-width: 600px; margin: 0 auto; background-color: #16181a; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; overflow: hidden; overflow: hidden;">
+  <div style="padding: 32px 40px;">
+   <h1 style="font-size: 24px; font-weight: bold; color: #ffffff; text-align: center; margin: 0 0 24px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
+     <path d="M12 9V11M12 15H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#494fdf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span>Saque Rejeitado</span>
+   </h1>
+   
+   <p style="font-size: 16px; color: rgba(255,255,255,0.6); margin: 0 0 16px 0;">
+    Olá, [[NAME]]!
+   </p>
+   
+   <p style="font-size: 16px; color: rgba(255,255,255,0.6); margin: 0 0 24px 0;">
+    Seu saque para <strong>[[MERCHANT_NAME]]</strong> foi rejeitado pela nossa equipe de análise.
+   </p>
 
-            <div style="background-color: #fef2f2; border-radius: 8px; padding: 24px; margin-bottom: 24px; border: 1px solid #fecaca;">
-                <h2 style="font-size: 16px; font-weight: 600; color: #374151; margin: 0 0 16px 0;">
-                    Detalhes do saque:
-                </h2>
-                
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="padding: 8px 0;">
-                            <p style="font-size: 14px; color: #6b7280; margin: 0;">Valor solicitado:</p>
-                        </td>
-                        <td style="padding: 8px 0; text-align: right;">
-                            <p style="font-size: 14px; color: #1f2937; font-weight: 600; margin: 0;">R$ [[AMOUNT]]</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0;">
-                            <p style="font-size: 14px; color: #6b7280; margin: 0;">Taxa:</p>
-                        </td>
-                        <td style="padding: 8px 0; text-align: right;">
-                            <p style="font-size: 14px; color: #1f2937; margin: 0;">R$ [[FEE_AMOUNT]]</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0;">
-                            <p style="font-size: 14px; color: #6b7280; margin: 0;">Valor líquido:</p>
-                        </td>
-                        <td style="padding: 8px 0; text-align: right;">
-                            <p style="font-size: 14px; color: #1f2937; font-weight: 600; margin: 0;">R$ [[NET_AMOUNT]]</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0;">
-                            <p style="font-size: 14px; color: #6b7280; margin: 0;">Motivo da rejeição:</p>
-                        </td>
-                        <td style="padding: 8px 0; text-align: right;">
-                            <p style="font-size: 14px; color: #ef4444; font-weight: 600; margin: 0;">[[REASON]]</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0;">
-                            <p style="font-size: 14px; color: #6b7280; margin: 0;">Data:</p>
-                        </td>
-                        <td style="padding: 8px 0; text-align: right;">
-                            <p style="font-size: 14px; color: #1f2937; margin: 0;">[[DATE]]</p>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+   <div style="background-color: rgba(73,79,223,0.15); border-radius: 16px; padding: 24px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.08);">
+    <h2 style="font-size: 16px; font-weight: 600; color: #ffffff; margin: 0 0 16px 0;">
+     Detalhes do saque:
+    </h2>
+    
+    <table style="width: 100%;">
+     <tr>
+      <td style="padding: 8px 0;">
+       <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0;">Valor solicitado:</p>
+      </td>
+      <td style="padding: 8px 0; text-align: right;">
+       <p style="font-size: 14px; color: #ffffff; font-weight: 600; margin: 0; font-variant-numeric: tabular-nums;">R$ [[AMOUNT]]</p>
+      </td>
+     </tr>
+     <tr>
+      <td style="padding: 8px 0;">
+       <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0;">Taxa:</p>
+      </td>
+      <td style="padding: 8px 0; text-align: right;">
+       <p style="font-size: 14px; color: #ffffff; margin: 0;">R$ [[FEE_AMOUNT]]</p>
+      </td>
+     </tr>
+     <tr>
+      <td style="padding: 8px 0;">
+       <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0;">Valor líquido:</p>
+      </td>
+      <td style="padding: 8px 0; text-align: right;">
+       <p style="font-size: 14px; color: #ffffff; font-weight: 600; margin: 0; font-variant-numeric: tabular-nums;">R$ [[NET_AMOUNT]]</p>
+      </td>
+     </tr>
+     <tr>
+      <td style="padding: 8px 0;">
+       <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0;">Motivo da rejeição:</p>
+      </td>
+      <td style="padding: 8px 0; text-align: right;">
+       <p style="font-size: 14px; color: #ef4444; font-weight: 600; margin: 0;">[[REASON]]</p>
+      </td>
+     </tr>
+     <tr>
+      <td style="padding: 8px 0;">
+       <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0;">Data:</p>
+      </td>
+      <td style="padding: 8px 0; text-align: right;">
+       <p style="font-size: 14px; color: #ffffff; margin: 0;">[[DATE]]</p>
+      </td>
+     </tr>
+    </table>
+   </div>
 
-            <div style="background-color: #ecfdf5; border-radius: 8px; padding: 16px; margin-bottom: 24px; border: 1px solid #a7f3d0;">
-                <p style="font-size: 14px; color: #047857; margin: 0; font-weight: 600;">
-                    ✅ O valor foi devolvido ao seu saldo
-                </p>
-                <p style="font-size: 14px; color: #047857; margin: 8px 0 0 0;">
-                    O valor de R$ [[AMOUNT]] e a taxa de R$ [[FEE_AMOUNT]] foram devolvidos integralmente ao seu saldo disponível.
-                </p>
-            </div>
+   <div style="background-color: rgba(73,79,223,0.15); border-radius: 16px; padding: 16px; margin-bottom: 24px; border: 1px solid rgba(73,79,223,0.15);">
+    <p style="font-size: 14px; color: #ffffff; margin: 0; font-weight: 600;">
+     ✅ O valor foi devolvido ao seu saldo
+    </p>
+    <p style="font-size: 14px; color: #ffffff; margin: 8px 0 0 0;">
+     O valor de R$ [[AMOUNT]] e a taxa de R$ [[FEE_AMOUNT]] foram devolvidos integralmente ao seu saldo disponível.
+    </p>
+   </div>
 
-            <p style="font-size: 16px; color: #4b5563; margin: 0 0 24px 0;">
-                Se você acredita que houve um erro ou tem dúvidas sobre a rejeição, entre em contato com nosso suporte.
-            </p>
+   <p style="font-size: 16px; color: rgba(255,255,255,0.6); margin: 0 0 24px 0;">
+    Se você acredita que houve um erro ou tem dúvidas sobre a rejeição, entre em contato com nosso suporte.
+   </p>
 
-            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+   <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 24px 0;">
 
-            <p style="font-size: 14px; color: #6b7280; margin: 0; text-align: center;">
-                Este é um e-mail automático. Por favor, não responda.
-            </p>
-        </div>
+   <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0; text-align: center;">
+    Este é um e-mail automático. Por favor, não responda.
+   </p>
+  </div>
 
-        <div style="background-color: #f9fafb; padding: 24px; border-radius: 0 0 8px 8px;">
-            <p style="font-size: 12px; color: #6b7280; text-align: center; margin: 0 0 8px 0;">
-                © 2025 SwiftPay
-            </p>
-            <p style="font-size: 12px; color: #6b7280; text-align: center; margin: 0;">
-                <a href="mailto:suporte@swiftpay.com.br" style="color: #4a8a00; text-decoration: none;">
-                    suporte@swiftpay.com.br
-                </a>
-            </p>
-        </div>
-    </div>
+  <div style="background-color: #0a0a0a; padding: 24px;">
+   <p style="font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin: 0 0 8px 0;">
+    © 2025 SwiftPay
+   </p>
+   <p style="font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin: 0;">
+    <a href="mailto:suporte@swiftpay.com.br" style="color: #494fdf; text-decoration: none;">
+     suporte@swiftpay.com.br
+    </a>
+   </p>
+  </div>
+ </div>
 </body>
 </html>
