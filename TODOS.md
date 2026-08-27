@@ -805,3 +805,8 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Fix**: `NotificationService.SendPushNotificationDirectAsync` loga `warning [push-diag] skip` com `userId/merchantId/type/statusType` + `PushEnabled/NotifyPaymentPending/NotifyInfo` quando `ShouldSendPush=false` ou `userId==empty`.
   - **Verify**: `dotnet build swiftpay-api-core` CORE_EXIT:0; aguardando `API_EXIT`; após deploy gerar novo PIX no mesmo checkout e checar `docker logs swiftpay-api --since 2m | grep push-diag`.
   - **Próxima**: commit + push + deploy + gerar novo pix teste.
+
+- `IN_PROGRESS` chore(diag) Spec: #112 diag push via GH — h7n2ksv5bi R$ 8,80 — 2026-08-27 09:38
+  - **Contexto**: Novo PIX `R$ 10,00 br / 8,80 liq` Pendente via checkout 09:38 in-app ok mas push não. Deploy diag 33071810232 já no ar.
+  - **Ação**: Workflow `diag-push.yml` roda `docker logs --grep push-diag` + `PushTokens` + prefs do dono do checkout + last Payments/Notifications via SSH do runner IP liberado (169.58.70.201).
+  - **Próxima**: dispatch workflow, coletar output e corrigir `ShouldSendPush`.

@@ -1,0 +1,23 @@
+name: Diag Push
+on:
+  workflow_dispatch:
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            echo "=== diag 10m push-diag ==="
+            docker logs swiftpayapi --since 20m 2>&1 | grep -i "push-diag" | tail -50 || echo "no push-diag"
+            echo "=== tokens ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", left(\"Token\", 12) as tok, \"Platform\", \"IsActive\", \"LastUsedAt\" FROM \"PushTokens\" ORDER BY \"LastUsedAt\" DESC LIMIT 5;" 2>&1 | head -20
+            echo "=== prefs do dono do checkout h7n2ksv5bi ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT u.\"Id\" as uid, p.\"PushNotificationsEnabled\", p.\"NotifyPaymentPending\", p.\"NotifyInfo\" FROM \"Users\" u JOIN \"Checkouts\" c ON c.\"MerchantId\" = (SELECT \"MerchantId\" FROM \"Merchants\" WHERE \"UserId\"=u.\"Id\" LIMIT 1) LEFT JOIN \"UserNotificationPreferences\" p ON p.\"UserId\"=u.\"Id\" WHERE c.\"ShortId\"='h7n2ksv5bi' LIMIT 1;" 2>&1 | head -20
+            echo "=== last Payments checkout ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT o.\"Id\" as orderId, p.\"Id\" as payId, p.\"MerchantId\", p.\"Amount\", p.\"Status\", p.\"CreatedAt\" FROM \"Orders\" o JOIN \"Payments\" p ON p.\"OrderId\"=o.\"Id\" JOIN \"Checkouts\" c ON c.\"Id\"=o.\"CheckoutId\" WHERE c.\"ShortId\"='h7n2ksv5bi' ORDER BY p.\"CreatedAt\" DESC LIMIT 3;" 2>&1 | head -20
+            echo "=== last Notifications ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Title\",\"Message\", left(\"ActionUrl\", 40) as url, \"Type\",\"StatusType\", \"CreatedAt\" FROM \"Notifications\" ORDER BY \"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -30
