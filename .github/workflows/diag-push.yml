@@ -11,11 +11,13 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== UserNotificationTemplates for merchant owner ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"Type\", \"StatusType\", \"TitleTemplate\", left(\"BodyTemplate\",40) as body, \"UpdatedAt\" FROM \"UserNotificationTemplates\" WHERE \"UserId\"=(SELECT \"UserId\" FROM \"Merchants\" WHERE \"Id\"='05722648-fa1a-41c2-8389-ec50a80cf576') ORDER BY \"UpdatedAt\" DESC;" 2>&1 | head -30
-            echo "=== all UserNotificationTemplates ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT count(*) FROM \"UserNotificationTemplates\";" 2>&1 | head -10
-            echo "=== last Notifications with titles ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Title\", \"Message\", \"Type\", \"StatusType\", \"CreatedAt\" FROM \"Notifications\" ORDER BY \"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -30
-            echo "=== swiftpayapi push logs last 10m ==="
-            docker logs swiftpayapi --since 10m 2>&1 | grep -E "push-diag|Failed to get Firebase|Venda|Pagamento pendente" | tail -20 || echo "no logs"
+            echo "=== last 5 Payments (Link) ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Id\", \"Amount\", \"Status\", \"IsPaymentLinkPayment\", \"IsCheckoutPayment\", \"RequestSource\", \"SuppressWebhookAndNotification\", \"CreatedAt\" FROM \"Payments\" ORDER BY \"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -40
+            echo "=== last 5 Notifications ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Title\", \"StatusType\", \"Type\", \"CreatedAt\" FROM \"Notifications\" ORDER BY \"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -40
+            echo "=== push-diag payment 10m ==="
+            docker logs swiftpayapipayment --since 10m 2>&1 | grep -i "push-diag" | tail -20 || echo "no push-diag payment"
+            echo "=== push-diag api 10m ==="
+            docker logs swiftpayapi --since 10m 2>&1 | grep -i "push-diag" | tail -20 || echo "no push-diag api"
+            echo "=== swiftpayapipayment logs last Link ==="
+            docker logs swiftpayapipayment --since 20m 2>&1 | grep -i "PaymentLink\|CreateForLink\|Transaction" | tail -30 || echo "no link logs"
