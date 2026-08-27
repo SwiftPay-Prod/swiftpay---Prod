@@ -799,3 +799,9 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
   - **Verify**: `dotnet build swiftpay-api` API_EXIT:0; `dotnet build swiftpay-api/Tests` TEST_EXIT:0.
   - **Arquivos**: `swiftpay-api/Endpoints/Admin/Notifications/BroadcastNotification/*`; `swiftpay-api-core/Models/Database/Primary/BroadcastAudit.cs`; `PrimaryDbContext.cs`; migration.
   - **Próxima**: commit + push + deploy.
+
+- `IN_PROGRESS` chore(diag) Spec: #112 U2 hotfix — log [push-diag] para checkout Pending — 2026-08-26
+  - **Contexto**: Checkout `teste (h7n2ksv5bi)` gerou `Pagamento pendente R$ 8,80` in-app há 8 min mas não chegou push. Código U2 está deployed mas `ShouldSendPush` pode filtrar por prefs/token.
+  - **Fix**: `NotificationService.SendPushNotificationDirectAsync` loga `warning [push-diag] skip` com `userId/merchantId/type/statusType` + `PushEnabled/NotifyPaymentPending/NotifyInfo` quando `ShouldSendPush=false` ou `userId==empty`.
+  - **Verify**: `dotnet build swiftpay-api-core` CORE_EXIT:0; aguardando `API_EXIT`; após deploy gerar novo PIX no mesmo checkout e checar `docker logs swiftpay-api --since 2m | grep push-diag`.
+  - **Próxima**: commit + push + deploy + gerar novo pix teste.

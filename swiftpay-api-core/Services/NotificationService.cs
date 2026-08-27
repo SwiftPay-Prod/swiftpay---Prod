@@ -230,6 +230,7 @@ public class NotificationService(
         }
 
         var dbContext = scope.ServiceProvider.GetRequiredService<PrimaryDbContext>();
+        var diagLogger = scope.ServiceProvider.GetService<ILogger<NotificationService>>();
 
         var userId = await dbContext.Merchants
             .AsNoTracking()
@@ -238,8 +239,17 @@ public class NotificationService(
             .Select(m => m.UserId)
             .FirstOrDefaultAsync();
 
-        if (userId == Guid.Empty || !await ShouldSendPushAsync(dbContext, userId, type, statusType))
+        if (userId == Guid.Empty)
         {
+            diagLogger?.LogWarning("[push-diag] skip merchantId={MerchantId} reason=no_user_for_merchant statusType={StatusType}", merchantId, statusType);
+            return;
+        }
+
+        var prefsDiag = await dbContext.UserNotificationPreferences.AsNoTracking().FirstOrDefaultAsync(p => p.UserId == userId);
+        var should = await ShouldSendPushAsync(dbContext, userId, type, statusType);
+        if (!should)
+        {
+            diagLogger?.LogWarning("[push-diag] skip userId={UserId} merchantId={MerchantId} type={Type} statusType={StatusType} reason=ShouldSendPush=false PushEnabled={PushEnabled} NotifyPaymentPending={NotifyPaymentPending} NotifyInfo={NotifyInfo}", userId, merchantId, type, statusType, prefsDiag?.PushNotificationsEnabled, prefsDiag?.NotifyPaymentPending, prefsDiag?.NotifyInfo);
             return;
         }
 
