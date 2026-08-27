@@ -28,7 +28,7 @@ public static class NotificationTemplates
     public const string DefaultActionLabel = "Ver Detalhes";
     public static IReadOnlyList<NotificationTemplateDefinition> SupportedTemplates { get; } =
     [
-        new(NotificationType.Payment, NotificationStatusType.PaymentPending, "Pagamento pendente", Payment.Pending.Title, "Valor líquido: {netAmount}."),
+        new(NotificationType.Payment, NotificationStatusType.PaymentPending, "Venda pendente", Payment.Pending.Title, "Valor líquido: {netAmount}."),
         new(NotificationType.Payment, NotificationStatusType.PaymentCompleted, "Venda aprovada", Payment.Completed.Title, "Líquido recebido: {netAmount}."),
         new(NotificationType.Payment, NotificationStatusType.PaymentExpired, "Venda expirada", Payment.Expired.Title, "Venda de {netAmount} expirou."),
         new(NotificationType.Payment, NotificationStatusType.PaymentFailed, "Venda falhou", Payment.Failed.Title, "Erro na venda de {netAmount}."),
@@ -54,7 +54,7 @@ public static class NotificationTemplates
     {
         public static class Pending
         {
-            public const string Title = "Pagamento pendente";
+            public const string Title = "Venda pendente";
 
             public static string Message(long netAmount, string? method = null)
             {
