@@ -814,3 +814,9 @@ Leia primeiro: AGENTS.md, CLAUDE.md, TODOS.md, docs/agent-context-governance.md 
 - `IN_PROGRESS` chore(diag) enqueue log — 2026-08-27 12:53
   - **Motivo**: `push-diag` só no caminho direto não apareceu para PIX 09:48 (fila Rabbit). Adicionado log em `EnqueuePushNotificationAsync`.
   - **Próxima**: deploy + novo PIX teste
+
+- `IN_PROGRESS` fix(push) FCM Base64 — 2026-08-27 13:18
+  - **Causa**: `SignWithRsa` falhava com `FormatException: not a valid Base-64` porque `FirebaseSettings.PrivateKey` vem do env como `\\n` literal (ex: `-----BEGIN PRIVATE KEY-----\nMIIE...`) e o código só fazia `Replace("\n","")`, deixando `\` solto e quebrando `FromBase64String`.
+  - **Fix**: `Replace("\\n","")` antes de `"\n"/"\r"` + `Replace(" ","")` para tolerar ambos formatos.
+  - **Verify**: `docker logs swiftpayapi --since 10m | grep -i "push-diag\|Failed to get Firebase"` antes mostrava `Error getting Firebase access token`; após deploy deve sumir e push de `nkvp27wl4l` 10:14 deve entregar.
+  - **Próxima**: deploy + gerar novo PIX teste + `grep push-diag`

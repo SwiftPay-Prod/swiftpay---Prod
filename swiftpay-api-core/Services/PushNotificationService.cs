@@ -409,10 +409,11 @@ public class PushNotificationService : IPushNotificationService
         var keyContent = privateKey
             .Replace("-----BEGIN PRIVATE KEY-----", "")
             .Replace("-----END PRIVATE KEY-----", "")
+            .Replace("\\n", "")
             .Replace("\n", "")
             .Replace("\r", "")
+            .Replace(" ", "")
             .Trim();
-
         var keyBytes = Convert.FromBase64String(keyContent);
         
         using var rsa = System.Security.Cryptography.RSA.Create();
