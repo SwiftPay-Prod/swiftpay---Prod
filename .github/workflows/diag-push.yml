@@ -11,15 +11,13 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== all checkouts ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"ShortId\", \"Name\", \"MerchantId\", \"CreatedAt\" FROM \"Checkouts\" ORDER BY \"CreatedAt\" DESC LIMIT 10;" 2>&1 | head -30
-            echo "=== checkout with ILIKE ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"ShortId\" FROM \"Checkouts\" WHERE \"ShortId\" ILIKE '%h7n2%' OR \"ShortId\" ILIKE '%nkvp%' ;" 2>&1 | head -20
-            echo "=== push-diag 30m ==="
-            docker logs swiftpayapi --since 30m 2>&1 | grep -i "push-diag" | tail -50 || echo "no push-diag"
-            echo "=== pushTokens count ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT count(*) as totalTokens FROM \"PushTokens\";" 2>&1 | head -10
-            echo "=== pushTokens detailed ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"Platform\", \"IsActive\", \"UpdatedAt\" FROM \"PushTokens\" ORDER BY \"UpdatedAt\" DESC LIMIT 10;" 2>&1 | head -30
-            echo "=== prefs for recent users ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"PushNotificationsEnabled\", \"NotifyPaymentPending\" FROM \"UserNotificationPreferences\" ORDER BY \"UpdatedAt\" DESC LIMIT 10;" 2>&1 | head -20
+            echo "=== merchant 05722648 owner ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Id\", \"UserId\", \"Name\" FROM \"Merchants\" WHERE \"Id\"='05722648-fa1a-41c2-8389-ec50a80cf576';" 2>&1 | head -20
+            echo "=== token for that owner ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", left(\"Token\",12) as tok, \"Platform\", \"IsActive\", \"UpdatedAt\" FROM \"PushTokens\" WHERE \"UserId\"=(SELECT \"UserId\" FROM \"Merchants\" WHERE \"Id\"='05722648-fa1a-41c2-8389-ec50a80cf576') ORDER BY \"UpdatedAt\" DESC;" 2>&1 | head -20
+            echo "=== prefs for that owner ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"PushNotificationsEnabled\", \"NotifyPaymentPending\", \"UpdatedAt\" FROM \"UserNotificationPreferences\" WHERE \"UserId\"=(SELECT \"UserId\" FROM \"Merchants\" WHERE \"Id\"='05722648-fa1a-41c2-8389-ec50a80cf576');" 2>&1 | head -20
+            echo "=== rabbit queue ==="
+            docker exec swiftpay-rabbitmq rabbitmqctl list_queues name messages 2>&1 | head -20 || docker exec swiftpay-rabbitmq rabbitmqctl list_queues 2>&1 | head -20
+            echo "=== swiftpayapi logs last push ==="
+            docker logs swiftpayapi --since 60m 2>&1 | grep -i "push\|PaymentPending\|Enqueue" | tail -30 || echo "no push logs"
