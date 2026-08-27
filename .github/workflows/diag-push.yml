@@ -11,11 +11,11 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== swiftpayapi logs 10m ==="
-            docker logs swiftpayapi --since 10m 2>&1 | tail -100 | head -80
-            echo "=== push consumer 10m ==="
-            docker logs swiftpayapi --since 10m 2>&1 | grep -i "push\|FCM\|firebase\|Notification" | tail -50 || echo "no push logs"
-            echo "=== rabbit queues ==="
-            docker exec swiftpayrabbitmq rabbitmqctl list_queues name messages consumers 2>&1 | head -20
-            echo "=== last Payments ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"CreatedAt\", \"Status\", left(\"Id\"::text,8) as id FROM \"Payments\" ORDER BY \"CreatedAt\" DESC LIMIT 3;" 2>&1 | head -20
+            echo "=== UserNotificationTemplates for merchant owner ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"Type\", \"StatusType\", \"TitleTemplate\", left(\"BodyTemplate\",40) as body, \"UpdatedAt\" FROM \"UserNotificationTemplates\" WHERE \"UserId\"=(SELECT \"UserId\" FROM \"Merchants\" WHERE \"Id\"='05722648-fa1a-41c2-8389-ec50a80cf576') ORDER BY \"UpdatedAt\" DESC;" 2>&1 | head -30
+            echo "=== all UserNotificationTemplates ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT count(*) FROM \"UserNotificationTemplates\";" 2>&1 | head -10
+            echo "=== last Notifications with titles ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Title\", \"Message\", \"Type\", \"StatusType\", \"CreatedAt\" FROM \"Notifications\" ORDER BY \"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -30
+            echo "=== swiftpayapi push logs last 10m ==="
+            docker logs swiftpayapi --since 10m 2>&1 | grep -E "push-diag|Failed to get Firebase|Venda|Pagamento pendente" | tail -20 || echo "no logs"
