@@ -11,13 +11,11 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== docker ps ==="
-            docker ps --format '{{.Names}} {{.Status}}' 2>&1 | head -20
-            echo "=== push-diag swiftpayapipayment 60m ==="
-            docker logs swiftpayapipayment --since 60m 2>&1 | grep -i "push-diag" | tail -50 || echo "no push-diag payment"
-            echo "=== push-diag swiftpayapi 60m ==="
-            docker logs swiftpayapi --since 60m 2>&1 | grep -i "push-diag" | tail -50 || echo "no push-diag api"
-            echo "=== FCM config swiftpayapipayment env ==="
-            docker exec swiftpayapipayment env 2>&1 | grep -i "FIREBASE\|FCM\|GOOGLE" | head -20 || echo "no fcm env"
-            echo "=== last Payments with notification check ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT p.\"Id\", p.\"Status\", p.\"MerchantId\", p.\"Amount\", p.\"CreatedAt\", p.\"SuppressWebhookAndNotification\" FROM \"Payments\" p ORDER BY p.\"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -20
+            echo "=== swiftpayapi logs 10m ==="
+            docker logs swiftpayapi --since 10m 2>&1 | tail -100 | head -80
+            echo "=== push consumer 10m ==="
+            docker logs swiftpayapi --since 10m 2>&1 | grep -i "push\|FCM\|firebase\|Notification" | tail -50 || echo "no push logs"
+            echo "=== rabbit queues ==="
+            docker exec swiftpayrabbitmq rabbitmqctl list_queues name messages consumers 2>&1 | head -20
+            echo "=== last Payments ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"CreatedAt\", \"Status\", left(\"Id\"::text,8) as id FROM \"Payments\" ORDER BY \"CreatedAt\" DESC LIMIT 3;" 2>&1 | head -20
