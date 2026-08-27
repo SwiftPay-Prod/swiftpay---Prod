@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { usePanelHeader } from '@/hooks/use-panel-header';
 import { useMerchant } from '@/contexts/merchant-context';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { NotificationPopover } from './notifications';
 import { Routes } from '@/router/routes';
 import type { UserInfo } from '@/types/auth';
@@ -65,7 +64,6 @@ export function PanelHeader({ title, user }: PanelHeaderProps) {
 
 					<div className="w-px h-3.5 bg-white/10 mx-1" />
 
-					<ThemeToggle />
 					<NotificationPopover />
 
 					{/* Refresh */}

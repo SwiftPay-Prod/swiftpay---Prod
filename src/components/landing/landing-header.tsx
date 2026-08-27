@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { SwiftPayBrandLogo } from '@/components/ui/swiftpay-brand-logo';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Icon } from '@/components/ui/icon';
 import { Menu01Icon, Cancel01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 
@@ -50,7 +49,6 @@ export function LandingHeader({ onOpenAuth }: LandingHeaderProps) {
 
 				{/* Header Actions */}
 				<div className="hidden md:flex items-center space-x-3">
-					<ThemeToggle />
 					<button
 						type="button"
 						onClick={() => onOpenAuth('signin')}
@@ -70,7 +68,6 @@ export function LandingHeader({ onOpenAuth }: LandingHeaderProps) {
 
 				{/* Mobile Menu Trigger */}
 				<div className="flex md:hidden items-center space-x-2">
-					<ThemeToggle />
 					<button
 						type="button"
 						onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
