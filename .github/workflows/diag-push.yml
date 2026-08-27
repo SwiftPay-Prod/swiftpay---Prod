@@ -11,15 +11,15 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== diag push-diag 30m ==="
+            echo "=== all checkouts ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"ShortId\", \"Name\", \"MerchantId\", \"CreatedAt\" FROM \"Checkouts\" ORDER BY \"CreatedAt\" DESC LIMIT 10;" 2>&1 | head -30
+            echo "=== checkout with ILIKE ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"ShortId\" FROM \"Checkouts\" WHERE \"ShortId\" ILIKE '%h7n2%' OR \"ShortId\" ILIKE '%nkvp%' ;" 2>&1 | head -20
+            echo "=== push-diag 30m ==="
             docker logs swiftpayapi --since 30m 2>&1 | grep -i "push-diag" | tail -50 || echo "no push-diag"
-            echo "=== checkout merchants ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT c.\"ShortId\", c.\"MerchantId\", m.\"UserId\" as merchantOwner, m.\"Name\" FROM \"Checkouts\" c JOIN \"Merchants\" m ON m.\"Id\"=c.\"MerchantId\" WHERE c.\"ShortId\" IN ('h7n2ksv5bi','nkvp27wl4l') ORDER BY c.\"CreatedAt\" DESC;" 2>&1 | head -20
-            echo "=== pushTokens for owners ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT pt.\"UserId\", left(pt.\"Token\",12) as tok, pt.\"Platform\", pt.\"IsActive\" FROM \"PushTokens\" pt WHERE pt.\"UserId\" IN (SELECT m.\"UserId\" FROM \"Merchants\" m JOIN \"Checkouts\" c ON c.\"MerchantId\"=m.\"Id\" WHERE c.\"ShortId\" IN ('h7n2ksv5bi','nkvp27wl4l')) ORDER BY pt.\"LastUsedAt\" DESC LIMIT 10;" 2>&1 | head -20
-            echo "=== all pushTokens ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", left(\"Token\",12) as tok, \"Platform\", \"IsActive\" FROM \"PushTokens\" ORDER BY \"LastUsedAt\" DESC LIMIT 10;" 2>&1 | head -20
-            echo "=== prefs owners ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT m.\"UserId\", p.\"PushNotificationsEnabled\", p.\"NotifyPaymentPending\" FROM \"Merchants\" m JOIN \"Checkouts\" c ON c.\"MerchantId\"=m.\"Id\" LEFT JOIN \"UserNotificationPreferences\" p ON p.\"UserId\"=m.\"UserId\" WHERE c.\"ShortId\" IN ('h7n2ksv5bi','nkvp27wl4l') LIMIT 2;" 2>&1 | head -20
-            echo "=== last notifications 5 ==="
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"Title\", \"MerchantId\", \"Type\", \"StatusType\", \"CreatedAt\" FROM \"Notifications\" ORDER BY \"CreatedAt\" DESC LIMIT 5;" 2>&1 | head -20
+            echo "=== pushTokens count ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT count(*) as totalTokens FROM \"PushTokens\";" 2>&1 | head -10
+            echo "=== pushTokens detailed ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"Platform\", \"IsActive\", \"UpdatedAt\" FROM \"PushTokens\" ORDER BY \"UpdatedAt\" DESC LIMIT 10;" 2>&1 | head -30
+            echo "=== prefs for recent users ==="
+            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT \"UserId\", \"PushNotificationsEnabled\", \"NotifyPaymentPending\" FROM \"UserNotificationPreferences\" ORDER BY \"UpdatedAt\" DESC LIMIT 10;" 2>&1 | head -20
