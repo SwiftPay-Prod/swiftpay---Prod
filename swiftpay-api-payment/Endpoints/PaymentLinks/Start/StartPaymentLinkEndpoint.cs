@@ -95,16 +95,20 @@ public sealed class StartPaymentLinkEndpoint(
                 .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(x => x.MerchantId == paymentLink.MerchantId && x.IsDefault && x.Status == PayoutAccountStatus.Active, ct);
 
+            string qrPayload;
+            string copyAndPaste;
             if (merchantPayoutAccount == null)
             {
-                await Send.ResponseAsync(new StartPaymentLinkResponse
-                {
-                    Error = new("Conta PIX do merchant não encontrada ou inativa.")
-                }, 400, ct);
-                return;
+                var linkUrl = $"https://swiftpayment.info/p/{paymentLink.Token}";
+                qrPayload = linkUrl;
+                copyAndPaste = linkUrl;
             }
-
-            var staticPix = PixStaticBrCodeGenerator.Generate(paymentLink, merchantPayoutAccount);
+            else
+            {
+                var staticPix = PixStaticBrCodeGenerator.Generate(paymentLink, merchantPayoutAccount);
+                qrPayload = staticPix.QrCode;
+                copyAndPaste = staticPix.CopyAndPaste;
+            }
             var now = DateTime.UtcNow;
 
             var staticData = new PaymentLinkData
@@ -131,10 +135,9 @@ public sealed class StartPaymentLinkEndpoint(
                 PassFeeToCustomer = paymentLink.PassFeeToCustomer,
                 ShowSwiftPayBranding = true,
                 ThemeMode = paymentLink.ThemeMode,
-                LogoUrl = paymentLink.LogoUrl,
                 ProductName = paymentLink.ProductName,
                 ProductImageUrl = paymentLink.ProductImageUrl,
-                Pix = staticPix,
+                Pix = new PixTransactionData { QrCode = qrPayload, CopyAndPaste = copyAndPaste, ExpiresAt = null },
                 Boleto = null
             };
 
