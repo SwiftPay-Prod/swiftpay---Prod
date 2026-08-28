@@ -574,6 +574,10 @@ public class PrimaryDbContext : DbContext, IDataProtectionKeyContext
         modelBuilder.Entity<PaymentLink>()
             .HasQueryFilter(pl => pl.Environment == CurrentEnvironment);
 
+        modelBuilder.Entity<PaymentLink>()
+            .Property(pl => pl.PixLinkMode)
+            .HasConversion<string>()
+            .HasColumnType("text");
         modelBuilder.Entity<PaymentPix>()
             .HasOne(pp => pp.Payment)
             .WithOne(p => p.PaymentPix)

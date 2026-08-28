@@ -4459,8 +4459,9 @@ namespace swiftpay_api.Database.Migrations.Primary
                     b.Property<Guid?>("PaymentId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("PixLinkMode")
-                        .HasColumnType("integer");
+                    b.Property<string>("PixLinkMode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("PixExpirationMinutes")
                         .HasColumnType("integer");

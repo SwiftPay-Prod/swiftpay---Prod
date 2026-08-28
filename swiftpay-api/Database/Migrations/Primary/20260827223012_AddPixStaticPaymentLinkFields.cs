@@ -11,12 +11,12 @@ namespace swiftpay_api.Database.Migrations.Primary
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
+            migrationBuilder.AddColumn<string>(
                 name: "PixLinkMode",
                 table: "PaymentLinks",
-                type: "integer",
+                type: "text",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: "Dynamic");
         }
 
         /// <inheritdoc />

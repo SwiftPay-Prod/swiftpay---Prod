@@ -4465,8 +4465,9 @@ namespace swiftpay_api.Database.Migrations.Primary
                     b.Property<int?>("PixExpirationMinutes")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PixLinkMode")
-                        .HasColumnType("integer");
+                    b.Property<string>("PixLinkMode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PrimaryColor")
                         .HasColumnType("text");
