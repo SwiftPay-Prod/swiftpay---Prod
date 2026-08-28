@@ -1,0 +1,19 @@
+name: Diag Logs
+on: workflow_dispatch
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            echo "=== swiftpayapi last 200 ==="
+            docker logs --tail=200 swiftpayapi 2>&1 | tail -n 200 || true
+            echo "=== swiftpayapipayment last 200 ==="
+            docker logs --tail=200 swiftpayapipayment 2>&1 | tail -n 200 || true
+            echo "=== curl create test ==="
+            set -a; [ -f /root/swiftpay/swiftpay-api/.env.production ] && . /root/swiftpay/swiftpay-api/.env.production; [ -f /root/swiftpay/.env.production ] && . /root/swiftpay/.env.production; set +a
+            echo "DB check done"
