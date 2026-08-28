@@ -54,9 +54,13 @@ jobs:
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" config --quiet
             set +e
             set -a; [ -f "${ENV_FILE}" ] && . "${ENV_FILE}"; set +a
-            docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0;" || echo "psql alter skipped (db not ready: $?)"
+            echo "DB_PASSWORD set? ${DB_PASSWORD:+yes} len ${#DB_PASSWORD:-0}"
+            docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0;" 2>&1 || echo "psql alter failed $?"
+            docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT column_name, data_type FROM information_schema.columns WHERE table_name='PaymentLinks';" 2>&1 | tail -n 20 || true
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
             COMPOSE_EXIT=$?
+            echo "COMPOSE_EXIT=$COMPOSE_EXIT"
+            docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT column_name FROM information_schema.columns WHERE table_name='PaymentLinks' AND column_name='PixLinkMode';" 2>&1 || true
             if [ "$COMPOSE_EXIT" -ne 0 ]; then
               echo "docker compose failed with exit code ${COMPOSE_EXIT}"
               docker logs --tail=200 swiftpayapi 2>&1 || true
