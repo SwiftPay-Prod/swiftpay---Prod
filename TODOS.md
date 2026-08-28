@@ -22,9 +22,9 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 - `IN_PROGRESS` Validar E2E do Pix Estático na VPS. Issue: #121
   - Implementado: `PixLinkMode`, branch offline em `StartPaymentLinkEndpoint`, `PixStaticBrCodeGenerator`, UI `/panel/merchant/pix-estatico`.
   - Verificação parcial: code review Matt Pocock Standards/Spec sem hard violations; `npx tsc --noEmit` passou; issues #120–125 fechadas no GitHub.
-  - Build corrigido para deploy: ajustados mapeamentos de `StartPaymentLinkEndpoint` para os modelos reais (`PaymentPix`, `PaymentBoleto`, `PixTransactionData`, `BoletoTransactionData`) e adicionado `Currency` em `CreatePaymentLinkInternalRequest`.
-  - Evidência planejada/registrada aqui antes do push: arquivos alterados `swiftpay-api-payment/Endpoints/PaymentLinks/Start/StartPaymentLinkEndpoint.cs` e `swiftpay-api-payment/Endpoints/Internal/PaymentLinks/Create/CreatePaymentLinkInternalModels.cs`.
-  - Próximo passo: push para `main`, acompanhar workflow `Deploy SwiftPay` e validar `https://swiftpayment.info/panel/merchant/pix-estatico`.
+  - Build e deploy: commit `e647049` aplicou migration EF `AddPixStaticPaymentLinkFields` + atualização do snapshot `PrimaryDbContextModelSnapshot.cs`; workflow `Deploy SwiftPay` acionado.
+  - Evidência remota: `https://swiftpayment.info/panel/merchant/pix-estatico` retornou HTTP 200 em checagem direta.
+  - Próximo passo: concluir validação do fluxo de criação/uso de link estático e dinâmico no painel e registrar resultado final aqui.
 ## Push notifications
 
 - `PENDING` Spec: #112 / Issue: #117 — broadcast admin de push com seleção de audiência.
