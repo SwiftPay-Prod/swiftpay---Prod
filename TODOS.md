@@ -20,11 +20,12 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 ## Pix Estático — E2E e fechamento
 
 - `IN_PROGRESS` Validar E2E do Pix Estático na VPS. Issue: #121
-  - Implementado: `PixLinkMode`, branch offline em `StartPaymentLinkEndpoint`, `PixStaticBrCodeGenerator`, UI `/panel/merchant/pix-estatico`.
-  - Verificação parcial: code review Matt Pocock Standards/Spec sem hard violations; `npx tsc --noEmit` passou; issues #120–125 fechadas no GitHub.
-  - Build e deploy: commit `e647049` aplicou migration EF `AddPixStaticPaymentLinkFields` + atualização do snapshot `PrimaryDbContextModelSnapshot.cs`; workflow `Deploy SwiftPay` acionado.
-  - Evidência remota: `https://swiftpayment.info/panel/merchant/pix-estatico` retornou HTTP 200 em checagem direta.
-  - Próximo passo: concluir validação do fluxo de criação/uso de link estático e dinâmico no painel e registrar resultado final aqui.
+  - Implementado: `PixLinkMode`, `PixStaticBrCodeGenerator`, UI `/panel/merchant/pix-estatico`, `PrimaryDbContextModelSnapshot` + migration `20260827223012_AddPixStaticPaymentLinkFields`.
+  - Auditoria Copilot (2026-08-28): verificado contra `design-system-and-code-quality` (HeroUI v3/Tailwind v4, Revolut 10 Ultra R8-R11), `forms-headless-and-table-actions` (useTransition/isPending, FormData), `react19-performance-and-data-flow` (useTransition, React Compiler), `environment-and-api-architecture`, `project-structure-and-api-types` (ApiResponse<T>).
+  - Correções aplicadas: parser BRL `amountCents` com vírgula, `useTransition` para `handleCreate` com `isPending` no botão, `Executive Header` Revolut + `rounded-[20px] border-white/12 bg-[#16181a]`, coluna `PixLinkMode` garantida via `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` em `deploy.yml` e `PrimaryDbContextExtensions` com `Ignore(PendingModelChangesWarning)` temporário.
+  - Build: `npx tsc --noEmit` `exit:0`; deploys `e6e2d41`, `7a81ea0`, `4d6d1ac`, `871435e`, `944a248` `success` com coluna `PixLinkMode` criada (`NOTICE: already exists` em `871435e`).
+  - Erro atual: `HTTP 500` ao criar Pix com `10`/`10,00` — `lastError` agora exposto no card; aguardando `response.data.error.message` da API para causa raiz (acquirer/payload).
+  - Próximo passo: retestar `Criar Pix Estático` após `944a248`; se persistir `500`, extrair `docker logs swiftpayapi` do `startPaymentLink`.
 ## Push notifications
 
 - `PENDING` Spec: #112 / Issue: #117 — broadcast admin de push com seleção de audiência.
