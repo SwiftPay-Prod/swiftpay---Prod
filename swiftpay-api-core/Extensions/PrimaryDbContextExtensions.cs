@@ -1,11 +1,10 @@
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using swiftpay_api_core.Database;
 using swiftpay_api_core.Models.Settings;
-
-namespace swiftpay_api_core.Extensions;
 
 public static class PrimaryDbContextExtensions
 {
@@ -22,6 +21,7 @@ public static class PrimaryDbContextExtensions
 
         services.AddDbContext<PrimaryDbContext>(options =>
         {
+            options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
             options.UseNpgsql(dataSource, npgsqlOptions =>
             {
                 npgsqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
@@ -32,7 +32,6 @@ public static class PrimaryDbContextExtensions
                 }
             });
         });
-
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<PrimaryDbContext>());
 
         return services;
@@ -54,6 +53,7 @@ public static class PrimaryDbContextExtensions
         {
             var dataSource = serviceProvider.GetRequiredService<NpgsqlDataSource>();
             
+            options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
             options.UseNpgsql(dataSource, npgsqlOptions =>
             {
                 npgsqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
@@ -64,7 +64,6 @@ public static class PrimaryDbContextExtensions
                 }
             });
         });
-
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<PrimaryDbContext>());
 
         return services;
