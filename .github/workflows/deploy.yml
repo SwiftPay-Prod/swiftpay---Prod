@@ -53,7 +53,8 @@ jobs:
             COMPOSE_FILE="docker-compose.production.yaml"
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" config --quiet
             set +e
-            docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0;" || echo "psql alter skipped (db not ready)"
+            set -a; [ -f "${ENV_FILE}" ] && . "${ENV_FILE}"; set +a
+            docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0;" || echo "psql alter skipped (db not ready: $?)"
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
             COMPOSE_EXIT=$?
             if [ "$COMPOSE_EXIT" -ne 0 ]; then
