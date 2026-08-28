@@ -54,7 +54,14 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
 
   const selectedMode = useMemo(() => MODES.find((item) => item.value === mode) ?? MODES[0], [mode]);
 
-  const canCreate = mode === 'StaticFixed' ? Number(amount) > 0 : true;
+  const amountCents = useMemo(() => {
+    if (!amount) return 0;
+    const normalized = amount.replace(/\./g, '').replace(',', '.');
+    const parsed = Number(normalized);
+    if (Number.isNaN(parsed)) return 0;
+    return Math.round(parsed * 100);
+  }, [amount]);
+  const canCreate = mode === 'StaticFixed' ? amountCents > 0 : true;
 
   const handleCreate = async () => {
     if (!canCreate || !selectedMode) {
@@ -66,8 +73,8 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
     try {
       const created = (await createMerchantPaymentLink(merchantId, {
         enabledMethods: [PaymentMethod.Pix],
-        amount: mode === 'StaticFixed' ? Number(amount) : 0,
-        description: selectedMode.label,
+        amount: mode === 'StaticFixed' ? amountCents : 0,
+        description: selectedMode!.label,
         pixLinkMode: mode,
       })) as ApiResponse<CreatePaymentLinkData> | null;
 
@@ -107,45 +114,53 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
 
   return (
     <div className="grid gap-6">
-      <Card className="border-white/12 bg-[#16181a] text-white">
-        <CardHeader className="flex flex-col gap-1">
-          <h1 className="text-xl font-semibold">Pix Estático</h1>
-          <p className="text-sm text-white/60">Crie QR reutilizável sem expiração para usar no seu comércio.</p>
-        </CardHeader>
-        <CardContent className="grid gap-4">
+      {/* Executive Header — Revolut 10 Ultra */}
+      <div className="flex items-start gap-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-white text-black">
+          <span className="text-[11px] font-bold tracking-widest">PIX</span>
+        </div>
+        <div className="grid gap-1">
+          <h1 className="text-xl font-semibold tracking-tight text-white">Pix Estático</h1>
+          <p className="max-w-2xl text-sm leading-5 text-white/60">Crie QR reutilizável sem expiração para usar no seu comércio. Funciona off-checkout e pode ser impresso.</p>
+        </div>
+      </div>
+      <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6">
+        <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label>Modo</Label>
+            <Label className="text-xs font-semibold tracking-wide text-white/70">Modo</Label>
             <select
               value={mode}
               onChange={(event) => setMode(event.target.value as PixLinkMode)}
-              className="border-white/12 bg-black/40 text-white"
+              className="h-10 rounded-[12px] border border-white/12 bg-black/40 px-3 text-sm text-white outline-none focus:border-white/20"
             >
               {MODES.map((item) => (
-                <option key={item.value} value={item.value}>
+                <option key={item.value} value={item.value} className="bg-[#0a0a0a]">
                   {item.label}
                 </option>
               ))}
             </select>
+            <p className="text-xs text-white/50">{selectedMode!.description}</p>
           </div>
 
           {mode === 'StaticFixed' && (
             <div className="grid gap-2">
-              <Label>Valor (BRL)</Label>
+              <Label className="text-xs font-semibold tracking-wide text-white/70">Valor (BRL)</Label>
               <Input
                 value={amount}
                 onChange={(event) => setAmount(event.target.value.replace(/[^0-9.,]/g, ''))}
-                placeholder="0,00"
-                className="border-white/12 bg-black/40 text-white"
+                placeholder="10,00"
+                inputMode="decimal"
+                className="h-10 rounded-[12px] border-white/12 bg-black/40 text-white placeholder:text-white/30"
               />
+              <p className="text-xs text-white/40">Digite como no Brasil: 10,00 = R$ 10,00. Envie em centavos.</p>
             </div>
           )}
 
-          <Button onClick={handleCreate} disabled={!canCreate || loading}>
+          <Button onClick={handleCreate} disabled={!canCreate || loading} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
             {loading ? 'Criando...' : 'Criar Pix Estático'}
           </Button>
-        </CardContent>
-      </Card>
-
+        </div>
+      </div>
       {(qr || copyAndPaste) && (
         <Card className="border-white/12 bg-[#16181a] text-white">
           <CardHeader className="flex flex-col gap-1">

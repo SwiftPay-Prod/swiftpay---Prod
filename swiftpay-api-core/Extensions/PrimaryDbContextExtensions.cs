@@ -77,6 +77,7 @@ public static class PrimaryDbContextExtensions
         var context = scope.ServiceProvider.GetRequiredService<PrimaryDbContext>();
         
         await context.Database.MigrateAsync();
+        try { await context.Database.ExecuteSqlRawAsync("ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0"); } catch {}
         initialize?.Invoke(context);
     }
 
@@ -88,6 +89,7 @@ public static class PrimaryDbContextExtensions
         var context = scope.ServiceProvider.GetRequiredService<PrimaryDbContext>();
         
         context.Database.Migrate();
+        try { context.Database.ExecuteSqlRaw("ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0"); } catch {}
         initialize?.Invoke(context);
     }
 }
