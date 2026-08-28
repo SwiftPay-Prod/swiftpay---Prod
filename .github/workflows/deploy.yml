@@ -60,6 +60,10 @@ jobs:
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
             COMPOSE_EXIT=$?
             echo "COMPOSE_EXIT=$COMPOSE_EXIT"
+            echo "--- swiftpayapi logs tail ---"
+            docker logs --tail=100 swiftpayapi 2>&1 | tail -n 100 || true
+            echo "--- swiftpayapipayment logs tail ---"
+            docker logs --tail=100 swiftpayapipayment 2>&1 | tail -n 100 || true
             docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT column_name FROM information_schema.columns WHERE table_name='PaymentLinks' AND column_name='PixLinkMode';" 2>&1 || true
             if [ "$COMPOSE_EXIT" -ne 0 ]; then
               echo "docker compose failed with exit code ${COMPOSE_EXIT}"
