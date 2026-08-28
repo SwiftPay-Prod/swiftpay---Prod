@@ -51,9 +51,9 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   const [copyAndPaste, setCopyAndPaste] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [lastError, setLastError] = useState<string | null>(null);
 
   const selectedMode = useMemo(() => MODES.find((item) => item.value === mode) ?? MODES[0], [mode]);
-
   const amountCents = useMemo(() => {
     if (!amount) return 0;
     const normalized = amount.replace(/\./g, '').replace(',', '.');
@@ -70,20 +70,27 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
     }
 
     setLoading(true);
+    setLastError(null);
     try {
       const created = (await createMerchantPaymentLink(merchantId, {
         enabledMethods: [PaymentMethod.Pix],
         amount: mode === 'StaticFixed' ? amountCents : 0,
         description: selectedMode!.label,
         pixLinkMode: mode,
-      })) as ApiResponse<CreatePaymentLinkData> | null;
+      })) as unknown as ApiResponse<CreatePaymentLinkData>;
 
+      if (created?.error) {
+        throw new Error(created.error.message || 'Erro ao criar link Pix Estático.');
+      }
       const token = created?.data?.paymentLinkUrl?.split('/').pop() ?? null;
       if (!token) {
         throw new Error('Não foi possível identificar o token do Pix Estático criado.');
       }
 
-      const started = (await startPaymentLink(token, 'Pix')) as StaticStartPayload | null;
+      const started = (await startPaymentLink(token, 'Pix')) as unknown as StaticStartPayload & { error?: { message?: string } } | null;
+      if (started && 'error' in started && (started as { error?: { message?: string } }).error) {
+        throw new Error((started as { error: { message: string } }).error.message);
+      }
       const nextQr = started?.data?.qr ?? started?.data?.pix?.qrCode ?? null;
       const nextCopy = started?.data?.copyAndPaste ?? started?.data?.pix?.copyAndPaste ?? null;
 
@@ -95,7 +102,10 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
       setCopyAndPaste(nextCopy);
       toast.success('Pix Estático criado com sucesso.');
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Erro ao criar Pix Estático.');
+      const msg = error instanceof Error ? error.message : 'Erro ao criar Pix Estático.';
+      setLastError(msg);
+      toast.error(msg);
+      console.error('[PixEstatico] create failed', error);
     } finally {
       setLoading(false);
     }
@@ -159,6 +169,9 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           <Button onClick={handleCreate} disabled={!canCreate || loading} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
             {loading ? 'Criando...' : 'Criar Pix Estático'}
           </Button>
+          {lastError && (
+            <div className="rounded-[12px] border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-200">{lastError}</div>
+          )}
         </div>
       </div>
       {(qr || copyAndPaste) && (
