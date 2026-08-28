@@ -101,11 +101,19 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
       setQr(nextQr);
       setCopyAndPaste(nextCopy);
       toast.success('Pix Estático criado com sucesso.');
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : 'Erro ao criar Pix Estático.';
+    } catch (error: unknown) {
+      let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
+      if (error && typeof error === 'object' && 'response' in error) {
+        const data = (error as { response?: { data?: { error?: { message?: string }; message?: string } } }).response?.data;
+        if (data?.error?.message) msg = data.error.message;
+        else if (data?.message) msg = data.message;
+        console.error('[PixEstatico] api error', data, error);
+      } else if (error instanceof Error) {
+        msg = error.message;
+        console.error('[PixEstatico] create failed', error);
+      }
       setLastError(msg);
       toast.error(msg);
-      console.error('[PixEstatico] create failed', error);
     } finally {
       setLoading(false);
     }
