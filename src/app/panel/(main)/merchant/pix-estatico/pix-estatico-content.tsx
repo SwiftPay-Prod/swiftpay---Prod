@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useTransition } from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -49,9 +49,9 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   const [amount, setAmount] = useState('');
   const [qr, setQr] = useState<string | null>(null);
   const [copyAndPaste, setCopyAndPaste] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const selectedMode = useMemo(() => MODES.find((item) => item.value === mode) ?? MODES[0], [mode]);
   const amountCents = useMemo(() => {
@@ -63,60 +63,59 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   }, [amount]);
   const canCreate = mode === 'StaticFixed' ? amountCents > 0 : true;
 
-  const handleCreate = async () => {
+  const handleCreate = () => {
     if (!canCreate || !selectedMode) {
       toast.error('Informe um valor para o Pix com valor fixo.');
       return;
     }
 
-    setLoading(true);
-    setLastError(null);
-    try {
-      const created = (await createMerchantPaymentLink(merchantId, {
-        enabledMethods: [PaymentMethod.Pix],
-        amount: mode === 'StaticFixed' ? amountCents : 0,
-        description: selectedMode!.label,
-        pixLinkMode: mode,
-      })) as unknown as ApiResponse<CreatePaymentLinkData>;
+    startTransition(async () => {
+      setLastError(null);
+      try {
+        const created = (await createMerchantPaymentLink(merchantId, {
+          enabledMethods: [PaymentMethod.Pix],
+          amount: mode === 'StaticFixed' ? amountCents : 0,
+          description: selectedMode!.label,
+          pixLinkMode: mode,
+        })) as unknown as ApiResponse<CreatePaymentLinkData>;
 
-      if (created?.error) {
-        throw new Error(created.error.message || 'Erro ao criar link Pix Estático.');
-      }
-      const token = created?.data?.paymentLinkUrl?.split('/').pop() ?? null;
-      if (!token) {
-        throw new Error('Não foi possível identificar o token do Pix Estático criado.');
-      }
+        if (created?.error) {
+          throw new Error(created.error.message || 'Erro ao criar link Pix Estático.');
+        }
+        const token = created?.data?.paymentLinkUrl?.split('/').pop() ?? null;
+        if (!token) {
+          throw new Error('Não foi possível identificar o token do Pix Estático criado.');
+        }
 
-      const started = (await startPaymentLink(token, 'Pix')) as unknown as StaticStartPayload & { error?: { message?: string } } | null;
-      if (started && 'error' in started && (started as { error?: { message?: string } }).error) {
-        throw new Error((started as { error: { message: string } }).error.message);
-      }
-      const nextQr = started?.data?.qr ?? started?.data?.pix?.qrCode ?? null;
-      const nextCopy = started?.data?.copyAndPaste ?? started?.data?.pix?.copyAndPaste ?? null;
+        const started = (await startPaymentLink(token, 'Pix')) as unknown as StaticStartPayload & { error?: { message?: string } } | null;
+        if (started && 'error' in started && (started as { error?: { message?: string } }).error) {
+          throw new Error((started as { error: { message: string } }).error.message);
+        }
+        const nextQr = started?.data?.qr ?? started?.data?.pix?.qrCode ?? null;
+        const nextCopy = started?.data?.copyAndPaste ?? started?.data?.pix?.copyAndPaste ?? null;
 
-      if (!nextQr && !nextCopy) {
-        throw new Error('O Pix Estático foi criado, mas sem QR retornado.');
-      }
+        if (!nextQr && !nextCopy) {
+          throw new Error('O Pix Estático foi criado, mas sem QR retornado.');
+        }
 
-      setQr(nextQr);
-      setCopyAndPaste(nextCopy);
-      toast.success('Pix Estático criado com sucesso.');
-    } catch (error: unknown) {
-      let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
-      if (error && typeof error === 'object' && 'response' in error) {
-        const data = (error as { response?: { data?: { error?: { message?: string }; message?: string } } }).response?.data;
-        if (data?.error?.message) msg = data.error.message;
-        else if (data?.message) msg = data.message;
-        console.error('[PixEstatico] api error', data, error);
-      } else if (error instanceof Error) {
-        msg = error.message;
-        console.error('[PixEstatico] create failed', error);
+        setQr(nextQr);
+        setCopyAndPaste(nextCopy);
+        toast.success('Pix Estático criado com sucesso.');
+      } catch (error: unknown) {
+        let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
+        if (error && typeof error === 'object' && 'response' in error) {
+          const data = (error as { response?: { data?: { error?: { message?: string }; message?: string } } }).response?.data;
+          if (data?.error?.message) msg = data.error.message;
+          else if (data?.message) msg = data.message;
+          console.error('[PixEstatico] api error', data, error);
+        } else if (error instanceof Error) {
+          msg = error.message;
+          console.error('[PixEstatico] create failed', error);
+        }
+        setLastError(msg);
+        toast.error(msg);
       }
-      setLastError(msg);
-      toast.error(msg);
-    } finally {
-      setLoading(false);
-    }
+    });
   };
 
   const handleCopy = async () => {
@@ -174,8 +173,8 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
             </div>
           )}
 
-          <Button onClick={handleCreate} disabled={!canCreate || loading} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
-            {loading ? 'Criando...' : 'Criar Pix Estático'}
+          <Button onClick={handleCreate} disabled={!canCreate || isPending} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
+            {isPending ? 'Criando...' : 'Criar Pix Estático'}
           </Button>
           {lastError && (
             <div className="rounded-[12px] border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-200">{lastError}</div>
