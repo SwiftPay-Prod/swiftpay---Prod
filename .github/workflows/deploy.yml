@@ -55,6 +55,7 @@ jobs:
             set +e
             docker exec swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" integer NOT NULL DEFAULT 0;" || echo "psql alter skipped (db not ready)"
             docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
+            COMPOSE_EXIT=$?
             if [ "$COMPOSE_EXIT" -ne 0 ]; then
               echo "docker compose failed with exit code ${COMPOSE_EXIT}"
               docker logs --tail=200 swiftpayapi 2>&1 || true
