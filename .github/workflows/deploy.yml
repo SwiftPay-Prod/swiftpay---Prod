@@ -58,7 +58,7 @@ jobs:
             docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ADD COLUMN IF NOT EXISTS \"PixLinkMode\" text NOT NULL DEFAULT 'Dynamic';" 2>&1 || echo "psql alter failed $?"
             docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "ALTER TABLE \"PaymentLinks\" ALTER COLUMN \"PixLinkMode\" TYPE text USING CASE \"PixLinkMode\"::text WHEN '0' THEN 'Dynamic' WHEN '1' THEN 'StaticFixed' WHEN '2' THEN 'StaticOpen' WHEN '3' THEN 'StaticPortable' ELSE \"PixLinkMode\"::text END;" 2>&1 || true
             docker exec -e PGPASSWORD="$DB_PASSWORD" swiftpaydb psql -U swiftpayuser -d swiftpay -c "SELECT column_name, data_type FROM information_schema.columns WHERE table_name='PaymentLinks';" 2>&1 | tail -n 20 || true
-            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
+            docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up -d --build --wait --wait-timeout 240 --remove-orphans swiftpayweb swiftpaywebcheckout swiftpayapi swiftpayapipayment
             COMPOSE_EXIT=$?
             echo "COMPOSE_EXIT=$COMPOSE_EXIT"
             echo "--- swiftpayapi logs tail ---"
