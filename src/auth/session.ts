@@ -7,7 +7,7 @@ import type { SessionData } from '@/types/session';
 import { UserStatus, PaymentEnvironment } from '@/types/enums';
 import { BaseCookie } from '@/constants/base';
 import { getSession } from '@/app/actions/session';
-import { readCookie, readParsedCookie } from '@/lib/server-cookies';
+import { deleteCookie, readCookie, readParsedCookie, setCookie } from '@/lib/server-cookies';
 
 export async function setAuthCookies(tokens: AuthTokens): Promise<void> {
 	const cookieStore = await cookies();
@@ -194,8 +194,26 @@ export async function clearDeviceRevokedModal(): Promise<void> {
 	cookieStore.delete(BaseCookie.deviceRevokedModal);
 }
 
+export async function setSelectedEnvironment(environment: PaymentEnvironment): Promise<void> {
+	const cookieStore = await cookies();
+
+	cookieStore.set(BaseCookie.selectedEnvironment, environment, {
+		httpOnly: false,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'lax',
+		maxAge: 60 * 60 * 24 * 365,
+		path: '/',
+	});
+}
+
 export async function getSelectedEnvironment(): Promise<PaymentEnvironment> {
-	// Sandbox desativado na plataforma — o header X-Api-Environment é sempre Produção.
+	const cookieStore = await cookies();
+	const env = cookieStore.get(BaseCookie.selectedEnvironment)?.value;
+	
+	if (env === PaymentEnvironment.Sandbox) {
+		return PaymentEnvironment.Sandbox;
+	}
+	
 	return PaymentEnvironment.Production;
 }
 

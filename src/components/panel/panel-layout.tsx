@@ -7,6 +7,7 @@ import { useMerchant } from '@/contexts/merchant-context';
 import { PanelSidebar } from './panel-sidebar';
 import { PanelHeader } from './panel-header';
 import { PanelContent } from './panel-content';
+import { SandboxWarningBar } from './sandbox-warning-bar';
 import { getPageTitle } from '@/utils/utils-routes';
 import { BulletinProvider } from '@/providers/bulletin-provider';
 import type { UserInfo } from '@/types/auth';
@@ -37,11 +38,13 @@ export function PanelLayout({ children }: PanelLayoutProps) {
 
 function PanelLayoutInner({ user, title, children }: { user: UserInfo; title?: string; children: ReactNode }) {
 	return (
-		<div className="flex h-dvh overflow-hidden bg-[#000000] text-white">
-			<PanelSidebar user={user} />
-			<div className="flex min-w-0 w-full grow flex-col bg-[#000000] min-h-0">
-				<PanelHeader title={title} user={user} />
-				<div className="flex-1 overflow-y-auto overflow-x-hidden pb-20 md:pb-0">
+		<div className="flex flex-col h-dvh">
+			<SandboxWarningBar />
+			<div className="flex flex-1 min-h-0">
+				<PanelSidebar user={user} />
+
+				<div className="flex min-w-0 w-full grow flex-col bg-background min-h-0 overflow-y-auto overflow-x-hidden pb-24 md:pb-0">
+					<PanelHeader title={title} user={user} />
 					<PanelContent>{children}</PanelContent>
 				</div>
 			</div>

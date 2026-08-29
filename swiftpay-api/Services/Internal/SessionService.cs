@@ -41,7 +41,7 @@ public class SessionService(
             EmailVerified = user.EmailVerified,
             DeviceId = deviceId,
             SelectedMerchantId = null,
-            Environment = ApiEnvironment.Production,
+            Environment = ApiEnvironment.Sandbox,
             CreatedAt = DateTime.UtcNow,
             LastActivityAt = DateTime.UtcNow,
             ExpiresAt = expiresAt,
@@ -108,9 +108,7 @@ public class SessionService(
         var session = await GetSessionAsync(sessionId);
         if (session == null) return;
 
-        // Sandbox desativado na plataforma: qualquer tentativa de mudança de
-        // ambiente força Produção.
-        session.Environment = ApiEnvironment.Production;
+        session.Environment = environment;
         session.LastActivityAt = DateTime.UtcNow;
         await SaveSessionAsync(session);
     }

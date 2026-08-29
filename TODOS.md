@@ -20,13 +20,14 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 ## Pix Estático — E2E e fechamento
 
 - `IN_PROGRESS` Validar E2E do Pix Estático na VPS. Issue: #121
-  - Implementado: `PixLinkMode`, `PixStaticBrCodeGenerator`, UI `/panel/merchant/pix-estatico`, `PrimaryDbContextModelSnapshot` + migration `20260827223012_AddPixStaticPaymentLinkFields`.
-  - Auditoria Copilot (2026-08-28): verificado contra `design-system-and-code-quality` (HeroUI v3/Tailwind v4, Revolut 10 Ultra R8-R11), `forms-headless-and-table-actions` (useTransition/isPending, FormData), `react19-performance-and-data-flow` (useTransition, React Compiler), `environment-and-api-architecture`, `project-structure-and-api-types` (ApiResponse<T>).
-  - Correções aplicadas: parser BRL `amountCents` com vírgula, `useTransition` para `handleCreate` com `isPending` no botão, `Executive Header` Revolut + `rounded-[20px] border-white/12 bg-[#16181a]`, coluna `PixLinkMode` garantida via `ALTER TABLE ... ADD COLUMN IF NOT EXISTS` em `deploy.yml` e `PrimaryDbContextExtensions` com `Ignore(PendingModelChangesWarning)` temporário.
-  - Build: `npx tsc --noEmit` `exit:0`; deploys `e6e2d41`, `7a81ea0`, `4d6d1ac`, `871435e`, `944a248` `success` com coluna `PixLinkMode` criada (`NOTICE: already exists` em `871435e`).
-  - Erro atual: `HTTP 500` ao criar Pix com `10`/`10,00` — `lastError` agora exposto no card; aguardando `response.data.error.message` da API para causa raiz (acquirer/payload).
-  - Próximo passo: retestar `Criar Pix Estático` após `944a248`; se persistir `500`, extrair `docker logs swiftpayapi` do `startPaymentLink`.
-## Push notifications
+  - Implementado: `PixLinkMode` enum + `PixStaticBrCodeGenerator` + UI `/panel/merchant/pix-estatico` com `TextField CurrencyCentsInput` `R$ 10,00` + `Select HeroUI ListBox Chip` + `QRCodeSVG level L` (fix `Data too long`) + `PrimaryDbContextModelSnapshot` + `migration 20260827223012_AddPixStaticPaymentLinkFields`.
+  - Design 100%: `Select` HeroUI `Chip isDisabled em breve` só `StaticFixed` ativo, `Tailwind v4` `rounded-3.5/rounded-5 size-10 w-fit p-3 max-w-64`, `danger` semântico, sem comentários, `isPending` no botão.
+  - Lista `QRs criados`: `listMerchantPaymentLinks` com `PixLinkMode` no backend (`MinimalPaymentLink.PixLinkMode` + `PaymentLinkMapper`) + filtro `Static*` + fallback `description.includes Pix Estático`, persistência no F5, `refetch` após `Create/Delete`.
+  - Excluir: `deleteMerchantPaymentLink` por linha `🗑️` com `confirm` + `refetch`, corrige volta no F5.
+  - Backend EMV: `StartPaymentLinkEndpoint` agora busca `MerchantPayoutAccount` (`Active IsDefault`) e gera `000201...br.gov.bcb.pix` via `PixStaticBrCodeGenerator` (antes retornava URL). Valida `PixKey` com `422` para `Saques > Contas`.
+  - Build: `npx tsc --noEmit` `exit:0` em todos os pushes `be968e0`..`7235383`.
+  - Deploys VPS `169.58.70.201`: `33227801499 success` (HeroUI), `33229525456 success` (lista), `33259767364 success` (QR fallback), `33262362950 success` (delete), `33263974664 success` (EMV), `33264682844 success` (só StaticFixed), `33265140419 in_progress` (delete refetch).
+  - Pendente validação: pagamento real `R$1 StaticFixed` escaneado no banco → `Transações`/`Saldo`.
 
 - `PENDING` Spec: #112 / Issue: #117 — broadcast admin de push com seleção de audiência.
   - Implementado: `BroadcastNotificationEndpoint` com audiências `all`/`merchant`/`user`, preview paginado e fan-out em batch de 500; log `BroadcastAudit` + listagem dedicada.
