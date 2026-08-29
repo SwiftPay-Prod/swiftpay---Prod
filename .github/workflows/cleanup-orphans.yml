@@ -1,0 +1,15 @@
+name: Cleanup Orphans
+on: workflow_dispatch
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            docker rm -f e2f2b973b03e_swiftpayapipayment a2b8ef71eb96d8428f97fb0a6b222df9a2d626d98e3abb67c4e6a4036f10ee4f || true
+            docker ps -a | grep swiftpay || true
+            docker compose -f /root/swiftpay/docker-compose.production.yaml ps || true
