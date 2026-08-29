@@ -10,12 +10,14 @@ jobs:
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            echo "=== ls ==="
-            ls -l /root/swiftpay/*.env* 2>&1 | head -n 20
-            ls -l /root/swiftpay/swiftpay-api/*.env* 2>&1 | head -n 20
-            ls -l /root/swiftpay/swiftpay-api-payment/*.env* 2>&1 | head -n 20
+            echo "=== find env ==="
+            find /root/swiftpay -maxdepth 4 -name "*.env*" -type f 2>/dev/null | head -n 20
+            echo "=== find compose ==="
+            find /root/swiftpay -maxdepth 4 -name "docker-compose*" -type f 2>/dev/null | head -n 20
+            echo "=== cat compose env_file ==="
+            cat /root/swiftpay/swiftpay-api/docker-compose.production.yaml 2>&1 | grep -A2 -B2 env_file | head -n 30 || cat /root/swiftpay/docker-compose.production.yaml 2>&1 | grep -A2 -B2 env_file | head -n 30 || true
             echo "=== grep JWT ==="
-            for F in /root/swiftpay/.env.production /root/swiftpay/swiftpay-api/.env.production /root/swiftpay/swiftpay-api-payment/.env.production /root/swiftpay/swiftpay-api/.env /root/swiftpay/swiftpay-api-payment/.env; do echo "--- $F ---"; grep -i JWT "$F" 2>&1 | head -n 5 || echo "no file or no JWT"; done
+            for F in $(find /root/swiftpay -name "*.env*" -type f 2>/dev/null | head -n 10); do echo "--- $F ---"; grep -i JWT "$F" 2>&1 | head -n 3 || echo "no JWT"; done
             echo "=== docker env ==="
             docker exec swiftpayapipayment env 2>&1 | grep -i JWT | head -n 5 || true
             docker exec swiftpayapi env 2>&1 | grep -i JWT | head -n 5 || true
