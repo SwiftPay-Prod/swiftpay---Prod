@@ -237,12 +237,14 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
               <ListBox>
                 {MODES.map((item) => {
                   const parse = pixLinkModeParse[item.value];
+                  const isFuture = item.value !== 'StaticFixed';
                   return (
-                    <ListBox.Item key={item.value} id={item.value} textValue={item.label}>
+                    <ListBox.Item key={item.value} id={item.value} textValue={item.label} isDisabled={isFuture}>
                       <Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm" className="gap-1">
                         {parse.icon}
                         {parse.label}
                       </Chip>
+                      {isFuture && <span className="ml-auto text-xs text-muted">em breve</span>}
                       <ListBox.ItemIndicator />
                     </ListBox.Item>
                   );
