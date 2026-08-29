@@ -5,6 +5,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { TextField, Label as HeroLabel } from '@heroui/react';
 import { RiCheckLine, RiRefreshLine } from '@remixicon/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toast } from 'sonner';
@@ -128,10 +129,8 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
     toast.success('Copia e cola copiado.');
     setTimeout(() => setCopied(false), 2000);
   };
-
   return (
     <div className="grid gap-6">
-      {/* Executive Header — Revolut 10 Ultra */}
       <div className="flex items-start gap-4">
         <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-white text-black">
           <span className="text-[11px] font-bold tracking-widest">PIX</span>
@@ -158,22 +157,26 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
             </select>
             <p className="text-xs text-white/50">{selectedMode!.description}</p>
           </div>
-
           {mode === 'StaticFixed' && (
-            <div className="grid gap-2">
+            <TextField
+              variant="secondary"
+              isRequired
+              className="[&_input]:text-center [&_input]:text-4xl [&_input]:font-semibold [&_input]:tracking-tight"
+            >
+              <HeroLabel>Valor (BRL)</HeroLabel>
               <CurrencyCentsInput
                 onValueChange={(v) => setAmount(v)}
                 placeholder="R$ 0,00"
-                className="text-center [&_input]:text-center [&_input]:text-2xl [&_input]:font-semibold [&_input]:tracking-tight"
+                variant="secondary"
+                className="text-center"
               />
-            </div>
+            </TextField>
           )}
-
           <Button onClick={handleCreate} disabled={!canCreate || isPending} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
             {isPending ? 'Criando...' : 'Criar Pix Estático'}
           </Button>
           {lastError && (
-            <div className="rounded-[12px] border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-200">{lastError}</div>
+            <div className="rounded-[12px] border border-danger/20 bg-danger/10 px-3 py-2 text-sm text-danger">{lastError}</div>
           )}
         </div>
       </div>
@@ -204,11 +207,11 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
             {(qr || copyAndPaste) && (
               <div className="grid gap-2">
                 <Label>QR Code</Label>
-                <div className="max-w-sm rounded-xl border border-white/12 bg-white p-4">
+                <div className="w-fit rounded-xl border border-white/12 bg-white p-3">
                   {qr && (qr.startsWith('data:') || qr.startsWith('http')) ? (
-                    <img alt="QR Code" src={qr} className="h-auto w-full" />
+                    <img alt="QR Code" src={qr} className="h-auto w-full max-w-64" />
                   ) : (
-                    <QRCodeSVG value={copyAndPaste ?? qr ?? 'pix'} size={256} level="L" />
+                    <QRCodeSVG value={copyAndPaste ?? qr ?? 'pix'} size={240} level="L" />
                   )}
                 </div>
               </div>
