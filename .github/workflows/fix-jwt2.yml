@@ -1,0 +1,29 @@
+name: Fix JWT All
+on: workflow_dispatch
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -Eeuo pipefail
+            NEW_SECRET=$(openssl rand -hex 32)
+            echo "NEW_SECRET_LEN=${#NEW_SECRET}"
+            for F in $(find /root/swiftpay -name "*.env*" -type f 2>/dev/null); do
+              echo "=== Checking $F ==="
+              if grep -q "JWT" "$F" 2>/dev/null; then
+                echo "Before:"; grep -i JWT "$F" | head -n 3
+                cp "$F" "$F.bak.$(date +%s)" || true
+                sed -i "s|^JWTSettings__Secret=.*|JWTSettings__Secret=$NEW_SECRET|" "$F" 2>/dev/null || true
+                sed -i "s|^JWT_SECRET=.*|JWTSettings__Secret=$NEW_SECRET|" "$F" 2>/dev/null || true
+                sed -i "s|^PAYMENT_JWT_SECRET=.*|PAYMENT_JWT_SECRET=$NEW_SECRET|" "$F" 2>/dev/null || true
+                sed -i "s|^API_JWT_SECRET=.*|API_JWT_SECRET=$NEW_SECRET|" "$F" 2>/dev/null || true
+                if ! grep -q "JWTSettings__Secret" "$F"; then echo "JWTSettings__Secret=$NEW_SECRET" >> "$F"; fi
+                echo "After:"; grep -i JWT "$F" | head -n 5
+              fi
+            done
+            echo "Done"
