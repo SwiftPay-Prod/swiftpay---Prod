@@ -212,7 +212,9 @@ public class SandboxService(
             payment.MerchantSettlementAmount,
             $"[SANDBOX] Pagamento recebido - {payment.Description}");
 
-        // Enviar webhook se configurado
+        await messagePublisher.PublishAsync(
+            RabbitMQQueues.PaymentCompleted,
+            payment.ToCompletedMessage(PaymentStatus.Pending, "sandbox.complete", PaymentFeeSplitHandling.None));
         if (!string.IsNullOrEmpty(payment.CallbackUrl))
         {
             await messagePublisher.PublishAsync(
