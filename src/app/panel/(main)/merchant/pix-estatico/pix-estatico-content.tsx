@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TextField, Label as HeroLabel, Select, ListBox, Chip } from '@heroui/react';
-import { RiCheckLine, RiRefreshLine, RiQrCodeLine, RiMoneyDollarCircleLine, RiShareLine } from '@remixicon/react';
+import { RiCheckLine, RiRefreshLine, RiQrCodeLine, RiMoneyDollarCircleLine, RiShareLine, RiDeleteBinLine } from '@remixicon/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toast } from 'sonner';
-import { createMerchantPaymentLink, listMerchantPaymentLinks } from '@/app/actions/merchant/payment-links';
+import { createMerchantPaymentLink, deleteMerchantPaymentLink, listMerchantPaymentLinks } from '@/app/actions/merchant/payment-links';
 import { startPaymentLink } from '@/app/actions/merchant/payment-links-start';
 import type { ApiResponse } from '@/types/common';
 import type { CreatePaymentLinkData, MinimalPaymentLink } from '@/types/merchant/payment-links';
@@ -65,6 +65,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   const [isPending, startTransition] = useTransition();
   const [staticLinks, setStaticLinks] = useState<MinimalPaymentLink[]>([]);
   const [isLoadingList, setIsLoadingList] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const amountCents = useMemo(() => {
     if (!amount) return 0;
     return formattedCurrencyToCents(amount) ?? 0;
@@ -179,6 +180,26 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
     setCopied(true);
     toast.success('Copia e cola copiado.');
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDelete = async (paymentLinkId: string) => {
+    if (!confirm('Excluir este QR estático? Ele não poderá ser usado para pagamento.')) return;
+    setDeletingId(paymentLinkId);
+    try {
+      const res = await deleteMerchantPaymentLink(merchantId, paymentLinkId);
+      const err = (res as unknown as { error?: { message?: string } })?.error;
+      if (err) throw new Error(err.message);
+      toast.success('QR excluído.');
+      setStaticLinks((prev) => prev.filter((l) => l.id !== paymentLinkId));
+      if (staticLinks.find((l) => l.id === paymentLinkId)) {
+        setQr(null);
+        setCopyAndPaste(null);
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Erro ao excluir QR');
+    } finally {
+      setDeletingId(null);
+    }
   };
   return (
     <div className="grid gap-6">
@@ -322,7 +343,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
                 }
                 const parse = pixLinkModeParse[key];
                 return (
-                  <div key={link.id} className="flex items-center justify-between rounded-3 border border-white/12 bg-black/40 px-3 py-2">
+                  <div key={link.id} className="flex items-center justify-between gap-2 rounded-3 border border-white/12 bg-black/40 px-3 py-2">
                     <div className="flex items-center gap-2">
                       <Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm" className="gap-1">
                         {parse.icon}
@@ -330,7 +351,12 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
                       </Chip>
                       <span className="text-sm font-mono tabular-nums text-white">{typeof link.amount === 'number' ? formatCurrency(link.amount) : '-'}</span>
                     </div>
-                    <span className="max-w-40 truncate text-xs text-white/50 md:max-w-60">{link.id}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="max-w-40 truncate text-xs text-white/50 md:max-w-60">{link.id}</span>
+                      <Button variant="ghost" size="icon-xs" onClick={() => handleDelete(link.id)} disabled={deletingId === link.id} aria-label="Excluir QR">
+                        <RiDeleteBinLine className="size-3.5" />
+                      </Button>
+                    </div>
                   </div>
                 );
               })}
