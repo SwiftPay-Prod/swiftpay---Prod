@@ -5,8 +5,8 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TextField, Label as HeroLabel } from '@heroui/react';
-import { RiCheckLine, RiRefreshLine } from '@remixicon/react';
+import { TextField, Label as HeroLabel, Select, ListBox, Chip } from '@heroui/react';
+import { RiCheckLine, RiRefreshLine, RiQrCodeLine, RiMoneyDollarCircleLine, RiShareLine } from '@remixicon/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toast } from 'sonner';
 import { createMerchantPaymentLink } from '@/app/actions/merchant/payment-links';
@@ -16,8 +16,15 @@ import type { CreatePaymentLinkData } from '@/types/merchant/payment-links';
 import { PaymentMethod } from '@/types/enums';
 import { CurrencyCentsInput } from '@/components/ui/currency-cents-input';
 import { formattedCurrencyToCents } from '@/utils/currency';
+import { mapParseColorToChipColor } from '@/parse';
 
 type PixLinkMode = 'StaticFixed' | 'StaticOpen' | 'StaticPortable';
+
+const pixLinkModeParse = {
+  StaticFixed: { label: 'Pix Estático com valor fixo', description: 'Gera um QR com valor definido. Quem pagar escaneia e paga exatamente esse valor.', color: 'accent' as const, icon: <RiMoneyDollarCircleLine className="size-3.5" /> },
+  StaticOpen: { label: 'Pix Estático sem valor', description: 'Gera um QR sem valor. O pagador digita o valor no app do banco.', color: 'success' as const, icon: <RiQrCodeLine className="size-3.5" /> },
+  StaticPortable: { label: 'BR Code Portável', description: 'Mesmo QR anterior, mas sem depender do checkout. Pode ser impresso e colado no comércio.', color: 'warning' as const, icon: <RiShareLine className="size-3.5" /> },
+} as const;
 
 const MODES: { value: PixLinkMode; label: string; description: string }[] = [
   {
@@ -132,7 +139,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   return (
     <div className="grid gap-6">
       <div className="flex items-start gap-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-white text-black">
+        <div className="flex size-10 items-center justify-center rounded-3.5 bg-white text-black">
           <span className="text-[11px] font-bold tracking-widest">PIX</span>
         </div>
         <div className="grid gap-1">
@@ -140,23 +147,45 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           <p className="max-w-2xl text-sm leading-5 text-white/60">Crie QR reutilizável sem expiração para usar no seu comércio. Funciona off-checkout e pode ser impresso.</p>
         </div>
       </div>
-      <div className="rounded-[20px] border border-white/12 bg-[#16181a] p-5 sm:p-6">
+      <div className="rounded-5 border border-white/12 bg-[#16181a] p-5 sm:p-6">
         <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label className="text-xs font-semibold tracking-wide text-white/70">Modo</Label>
-            <select
-              value={mode}
-              onChange={(event) => setMode(event.target.value as PixLinkMode)}
-              className="h-10 rounded-[12px] border border-white/12 bg-black/40 px-3 text-sm text-white outline-none focus:border-white/20"
-            >
-              {MODES.map((item) => (
-                <option key={item.value} value={item.value} className="bg-[#0a0a0a]">
-                  {item.label}
-                </option>
-              ))}
-            </select>
-            <p className="text-xs text-white/50">{selectedMode!.description}</p>
-          </div>
+          <Select
+            variant="secondary"
+            className="w-full"
+            placeholder="Selecione o modo"
+            value={mode}
+            onChange={(key) => setMode(key as PixLinkMode)}
+          >
+            <HeroLabel className="text-xs font-semibold tracking-wide text-white/70">Modo</HeroLabel>
+            <Select.Trigger>
+              <Select.Value>
+                <div className="flex items-center gap-2">
+                  <Chip variant="soft" color={mapParseColorToChipColor(pixLinkModeParse[mode].color)} size="sm" className="gap-1">
+                    {pixLinkModeParse[mode].icon}
+                    {pixLinkModeParse[mode].label}
+                  </Chip>
+                </div>
+              </Select.Value>
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                {MODES.map((item) => {
+                  const parse = pixLinkModeParse[item.value];
+                  return (
+                    <ListBox.Item key={item.value} id={item.value} textValue={item.label}>
+                      <Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm" className="gap-1">
+                        {parse.icon}
+                        {parse.label}
+                      </Chip>
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  );
+                })}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+          <p className="text-xs text-white/50">{selectedMode!.description}</p>
           {mode === 'StaticFixed' && (
             <TextField
               variant="secondary"
