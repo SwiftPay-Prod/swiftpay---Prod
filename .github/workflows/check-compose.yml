@@ -1,0 +1,17 @@
+name: Check Compose
+on: workflow_dispatch
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cat /root/swiftpay/docker-compose.production.yaml 2>&1 | head -n 100
+            echo "---"
+            cat /root/swiftpay/swiftpay-api-payment/docker-compose.yml 2>&1 | head -n 50 || true
+            echo "--- env files ---"
+            ls -l /root/swiftpay/*.env* /root/swiftpay/swiftpay-api/*.env* /root/swiftpay/swiftpay-api-payment/*.env* 2>&1 | head -n 20
