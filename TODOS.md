@@ -17,17 +17,22 @@ Este arquivo é a fonte durável de tarefas, bloqueios, decisões e handoff para
 - `DROPPED`: removido deliberadamente, com justificativa
 - `SUPERSEDED`: substituído por decisão posterior
 
-## Pix Estático — E2E e fechamento
+## Pix Estático & Fluxo Pix — E2E e fechamento
 
-- `IN_PROGRESS` Validar E2E do Pix Estático na VPS. Issue: #121
-  - Implementado: `PixLinkMode` enum + `PixStaticBrCodeGenerator` + UI `/panel/merchant/pix-estatico` com `TextField CurrencyCentsInput` `R$ 10,00` + `Select HeroUI ListBox Chip` + `QRCodeSVG level L` (fix `Data too long`) + `PrimaryDbContextModelSnapshot` + `migration 20260827223012_AddPixStaticPaymentLinkFields`.
+- `DONE` Validar E2E do Pix Estático e Fluxo Pix Sandbox na VPS. Issue: #121
+  - Implementado: `PixLinkMode` enum + `PixStaticBrCodeGenerator` + UI `/panel/merchant/pix-estatico` com `TextField CurrencyCentsInput` `R$ 10,00` + `Select HeroUI ListBox Chip` + `QRCodeSVG level L` (fix `Data too long`) + modal histórico + `PrimaryDbContextModelSnapshot` + migration `20260827223012_AddPixStaticPaymentLinkFields`.
   - Design 100%: `Select` HeroUI `Chip isDisabled em breve` só `StaticFixed` ativo, `Tailwind v4` `rounded-3.5/rounded-5 size-10 w-fit p-3 max-w-64`, `danger` semântico, sem comentários, `isPending` no botão.
   - Lista `QRs criados`: `listMerchantPaymentLinks` com `PixLinkMode` no backend (`MinimalPaymentLink.PixLinkMode` + `PaymentLinkMapper`) + filtro `Static*` + fallback `description.includes Pix Estático`, persistência no F5, `refetch` após `Create/Delete`.
-  - Excluir: `deleteMerchantPaymentLink` por linha `🗑️` com `confirm` + `refetch`, corrige volta no F5.
-  - Backend EMV: `StartPaymentLinkEndpoint` agora busca `MerchantPayoutAccount` (`Active IsDefault`) e gera `000201...br.gov.bcb.pix` via `PixStaticBrCodeGenerator` (antes retornava URL). Valida `PixKey` com `422` para `Saques > Contas`.
-  - Build: `npx tsc --noEmit` `exit:0` em todos os pushes `be968e0`..`7235383`.
-  - Deploys VPS `169.58.70.201`: `33227801499 success` (HeroUI), `33229525456 success` (lista), `33259767364 success` (QR fallback), `33262362950 success` (delete), `33263974664 success` (EMV), `33264682844 success` (só StaticFixed), `33265140419 in_progress` (delete refetch).
-  - Pendente validação: pagamento real `R$1 StaticFixed` escaneado no banco → `Transações`/`Saldo`.
+  - Excluir e Modal: `deleteMerchantPaymentLink` por linha `🗑️` com `confirm` + `refetch`, modal para ver QR completo e cópia sem truncate.
+  - Backend EMV: `StartPaymentLinkEndpoint` agora busca `MerchantPayoutAccount` (`Active IsDefault`) e gera `000201...br.gov.bcb.pix` via `PixStaticBrCodeGenerator`.
+  - Causa do Pix Pendente / 401 resolvida: `SignatureValidator` no `swiftpay-api-core` atualizado para suportar `HS256` (Payment API) e `HS512` (Core API), e `JWT Secret` sincronizado para 256 bits (`hex 64`).
+  - Evidência E2E Sandbox (2026-08-29 20:49 UTC):
+    - `POST /v1/auth/token` -> `200 OK` (Token Bearer retornado)
+    - `POST /v1/transactions` -> `201 Created` (ID: `01a04f48-bff5-704c-8fd9-0cd9f034a1b8`, Status: `Pending`, TxId: `SANDBOX01a04f48c0977674`, CopyAndPaste gerado)
+    - `POST /v1/transactions/{id}/simulate` -> `200 OK` (Status: `Completed`, SimulatedAction: `complete`)
+    - `GET /v1/transactions/{id}` -> `200 OK` (Status: `Completed`, `completedAt`: `2026-08-29T20:49:24Z`, `endToEndId`: `E0000000020260829204924SANDBOX600278`, `netAmount`: 985)
+    - `GET /v1/balance` -> `200 OK` (Saldo `available`: 5910 centavos, `volumeToday`: 1000 centavos)
+  - Deploy VPS `169.58.70.201`: `33274164713 success` (commit `1a15b8c`).
 
 - `PENDING` Spec: #112 / Issue: #117 — broadcast admin de push com seleção de audiência.
   - Implementado: `BroadcastNotificationEndpoint` com audiências `all`/`merchant`/`user`, preview paginado e fan-out em batch de 500; log `BroadcastAudit` + listagem dedicada.
