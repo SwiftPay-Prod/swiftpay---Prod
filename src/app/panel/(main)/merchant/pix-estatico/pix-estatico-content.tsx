@@ -79,8 +79,12 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
         const res = await listMerchantPaymentLinks(merchantId, { page: 1, pageSize: 50 });
         const raw = (res as unknown as { data?: { items?: unknown[] } | unknown[] })?.data;
         const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
-        const filtered = (items as MinimalPaymentLink[]).filter((l) => String((l as unknown as { pixLinkMode?: string }).pixLinkMode ?? '').startsWith('Static'));
-        if (!cancelled) setStaticLinks(filtered);
+        const filtered = (items as MinimalPaymentLink[]).filter((l) => {
+          const v = (l as unknown as { pixLinkMode?: string | number }).pixLinkMode;
+          if (v == null) return false;
+          const s = String(v);
+          return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
+        });
       } catch {
         if (!cancelled) setStaticLinks([]);
       } finally {
@@ -135,8 +139,12 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           const res = await listMerchantPaymentLinks(merchantId, { page: 1, pageSize: 50 });
           const raw = (res as unknown as { data?: { items?: unknown[] } | unknown[] })?.data;
           const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
-          const filtered = (items as MinimalPaymentLink[]).filter((l) => String((l as unknown as { pixLinkMode?: string }).pixLinkMode ?? '').startsWith('Static'));
-          setStaticLinks(filtered);
+          const filtered = (items as MinimalPaymentLink[]).filter((l) => {
+            const v = (l as unknown as { pixLinkMode?: string | number }).pixLinkMode;
+            if (v == null) return false;
+            const s = String(v);
+            return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
+          });
         } catch {}
       } catch (error: unknown) {
         let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
@@ -296,7 +304,16 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           ) : (
             <div className="grid gap-2">
               {staticLinks.map((link) => {
-                const parse = pixLinkModeParse[(link as unknown as { pixLinkMode?: PixLinkMode }).pixLinkMode as PixLinkMode] ?? pixLinkModeParse.StaticFixed;
+                const rawMode = (link as unknown as { pixLinkMode?: string | number }).pixLinkMode;
+                let key: PixLinkMode = 'StaticFixed';
+                if (typeof rawMode === 'number') {
+                  if (rawMode === 2) key = 'StaticOpen';
+                  else if (rawMode === 3) key = 'StaticPortable';
+                  else key = 'StaticFixed';
+                } else if (typeof rawMode === 'string' && rawMode in pixLinkModeParse) {
+                  key = rawMode as PixLinkMode;
+                }
+                const parse = pixLinkModeParse[key];
                 return (
                   <div key={link.id} className="flex items-center justify-between rounded-3 border border-white/12 bg-black/40 px-3 py-2">
                     <div className="flex items-center gap-2">

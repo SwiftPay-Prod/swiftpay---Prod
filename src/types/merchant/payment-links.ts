@@ -86,6 +86,7 @@ export interface MinimalPaymentLink {
   isExpired: boolean;
   lifetimeStatus: PaymentLinkLifetimeStatus;
   customer: MinimalPaymentLinkCustomer | null;
+  pixLinkMode?: string | number | null;
 }
 
 export interface PaymentLinkDetails {

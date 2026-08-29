@@ -58,6 +58,7 @@ public sealed class MinimalPaymentLink
     public bool IsExpired { get; set; }
     public string LifetimeStatus { get; set; } = "Active";
     public MinimalPaymentLinkCustomer? Customer { get; set; }
+    public PixLinkMode PixLinkMode { get; set; }
 }
 
 public sealed class MinimalPaymentLinkCustomer

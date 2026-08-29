@@ -41,7 +41,8 @@ public static class PaymentLinkMapper
                     Name = payment.Customer.Name,
                     Email = payment.Customer.Email
                 }
-                : null
+                : null,
+            PixLinkMode = paymentLink.PixLinkMode
         };
     }
 
