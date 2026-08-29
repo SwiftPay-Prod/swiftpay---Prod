@@ -79,35 +79,35 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           pixLinkMode: mode,
         })) as unknown as ApiResponse<CreatePaymentLinkData>;
 
-        if (created?.error) {
-          throw new Error(created.error.message || 'Erro ao criar link Pix Estático.');
-        }
-        const token = created?.data?.paymentLinkUrl?.split('/').pop() ?? null;
-        if (!token) {
-          throw new Error('Não foi possível identificar o token do Pix Estático criado.');
-        }
+        const createdError = created && typeof created === 'object' && 'error' in created ? (created as { error: { message: string } | null }).error : null;
+        if (createdError) throw new Error(createdError.message || 'Erro ao criar link Pix Estático.');
+        const paymentLinkUrl = created && typeof created === 'object' && 'data' in created ? (created as { data: { paymentLinkUrl?: string } | null }).data?.paymentLinkUrl ?? null : null;
+        const token = paymentLinkUrl?.split('/').pop() ?? null;
+        if (!token) throw new Error('Não foi possível identificar o token do Pix Estático criado.');
 
-        const started = (await startPaymentLink(token, 'Pix')) as unknown as StaticStartPayload & { error?: { message?: string } } | null;
-        if (started && 'error' in started && (started as { error?: { message?: string } }).error) {
-          throw new Error((started as { error: { message: string } }).error.message);
-        }
-        const nextQr = started?.data?.qr ?? started?.data?.pix?.qrCode ?? null;
-        const nextCopy = started?.data?.copyAndPaste ?? started?.data?.pix?.copyAndPaste ?? null;
-
-        if (!nextQr && !nextCopy) {
-          throw new Error('O Pix Estático foi criado, mas sem QR retornado.');
-        }
-
+        const startedRaw = await startPaymentLink(token, 'Pix');
+        console.log('[PixEstatico] started raw', startedRaw);
+        const startedError = startedRaw && typeof startedRaw === 'object' && 'error' in startedRaw ? (startedRaw as { error: { message: string } | null }).error : null;
+        if (startedError) throw new Error(startedError.message);
+        const startedData = startedRaw && typeof startedRaw === 'object' && 'data' in startedRaw ? (startedRaw as { data: Record<string, unknown> | null }).data : null;
+        const pixObj = startedData && typeof startedData === 'object' && ('pix' in startedData || 'Pix' in startedData) ? ((startedData as Record<string, unknown>)['pix'] ?? (startedData as Record<string, unknown>)['Pix']) as Record<string, unknown> | null : null;
+        const qrVal = startedData && typeof startedData === 'object' && ('qr' in startedData || 'Qr' in startedData) ? ((startedData as Record<string, unknown>)['qr'] ?? (startedData as Record<string, unknown>)['Qr']) as string | null : null;
+        const copyVal = startedData && typeof startedData === 'object' && ('copyAndPaste' in startedData || 'CopyAndPaste' in startedData) ? ((startedData as Record<string, unknown>)['copyAndPaste'] ?? (startedData as Record<string, unknown>)['CopyAndPaste']) as string | null : null;
+        const pixQr = pixObj && typeof pixObj === 'object' && ('qrCode' in pixObj || 'QrCode' in pixObj) ? ((pixObj as Record<string, unknown>)['qrCode'] ?? (pixObj as Record<string, unknown>)['QrCode']) as string | null : null;
+        const pixCopy = pixObj && typeof pixObj === 'object' && ('copyAndPaste' in pixObj || 'CopyAndPaste' in pixObj) ? ((pixObj as Record<string, unknown>)['copyAndPaste'] ?? (pixObj as Record<string, unknown>)['CopyAndPaste']) as string | null : null;
+        const nextQr = qrVal ?? pixQr ?? null;
+        const nextCopy = copyVal ?? pixCopy ?? null;
+        if (!nextQr && !nextCopy) throw new Error('O Pix Estático foi criado, mas sem QR retornado.');
         setQr(nextQr);
         setCopyAndPaste(nextCopy);
         toast.success('Pix Estático criado com sucesso.');
       } catch (error: unknown) {
         let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
         if (error && typeof error === 'object' && 'response' in error) {
-          const data = (error as { response?: { data?: { error?: { message?: string }; message?: string } } }).response?.data;
-          if (data?.error?.message) msg = data.error.message;
-          else if (data?.message) msg = data.message;
-          console.error('[PixEstatico] api error', data, error);
+          const respData = (error as { response?: { data?: { error?: { message?: string }; message?: string } } }).response?.data;
+          if (respData?.error?.message) msg = respData.error.message;
+          else if (respData?.message) msg = respData.message;
+          console.error('[PixEstatico] api error', respData, error);
         } else if (error instanceof Error) {
           msg = error.message;
           console.error('[PixEstatico] create failed', error);
