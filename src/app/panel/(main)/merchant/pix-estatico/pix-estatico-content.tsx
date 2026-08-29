@@ -205,11 +205,14 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
               <div className="grid gap-2">
                 <Label>QR Code</Label>
                 <div className="max-w-sm rounded-xl border border-white/12 bg-white p-4">
-                  <QRCodeSVG value={qr ?? copyAndPaste ?? 'pix'} size={256} />
+                  {qr && (qr.startsWith('data:') || qr.startsWith('http')) ? (
+                    <img alt="QR Code" src={qr} className="h-auto w-full" />
+                  ) : (
+                    <QRCodeSVG value={copyAndPaste ?? qr ?? 'pix'} size={256} level="L" />
+                  )}
                 </div>
               </div>
             )}
-
             {copyAndPaste && (
               <div className="grid gap-2">
                 <Label>Copia e cola</Label>
