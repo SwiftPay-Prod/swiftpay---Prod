@@ -91,9 +91,22 @@ public sealed class StartPaymentLinkEndpoint(
 
         if (paymentLink.PixLinkMode != PixLinkMode.Dynamic)
         {
-            var linkUrl = $"https://swiftpayment.info/p/{paymentLink.Token}";
-            var qrPayload = linkUrl;
-            var copyAndPaste = linkUrl;
+            var payoutAccount = await dbContext.MerchantPayoutAccounts
+                .Where(a => a.MerchantId == paymentLink.MerchantId && a.Status == PayoutAccountStatus.Active)
+                .OrderByDescending(a => a.IsDefault)
+                .ThenBy(a => a.CreatedAt)
+                .FirstOrDefaultAsync(ct);
+
+            if (payoutAccount == null || string.IsNullOrWhiteSpace(payoutAccount.PixKey))
+            {
+                await Send.ResponseAsync(new StartPaymentLinkResponse
+                {
+                    Error = new("Cadastre uma conta de saque com chave Pix para gerar QR estático. Vá em Saques > Contas.")
+                }, 422, ct);
+                return;
+            }
+
+            var pixData = PixStaticBrCodeGenerator.Generate(paymentLink, payoutAccount);
             var now = DateTime.UtcNow;
             var staticData = new PaymentLinkData
             {
@@ -121,7 +134,7 @@ public sealed class StartPaymentLinkEndpoint(
                 ThemeMode = paymentLink.ThemeMode,
                 ProductName = paymentLink.ProductName,
                 ProductImageUrl = paymentLink.ProductImageUrl,
-                Pix = new PixTransactionData { QrCode = qrPayload, CopyAndPaste = copyAndPaste, ExpiresAt = null },
+                Pix = pixData,
                 Boleto = null
             };
 
