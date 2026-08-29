@@ -39,13 +39,19 @@ public static class AuthenticationExtensions
                 {
                     try
                     {
+                        var jwt = new JsonWebToken(token);
+                        var isSha256 = string.Equals(jwt.Alg, SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase) ||
+                                       string.Equals(jwt.Alg, "HS256", StringComparison.OrdinalIgnoreCase);
+
+                        IJwtAlgorithm algorithm = isSha256 ? new HMACSHA256Algorithm() : new HMACSHA512Algorithm();
+
                         JwtBuilder.Create()
-                            .WithAlgorithm(new HMACSHA512Algorithm())
+                            .WithAlgorithm(algorithm)
                             .WithSecret(jwtSettings.Secret)
                             .MustVerifySignature()
                             .Decode<Dictionary<string, object>>(token);
 
-                        return new JsonWebToken(token);
+                        return jwt;
                     }
                     catch (TokenExpiredException ex)
                     {
