@@ -77,15 +77,21 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
     async function load() {
       try {
         const res = await listMerchantPaymentLinks(merchantId, { page: 1, pageSize: 50 });
+        console.log('[PixEstatico] list raw', res);
         const raw = (res as unknown as { data?: { items?: unknown[] } | unknown[] })?.data;
         const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
+        console.log('[PixEstatico] list items', items);
         const filtered = (items as MinimalPaymentLink[]).filter((l) => {
           const v = (l as unknown as { pixLinkMode?: string | number }).pixLinkMode;
-          if (v == null) return false;
+          console.log('[PixEstatico] item', l.id, v, (l as unknown as { description?: string }).description);
+          if (v == null) return String((l as unknown as { description?: string }).description ?? '').includes('Pix Estático');
           const s = String(v);
           return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
         });
-      } catch {
+        console.log('[PixEstatico] filtered', filtered);
+        if (!cancelled) setStaticLinks(filtered);
+      } catch (e) {
+        console.error('[PixEstatico] list failed', e);
         if (!cancelled) setStaticLinks([]);
       } finally {
         if (!cancelled) setIsLoadingList(false);
@@ -141,10 +147,11 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
           const filtered = (items as MinimalPaymentLink[]).filter((l) => {
             const v = (l as unknown as { pixLinkMode?: string | number }).pixLinkMode;
-            if (v == null) return false;
+            if (v == null) return String((l as unknown as { description?: string }).description ?? '').includes('Pix Estático');
             const s = String(v);
             return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
           });
+          setStaticLinks(filtered);
         } catch {}
       } catch (error: unknown) {
         let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
