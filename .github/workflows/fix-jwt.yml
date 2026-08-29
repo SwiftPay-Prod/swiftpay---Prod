@@ -1,0 +1,47 @@
+name: Fix JWT Secret
+on: workflow_dispatch
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 169.58.70.201
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -Eeuo pipefail
+            cd /root/swiftpay
+            ENV_FILE="swiftpay-api/.env.production"
+            if [ ! -f "$ENV_FILE" ]; then ENV_FILE="swiftpay-api-payment/.env.production"; fi
+            if [ ! -f "$ENV_FILE" ]; then ENV_FILE=".env.production"; fi
+            echo "ENV_FILE=$ENV_FILE"
+            ls -l "$ENV_FILE" || true
+            echo "--- current JWT Secret length ---"
+            grep -i "JWT" "$ENV_FILE" || true
+            # Generate new 64-char base64 secret (at least 32 bytes = 256 bits)
+            NEW_SECRET=$(openssl rand -base64 48 | tr -d '\n' | tr -d '=' | head -c 64)
+            echo "NEW_SECRET_LEN=${#NEW_SECRET}"
+            # Backup
+            cp "$ENV_FILE" "$ENV_FILE.bak.$(date +%s)"
+            # Replace JWT secret - try common keys
+            if grep -q "JWT_SECRET" "$ENV_FILE"; then
+              sed -i "s/^JWT_SECRET=.*/JWT_SECRET=$NEW_SECRET/" "$ENV_FILE"
+            elif grep -q "Jwt__Secret" "$ENV_FILE"; then
+              sed -i "s/^Jwt__Secret=.*/Jwt__Secret=$NEW_SECRET/" "$ENV_FILE"
+            elif grep -q "JWT__Secret" "$ENV_FILE"; then
+              sed -i "s/^JWT__Secret=.*/JWT__Secret=$NEW_SECRET/" "$ENV_FILE"
+            else
+              echo "JWT_SECRET=$NEW_SECRET" >> "$ENV_FILE"
+            fi
+            echo "--- new JWT line ---"
+            grep -i "JWT" "$ENV_FILE" | head -n 5
+            # Also fix for payment env
+            for F in swiftpay-api/.env.production swiftpay-api-payment/.env.production .env.production; do
+              if [ -f "$F" ] && [ "$F" != "$ENV_FILE" ]; then
+                echo "Also fixing $F"
+                cp "$F" "$F.bak.$(date +%s)" || true
+                if grep -q "JWT_SECRET" "$F"; then sed -i "s/^JWT_SECRET=.*/JWT_SECRET=$NEW_SECRET/" "$F"; elif grep -q "Jwt__Secret" "$F"; then sed -i "s/^Jwt__Secret=.*/Jwt__Secret=$NEW_SECRET/" "$F"; elif grep -q "JWT__Secret" "$F"; then sed -i "s/^JWT__Secret=.*/JWT__Secret=$NEW_SECRET/" "$F"; else echo "JWT_SECRET=$NEW_SECRET" >> "$F"; fi
+              fi
+            done
+            echo "Done"
