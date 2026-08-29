@@ -12,6 +12,8 @@ import { startPaymentLink } from '@/app/actions/merchant/payment-links-start';
 import type { ApiResponse } from '@/types/common';
 import type { CreatePaymentLinkData } from '@/types/merchant/payment-links';
 import { PaymentMethod } from '@/types/enums';
+import { CurrencyCentsInput } from '@/components/ui/currency-cents-input';
+import { formattedCurrencyToCents } from '@/utils/currency';
 
 type PixLinkMode = 'StaticFixed' | 'StaticOpen' | 'StaticPortable';
 
@@ -56,10 +58,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   const selectedMode = useMemo(() => MODES.find((item) => item.value === mode) ?? MODES[0], [mode]);
   const amountCents = useMemo(() => {
     if (!amount) return 0;
-    const normalized = amount.replace(/\./g, '').replace(',', '.');
-    const parsed = Number(normalized);
-    if (Number.isNaN(parsed)) return 0;
-    return Math.round(parsed * 100);
+    return formattedCurrencyToCents(amount) ?? 0;
   }, [amount]);
   const canCreate = mode === 'StaticFixed' ? amountCents > 0 : true;
 
@@ -162,14 +161,12 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           {mode === 'StaticFixed' && (
             <div className="grid gap-2">
               <Label className="text-xs font-semibold tracking-wide text-white/70">Valor (BRL)</Label>
-              <Input
-                value={amount}
-                onChange={(event) => setAmount(event.target.value.replace(/[^0-9.,]/g, ''))}
-                placeholder="10,00"
-                inputMode="decimal"
-                className="h-10 rounded-[12px] border-white/12 bg-black/40 text-white placeholder:text-white/30"
+              <CurrencyCentsInput
+                onValueChange={(v) => setAmount(v)}
+                placeholder="R$ 0,00"
+                variant="secondary"
+                className="text-center [&_input]:text-center [&_input]:text-2xl [&_input]:font-semibold [&_input]:tracking-tight"
               />
-              <p className="text-xs text-white/40">Digite como no Brasil: 10,00 = R$ 10,00. Envie em centavos.</p>
             </div>
           )}
 
