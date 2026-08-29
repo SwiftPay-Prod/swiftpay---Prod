@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RiCheckLine, RiRefreshLine } from '@remixicon/react';
+import { QRCodeSVG } from 'qrcode.react';
 import { toast } from 'sonner';
 import { createMerchantPaymentLink } from '@/app/actions/merchant/payment-links';
 import { startPaymentLink } from '@/app/actions/merchant/payment-links-start';
@@ -196,17 +197,17 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
                 {copied ? 'Copiado' : 'Copiar copia e cola'}
               </Button>
 
-              <Button variant="outline" onClick={() => setQr(null)} className="gap-2">
+              <Button variant="outline" onClick={() => { setQr(null); setCopyAndPaste(null); }} className="gap-2">
                 <RiRefreshLine className="h-4 w-4" />
                 Gerar novo
               </Button>
             </div>
 
-            {qr && (
+            {(qr || copyAndPaste) && (
               <div className="grid gap-2">
                 <Label>QR Code</Label>
                 <div className="max-w-sm rounded-xl border border-white/12 bg-white p-4">
-                  <img alt="QR Code" src={`https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(qr)}`} />
+                  <QRCodeSVG value={qr ?? copyAndPaste ?? ''} size={256} level="M" className="h-auto w-full" />
                 </div>
               </div>
             )}
