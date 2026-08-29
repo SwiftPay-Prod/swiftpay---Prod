@@ -19,16 +19,16 @@ jobs:
             ls -l "$ENV_FILE" || true
             echo "--- current JWT Secret length ---"
             grep -i "JWT" "$ENV_FILE" || true
-            NEW_SECRET=$(openssl rand -base64 48 | tr -d '\n' | tr -d '=' | head -c 64)
+            NEW_SECRET=$(openssl rand -hex 32)
             echo "NEW_SECRET_LEN=${#NEW_SECRET}"
             cp "$ENV_FILE" "$ENV_FILE.bak.$(date +%s)"
             for F in swiftpay-api/.env.production swiftpay-api-payment/.env.production .env.production; do
               if [ -f "$F" ]; then
                 echo "Fixing $F"
                 cp "$F" "$F.bak.$(date +%s)" || true
-                if grep -q "JWTSettings__Secret" "$F"; then sed -i "s/^JWTSettings__Secret=.*/JWTSettings__Secret=$NEW_SECRET/" "$F";
-                elif grep -q "JWTSettings_Secret" "$F"; then sed -i "s/^JWTSettings_Secret=.*/JWTSettings__Secret=$NEW_SECRET/" "$F";
-                elif grep -q "JWT_SECRET" "$F"; then sed -i "s/^JWT_SECRET=.*/JWTSettings__Secret=$NEW_SECRET/" "$F";
+                if grep -q "JWTSettings__Secret" "$F"; then sed -i "s|^JWTSettings__Secret=.*|JWTSettings__Secret=$NEW_SECRET|" "$F";
+                elif grep -q "JWTSettings_Secret" "$F"; then sed -i "s|^JWTSettings_Secret=.*|JWTSettings__Secret=$NEW_SECRET|" "$F";
+                elif grep -q "JWT_SECRET" "$F"; then sed -i "s|^JWT_SECRET=.*|JWTSettings__Secret=$NEW_SECRET|" "$F";
                 else echo "JWTSettings__Secret=$NEW_SECRET" >> "$F"; fi
                 echo "--- $F JWT line ---"
                 grep -i "JWT" "$F" | head -n 5
