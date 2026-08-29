@@ -88,8 +88,8 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           const s = String(v);
           return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
         });
-        console.log('[PixEstatico] filtered', filtered);
-        if (!cancelled) setStaticLinks(filtered);
+        console.log('[PixEstatico] filtered', filtered, 'total', items.length);
+        if (!cancelled) setStaticLinks(filtered.length > 0 ? filtered : (items as MinimalPaymentLink[]).slice(0, 10));
       } catch (e) {
         console.error('[PixEstatico] list failed', e);
         if (!cancelled) setStaticLinks([]);
@@ -151,7 +151,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
             const s = String(v);
             return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
           });
-          setStaticLinks(filtered);
+          setStaticLinks(filtered.length > 0 ? filtered : (items as MinimalPaymentLink[]).slice(0, 10));
         } catch {}
       } catch (error: unknown) {
         let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
