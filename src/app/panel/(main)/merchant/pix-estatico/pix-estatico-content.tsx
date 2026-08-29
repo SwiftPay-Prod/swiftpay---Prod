@@ -186,16 +186,22 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
     if (!confirm('Excluir este QR estático? Ele não poderá ser usado para pagamento.')) return;
     setDeletingId(paymentLinkId);
     try {
-      const res = await deleteMerchantPaymentLink(merchantId, paymentLinkId);
-      const err = (res as unknown as { error?: { message?: string } })?.error;
-      if (err) throw new Error(err.message);
+      await deleteMerchantPaymentLink(merchantId, paymentLinkId);
       toast.success('QR excluído.');
-      setStaticLinks((prev) => prev.filter((l) => l.id !== paymentLinkId));
-      if (staticLinks.find((l) => l.id === paymentLinkId)) {
-        setQr(null);
-        setCopyAndPaste(null);
-      }
+      const res = await listMerchantPaymentLinks(merchantId, { page: 1, pageSize: 50 });
+      const raw = (res as unknown as { data?: { items?: unknown[] } | unknown[] })?.data;
+      const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
+      const filtered = (items as MinimalPaymentLink[]).filter((l) => {
+        const v = (l as unknown as { pixLinkMode?: string | number }).pixLinkMode;
+        if (v == null) return String((l as unknown as { description?: string }).description ?? '').includes('Pix Estático');
+        const s = String(v);
+        return s !== '0' && s !== 'Dynamic' && (s.startsWith('Static') || ['1', '2', '3'].includes(s));
+      });
+      setStaticLinks(filtered.length > 0 ? filtered : (items as MinimalPaymentLink[]).slice(0, 10));
+      setQr(null);
+      setCopyAndPaste(null);
     } catch (e) {
+      console.error('[PixEstatico] delete failed', e);
       toast.error(e instanceof Error ? e.message : 'Erro ao excluir QR');
     } finally {
       setDeletingId(null);
