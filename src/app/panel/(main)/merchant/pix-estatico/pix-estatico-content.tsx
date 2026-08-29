@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useTransition } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,13 +9,13 @@ import { TextField, Label as HeroLabel, Select, ListBox, Chip } from '@heroui/re
 import { RiCheckLine, RiRefreshLine, RiQrCodeLine, RiMoneyDollarCircleLine, RiShareLine } from '@remixicon/react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toast } from 'sonner';
-import { createMerchantPaymentLink } from '@/app/actions/merchant/payment-links';
+import { createMerchantPaymentLink, listMerchantPaymentLinks } from '@/app/actions/merchant/payment-links';
 import { startPaymentLink } from '@/app/actions/merchant/payment-links-start';
 import type { ApiResponse } from '@/types/common';
-import type { CreatePaymentLinkData } from '@/types/merchant/payment-links';
+import type { CreatePaymentLinkData, MinimalPaymentLink } from '@/types/merchant/payment-links';
 import { PaymentMethod } from '@/types/enums';
 import { CurrencyCentsInput } from '@/components/ui/currency-cents-input';
-import { formattedCurrencyToCents } from '@/utils/currency';
+import { formatCurrency, formattedCurrencyToCents } from '@/utils/currency';
 import { mapParseColorToChipColor } from '@/parse';
 
 type PixLinkMode = 'StaticFixed' | 'StaticOpen' | 'StaticPortable';
@@ -63,13 +63,35 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   const [copied, setCopied] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-
-  const selectedMode = useMemo(() => MODES.find((item) => item.value === mode) ?? MODES[0], [mode]);
+  const [staticLinks, setStaticLinks] = useState<MinimalPaymentLink[]>([]);
+  const [isLoadingList, setIsLoadingList] = useState(true);
   const amountCents = useMemo(() => {
     if (!amount) return 0;
     return formattedCurrencyToCents(amount) ?? 0;
   }, [amount]);
   const canCreate = mode === 'StaticFixed' ? amountCents > 0 : true;
+  const selectedMode = useMemo(() => MODES.find((item) => item.value === mode) ?? MODES[0], [mode]);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await listMerchantPaymentLinks(merchantId, { page: 1, pageSize: 50 });
+        const raw = (res as unknown as { data?: { items?: unknown[] } | unknown[] })?.data;
+        const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
+        const filtered = (items as MinimalPaymentLink[]).filter((l) => String((l as unknown as { pixLinkMode?: string }).pixLinkMode ?? '').startsWith('Static'));
+        if (!cancelled) setStaticLinks(filtered);
+      } catch {
+        if (!cancelled) setStaticLinks([]);
+      } finally {
+        if (!cancelled) setIsLoadingList(false);
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [merchantId]);
 
   const handleCreate = () => {
     if (!canCreate || !selectedMode) {
@@ -109,6 +131,13 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
         setQr(nextQr);
         setCopyAndPaste(nextCopy);
         toast.success('Pix Estático criado com sucesso.');
+        try {
+          const res = await listMerchantPaymentLinks(merchantId, { page: 1, pageSize: 50 });
+          const raw = (res as unknown as { data?: { items?: unknown[] } | unknown[] })?.data;
+          const items = Array.isArray(raw) ? raw : Array.isArray((raw as { items?: unknown[] })?.items) ? (raw as { items: unknown[] }).items : [];
+          const filtered = (items as MinimalPaymentLink[]).filter((l) => String((l as unknown as { pixLinkMode?: string }).pixLinkMode ?? '').startsWith('Static'));
+          setStaticLinks(filtered);
+        } catch {}
       } catch (error: unknown) {
         let msg = 'Erro ao comunicar com a API de pagamentos (HTTP 500).';
         if (error && typeof error === 'object' && 'response' in error) {
@@ -254,6 +283,37 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           </CardContent>
         </Card>
       )}
+      <Card className="border-white/12 bg-[#16181a] text-white">
+        <CardHeader className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold">QRs criados</h2>
+          <p className="text-sm text-white/60">Reutilize seus QRs estáticos. Eles não expiram e ficam salvos aqui.</p>
+        </CardHeader>
+        <CardContent>
+          {isLoadingList ? (
+            <p className="text-sm text-white/50">Carregando...</p>
+          ) : staticLinks.length === 0 ? (
+            <p className="text-sm text-white/50">Nenhum QR estático criado ainda.</p>
+          ) : (
+            <div className="grid gap-2">
+              {staticLinks.map((link) => {
+                const parse = pixLinkModeParse[(link as unknown as { pixLinkMode?: PixLinkMode }).pixLinkMode as PixLinkMode] ?? pixLinkModeParse.StaticFixed;
+                return (
+                  <div key={link.id} className="flex items-center justify-between rounded-3 border border-white/12 bg-black/40 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm" className="gap-1">
+                        {parse.icon}
+                        {parse.label}
+                      </Chip>
+                      <span className="text-sm font-mono tabular-nums text-white">{typeof link.amount === 'number' ? formatCurrency(link.amount) : '-'}</span>
+                    </div>
+                    <span className="max-w-40 truncate text-xs text-white/50 md:max-w-60">{link.id}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
