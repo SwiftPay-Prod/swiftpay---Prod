@@ -91,26 +91,10 @@ public sealed class StartPaymentLinkEndpoint(
 
         if (paymentLink.PixLinkMode != PixLinkMode.Dynamic)
         {
-            var merchantPayoutAccount = await dbContext.MerchantPayoutAccounts
-                .IgnoreQueryFilters()
-                .FirstOrDefaultAsync(x => x.MerchantId == paymentLink.MerchantId && x.IsDefault && x.Status == PayoutAccountStatus.Active, ct);
-
-            string qrPayload;
-            string copyAndPaste;
-            if (merchantPayoutAccount == null)
-            {
-                var linkUrl = $"https://swiftpayment.info/p/{paymentLink.Token}";
-                qrPayload = linkUrl;
-                copyAndPaste = linkUrl;
-            }
-            else
-            {
-                var staticPix = PixStaticBrCodeGenerator.Generate(paymentLink, merchantPayoutAccount);
-                qrPayload = staticPix.QrCode;
-                copyAndPaste = staticPix.CopyAndPaste;
-            }
+            var linkUrl = $"https://swiftpayment.info/p/{paymentLink.Token}";
+            var qrPayload = linkUrl;
+            var copyAndPaste = linkUrl;
             var now = DateTime.UtcNow;
-
             var staticData = new PaymentLinkData
             {
                 Id = paymentLink.Id,
