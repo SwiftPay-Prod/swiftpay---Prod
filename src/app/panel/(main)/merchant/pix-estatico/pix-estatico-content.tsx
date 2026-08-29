@@ -161,11 +161,9 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
 
           {mode === 'StaticFixed' && (
             <div className="grid gap-2">
-              <Label className="text-xs font-semibold tracking-wide text-white/70">Valor (BRL)</Label>
               <CurrencyCentsInput
                 onValueChange={(v) => setAmount(v)}
                 placeholder="R$ 0,00"
-                variant="secondary"
                 className="text-center [&_input]:text-center [&_input]:text-2xl [&_input]:font-semibold [&_input]:tracking-tight"
               />
             </div>
@@ -207,7 +205,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
               <div className="grid gap-2">
                 <Label>QR Code</Label>
                 <div className="max-w-sm rounded-xl border border-white/12 bg-white p-4">
-                  <QRCodeSVG value={qr ?? copyAndPaste ?? ''} size={256} level="M" className="h-auto w-full" />
+                  <QRCodeSVG value={qr ?? copyAndPaste ?? 'pix'} size={256} />
                 </div>
               </div>
             )}
