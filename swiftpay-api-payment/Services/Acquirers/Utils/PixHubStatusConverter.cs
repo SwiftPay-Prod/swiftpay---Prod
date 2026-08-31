@@ -14,7 +14,7 @@ public static class PixHubStatusConverter
         {
             "paid" or "completed" or "settled" => PaymentStatus.Completed,
             "pending" or "waiting_payment" or "created" => PaymentStatus.Pending,
-            "canceled" or "cancelled" or "expired" => PaymentStatus.Failed,
+            "failed" or "canceled" or "cancelled" or "expired" => PaymentStatus.Failed,
             "refunded" => PaymentStatus.Refunded,
             _ => PaymentStatus.Pending
         };
