@@ -541,6 +541,16 @@ const ADMIN_ROUTES: RouteConfig[] = [
 		showInMenu: true,
 	},
 	{
+		path: Routes.panel.admin.notifications,
+		title: 'Notificações Push',
+		type: RouteType.Private,
+		access: { roles: [UserRole.God] },
+		iconName: 'NotificationSquare',
+		menuSection: 'Administração',
+		menuOrder: 13,
+		showInMenu: true,
+	},
+	{
 		path: Routes.panel.admin.reconciliations,
 		title: 'Reconciliações',
 		type: RouteType.Private,

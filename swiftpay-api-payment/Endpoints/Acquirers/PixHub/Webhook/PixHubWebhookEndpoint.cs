@@ -69,6 +69,23 @@ public sealed class PixHubWebhookEndpoint(
             {
                 await ProcessTransferAsync(payload.Transfer, ct);
             }
+            else
+            {
+                logger.LogWarning("PixHub webhook recebido sem transaction/transfer: Type={Type}, Event={Event}, HasTransaction={HasTransaction}, HasTransfer={HasTransfer}, RawBody={RawBody}",
+                    payload.Type, payload.Event, payload.Transaction != null, payload.Transfer != null, System.Text.Encoding.UTF8.GetString(rawBody));
+                await WebhookLogHelper.LogEventAsync(
+                    apiLogService,
+                    dbContext,
+                    HttpContext,
+                    AcquirerType.PixHub,
+                    ApiLogStatus.Warning,
+                    $"Webhook PixHub recebido sem payload processável: Type={payload.Type}, Event={payload.Event}",
+                    null,
+                    new { hasTransaction = payload.Transaction != null, hasTransfer = payload.Transfer != null },
+                    payload.Id ?? payload.Transaction?.Id ?? payload.Transfer?.Id,
+                    payload.Id ?? payload.Transaction?.Id ?? payload.Transfer?.Id,
+                    ct: ct);
+            }
 
             await Send.OkAsync(new PixHubWebhookResponse(), ct);
         }

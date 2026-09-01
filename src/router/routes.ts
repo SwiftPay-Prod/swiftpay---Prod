@@ -88,6 +88,7 @@ export const Routes = {
       acquirerDetails: (id: string) => `/panel/admin/acquirers/${id}`,
       templates: '/panel/admin/templates',
       templatesUpsert: (id: string = 'new') => `/panel/admin/templates/upsert/${id}`,
+      notifications: '/panel/admin/notifications',
       platformSettings: '/panel/admin/platform-settings',
       reconciliations: '/panel/admin/reconciliations',
     },

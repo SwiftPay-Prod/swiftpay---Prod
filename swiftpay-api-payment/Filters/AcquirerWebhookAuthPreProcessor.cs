@@ -19,8 +19,13 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
     public async Task PreProcessAsync(IPreProcessorContext ctx, CancellationToken ct)
     {
         var acquirerCode = GetAcquirerCodeFromRoute(ctx.HttpContext);
+        var isWebhookPath = IsRealWebhookPath(ctx.HttpContext.Request.Path.Value);
         if (string.IsNullOrEmpty(acquirerCode))
         {
+            if (isWebhookPath)
+            {
+                await LogWebhookAttemptAsync(ctx.HttpContext, null, "missing_acquirer_code", ct);
+            }
             if (!ctx.HttpContext.ResponseStarted())
             {
                 await ctx.HttpContext.Response.SendAsync(new BaseResponse
@@ -46,6 +51,10 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
 
         if (acquirerCandidates.Count == 0)
         {
+            if (isWebhookPath)
+            {
+                await LogWebhookAttemptAsync(ctx.HttpContext, null, "acquirer_not_found", ct);
+            }
             if (!ctx.HttpContext.ResponseStarted())
             {
                 await ctx.HttpContext.Response.SendAsync(new BaseResponse
@@ -68,6 +77,11 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
 
         if (acquirer == null)
         {
+            if (isWebhookPath)
+            {
+                var firstCandidate = acquirerCandidates.FirstOrDefault();
+                await LogWebhookAttemptAsync(ctx.HttpContext, firstCandidate, "unauthorized", ct);
+            }
             if (!ctx.HttpContext.ResponseStarted())
             {
                 await ctx.HttpContext.Response.SendAsync(new BaseResponse
@@ -80,7 +94,7 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
 
         ctx.HttpContext.Items["Acquirer"] = acquirer;
 
-        if (IsRealWebhookPath(ctx.HttpContext.Request.Path.Value))
+        if (isWebhookPath)
         {
             await LogWebhookRequestAsync(ctx.HttpContext, acquirer, ct);
         }
@@ -135,6 +149,38 @@ public class AcquirerWebhookAuthPreProcessor : IGlobalPreProcessor
             ContentType = httpContext.Request.ContentType,
             ContentLength = httpContext.Request.ContentLength
         });
+    }
+
+    private static async Task LogWebhookAttemptAsync(HttpContext httpContext, Acquirer? acquirer, string reason, CancellationToken ct)
+    {
+        try
+        {
+            var logService = httpContext.Resolve<IAcquirerWebhookLogService>();
+            var requestBody = await ReadRequestBodyAsync(httpContext);
+            var headers = SerializeHeaders(httpContext);
+            var acquirerCode = GetAcquirerCodeFromRoute(httpContext) ?? "unknown";
+            await logService.LogAsync(new AcquirerWebhookLogInput
+            {
+                AcquirerId = acquirer?.Id ?? Guid.Empty,
+                AcquirerType = acquirer?.Type.ToString() ?? acquirerCode,
+                AcquirerCode = acquirer?.Code ?? acquirerCode,
+                HttpMethod = httpContext.Request.Method,
+                Endpoint = httpContext.Request.Path.Value ?? "/unknown",
+                QueryString = httpContext.Request.QueryString.HasValue ? httpContext.Request.QueryString.Value : null,
+                RequestHeaders = headers,
+                RequestBody = requestBody != null ? $"[REJECTED:{reason}] {requestBody}" : $"[REJECTED:{reason}]",
+                IpAddress = GetClientIp(httpContext),
+                UserAgent = httpContext.Request.Headers.UserAgent.ToString(),
+                Location = ResolveLocation(httpContext),
+                CorrelationId = httpContext.Request.Headers["X-Correlation-Id"].ToString(),
+                ContentType = httpContext.Request.ContentType,
+                ContentLength = httpContext.Request.ContentLength
+            });
+        }
+        catch
+        {
+            // Nunca quebrar o fluxo principal por falha de log
+        }
     }
 
     private static async Task<string?> ReadRequestBodyAsync(HttpContext context)
