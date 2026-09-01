@@ -2,9 +2,10 @@
 
 import { Button, Chip, Avatar, Tooltip } from '@heroui/react';
 import Image from 'next/image';
-import { Building02Icon, ServerStack01Icon, ViewIcon, Tag01Icon, Copy01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
+import { Building02Icon, ServerStack01Icon, ViewIcon, Tag01Icon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/ui/icon';
 import type { AdminMinimalMerchant } from '@/types/admin/merchants';
+import { CopyableId } from '@/components/admin/copyable-id';
 import { UserRole } from '@/types/enums';
 import {
 	merchantStatusParse,
@@ -227,21 +228,7 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			key: 'merchantId',
 			header: 'Merchant ID',
 			sortable: false,
-			render: (merchant) => (
-				<button
-					type="button"
-					onClick={() => {
-						if (typeof navigator !== 'undefined' && navigator.clipboard) {
-							navigator.clipboard.writeText(merchant.id);
-						}
-					}}
-					className="group inline-flex max-w-70 items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-xs text-white/60 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
-					title="Copiar UUID"
-				>
-					<span className="truncate">{merchant.id}</span>
-					<Icon icon={Copy01Icon} className="icon-xs shrink-0 opacity-50 group-hover:opacity-100" />
-				</button>
-			),
+			render: (merchant) => <CopyableId value={merchant.id} />,
 		},
 		{
 			key: 'actions',
