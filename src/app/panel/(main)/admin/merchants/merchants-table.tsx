@@ -224,6 +224,26 @@ function getColumns(config: ColumnsConfig): DataTableColumn<AdminMinimalMerchant
 			),
 		},
 		{
+			key: 'merchantId',
+			header: 'Merchant ID',
+			sortable: false,
+			render: (merchant) => (
+				<button
+					type="button"
+					onClick={() => {
+						if (typeof navigator !== 'undefined' && navigator.clipboard) {
+							navigator.clipboard.writeText(merchant.id);
+						}
+					}}
+					className="group inline-flex max-w-55 items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2 py-1 font-mono text-xs text-white/60 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
+					title="Copiar UUID"
+				>
+					<span className="truncate">{merchant.id}</span>
+					<Icon icon={ViewIcon} className="icon-xs opacity-40 group-hover:opacity-100" />
+				</button>
+			),
+		},
+		{
 			key: 'actions',
 			header: 'Ações',
 			align: 'center',
