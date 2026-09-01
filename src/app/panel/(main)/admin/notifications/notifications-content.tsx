@@ -37,7 +37,7 @@ export function NotificationsBroadcastContent({ currentUserRole }: { currentUser
       toast.error('Apenas God pode enviar broadcast.');
       return;
     }
-    if (!title.trim() || !message.trim()) {
+    if (!(title || '').trim() || !(message || '').trim()) {
       toast.error('Título e mensagem são obrigatórios.');
       return;
     }
@@ -51,10 +51,10 @@ export function NotificationsBroadcastContent({ currentUserRole }: { currentUser
         const res = await adminBroadcastNotification({
           audience,
           merchantId: audience === 'merchant' ? merchantId : null,
-          userEmail: audience === 'user' ? userEmail : null,
-          title: title.trim(),
-          message: message.trim(),
-          actionUrl: actionUrl.trim() || null,
+          userEmail: audience === 'user' ? (userEmail || '').trim() || null : null,
+          title: (title || '').trim(),
+          message: (message || '').trim(),
+          actionUrl: (actionUrl || '').trim() || null,
           type: 'Admin',
           priority: 'Normal',
         });
@@ -151,7 +151,7 @@ export function NotificationsBroadcastContent({ currentUserRole }: { currentUser
           <TextField variant="secondary" isRequired>
             <Label>Mensagem</Label>
             <TextArea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Ex: Seu saque foi aprovado e o valor já está disponível." rows={4} maxLength={300} />
-            <p className="text-xs text-white/40">{message.length}/300</p>
+            <p className="text-xs text-white/40">{(message || '').length}/300</p>
           </TextField>
 
           <TextField variant="secondary">
