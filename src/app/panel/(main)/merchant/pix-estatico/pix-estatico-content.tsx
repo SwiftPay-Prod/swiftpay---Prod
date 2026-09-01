@@ -55,6 +55,8 @@ interface StaticStartPayload {
   };
 }
 
+const PIX_ESTATICO_DISABLED = true;
+
 export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   const [mode, setMode] = useState<PixLinkMode>('StaticFixed');
   const [amount, setAmount] = useState('');
@@ -109,6 +111,11 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
   }, [merchantId]);
 
   const handleCreate = () => {
+    if (PIX_ESTATICO_DISABLED) {
+      toast.error('Pix estático em breve. No momento apenas Pix dinâmico está disponível.');
+      setLastError('Pix estático em breve. Disponível apenas Pix dinâmico.');
+      return;
+    }
     if (!canCreate || !selectedMode) {
       toast.error('Informe um valor para o Pix com valor fixo.');
       return;
@@ -245,6 +252,12 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
           <p className="max-w-2xl text-sm leading-5 text-white/60">Crie QR reutilizável sem expiração para usar no seu comércio. Funciona off-checkout e pode ser impresso.</p>
         </div>
       </div>
+      {PIX_ESTATICO_DISABLED && (
+        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3">
+          <p className="text-sm font-medium text-amber-200">Pix estático em breve</p>
+          <p className="text-xs leading-4 text-amber-200/70">Estamos finalizando a integração. Por enquanto utilize Pix dinâmico via Links de Pagamento ou Checkout — o código do estático permanece intacto e será liberado em breve.</p>
+        </div>
+      )}
       <div className="rounded-5 border border-white/12 bg-[#16181a] p-5 sm:p-6">
         <div className="grid gap-4">
           <Select
@@ -270,7 +283,7 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
               <ListBox>
                 {MODES.map((item) => {
                   const parse = pixLinkModeParse[item.value];
-                  const isFuture = item.value !== 'StaticFixed';
+                  const isFuture = PIX_ESTATICO_DISABLED ? true : item.value !== 'StaticFixed';
                   return (
                     <ListBox.Item key={item.value} id={item.value} textValue={item.label} isDisabled={isFuture}>
                       <Chip variant="soft" color={mapParseColorToChipColor(parse.color)} size="sm" className="gap-1">
@@ -301,8 +314,8 @@ export function PixEstaticoContent({ merchantId }: { merchantId: string }) {
               />
             </TextField>
           )}
-          <Button onClick={handleCreate} disabled={!canCreate || isPending} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
-            {isPending ? 'Criando...' : 'Criar Pix Estático'}
+          <Button onClick={handleCreate} disabled={PIX_ESTATICO_DISABLED || !canCreate || isPending} className="rounded-full bg-white font-semibold text-black hover:bg-white/90 disabled:opacity-40">
+            {PIX_ESTATICO_DISABLED ? 'Em breve' : isPending ? 'Criando...' : 'Criar Pix Estático'}
           </Button>
           {lastError && (
             <div className="rounded-[12px] border border-danger/20 bg-danger/10 px-3 py-2 text-sm text-danger">{lastError}</div>

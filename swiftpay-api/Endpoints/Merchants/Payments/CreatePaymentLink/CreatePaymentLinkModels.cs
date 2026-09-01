@@ -80,6 +80,11 @@ public sealed class CreatePaymentLinkRequestValidator : Validator<CreatePaymentL
             .Must(field => field == "Name" || field == "Email" || field == "Phone")
             .When(x => x.RequiredBuyerFields != null && x.RequiredBuyerFields.Count > 0)
             .WithMessage("Os campos de comprador permitidos são: Name, Email, Phone.");
+
+        // Pix estático desabilitado temporariamente - manter código intacto, bloquear uso
+        RuleFor(x => x.PixLinkMode)
+            .Must(mode => mode == PixLinkMode.Dynamic)
+            .WithMessage("Pix estático em breve. No momento apenas Pix dinâmico está disponível.");
     }
 }
 
